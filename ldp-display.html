@@ -8,7 +8,7 @@
     <template>
         <template is="dom-if" if="{{isContainer(resource)}}">
             <template is="dom-repeat" items="{{resource.ldp:contains}}">
-                <div>
+                <div on-click="dispatchSelect">
                     <ldp-display resource="{{item}}"></ldp-display>
                 </div>
             </template>
@@ -31,6 +31,10 @@
             }
             getField(resource, field) {
                 return resource[field];
+            }
+            dispatchSelect(event) {
+                var resource = event.currentTarget.querySelector('ldp-display').resource;
+                this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
             }
             isContainer(resource) {
                 return ('ldp:contains' in resource);
