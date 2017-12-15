@@ -7,7 +7,7 @@
 <dom-module id="ldp-display">
     <template>
         <template is="dom-if" if="{{isContainer(resource)}}">
-            <template is="dom-repeat" items="{{resource.ldp:contains}}">
+            <template is="dom-repeat" items="{{listResources(resource)}}">
                 <div on-click="dispatchSelect">
                     <ldp-display resource="{{item}}"></ldp-display>
                 </div>
@@ -25,9 +25,9 @@
         var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"});
         class LDPDisplay extends Polymer.Element {
             static get is() { return 'ldp-display'; }
-            static get observedAttributes() {return ['data-src']; }
+            static get observedAttributes() { return ['data-src']; }
             getFields(resource) {
-                return Object.keys(resource).filter(function(prop){return !prop.startsWith("@")});
+                return Object.keys(resource).filter(function(prop){ return !prop.startsWith("@") });
             }
             getField(resource, field) {
                 return resource[field];
@@ -38,6 +38,11 @@
             }
             isContainer(resource) {
                 return ('ldp:contains' in resource);
+            }
+            listResources(container) {
+                if(!this.isContainer(container)) return [];
+                if(Array.isArray(container['ldp:contains'])) return container['ldp:contains'];
+                return [container['ldp:contains']];
             }
             attributeChangedCallback(attribute, oldValue, newValue) {
                 if(attribute == "data-src" && newValue) store.get(newValue).then(function(resource) {
