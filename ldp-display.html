@@ -1,76 +1,31 @@
-<script type="text/javascript" src="https://cdn.happy-dev.fr/LDP-framework/ldpframework.js"></script>
-<base href="https://polygit.org/components/">
-<link rel="import" href="polymer/polymer-element.html">
-<link rel="import" href="polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="polymer/lib/elements/dom-if.html">
-
-
-<dom-module id="ldp-insert">
-    <script>
-    (function(){
-        class LDPInsert extends Polymer.Element {
-            static get is() { return 'ldp-insert'; }
-            static get properties() { return {tag: String}; }
-            connectedCallback() {
-                var elt = document.createElement(this.tag);
-                while(this.firstChild) elt.appendChild(this.firstChild);
-                for(let key of Object.keys(this)) if(!key.startsWith('__')) elt[key] = this[key];
-                this.appendChild(elt);
-            }
-        }
-        customElements.define(LDPInsert.is, LDPInsert);
-    }());
-    </script>
-</dom-module>
+<link rel="import" href="./ldp-base.html">
+<link rel="import" href="./ldp-widgets.html">
 
 <dom-module id="ldp-display">
     <template>
         <template is="dom-if" if="{{isContainer(resource)}}">
             <template is="dom-repeat" items="{{listResources(resource)}}">
                 <div on-click="dispatchSelect">
-                    <ldp-insert tag="{{childTag()}}" resource="{{item}}"></ldp-insert>
+                    <ldp-insert tag="{{childTag()}}" resource="{{item}}" fields="{{fields}}" widgets="{{widgets}}"></ldp-insert>
                 </div>
             </template>
         </template>
         <template is="dom-if" if="{{!isContainer(resource)}}">
-            <template is="dom-repeat" items="{{getFields(resource)}}">
-                <ldp-insert tag="div">{{getField(resource, item)}}</ldp-insert>
-            </template>
+            <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-display-div"></ldp-list-fields>
         </template>
     </template>
 
     <script>
     (function(){
-        var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"});
-        class LDPDisplay extends Polymer.Element {
+        class LDPDisplay extends LDPBase {
             static get is() { return 'ldp-display'; }
-            static get observedAttributes() { return ['data-src', 'data-child']; }
             
             childTag() {
                 return this.dataset.child || this.tagName;
             }
-            getFields(resource) {
-                return Object.keys(resource).filter(function(prop){ return !prop.startsWith("@") });
-            }
-            getField(resource, field) {
-                return resource[field];
-            }
             dispatchSelect(event) {
-                var resource = event.currentTarget.querySelector('ldp-display').resource;
+                var resource = event.currentTarget.querySelector('ldp-display').resource; //TODO won't work with custom child
                 this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
-            }
-            isContainer(resource) {
-                return ('ldp:contains' in resource);
-            }
-            listResources(container) {
-                if(!this.isContainer(container)) return [];
-                if(Array.isArray(container['ldp:contains'])) return container['ldp:contains'];
-                return [container['ldp:contains']];
-            }
-            attributeChangedCallback(attribute, oldValue, newValue) {
-                if(attribute == "data-src" && newValue) store.get(newValue).then(function(resource) {
-                    this.resource = resource;
-                }.bind(this));
             }
         }
 

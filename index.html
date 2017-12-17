@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
         <link rel="import" href="ldp-display.html" />
+        <link rel="import" href="ldp-form.html" />
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.querySelector('ldp-display').addEventListener('select', function(event) {
@@ -14,6 +15,7 @@
         </script>
     </head>
     <body>
-        <ldp-display data-child='div' data-src="http://localhost:8000/todos/"></ldp-display>
+        <ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, name" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}'></ldp-display>
+        <ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
     </body>
 </html>

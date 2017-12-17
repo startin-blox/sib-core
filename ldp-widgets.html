@@ -1,0 +1,39 @@
+<base href="https://polygit.org/components/">
+<link rel="import" href="polymer/polymer-element.html">
+
+<dom-module id="ldp-display-div">
+    <template>
+        <div>{{value}}</div>
+    </template>
+    <script>
+        class LDPDisplayDiv extends Polymer.Element {
+            static get is() { return "ldp-display-div"; }
+        }
+        customElements.define(LDPDisplayDiv.is, LDPDisplayDiv);
+    </script>
+</dom-module>
+
+<dom-module id="ldp-display-img">
+    <template>
+        <img src$="{{value}}"/>
+    </template>
+    <script>
+        class LDPDisplayImg extends Polymer.Element {
+            static get is() { return "ldp-display-img"; }
+        }
+        customElements.define(LDPDisplayImg.is, LDPDisplayImg);
+    </script>
+</dom-module>
+
+<dom-module id="ldp-form-text">
+    <template>
+        <label for="id-{{name}}">{{name}}</label>
+        <input type="text" value$="{{value}}" name="{{name}}">
+    </template>
+    <script>
+        class LDPFormText extends Polymer.Element {
+            static get is() { return "ldp-form-text"; }
+        }
+        customElements.define(LDPFormText.is, LDPFormText);
+    </script>
+</dom-module>

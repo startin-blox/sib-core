@@ -1,0 +1,110 @@
+<script type="text/javascript" src="https://cdn.happy-dev.fr/LDP-framework/ldpframework.js"></script>
+<base href="https://polygit.org/components/">
+<link rel="import" href="polymer/polymer-element.html">
+<link rel="import" href="polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="polymer/lib/elements/dom-if.html">
+
+<dom-module id="ldp-insert">
+    <script>
+    (function(){
+        class LDPInsert extends Polymer.Element {
+            static get is() { return 'ldp-insert'; }
+            static get properties() { return {tag: String}; }
+            connectedCallback() {
+                var elt = document.createElement(this.tag);
+                while(this.firstChild) elt.appendChild(this.firstChild);
+                for(let key of Object.keys(this).filter(function(key){ return !key.startsWith("__") }))
+                    elt[key] = this[key];
+                this.appendChild(elt);
+            }
+        }
+        customElements.define(LDPInsert.is, LDPInsert);
+    }());
+    </script>
+</dom-module>
+
+<dom-module id="ldp-list-fields">
+    <template>
+        <template is="dom-repeat" items="{{fields}}">
+            <template is="dom-if" if="{{isSet(item)}}">
+                <div>
+                    <ldp-list-fields resource="{{resource}}" fields="{{getWidget(item)}}" widgets="{{widgets}}" default-widget="{{defaultWidget}}"></ldp-list-fields>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isSet(item)}}">
+                <ldp-insert tag="{{getWidget(item)}}" value="{{getField(resource, item)}}" name="{{item}}"></ldp-insert>
+            </template>
+        </template>
+    </template>
+    <script>
+        class LDPListFields extends Polymer.Element {
+            static get is() { return "ldp-list-fields"; }
+            static get properties() { return {defaultWidget: String}; }
+            isSet(field) {
+                return Array.isArray(this.getWidget(field));
+            }
+            isValue(field) {
+                try {
+                    return 'value' in this.widgets[field];
+                } catch(e) {
+                    return false;
+                }
+            }
+            getWidget(field) {
+                if(this.widgets && field in this.widgets) {
+                    if(this.isValue(field)) return this.widgets[field].widget || this.defaultWidget;
+                    return this.widgets[field];
+                }
+                return this.defaultWidget;
+            }
+            getField(resource, field) {
+                if(this.isValue(field)) return this.widgets[field].value;
+                return resource[field];
+            }
+        }
+        customElements.define(LDPListFields.is, LDPListFields);
+    </script>
+</dom-module>
+
+
+<script>
+    var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"});
+    class LDPBase extends Polymer.Element {
+        static get observedAttributes() { return ['data-fields', 'data-widgets', 'data-src', 'data-child']; }
+        
+        childTag() {
+            return this.dataset.child || this.tagName;
+        }
+        getFields(resource) {
+            if(this.dataset.fields) return this.dataset.fields.split(',').map(function(s){return s.trim()});
+            if(this.isContainer(resource)) return this.getFields(this.listResources(resource)[0]);
+            return Object.keys(resource).filter(function(prop){ return !prop.startsWith("@") });
+        }
+        getWidgets(field) {
+            try {
+                return JSON.parse(this.dataset.widgets);
+            } catch(e) {
+                console.error("Parsing error:", e.message);
+                return {};
+            }
+        }
+        isContainer(resource) {
+            return ('ldp:contains' in resource);
+        }
+        listResources(container) {
+            if(!this.isContainer(container)) return [];
+            if(Array.isArray(container['ldp:contains'])) return container['ldp:contains'];
+            return [container['ldp:contains']];
+        }
+        attributeChangedCallback(attribute, oldValue, newValue) {
+            if(attribute == "data-src" && newValue) store.get(newValue).then(function(resource) {
+                this.resource = resource;
+                this.set('fields', this.getFields(this.resource));
+            }.bind(this));
+            if(attribute == "data-fields" && newValue)
+                this.set('fields', this.getFields(this.resource));
+            if(attribute == "data-widgets" && newValue)
+                this.set('widgets', this.getWidgets());
+        }
+    }
+</script>
