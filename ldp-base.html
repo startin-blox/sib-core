@@ -68,7 +68,7 @@
 
 
 <script>
-    var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"});
+    var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     class LDPBase extends Polymer.Element {
         static get observedAttributes() { return ['data-fields', 'data-widgets', 'data-src', 'data-child']; }
         
