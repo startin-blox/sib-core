@@ -3,7 +3,7 @@
 
 <dom-module id="ldp-display-div">
     <template>
-        <div>{{value}}</div>
+        <div class$="{{name}}">{{value}}</div>
     </template>
     <script>
         class LDPDisplayDiv extends Polymer.Element {
@@ -15,7 +15,7 @@
 
 <dom-module id="ldp-display-img">
     <template>
-        <img src$="{{value}}"/>
+        <img class$="{{name}}" src$="{{value}}"/>
     </template>
     <script>
         class LDPDisplayImg extends Polymer.Element {
