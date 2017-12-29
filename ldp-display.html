@@ -3,6 +3,7 @@
 
 <dom-module id="ldp-display">
     <template>
+        <style include="custom-styles"></style>
         <template is="dom-if" if="{{isContainer(resource)}}">
             <template is="dom-repeat" items="{{listResources(resource)}}">
                 <div on-click="dispatchSelect">

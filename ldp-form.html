@@ -3,6 +3,7 @@
 
 <dom-module id="ldp-form">
     <template>
+        <style include="custom-styles"></style>
         <form on-submit="saveForm">
             <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-form-text"></ldp-list-fields>
             <input type="submit">

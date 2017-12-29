@@ -13,6 +13,15 @@
                 });
             });
         </script>
+        <dom-module id='custom-styles'>
+            <template>
+                <style>
+                    ldp-list-fields {
+                        display: flex;
+                    }
+                </style>
+            </template>
+        </dom-module>
     </head>
     <body>
         <ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}'></ldp-display>

@@ -25,6 +25,7 @@
 
 <dom-module id="ldp-list-fields">
     <template>
+        <style include="custom-styles"></style>
         <template is="dom-repeat" items="{{fields}}">
             <template is="dom-if" if="{{isSet(item)}}">
                 <div>
