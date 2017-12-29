@@ -28,7 +28,7 @@
         <style include="custom-styles"></style>
         <template is="dom-repeat" items="{{fields}}">
             <template is="dom-if" if="{{isSet(item)}}">
-                <div>
+                <div class$={{item}}>
                     <ldp-list-fields resource="{{resource}}" fields="{{getWidget(item)}}" widgets="{{widgets}}" default-widget="{{defaultWidget}}"></ldp-list-fields>
                 </div>
             </template>
