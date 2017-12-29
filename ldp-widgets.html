@@ -3,6 +3,7 @@
 
 <dom-module id="ldp-display-div">
     <template>
+        <style include="custom-styles"></style>
         <div class$="{{name}}">{{value}}</div>
     </template>
     <script>
@@ -15,6 +16,7 @@
 
 <dom-module id="ldp-display-img">
     <template>
+        <style include="custom-styles"></style>
         <img class$="{{name}}" src$="{{value}}"/>
     </template>
     <script>
@@ -27,6 +29,7 @@
 
 <dom-module id="ldp-form-text">
     <template>
+        <style include="custom-styles"></style>
         <label for="id-{{name}}">{{name}}</label>
         <input type="text" value$="{{value}}" name="{{name}}">
     </template>
