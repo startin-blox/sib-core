@@ -13,18 +13,22 @@
                 });
             });
         </script>
-        <dom-module id='custom-styles'>
-            <template>
-                <style>
-                    ldp-list-fields {
-                        display: flex;
-                    }
-                </style>
-            </template>
-        </dom-module>
+        <template id='mystyles'>
+            <style>
+            ldp-list-fields {
+                display: flex;
+            }
+            .set1 {
+                color: orange;
+            }
+            .text {
+                font-weight: bold;
+            }
+            </style>
+        </template>
     </head>
     <body>
-        <ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}'></ldp-display>
+        <ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}' custom-styles="mystyles"></ldp-display>
         <ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
     </body>
 </html>

@@ -3,11 +3,10 @@
 
 <dom-module id="ldp-display-div">
     <template>
-        <style include="custom-styles"></style>
         <div class$="{{name}}">{{value}}</div>
     </template>
     <script>
-        class LDPDisplayDiv extends Polymer.Element {
+        class LDPDisplayDiv extends StyledElement {
             static get is() { return "ldp-display-div"; }
         }
         customElements.define(LDPDisplayDiv.is, LDPDisplayDiv);
@@ -16,11 +15,10 @@
 
 <dom-module id="ldp-display-img">
     <template>
-        <style include="custom-styles"></style>
         <img class$="{{name}}" src$="{{value}}"/>
     </template>
     <script>
-        class LDPDisplayImg extends Polymer.Element {
+        class LDPDisplayImg extends StyledElement {
             static get is() { return "ldp-display-img"; }
         }
         customElements.define(LDPDisplayImg.is, LDPDisplayImg);
@@ -29,12 +27,11 @@
 
 <dom-module id="ldp-form-text">
     <template>
-        <style include="custom-styles"></style>
         <label for="id-{{name}}">{{name}}</label>
         <input type="text" value$="{{value}}" name="{{name}}">
     </template>
     <script>
-        class LDPFormText extends Polymer.Element {
+        class LDPFormText extends StyledElement {
             static get is() { return "ldp-form-text"; }
         }
         customElements.define(LDPFormText.is, LDPFormText);

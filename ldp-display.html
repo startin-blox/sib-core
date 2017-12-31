@@ -3,16 +3,15 @@
 
 <dom-module id="ldp-display">
     <template>
-        <style include="custom-styles"></style>
         <template is="dom-if" if="{{isContainer(resource)}}">
             <template is="dom-repeat" items="{{listResources(resource)}}">
                 <div on-click="dispatchSelect">
-                    <ldp-insert tag="{{childTag()}}" resource="{{item}}" fields="{{fields}}" widgets="{{widgets}}"></ldp-insert>
+                    <ldp-insert tag="{{childTag()}}" resource="{{item}}" fields="{{fields}}" widgets="{{widgets}}" custom-styles="{{customStyles}}"></ldp-insert>
                 </div>
             </template>
         </template>
         <template is="dom-if" if="{{!isContainer(resource)}}">
-            <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-display-div"></ldp-list-fields>
+            <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-display-div" custom-styles="{{customStyles}}"></ldp-list-fields>
         </template>
     </template>
 
