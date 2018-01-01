@@ -11,7 +11,7 @@
         static get properties() { return {customStyles: String}; }
         connectedCallback() {
             super.connectedCallback();
-            if(this.customStyles) {
+            if(this.customStyles && document.getElementById(this.customStyles)) {
                 var styles = document.getElementById(this.customStyles).content.firstElementChild.cloneNode(true);
                 this.shadowRoot.appendChild(styles);
             }
