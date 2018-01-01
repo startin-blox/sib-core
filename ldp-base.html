@@ -12,7 +12,6 @@
         connectedCallback() {
             super.connectedCallback();
             if(this.customStyles) {
-                console.log(this.customStyles);
                 var styles = document.getElementById(this.customStyles).content.firstElementChild.cloneNode(true);
                 this.shadowRoot.appendChild(styles);
             }
