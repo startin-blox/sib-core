@@ -34,10 +34,10 @@
             <ldp-route name="form">Voir le formulaire</ldp-route>
             <ldp-route name="detail">Voir le détail</ldp-route>
         </ldp-router>
-        <content id="ldp-root">
+        <main id="ldp-root">
             <ldp-display id="list" data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}' custom-styles="mystyles"></ldp-display>
             <ldp-display id="detail" data-src="http://localhost:8000/todos/1" data-fields="name, author, text" data-widgets='{"text": {"value": "Ceci est un détail"}}' custom-styles="mystyles"></ldp-display>
             <ldp-form id="form" data-src="http://localhost:8000/todos/"></ldp-form>
-        </content>
+        </main>
     </body>
 </html>
