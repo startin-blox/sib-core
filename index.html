@@ -5,6 +5,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
         <link rel="import" href="ldp-display.html" />
         <link rel="import" href="ldp-form.html" />
+        <link rel="import" href="ldp-router.html" />
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.querySelector('ldp-display').addEventListener('select', function(event) {
@@ -28,7 +29,15 @@
         </template>
     </head>
     <body>
-        <ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}' custom-styles="mystyles"></ldp-display>
-        <ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
+        <ldp-router>
+            <ldp-route name="list">Voir la liste</ldp-route>
+            <ldp-route name="form">Voir le formulaire</ldp-route>
+            <ldp-route name="detail">Voir le détail</ldp-route>
+        </ldp-router>
+        <content id="ldp-root">
+            <ldp-display id="list" data-src="http://localhost:8000/todos/" data-fields="set1, author" data-widgets='{"set1": ["name", "text"], "text": {"value": "youpi"}}' custom-styles="mystyles"></ldp-display>
+            <ldp-display id="detail" data-src="http://localhost:8000/todos/1" data-fields="name, author, text" data-widgets='{"text": {"value": "Ceci est un détail"}}' custom-styles="mystyles"></ldp-display>
+            <ldp-form id="form" data-src="http://localhost:8000/todos/"></ldp-form>
+        </content>
     </body>
 </html>

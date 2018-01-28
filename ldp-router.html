@@ -1,0 +1,40 @@
+<base href="https://polygit.org/components/">
+<link rel="import" href="polymer/polymer-element.html">
+
+<dom-module id="ldp-router">
+    <script>
+    (function(){
+        class LDPRouter extends Polymer.Element {
+            static get is() { return 'ldp-router'; }
+            navigate(name) {
+                Array.from(document.getElementById("ldp-root").children).forEach(function(child, index) {
+                    child.style.display = 'none';
+                });
+                window.location.hash = name;
+                if(document.getElementById(name))
+                    document.getElementById(name).style.display = 'block';
+            }
+            connectedCallback() {
+                this.navigate(window.location.hash.replace('#', ''));
+            }
+        }
+        customElements.define(LDPRouter.is, LDPRouter);
+    }());
+    </script>
+</dom-module>
+<dom-module id="ldp-route">
+    <script>
+    (function(){
+        class LDPRoute extends Polymer.Element {
+            static get is() { return 'ldp-route'; }
+            static get properties() { return {name: String}; }
+            connectedCallback() {
+                this.addEventListener('click', function(event) {
+                    this.closest('ldp-router').navigate(this.name);
+                }.bind(this));
+            }
+        }
+        customElements.define(LDPRoute.is, LDPRoute);
+    }());
+    </script>
+</dom-module>
