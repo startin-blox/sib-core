@@ -1,35 +1,43 @@
 <link rel="import" href="./ldp-base.html">
 <link rel="import" href="./ldp-widgets.html">
 
-<dom-module id="ldp-display">
-    <template>
-        <template is="dom-if" if="{{isContainer(resource)}}">
-            <template is="dom-repeat" items="{{listResources(resource)}}">
-                <div on-click="dispatchSelect">
-                    <ldp-insert tag="{{childTag()}}" resource="{{item}}" fields="{{fields}}" widgets="{{widgets}}" custom-styles="{{customStyles}}"></ldp-insert>
-                </div>
-            </template>
-        </template>
-        <template is="dom-if" if="{{!isContainer(resource)}}">
-            <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-display-div" custom-styles="{{customStyles}}"></ldp-list-fields>
-        </template>
-    </template>
-
-    <script>
-    (function(){
-        class LDPDisplay extends LDPBase {
-            static get is() { return 'ldp-display'; }
-            
-            childTag() {
-                return this.dataset.child || this.tagName;
+<script>
+(function(){
+    class LDPDisplay extends LDPBase {
+        constructor(){
+            super();
+            this.defaultWidget = 'ldp-display-div';
+        }
+        
+        childTag() {
+            return this.dataset.child || this.tagName;
+        }
+        dispatchSelect(event) {
+            var resource = event.currentTarget.querySelector(this.childTag()).resource;
+            this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+        }
+        appendChildTag(resource) {
+            var child = document.createElement(this.childTag());
+            child.resource = resource;
+            child.dataset.fields = this.dataset.fields;
+            child.dataset.widgets = this.dataset.widgets;
+            this.appendChild(child);
+        }
+        populate() {
+            if(this.isContainer()) {
+                this.removeChildren();
+                
+                for(let item of this.listResources(this.resource))
+                    this.appendChildTag(item);
             }
-            dispatchSelect(event) {
-                var resource = event.currentTarget.querySelector('ldp-display').resource; //TODO won't work with custom child
-                this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            
+            else {
+                this.removeChildren();
+                for(let field of this.getFields(this.resource))
+                    this.appendFieldWidget(field);
             }
         }
-
-        customElements.define(LDPDisplay.is, LDPDisplay);
-    }());
-    </script>
-</dom-module>
+    }
+    customElements.define('ldp-display', LDPDisplay);
+}());
+</script>

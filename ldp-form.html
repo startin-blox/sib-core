@@ -9,29 +9,45 @@
         </form>
     </template>
 
-    <script>
-    (function(){
-        class LDPForm extends LDPBase {
-            static get is() { return 'ldp-form'; }
-            
-            formToObject(form) {
-                return [].reduce.call(form.elements, function(data, element) {
-                    if(element.name) data[element.name] = element.value;
-                    return data;
-                }, {})
-            }
-            saveForm(event) {
-                var resource = this.formToObject(event.target);
-                if(!this.isContainer(this.resource)) resource['@id'] = this.resource['@id'];
-                store.save(resource, this.resource['@id']).then(function(){
-                    this.dispatchEvent(new CustomEvent('save', {detail: {resource: resource}}));
-                }.bind(this));
-                event.preventDefault();
-                return false;
-            }
+<script>
+(function(){
+    class LDPForm extends LDPBase {
+        constructor(){
+            super();
+            this.defaultWidget = 'ldp-form-text';
         }
         
-        customElements.define(LDPForm.is, LDPForm);
-    }());
-    </script>
-</dom-module>
+        formToObject(form) {
+            return [].reduce.call(form.elements, function(data, element) {
+                if(element.name) data[element.name] = element.value;
+                return data;
+            }, {})
+        }
+        saveForm(event) {
+            let resource = this.formToObject(event.target);
+            if(!this.isContainer()) resource['@id'] = this.resource['@id'];
+            store.save(resource, this.resource['@id']).then(function(){
+                this.dispatchEvent(new CustomEvent('save', {detail: {resource: resource}}));
+            }.bind(this));
+            event.preventDefault();
+            return false;
+        }
+        populate() {
+            this.removeChildren();
+
+            let form = document.createElement('form');
+            form.addEventListener('submit', this.saveForm);
+            this.appendChild(form);
+            
+            for(let field of this.getFields(this.resource))
+                this.appendFieldWidget(field, form);
+            
+            let submit = document.createElement('input');
+            submit.type = 'submit';
+            form.appendChild(submit);
+        }
+    }
+    
+    customElements.define('ldp-form', LDPForm);
+}());
+</script>

@@ -1,13 +1,15 @@
-<base href="https://polygit.org/components/">
-<link rel="import" href="polymer/polymer-element.html">
+<link rel="import" href="https://polygit.org/components/polymer/polymer-element.html">
 
 <dom-module id="ldp-display-div">
     <template>
         <div class$="{{name}}">{{value}}</div>
     </template>
     <script>
-        class LDPDisplayDiv extends StyledElement {
+        class LDPDisplayDiv extends Polymer.Element {
             static get is() { return "ldp-display-div"; }
+            connectedCallback() {
+                super.connectedCallback();
+            }
         }
         customElements.define(LDPDisplayDiv.is, LDPDisplayDiv);
     </script>
@@ -18,7 +20,7 @@
         <img class$="{{name}}" src$="{{value}}"/>
     </template>
     <script>
-        class LDPDisplayImg extends StyledElement {
+        class LDPDisplayImg extends Polymer.Element {
             static get is() { return "ldp-display-img"; }
         }
         customElements.define(LDPDisplayImg.is, LDPDisplayImg);
@@ -31,7 +33,7 @@
         <input type="text" value$="{{value}}" name="{{name}}">
     </template>
     <script>
-        class LDPFormText extends StyledElement {
+        class LDPFormText extends Polymer.Element {
             static get is() { return "ldp-form-text"; }
         }
         customElements.define(LDPFormText.is, LDPFormText);

@@ -1,33 +1,21 @@
 <script type="text/javascript" src="https://cdn.happy-dev.fr/LDP-framework/ldpframework.js"></script>
-<base href="https://polygit.org/components/">
-<link rel="import" href="polymer/polymer-element.html">
-<link rel="import" href="polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="polymer/lib/elements/dom-if.html">
 
 <script>
     var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     
-    class StyledElement extends Polymer.Element {
-        static get properties() { return {customStyles: String}; }
-        connectedCallback() {
-            super.connectedCallback();
-            if(this.customStyles && document.getElementById(this.customStyles)) {
-                var styles = document.getElementById(this.customStyles).content.firstElementChild.cloneNode(true);
-                this.shadowRoot.appendChild(styles);
-            }
-        }
-    }
-    
-    class LDPBase extends StyledElement {
+    class LDPBase extends HTMLElement {
         static get observedAttributes() { return ['data-fields', 'data-widgets', 'data-src', 'data-child', 'custom-styles']; }
         static get properties() {return {dataFields: String, dataWidgets: String, dataSrc: String, dataChild: String, customStyles: String}}
         
         childTag() {
             return this.dataset.child || this.tagName;
         }
-        getFields(resource) {
+        getFields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(function(s){return s.trim()});
-            if(this.isContainer(resource)) return this.getFields(this.listResources(resource)[0]);
+            
+            let resource = this.resource;
+            if(this.isContainer()) resource = this.listResources()[0];
+            
             return Object.keys(resource).filter(function(prop){ return !prop.startsWith("@") });
         }
         getWidgets(field) {
@@ -38,87 +26,71 @@
                 return {};
             }
         }
-        isContainer(resource) {
-            return ('ldp:contains' in resource);
+        isContainer() {
+            return ('ldp:contains' in this.resource);
         }
-        listResources(container) {
-            if(!this.isContainer(container)) return [];
-            if(Array.isArray(container['ldp:contains'])) return container['ldp:contains'];
-            return [container['ldp:contains']];
+        listResources() {
+            if(!this.isContainer()) return [];
+            if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
+            return [this.resource['ldp:contains']];
         }
         attributeChangedCallback(attribute, oldValue, newValue) {
-            super.attributeChangedCallback(attribute, oldValue, newValue);
             if(attribute == "data-src" && newValue) store.get(newValue).then(function(resource) {
                 this.resource = resource;
-                this.set('fields', this.getFields(this.resource));
+                this.fields = this.getFields(this.resource);
+                this.populate(this.resource);
             }.bind(this));
             if(attribute == "data-fields" && newValue)
-                this.set('fields', this.getFields(this.resource));
+                this.fields = this.getFields(this.resource);
             if(attribute == "data-widgets" && newValue)
-                this.set('widgets', this.getWidgets());
+                this.widgets = this.getWidgets();
+            if(this.resource)
+                this.populate(this.resource);
+        }
+        connectedCallback() {
+            if(this.resource)
+                this.populate(this.resource);
+        }
+        isSet(field) {
+            return Array.isArray(this.getWidget(field));
+        }
+        isValue(field) {
+            try {
+                return 'value' in this.widgets[field];
+            } catch(e) {
+                return false;
+            }
+        }
+        getWidget(field) {
+            if(this.widgets && field in this.widgets) {
+                if(this.isValue(field)) return this.widgets[field].widget || this.defaultWidget;
+                return this.widgets[field];
+            }
+            return this.defaultWidget;
+        }
+        getField(resource, field) {
+            if(this.isValue(field)) return this.widgets[field].value;
+            return resource[field];
+        }
+        removeChildren() {
+            while (this.firstChild) this.removeChild(this.firstChild);
+        }
+        appendFieldWidget(field, parent) {
+            if(!parent) parent = this;
+            
+            if(this.isSet(field)) {
+                var div = document.createElement("div");
+                div.className = field;
+                parent.appendChild(div);
+                for(let item of this.getWidget(field))
+                    this.appendFieldWidget(item, div);
+            } else {
+                var widget = document.createElement(this.getWidget(field));
+                widget.value = this.getField(this.resource, field);
+                widget.name = field;
+                widget.className = field;
+                parent.appendChild(widget);
+            }
         }
     }
 </script>
-
-<dom-module id="ldp-insert">
-    <script>
-    (function(){
-        class LDPInsert extends Polymer.Element {
-            static get is() { return 'ldp-insert'; }
-            static get properties() { return {tag: String}; }
-            connectedCallback() {
-                super.connectedCallback();
-                var elt = document.createElement(this.tag);
-                while(this.firstChild) elt.appendChild(this.firstChild);
-                for(let key of Object.keys(this).filter(function(key){ return !key.startsWith("__") }))
-                    elt[key] = this[key];
-                this.appendChild(elt);
-            }
-        }
-        customElements.define(LDPInsert.is, LDPInsert);
-    }());
-    </script>
-</dom-module>
-
-<dom-module id="ldp-list-fields">
-    <template>
-        <template is="dom-repeat" items="{{fields}}">
-            <template is="dom-if" if="{{isSet(item)}}">
-                <div class$={{item}}>
-                    <ldp-list-fields resource="{{resource}}" fields="{{getWidget(item)}}" widgets="{{widgets}}" default-widget="{{defaultWidget}}" custom-styles="{{customStyles}}"></ldp-list-fields>
-                </div>
-            </template>
-            <template is="dom-if" if="{{!isSet(item)}}">
-                <ldp-insert tag="{{getWidget(item)}}" value="{{getField(resource, item)}}" name="{{item}}" custom-styles="{{customStyles}}"></ldp-insert>
-            </template>
-        </template>
-    </template>
-    <script>
-        class LDPListFields extends StyledElement {
-            static get is() { return "ldp-list-fields"; }
-            static get properties() { return {defaultWidget: String}; }
-            isSet(field) {
-                return Array.isArray(this.getWidget(field));
-            }
-            isValue(field) {
-                try {
-                    return 'value' in this.widgets[field];
-                } catch(e) {
-                    return false;
-                }
-            }
-            getWidget(field) {
-                if(this.widgets && field in this.widgets) {
-                    if(this.isValue(field)) return this.widgets[field].widget || this.defaultWidget;
-                    return this.widgets[field];
-                }
-                return this.defaultWidget;
-            }
-            getField(resource, field) {
-                if(this.isValue(field)) return this.widgets[field].value;
-                return resource[field];
-            }
-        }
-        customElements.define(LDPListFields.is, LDPListFields);
-    </script>
-</dom-module>
