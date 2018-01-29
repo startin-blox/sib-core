@@ -17,6 +17,11 @@
 
 <dom-module id="ldp-display-img">
     <template>
+        <style>
+            img {
+                max-width: 100%;
+            }
+        </style>
         <img class$="{{name}}" src$="{{value}}"/>
     </template>
     <script>
