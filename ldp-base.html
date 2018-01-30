@@ -1,96 +1,78 @@
 <script type="text/javascript" src="https://cdn.happy-dev.fr/LDP-framework/ldpframework.js"></script>
 
 <script>
-    var store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
+    const store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     
     class LDPBase extends HTMLElement {
-        static get observedAttributes() { return ['data-fields', 'data-widgets', 'data-src', 'data-child', 'custom-styles']; }
-        static get properties() {return {dataFields: String, dataWidgets: String, dataSrc: String, dataChild: String, customStyles: String}}
+        static get observedAttributes() { return ['data-fields', 'data-src', 'data-child']; }
         
-        childTag() {
-            return this.dataset.child || this.tagName;
-        }
-        getFields() {
-            if(this.dataset.fields) return this.dataset.fields.split(',').map(function(s){return s.trim()});
-            
-            let resource = this.resource;
-            if(this.isContainer()) resource = this.listResources()[0];
-            
-            return Object.keys(resource).filter(function(prop){ return !prop.startsWith("@") });
-        }
-        getWidgets(field) {
-            try {
-                return JSON.parse(this.dataset.widgets);
-            } catch(e) {
-                console.error("Parsing error:", e.message);
-                return {};
-            }
-        }
-        isContainer() {
-            return ('ldp:contains' in this.resource);
-        }
-        listResources() {
-            if(!this.isContainer()) return [];
-            if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
-            return [this.resource['ldp:contains']];
-        }
-        attributeChangedCallback(attribute, oldValue, newValue) {
-            if(attribute == "data-src" && newValue) store.get(newValue).then(function(resource) {
-                this.resource = resource;
-                this.fields = this.getFields(this.resource);
-                this.populate(this.resource);
-            }.bind(this));
-            if(attribute == "data-fields" && newValue)
-                this.fields = this.getFields(this.resource);
-            if(attribute == "data-widgets" && newValue)
-                this.widgets = this.getWidgets();
-            if(this.resource)
-                this.populate(this.resource);
-        }
-        connectedCallback() {
-            if(this.resource)
-                this.populate(this.resource);
-        }
-        isSet(field) {
-            return Array.isArray(this.getWidget(field));
-        }
-        isValue(field) {
-            try {
-                return 'value' in this.widgets[field];
-            } catch(e) {
-                return false;
-            }
-        }
         getWidget(field) {
-            if(this.widgets && field in this.widgets) {
-                if(this.isValue(field)) return this.widgets[field].widget || this.defaultWidget;
-                return this.widgets[field];
+            if(this.hasAttribute("widget-"+field)) {
+                const widget = this.getAttribute("widget-"+field);
+                if(widget.indexOf(',') == -1) return widget;
+                return widget.split(',').map(s => s.trim());
             }
             return this.defaultWidget;
         }
-        getField(resource, field) {
-            if(this.isValue(field)) return this.widgets[field].value;
-            return resource[field];
+        get fields() {
+            if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
+            
+            const resource = this.isContainer ? this.resources[0] : this.resource;
+            return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
-        removeChildren() {
+
+        isSet(field) {
+            return Array.isArray(this.getWidget(field));
+        }
+        
+        getValue(field) {
+            if(this.hasAttribute("value-"+field)) return this.getAttribute("value-"+field);
+            return this.resource[field];
+        }
+        empty() {
             while (this.firstChild) this.removeChild(this.firstChild);
         }
-        appendFieldWidget(field, parent) {
+        appendWidget(field, parent) {
             if(!parent) parent = this;
             
             if(this.isSet(field)) {
-                var div = document.createElement("div");
+                const div = document.createElement("div");
                 div.className = field;
                 parent.appendChild(div);
                 for(let item of this.getWidget(field))
-                    this.appendFieldWidget(item, div);
+                    this.appendWidget(item, div);
             } else {
-                var widget = document.createElement(this.getWidget(field));
-                widget.value = this.getField(this.resource, field);
+                const widget = document.createElement(this.getWidget(field));
+                widget.value = this.getValue(field);
                 widget.name = field;
                 widget.className = field;
                 parent.appendChild(widget);
             }
         }
+        
+        get isContainer() {
+            return ('ldp:contains' in this.resource);
+        }
+        get resources() {
+            if(!this.isContainer) return[];
+            if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
+            return [this.resource['ldp:contains']];
+        }
+        
+        attributeChangedCallback(attribute, oldValue, newValue) {
+            if(attribute == "data-src") {
+                if(newValue) store.get(newValue).then(resource => {
+                    this.resource = resource;
+                    this.populate();
+                });
+            } else {
+                if(this.resource) this.populate();
+            }
+        }
+        connectedCallback() {
+            if(this.resource)
+                this.populate();
+        }
+        
     }
 </script>

@@ -9,33 +9,34 @@
             this.defaultWidget = 'ldp-display-div';
         }
         
-        childTag() {
+        get childTag() {
             return this.dataset.child || this.tagName;
         }
         dispatchSelect(event) {
-            var resource = event.target.closest(this.childTag()).resource;
+            const resource = event.target.closest(this.childTag).resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
         }
         appendChildTag(resource) {
-            var child = document.createElement(this.childTag());
+            const child = document.createElement(this.childTag);
             child.resource = resource;
             child.addEventListener('click', this.dispatchSelect.bind(this));
             child.dataset.fields = this.dataset.fields;
-            child.dataset.widgets = this.dataset.widgets;
+            
+            for (let attr of this.attributes) //copy widget and value attributes
+                if(attr.name.startsWith('value-') || attr.name.startsWith('widget-'))
+                    child.setAttribute(attr.name, attr.value);
+            
             this.appendChild(child);
         }
         populate() {
-            if(this.isContainer()) {
-                this.removeChildren();
-                
-                for(let item of this.listResources(this.resource))
-                    this.appendChildTag(item);
+            if(this.isContainer) {
+                this.empty();
+                for(let item of this.resources) this.appendChildTag(item);
             }
             
             else {
-                this.removeChildren();
-                for(let field of this.getFields(this.resource))
-                    this.appendFieldWidget(field);
+                this.empty();
+                for(let field of this.fields) this.appendWidget(field);
             }
         }
     }

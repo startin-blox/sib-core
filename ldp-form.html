@@ -1,14 +1,6 @@
 <link rel="import" href="./ldp-base.html">
 <link rel="import" href="./ldp-widgets.html">
 
-<dom-module id="ldp-form">
-    <template>
-        <form on-submit="saveForm">
-            <ldp-list-fields resource="{{resource}}" fields="{{fields}}" widgets="{{widgets}}" default-widget="ldp-form-text"></ldp-list-fields>
-            <input type="submit">
-        </form>
-    </template>
-
 <script>
 (function(){
     class LDPForm extends LDPBase {
@@ -25,22 +17,21 @@
         }
         saveForm(event) {
             let resource = this.formToObject(event.target);
-            if(!this.isContainer()) resource['@id'] = this.resource['@id'];
-            store.save(resource, this.resource['@id']).then(function(){
-                this.dispatchEvent(new CustomEvent('save', {detail: {resource: resource}}));
-            }.bind(this));
+            if(!this.isContainer) resource['@id'] = this.resource['@id'];
+            store.save(resource, this.resource['@id']).then(
+                () => this.dispatchEvent(new CustomEvent('save', {detail: {resource: resource}})));
             event.preventDefault();
             return false;
         }
         populate() {
-            this.removeChildren();
+            this.empty();
 
             let form = document.createElement('form');
             form.addEventListener('submit', this.saveForm);
             this.appendChild(form);
             
-            for(let field of this.getFields(this.resource))
-                this.appendFieldWidget(field, form);
+            for(let field of this.fields)
+                this.appendWidget(field, form);
             
             let submit = document.createElement('input');
             submit.type = 'submit';
