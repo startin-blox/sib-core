@@ -7,9 +7,11 @@
         class LDPRouter extends Polymer.Element {
             static get is() { return 'ldp-router'; }
             navigate(name) {
-                Array.from(document.getElementById("ldp-root").children).forEach(function(child, index) {
-                    child.style.display = 'none';
-                });
+                const root = document.getElementById(this.getAttribute("root"));
+                if(root)
+                    for(let child of root.children)
+                        child.style.display = 'none';
+                
                 window.location.hash = name;
                 if(document.getElementById(name))
                     document.getElementById(name).style.display = 'block';
