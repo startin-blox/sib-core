@@ -39,3 +39,18 @@
         customElements.define(LDPFormText.is, LDPFormText);
     </script>
 </dom-module>
+
+<script>
+    class LDPList extends HTMLElement {
+        connectedCallback() {
+            const ul = document.createElement('ul');
+            for(let item of this.value) {
+                const li = document.createElement('li');
+                li.innerHTML = item;
+                ul.appendChild(li);
+            }
+            this.appendChild(ul);
+        }
+    }
+    customElements.define('ldp-list', LDPList);
+</script>
