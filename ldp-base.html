@@ -11,12 +11,10 @@
         }
         
         getWidget(field) {
-            if(this.hasAttribute("widget-"+field)) {
-                const widget = this.getAttribute("widget-"+field);
-                if(widget.indexOf(',') == -1) return widget;
-                return widget.split(',').map(s => s.trim());
-            }
-            return this.defaultWidget;
+            return this.getAttribute("widget-"+field) || this.defaultWidget;
+        }
+        getSet(field) {
+            return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
         get fields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
@@ -24,9 +22,8 @@
             const resource = this.isContainer ? this.resources[0] : this.resource;
             return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
-
         isSet(field) {
-            return Array.isArray(this.getWidget(field));
+            return this.hasAttribute("set-"+field);
         }
         
         getValue(field) {
@@ -43,7 +40,7 @@
                 const div = document.createElement("div");
                 div.className = field;
                 parent.appendChild(div);
-                for(let item of this.getWidget(field))
+                for(let item of this.getSet(field))
                     this.appendWidget(item, div);
             } else {
                 const widget = document.createElement(this.getWidget(field));

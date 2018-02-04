@@ -32,7 +32,7 @@
             child.dataset.fields = this.dataset.fields;
             
             for (let attr of this.attributes) //copy widget and value attributes
-                if(attr.name.startsWith('value-') || attr.name.startsWith('widget-'))
+                if(attr.name.startsWith('value-') || attr.name.startsWith('set-') || attr.name.startsWith('widget-'))
                     child.setAttribute(attr.name, attr.value);
             
             this.appendChild(child);
