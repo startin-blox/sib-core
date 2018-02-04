@@ -8,19 +8,22 @@
             static get is() { return 'ldp-router'; }
             constructor() {
                 super();
-                if(document.readyState=="complete") this.navigate();
-                else document.addEventListener("DOMContentLoaded", event => this.navigate());
+                if(document.readyState=="complete") this.display();
+                else document.addEventListener("DOMContentLoaded", event => this.display());
             }
-            navigate(name) {
-                name = name || window.location.hash.replace('#', '');
+            display(name) {
+                name = name || window.location.hash.replace('#', '') || this.getAttribute('default-route');
                 const root = document.getElementById(this.getAttribute("root"));
                 if(root)
                     for(let child of root.children)
                         child.style.display = 'none';
-                
-                window.location.hash = name;
                 if(document.getElementById(name))
                     document.getElementById(name).style.display = 'block';
+            }
+            navigate(name) {
+                name = name || '';
+                this.display(name);
+                window.location.hash = name;
             }
         }
         customElements.define(LDPRouter.is, LDPRouter);
