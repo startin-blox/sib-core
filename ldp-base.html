@@ -5,6 +5,10 @@
     
     class LDPBase extends HTMLElement {
         static get observedAttributes() { return ['data-fields', 'data-src', 'data-child']; }
+        constructor() {
+            super();
+            this._filters={};
+        }
         
         getWidget(field) {
             if(this.hasAttribute("widget-"+field)) {
@@ -50,13 +54,27 @@
             }
         }
         
+        get filters() {
+            return this._filters;
+        }
+        set filters(filters) {
+            this._filters = filters;
+            if(this.resource) this.populate();
+        }
         get isContainer() {
             return ('ldp:contains' in this.resource);
         }
-        get resources() {
-            if(!this.isContainer) return[];
+        listResources() {
+            if(!this.isContainer) return [];
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
+        }
+        get resources() {
+            return this.listResources().filter(resource => 
+                Object.keys(this.filters).reduce((initial, filter) => 
+                    initial && resource[filter].indexOf(this.filters[filter]) != -1
+                , true)
+            );
         }
         
         attributeChangedCallback(attribute, oldValue, newValue) {
@@ -70,8 +88,7 @@
             }
         }
         connectedCallback() {
-            if(this.resource)
-                this.populate();
+            if(this.resource) this.populate();
         }
         
     }

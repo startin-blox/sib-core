@@ -16,6 +16,15 @@
             const resource = event.target.closest(this.childTag).resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
         }
+        filterList(filters) {
+            this.filters = filters;
+        }
+        appendFilters() {
+            const formElt = document.createElement('ldp-form');
+            formElt.resource = this.resource;
+            formElt.save = this.filterList.bind(this);
+            this.appendChild(formElt);
+        }
         appendChildTag(resource) {
             const child = document.createElement(this.childTag);
             child.resource = resource;
@@ -31,6 +40,7 @@
         populate() {
             if(this.isContainer) {
                 this.empty();
+                this.appendFilters();
                 for(let item of this.resources) this.appendChildTag(item);
             }
             
