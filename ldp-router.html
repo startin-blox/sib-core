@@ -6,7 +6,13 @@
     (function(){
         class LDPRouter extends Polymer.Element {
             static get is() { return 'ldp-router'; }
+            constructor() {
+                super();
+                if(document.readyState=="complete") this.navigate();
+                else document.addEventListener("DOMContentLoaded", event => this.navigate());
+            }
             navigate(name) {
+                name = name || window.location.hash.replace('#', '');
                 const root = document.getElementById(this.getAttribute("root"));
                 if(root)
                     for(let child of root.children)
@@ -15,9 +21,6 @@
                 window.location.hash = name;
                 if(document.getElementById(name))
                     document.getElementById(name).style.display = 'block';
-            }
-            connectedCallback() {
-                this.navigate(window.location.hash.replace('#', ''));
             }
         }
         customElements.define(LDPRouter.is, LDPRouter);

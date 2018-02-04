@@ -48,7 +48,15 @@
                 data-fields="name, author, text"
                 value-text="Ceci est un détail"
             ></ldp-display>
-            <ldp-form id="form" data-src="http://localhost:8000/todos/"></ldp-form>
+            <div id="form">
+                <ldp-router root="form-root">
+                    <ldp-route name="create">Nouveau</ldp-route>
+                    <ldp-route name="edit">Modifier</ldp-route>
+                </ldp-router>
+                <section id="form-root">
+                    <ldp-form id="create" data-src="http://localhost:8000/todos/"></ldp-form>
+                    <ldp-form id="edit" data-src="http://localhost:8000/todos/1"></ldp-form>
+                </section>
         </main>
     </body>
 </html>
