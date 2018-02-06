@@ -4,10 +4,7 @@
 <script>
 (function(){
     class LDPDisplay extends LDPBase {
-        constructor(){
-            super();
-            this.defaultWidget = 'ldp-display-div';
-        }
+        get defaultWidget() {return 'ldp-display-div';}
         
         get childTag() {
             return this.dataset.child || this.tagName;

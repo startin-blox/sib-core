@@ -4,10 +4,7 @@
 <script>
 (function(){
     class LDPForm extends LDPBase {
-        constructor(){
-            super();
-            this.defaultWidget = 'ldp-form-text';
-        }
+        get defaultWidget() {return 'ldp-form-text';}
         
         formToObject(form) {
             return [].reduce.call(form.elements, function(data, element) {
