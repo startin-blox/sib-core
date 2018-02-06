@@ -1,6 +1,6 @@
 <script>
 (function(){
-    class LDPRoute extends Polymer.Element {
+    class LDPRoute extends HTMLElement {
         get name() {
             return this.getAttribute('name');
         }
@@ -17,28 +17,57 @@
     class LDPRouter extends HTMLElement {
         constructor() {
             super();
-            if(document.readyState=="complete")window.addEventListener('WebComponentsReady', event => this.display());
+            window.addEventListener('popState', e => e.preventDefault(), false);
+            window.onpopstate = e => e.preventDefault();
+            if(document.readyState=="complete") window.addEventListener('WebComponentsReady', event => this.display());
             else document.addEventListener("DOMContentLoaded", event => this.display());
         }
+        get useHash() {
+            return this.hasAttribute('use-hash');
+        }
+        get prefix() {
+            if(this.hasAttribute('route-prefix'))
+                return this.getAttribute('route-prefix') + '/';
+            else
+                return '';
+        }
+        get defaultRoute() {
+            return this.getAttribute('default-route') || '';
+        }
+        get currentRoute() {
+            const url = (this.useHash ? location.hash : location.pathname).slice(1);
+            if(url.startsWith(this.prefix))
+                return url.slice(this.prefix.length);
+            else
+                return null;
+        }
         display(name) {
-            name = name || window.location.hash.replace('#', '') || this.getAttribute('default-route');
+            name = name || this.currentRoute || this.defaultRoute;
             for(let route of this.querySelectorAll('ldp-route')) {
-                const page = document.getElementById(route.name);
-                if(page) {
+                const view = document.getElementById(route.name);
+                if(view) {
                     if(route.name == name) {
-                        page.style.display = 'block';
+                        view.style.display = 'block';
                         route.setAttribute('active', '');
                     } else {
-                        page.style.display = 'none';
+                        view.style.display = 'none';
                         route.removeAttribute('active');
+                        for(let router of view.querySelectorAll('ldp-router'))
+                            router.display();
                     }
                 }
             }
         }
         navigate(name) {
             name = name || '';
+            const url = this.prefix + name;
+            
+            if(this.useHash)
+                window.location.hash = url;
+            else
+                history.pushState({}, name, '/' + url);
+            
             this.display(name);
-            window.location.hash = name;
         }
     }
     

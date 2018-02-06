@@ -29,7 +29,7 @@
         </template>
     </head>
     <body>
-        <ldp-router root="ldp-root" default-route="list">
+        <ldp-router default-route="list">
             <ldp-route name="list">Voir la liste</ldp-route>
             <ldp-route name="form">Voir le formulaire</ldp-route>
             <ldp-route name="detail">Voir le détail</ldp-route>
@@ -51,7 +51,7 @@
                 widget-assignees="ldp-list"
             ></ldp-display>
             <div id="form">
-                <ldp-router root="form-root">
+                <ldp-router route-prefix="form">
                     <ldp-route name="create">Nouveau</ldp-route>
                     <ldp-route name="edit">Modifier</ldp-route>
                 </ldp-router>
