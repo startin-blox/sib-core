@@ -1,48 +1,51 @@
 <base href="https://polygit.org/components/">
 <link rel="import" href="polymer/polymer-element.html">
 
-<dom-module id="ldp-router">
-    <script>
-    (function(){
-        class LDPRouter extends Polymer.Element {
-            static get is() { return 'ldp-router'; }
-            constructor() {
-                super();
-                if(document.readyState=="complete") this.display();
-                else document.addEventListener("DOMContentLoaded", event => this.display());
-            }
-            display(name) {
-                name = name || window.location.hash.replace('#', '') || this.getAttribute('default-route');
-                const root = document.getElementById(this.getAttribute("root"));
-                if(root)
-                    for(let child of root.children)
-                        child.style.display = 'none';
-                if(document.getElementById(name))
-                    document.getElementById(name).style.display = 'block';
-            }
-            navigate(name) {
-                name = name || '';
-                this.display(name);
-                window.location.hash = name;
+<script>
+(function(){
+    class LDPRoute extends Polymer.Element {
+        get name() {
+            return this.getAttribute('name');
+        }
+        set name(name) {
+            this.setAttribute('name', name);
+        }
+        connectedCallback() {
+            this.addEventListener('click', function(event) {
+                this.closest('ldp-router').navigate(this.name);
+            }.bind(this));
+        }
+    }
+    
+    class LDPRouter extends HTMLElement {
+        constructor() {
+            super();
+            if(document.readyState=="complete")window.addEventListener('WebComponentsReady', event => this.display());
+            else document.addEventListener("DOMContentLoaded", event => this.display());
+        }
+        display(name) {
+            name = name || window.location.hash.replace('#', '') || this.getAttribute('default-route');
+            for(let route of this.querySelectorAll('ldp-route')) {
+                const page = document.getElementById(route.name);
+                if(page) {
+                    if(route.name == name) {
+                        page.style.display = 'block';
+                        route.setAttribute('active', '');
+                    } else {
+                        page.style.display = 'none';
+                        route.removeAttribute('active');
+                    }
+                }
             }
         }
-        customElements.define(LDPRouter.is, LDPRouter);
-    }());
-    </script>
-</dom-module>
-<dom-module id="ldp-route">
-    <script>
-    (function(){
-        class LDPRoute extends Polymer.Element {
-            static get is() { return 'ldp-route'; }
-            static get properties() { return {name: String}; }
-            connectedCallback() {
-                this.addEventListener('click', function(event) {
-                    this.closest('ldp-router').navigate(this.name);
-                }.bind(this));
-            }
+        navigate(name) {
+            name = name || '';
+            this.display(name);
+            window.location.hash = name;
         }
-        customElements.define(LDPRoute.is, LDPRoute);
-    }());
-    </script>
-</dom-module>
+    }
+    
+    customElements.define('ldp-router', LDPRouter);
+    customElements.define('ldp-route', LDPRoute);
+}());
+</script>
