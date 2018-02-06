@@ -20,6 +20,7 @@
             const formElt = document.createElement('ldp-form');
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
+            formElt.dataset.fields = this.getAttribute("search-fields");
             this.appendChild(formElt);
         }
         appendChildTag(resource) {
@@ -37,7 +38,7 @@
         populate() {
             if(this.isContainer) {
                 this.empty();
-                this.appendFilters();
+                if(this.hasAttribute("search-fields")) this.appendFilters();
                 for(let item of this.resources) this.appendChildTag(item);
             }
             
