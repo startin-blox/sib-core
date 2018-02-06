@@ -27,20 +27,34 @@
     </script>
 </dom-module>
 
-<dom-module id="ldp-form-text">
-    <template>
-        <label for="id-{{name}}">{{name}}</label>
-        <input type="text" value$="{{value}}" name="{{name}}">
-    </template>
-    <script>
-        class LDPFormText extends Polymer.Element {
-            static get is() { return "ldp-form-text"; }
-        }
-        customElements.define(LDPFormText.is, LDPFormText);
-    </script>
-</dom-module>
-
 <script>
+    class LDPFormText extends HTMLElement {
+        connectedCallback() {
+            this._value = '';
+            this.render();
+        }
+        get template() {
+            return `<label for="id-${this.name}">${this.name}</label>
+                <input type="text" name="${this.name}"> value="${this.value}`;
+        }
+        render() {
+            this.innerHTML = this.template;
+            this.value = this._value;
+        }
+        get template() {
+            return `<label for="id-${this.name}">${this.name}</label>
+                <input type="text" name="${this.name}">`;
+        }
+        get name() {
+            return this.getAttribute('name');
+        }
+        set name(name) {
+            this.setAttribute('name', name);
+            this.render();
+        }
+    }
+    customElements.define("ldp-form-text", LDPFormText);
+    
     class LDPList extends HTMLElement {
         connectedCallback() {
             const ul = document.createElement('ul');
