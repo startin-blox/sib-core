@@ -17,8 +17,8 @@
     class LDPRouter extends HTMLElement {
         constructor() {
             super();
-            //window.onpopstate = function(event) {this.display()}.bind(this);
             window.addEventListener('popstate', event => this.display());
+            window.addEventListener('navigate', event => this.display(event.detail.route));
             if(document.readyState=="complete") window.addEventListener('WebComponentsReady', event => this.display());
             else document.addEventListener("DOMContentLoaded", event => this.display());
         }
