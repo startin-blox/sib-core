@@ -6,6 +6,9 @@
     class LDPForm extends LDPBase {
         get defaultWidget() {return 'ldp-form-text';}
         
+        get next() {
+            return this.getAttribute('next');
+        }
         formToObject(form) {
             return [].reduce.call(form.elements, function(data, element) {
                 if(element.name) data[element.name] = element.value;
@@ -20,7 +23,10 @@
         submitForm(event) {
             const resource = this.formToObject(event.target);
             if(!this.isContainer) resource['@id'] = this.resource['@id'];
+            
             this.save(resource);
+            
+            if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
             event.preventDefault();
             return false;
         }

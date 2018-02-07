@@ -17,8 +17,8 @@
     class LDPRouter extends HTMLElement {
         constructor() {
             super();
-            window.addEventListener('popState', e => e.preventDefault(), false);
-            window.onpopstate = e => e.preventDefault();
+            //window.onpopstate = function(event) {this.display()}.bind(this);
+            window.addEventListener('popstate', event => this.display());
             if(document.readyState=="complete") window.addEventListener('WebComponentsReady', event => this.display());
             else document.addEventListener("DOMContentLoaded", event => this.display());
         }
@@ -36,7 +36,7 @@
         }
         get currentRoute() {
             const url = (this.useHash ? location.hash : location.pathname).slice(1);
-            if(url.startsWith(this.prefix))
+            if(url.startsWith(this.prefix.replace('/', '')))
                 return url.slice(this.prefix.length);
             else
                 return null;
