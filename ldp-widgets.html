@@ -30,26 +30,27 @@
 <script>
     class LDPFormText extends HTMLElement {
         connectedCallback() {
-            this._value = '';
             this.render();
         }
         get template() {
             return `<label for="id-${this.name}">${this.name}</label>
-                <input type="text" name="${this.name}"> value="${this.value}`;
+                <input type="text" name="${this.name}" value="${this.value}">`;
         }
         render() {
             this.innerHTML = this.template;
-            this.value = this._value;
-        }
-        get template() {
-            return `<label for="id-${this.name}">${this.name}</label>
-                <input type="text" name="${this.name}">`;
         }
         get name() {
             return this.getAttribute('name');
         }
         set name(name) {
             this.setAttribute('name', name);
+            this.render();
+        }
+        get value() {
+            return this._value || '';
+        }
+        set value(value) {
+            this._value = value;
             this.render();
         }
     }
