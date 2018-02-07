@@ -46,7 +46,7 @@
             for(let route of this.querySelectorAll('ldp-route')) {
                 const view = document.getElementById(route.name);
                 if(view) {
-                    if(route.name == name) {
+                    if(name.startsWith(route.name)) {
                         view.style.display = 'block';
                         route.setAttribute('active', '');
                     } else {
