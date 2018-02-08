@@ -36,16 +36,14 @@
             this.appendChild(child);
         }
         populate() {
+            this.empty();
             if(this.isContainer) {
-                this.empty();
                 if(this.hasAttribute("search-fields")) this.appendFilters();
                 for(let item of this.resources) this.appendChildTag(item);
             }
             
-            else {
-                this.empty();
+            else
                 for(let field of this.fields) this.appendWidget(field);
-            }
         }
     }
     customElements.define('ldp-display', LDPDisplay);

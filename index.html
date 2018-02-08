@@ -5,6 +5,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
         <link rel="import" href="ldp-display.html" />
         <link rel="import" href="ldp-form.html" />
+        <link rel="import" href="ldp-calendar.html" />
         <link rel="import" href="ldp-router.html" />
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -59,6 +60,8 @@
                     <ldp-form id="create" data-src="http://localhost:8000/todos/"></ldp-form>
                     <ldp-form id="edit" data-src="http://localhost:8000/todos/1" next="list"></ldp-form>
                 </section>
+            </div>
+            <ldp-calendar data-src="http://localhost:8000/todos/" style="display: block; height: 300px; width: 500px;"></ldp-calendar>
         </main>
     </body>
 </html>
