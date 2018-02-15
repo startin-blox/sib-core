@@ -3,7 +3,7 @@
 
 <script>
 (function(){
-    class LDPDisplay extends LDPBase {
+    class LDPDisplay extends LDPListMixin(LDPWidgetMixin(LDPBase)) {
         get defaultWidget() {return 'ldp-display-div';}
         
         get childTag() {

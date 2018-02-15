@@ -1,5 +1,4 @@
 <link rel="import" href="./ldp-base.html">
-<link rel="import" href="./ldp-widgets.html">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css' />
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script>
@@ -7,7 +6,7 @@
 
 <script>
 (function(){
-    class LDPCalendar extends LDPBase {
+    class LDPCalendar extends LDPListMixin(LDPBase) {
         constructor() {
             super();
             this.attachShadow({mode: 'open'});
@@ -17,20 +16,21 @@
         }
         
         dispatchSelect(event) {
-            const resource = event.target.closest(this.childTag).resource;
+            const resource = event.resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
         }
-        toEvent(resource) {
-            return {title: resource.name, start: resource.deadline}
+        addEvent(resource) {
+            if(resource.name && resource.deadline)
+                this.events.push({title: resource.name, start: resource.deadline, resource: resource});
         }
         populate() {
             this.events = [];
             if(this.isContainer) 
-                for(let resource of this.resources) this.events.push(this.toEvent(resource));
+                for(let resource of this.resources) this.addEvent(resource);
             
             else
-                this.events.push(this.toEvent(this.resource));
-            $(this.shadowRoot.firstChild).fullCalendar({events: this.events, height: this.style.height});
+                this.addEvent(this.resource);
+            $(this.shadowRoot.firstChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
         }
     }
     customElements.define('ldp-calendar', LDPCalendar);

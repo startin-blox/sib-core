@@ -4,12 +4,23 @@
     const store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     
     class LDPBase extends HTMLElement {
-        static get observedAttributes() { return ['data-fields', 'data-src', 'data-child']; }
-        constructor() {
-            super();
-            this._filters={};
+        static get observedAttributes() { return ['data-src']; }
+        attributeChangedCallback(attribute, oldValue, newValue) {
+            if(attribute == "data-src") {
+                if(newValue) store.get(newValue).then(resource => {
+                    this.resource = resource;
+                    this.populate();
+                });
+            } else {
+                if(this.resource) this.populate();
+            }
         }
-        
+        connectedCallback() {
+            if(this.resource) this.populate();
+        }
+    }
+    
+    const LDPWidgetMixin = superclass => class extends superclass {
         getWidget(field) {
             return this.getAttribute("widget-"+field) || this.defaultWidget;
         }
@@ -50,7 +61,13 @@
                 parent.appendChild(widget);
             }
         }
-        
+    }
+    
+    const LDPListMixin = superclass => class extends superclass {
+        constructor() {
+            super();
+            this._filters={};
+        }
         get filters() {
             return this._filters;
         }
@@ -73,20 +90,5 @@
                 , true)
             );
         }
-        
-        attributeChangedCallback(attribute, oldValue, newValue) {
-            if(attribute == "data-src") {
-                if(newValue) store.get(newValue).then(resource => {
-                    this.resource = resource;
-                    this.populate();
-                });
-            } else {
-                if(this.resource) this.populate();
-            }
-        }
-        connectedCallback() {
-            if(this.resource) this.populate();
-        }
-        
     }
 </script>

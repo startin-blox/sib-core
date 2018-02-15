@@ -3,7 +3,7 @@
 
 <script>
 (function(){
-    class LDPForm extends LDPBase {
+    class LDPForm extends LDPWidgetMixin(LDPBase) {
         get defaultWidget() {return 'ldp-form-text';}
         
         get next() {
