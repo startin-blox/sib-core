@@ -6,6 +6,19 @@
     class LDPForm extends LDPWidgetMixin(LDPBase) {
         get defaultWidget() {return 'ldp-form-text';}
         
+        //Special case of the dropdown
+        getWidget(field) {
+            if(this.hasAttribute("range-"+field)) return "ldp-form-dropdown";
+            else return super.getWidget(field);
+        }
+        widgetAttributes(field) {
+            let attributes = super.widgetAttributes(field);
+            if(this.hasAttribute("range-"+field)) attributes.range = this.getAttribute("range-"+field);
+            return attributes;
+        }
+        
+        
+        //form submission handling
         get next() {
             return this.getAttribute('next');
         }
@@ -30,6 +43,8 @@
             event.preventDefault();
             return false;
         }
+        
+        
         populate() {
             this.empty();
             

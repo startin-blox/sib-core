@@ -29,4 +29,36 @@
         }
     }
     customElements.define("ldp-form-text", LDPFormText);
+    class LDPFormCheckbox extends LDPWidget {
+        get template() {
+            const checked = this.value ? 'checked' : '';
+            return `<label for="id-${this.name}">${this.name}</label>
+                <input id="id-${this.name}" type="checkbox" name="${this.name}" ${checked}>`;
+        }
+    }
+    customElements.define("ldp-form-checkbox", LDPFormCheckbox);
+    class LDPFormDropdown extends LDPMultipleWidget {
+        get parentElement() {
+            return "select";
+        }
+        get labelTemplate() {
+            return `<label for="id-${this.name}">${this.name}</label>`;
+        }
+        getTemplate(item, index) {
+            const selected = this.value==item['@id'] ? 'selected' : '';
+            return `<option value="${item['@id']}" ${selected}>${item.username}</option>`;
+        }
+        get range() {
+            if(!this._range) return [];
+            if(!Array.isArray(this._range)) return [this._range];
+            return this._range;
+        }
+        set range(url) {
+            store.list(url).then(list => {
+                this._range = list;
+                this.render();
+            });
+        }
+    }
+    customElements.define("ldp-form-dropdown", LDPFormDropdown);
 </script>

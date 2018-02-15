@@ -58,7 +58,13 @@
                 </ldp-router>
                 <section id="form-root">
                     <ldp-form id="create" data-src="http://localhost:8000/todos/"></ldp-form>
-                    <ldp-form id="edit" data-src="http://localhost:8000/todos/1" next="list"></ldp-form>
+                    <ldp-form
+                        id="edit"
+                        data-src="http://localhost:8000/todos/3"
+                        next="list"
+                        widget-done="ldp-form-checkbox"
+                        range-author="http://localhost:8000/users/"
+                    ></ldp-form>
                 </section>
             </div>
             <ldp-calendar data-src="http://localhost:8000/todos/" style="display: block; height: 300px; width: 500px;"></ldp-calendar>

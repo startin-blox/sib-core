@@ -18,19 +18,19 @@
         connectedCallback() {
             if(this.resource) this.populate();
         }
+        get isContainer() {
+            return ('ldp:contains' in this.resource);
+        }
     }
     
     const LDPWidgetMixin = superclass => class extends superclass {
-        getWidget(field) {
-            return this.getAttribute("widget-"+field) || this.defaultWidget;
-        }
         getSet(field) {
             return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
         get fields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
             
-            const resource = this.isContainer ? this.resources[0] : this.resource;
+            const resource = this.isContainer ? this.resource['ldp:contains'][0] : this.resource;
             return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
         isSet(field) {
@@ -44,6 +44,15 @@
         empty() {
             while (this.firstChild) this.removeChild(this.firstChild);
         }
+        getWidget(field) {
+            return this.getAttribute("widget-"+field) || this.defaultWidget;
+        }
+        widgetAttributes(field) {
+            return {
+                value: this.getValue(field),
+                name: field
+            }
+        }
         appendWidget(field, parent) {
             if(!parent) parent = this;
             
@@ -55,9 +64,9 @@
                     this.appendWidget(item, div);
             } else {
                 const widget = document.createElement(this.getWidget(field));
-                widget.value = this.getValue(field);
-                widget.name = field;
-                widget.className = field;
+                const attributes = this.widgetAttributes(field)
+                for(let name of Object.keys(attributes))
+                    widget[name] = attributes[name];
                 parent.appendChild(widget);
             }
         }
@@ -74,9 +83,6 @@
         set filters(filters) {
             this._filters = filters;
             if(this.resource) this.populate();
-        }
-        get isContainer() {
-            return ('ldp:contains' in this.resource);
         }
         listResources() {
             if(!this.isContainer) return [];
@@ -146,24 +152,22 @@
         }
     }
     class LDPMultipleWidget extends LDPWidget {
-        empty() {
-            while (this.firstChild) this.removeChild(this.firstChild);
+        get labelTemplate() {
+            return '';
         }
         render() {
-            this.empty();
+            this.innerHTML = this.labelTemplate;
             const parent = document.createElement(this.parentElement);
             parent.setAttribute('name', this.name);
+            parent.id = "id-"+this.name;
             
             //add one instance of the template per item in the value array
-            parent.innerHTML = this.value.map(this.getTemplate, this).join('');
+            parent.innerHTML = this.range.map(this.getTemplate, this).join('');
             this.appendChild(parent);
         }
-        get value(){
-            return super.value;
-        }
-        set value(value) {
-            if(!Array.isArray(value)) value = [value];
-            super.value = value;
+        get range() {
+            if(!Array.isArray(this.value)) return [this.value];
+            return this.value;
         }
     }
 </script>
