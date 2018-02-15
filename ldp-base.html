@@ -98,6 +98,12 @@
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
             formElt.dataset.fields = this.getAttribute("search-fields");
+            
+            //displays applied filter values in the form
+            for(let filter of Object.keys(this.filters))
+                if(formElt.dataset.fields.indexOf(filter)!=-1) 
+                    formElt.setAttribute("value-"+filter, this.filters[filter]);
+            
             if(this.shadowRoot)
                 this.shadowRoot.appendChild(formElt);
             else
