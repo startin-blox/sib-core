@@ -19,17 +19,13 @@
             const resource = event.resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
         }
-        addEvent(resource) {
+        appendChildElt(resource) {
             if(resource.name && resource.deadline)
                 this.events.push({title: resource.name, start: resource.deadline, resource: resource});
         }
         populate() {
             this.events = [];
-            if(this.isContainer) 
-                for(let resource of this.resources) this.addEvent(resource);
-            
-            else
-                this.addEvent(this.resource);
+            super.populate();
             $(this.shadowRoot.firstChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
         }
     }

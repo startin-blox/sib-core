@@ -23,7 +23,7 @@
             const resource = event.target.options.resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
         }
-        addToMap(resource) {
+        appendChildElt(resource) {
             if(resource.lat && resource.lng) {
                 const marker = L.marker([resource.lat, resource.lng], {resource: resource});
                 marker.addTo(this.map).on('click', this.dispatchSelect.bind(this));
@@ -31,12 +31,7 @@
             }
         }
         populate() {
-            this.events = [];
-            if(this.isContainer) 
-                for(let resource of this.resources) this.addToMap(resource);
-            
-            else
-                this.addToMap(this.resource);
+            super.populate();
             this.map.fitBounds(L.featureGroup(this.markers).getBounds());
         }
     }

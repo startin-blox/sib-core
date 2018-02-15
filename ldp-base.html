@@ -90,5 +90,29 @@
                 , true)
             );
         }
+        filterList(filters) {
+            this.filters = filters;
+        }
+        appendFilters() {
+            const formElt = document.createElement('ldp-form');
+            formElt.resource = this.resource;
+            formElt.save = this.filterList.bind(this);
+            formElt.dataset.fields = this.getAttribute("search-fields");
+            if(this.shadowRoot)
+                this.shadowRoot.appendChild(formElt);
+            else
+                this.appendChild(formElt);
+        }
+        appendSingleElt() {
+            this.appendChildElt(this.resource);
+        }
+        populate() {
+            if(this.isContainer) {
+                if(this.hasAttribute("search-fields")) this.appendFilters();
+                for(let resource of this.resources) this.appendChildElt(resource);
+            }
+            else
+                this.appendSingleElt();
+        }
     }
 </script>
