@@ -52,6 +52,8 @@
                     } else {
                         view.style.display = 'none';
                         route.removeAttribute('active');
+
+                        // Reseting all routers within the selected view
                         for(let router of view.querySelectorAll('ldp-router'))
                             router.display();
                     }
