@@ -36,7 +36,7 @@
         }
         get currentRoute() {
             const url = (this.useHash ? location.hash : location.pathname).slice(1);
-            if(url.startsWith(this.prefix.replace('/', '')))
+            if(url.startsWith(this.prefix))
                 return url.slice(this.prefix.length);
             else
                 return null;
@@ -46,7 +46,7 @@
             for(let route of this.querySelectorAll('ldp-route')) {
                 const view = document.getElementById(route.name);
                 if(view) {
-                    if(name.startsWith(route.name)) {
+                    if(name.split('/')[0] == route.name) {
                         view.style.display = 'block';
                         route.setAttribute('active', '');
                     } else {
