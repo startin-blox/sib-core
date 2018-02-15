@@ -50,6 +50,7 @@
             return this._value || '';
         }
         set value(value) {
+            if(!isArray(value)) value = [value];
             this._value = value;
             this.render();
         }
