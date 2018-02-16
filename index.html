@@ -33,7 +33,7 @@
         <ldp-router default-route="list">
             <ldp-route name="list">Voir la liste</ldp-route>
             <ldp-route name="form">Voir le formulaire</ldp-route>
-            <ldp-route name="detail">Voir le détail</ldp-route>
+            <ldp-route name="detail" id-prefix="http://localhost:8000/todos/">Voir le détail</ldp-route>
         </ldp-router>
         <main id="ldp-root">
             <ldp-display 
@@ -43,6 +43,7 @@
                 set-set1="name, text"
                 value-text="youpi"
                 search-fields="name, author"
+                next="detail"
             ></ldp-display>
             <ldp-display
                 id="detail"

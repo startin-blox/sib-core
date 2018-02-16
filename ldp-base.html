@@ -21,6 +21,9 @@
         get isContainer() {
             return ('ldp:contains' in this.resource);
         }
+        get next() {
+            return this.getAttribute('next');
+        }
     }
     
     const LDPWidgetMixin = superclass => class extends superclass {
