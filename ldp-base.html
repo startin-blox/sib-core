@@ -61,7 +61,7 @@
                 parent.appendChild(widget);
             }
         }
-    }
+    };
     
     const LDPListMixin = superclass => class extends superclass {
         constructor() {
@@ -86,9 +86,8 @@
         get resources() {
             return this.listResources().filter(resource => 
                 Object.keys(this.filters).reduce((initial, filter) => 
-                    initial && resource[filter].indexOf(this.filters[filter]) != -1
-                , true)
+                    initial && resource[filter].indexOf(this.filters[filter]) != -1, true)
             );
         }
-    }
+    };
 </script>
