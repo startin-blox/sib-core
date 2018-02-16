@@ -1,71 +1,64 @@
-<link rel="import" href="https://polygit.org/components/polymer/polymer-element.html">
-
-<dom-module id="ldp-display-div">
-    <template>
-        <div class$="{{name}}">{{value}}</div>
-    </template>
-    <script>
-        class LDPDisplayDiv extends Polymer.Element {
-            static get is() { return "ldp-display-div"; }
-            connectedCallback() {
-                super.connectedCallback();
-            }
-        }
-        customElements.define(LDPDisplayDiv.is, LDPDisplayDiv);
-    </script>
-</dom-module>
-
-<dom-module id="ldp-display-img">
-    <template>
-        <img class$="{{name}}" src$="{{value}}" style="max-width: 100%; max-height: 100%;"/>
-    </template>
-    <script>
-        class LDPDisplayImg extends Polymer.Element {
-            static get is() { return "ldp-display-img"; }
-        }
-        customElements.define(LDPDisplayImg.is, LDPDisplayImg);
-    </script>
-</dom-module>
-
 <script>
-    class LDPFormText extends HTMLElement {
-        connectedCallback() {
-            this.render();
+    class LDPDisplayDiv extends LDPWidget {
+        get template() {
+            return `<div name="${this.name}">${this.value}</div>`;
         }
+    }
+    customElements.define("ldp-display-div", LDPDisplayDiv);
+    
+    class LDPDisplayImg extends LDPWidget {
+        get template() {
+            return `<img name="${this.name}" src$="${this.value}" style="max-width: 100%; max-height: 100%;"/>`;
+        }
+    }
+    customElements.define("ldp-display-img", LDPDisplayImg);
+    
+    class LDPDisplayList extends LDPMultipleWidget {
+        get parentElement() {return "ul"}
+        getTemplate(value, index) {
+            return `<li id="${this.name}-${index}">${value}</li>`;
+        }
+    }
+    customElements.define('ldp-display-list', LDPDisplayList);
+    
+    
+    class LDPFormText extends LDPWidget {
         get template() {
             return `<label for="id-${this.name}">${this.name}</label>
-                <input type="text" name="${this.name}" value="${this.value}">`;
-        }
-        render() {
-            this.innerHTML = this.template;
-        }
-        get name() {
-            return this.getAttribute('name');
-        }
-        set name(name) {
-            this.setAttribute('name', name);
-            this.render();
-        }
-        get value() {
-            return this._value || '';
-        }
-        set value(value) {
-            this._value = value;
-            this.render();
+                <input id="id-${this.name}" type="text" name="${this.name}" value="${this.value}">`;
         }
     }
     customElements.define("ldp-form-text", LDPFormText);
-    
-    class LDPList extends HTMLElement {
-        connectedCallback() {
-            const ul = document.createElement('ul');
-            for(let item of this.value) {
-                const li = document.createElement('li');
-                li.innerHTML = item;
-                ul.appendChild(li);
-            }
-            this.appendChild(ul);
+    class LDPFormCheckbox extends LDPWidget {
+        get template() {
+            const checked = this.value ? 'checked' : '';
+            return `<label for="id-${this.name}">${this.name}</label>
+                <input id="id-${this.name}" type="checkbox" name="${this.name}" ${checked}>`;
         }
     }
-    customElements.define('ldp-list', LDPList);
+    customElements.define("ldp-form-checkbox", LDPFormCheckbox);
+    class LDPFormDropdown extends LDPMultipleWidget {
+        get parentElement() {
+            return "select";
+        }
+        get labelTemplate() {
+            return `<label for="id-${this.name}">${this.name}</label>`;
+        }
+        getTemplate(item, index) {
+            const selected = this.value==item['@id'] ? 'selected' : '';
+            return `<option value="${item['@id']}" ${selected}>${item.username}</option>`;
+        }
+        get range() {
+            if(!this._range) return [];
+            if(!Array.isArray(this._range)) return [this._range];
+            return this._range;
+        }
+        set range(url) {
+            store.list(url).then(list => {
+                this._range = list;
+                this.render();
+            });
+        }
+    }
+    customElements.define("ldp-form-dropdown", LDPFormDropdown);
 </script>

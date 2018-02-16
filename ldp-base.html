@@ -18,19 +18,22 @@
         connectedCallback() {
             if(this.resource) this.populate();
         }
+        get isContainer() {
+            return ('ldp:contains' in this.resource);
+        }
+        get next() {
+            return this.getAttribute('next');
+        }
     }
     
     const LDPWidgetMixin = superclass => class extends superclass {
-        getWidget(field) {
-            return this.getAttribute("widget-"+field) || this.defaultWidget;
-        }
         getSet(field) {
             return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
         get fields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
             
-            const resource = this.isContainer ? this.resources[0] : this.resource;
+            const resource = this.isContainer ? this.resource['ldp:contains'][0] : this.resource;
             return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
         isSet(field) {
@@ -44,20 +47,29 @@
         empty() {
             while (this.firstChild) this.removeChild(this.firstChild);
         }
+        getWidget(field) {
+            return this.getAttribute("widget-"+field) || this.defaultWidget;
+        }
+        widgetAttributes(field) {
+            return {
+                value: this.getValue(field),
+                name: field
+            };
+        }
         appendWidget(field, parent) {
             if(!parent) parent = this;
             
             if(this.isSet(field)) {
                 const div = document.createElement("div");
-                div.className = field;
+                div.setAttribute('name', field);
                 parent.appendChild(div);
                 for(let item of this.getSet(field))
                     this.appendWidget(item, div);
             } else {
                 const widget = document.createElement(this.getWidget(field));
-                widget.value = this.getValue(field);
-                widget.name = field;
-                widget.className = field;
+                const attributes = this.widgetAttributes(field);
+                for(let name of Object.keys(attributes))
+                    widget[name] = attributes[name];
                 parent.appendChild(widget);
             }
         }
@@ -75,19 +87,90 @@
             this._filters = filters;
             if(this.resource) this.populate();
         }
-        get isContainer() {
-            return ('ldp:contains' in this.resource);
-        }
         listResources() {
             if(!this.isContainer) return [];
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
         get resources() {
-            return this.listResources().filter(resource => 
-                Object.keys(this.filters).reduce((initial, filter) => 
+            return this.listResources().filter(resource => //for each resource
+                Object.keys(this.filters).reduce((initial, filter) => //for each filter
+                    //return true if all filters values are contained in the corresponding field of the resource
                     initial && resource[filter].indexOf(this.filters[filter]) != -1, true)
             );
         }
+        filterList(filters) {
+            this.filters = filters;
+        }
+        appendFilters() {
+            const formElt = document.createElement('ldp-form');
+            formElt.resource = this.resource;
+            formElt.save = this.filterList.bind(this);
+            formElt.dataset.fields = this.getAttribute("search-fields");
+            
+            //displays applied filter values in the form
+            for(let filter of Object.keys(this.filters))
+                if(formElt.dataset.fields.indexOf(filter)!=-1) 
+                    formElt.setAttribute("value-"+filter, this.filters[filter]);
+            
+            if(this.shadowRoot)
+                this.shadowRoot.appendChild(formElt);
+            else
+                this.appendChild(formElt);
+        }
+        appendSingleElt() {
+            this.appendChildElt(this.resource);
+        }
+        populate() {
+            if(this.isContainer) {
+                if(this.hasAttribute("search-fields")) this.appendFilters();
+                for(let resource of this.resources) this.appendChildElt(resource);
+            }
+            else
+                this.appendSingleElt();
+        }
     };
+    
+    class LDPWidget extends HTMLElement {
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            this.innerHTML = this.template;
+        }
+        get name() {
+            return this.getAttribute('name');
+        }
+        set name(name) {
+            this.setAttribute('name', name);
+            this.render();
+        }
+        get value() {
+            return this._value || '';
+        }
+        set value(value) {
+            this._value = value;
+            this.render();
+        }
+    }
+    class LDPMultipleWidget extends LDPWidget {
+        get labelTemplate() {
+            return '';
+        }
+        render() {
+            this.innerHTML = this.labelTemplate;
+            const parent = document.createElement(this.parentElement);
+            parent.setAttribute('name', this.name);
+            parent.id = "id-"+this.name;
+            
+            //add one instance of the template per item in the value array
+            parent.innerHTML = this.range.map(this.getTemplate, this).join('');
+            this.appendChild(parent);
+        }
+        get range() {
+            if(!this.value) return [];
+            if(!Array.isArray(this.value)) return [this.value];
+            return this.value;
+        }
+    }
 </script>

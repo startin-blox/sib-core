@@ -12,18 +12,9 @@
         dispatchSelect(event) {
             const resource = event.target.closest(this.childTag).resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
-        filterList(filters) {
-            this.filters = filters;
-        }
-        appendFilters() {
-            const formElt = document.createElement('ldp-form');
-            formElt.resource = this.resource;
-            formElt.save = this.filterList.bind(this);
-            formElt.dataset.fields = this.getAttribute("search-fields");
-            this.appendChild(formElt);
-        }
-        appendChildTag(resource) {
+        appendChildElt(resource) {
             const child = document.createElement(this.childTag);
             child.resource = resource;
             child.addEventListener('click', this.dispatchSelect.bind(this));
@@ -35,15 +26,12 @@
             
             this.appendChild(child);
         }
+        appendSingleElt() {
+            for(let field of this.fields) this.appendWidget(field);
+        }
         populate() {
             this.empty();
-            if(this.isContainer) {
-                if(this.hasAttribute("search-fields")) this.appendFilters();
-                for(let item of this.resources) this.appendChildTag(item);
-            }
-            
-            else
-                for(let field of this.fields) this.appendWidget(field);
+            super.populate();
         }
     }
     customElements.define('ldp-display', LDPDisplay);

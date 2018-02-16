@@ -1,5 +1,4 @@
 <link rel="import" href="./ldp-base.html">
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css' />
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.js'></script>
@@ -10,6 +9,9 @@
         constructor() {
             super();
             this.attachShadow({mode: 'open'});
+            const style = document.createElement('style');
+            style.innerHTML = '@import url("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css");';
+            this.shadowRoot.appendChild(style);
             const div = document.createElement('div');
             div.style = "max-width: 100%; max-height: 100%";
             this.shadowRoot.appendChild(div);
@@ -18,19 +20,16 @@
         dispatchSelect(event) {
             const resource = event.resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
-        addEvent(resource) {
+        appendChildElt(resource) {
             if(resource.name && resource.deadline)
                 this.events.push({title: resource.name, start: resource.deadline, resource: resource});
         }
         populate() {
             this.events = [];
-            if(this.isContainer) 
-                for(let resource of this.resources) this.addEvent(resource);
-            
-            else
-                this.addEvent(this.resource);
-            $(this.shadowRoot.firstChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
+            super.populate();
+            $(this.shadowRoot.lastChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
         }
     }
     customElements.define('ldp-calendar', LDPCalendar);
