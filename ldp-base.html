@@ -169,6 +169,7 @@
             this.appendChild(parent);
         }
         get range() {
+            if(!this.value) return [];
             if(!Array.isArray(this.value)) return [this.value];
             return this.value;
         }
