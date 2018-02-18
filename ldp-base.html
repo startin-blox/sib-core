@@ -54,7 +54,7 @@
             return {
                 value: this.getValue(field),
                 name: field
-            }
+            };
         }
         appendWidget(field, parent) {
             if(!parent) parent = this;
@@ -67,13 +67,13 @@
                     this.appendWidget(item, div);
             } else {
                 const widget = document.createElement(this.getWidget(field));
-                const attributes = this.widgetAttributes(field)
+                const attributes = this.widgetAttributes(field);
                 for(let name of Object.keys(attributes))
                     widget[name] = attributes[name];
                 parent.appendChild(widget);
             }
         }
-    }
+    };
     
     const LDPListMixin = superclass => class extends superclass {
         constructor() {
@@ -96,8 +96,7 @@
             return this.listResources().filter(resource => //for each resource
                 Object.keys(this.filters).reduce((initial, filter) => //for each filter
                     //return true if all filters values are contained in the corresponding field of the resource
-                    initial && resource[filter].indexOf(this.filters[filter]) != -1
-                , true)
+                    initial && resource[filter].indexOf(this.filters[filter]) != -1, true)
             );
         }
         filterList(filters) {
@@ -130,7 +129,7 @@
             else
                 this.appendSingleElt();
         }
-    }
+    };
     
     class LDPWidget extends HTMLElement {
         connectedCallback() {
