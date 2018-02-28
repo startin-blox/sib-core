@@ -9,6 +9,8 @@
         get childTag() {
             return this.dataset.child || this.tagName;
         }
+
+        // Here "even.target" points to the content of the widgets of the children of ldp-display
         dispatchSelect(event) {
             const resource = event.target.closest(this.childTag).resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
