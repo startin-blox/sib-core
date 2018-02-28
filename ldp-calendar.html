@@ -20,6 +20,7 @@
         dispatchSelect(event) {
             const resource = event.resource;
             this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
             if(resource.name && resource.deadline)

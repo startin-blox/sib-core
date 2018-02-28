@@ -18,7 +18,7 @@
         constructor() {
             super();
             window.addEventListener('popstate', event => this.display());
-            window.addEventListener('navigate', event => this.display(event.detail.route));
+            window.addEventListener('navigate', event => this.navigate(event.detail.route, event.detail.resource));
             if(document.readyState=="complete") window.addEventListener('WebComponentsReady', event => this.display());
             else document.addEventListener("DOMContentLoaded", event => this.display());
         }
@@ -36,7 +36,7 @@
         }
         get currentRoute() {
             const url = (this.useHash ? location.hash : location.pathname).slice(1);
-            if(url.startsWith(this.prefix.replace('/', '')))
+            if(url.startsWith(this.prefix))
                 return url.slice(this.prefix.length);
             else
                 return null;
@@ -46,9 +46,13 @@
             for(let route of this.querySelectorAll('ldp-route')) {
                 const view = document.getElementById(route.name);
                 if(view) {
-                    if(name.startsWith(route.name)) {
+                    if(name.split('/')[0] == route.name) {
                         view.style.display = 'block';
                         route.setAttribute('active', '');
+                        //handle resource id
+                        if(route.hasAttribute('id-prefix'))
+                            view.setAttribute('data-src', route.getAttribute('id-prefix') + name.split('/')[1]);
+                    
                     } else {
                         view.style.display = 'none';
                         route.removeAttribute('active');
@@ -60,16 +64,22 @@
                 }
             }
         }
-        navigate(name) {
+        navigate(name, resource) {
             name = name || '';
-            const url = this.prefix + name;
+            let id='', url = this.prefix + name;
+            const route = this.querySelector('ldp-route[name='+name+']');
+            if(!route) return; //this route is not for me!
+            
+            //if there is a resource, add its id to the url
+            if(resource && route.hasAttribute('id-prefix'))
+                id = '/' + resource['@id'].replace(route.getAttribute('id-prefix'), '');
             
             if(this.useHash)
-                window.location.hash = url;
+                window.location.hash = url + id;
             else
-                history.pushState({}, name, '/' + url);
+                history.pushState({}, name, '/' + url + id);
             
-            this.display(name);
+            this.display(name + id);
         }
     }
     

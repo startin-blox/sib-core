@@ -33,7 +33,7 @@
         <ldp-router default-route="list">
             <ldp-route name="list">Voir la liste</ldp-route>
             <ldp-route name="form">Voir le formulaire</ldp-route>
-            <ldp-route name="detail">Voir le détail</ldp-route>
+            <ldp-route name="detail" id-prefix="http://localhost:8000/todos/">Voir le détail</ldp-route>
         </ldp-router>
         <main id="ldp-root">
             <ldp-display 
@@ -43,13 +43,14 @@
                 set-set1="name, text"
                 value-text="youpi"
                 search-fields="name, author"
+                next="detail"
             ></ldp-display>
             <ldp-display
                 id="detail"
                 data-src="http://localhost:8000/todos/3"
                 data-fields="name, author, text, assignees"
                 value-text="Ceci est un détail"
-                widget-assignees="ldp-list"
+                widget-assignees="ldp-display-list"
             ></ldp-display>
             <div id="form">
                 <ldp-router route-prefix="form">
@@ -58,7 +59,13 @@
                 </ldp-router>
                 <section id="form-root">
                     <ldp-form id="create" data-src="http://localhost:8000/todos/"></ldp-form>
-                    <ldp-form id="edit" data-src="http://localhost:8000/todos/1" next="list"></ldp-form>
+                    <ldp-form
+                        id="edit"
+                        data-src="http://localhost:8000/todos/3"
+                        next="list"
+                        widget-done="ldp-form-checkbox"
+                        range-author="http://localhost:8000/users/"
+                    ></ldp-form>
                 </section>
             </div>
             <ldp-calendar data-src="http://localhost:8000/todos/" style="display: block; height: 300px; width: 500px;"></ldp-calendar>
