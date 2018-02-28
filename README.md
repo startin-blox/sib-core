@@ -5,16 +5,11 @@ They are aimed at enabling anyone with little development skills to create their
 
 ## Code Example
 
-An example can be seen in index.html:
-```
-<ldp-display data-src="http://localhost:8000/todos/" data-fields="set1, author, picture" data-widgets='{"set1": ["name", "text1"], "text1": {"value": "youpi"}, "picture" : "ldp-display-img"}' custom-styles="mystyles"></ldp-display>
-<ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
-```
-This shows the list of todos listed by the container, and a form to create a new one.
+An full app example can be found in index.html:
 
 ## Initialization
 
-You first need to load the webcomponents polyfill for the browser that have not implemented them yet, and import the components you want to use in your HTML file:
+You first need to load the webcomponents polyfill for the browsers that have not implemented them yet, and import the components you want to use in your HTML file:
 ```
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
 <link rel="import" href="https://cdn.happy-dev.fr/ldp-display/ldp-display.html" />
@@ -30,25 +25,30 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
 
 ### ldp-display &nbsp;&&nbsp; ldp-form
 
-**They accept the following attributes:**
+**These components accept the following attributes:**
 
- - **data-src**: The uri of the LDP resource you want them to display. If this resource is a container, ldp-display will create a child `<ldp-display>` for each resource it contains, and ldp-form will display a blank form to create a new resource.
- - **data-fields**: the ordered list of fields to be displayed, separated by a comma. By default, all the fields of the resource are displayed
- - **data-widgets**: the widgets to be used to display each field. This is a JSON object. By default, the widget used is ldp-display-div. If the value corresponding to a field is an array, it is displayed as a set, enabling to create a html hierarchy. If it is an object with a 'value' field, it will be displayed as a raw text.
- - **custom-styles**: the id of a template tag containing a style tag that will be applied to the internals of the component. A class is created for each field, based on its name. Eg: if your model has a field named "title", you can add style to it with a class `.title`.
+ - **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<ldp-display>` will create a child `<ldp-display>` for each resource it contains, and `<ldp-form>` will display a blank form with appropriate fields to create a new resource.
+ - **set-xyz**: If you want to group fields within a `<div>` tag `set-xyz` allow you to do so. The `<div>` container will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
+ - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
+ - **data-widgets**: the widgets to be used to display each field. This is a JSON object. By default, the widget used is `<ldp-display-div>`. If the value corresponding to a field is an array, it is displayed as a set, enabling to create a html hierarchy. If it is an object with a `value` field, it will be displayed as a raw text.
+ - **custom-styles**: the id of a template tag containing a style tag that will be applied to the internals of the component. A class is created for each field, based on its name. Eg: if your model has a field named `title`, you can add style to it with a class `.title`.
 
 **Example :**
 ```
 <ldp-display 
     id="list"
     data-src="http://localhost:8000/todos/"
-    data-fields="set1, author"
-    set-set1="name, text"
-    value-text="Hello World !"
+    set-info="task, date"
+    value-created="Created by :"
+    set-author="created, name"
+    set-status="state"
+    data-fields="status, author, deadline"
     search-fields="name, author"
 ></ldp-display>
 
+<ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
 ```
+This shows the list of todos listed by the container, and a form to create a new one.
 
 ### ldp-router
 

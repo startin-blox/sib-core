@@ -39,7 +39,6 @@
         isSet(field) {
             return this.hasAttribute("set-"+field);
         }
-        
         getValue(field) {
             if(this.hasAttribute("value-"+field)) return this.getAttribute("value-"+field);
             return this.resource[field];
