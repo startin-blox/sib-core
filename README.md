@@ -10,7 +10,7 @@ An full app example can be found in index.html:
 ## Initialization
 
 You first need to load the webcomponents polyfill for the browsers that have not implemented them yet, and import the components you want to use in your HTML file:
-```
+```html
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
 <link rel="import" href="https://cdn.happy-dev.fr/ldp-display/ldp-display.html" />
 <link rel="import" href="https://cdn.happy-dev.fr/ldp-display/ldp-form.html" />
@@ -36,7 +36,7 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
  - **next**: See the documentation of `<ldp-router>`
 
 **Example :**
-```
+```html
 <ldp-display 
     id="list"
     data-src="http://localhost:8000/todos/"
@@ -62,7 +62,7 @@ This shows the list of todos listed by the container, and a form to create a new
 
 
 **Example :**
-```
+```html
 <ldp-router 
     default-route="list"
     route-prefix="my-app"
@@ -94,4 +94,5 @@ The componend ldp-form fires a "save" event when the user validates the form.
 ## License
 
 No licence yet. Please wait...  
+
 
