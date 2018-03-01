@@ -28,10 +28,12 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
 **These components accept the following attributes:**
 
  - **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<ldp-display>` will create a child `<ldp-display>` for each resource it contains, and `<ldp-form>` will display a blank form with appropriate fields to create a new resource.
- - **set-xyz**: If you want to group fields within a `<div>` tag `set-xyz` allow you to do so. The `<div>` container will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
+ - **value-xyz**: To display a string not contained within the data.
+ - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
  - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
  - **data-widgets**: the widgets to be used to display each field. This is a JSON object. By default, the widget used is `<ldp-display-div>`. If the value corresponding to a field is an array, it is displayed as a set, enabling to create a html hierarchy. If it is an object with a `value` field, it will be displayed as a raw text.
- - **custom-styles**: the id of a template tag containing a style tag that will be applied to the internals of the component. A class is created for each field, based on its name. Eg: if your model has a field named `title`, you can add style to it with a class `.title`.
+ - **search-fields**: TO BE WRITTEN 
+ - **next**: See the documentation of `<ldp-router>`
 
 **Example :**
 ```
