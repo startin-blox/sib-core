@@ -32,8 +32,10 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
  - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
  - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
  - **data-widgets**: the widgets to be used to display each field. This is a JSON object. By default, the widget used is `<ldp-display-div>`. If the value corresponding to a field is an array, it is displayed as a set, enabling to create a html hierarchy. If it is an object with a `value` field, it will be displayed as a raw text.
+
+**`<ldp-display>` also has the following attributes:**
  - **search-fields**: TO BE WRITTEN 
- - **next**: See the documentation of `<ldp-router>`
+ - **next**: `name` attribute of the `<ldp-route>` that should be accessed when a `<ldp-display>` element is clicked. See the documentation of `<ldp-router>` for more details.
 
 **Example :**
 ```html
@@ -46,19 +48,24 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
     set-status="state"
     data-fields="status, author, deadline"
     search-fields="name, author"
+    next="detail"
 ></ldp-display>
 
 <ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
 ```
 This shows the list of todos listed by the container, and a form to create a new one.
 
-### ldp-router
-
-**Accepts the following attributes:**
+### ldp-router  &nbsp;&&nbsp;  ldp-route
+**`<ldp-router>` accepts the following attributes:**
 
  - **default-route**: The `name` attribute of the default `<ldp-route>` displayed.
  - **route-prefix**: If you app is not run from the root of your domain name, for instance `www.your-domain.com/some-uri`, you should set `route-prefix` to "some-uri". 
  - **use-hash**: If you can't rewrite the URLs on your server, you might want to set this attribute to `true` to use `location.hash` instead of `location.pathname` as URLs. 
+ 
+**`<ldp-route>` accepts the following attributes:**
+
+ - **id-prefix**: TO BE WRITTEN
+ - **active**: This attribute is present on route being displayed by `<ldp-router>`. It is automatically added/removed by `<ldp-router>` and should not be tinkered manually.    
 
 
 **Example :**
@@ -94,5 +101,6 @@ The componend ldp-form fires a "save" event when the user validates the form.
 ## License
 
 No licence yet. Please wait...  
+
 
 

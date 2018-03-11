@@ -65,7 +65,7 @@
             }
         }
         navigate(name, resource) {
-            name = name || '';
+            name = name || '';// of the route
             let id='', url = this.prefix + name;
             const route = this.querySelector('ldp-route[name='+name+']');
             if(!route) return; //this route is not for me!
