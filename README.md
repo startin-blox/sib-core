@@ -31,7 +31,7 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
  - **value-xyz**: To display a string not contained within the data.
  - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
  - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
- - **data-widgets**: the widgets to be used to display each field. This is a JSON object. By default, the widget used is `<ldp-display-div>`. If the value corresponding to a field is an array, it is displayed as a set, enabling to create a html hierarchy. If it is an object with a `value` field, it will be displayed as a raw text.
+ - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<ldp-display-div>`. Cf the **Widgets** section below for more info.
 
 **`<ldp-display>` also has the following attributes:**
  - **search-fields**: TO BE WRITTEN 
@@ -46,7 +46,8 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
     value-created="Created by :"
     set-author="created, name"
     set-status="state"
-    data-fields="status, author, deadline"
+    data-fields="image, status, author, deadline"
+    widget-image="ldp-display-img"
     search-fields="name, author"
     next="detail"
 ></ldp-display>
