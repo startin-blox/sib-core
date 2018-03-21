@@ -45,13 +45,15 @@
                 search-fields="name, author"
                 next="detail"
             ></ldp-display>
-            <ldp-display
-                id="detail"
-                data-src="http://localhost:8000/todos/3"
-                data-fields="name, author, text, assignees"
-                value-text="Ceci est un détail"
-                widget-assignees="ldp-display-list"
-            ></ldp-display>
+            <div id="detail">
+                <ldp-display
+                    bind-resources
+                    data-src="http://localhost:8000/todos/3"
+                    data-fields="name, author, text, assignees"
+                    value-text="Ceci est un détail"
+                    widget-assignees="ldp-display-list"
+                ></ldp-display>
+            </div>
             <div id="form">
                 <ldp-router route-prefix="form">
                     <ldp-route name="create">Nouveau</ldp-route>

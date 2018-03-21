@@ -50,8 +50,13 @@
                         view.style.display = 'block';
                         route.setAttribute('active', '');
                         //handle resource id
-                        if(route.hasAttribute('id-prefix'))
-                            view.setAttribute('data-src', route.getAttribute('id-prefix') + name.split('/')[1]);
+                        if(route.hasAttribute('id-prefix')) {
+                            const id = route.getAttribute('id-prefix') + name.split('/')[1];
+                            if(view.hasAttribute('bind-resources'))
+                                view.setAttribute('data-src', id);
+                            for(let element of view.querySelectorAll('[bind-resources]'))
+                                element.setAttribute('data-src', id);
+                        }
                     
                     } else {
                         view.style.display = 'none';
