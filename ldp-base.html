@@ -86,19 +86,30 @@
         }
         set filters(filters) {
             this._filters = filters;
-            if(this.resource) this.populate();
+            if(this.resource) {
+                this.empty();
+                this.populate();
+            }
         }
         listResources() {
             if(!this.isContainer) return [];
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
+        matchFilter(property, value) {
+            if(typeof property === 'string' || property instanceof String)
+                return property.toLowerCase().indexOf(value.toLowerCase()) != -1;
+            if(property['@id'])
+                return this.matchFilter(property['@id'], value);
+            return false;
+        }
+        matchFilters(resource) {
+            //return true if all filters values are contained in the corresponding field of the resource
+            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource[filter], this.filters[filter]), true)
+                
+        }
         get resources() {
-            return this.listResources().filter(resource => //for each resource
-                Object.keys(this.filters).reduce((initial, filter) => //for each filter
-                    //return true if all filters values are contained in the corresponding field of the resource
-                    initial && resource[filter].indexOf(this.filters[filter]) != -1, true)
-            );
+            return this.listResources().filter(this.matchFilters.bind(this));
         }
         filterList(filters) {
             this.filters = filters;
