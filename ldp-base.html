@@ -108,6 +108,7 @@
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
             formElt.dataset.fields = this.getAttribute("search-fields");
+            formElt.setAttribute('reset', '');
             
             //displays applied filter values in the form
             for(let filter of Object.keys(this.filters))
