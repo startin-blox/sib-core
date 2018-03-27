@@ -26,8 +26,10 @@
             if(resource.name && resource.deadline)
                 this.events.push({title: resource.name, start: resource.deadline, resource: resource});
         }
-        populate() {
+        empty() {
             this.events = [];
+        }
+        populate() {
             super.populate();
             $(this.shadowRoot.lastChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
         }

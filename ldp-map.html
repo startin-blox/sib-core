@@ -31,6 +31,10 @@
                 this.markers.push(marker);
             }
         }
+        empty() {
+            for(let marker of this.markers)
+                this.map.removeLayer(marker);
+        }
         populate() {
             super.populate();
             this.map.fitBounds(L.featureGroup(this.markers).getBounds());

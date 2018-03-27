@@ -31,10 +31,6 @@
         appendSingleElt() {
             for(let field of this.fields) this.appendWidget(field);
         }
-        populate() {
-            this.empty();
-            super.populate();
-        }
     }
     customElements.define('ldp-display', LDPDisplay);
 }());
