@@ -31,6 +31,13 @@
         }
     }
     customElements.define("ldp-form-text", LDPFormText);
+    class LDPFormTextArea extends LDPWidget {
+        get template() {
+            return `<label for="id-${this.name}">${this.name}</label>
+                <textarea id="id-${this.name}" type="text" name="${this.name}" value="${this.value}"></textarea>`;
+        }
+    }
+    customElements.define("ldp-form-textarea", LDPFormTextArea);
     class LDPFormCheckbox extends LDPWidget {
         get template() {
             const checked = this.value ? 'checked' : '';
