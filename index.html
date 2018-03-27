@@ -30,6 +30,7 @@
         </style>
     </head>
     <body>
+        <div id="loader" style="display:none">Chargement...</div>
         <ldp-router default-route="list">
             <ldp-route name="list">Voir la liste</ldp-route>
             <ldp-route name="form">Voir le formulaire</ldp-route>
@@ -48,6 +49,7 @@
             <div id="detail">
                 <ldp-display
                     bind-resources
+                    loader-id="loader"
                     data-src="http://localhost:8000/todos/3"
                     data-fields="name, author, text, assignees"
                     value-text="Ceci est un détail"

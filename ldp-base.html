@@ -8,9 +8,13 @@
         attributeChangedCallback(attribute, oldValue, newValue) {
             if(attribute == "data-src") {
                 this.empty();
+                if(this.hasAttribute('loader-id'))
+                    document.getElementById(this.getAttribute('loader-id')).style.display = 'block';
                 if(newValue) store.get(newValue).then(resource => {
                     this.resource = resource;
                     this.populate();
+                    if(this.hasAttribute('loader-id'))
+                        document.getElementById(this.getAttribute('loader-id')).style.display = 'none';
                 });
             }
         }
