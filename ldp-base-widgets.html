@@ -1,0 +1,44 @@
+<script>
+    class LDPWidget extends HTMLElement {
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            this.innerHTML = this.template;
+        }
+        get name() {
+            return this.getAttribute('name');
+        }
+        set name(name) {
+            this.setAttribute('name', name);
+            this.render();
+        }
+        get value() {
+            return this._value || '';
+        }
+        set value(value) {
+            this._value = value;
+            this.render();
+        }
+    }
+    class LDPMultipleWidget extends LDPWidget {
+        get labelTemplate() {
+            return '';
+        }
+        render() {
+            this.innerHTML = this.labelTemplate;
+            const parent = document.createElement(this.parentElement);
+            parent.setAttribute('name', this.name);
+            parent.id = "id-"+this.name;
+            
+            //add one instance of the template per item in the value array
+            parent.innerHTML = this.range.map(this.getTemplate, this).join('');
+            this.appendChild(parent);
+        }
+        get range() {
+            if(!this.value) return [];
+            if(!Array.isArray(this.value)) return [this.value];
+            return this.value;
+        }
+    }
+</script>
