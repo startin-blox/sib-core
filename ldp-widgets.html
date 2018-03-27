@@ -26,14 +26,14 @@
     
     class LDPFormText extends LDPWidget {
         get template() {
-            return `<label for="id-${this.name}">${this.name}</label>
+            return `<label for="id-${this.name}">${this.label}</label>
                 <input id="id-${this.name}" type="text" name="${this.name}" value="${this.value}">`;
         }
     }
     customElements.define("ldp-form-text", LDPFormText);
     class LDPFormTextArea extends LDPWidget {
         get template() {
-            return `<label for="id-${this.name}">${this.name}</label>
+            return `<label for="id-${this.name}">${this.label}</label>
                 <textarea id="id-${this.name}" type="text" name="${this.name}" value="${this.value}"></textarea>`;
         }
     }
@@ -41,7 +41,7 @@
     class LDPFormCheckbox extends LDPWidget {
         get template() {
             const checked = this.value ? 'checked' : '';
-            return `<label for="id-${this.name}">${this.name}</label>
+            return `<label for="id-${this.name}">${this.label}</label>
                 <input id="id-${this.name}" type="checkbox" name="${this.name}" ${checked}>`;
         }
     }
@@ -51,7 +51,7 @@
             return "select";
         }
         get labelTemplate() {
-            return `<label for="id-${this.name}">${this.name}</label>`;
+            return `<label for="id-${this.name}">${this.label}</label>`;
         }
         getTemplate(item, index) {
             const selected = this.value==item['@id'] ? 'selected' : '';

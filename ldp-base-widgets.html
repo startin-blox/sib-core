@@ -6,6 +6,13 @@
         render() {
             this.innerHTML = this.template;
         }
+        get label() {
+            return this.getAttribute('label') || this.name;
+        }
+        set label(label) {
+            this.setAttribute('label', label);
+            this.render();
+        }
         get name() {
             return this.getAttribute('name');
         }

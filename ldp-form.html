@@ -14,6 +14,7 @@
         widgetAttributes(field) {
             let attributes = super.widgetAttributes(field);
             if(this.hasAttribute("range-"+field)) attributes.range = this.getAttribute("range-"+field);
+            if(this.hasAttribute("label-"+field)) attributes.label = this.getAttribute("label-"+field);
             return attributes;
         }
         
