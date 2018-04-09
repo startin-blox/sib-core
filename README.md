@@ -34,7 +34,7 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
  - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<ldp-display-div>`. Cf the **Widgets** section below for more info.
 
 **`<ldp-display>` also has the following attributes:**
- - **search-fields**: TO BE WRITTEN 
+ - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
  - **next**: `name` attribute of the `<ldp-route>` that should be accessed when a `<ldp-display>` element is clicked. See the documentation of `<ldp-router>` for more details.
 
 **Example :**
@@ -51,8 +51,14 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
     search-fields="name, author"
     next="detail"
 ></ldp-display>
+```
 
-<ldp-form data-src="http://localhost:8000/todos/"></ldp-form>
+**`<ldp-form>` also has the following attributes:**
+ - **label-xyz**: When displaying a form, the default labels are the fields names of the model. If you want something fancier, you can set this attribute, for instance : `label-username="Your name"`.
+```html
+<ldp-form 
+    data-src="http://localhost:8000/todos/"
+></ldp-form>
 ```
 This shows the list of todos listed by the container, and a form to create a new one.
 
