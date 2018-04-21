@@ -29,7 +29,7 @@ Then you can use the new tags in your markup, for instance : `<ldp-display>`. Mo
 
  - **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<ldp-display>` will create a child `<ldp-display>` for each resource it contains, and `<ldp-form>` will display a blank form with appropriate fields to create a new resource.
  - **value-xyz**: To display a string not contained within the data.
- - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`.
+ - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<ldp-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
  - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
  - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<ldp-display-div>`. Cf the **Widgets** section below for more info.
 
