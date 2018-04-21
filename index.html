@@ -12,13 +12,17 @@
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('list').addEventListener('select', function(event) {
                     console.log(event.detail.resource);
-                    alert('selected!');
+                    //alert('selected!');
                 });
             });
         </script>
         <style>
             ldp-display {
                 display: flex;
+            }
+            #detail {
+                float: right;
+                border: solid blue;
             }
             .set1 {
                 display: flex;
@@ -34,18 +38,11 @@
         <ldp-router default-route="list">
             <ldp-route name="list">Voir la liste</ldp-route>
             <ldp-route name="form">Voir le formulaire</ldp-route>
+        </ldp-router>
+        <ldp-router route-prefix="list">
             <ldp-route name="detail" id-prefix="http://localhost:8000/todos/">Voir le détail</ldp-route>
         </ldp-router>
-        <main id="ldp-root">
-            <ldp-display 
-                id="list"
-                data-src="http://localhost:8000/todos/"
-                data-fields="set1, author"
-                set-set1="name, text"
-                value-text="youpi"
-                search-fields="name, author"
-                next="detail"
-            ></ldp-display>
+        <main>
             <div id="detail">
                 <ldp-display
                     bind-resources
@@ -56,6 +53,15 @@
                     widget-assignees="ldp-display-list"
                 ></ldp-display>
             </div>
+            <ldp-display 
+                id="list"
+                data-src="http://localhost:8000/todos/"
+                data-fields="set1, author"
+                set-set1="name, text"
+                value-text="youpi"
+                search-fields="name, author"
+                next="detail"
+            ></ldp-display>
             <div id="form">
                 <ldp-router route-prefix="form">
                     <ldp-route name="create">Nouveau</ldp-route>
