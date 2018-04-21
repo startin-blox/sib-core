@@ -5,12 +5,17 @@
     
     class LDPBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
+        
         attributeChangedCallback(attribute, oldValue, newValue) {
             if(attribute == "data-src") {
                 this.empty();
+                
+                // brings a loader out if the attribute is set
                 if(this.hasAttribute('loader-id'))
                     document.getElementById(this.getAttribute('loader-id')).style.display = 'block';
-                if(newValue) store.get(newValue).then(resource => {
+                
+                // gets the data through the store 
+                if(newValue) store.get(newValue+this.idSuffix).then(resource => {
                     this.resource = resource;
                     this.populate();
                     if(this.hasAttribute('loader-id'))
@@ -19,6 +24,7 @@
             }
         }
         empty() {
+            //this method should be implemented by descending components to remove all content
             throw "Not Implemented";
         }
         connectedCallback() {
@@ -29,6 +35,11 @@
         }
         get next() {
             return this.getAttribute('next');
+        }
+        get idSuffix() { // attribute added to the id given as data-src
+            if(this.hasAttribute('id-suffix'))
+                return this.getAttribute('id-suffix') + '/';
+            else return '';
         }
     }
     
