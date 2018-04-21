@@ -22,6 +22,20 @@
         }
     }
     customElements.define('ldp-display-list', LDPDisplayList);
+
+    class LDPDisplayMailTo extends LDPWidget {
+        get template() {
+          return `<a href="mailto:${this.value}" name="${this.name}">${this.value}</a>`;
+        }
+    }
+    customElements.define("ldp-display-mailto", LDPDisplayMailTo);
+
+    class LDPDisplayTel extends LDPWidget {
+        get template() {
+          return `<a href="tel:${this.value}" name="${this.name}">${this.value}</a>`;
+        }
+    }
+    customElements.define("ldp-display-tel", LDPDisplayTel);
     
     
     class LDPFormText extends LDPWidget {
