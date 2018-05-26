@@ -1,14 +1,14 @@
-<link rel="import" href="./ldp-base.html">
-<link rel="import" href="./ldp-widgets.html">
+<link rel="import" href="./sib-base.html">
+<link rel="import" href="widgets/sib-widgets.html">
 
 <script>
 (function(){
-    class LDPForm extends LDPWidgetMixin(LDPBase) {
-        get defaultWidget() {return 'ldp-form-text';}
+    class SIBForm extends SIBWidgetMixin(SIBBase) {
+        get defaultWidget() {return 'sib-form-text';}
         
         //Special case of the dropdown
         getWidget(field) {
-            if(this.hasAttribute("range-"+field)) return "ldp-form-dropdown";
+            if(this.hasAttribute("range-"+field)) return "sib-form-dropdown";
             else return super.getWidget(field);
         }
         widgetAttributes(field) {
@@ -61,6 +61,6 @@
         }
     }
     
-    customElements.define('ldp-form', LDPForm);
+    customElements.define('sib-form', SIBForm);
 }());
 </script>

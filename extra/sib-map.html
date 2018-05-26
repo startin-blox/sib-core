@@ -1,10 +1,10 @@
-<link rel="import" href="./ldp-base.html">
+<link rel="import" href="../sib-base.html">
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
     integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
     crossorigin=""></script>
 <script>
 (function(){
-    class LDPMap extends LDPListMixin(LDPBase) {
+    class SIBMap extends SIBListMixin(SIBBase) {
         constructor() {
             super();
             this.markers = [];
@@ -40,6 +40,6 @@
             this.map.fitBounds(L.featureGroup(this.markers).getBounds());
         }
     }
-    customElements.define('ldp-map', LDPMap);
+    customElements.define('sib-map', SIBMap);
 }());
 </script>

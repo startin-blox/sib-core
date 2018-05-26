@@ -3,7 +3,7 @@
 <script>
     const store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     
-    class LDPBase extends HTMLElement {
+    class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         
         attributeChangedCallback(attribute, oldValue, newValue) {
@@ -43,7 +43,7 @@
         }
     }
     
-    const LDPWidgetMixin = superclass => class extends superclass {
+    const SIBWidgetMixin = superclass => class extends superclass {
         getSet(field) {
             return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
@@ -91,7 +91,7 @@
         }
     };
     
-    const LDPListMixin = superclass => class extends superclass {
+    const SIBListMixin = superclass => class extends superclass {
         constructor() {
             super();
             this._filters={};
@@ -130,7 +130,7 @@
             this.filters = filters;
         }
         appendFilters() {
-            const formElt = document.createElement('ldp-form');
+            const formElt = document.createElement('sib-form');
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
             formElt.dataset.fields = this.getAttribute("search-fields");
@@ -159,4 +159,4 @@
         }
     };
 </script>
-<link rel="import" href="ldp-form.html" />
+<link rel="import" href="sib-form.html" />

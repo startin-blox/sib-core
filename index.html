@@ -3,11 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
-        <link rel="import" href="ldp-display.html" />
-        <link rel="import" href="ldp-form.html" />
-        <link rel="import" href="ldp-calendar.html" />
-        <link rel="import" href="ldp-map.html" />
-        <link rel="import" href="ldp-router.html" />
+        <link rel="import" href="sib-display.html" />
+        <link rel="import" href="sib-form.html" />
+        <link rel="import" href="extra/sib-calendar.html" />
+        <link rel="import" href="extra/sib-map.html" />
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('list').addEventListener('select', function(event) {
@@ -17,7 +16,7 @@
             });
         </script>
         <style>
-            ldp-display {
+            sib-display {
                 display: flex;
             }
             #detail {
@@ -35,52 +34,39 @@
     </head>
     <body>
         <div id="loader" style="display:none">Chargement...</div>
-        <ldp-router default-route="list">
-            <ldp-route name="list">Voir la liste</ldp-route>
-            <ldp-route name="form">Voir le formulaire</ldp-route>
-        </ldp-router>
-        <ldp-router route-prefix="list">
-            <ldp-route name="detail" id-prefix="http://localhost:8000/todos/">Voir le détail</ldp-route>
-        </ldp-router>
         <main>
             <div id="detail">
-                <ldp-display
+                <sib-display
                     bind-resources
                     loader-id="loader"
-                    data-src="http://localhost:8000/todos/6/"
-                    data-fields="name, author, text, assignees"
+                    data-src="http://localhost:8000/members/3/"
+                    data-fields="firstname, author, text, assignees"
                     value-text="Ceci est un détail"
-                    widget-assignees="ldp-display-list"
-                ></ldp-display>
+                    widget-assignees="sib-display-list"
+                ></sib-display>
             </div>
-            <ldp-display 
+            <sib-display 
                 id="list"
-                data-src="http://localhost:8000/todos/"
+                data-src="http://localhost:8000/members/"
                 data-fields="set1, author"
-                set-set1="name, text"
+                set-set1="firstname, text"
                 value-text="youpi"
                 search-fields="name, author"
                 next="detail"
-            ></ldp-display>
+            ></sib-display>
             <div id="form">
-                <ldp-router route-prefix="form">
-                    <ldp-route name="create">Nouveau</ldp-route>
-                    <ldp-route name="edit">Modifier</ldp-route>
-                </ldp-router>
-                <section id="form-root">
-                    <ldp-form id="create" data-src="http://localhost:8000/todos/"></ldp-form>
-                    <ldp-form
-                        id="edit"
-                        data-src="http://localhost:8000/todos/6/"
-                        next="list"
-                        widget-done="ldp-form-checkbox"
-                        label-name="What's your name, honey?"
-                        range-author="http://localhost:8000/users/"
-                    ></ldp-form>
-                </section>
+                <sib-form id="create" data-src="http://localhost:8000/members/"></sib-form>
+                <sib-form
+                    id="edit"
+                    data-src="http://localhost:8000/members/6/"
+                    next="list"
+                    widget-done="sib-form-checkbox"
+                    label-name="What's your name, honey?"
+                    range-author="http://localhost:8000/members/"
+                ></sib-form>
             </div>
-            <ldp-calendar data-src="http://localhost:8000/todos/" style="display: block; height: 300px; width: 500px;"></ldp-calendar>
-            <ldp-map id="map" search-fields="name" data-src="http://localhost:8000/todos/" style="display: block; height: 300px; width: 500px;"></ldp-map>
+            <sib-calendar data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-calendar>
+            <sib-map id="map" search-fields="name" data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-map>
         </main>
     </body>
 </html>

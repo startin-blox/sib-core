@@ -1,66 +1,66 @@
-<link rel="import" href="./ldp-base-widgets.html">
+<link rel="import" href="./sib-base-widgets.html">
 
 <script>
-    class LDPDisplayDiv extends LDPWidget {
+    class SIBDisplayDiv extends SIBWidget {
         get template() {
             return `<div name="${this.name}">${this.value}</div>`;
         }
     }
-    customElements.define("ldp-display-div", LDPDisplayDiv);
+    customElements.define("sib-display-div", SIBDisplayDiv);
     
-    class LDPDisplayImg extends LDPWidget {
+    class SIBDisplayImg extends SIBWidget {
         get template() {
             return `<img name="${this.name}" src="${this.value}" style="max-width: 100%; max-height: 100%;"/>`;
         }
     }
-    customElements.define("ldp-display-img", LDPDisplayImg);
+    customElements.define("sib-display-img", SIBDisplayImg);
     
-    class LDPDisplayList extends LDPMultipleWidget {
+    class SIBDisplayList extends SIBMultipleWidget {
         get parentElement() {return "ul"}
         getTemplate(value, index) {
             return `<li id="${this.name}-${index}">${value}</li>`;
         }
     }
-    customElements.define('ldp-display-list', LDPDisplayList);
+    customElements.define('sib-display-list', SIBDisplayList);
 
-    class LDPDisplayMailTo extends LDPWidget {
+    class SIBDisplayMailTo extends SIBWidget {
         get template() {
           return `<a href="mailto:${this.value}" name="${this.name}">${this.value}</a>`;
         }
     }
-    customElements.define("ldp-display-mailto", LDPDisplayMailTo);
+    customElements.define("sib-display-mailto", SIBDisplayMailTo);
 
-    class LDPDisplayTel extends LDPWidget {
+    class SIBDisplayTel extends SIBWidget {
         get template() {
           return `<a href="tel:${this.value}" name="${this.name}">${this.value}</a>`;
         }
     }
-    customElements.define("ldp-display-tel", LDPDisplayTel);
+    customElements.define("sib-display-tel", SIBDisplayTel);
     
     
-    class LDPFormText extends LDPWidget {
+    class SIBFormText extends SIBWidget {
         get template() {
             return `<label for="id-${this.name}">${this.label}</label>
                 <input id="id-${this.name}" type="text" name="${this.name}" value="${this.value}">`;
         }
     }
-    customElements.define("ldp-form-text", LDPFormText);
-    class LDPFormTextArea extends LDPWidget {
+    customElements.define("sib-form-text", SIBFormText);
+    class SIBFormTextArea extends SIBWidget {
         get template() {
             return `<label for="id-${this.name}">${this.label}</label>
                 <textarea id="id-${this.name}" type="text" name="${this.name}" value="${this.value}"></textarea>`;
         }
     }
-    customElements.define("ldp-form-textarea", LDPFormTextArea);
-    class LDPFormCheckbox extends LDPWidget {
+    customElements.define("sib-form-textarea", SIBFormTextArea);
+    class SIBFormCheckbox extends SIBWidget {
         get template() {
             const checked = this.value ? 'checked' : '';
             return `<label for="id-${this.name}">${this.label}</label>
                 <input id="id-${this.name}" type="checkbox" name="${this.name}" ${checked}>`;
         }
     }
-    customElements.define("ldp-form-checkbox", LDPFormCheckbox);
-    class LDPFormDropdown extends LDPMultipleWidget {
+    customElements.define("sib-form-checkbox", SIBFormCheckbox);
+    class SIBFormDropdown extends SIBMultipleWidget {
         get parentElement() {
             return "select";
         }
@@ -83,5 +83,5 @@
             });
         }
     }
-    customElements.define("ldp-form-dropdown", LDPFormDropdown);
+    customElements.define("sib-form-dropdown", SIBFormDropdown);
 </script>
