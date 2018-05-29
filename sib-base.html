@@ -143,9 +143,9 @@
                     formElt.setAttribute("value-"+filter, this.filters[filter]);
             
             if(this.shadowRoot)
-                this.shadowRoot.appendChild(formElt);
+                this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
             else
-                this.appendChild(formElt);
+                this.insertBefore(formElt, this.firstChild);
         }
         appendSingleElt() {
             this.appendChildElt(this.resource);
