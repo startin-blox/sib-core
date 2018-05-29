@@ -16,6 +16,7 @@
                 
                 // gets the data through the store 
                 if(newValue) store.get(newValue+this.idSuffix).then(resource => {
+                    this.empty();
                     this.resource = resource;
                     this.populate();
                     if(this.hasAttribute('loader-id'))
