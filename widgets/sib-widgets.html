@@ -85,7 +85,7 @@
         }
         set range(url) {
             store.list(url).then(list => {
-                this._range = list;
+                this._range = [{'@id':'','name':''}].concat(list);
                 this.renderList();
                 this.parent.value = this._value;
             });
