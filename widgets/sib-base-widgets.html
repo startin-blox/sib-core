@@ -29,7 +29,7 @@
         }
     }
     
-    const SIBAsochronousWidget = superclass => class extends superclass {
+    const SIBAsochronousResourceWidgetMixin = superclass => class extends superclass {
         render() {
             store.get(this.value).then( (value) => {
                 this._value = value;
