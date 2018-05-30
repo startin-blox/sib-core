@@ -138,6 +138,7 @@
             const formElt = document.createElement('sib-form');
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
+            formElt.change = this.filterList.bind(this);
             formElt.dataset.fields = this.getAttribute("search-fields");
             formElt.setAttribute('reset', '');
             
