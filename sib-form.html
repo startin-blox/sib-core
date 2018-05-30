@@ -57,6 +57,7 @@
         populate() {
             this.form = document.createElement('form');
             this.form.addEventListener('submit', this.submitForm.bind(this));
+            this.form.addEventListener('reset', event => setTimeout(this.inputChange.bind(this)));
             this.appendChild(this.form);
             
             for(let field of this.fields)
