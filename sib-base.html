@@ -112,17 +112,21 @@
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
+        matchValue(propertyValue, fieldValue) {
+            if(Array.isArray(propertyValue))
+                return propertyValue.reduce((initial, value) => initial || this.matchValue(value, fieldValue), false);
+            if(propertyValue['@id']) //search in ids
+                return propertyValue['@id'] == fieldValue;
+            if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
+                return propertyValue == fieldValue || fieldValue == '';
+            if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
+                return propertyValue.toLowerCase().indexOf(fieldValue.toLowerCase()) != -1;
+            return false;
+        }
         matchFilter(resource, filter, value) {
             if(this.isSet(filter)) // for sets, return true if it matches at least one of the fields
                 return this.getSet(filter).reduce((initial, field) => initial || this.matchFilter(resource, field, value), false);
-            const propertyValue = resource[filter];
-            if(propertyValue['@id']) //search in ids
-                return propertyValue['@id'] == value;
-            if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
-                return propertyValue == value || value == '';
-            if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
-                return propertyValue.toLowerCase().indexOf(value.toLowerCase()) != -1;
-            return false;
+            return this.matchValue(resource[filter], value);
         }
         matchFilters(resource) {
             //return true if all filters values are contained in the corresponding field of the resource
@@ -146,6 +150,11 @@
             for(let filter of Object.keys(this.filters))
                 if(formElt.dataset.fields.indexOf(filter)!=-1) 
                     formElt.setAttribute("value-"+filter, this.filters[filter]);
+            
+            //pass range attributes
+            for(let field of formElt.fields)
+                if(this.hasAttribute("search-range-"+field))
+                    formElt.setAttribute("range-"+field, this.getAttribute("search-range-"+field));
             
             if(this.shadowRoot)
                 this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);

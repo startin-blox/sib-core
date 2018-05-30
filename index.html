@@ -53,9 +53,10 @@
                 id="list"
                 data-src="http://localhost:8000/members/"
                 data-fields="set1, number"
-                set-set1="firstname, lastname, experience"
+                set-set1="firstname, lastname, experience, skills"
                 value-text="youpi"
-                search-fields="set1, number, experience"
+                search-fields="set1, number, experience, skills"
+                search-range-skills="http://localhost:8000/skills/"
                 next="detail"
             ></sib-display>
             <div id="form">
@@ -66,7 +67,7 @@
                     next="list"
                     widget-done="sib-form-checkbox"
                     label-firstname="What's your name, honey?"
-                    range-number="http://localhost:8000/members/"
+                    range-cell="http://localhost:8000/cells/"
                 ></sib-form>
             </div>
             <sib-calendar data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-calendar>
