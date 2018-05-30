@@ -66,10 +66,8 @@
             if(this.hasAttribute('reset'))
                 this.form.appendChild(this.createInput('reset'));
             
-            for(let element of this.form.querySelectorAll('input, select, textarea')) {
+            for(let element of this.form.querySelectorAll('input, select, textarea'))
                 element.addEventListener('input', this.inputChange.bind(this));
-                element.addEventListener('change', this.inputChange.bind(this));
-            }
         }
     }
     

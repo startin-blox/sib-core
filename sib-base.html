@@ -45,6 +45,12 @@
     }
     
     const SIBWidgetMixin = superclass => class extends superclass {
+        get div() {
+            if(this._div) return this._div;
+            this._div = document.createElement('div');
+            this.appendChild(this._div);
+            return this._div;
+        }
         getSet(field) {
             return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
@@ -62,7 +68,7 @@
             return this.resource[field];
         }
         empty() {
-            while (this.firstChild) this.removeChild(this.firstChild);
+            while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
         }
         getWidget(field) {
             return this.getAttribute("widget-"+field) || this.defaultWidget;
@@ -96,6 +102,7 @@
         constructor() {
             super();
             this._filters={};
+            this._filtersAdded = false;
         }
         get filters() {
             return this._filters;
@@ -112,15 +119,16 @@
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
-        matchValue(propertyValue, fieldValue) {
+        matchValue(propertyValue, filterValue) {
+            if(filterValue == '') return true;
             if(Array.isArray(propertyValue))
-                return propertyValue.reduce((initial, value) => initial || this.matchValue(value, fieldValue), false);
+                return propertyValue.reduce((initial, value) => initial || this.matchValue(value, filterValue), false);
             if(propertyValue['@id']) //search in ids
-                return propertyValue['@id'] == fieldValue;
+                return propertyValue['@id'] == filterValue;
             if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
-                return propertyValue == fieldValue || fieldValue == '';
+                return propertyValue == filterValue;
             if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
-                return propertyValue.toLowerCase().indexOf(fieldValue.toLowerCase()) != -1;
+                return propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1;
             return false;
         }
         matchFilter(resource, filter, value) {
@@ -160,13 +168,15 @@
                 this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
             else
                 this.insertBefore(formElt, this.firstChild);
+            
+            this._filtersAdded = true;
         }
         appendSingleElt() {
             this.appendChildElt(this.resource);
         }
         populate() {
             if(this.isContainer) {
-                if(this.hasAttribute("search-fields")) this.appendFilters();
+                if(!this._filtersAdded && this.hasAttribute("search-fields")) this.appendFilters();
                 for(let resource of this.resources) this.appendChildElt(resource);
             }
             else

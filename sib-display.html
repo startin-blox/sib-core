@@ -28,11 +28,6 @@
             
             this.div.appendChild(child);
         }
-        populate() {
-            this.div = document.createElement('div');
-            this.appendChild(this.div);
-            super.populate();
-        }
         appendSingleElt() {
             for(let field of this.fields) this.appendWidget(field);
         }
