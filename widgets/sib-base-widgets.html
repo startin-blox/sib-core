@@ -28,6 +28,16 @@
             this.render();
         }
     }
+    
+    const SIBAsochronousWidget = superclass => class extends superclass {
+        render() {
+            store.get(this.value).then( (value) => {
+                this._value = value;
+                this.innerHTML = this.template;
+              });
+        }
+    }
+    
     class SIBMultipleWidget extends SIBWidget {
         get labelTemplate() {
             return `<label for="id-${this.name}">${this.label}</label>`;
