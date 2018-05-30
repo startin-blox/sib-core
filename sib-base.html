@@ -112,17 +112,19 @@
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
-        matchFilter(property, value) {
-            if(typeof property === 'string' || property instanceof String)
-                return property.toLowerCase().indexOf(value.toLowerCase()) != -1;
-            if(property['@id'])
-                return this.matchFilter(property['@id'], value);
+        matchFilter(resource, filter, value) {
+            if(this.isSet(filter)) // for sets, return true if it matches at least one of the fields
+                return this.getSet(filter).reduce((initial, field) => initial || this.matchFilter(resource, field, value), false);
+            const propertyValue = resource[filter];
+            if(propertyValue['@id']) //search in ids
+                return propertyValue['@id'] == value;
+            if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
+                return propertyValue.toLowerCase().indexOf(value.toLowerCase()) != -1;
             return false;
         }
         matchFilters(resource) {
             //return true if all filters values are contained in the corresponding field of the resource
-            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource[filter], this.filters[filter]), true)
-                
+            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource, filter, this.filters[filter]), true);
         }
         get resources() {
             return this.listResources().filter(this.matchFilters.bind(this));

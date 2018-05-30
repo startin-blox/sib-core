@@ -40,7 +40,7 @@
                     bind-resources
                     loader-id="loader"
                     data-src="http://localhost:8000/members/3/"
-                    data-fields="firstname, author, text, assignees"
+                    data-fields="firstname, , lastname, number"
                     value-text="Ceci est un détail"
                     widget-assignees="sib-display-list"
                 ></sib-display>
@@ -48,10 +48,10 @@
             <sib-display 
                 id="list"
                 data-src="http://localhost:8000/members/"
-                data-fields="set1, author"
-                set-set1="firstname, text"
+                data-fields="set1, number"
+                set-set1="firstname, lastname"
                 value-text="youpi"
-                search-fields="name, author"
+                search-fields="set1, number"
                 next="detail"
             ></sib-display>
             <div id="form">
@@ -61,8 +61,8 @@
                     data-src="http://localhost:8000/members/3/"
                     next="list"
                     widget-done="sib-form-checkbox"
-                    label-name="What's your name, honey?"
-                    range-author="http://localhost:8000/members/"
+                    label-firstname="What's your name, honey?"
+                    range-number="http://localhost:8000/members/"
                 ></sib-form>
             </div>
             <sib-calendar data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-calendar>
