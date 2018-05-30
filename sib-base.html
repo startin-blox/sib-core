@@ -118,6 +118,8 @@
             const propertyValue = resource[filter];
             if(propertyValue['@id']) //search in ids
                 return propertyValue['@id'] == value;
+            if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
+                return propertyValue == value || value == '';
             if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
                 return propertyValue.toLowerCase().indexOf(value.toLowerCase()) != -1;
             return false;

@@ -30,6 +30,10 @@
             .text {
                 font-weight: bold;
             }
+            #form {
+                border: solid;
+                margin: 3em;
+            }
         </style>
     </head>
     <body>
@@ -40,18 +44,18 @@
                     bind-resources
                     loader-id="loader"
                     data-src="http://localhost:8000/members/3/"
-                    data-fields="firstname, , lastname, number"
+                    data-fields="firstname, lastname, experience, number, skills"
                     value-text="Ceci est un détail"
-                    widget-assignees="sib-display-list"
+                    widget-skills="sib-display-list"
                 ></sib-display>
             </div>
             <sib-display 
                 id="list"
                 data-src="http://localhost:8000/members/"
                 data-fields="set1, number"
-                set-set1="firstname, lastname"
+                set-set1="firstname, lastname, experience"
                 value-text="youpi"
-                search-fields="set1, number"
+                search-fields="set1, number, experience"
                 next="detail"
             ></sib-display>
             <div id="form">
