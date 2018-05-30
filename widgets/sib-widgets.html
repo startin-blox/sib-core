@@ -22,14 +22,14 @@
         }
     }
     customElements.define('sib-display-list', SIBDisplayList);
-
+    
     class SIBDisplayMailTo extends SIBWidget {
         get template() {
           return `<a href="mailto:${this.value}" name="${this.name}">${this.value}</a>`;
         }
     }
     customElements.define("sib-display-mailto", SIBDisplayMailTo);
-
+    
     class SIBDisplayTel extends SIBWidget {
         get template() {
           return `<a href="tel:${this.value}" name="${this.name}">${this.value}</a>`;
@@ -40,11 +40,19 @@
     
     class SIBFormText extends SIBWidget {
         get template() {
+            return `<input id="id-${this.name}" placeholder="${this.label}" type="text" name="${this.name}" value="${this.value}">`;
+        }
+    }
+    customElements.define("sib-form-text", SIBFormText);
+    
+    class SIBFormLabelText extends SIBWidget {
+        get template() {
             return `<label for="id-${this.name}">${this.label}</label>
                 <input id="id-${this.name}" type="text" name="${this.name}" value="${this.value}">`;
         }
     }
-    customElements.define("sib-form-text", SIBFormText);
+    customElements.define("sib-form-label-text", SIBFormLabelText);
+    
     class SIBFormTextArea extends SIBWidget {
         get template() {
             return `<label for="id-${this.name}">${this.label}</label>
@@ -52,6 +60,7 @@
         }
     }
     customElements.define("sib-form-textarea", SIBFormTextArea);
+    
     class SIBFormCheckbox extends SIBWidget {
         get template() {
             const checked = this.value ? 'checked' : '';
@@ -60,6 +69,7 @@
         }
     }
     customElements.define("sib-form-checkbox", SIBFormCheckbox);
+    
     class SIBFormDropdown extends SIBMultipleWidget {
         get parentElement() {
             return "select";
