@@ -13,7 +13,7 @@
         // Here "even.target" points to the content of the widgets of the children of sib-display
         dispatchSelect(event) {
             const resource = event.target.closest(this.childTag).resource;
-            this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            this.dispatchEvent(new CustomEvent('resourceSelect', {detail: {resource: resource}}));
             if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
