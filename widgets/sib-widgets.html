@@ -23,6 +23,24 @@
     }
     customElements.define('sib-display-list', SIBDisplayList);
     
+    class SIBDisplayLookupList extends SIBMultipleWidget {
+        get parentElement() {return "ul"}
+        getTemplate(value, index) {
+            if(typeof value == "object")
+                if(value.name) value = value.name;
+                else {
+                    store.get(value).then(resource => {
+                        this.value.push(resource);
+                        this.render();
+                    });
+                    this.value.splice(this.value.indexOf(value), 1);
+                    return '';
+                }
+            return `<li id="${this.name}-${index}">${value}</li>`;
+        }
+    }
+    customElements.define('sib-display-lookuplist', SIBDisplayLookupList);
+    
     class SIBDisplayMailTo extends SIBWidget {
         get template() {
           return `<a href="mailto:${this.value}" name="${this.name}">${this.value}</a>`;

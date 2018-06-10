@@ -43,10 +43,10 @@
                 <sib-display
                     bind-resources
                     loader-id="loader"
-                    data-src="http://localhost:8000/members/3/"
+                    data-src="http://localhost:8000/members/Alexandre/"
                     data-fields="firstname, lastname, experience, number, skills"
                     value-text="Ceci est un détail"
-                    widget-skills="sib-display-list"
+                    widget-skills="sib-display-lookuplist"
                 ></sib-display>
             </div>
             <sib-display 
@@ -57,13 +57,14 @@
                 value-text="youpi"
                 search-fields="set1, number, experience, skills"
                 search-range-skills="http://localhost:8000/skills/"
+                widget-skills="sib-display-lookuplist"
                 next="detail"
             ></sib-display>
             <div id="form">
                 <sib-form id="create" data-src="http://localhost:8000/members/"></sib-form>
                 <sib-form
                     id="edit"
-                    data-src="http://localhost:8000/members/3/"
+                    data-src="http://localhost:8000/members/Alexandre/"
                     next="list"
                     widget-done="sib-form-checkbox"
                     label-firstname="What's your name, honey?"

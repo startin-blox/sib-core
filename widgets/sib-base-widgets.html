@@ -39,6 +39,9 @@
     }
     
     class SIBMultipleWidget extends SIBWidget {
+        get parentElement() {
+            return "div";
+        }
         get labelTemplate() {
             return `<label for="id-${this.name}">${this.label}</label>`;
         }
