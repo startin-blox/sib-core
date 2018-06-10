@@ -33,7 +33,8 @@
                         this.value.push(resource);
                         this.render();
                     });
-                    this.value.splice(this.value.indexOf(value), 1);
+                    if(Array.isArray(this.value))this.value.splice(this.value.indexOf(value), 1);
+                    else this.value = [];
                     return '';
                 }
             return `<li id="${this.name}-${index}">${value}</li>`;
