@@ -16,7 +16,7 @@
     customElements.define("sib-display-img", SIBDisplayImg);
     
     class SIBDisplayList extends SIBMultipleWidget {
-        get parentElement() {return "ul"}
+        get parentTag() {return "ul"}
         getTemplate(value, index) {
             return `<li id="${this.name}-${index}">${value}</li>`;
         }
@@ -24,7 +24,7 @@
     customElements.define('sib-display-list', SIBDisplayList);
     
     class SIBDisplayLookupList extends SIBMultipleWidget {
-        get parentElement() {return "ul"}
+        get parentTag() {return "ul"}
         getTemplate(value, index) {
             if(typeof value == "object")
                 if(value.name) value = value.name;
@@ -90,12 +90,12 @@
     customElements.define("sib-form-checkbox", SIBFormCheckbox);
     
     class SIBFormDropdown extends SIBMultipleWidget {
-        get parentElement() {
+        get parentTag() {
             return "select";
         }
         getTemplate(item, index) {
             const selected = this.value==item['@id'] ? 'selected' : '';
-            return `<option value="${item['@id']}" ${selected}>${item.name}</option>`;
+            return `<option value="${JSON.stringify(item)}" ${selected}>${item.name}</option>`;
         }
         get range() {
             if(!this._range) return [];
@@ -111,4 +111,62 @@
         }
     }
     customElements.define("sib-form-dropdown", SIBFormDropdown);
+    
+    class SIBFormMultipleValue extends SIBMultipleWidget {
+        getTemplate(item, index) {
+            return `<div id="id-${this.name}-${index}-box" class="${this.tagName}-box">
+                <input id="id-${this.name}-${index}" class="${this.tagName}-input" type="text" value='${item["@id"]}' onclick="this.closest('${this.tagName}').updateValue()">
+                <button onclick="this.closest('${this.tagName}').removeField(${index});return false">x</button>
+            </div>`;
+        }
+        appendField() {
+            const index = this.querySelectorAll(`.${this.tagName}-box`).length;
+            this.parent.innerHTML += this.getTemplate({}, index);
+            this.updateValue();
+        }
+        removeField(index) {
+            document.getElementById(`id-${this.name}-${index}-box`).remove();
+            this.updateValue();
+        }
+        get appendTemplate() {
+            return `<button onclick="this.closest('${this.tagName}').appendField();return false">+</button>
+                <input type="hidden" id="id-${this.name}" name="${this.name}">`;
+        }
+        updateValue() {
+            const valueList = Array.prototype.map.call(this.querySelectorAll(`.${this.tagName}-input`), input => '{"@id": "'+input.value+'"}');
+            this.appendBox.querySelector('input').value = "["+valueList.join(',')+"]";
+        }
+        render() {
+            super.render();
+            this.appendBox = document.createElement('div');
+            this.appendBox.innerHTML = this.appendTemplate;
+            this.appendChild(this.appendBox);
+            this.updateValue();
+        }
+    }
+    customElements.define("sib-form-multiple-value", SIBFormMultipleValue);
+    
+    class SIBFormMultipleDropdown extends SIBFormMultipleValue {
+        getTemplate(item, index) {
+            return `<div id="id-${this.name}-${index}-box" class="${this.tagName}-box">
+                <select id="id-${this.name}-${index}" class="${this.tagName}-input" value='${item["@id"]}' onclick="this.closest('${this.tagName}').updateValue()">
+                ${this.optionList}
+                </select>
+                <button onclick="this.closest('${this.tagName}').removeField(${index});return false">x</button>
+            </div>`;
+        }
+        getOptionTemplate(item) {
+            return `<option value='${item["@id"]}'>${item.name}</option>`;
+        }
+        set range(url) {
+            store.list(url).then(list => {
+                this.optionList = list.map(item => this.getOptionTemplate(item)).join('');
+                this.renderList();
+                for(let select of this.querySelectorAll("select"))
+                    select.value = select.getAttribute("value");
+                this.updateValue();
+            });
+        }
+    }
+    customElements.define("sib-form-multiple-dropdown", SIBFormMultipleDropdown);
 </script>

@@ -8,7 +8,7 @@
         
         //Special case of the dropdown
         getWidget(field) {
-            if(this.hasAttribute("range-"+field)) return "sib-form-dropdown";
+            if(!this.hasAttribute("widget-"+field) && this.hasAttribute("range-"+field)) return "sib-form-dropdown";
             else return super.getWidget(field);
         }
         widgetAttributes(field) {

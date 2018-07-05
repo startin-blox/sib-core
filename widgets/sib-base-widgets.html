@@ -39,7 +39,7 @@
     }
     
     class SIBMultipleWidget extends SIBWidget {
-        get parentElement() {
+        get parentTag() {
             return "div";
         }
         get labelTemplate() {
@@ -51,17 +51,17 @@
         renderList() {
             this.emptyList();
             //add one instance of the template per item in the value array
-            this.parent.innerHTML = this.range.map(this.getTemplate, this).join('');
-            this.appendChild(this.parent);
+            this.parent.innerHTML = this.values.map(this.getTemplate, this).join('');
         }
         render() {
             this.innerHTML = this.labelTemplate;
-            this.parent = document.createElement(this.parentElement);
+            this.parent = document.createElement(this.parentTag);
             this.parent.setAttribute('name', this.name);
             this.parent.id = "id-"+this.name;
+            this.appendChild(this.parent);
             this.renderList();
         }
-        get range() {
+        get values() {
             if(!this.value) return [];
             if(!Array.isArray(this.value)) return [this.value];
             return this.value;
