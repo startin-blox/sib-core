@@ -21,7 +21,9 @@
             this.render();
         }
         get value() {
-            return this._value || '';
+            if(!this._value) return '';
+            if(this._value["@id"]) return JSON.stringify(this._value);
+            return this._value;
         }
         set value(value) {
             this._value = value;
