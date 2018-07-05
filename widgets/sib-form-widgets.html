@@ -111,12 +111,19 @@
         getOptionTemplate(item) {
             return `<option value='${item["@id"]}'>${item.name}</option>`;
         }
+        updateSelected() {
+            for(let select of this.querySelectorAll("select"))
+                select.value = select.getAttribute("value");
+        }
+        appendField() {
+            super.appendField();
+            this.updateSelected();
+        }
         set range(url) {
             store.list(url).then(list => {
                 this.optionList = list.map(item => this.getOptionTemplate(item)).join('');
                 this.renderList();
-                for(let select of this.querySelectorAll("select"))
-                    select.value = select.getAttribute("value");
+                this.updateSelected();
                 this.updateValue();
             });
         }
