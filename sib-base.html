@@ -3,7 +3,7 @@
 <script>
     const store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
     
-    class LDPBase extends HTMLElement {
+    class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         
         attributeChangedCallback(attribute, oldValue, newValue) {
@@ -16,6 +16,7 @@
                 
                 // gets the data through the store 
                 if(newValue) store.get(newValue+this.idSuffix).then(resource => {
+                    this.empty();
                     this.resource = resource;
                     this.populate();
                     if(this.hasAttribute('loader-id'))
@@ -43,7 +44,13 @@
         }
     }
     
-    const LDPWidgetMixin = superclass => class extends superclass {
+    const SIBWidgetMixin = superclass => class extends superclass {
+        get div() {
+            if(this._div) return this._div;
+            this._div = document.createElement('div');
+            this.appendChild(this._div);
+            return this._div;
+        }
         getSet(field) {
             return this.getAttribute("set-"+field).split(',').map(s => s.trim());
         }
@@ -61,7 +68,7 @@
             return this.resource[field];
         }
         empty() {
-            while (this.firstChild) this.removeChild(this.firstChild);
+            while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
         }
         getWidget(field) {
             return this.getAttribute("widget-"+field) || this.defaultWidget;
@@ -91,10 +98,11 @@
         }
     };
     
-    const LDPListMixin = superclass => class extends superclass {
+    const SIBListMixin = superclass => class extends superclass {
         constructor() {
             super();
             this._filters={};
+            this._filtersAdded = false;
         }
         get filters() {
             return this._filters;
@@ -111,17 +119,26 @@
             if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
             return [this.resource['ldp:contains']];
         }
-        matchFilter(property, value) {
-            if(typeof property === 'string' || property instanceof String)
-                return property.toLowerCase().indexOf(value.toLowerCase()) != -1;
-            if(property['@id'])
-                return this.matchFilter(property['@id'], value);
+        matchValue(propertyValue, filterValue) {
+            if(filterValue == '') return true;
+            if(Array.isArray(propertyValue))
+                return propertyValue.reduce((initial, value) => initial || this.matchValue(value, filterValue), false);
+            if(propertyValue['@id']) //search in ids
+                return propertyValue['@id'] == filterValue;
+            if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
+                return propertyValue == filterValue;
+            if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings
+                return propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1;
             return false;
+        }
+        matchFilter(resource, filter, value) {
+            if(this.isSet(filter)) // for sets, return true if it matches at least one of the fields
+                return this.getSet(filter).reduce((initial, field) => initial || this.matchFilter(resource, field, value), false);
+            return this.matchValue(resource[filter], value);
         }
         matchFilters(resource) {
             //return true if all filters values are contained in the corresponding field of the resource
-            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource[filter], this.filters[filter]), true)
-                
+            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource, filter, this.filters[filter]), true);
         }
         get resources() {
             return this.listResources().filter(this.matchFilters.bind(this));
@@ -130,9 +147,10 @@
             this.filters = filters;
         }
         appendFilters() {
-            const formElt = document.createElement('ldp-form');
+            const formElt = document.createElement('sib-form');
             formElt.resource = this.resource;
             formElt.save = this.filterList.bind(this);
+            formElt.change = this.filterList.bind(this);
             formElt.dataset.fields = this.getAttribute("search-fields");
             formElt.setAttribute('reset', '');
             
@@ -141,17 +159,24 @@
                 if(formElt.dataset.fields.indexOf(filter)!=-1) 
                     formElt.setAttribute("value-"+filter, this.filters[filter]);
             
+            //pass range attributes
+            for(let field of formElt.fields)
+                if(this.hasAttribute("search-range-"+field))
+                    formElt.setAttribute("range-"+field, this.getAttribute("search-range-"+field));
+            
             if(this.shadowRoot)
-                this.shadowRoot.appendChild(formElt);
+                this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
             else
-                this.appendChild(formElt);
+                this.insertBefore(formElt, this.firstChild);
+            
+            this._filtersAdded = true;
         }
         appendSingleElt() {
             this.appendChildElt(this.resource);
         }
         populate() {
             if(this.isContainer) {
-                if(this.hasAttribute("search-fields")) this.appendFilters();
+                if(!this._filtersAdded && this.hasAttribute("search-fields")) this.appendFilters();
                 for(let resource of this.resources) this.appendChildElt(resource);
             }
             else
@@ -159,4 +184,4 @@
         }
     };
 </script>
-<link rel="import" href="ldp-form.html" />
+<link rel="import" href="sib-form.html" />

@@ -1,11 +1,11 @@
-<link rel="import" href="./ldp-base.html">
+<link rel="import" href="../sib-base.html">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.js'></script>
 
 <script>
 (function(){
-    class LDPCalendar extends LDPListMixin(LDPBase) {
+    class SIBCalendar extends SIBListMixin(SIBBase) {
         constructor() {
             super();
             this.attachShadow({mode: 'open'});
@@ -19,7 +19,7 @@
         
         dispatchSelect(event) {
             const resource = event.resource;
-            this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            this.dispatchEvent(new CustomEvent('resourceSelect', {detail: {resource: resource}}));
             if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
@@ -34,6 +34,6 @@
             $(this.shadowRoot.lastChild).fullCalendar({events: this.events, height: this.style.height, eventClick: this.dispatchSelect.bind(this)});
         }
     }
-    customElements.define('ldp-calendar', LDPCalendar);
+    customElements.define('sib-calendar', SIBCalendar);
 }());
 </script>

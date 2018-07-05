@@ -1,19 +1,19 @@
-<link rel="import" href="./ldp-base.html">
-<link rel="import" href="./ldp-widgets.html">
+<link rel="import" href="./sib-base.html">
+<link rel="import" href="widgets/sib-display-widgets.html">
 
 <script>
 (function(){
-    class LDPDisplay extends LDPListMixin(LDPWidgetMixin(LDPBase)) {
-        get defaultWidget() {return 'ldp-display-div';}
+    class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
+        get defaultWidget() {return 'sib-display-div';}
         
         get childTag() {
             return this.dataset.child || this.tagName;
         }
 
-        // Here "even.target" points to the content of the widgets of the children of ldp-display
+        // Here "even.target" points to the content of the widgets of the children of sib-display
         dispatchSelect(event) {
             const resource = event.target.closest(this.childTag).resource;
-            this.dispatchEvent(new CustomEvent('select', {detail: {resource: resource}}));
+            this.dispatchEvent(new CustomEvent('resourceSelect', {detail: {resource: resource}}));
             if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
@@ -26,12 +26,12 @@
                 if(attr.name.startsWith('value-') || attr.name.startsWith('set-') || attr.name.startsWith('widget-'))
                     child.setAttribute(attr.name, attr.value);
             
-            this.appendChild(child);
+            this.div.appendChild(child);
         }
         appendSingleElt() {
             for(let field of this.fields) this.appendWidget(field);
         }
     }
-    customElements.define('ldp-display', LDPDisplay);
+    customElements.define('sib-display', SIBDisplay);
 }());
 </script>

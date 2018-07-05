@@ -1,14 +1,14 @@
-<link rel="import" href="./ldp-base.html">
-<link rel="import" href="./ldp-widgets.html">
+<link rel="import" href="./sib-base.html">
+<link rel="import" href="widgets/sib-form-widgets.html">
 
 <script>
 (function(){
-    class LDPForm extends LDPWidgetMixin(LDPBase) {
-        get defaultWidget() {return 'ldp-form-text';}
+    class SIBForm extends SIBWidgetMixin(SIBBase) {
+        get defaultWidget() {return 'sib-form-text';}
         
         //Special case of the dropdown
         getWidget(field) {
-            if(this.hasAttribute("range-"+field)) return "ldp-form-dropdown";
+            if(!this.hasAttribute("widget-"+field) && this.hasAttribute("range-"+field)) return "sib-form-dropdown";
             else return super.getWidget(field);
         }
         widgetAttributes(field) {
@@ -31,8 +31,10 @@
                 () => this.dispatchEvent(new CustomEvent('save', {detail: {resource: resource}}))
             );
         }
+        change(resource) {
+        }
         submitForm(event) {
-            const resource = this.formToObject(event.target);
+            const resource = this.formToObject(this.form);
             if(!this.isContainer) resource['@id'] = this.resource['@id'];
             
             this.save(resource);
@@ -41,6 +43,11 @@
             event.preventDefault();
             return false;
         }
+        inputChange(event) {
+            const resource = this.formToObject(this.form);
+            if(!this.isContainer) resource['@id'] = this.resource['@id'];
+            this.change(resource);
+        }
         
         createInput(type) {
             const input = document.createElement('input');
@@ -48,19 +55,23 @@
             return input;
         }
         populate() {
-            const form = document.createElement('form');
-            form.addEventListener('submit', this.submitForm.bind(this));
-            this.appendChild(form);
+            this.form = document.createElement('form');
+            this.form.addEventListener('submit', this.submitForm.bind(this));
+            this.form.addEventListener('reset', event => setTimeout(this.inputChange.bind(this)));
+            this.appendChild(this.form);
             
             for(let field of this.fields)
-                this.appendWidget(field, form);
+                this.appendWidget(field, this.form);
             
-            form.appendChild(this.createInput('submit'));
+            this.form.appendChild(this.createInput('submit'));
             if(this.hasAttribute('reset'))
-                form.appendChild(this.createInput('reset'));
+                this.form.appendChild(this.createInput('reset'));
+            
+            for(let element of this.form.querySelectorAll('input, select, textarea'))
+                element.addEventListener('input', this.inputChange.bind(this));
         }
     }
     
-    customElements.define('ldp-form', LDPForm);
+    customElements.define('sib-form', SIBForm);
 }());
 </script>
