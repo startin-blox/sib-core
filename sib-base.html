@@ -80,7 +80,7 @@
             };
         }
         appendWidget(field, parent) {
-            if(!parent) parent = this;
+            if(!parent) parent = this.div;
             
             if(this.isSet(field)) {
                 const div = document.createElement("div");
