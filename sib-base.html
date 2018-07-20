@@ -57,7 +57,9 @@
         get fields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
             
-            const resource = this.isContainer ? this.resource['ldp:contains'][0] : this.resource;
+            let resource = this.resource;
+            if(this.isContainer)
+                resource = Array.isArray(this.resource['ldp:contains']) ? this.resource['ldp:contains'][0] : this.resource['ldp:contains'];
             return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
         isSet(field) {
