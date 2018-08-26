@@ -6,21 +6,24 @@
     class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         
+        setLoaderDisplay(display) {
+            if(this.hasAttribute('loader-id'))
+                document.getElementById(this.getAttribute('loader-id')).style.display = display;
+        }
+        
         attributeChangedCallback(attribute, oldValue, newValue) {
             if(attribute == "data-src") {
                 this.empty();
                 
                 // brings a loader out if the attribute is set
-                if(this.hasAttribute('loader-id'))
-                    document.getElementById(this.getAttribute('loader-id')).style.display = 'block';
+                this.setLoaderDisplay('block');
                 
                 // gets the data through the store 
                 if(newValue) store.get(newValue+this.idSuffix).then(resource => {
                     this.empty();
                     this.resource = resource;
                     this.populate();
-                    if(this.hasAttribute('loader-id'))
-                        document.getElementById(this.getAttribute('loader-id')).style.display = 'none';
+                    this.setLoaderDisplay('none');
                 });
             }
         }
@@ -122,7 +125,8 @@
         matchValue(propertyValue, filterValue) {
             if(filterValue == '') return true;
             if(Array.isArray(propertyValue))
-                return propertyValue.reduce((initial, value) => initial || this.matchValue(value, filterValue), false);
+                return propertyValue.reduce((initial, value) =>
+                    initial || this.matchValue(value, filterValue), false);
             if(propertyValue['@id']) //search in ids
                 return propertyValue['@id'] == filterValue;
             if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
@@ -133,12 +137,14 @@
         }
         matchFilter(resource, filter, value) {
             if(this.isSet(filter)) // for sets, return true if it matches at least one of the fields
-                return this.getSet(filter).reduce((initial, field) => initial || this.matchFilter(resource, field, value), false);
+                return this.getSet(filter).reduce((initial, field) =>
+                    initial || this.matchFilter(resource, field, value), false);
             return this.matchValue(resource[filter], value);
         }
         matchFilters(resource) {
             //return true if all filters values are contained in the corresponding field of the resource
-            return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource, filter, this.filters[filter]), true);
+            return Object.keys(this.filters).reduce((initial, filter) =>
+                initial && this.matchFilter(resource, filter, this.filters[filter]), true);
         }
         get resources() {
             return super.resources.filter(this.matchFilters.bind(this));
