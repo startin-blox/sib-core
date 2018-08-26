@@ -3,7 +3,7 @@
 <script>
     class SIBFormText extends SIBWidget {
         get template() {
-            return `<input id="id-${this.name}" placeholder="${this.label}" type="text" name="${this.name}" value='${this.value}'>`;
+            return `<input id="id-${this.name}" placeholder="${this.label}" type="text" name="${this.name}" value="${this.escapedValue}">`;
         }
     }
     customElements.define("sib-form-text", SIBFormText);
@@ -11,7 +11,7 @@
     class SIBFormLabelText extends SIBWidget {
         get template() {
             return `<label for="id-${this.name}">${this.label}</label>
-                <input id="id-${this.name}" type="text" name="${this.name}" value='${this.value}'>`;
+                <input id="id-${this.name}" type="text" name="${this.name}" value="${this.escapedValue}">`;
         }
     }
     customElements.define("sib-form-label-text", SIBFormLabelText);
@@ -19,7 +19,7 @@
     class SIBFormTextArea extends SIBWidget {
         get template() {
             return `<label for="id-${this.name}">${this.label}</label>
-                <textarea id="id-${this.name}" type="text" name="${this.name}" value='${this.value}'></textarea>`;
+                <textarea id="id-${this.name}" type="text" name="${this.name}" value="${this.escapedValue}"></textarea>`;
         }
     }
     customElements.define("sib-form-textarea", SIBFormTextArea);

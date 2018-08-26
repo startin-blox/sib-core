@@ -27,6 +27,10 @@
             this._value = value;
             this.render();
         }
+        get escapedValue() {
+            return ('' + this.value)
+                .replace(/&/g, '&amp;').replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+        }
     }
     
     const SIBAsochronousResourceWidgetMixin = superclass => class extends superclass {
