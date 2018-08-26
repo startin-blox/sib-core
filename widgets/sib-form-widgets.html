@@ -62,6 +62,10 @@
                     this.parent.value = `{"@id": "${this._value['@id']}"}`;
             });
         }
+        render() {
+            super.render();
+            this.parent.id = this.id;
+        }
     }
     customElements.define("sib-form-dropdown", SIBFormDropdown);
     
@@ -91,6 +95,7 @@
         }
         render() {
             super.render();
+            this.parent.id = this.id;
             this.appendBox = document.createElement('div');
             this.appendBox.innerHTML = this.appendTemplate;
             this.appendChild(this.appendBox);

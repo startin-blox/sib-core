@@ -18,13 +18,12 @@
     class SIBDisplayList extends SIBMultipleWidget {
         get parentTag() {return "ul"}
         getTemplate(value, index) {
-            return `<li id="${this.name}-${index}">${value}</li>`;
+            return `<li name="${this.name}-${index}">${value}</li>`;
         }
     }
     customElements.define('sib-display-list', SIBDisplayList);
     
-    class SIBDisplayLookupList extends SIBMultipleWidget {
-        get parentTag() {return "ul"}
+    class SIBDisplayLookupList extends SIBDisplayList {
         getTemplate(value, index) {
             if(typeof value == "object")
                 if(value.name) value = value.name;
@@ -37,7 +36,7 @@
                     else this.value = [];
                     return '';
                 }
-            return `<li id="${this.name}-${index}">${value}</li>`;
+            return super.getTemplate(value, index);
         }
     }
     customElements.define('sib-display-lookuplist', SIBDisplayLookupList);

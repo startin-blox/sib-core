@@ -39,9 +39,7 @@
     }
     
     class SIBMultipleWidget extends SIBWidget {
-        get parentTag() {
-            return "div";
-        }
+        get parentTag() {return "div";}
         get id() {
             return "id-"+this.name;
         }
@@ -60,7 +58,6 @@
             this.innerHTML = this.labelTemplate;
             this.parent = document.createElement(this.parentTag);
             this.parent.setAttribute('name', this.name);
-            this.parent.id = this.id;
             this.appendChild(this.parent);
             this.renderList();
         }
