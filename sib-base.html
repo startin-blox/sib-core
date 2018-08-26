@@ -42,6 +42,11 @@
                 return this.getAttribute('id-suffix') + '/';
             else return '';
         }
+        get resources() {
+            if(!this.isContainer) return [];
+            if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
+            return [this.resource['ldp:contains']];
+        }
     }
     
     const SIBWidgetMixin = superclass => class extends superclass {
@@ -57,9 +62,7 @@
         get fields() {
             if(this.dataset.fields) return this.dataset.fields.split(',').map(s => s.trim());
             
-            let resource = this.resource;
-            if(this.isContainer)
-                resource = Array.isArray(this.resource['ldp:contains']) ? this.resource['ldp:contains'][0] : this.resource['ldp:contains'];
+            const resource = this.isContainer && this.resources ? this.resources[0] : this.resource;
             return Object.keys(resource).filter(prop => !prop.startsWith("@"));
         }
         isSet(field) {
@@ -116,11 +119,6 @@
                 this.populate();
             }
         }
-        listResources() {
-            if(!this.isContainer) return [];
-            if(Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
-            return [this.resource['ldp:contains']];
-        }
         matchValue(propertyValue, filterValue) {
             if(filterValue == '') return true;
             if(Array.isArray(propertyValue))
@@ -143,7 +141,7 @@
             return Object.keys(this.filters).reduce((initial, filter) => initial && this.matchFilter(resource, filter, this.filters[filter]), true);
         }
         get resources() {
-            return this.listResources().filter(this.matchFilters.bind(this));
+            return super.resources.filter(this.matchFilters.bind(this));
         }
         filterList(filters) {
             this.filters = filters;
