@@ -6,7 +6,7 @@
 <script>
 (function(){
     class SIBCalendar extends SIBListMixin(SIBBase) {
-        get extra_context() {return {date: "http://www.w3.org/2001/XMLSchema#dateTime", name: "http://www.w3.org/2000/01/rdf-schema#label"}}
+        get extra_context() {return {date: "http://www.w3.org/2001/XMLSchema#dateTime"}}
         constructor() {
             super();
             this.attachShadow({mode: 'open'});

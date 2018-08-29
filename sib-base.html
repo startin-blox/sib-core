@@ -1,12 +1,20 @@
 <script type="text/javascript" src="https://cdn.happy-dev.fr/LDP-framework/ldpframework.js"></script>
 
 <script>
-    const store = new MyStore({context: "https://cdn.happy-dev.fr/owl/hdcontext.jsonld", defaultSerializer: "application/ld+json"});
+    const base_context = {
+        "@vocab": "http://happy-dev.fr/owl/#",
+        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+        ldp: "http://www.w3.org/ns/ldp#",
+        foaf: "http://xmlns.com/foaf/0.1/",
+        name: "rdfs:label"
+    }
+    const store = new MyStore({context: base_context, defaultSerializer: "application/ld+json"});
     
     class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         get extra_context() {return {}}
-        get context() {return [{ldp: "http://www.w3.org/ns/ldp#"}, this.extra_context]}
+        get context() {return [base_context, this.extra_context]}
         
         setLoaderDisplay(display) {
             if(this.hasAttribute('loader-id'))
