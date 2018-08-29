@@ -6,6 +6,7 @@
 <script>
 (function(){
     class SIBCalendar extends SIBListMixin(SIBBase) {
+        get extra_context() {return {date: "http://www.w3.org/2001/XMLSchema#dateTime", name: "http://www.w3.org/2000/01/rdf-schema#label"}}
         constructor() {
             super();
             this.attachShadow({mode: 'open'});
@@ -23,8 +24,8 @@
             if(this.next) window.dispatchEvent(new CustomEvent('navigate', {detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
-            if(resource.name && resource.deadline)
-                this.events.push({title: resource.name, start: resource.deadline, resource: resource});
+            if(resource.name && resource.date)
+                this.events.push({title: resource.name, start: resource.date, resource: resource});
         }
         empty() {
             this.events = [];

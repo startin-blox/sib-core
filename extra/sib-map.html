@@ -5,6 +5,7 @@
 <script>
 (function(){
     class SIBMap extends SIBListMixin(SIBBase) {
+        get extra_context() {return {geo: "http://www.w3.org/2003/01/geo/wgs84_pos#", lat: "geo:lat", lng: "geo:long"}}
         constructor() {
             super();
             this.markers = [];
