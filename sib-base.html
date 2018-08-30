@@ -138,7 +138,7 @@
                 return propertyValue.reduce((initial, value) =>
                     initial || this.matchValue(value, filterValue), false);
             if(propertyValue['@id']) //search in ids
-                return propertyValue['@id'] == filterValue;
+                return propertyValue['@id'] == filterValue || propertyValue['@id'] == filterValue['@id'];
             if(typeof propertyValue === 'number' || propertyValue instanceof Number) //check if integer match
                 return propertyValue == filterValue;
             if(typeof propertyValue === 'string' || propertyValue instanceof String) //search in strings

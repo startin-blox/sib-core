@@ -22,7 +22,11 @@
         //form submission handling
         formToObject(form) {
             return [].reduce.call(form.elements, function(data, element) {
-                if(element.name) data[element.name] = element.value;
+                let value;
+                try { value = JSON.parse(element.value)}
+                catch(error) { value = element.value};
+                
+                if(element.name) data[element.name] = value;
                 return data;
             }, {})
         }
