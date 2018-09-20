@@ -199,5 +199,26 @@
                 this.appendSingleElt();
         }
     };
+
+    class SIBACChecker extends SIBBase {
+        get extra_context() {
+            return {
+                permissions: "acl:accessControl",
+                mode: "acl:mode"
+            }
+        }
+        get permission() {
+            return this.getAttribute('permission') || "view";
+        }
+        populate() {
+            for(let permission of this.resource.permissions)
+                if(permission.mode == this.permission)
+                    this.style.display = 'block';
+        }
+        empty() {
+            this.style.display = 'none';
+        }
+    }
+    customElements.define('sib-ac-checker', SIBACChecker);
 </script>
 <link rel="import" href="sib-form.html" />
