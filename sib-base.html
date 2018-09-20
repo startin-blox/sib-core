@@ -193,7 +193,12 @@
         populate() {
             if(this.isContainer) {
                 if(!this._filtersAdded && this.hasAttribute("search-fields")) this.appendFilters();
-                for(let resource of this.resources) this.appendChildElt(resource);
+                for(let resource of this.resources) {
+                    //for federations, fetch every sib:source we find
+                    if(resource['@type'] == 'sib:source') store.get(resource.container).then(
+                        container => {for(let resource of container['ldp:contains']) this.appendChildElt(resource)});
+                    else this.appendChildElt(resource);
+                }
             }
             else
                 this.appendSingleElt();
