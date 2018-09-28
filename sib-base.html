@@ -14,7 +14,7 @@
     class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         get extra_context() {return {}}
-        get context() {return [base_context, this.extra_context]}
+        get context() {return {...base_context, ...this.extra_context}}
         
         setLoaderDisplay(display) {
             if(this.hasAttribute('loader-id'))
@@ -28,7 +28,7 @@
                 // brings a loader out if the attribute is set
                 this.setLoaderDisplay('block');
                 
-                // gets the data through the store 
+                // gets the data through the store
                 if(newValue) store.get(newValue+this.idSuffix, this.context).then(resource => {
                     this.empty();
                     this.resource = resource;
