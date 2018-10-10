@@ -1,11 +1,11 @@
 <link rel="import" href="./sib-base-widgets.html"><script>
-    class SIBFormText extends SIBWidget {
+    class SIBFormPlaceholderText extends SIBWidget {
         get template() {
             const id = uniqID();
             return `<input id="${id}" placeholder="${this.label}" type="text" name="${this.name}" value="${this.escapedValue}">`;
         }
     }
-    customElements.define("sib-form-text", SIBFormText);
+    customElements.define("sib-form-placeholder-text", SIBFormPlaceholderText);
     
     class SIBFormLabelText extends SIBWidget {
         get template() {
