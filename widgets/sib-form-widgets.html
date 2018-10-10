@@ -1,42 +1,45 @@
-<link rel="import" href="./sib-base-widgets.html">
-
-<script>
+<link rel="import" href="./sib-base-widgets.html"><script>
     class SIBFormText extends SIBWidget {
         get template() {
-            return `<input id="id-${this.name}" placeholder="${this.label}" type="text" name="${this.name}" value="${this.escapedValue}">`;
+            const id = uniqID();
+            return `<input id="${id}" placeholder="${this.label}" type="text" name="${this.name}" value="${this.escapedValue}">`;
         }
     }
     customElements.define("sib-form-text", SIBFormText);
     
     class SIBFormLabelText extends SIBWidget {
         get template() {
-            return `<label for="id-${this.name}">${this.label}</label>
-                <input id="id-${this.name}" type="text" name="${this.name}" value="${this.escapedValue}">`;
+            const id = uniqID();
+            return `<label for="${id}">${this.label}</label>
+                <input id="${id}" type="text" name="${this.name}" value="${this.escapedValue}">`;
         }
     }
     customElements.define("sib-form-label-text", SIBFormLabelText);
     
     class SIBFormTextArea extends SIBWidget {
         get template() {
-            return `<label for="id-${this.name}">${this.label}</label>
-                <textarea id="id-${this.name}" type="text" name="${this.name}" value="${this.escapedValue}"></textarea>`;
+            const id = uniqID();
+            return `<label for="${id}">${this.label}</label>
+                <textarea id="${id}" type="text" name="${this.name}" value="${this.escapedValue}"></textarea>`;
         }
     }
     customElements.define("sib-form-textarea", SIBFormTextArea);
     
     class SIBFormCheckbox extends SIBWidget {
         get template() {
+            const id = uniqID();
             const checked = this.value ? 'checked' : '';
-            return `<label for="id-${this.name}">${this.label}</label>
-                <input id="id-${this.name}" type="checkbox" name="${this.name}" ${checked}>`;
+            return `<label for="${id}">${this.label}</label>
+                <input id="${id}" type="checkbox" name="${this.name}" ${checked}>`;
         }
     }
     customElements.define("sib-form-checkbox", SIBFormCheckbox);
     
     class SIBFormJSON extends SIBWidget {
         get template() {
-            return `<label for="id-${this.name}">${this.label}</label>
-                <input id="id-${this.name}" type="text" name="${this.name}" value='${JSON.stringify(this.value)}'>`;
+            const id = uniqID();
+            return `<label for="${id}">${this.label}</label>
+                <input id="${id}" type="text" name="${this.name}" value='${JSON.stringify(this.value)}'>`;
         }
     }
     customElements.define("sib-form-json", SIBFormJSON);

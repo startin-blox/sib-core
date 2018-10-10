@@ -10,7 +10,9 @@
         name: "rdfs:label"
     }
     const store = new MyStore({context: base_context, defaultSerializer: "application/ld+json"});
-    
+    function uniqID(){
+        return '_' + (Math.random()*Math.pow(20,36)).toString(36).slice(1,16);
+    }
     class SIBBase extends HTMLElement {
         static get observedAttributes() { return ['data-src']; }
         get extra_context() {return {}}
