@@ -44,10 +44,9 @@
     
     class SIBMultipleWidget extends SIBWidget {
         get parentTag() {return "div";}
-        get id() {
-            return "id-"+this.name;
-        }
         get labelTemplate() {
+            if(!this.id)
+                this.id = uniqID();
             return `<label for="${this.id}">${this.label}</label>`;
         }
         emptyList() {
