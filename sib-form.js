@@ -76,13 +76,20 @@
       input.type = type;
       return input;
     }
+    empty(){
+      if(!this.form) return
+      while(this.form.firstChild)
+        this.form.removeChild(this.form.firstChild);
+    }
     populate() {
-      this.form = document.createElement('form');
-      this.form.addEventListener('submit', this.submitForm.bind(this));
-      this.form.addEventListener('reset', event =>
-        setTimeout(this.inputChange.bind(this)),
-      );
-      this.appendChild(this.form);
+      if(!this.form){
+        this.form = document.createElement('form');
+        this.form.addEventListener('submit', this.submitForm.bind(this));
+        this.form.addEventListener('reset', event =>
+          setTimeout(this.inputChange.bind(this)),
+        );
+        this.appendChild(this.form);
+      }
       for (let field of this.fields) this.appendWidget(field, this.form);
 
       this.form.appendChild(this.createInput('submit'));
