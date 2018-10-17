@@ -76,6 +76,11 @@
       input.type = type;
       return input;
     }
+    empty(){
+      if(!this.form) return
+      while(this.form.firstChild)
+        this.form.removeChild(this.form.firstChild);
+    }
     populate() {
       if(!this.form){
         this.form = document.createElement('form');
