@@ -1,9 +1,13 @@
 class SIBFormPlaceholderText extends SIBWidget {
   get template() {
     const id = uniqID();
-    return `<input id="${id}" placeholder="${this.label}" type="text" name="${
-      this.name
-    }" value="${this.escapedValue}">`;
+    return `<input
+      id="${id}"
+      placeholder="${this.label}"
+      type="text"
+      name="${this.name}"
+      value="${this.escapedValue}"
+    >`;
   }
 }
 customElements.define('sib-form-placeholder-text', SIBFormPlaceholderText);
@@ -11,10 +15,13 @@ customElements.define('sib-form-placeholder-text', SIBFormPlaceholderText);
 class SIBFormLabelText extends SIBWidget {
   get template() {
     const id = uniqID();
-    return `<label for="${id}">${this.label}</label>
-                <input id="${id}" type="text" name="${this.name}" value="${
-      this.escapedValue
-    }">`;
+    return `
+    <label for="${id}">${this.label}</label>
+    <input id="${id}"
+      type="text"
+      name="${this.name}"
+      value="${this.escapedValue}"
+    >`;
   }
 }
 customElements.define('sib-form-label-text', SIBFormLabelText);
@@ -23,9 +30,12 @@ class SIBFormTextArea extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<label for="${id}">${this.label}</label>
-                <textarea id="${id}" type="text" name="${this.name}" value="${
-      this.escapedValue
-    }"></textarea>`;
+    <textarea
+      id="${id}"
+      type="text"
+      name="${this.name}"
+      value="${this.escapedValue}"
+    ></textarea>`;
   }
 }
 customElements.define('sib-form-textarea', SIBFormTextArea);
@@ -35,9 +45,12 @@ class SIBFormCheckbox extends SIBWidget {
     const id = uniqID();
     const checked = this.value ? 'checked' : '';
     return `<label for="${id}">${this.label}</label>
-                <input id="${id}" type="checkbox" name="${
-      this.name
-    }" ${checked}>`;
+    <input
+      id="${id}"
+      type="checkbox"
+      name="${this.name}"
+      ${checked}
+    >`;
   }
 }
 customElements.define('sib-form-checkbox', SIBFormCheckbox);
@@ -46,9 +59,12 @@ class SIBFormJSON extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<label for="${id}">${this.label}</label>
-                <input id="${id}" type="text" name="${
-      this.name
-    }" value='${JSON.stringify(this.value)}'>`;
+    <input
+      id="${id}"
+      type="text"
+      name="${this.name}"
+      value='${JSON.stringify(this.value)}'
+    >`;
   }
 }
 customElements.define('sib-form-json', SIBFormJSON);
@@ -59,9 +75,10 @@ class SIBFormDropdown extends SIBMultipleWidget {
   }
   getTemplate(item, index) {
     const selected = this.value == item['@id'] ? 'selected' : '';
-    return `<option value='{"@id": "${item['@id']}"}' ${selected}>${
-      item.name
-    }</option>`;
+    return `<option
+      value='{"@id": "${item['@id']}"}'
+      ${selected}
+    >${item.name}</option>`;
   }
   get values() {
     if (!this._range) return [];
@@ -84,16 +101,23 @@ customElements.define('sib-form-dropdown', SIBFormDropdown);
 
 class SIBFormMultipleValue extends SIBMultipleWidget {
   getTemplate(item, index) {
-    return `<div id="id-${this.name}-${index}-box" class="${this.tagName}-box">
-                <input id="id-${this.name}-${index}" class="${
-      this.tagName
-    }-input" type="text" value='${item['@id']}' onclick="this.closest('${
-      this.tagName
-    }').updateValue()">
-                <button onclick="this.closest('${
-                  this.tagName
-                }').removeField(${index});return false">x</button>
-            </div>`;
+    return `<div
+      id="id-${this.name}-${index}-box"
+      class="${this.tagName}-box"
+    >
+      <input
+        id="id-${this.name}-${index}"
+        class="${this.tagName}-input"
+        type="text"
+        value='${item['@id']}'
+        onclick="this.closest('${this.tagName}').updateValue()"
+      >
+      <button
+        onclick="this.closest('${
+          this.tagName
+        }').removeField(${index});return false"
+      >x</button>
+    </div>`;
   }
   appendField() {
     const index = this.querySelectorAll(`.${this.tagName}-box`).length;
@@ -105,18 +129,21 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
     this.updateValue();
   }
   get appendTemplate() {
-    return `<button onclick="this.closest('${
-      this.tagName
-    }').appendField();return false">+</button>
-                <input type="hidden" id="id-${this.name}" name="${this.name}">`;
+    return `<button
+      onclick="this.closest('${this.tagName}').appendField();return false"
+    >+</button>
+    <input
+      type="hidden"
+      id="id-${this.name}"
+      name="${this.name}"
+    >`;
   }
   updateValue() {
     const valueList = Array.prototype.map.call(
       this.querySelectorAll(`.${this.tagName}-input`),
       input => '{"@id": "' + input.value + '"}',
     );
-    this.appendBox.querySelector('input').value =
-      '[' + valueList.join(',') + ']';
+    this.appendBox.querySelector('input').value = `[${valueList.join(',')}]`;
   }
   render() {
     super.render();
@@ -131,18 +158,22 @@ customElements.define('sib-form-multiple-value', SIBFormMultipleValue);
 
 class SIBFormMultipleDropdown extends SIBFormMultipleValue {
   getTemplate(item, index) {
-    return `<div id="id-${this.name}-${index}-box" class="${this.tagName}-box">
-                <select id="id-${this.name}-${index}" class="${
-      this.tagName
-    }-input" value='${item['@id']}' onclick="this.closest('${
-      this.tagName
-    }').updateValue()">
-                ${this.optionList}
-                </select>
-                <button onclick="this.closest('${
-                  this.tagName
-                }').removeField(${index});return false">x</button>
-            </div>`;
+    return `<div
+      id="id-${this.name}-${index}-box"
+      class="${this.tagName}-box"
+    >
+      <select
+        id="id-${this.name}-${index}"
+        class="${this.tagName}-input"
+        value='${item['@id']}'
+        onclick="this.closest('${this.tagName}').updateValue()"
+      >${this.optionList}</select>
+      <button
+        onclick="this.closest('${
+          this.tagName
+        }').removeField(${index});return false"
+      >x</button>
+    </div>`;
   }
   getOptionTemplate(item) {
     return `<option value='${item['@id']}'>${item.name}</option>`;

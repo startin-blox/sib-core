@@ -33,7 +33,7 @@
           } catch (error) {
             value = element.value;
           }
-
+          console.log(element.name);
           if (element.name) data[element.name] = value;
           return data;
         },

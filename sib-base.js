@@ -88,7 +88,9 @@ const SIBWidgetMixin = superclass =>
       return this._div;
     }
     getSet(field) {
-      return this.parseFieldsString(this.getAttribute('set-' + field.join('.')));
+      return this.parseFieldsString(
+        this.getAttribute('set-' + field),
+      );
     }
     parseFieldsString(fields) {
       return fields.split(',').map(s => s.trim().split(/\./));
@@ -104,7 +106,7 @@ const SIBWidgetMixin = superclass =>
         .map(a => [a]);
     }
     isSet(field) {
-      return this.hasAttribute('set-' + field.join('.'));
+      return this.hasAttribute('set-' + field);
     }
     async fetchValue(resource, field) {
       // if(!resource) console.trace();
@@ -139,7 +141,7 @@ const SIBWidgetMixin = superclass =>
 
       if (this.isSet(field)) {
         const div = document.createElement('div');
-        div.setAttribute('name', field.join('.'));
+        div.setAttribute('name', field);
         parent.appendChild(div);
         for (let item of this.getSet(field)) await this.appendWidget(item, div);
       } else {
