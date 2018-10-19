@@ -88,9 +88,7 @@ const SIBWidgetMixin = superclass =>
       return this._div;
     }
     getSet(field) {
-      return this.parseFieldsString(
-        this.getAttribute('set-' + field),
-      );
+      return this.parseFieldsString(this.getAttribute('set-' + field));
     }
     parseFieldsString(fields) {
       return fields.split(',').map(s => s.trim().split(/\./));
@@ -268,6 +266,7 @@ const SIBListMixin = superclass =>
 class SIBACChecker extends SIBBase {
   get extra_context() {
     return {
+      acl: 'http://www.w3.org/ns/auth/acl#',
       permissions: 'acl:accessControl',
       mode: 'acl:mode',
     };
@@ -276,11 +275,14 @@ class SIBACChecker extends SIBBase {
     return this.getAttribute('permission') || 'view';
   }
   populate() {
-    for (let permission of this.resource.permissions)
-      if (permission.mode == this.permission) this.style.display = 'block';
+    for (let permission of this.resource.permissions) {
+      if (permission.mode == this.permission) {
+        this.removeAttribute('hidden');
+      }
+    }
   }
   empty() {
-    this.style.display = 'none';
+    this.setAttribute('hidden', '');
   }
 }
 customElements.define('sib-ac-checker', SIBACChecker);
