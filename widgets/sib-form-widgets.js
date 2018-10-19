@@ -34,8 +34,7 @@ class SIBFormTextArea extends SIBWidget {
       id="${id}"
       type="text"
       name="${this.name}"
-      value="${this.escapedValue}"
-    ></textarea>`;
+    >${this.escapedValue}</textarea>`;
   }
 }
 customElements.define('sib-form-textarea', SIBFormTextArea);
@@ -116,7 +115,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
         onclick="this.closest('${
           this.tagName
         }').removeField(${index});return false"
-      >x</button>
+      >&times;</button>
     </div>`;
   }
   appendField() {
@@ -172,7 +171,7 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
         onclick="this.closest('${
           this.tagName
         }').removeField(${index});return false"
-      >x</button>
+      >&times;</button>
     </div>`;
   }
   getOptionTemplate(item) {
