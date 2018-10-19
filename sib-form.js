@@ -51,6 +51,7 @@
     }
     change(resource) {}
     submitForm(event) {
+      event.preventDefault();
       const resource = this.formToObject(this.form);
       if (!this.isContainer) resource['@id'] = this.resource['@id'];
 
@@ -62,7 +63,6 @@
             detail: { route: this.next, resource: resource },
           }),
         );
-      event.preventDefault();
       return false;
     }
     inputChange(event) {
@@ -76,28 +76,31 @@
       input.type = type;
       return input;
     }
-    empty(){
-      if(!this.form) return
-      while(this.form.firstChild)
+    empty() {
+      if (!this.form) return;
+      while (this.form.firstChild) {
         this.form.removeChild(this.form.firstChild);
+      }
     }
-    populate() {
-      if(!this.form){
+    async populate() {
+      if (!this.form) {
         this.form = document.createElement('form');
         this.form.addEventListener('submit', this.submitForm.bind(this));
-        this.form.addEventListener('reset', event =>
+        this.form.addEventListener('input', this.inputChange.bind(this));
+        this.form.addEventListener('reset', () =>
           setTimeout(this.inputChange.bind(this)),
         );
         this.appendChild(this.form);
       }
-      for (let field of this.fields) this.appendWidget(field, this.form);
+
+      for (let field of this.fields) {
+        await this.appendWidget(field, this.form);
+      }
 
       this.form.appendChild(this.createInput('submit'));
-      if (this.hasAttribute('reset'))
+      if (this.hasAttribute('reset')) {
         this.form.appendChild(this.createInput('reset'));
-
-      for (let element of this.form.querySelectorAll('input, select, textarea'))
-        element.addEventListener('input', this.inputChange.bind(this));
+      }
     }
   }
 
