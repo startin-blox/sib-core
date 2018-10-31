@@ -126,7 +126,7 @@ const SIBWidgetMixin = superclass =>
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
     getWidget(field) {
-      return this.getAttribute('widget-' + field) || this.defaultWidget;
+      return this.getAttribute('widget-' + field.join('.')) || this.defaultWidget;
     }
     async widgetAttributes(field) {
       return {
