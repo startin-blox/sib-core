@@ -59,6 +59,8 @@ class SIBMultipleWidget extends SIBWidget {
   renderList() {
     this.emptyList();
     //add one instance of the template per item in the value array
+    console.log('value', this.value);
+    console.log('values', this.values);
     this.parent.innerHTML = this.values.map(this.getTemplate, this).join('');
   }
   render() {
@@ -70,7 +72,9 @@ class SIBMultipleWidget extends SIBWidget {
   }
   get values() {
     if (!this.value) return [];
-    if (!Array.isArray(this.value)) return [this.value];
-    return this.value;
+    let value = this.value;
+    if ('ldp:contains' in value) value = value['ldp:contains'];
+    if (!Array.isArray(value)) value = [value];
+    return value;
   }
 }
