@@ -111,7 +111,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
         value='${item['@id']}'
         onclick="this.closest('${this.tagName}').updateValue()"
       >
-      <button
+      <button type="button"
         onclick="this.closest('${
           this.tagName
         }').removeField(${index});return false"
@@ -128,7 +128,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
     this.updateValue();
   }
   get appendTemplate() {
-    return `<button
+    return `<button type="button"
       onclick="this.closest('${this.tagName}').appendField();return false"
     >+</button>
     <input
@@ -167,7 +167,7 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
         value='${item['@id']}'
         onclick="this.closest('${this.tagName}').updateValue()"
       >${this.optionList}</select>
-      <button
+      <button type="button"
         onclick="this.closest('${
           this.tagName
         }').removeField(${index});return false"
