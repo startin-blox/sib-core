@@ -59,8 +59,7 @@ class SIBMultipleWidget extends SIBWidget {
   renderList() {
     this.emptyList();
     //add one instance of the template per item in the value array
-    console.log('value', this.value);
-    console.log('values', this.values);
+    console.trace();
     this.parent.innerHTML = this.values.map(this.getTemplate, this).join('');
   }
   render() {

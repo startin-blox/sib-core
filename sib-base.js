@@ -136,19 +136,34 @@ const SIBWidgetMixin = superclass =>
     }
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
-
+      const template = await this.getTemplate2(field);
+      if (template) {
+        parent.appendChild(template);
+        return;
+      } 
       if (this.isSet(field)) {
         const div = document.createElement('div');
         div.setAttribute('name', field);
         parent.appendChild(div);
         for (let item of this.getSet(field)) await this.appendWidget(item, div);
-      } else {
-        const widget = document.createElement(this.getWidget(field));
-        const attributes = await this.widgetAttributes(field);
-        for (let name of Object.keys(attributes))
-          widget[name] = attributes[name];
-        parent.appendChild(widget);
+        return;
       }
+      const widget = document.createElement(this.getWidget(field));
+      const attributes = await this.widgetAttributes(field);
+      for (let name of Object.keys(attributes))
+        widget[name] = attributes[name];
+      parent.appendChild(widget);
+    }
+    async getTemplate2(field) {
+     const id = this.getAttribute(`template-${field}`);
+     const template = document.getElementById(id);
+      if (!(template instanceof HTMLTemplateElement)) return;
+      const name = field;
+      const value = await this.getValue(field);
+      console.log(name, value, 1);
+      const template2 = document.createElement('template');
+      template2.innerHTML = eval('`' + template.innerHTML.trim() + '`');
+      return template2.content;
     }
   };
 

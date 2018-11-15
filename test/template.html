@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SIB test: template</title>
+  <script
+    src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"
+  ></script>
+  <link rel="import" href="../sib-display.html" />
+  <link rel="import" href="../sib-form.html" />
+</head>
+
+<body>
+  <template id="abc">
+    <h1>template test</h1>
+    
+    <div>name: ${name}</div>
+    <div>value: ${value}</div>
+    
+    <sib-form-label-text value="${value}" data-fields="value.name, role" range-user="https://test-paris.happy-dev.fr/members/">
+    </sib-form-label-text>
+    <sib-display data-src="${value}"></sib-display>
+  </template>
+
+  <sib-display 
+    data-src="https://test-paris.happy-dev.fr/projects/" 
+    data-fields="name, team, description"
+    widget-team="sib-display-lookuplist"
+    template-description="abc"
+  ></sib-display>
+
+  <!-- <sib-display data-src="https://test-paris.happy-dev.fr/projects/4/" data-fields="name, description">
+    <template field="description">
+      <h1>template test</h1>
+      <div>${name}: ${value}</div>
+      <sib-form-multiple-widget data-fields="user, role" range-user="https://test-paris.happy-dev.fr/members/">
+      </sib-form-multiple-widget>
+    </template>
+    </sib-display> -->
+</body>
+
+</html>

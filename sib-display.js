@@ -31,7 +31,8 @@
         if (
           attr.name.startsWith('value-') ||
           attr.name.startsWith('set-') ||
-          attr.name.startsWith('widget-')
+          attr.name.startsWith('widget-') ||
+          attr.name.startsWith('template-')
         )
           child.setAttribute(attr.name, attr.value);
 
