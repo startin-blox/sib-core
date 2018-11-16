@@ -95,9 +95,9 @@ The following widgets are available :
 
 ## Events
 
-The componend sib-display fires a "select" event when the user clicks an child in the list, with the resource as a detail of the event.
+The component sib-display fires a "select" event when the user clicks an child in the list, with the resource as a detail of the event.
 
-The componend sib-form fires a "save" event when the user validates the form.
+The component sib-form fires a "save" event when the user validates the form.
 
 ## License
 
