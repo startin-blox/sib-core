@@ -10,6 +10,7 @@ An full app example can be found in index.html:
 ## Initialization
 
 You first need to load the webcomponents polyfill for the browsers that have not implemented them yet, and import the components you want to use in your HTML file:
+
 ```html
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
 <link rel="import" href="https://cdn.happy-dev.fr/sib-core/sib-display.html" />
@@ -19,7 +20,7 @@ You first need to load the webcomponents polyfill for the browsers that have not
 <link rel="import" href="https://cdn.happy-dev.fr/sib-core/extra/sib-map.html" />
 ```
 
-Then you can use the new tags in your markup, for instance : `<sib-display>`. More details on each component in the following section. 
+Then you can use the new tags in your markup, for instance : `<sib-display>`. More details on each component in the following section.
 
 ## Components documentation
 
@@ -27,64 +28,79 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 
 **These components accept the following attributes:**
 
- - **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
- - **value-xyz**: To display a string not contained within the data.
- - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
- - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
- - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
+- **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
+- **value-xyz**: To display a string not contained within the data.
+- **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
+- **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
+- **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
+- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed.
 
 **`<sib-display>` also has the following attributes:**
- - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
- - **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
+
+- **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
+- **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
 
 **Example :**
+
 ```html
-<sib-display 
-    id="list"
-    data-src="http://localhost:8000/todos/"
-    set-info="task, date"
-    value-created="Created by :"
-    set-author="created, name"
-    set-status="state"
-    data-fields="image, status, author, deadline"
-    widget-image="sib-display-img"
-    search-fields="name, author"
-    next="detail"
+<sib-display
+  id="list"
+  data-src="http://localhost:8000/todos/"
+  set-info="task, date"
+  value-created="Created by:"
+  set-author="created, name"
+  set-status="state"
+  data-fields="image, status, author, deadline"
+  widget-image="sib-display-img"
+  search-fields="name, author"
+  next="detail"
 ></sib-display>
 ```
 
 **`<sib-form>` also has the following attributes:**
- - **label-xyz**: When displaying a form, the default labels are the fields names of the model. If you want something fancier, you can set this attribute, for instance : `label-username="Your name"`.
+
+- **label-xyz**: When displaying a form, the default labels are the fields names of the model. If you want something fancier, you can set this attribute, for instance : `label-username="Your name"`.
+
 ```html
-<sib-form 
-    data-src="http://localhost:8000/todos/"
-></sib-form>
+<sib-form data-src="http://localhost:8000/todos/"></sib-form>
 ```
+
 This shows the list of todos listed by the container, and a form to create a new one.
 
 ## Widgets
 
-The following widgets are available : 
+The following widgets are available :
 
+- **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
  - **sib-display-div** (default): Displays the value inside a `<div>` HTML tag. 
+- **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
+ - **sib-display-div** (default): Displays the value inside a `<div>` HTML tag. 
+- **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
+- **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
  - **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag. 
- - **sib-display-list**:
- - **sib-display-mailto**:
- - **sib-display-tel**:
+- **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
+ - **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag. 
+- **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
+- **sib-display-list**:
+- **sib-display-mailto**:
+- **sib-display-tel**:
+- **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
  - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text". 
- - **sib-form-textarea**:
- - **sib-form-checkbox**:
- - **sib-form-dropdown**:
+- **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
+ - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text". 
+- **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
+- **sib-form-textarea**:
+- **sib-form-checkbox**:
+- **sib-form-dropdown**:
+
 ## Events
 
 The componend sib-display fires a "select" event when the user clicks an child in the list, with the resource as a detail of the event.
 
 The componend sib-form fires a "save" event when the user validates the form.
 
-
 ## License
 
 Licence MIT
-
 
 
