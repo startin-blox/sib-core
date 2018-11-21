@@ -1,55 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: template</title>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"></script>
+    <link rel="import" href="../sib-display.html" />
+    <link rel="import" href="../sib-form.html" />
+    <style>
+      sib-display {
+        border: 1px solid blue;
+        display: block;
+        padding: 0.3em;
+        margin: 0.3em;
+      }
+      summary{
+        cursor: pointer;
+      }
+      h1{
+        display: inline-block;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>SIB test: template</title>
-  <script
-    src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"
-  ></script>
-  <link rel="import" href="../sib-display.html" />
-  <link rel="import" href="../sib-form.html" />
-  <style>
-    sib-display{
-      border: 1px solid blue;
-      display: block;
-      padding: .3em;
-      margin: .3em;
-    }
-  </style>
-</head>
+  <body>
+    <details>
+      <summary> <h1>One field:</h1> </summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="email"
+      ></sib-display>
+    </details>
 
-<body>
-  <h1>One field:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/users/" 
-    data-fields="first_name, last_name, email"
-    search-fields="email"
-  ></sib-display>
+    <details>
+      <summary> <h1>Multiple fields:</h1> </summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="first_name, last_name"
+      ></sib-display>
+    </details>
 
-  <h1>Multiple fields:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/users/" 
-    data-fields="first_name, last_name, email"
-    search-fields="first_name, last_name"
-  ></sib-display>
+    <details>
+      <summary> <h1>Set:</h1> </summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="nameSet"
+        set-nameSet="first_name, last_name"
+      ></sib-display>
+    </details>
 
-  <h1>Set:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/users/" 
-    data-fields="first_name, last_name, email"
-    search-fields="name"
-    set-name="first_name, last_name"
-  ></sib-display>
+    <details>
+      <summary> <h1>Dotted field:</h1> </summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email, member.pseudo"
+        search-fields="member.pseudo"
+      ></sib-display>
+    </details>
 
-  <h1>Doted field:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/users/" 
-    data-fields="first_name, last_name, email"
-    search-fields="member.pseudo"
-  ></sib-display>
-</body>
 
+    <details>
+        <summary> <h1>Set + dotted field:</h1> </summary>
+        <sib-display
+          data-src="https://test-paris.happy-dev.fr/users/"
+          data-fields="username, first_name, last_name, email, member.pseudo"
+          search-fields="set"
+          search-fields="member.pseudo"
+        ></sib-display>
+      </details>
+  </body>
 </html>
