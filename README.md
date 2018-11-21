@@ -33,7 +33,7 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
 - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
 - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
-- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed.
+- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
 
 **`<sib-display>` also has the following attributes:**
 
