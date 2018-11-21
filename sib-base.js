@@ -160,7 +160,6 @@ const SIBWidgetMixin = superclass =>
       if (!(template instanceof HTMLTemplateElement)) return;
       const name = field;
       const value = await this.getValue(field);
-      console.log(name, value, 1);
       const template2 = document.createElement('template');
       template2.innerHTML = eval('`' + template.innerHTML.trim() + '`');
       return template2.content;
@@ -185,7 +184,8 @@ const SIBListMixin = superclass =>
       }
     }
     matchValue(propertyValue, filterValue) {
-      if (filterValue == '') return true;
+      if (filterValue === '') return true;
+      if(propertyValue == null) return false;
       if (Array.isArray(propertyValue))
         return propertyValue.reduce(
           (initial, value) => initial || this.matchValue(value, filterValue),
