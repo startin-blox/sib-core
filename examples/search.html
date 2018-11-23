@@ -4,29 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: template</title>
+    <title>SIB test: search</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"></script>
     <link rel="import" href="../sib-display.html" />
     <link rel="import" href="../sib-form.html" />
-    <style>
-      sib-display {
-        border: 1px solid blue;
-        display: block;
-        padding: 0.3em;
-        margin: 0.3em;
-      }
-      summary {
-        cursor: pointer;
-      }
-      h1 {
-        display: inline-block;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
     <details>
-      <summary> <h1>One field:</h1> </summary>
+      <summary>One field:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
@@ -35,7 +22,7 @@
     </details>
 
     <details>
-      <summary> <h1>Multiple fields:</h1> </summary>
+      <summary>Multiple fields:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
@@ -44,7 +31,7 @@
     </details>
 
     <details>
-      <summary> <h1>Set:</h1> </summary>
+      <summary>Set:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
@@ -54,17 +41,17 @@
     </details>
 
     <details>
-      <summary> <h1>Dropdown:</h1> </summary>
+      <summary>Dropdown:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
-        search-fields='skills'
+        search-fields="skills"
         search-range-skills="https://test-paris.happy-dev.fr/skills/"
       ></sib-display>
     </details>
 
     <details>
-      <summary> <h1>Dotted field:</h1> </summary>
+      <summary>Dotted field:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email, member.pseudo"
@@ -73,7 +60,7 @@
     </details>
 
     <details>
-      <summary> <h1>Set + dotted field:</h1> </summary>
+      <summary>Set + dotted field:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email, member.pseudo"

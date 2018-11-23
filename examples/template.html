@@ -1,51 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: template</title>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"></script>
+    <link rel="import" href="../sib-display.html" />
+    <link rel="import" href="../sib-form.html" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>SIB test: template</title>
-  <script
-    src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"
-  ></script>
-  <link rel="import" href="../sib-display.html" />
-  <link rel="import" href="../sib-form.html" />
-  <style>
-    sib-display{
-      border: 1px solid blue;
-      display: block;
-      padding: .3em;
-      margin: .3em;
-    }
-    .team sib-display{
-      border-color: green;
-      display: inline-block;
-    }
-  </style>
-</head>
+  <body>
+    <template id="myTeamTemplate">
+      <h3>team</h3>
+      <h4>${value['ldp:contains'].length} members:</h4>
+      <sib-display
+        class="team"
+        data-src="${value['@id']}"
+        data-fields="username"
+      ></sib-display>
+    </template>
 
-<body>
-  <template id="myTeamTemplate">
-    <h3>team</h3>
-    <h4>${value['ldp:contains'].length} members:</h4>
-    <sib-display class="team" data-src="${value['@id']}" data-fields="username">
-    </sib-form>
-  </template>
+    <details>
+      <summary>One Project:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/4/"
+        data-fields="name, description, team"
+        template-team="myTeamTemplate"
+      ></sib-display>
+    </details>
 
-  <h1>One Project:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/projects/4/" 
-    data-fields="name, description, team"
-    template-team="myTeamTemplate"
-  ></sib-display>
-
-  <h1>All projects:</h1>
-  <sib-display 
-    data-src="https://test-paris.happy-dev.fr/projects/" 
-    data-fields="name, description, team"
-    template-team="myTeamTemplate"
-  ></sib-display>
-</body>
-
+    <details>
+      <summary>All projects:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/"
+        data-fields="name, description, team"
+        template-team="myTeamTemplate"
+      ></sib-display>
+    </details>
+  </body>
 </html>
