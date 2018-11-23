@@ -59,6 +59,7 @@
       event.preventDefault();
       const resource = this.formToObject(this.form);
       if (!this.isContainer) resource['@id'] = this.resource['@id'];
+      resource.context = this.context;
       this.save(resource);
 
       if (this.next)
