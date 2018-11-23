@@ -24,9 +24,10 @@
     
     //form submission handling
     setValue(data, namelist, value) {
-        const name = namelist.pop();
-        if(namelist.length) this.setValue(data, namelist, {name: value});
-        else data[name] = value;
+      const name = namelist.shift();
+      if(!(name in data)) data[name] = {};
+      if(namelist.length) this.setValue(data[name], namelist, value);
+      else data[name] = value;
     }
     formToObject(form) {
       return [].reduce.call(
@@ -58,7 +59,6 @@
       event.preventDefault();
       const resource = this.formToObject(this.form);
       if (!this.isContainer) resource['@id'] = this.resource['@id'];
-
       this.save(resource);
 
       if (this.next)
