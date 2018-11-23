@@ -251,6 +251,11 @@ const SIBListMixin = superclass =>
             'range-' + field,
             this.getAttribute('search-range-' + field),
           );
+        if (this.hasAttribute('search-widget-' + field))
+          formElt.setAttribute(
+            'widget-' + field,
+            this.getAttribute('search-widget-' + field),
+          );
 
       if (this.shadowRoot)
         this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
