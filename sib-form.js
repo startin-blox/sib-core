@@ -21,19 +21,24 @@
         attributes.label = this.getAttribute('label-' + field);
       return attributes;
     }
-
+    
     //form submission handling
+    setValue(data, namelist, value) {
+        const name = namelist.pop();
+        if(namelist.length) this.setValue(data, namelist, {name: value});
+        else data[name] = value;
+    }
     formToObject(form) {
       return [].reduce.call(
         form.elements,
-        function(data, element) {
+        (data, element) => {
           let value;
           try {
             value = JSON.parse(element.value);
           } catch (error) {
             value = element.value;
           }
-          if (element.name) data[element.name] = value;
+          this.setValue(data, element.name.split(","), value);
           return data;
         },
         {},
