@@ -108,7 +108,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
         id="id-${this.name}-${index}"
         class="${this.tagName}-input"
         type="text"
-        value='${item['@id']}'
+        value='${item['@id']||''}'
         onclick="this.closest('${this.tagName}').updateValue()"
       >
       <button type="button"
