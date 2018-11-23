@@ -15,7 +15,7 @@
         new CustomEvent('resourceSelect', { detail: { resource: resource } }),
       );
       if (this.next)
-        window.dispatchEvent(
+        this.dispatchEvent(
           new CustomEvent('navigate', {
             detail: { route: this.next, resource: resource },
           }),
