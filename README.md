@@ -72,22 +72,10 @@ This shows the list of todos listed by the container, and a form to create a new
 The following widgets are available :
 
 - **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
- - **sib-display-div** (default): Displays the value inside a `<div>` HTML tag. 
-- **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
- - **sib-display-div** (default): Displays the value inside a `<div>` HTML tag. 
-- **sib-display-div** (default): Displays the value inside a `<div>` HTML tag.
-- **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
- - **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag. 
-- **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
- - **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag. 
 - **sib-display-img**: Inserts the value as the src attribute value of an `<img>` HTML tag.
 - **sib-display-list**:
 - **sib-display-mailto**:
 - **sib-display-tel**:
-- **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
- - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text". 
-- **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
- - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text". 
 - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
 - **sib-form-textarea**:
 - **sib-form-checkbox**:
