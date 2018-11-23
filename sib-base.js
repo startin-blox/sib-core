@@ -245,7 +245,7 @@ const SIBListMixin = superclass =>
           formElt.setAttribute('value-' + filter, this.filters[filter]);
 
       //pass range attributes
-      for (let field of formElt.fields)
+      for (let field of formElt.fields) {
         if (this.hasAttribute('search-range-' + field))
           formElt.setAttribute(
             'range-' + field,
@@ -256,6 +256,7 @@ const SIBListMixin = superclass =>
             'widget-' + field,
             this.getAttribute('search-widget-' + field),
           );
+      }
 
       if (this.shadowRoot)
         this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
