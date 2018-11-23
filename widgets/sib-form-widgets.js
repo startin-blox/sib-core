@@ -120,7 +120,13 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
   }
   appendField() {
     const index = this.querySelectorAll(`.${this.tagName}-box`).length;
-    this.parent.innerHTML += this.getTemplate({}, index);
+    const templateElement = document.createElement('template');
+    templateElement.innerHTML = this.getTemplate({}, index);
+    const content = templateElement.content;
+    [...content.querySelectorAll('select')].forEach(input => {
+      input.value = null;
+    });
+    this.parent.appendChild(content);
     this.updateValue();
   }
   removeField(index) {
@@ -183,7 +189,6 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
   }
   appendField() {
     super.appendField();
-    this.updateSelected();
   }
   set range(url) {
     store.list(url).then(list => {
