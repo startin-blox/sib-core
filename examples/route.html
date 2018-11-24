@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: routes</title>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"></script>
+    <link rel="import" href="../sib-display.html" />
+    <link rel="import" href="https://cdn.happy-dev.fr/sib-router/sib-router.html" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <details>
+      <summary>Next route:</summary>
+      <sib-router use-hash default-route="list">
+        <sib-route name="list">List</sib-route>
+        <sib-route name="detail">Detail</sib-route>
+      </sib-router>
+      <div id="list">
+        <sib-display
+            data-src="https://test-paris.happy-dev.fr/users/"
+            data-fields="username, first_name, last_name, email"
+            next="detail"
+          ></sib-display>
+      </div>
+      <div id="detail">
+        Detail!
+      </div>
+    </details>
+  </body>
+</html>
