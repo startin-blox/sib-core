@@ -21,7 +21,7 @@
         attributes.label = this.getAttribute('label-' + field);
       return attributes;
     }
-    
+
     //form submission handling
     setValue(data, namelist, value) {
       const name = namelist.shift();
@@ -98,6 +98,7 @@
       }
 
       for (let field of this.fields) {
+        //console.log(this.getAttribute('data-fields'),' field ',field);
         await this.appendWidget(field, this.form);
       }
 
