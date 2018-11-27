@@ -22,9 +22,7 @@ class SIBBase extends HTMLElement {
     return {};
   }
   get context() {
-    return { ...base_context,
-      ...this.extra_context
-    };
+    return { ...base_context, ...this.extra_context };
   }
 
   setLoaderDisplay(display) {
@@ -110,23 +108,18 @@ const SIBWidgetMixin = superclass =>
       return this.hasAttribute('set-' + field);
     }
     async fetchValue(resource, field) {
-      //console.log('fetchValue',resource, field);
-      // if(!resource) console.trace();
       if (field in resource) return resource[field];
       resource = await store.get(resource);
       return resource[field];
     }
     async getValue(field) {
-      //console.log('getValue', field);
       if (this.hasAttribute('value-' + field))
         return this.getAttribute('value-' + field);
 
       let resource = this.resource;
       for (let name of field) {
         resource = await this.fetchValue(resource, name);
-        if (resource==undefined){
-          break;
-        }
+        if (resource == null) return;
       }
       return resource;
     }
@@ -134,7 +127,9 @@ const SIBWidgetMixin = superclass =>
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
     getWidget(field) {
-      return this.getAttribute('widget-' + field.join('.')) || this.defaultWidget;
+      return (
+        this.getAttribute('widget-' + field.join('.')) || this.defaultWidget
+      );
     }
     async widgetAttributes(field) {
       return {
@@ -155,23 +150,20 @@ const SIBWidgetMixin = superclass =>
           const div = document.createElement('div');
           div.setAttribute('name', field);
           parent.appendChild(div);
-          for (let item of this.getSet(field)) await this.appendWidget(item, div);
+          for (let item of this.getSet(field))
+            await this.appendWidget(item, div);
           return;
         }
-        //console.log('----------------------');
-        //console.warn(parent,field);
         let widget;
         let attributes;
 
         widget = document.createElement(this.getWidget(field));
         attributes = await this.widgetAttributes(field);
-        //console.warn(parent,field,widget,attributes);
-        //console.log('----------------------');
         for (let name of Object.keys(attributes))
           widget[name] = attributes[name];
         parent.appendChild(widget);
       } catch (e) {
-        console.error('appendWidget', field, e)
+        console.error('appendWidget', field, e);
       }
     }
     async getTemplate2(field) {
@@ -232,7 +224,7 @@ const SIBListMixin = superclass =>
         // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
-          initial || this.matchFilter(resource, field, value),
+            initial || this.matchFilter(resource, field, value),
           false,
         );
       return this.matchValue(resource[filter], value);
@@ -241,7 +233,7 @@ const SIBListMixin = superclass =>
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
         (initial, filter) =>
-        initial && this.matchFilter(resource, filter, this.filters[filter]),
+          initial && this.matchFilter(resource, filter, this.filters[filter]),
         true,
       );
     }

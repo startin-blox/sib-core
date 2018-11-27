@@ -99,7 +99,6 @@
       }
 
       for (let field of this.fields) {
-        //console.log(this.getAttribute('data-fields'),' field ',field);
         await this.appendWidget(field, this.form);
       }
 
