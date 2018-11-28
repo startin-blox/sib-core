@@ -64,7 +64,7 @@
 
       if (this.next)
         this.dispatchEvent(
-          new CustomEvent('navigate', {
+          new CustomEvent('requestNavigation', {
             bubbles: true,
             detail: { route: this.next, resource: resource },
           })

@@ -21,7 +21,7 @@
         dispatchSelect(event) {
             const resource = event.resource;
             this.dispatchEvent(new CustomEvent('resourceSelect', {detail: {resource: resource}}));
-            if(this.next) this.dispatchEvent(new CustomEvent('navigate', {bubbles: true, detail: {route: this.next, resource: resource}}));
+            if(this.next) this.dispatchEvent(new CustomEvent('requestNavigation', {bubbles: true, detail: {route: this.next, resource: resource}}));
         }
         appendChildElt(resource) {
             if(resource.name && resource.date)
