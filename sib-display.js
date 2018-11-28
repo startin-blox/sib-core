@@ -15,8 +15,9 @@
         new CustomEvent('resourceSelect', { detail: { resource: resource } }),
       );
       if (this.next)
-        window.dispatchEvent(
+        this.dispatchEvent(
           new CustomEvent('navigate', {
+            bubbles: true,
             detail: { route: this.next, resource: resource },
           }),
         );
@@ -35,7 +36,7 @@
           attr.name.startsWith('template-')
         )
           child.setAttribute(attr.name, attr.value);
-    
+
       this.div.appendChild(child);
     }
     async appendSingleElt() {
