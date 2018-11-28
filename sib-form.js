@@ -42,7 +42,7 @@
           this.setValue(data, element.name.split(","), value);
           return data;
         },
-        {},
+        {}
       );
     }
     save(resource) {
@@ -50,8 +50,8 @@
         .save(resource, this.resource['@id'])
         .then(() =>
           this.dispatchEvent(
-            new CustomEvent('save', { detail: { resource: resource } }),
-          ),
+            new CustomEvent('save', { detail: { resource: resource } })
+          )
         );
     }
     change(resource) {}
@@ -59,14 +59,14 @@
       event.preventDefault();
       const resource = this.formToObject(this.form);
       if (!this.isContainer) resource['@id'] = this.resource['@id'];
-      resource.context = this.context;
+      resource['@context'] = this.context;
       this.save(resource);
 
       if (this.next)
         this.dispatchEvent(
           new CustomEvent('navigate', {
             detail: { route: this.next, resource: resource },
-          }),
+          })
         );
       return false;
     }
