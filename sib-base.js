@@ -14,6 +14,22 @@ const store = new window.MyStore({
 function uniqID() {
   return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
 }
+function stringToDom(html) {
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  return template.content;
+}
+function evalTemplateString(str, variables = {}) {
+  const keys = Object.keys(variables);
+  const values = keys.map(key => variables[keys]);
+  try {
+    const func = Function.call(null, ...keys, 'return `' + str + '`');
+    return func(...values);
+  } catch (e) {
+    console.warn(e);
+  }
+  return '';
+}
 class SIBBase extends HTMLElement {
   static get observedAttributes() {
     return ['data-src'];
@@ -172,9 +188,11 @@ const SIBWidgetMixin = superclass =>
       if (!(template instanceof HTMLTemplateElement)) return;
       const name = field;
       const value = await this.getValue(field);
-      const template2 = document.createElement('template');
-      template2.innerHTML = eval('`' + template.innerHTML.trim() + '`');
-      return template2.content;
+      const html = evalTemplateString(
+        template.innerHTML.trim(), 
+        {name, value}
+      );
+      return stringToDom(html);
     }
   };
 
@@ -283,6 +301,15 @@ const SIBListMixin = superclass =>
       if (this.isContainer) {
         if (!this._filtersAdded && this.hasAttribute('search-fields'))
           this.appendFilters();
+        
+        if (this.hasAttribute('counter-template')) {
+          const html = evalTemplateString(
+            this.getAttribute('counter-template'),
+            { counter: this.resources.length },
+          );
+          this.div.insertBefore(stringToDom(html), this.div.firstChild);
+        }
+
         for (let resource of this.resources) {
           //for federations, fetch every sib:source we find
           if (resource['@type'] == 'sib:source')
