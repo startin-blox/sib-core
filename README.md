@@ -40,7 +40,7 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
 - **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
 
-**Example :**
+Example :
 
 ```html
 <sib-display
@@ -66,6 +66,25 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 ```
 
 This shows the list of todos listed by the container, and a form to create a new one.
+
+### sib-ac-checker
+
+Hides an element from the page if the current user doesn't have the required permissions on it.
+```html
+  <sib-ac-checker permission="change" bind-resources>
+    <sib-route name="member-edit">
+      <div>Edit</div>
+    </sib-route>
+  </sib-ac-checker>
+```
+
+**Attributes :**
+- **permission**: Can take the following values :
+    - **view**: equivalent of [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
+    - **change**: equivalent of [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
+    - **add**: equivalent of [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
+    - **control**: equivalent of [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
+
 
 ## Widgets
 
