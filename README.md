@@ -24,23 +24,11 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 
 ## Components documentation
 
-### sib-display &nbsp;&&nbsp; sib-form
+### sib-display
 
-**These components accept the following attributes:**
-
-- **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
-- **value-xyz**: To display a string not contained within the data.
-- **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
-- **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
-- **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
-- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
-
-**`<sib-display>` also has the following attributes:**
-
-- **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
-- **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
-
-Example :
+Receives the URL of a ressource or of a contrainer of resources via its `data-src` attribute, and displays it. 
+Each field of the displayed resources can be rendered by a specific widget, either custom or chosen from the default ones. 
+Filters and searching capabilities can be easily added to interact with the list of data being displayed 
 
 ```html
 <sib-display
@@ -57,15 +45,32 @@ Example :
 ></sib-display>
 ```
 
-**`<sib-form>` also has the following attributes:**
+**Attributes:**
 
-- **label-xyz**: When displaying a form, the default labels are the fields names of the model. If you want something fancier, you can set this attribute, for instance : `label-username="Your name"`.
+- **data-src**: The uri of the LDP resource you want to display. If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
+- **value-xyz**: To display a string not contained within the data.
+- **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
+- **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed.
+- **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
+- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
+- **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
+- **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
+
+
+### sib-form
+
+Receives the URL of a ressource via its `data-src` attribute, and displays a form to edit the resource.
+If given the URL of a container of ressources, and displays a creation form to add a resource to the container.
+
 
 ```html
 <sib-form data-src="http://localhost:8000/todos/"></sib-form>
 ```
 
-This shows the list of todos listed by the container, and a form to create a new one.
+**Attributes:**
+
+- **label-xyz**: When displaying a form, the default labels are the fields names of the model. If you want something fancier, you can set this attribute, for instance : `label-username="Your name"`.
+
 
 ### sib-ac-checker
 
