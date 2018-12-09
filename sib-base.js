@@ -124,8 +124,9 @@ const SIBWidgetMixin = superclass =>
       return this.hasAttribute('set-' + field);
     }
     async fetchValue(resource, field) {
-      if (field in resource) return resource[field];
-      resource = await store.get(resource);
+      if(Object.keys(resource).length <= 1) {
+        resource = await store.get(resource);
+      }
       return resource[field];
     }
     async getValue(field) {
