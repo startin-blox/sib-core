@@ -1,13 +1,15 @@
 (function() {
   class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
-    constructor(){
-      super()
+    constructor() {
+      super();
       window.addEventListener('navigate', event => {
-        if(this.resource == null) return
-        if(event.detail.resource == null) return
-        if(this.resource['@id'] == null) return
-        if(this.resource['@id'] === event.detail.resource['@id']) console.log('youpi!', this)
-        this.toggleAttribute('active', this.resource['@id'] === event.detail.resource['@id']);
+        if (this.resource == null) return;
+        if (event.detail.resource == null) return;
+        if (this.resource['@id'] == null) return;
+        this.toggleAttribute(
+          'active',
+          this.resource['@id'] === event.detail.resource['@id'],
+        );
       });
     }
     get defaultWidget() {
