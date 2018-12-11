@@ -200,3 +200,40 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
   }
 }
 customElements.define('sib-form-multiple-dropdown', SIBFormMultipleDropdown);
+
+class SIBFormAutoCompletion extends SIBMultipleWidget {
+  constructor() {
+    super();
+    this.list = [];
+  }
+  async renderList() {
+    const select = document.createElement('select');
+    select.multiple = true;
+    const options = this.list.map(value => {
+      const option = document.createElement('option');
+      option.value = value['@id'];
+      option.textContent = value.name;
+      return option;
+    });
+    this.values.forEach(value => {
+      const option = options.find(option => {
+        const ret = option.value === value['@id'];
+        return ret;
+      });
+      if(option) option.selected = true;
+    });
+    options.forEach(option => select.appendChild(option));
+    this.parent.appendChild(select);
+    if(window.Choices) {
+      new window.Choices(select)
+    }
+  }
+  set range(url) {
+    store.list(url).then(list => {
+      console.log(list);
+      this.list = list;
+      this.render();
+    });
+  }
+}
+customElements.define('sib-form-auto-completion', SIBFormAutoCompletion);

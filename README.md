@@ -110,6 +110,7 @@ The following widgets are available :
 - **sib-form-textarea**:
 - **sib-form-checkbox**:
 - **sib-form-dropdown**:
+- **sib-form-auto-completion**:
 
 ## Events
 
