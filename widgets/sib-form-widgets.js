@@ -202,33 +202,38 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
 customElements.define('sib-form-multiple-dropdown', SIBFormMultipleDropdown);
 
 class SIBFormAutoCompletion extends SIBMultipleWidget {
-  get parentTag() {
-    return 'datalist';
+  constructor() {
+    super();
+    this.list = [];
   }
-  getTemplate(item, index) {
-    console.log(item);
-    return `<option value='{"@id": "${item['@id']}"}'>${item.name}</option>`;
-  }
-  get values() {
-    if (!this._range) return [];
-    if (!Array.isArray(this._range)) return [this._range];
-    return this._range;
+  async renderList() {
+    const select = document.createElement('select');
+    select.multiple = true;
+    const options = this.list.map(value => {
+      const option = document.createElement('option');
+      option.value = value['@id'];
+      option.textContent = value.name;
+      return option;
+    });
+    this.values.forEach(value => {
+      const option = options.find(option => {
+        const ret = option.value === value['@id'];
+        return ret;
+      });
+      if(option) option.selected = true;
+    });
+    options.forEach(option => select.appendChild(option));
+    this.parent.appendChild(select);
+    if(window.Choices) {
+      new window.Choices(select)
+    }
   }
   set range(url) {
     store.list(url).then(list => {
-      this._range = list;
-      this.renderList();
-      if (this._value) this.parent.value = `{"@id": "${this._value['@id']}"}`;
+      console.log(list);
+      this.list = list;
+      this.render();
     });
-  }
-  render() {
-    super.render();
-    
-    this.parent.id = uniqID();
-    const input = document.createElement('input');
-    input.value = this.value;
-    input.setAttribute('list', this.parent.id);
-    this.parent.parentElement.insertBefore(input, this.parent);
   }
 }
 customElements.define('sib-form-auto-completion', SIBFormAutoCompletion);
