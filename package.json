@@ -1,0 +1,21 @@
+{
+  "name": "sib-core",
+  "version": "1.0.0",
+  "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
+  "main": "sib-base.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.happy-dev.fr:startinblox/framework/sib-core.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}

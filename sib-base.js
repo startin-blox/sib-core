@@ -14,14 +14,16 @@ const store = new window.MyStore({
 function uniqID() {
   return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
 }
+
 function stringToDom(html) {
   const template = document.createElement('template');
   template.innerHTML = html;
   return template.content;
 }
+
 function evalTemplateString(str, variables = {}) {
   const keys = Object.keys(variables);
-  const values = keys.map(key => variables[keys]);
+  const values = keys.map(key => variables[key]);
   try {
     const func = Function.call(null, ...keys, 'return `' + str + '`');
     return func(...values);
@@ -30,15 +32,18 @@ function evalTemplateString(str, variables = {}) {
   }
   return '';
 }
+
 class SIBBase extends HTMLElement {
   static get observedAttributes() {
     return ['data-src'];
   }
+
   get extra_context() {
     return {};
   }
+
   get context() {
-    return { ...base_context, ...this.extra_context };
+    return {...base_context, ...this.extra_context};
   }
 
   setLoaderDisplay(display) {
@@ -65,29 +70,36 @@ class SIBBase extends HTMLElement {
         });
     }
   }
+
   populate() {
     //this method should be implemented by descending components to insert content
     throw 'Not Implemented';
   }
+
   empty() {
     //this method should be implemented by descending components to remove all content
     throw 'Not Implemented';
   }
+
   connectedCallback() {
     if (this.resource) this.populate();
   }
+
   get isContainer() {
     return 'ldp:contains' in this.resource;
   }
+
   get next() {
     return this.getAttribute('next');
   }
+
   get idSuffix() {
     // attribute added to the id given as data-src
     if (this.hasAttribute('id-suffix'))
       return this.getAttribute('id-suffix') + '/';
     else return '';
   }
+
   get resources() {
     if (!this.isContainer) return [];
     if (Array.isArray(this.resource['ldp:contains']))
@@ -104,12 +116,15 @@ const SIBWidgetMixin = superclass =>
       this.appendChild(this._div);
       return this._div;
     }
+
     getSet(field) {
       return this.parseFieldsString(this.getAttribute('set-' + field));
     }
+
     parseFieldsString(fields) {
       return fields.split(',').map(s => s.trim().split(/\./));
     }
+
     get fields() {
       if (this.dataset.fields)
         return this.parseFieldsString(this.dataset.fields);
@@ -120,15 +135,18 @@ const SIBWidgetMixin = superclass =>
         .filter(prop => !prop.startsWith('@'))
         .map(a => [a]);
     }
+
     isSet(field) {
       return this.hasAttribute('set-' + field);
     }
+
     async fetchValue(resource, field) {
-      if(Object.keys(resource).length <= 1) {
+      if (Object.keys(resource).length <= 1) {
         resource = await store.get(resource);
       }
       return resource[field];
     }
+
     async getValue(field) {
       if (this.hasAttribute('value-' + field))
         return this.getAttribute('value-' + field);
@@ -140,20 +158,24 @@ const SIBWidgetMixin = superclass =>
       }
       return resource;
     }
+
     empty() {
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
+
     getWidget(field) {
       return (
         this.getAttribute('widget-' + field.join('.')) || this.defaultWidget
       );
     }
+
     async widgetAttributes(field) {
       return {
         value: await this.getValue(field),
         name: field,
       };
     }
+
     async appendWidget(field, parent) {
       try {
         if (!parent) parent = this.div;
@@ -183,6 +205,7 @@ const SIBWidgetMixin = superclass =>
         console.error('appendWidget', field, e);
       }
     }
+
     async getTemplate2(field) {
       const id = this.getAttribute(`template-${field}`);
       const template = document.getElementById(id);
@@ -190,7 +213,7 @@ const SIBWidgetMixin = superclass =>
       const name = field;
       const value = await this.getValue(field);
       const html = evalTemplateString(
-        template.innerHTML.trim(), 
+        template.innerHTML.trim(),
         {name, value}
       );
       return stringToDom(html);
@@ -204,9 +227,11 @@ const SIBListMixin = superclass =>
       this._filters = {};
       this._filtersAdded = false;
     }
+
     get filters() {
       return this._filters;
     }
+
     set filters(filters) {
       this._filters = filters;
       if (this.resource) {
@@ -214,6 +239,7 @@ const SIBListMixin = superclass =>
         this.populate();
       }
     }
+
     matchValue(propertyValue, filterValue) {
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
@@ -223,24 +249,25 @@ const SIBListMixin = superclass =>
           false,
         );
       if (propertyValue['@id'])
-        //search in ids
+      //search in ids
         return (
           propertyValue['@id'] == filterValue ||
           propertyValue['@id'] == filterValue['@id']
         );
       if (typeof propertyValue === 'number' || propertyValue instanceof Number)
-        //check if integer match
+      //check if integer match
         return propertyValue == filterValue;
       if (typeof propertyValue === 'string' || propertyValue instanceof String)
-        //search in strings
+      //search in strings
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
         );
       return false;
     }
+
     matchFilter(resource, filter, value) {
       if (this.isSet(filter))
-        // for sets, return true if it matches at least one of the fields
+      // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
             initial || this.matchFilter(resource, field, value),
@@ -248,6 +275,7 @@ const SIBListMixin = superclass =>
         );
       return this.matchValue(resource[filter], value);
     }
+
     matchFilters(resource) {
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
@@ -256,12 +284,15 @@ const SIBListMixin = superclass =>
         true,
       );
     }
+
     get resources() {
       return super.resources.filter(this.matchFilters.bind(this));
     }
+
     filterList(filters) {
       this.filters = filters;
     }
+
     appendFilters() {
       const formElt = document.createElement('sib-form');
       formElt.resource = this.resource;
@@ -295,18 +326,20 @@ const SIBListMixin = superclass =>
 
       this._filtersAdded = true;
     }
+
     appendSingleElt() {
       this.appendChildElt(this.resource);
     }
+
     populate() {
       if (this.isContainer) {
         if (!this._filtersAdded && this.hasAttribute('search-fields'))
           this.appendFilters();
-        
+
         if (this.hasAttribute('counter-template')) {
           const html = evalTemplateString(
             this.getAttribute('counter-template'),
-            { counter: this.resources.length },
+            {counter: this.resources.length},
           );
           this.div.insertBefore(stringToDom(html), this.div.firstChild);
         }
@@ -332,9 +365,11 @@ class SIBACChecker extends SIBBase {
       mode: 'acl:mode',
     };
   }
+
   get permission() {
     return this.getAttribute('permission') || 'view';
   }
+
   populate() {
     for (let permission of this.resource.permissions) {
       if (permission.mode == this.permission) {
@@ -342,8 +377,13 @@ class SIBACChecker extends SIBBase {
       }
     }
   }
+
   empty() {
     this.setAttribute('hidden', '');
   }
 }
+
 customElements.define('sib-ac-checker', SIBACChecker);
+
+
+exports.evalTemplateString = evalTemplateString;
