@@ -40,9 +40,14 @@ Filters and searching capabilities can be easily added to interact with the list
   set-status="state"
   data-fields="image, status, author, deadline"
   widget-image="sib-display-img"
+  template-deadline="deadline-template"
   search-fields="name, author"
   next="detail"
 ></sib-display>
+
+<template id="deadline-template">
+  <h3>The project ends in <span>${value}</span> days.</h3>
+</template>
 ```
 
 **Attributes:**
@@ -55,6 +60,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
 - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
 - **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
+- **template-xyz**: You can choose how a given field will render by defining a template, see  the example above. 
 
 
 ### sib-form
