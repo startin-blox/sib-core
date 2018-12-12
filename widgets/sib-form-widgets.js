@@ -108,7 +108,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
         id="id-${this.name}-${index}"
         class="${this.tagName}-input"
         type="text"
-        value='${item['@id']||''}'
+        value='${item['@id'] || ''}'
         onclick="this.closest('${this.tagName}').updateValue()"
       >
       <button type="button"
@@ -220,12 +220,12 @@ class SIBFormAutoCompletion extends SIBMultipleWidget {
         const ret = option.value === value['@id'];
         return ret;
       });
-      if(option) option.selected = true;
+      if (option) option.selected = true;
     });
     options.forEach(option => select.appendChild(option));
     this.parent.appendChild(select);
-    if(window.Choices) {
-      new window.Choices(select)
+    if (window.Choices) {
+      new window.Choices(select, { removeItemButton: true });
     }
   }
   set range(url) {
