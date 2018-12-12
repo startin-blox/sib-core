@@ -1,39 +1,7 @@
-const base_context = {
-  '@vocab': 'http://happy-dev.fr/owl/#',
-  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-  ldp: 'http://www.w3.org/ns/ldp#',
-  foaf: 'http://xmlns.com/foaf/0.1/',
-  name: 'rdfs:label',
-};
-const store = new window.MyStore({
-  context: base_context,
-  defaultSerializer: 'application/ld+json',
-});
+import {base_context, store} from './store.mjs';
+import { stringToDom, evalTemplateString } from './helpers.mjs';
 
-function uniqID() {
-  return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
-}
-
-function stringToDom(html) {
-  const template = document.createElement('template');
-  template.innerHTML = html;
-  return template.content;
-}
-
-function evalTemplateString(str, variables = {}) {
-  const keys = Object.keys(variables);
-  const values = keys.map(key => variables[key]);
-  try {
-    const func = Function.call(null, ...keys, 'return `' + str + '`');
-    return func(...values);
-  } catch (e) {
-    console.warn(e);
-  }
-  return '';
-}
-
-class SIBBase extends HTMLElement {
+export class SIBBase extends HTMLElement {
   static get observedAttributes() {
     return ['data-src'];
   }
@@ -43,7 +11,7 @@ class SIBBase extends HTMLElement {
   }
 
   get context() {
-    return {...base_context, ...this.extra_context};
+    return { ...base_context, ...this.extra_context };
   }
 
   setLoaderDisplay(display) {
@@ -108,7 +76,7 @@ class SIBBase extends HTMLElement {
   }
 }
 
-const SIBWidgetMixin = superclass =>
+export const SIBWidgetMixin = superclass =>
   class extends superclass {
     get div() {
       if (this._div) return this._div;
@@ -177,33 +145,29 @@ const SIBWidgetMixin = superclass =>
     }
 
     async appendWidget(field, parent) {
-      try {
-        if (!parent) parent = this.div;
+      if (!parent) parent = this.div;
 
-        const template = await this.getTemplate2(field);
-        if (template) {
-          parent.appendChild(template);
-          return;
-        }
-        if (this.isSet(field)) {
-          const div = document.createElement('div');
-          div.setAttribute('name', field);
-          parent.appendChild(div);
-          for (let item of this.getSet(field))
-            await this.appendWidget(item, div);
-          return;
-        }
-        let widget;
-        let attributes;
-
-        widget = document.createElement(this.getWidget(field));
-        attributes = await this.widgetAttributes(field);
-        for (let name of Object.keys(attributes))
-          widget[name] = attributes[name];
-        parent.appendChild(widget);
-      } catch (e) {
-        console.error('appendWidget', field, e);
+      const template = await this.getTemplate2(field);
+      if (template) {
+        parent.appendChild(template);
+        return;
       }
+      if (this.isSet(field)) {
+        const div = document.createElement('div');
+        div.setAttribute('name', field);
+        parent.appendChild(div);
+        for (let item of this.getSet(field))
+          await this.appendWidget(item, div);
+        return;
+      }
+      let widget;
+      let attributes;
+
+      widget = document.createElement(this.getWidget(field));
+      attributes = await this.widgetAttributes(field);
+      for (let name of Object.keys(attributes))
+        widget[name] = attributes[name];
+      parent.appendChild(widget);
     }
 
     async getTemplate2(field) {
@@ -212,15 +176,15 @@ const SIBWidgetMixin = superclass =>
       if (!(template instanceof HTMLTemplateElement)) return;
       const name = field;
       const value = await this.getValue(field);
-      const html = evalTemplateString(
-        template.innerHTML.trim(),
-        {name, value}
-      );
+      const html = evalTemplateString(template.innerHTML.trim(), {
+        name,
+        value,
+      });
       return stringToDom(html);
     }
   };
 
-const SIBListMixin = superclass =>
+export const SIBListMixin = superclass =>
   class extends superclass {
     constructor() {
       super();
@@ -244,7 +208,7 @@ const SIBListMixin = superclass =>
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
-        return this.matchValue(propertyValue['ldp:contains'],filterValue);
+        return this.matchValue(propertyValue['ldp:contains'], filterValue);
       }
       if (Array.isArray(propertyValue)) {
         return propertyValue.reduce(
@@ -259,22 +223,27 @@ const SIBListMixin = superclass =>
           propertyValue['@id'] == filterValue['@id']
         );
       }
-      if (typeof propertyValue === 'number' || propertyValue instanceof Number) {
+      if (
+        typeof propertyValue === 'number' ||
+        propertyValue instanceof Number
+      ) {
         //check if integer match
         return propertyValue == filterValue;
       }
-      if (typeof propertyValue === 'string' || propertyValue instanceof String) {
+      if (
+        typeof propertyValue === 'string' ||
+        propertyValue instanceof String
+      ) {
         //search in strings
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
         );
       }
       return false;
-
     }
     matchFilter(resource, filter, value) {
       if (this.isSet(filter))
-      // for sets, return true if it matches at least one of the fields
+        // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
             initial || this.matchFilter(resource, field, value),
@@ -346,7 +315,7 @@ const SIBListMixin = superclass =>
         if (this.hasAttribute('counter-template')) {
           const html = evalTemplateString(
             this.getAttribute('counter-template'),
-            {counter: this.resources.length},
+            { counter: this.resources.length },
           );
           this.div.insertBefore(stringToDom(html), this.div.firstChild);
         }
@@ -364,7 +333,7 @@ const SIBListMixin = superclass =>
     }
   };
 
-class SIBACChecker extends SIBBase {
+export class SIBACChecker extends SIBBase {
   get extra_context() {
     return {
       acl: 'http://www.w3.org/ns/auth/acl#',
@@ -391,6 +360,3 @@ class SIBACChecker extends SIBBase {
 }
 
 customElements.define('sib-ac-checker', SIBACChecker);
-
-
-exports.evalTemplateString = evalTemplateString;

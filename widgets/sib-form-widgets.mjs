@@ -1,3 +1,13 @@
+/*
+For a better experience Include Choices.js in html to use sib-form-auto-completion
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/styles/choices.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"></script>
+*/
+import {store} from '../store.mjs';
+import { uniqID } from '../helpers.mjs';
+import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.mjs";
+
 class SIBFormPlaceholderText extends SIBWidget {
   get template() {
     const id = uniqID();
@@ -236,4 +246,5 @@ class SIBFormAutoCompletion extends SIBMultipleWidget {
     });
   }
 }
+
 customElements.define('sib-form-auto-completion', SIBFormAutoCompletion);

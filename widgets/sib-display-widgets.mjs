@@ -1,3 +1,5 @@
+import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.mjs";
+
 class SIBDisplayDiv extends SIBWidget {
   get template() {
     return `<div name="${this.name}">${this.value}</div>`;

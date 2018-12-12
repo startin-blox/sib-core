@@ -1,4 +1,5 @@
-class SIBWidget extends HTMLElement {
+import { uniqID } from '../helpers.mjs';
+export class SIBWidget extends HTMLElement {
   connectedCallback() {
     this.render();
   }
@@ -34,17 +35,7 @@ class SIBWidget extends HTMLElement {
   }
 }
 
-const SIBAsochronousResourceWidgetMixin = superclass =>
-  class extends superclass {
-    render() {
-      store.get(this.value).then(value => {
-        this._value = value;
-        this.innerHTML = this.template;
-      });
-    }
-  };
-
-class SIBMultipleWidget extends SIBWidget {
+export class SIBMultipleWidget extends SIBWidget {
   get parentTag() {
     return 'div';
   }
