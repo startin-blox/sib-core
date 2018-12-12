@@ -241,39 +241,30 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      console.log('matchValue',propertyValue, filterValue);
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
-      if (propertyValue['ldp:contains']) {
-        return this.matchValue(propertyValue['ldp:contains'],filterValue);
-      }
-      if (Array.isArray(propertyValue)) {
+      if (Array.isArray(propertyValue))
         return propertyValue.reduce(
           (initial, value) => initial || this.matchValue(value, filterValue),
           false,
         );
-      }
-      if (propertyValue['@id']) {
-        //search in ids
+      if (propertyValue['@id'])
+      //search in ids
         return (
-          filterValue['@id']=='' ||
           propertyValue['@id'] == filterValue ||
           propertyValue['@id'] == filterValue['@id']
         );
-      }
-      if (typeof propertyValue === 'number' || propertyValue instanceof Number) {
-        //check if integer match
+      if (typeof propertyValue === 'number' || propertyValue instanceof Number)
+      //check if integer match
         return propertyValue == filterValue;
-      }
-      if (typeof propertyValue === 'string' || propertyValue instanceof String) {
-        //search in strings
+      if (typeof propertyValue === 'string' || propertyValue instanceof String)
+      //search in strings
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
         );
-      }
       return false;
-
     }
+
     matchFilter(resource, filter, value) {
       if (this.isSet(filter))
       // for sets, return true if it matches at least one of the fields

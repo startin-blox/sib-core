@@ -43,7 +43,13 @@ class SIBBase extends HTMLElement {
   }
 
   get context() {
+<<<<<<< HEAD
+    return { ...base_context,
+      ...this.extra_context
+    };
+=======
     return {...base_context, ...this.extra_context};
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
   }
 
   setLoaderDisplay(display) {
@@ -118,10 +124,12 @@ const SIBWidgetMixin = superclass =>
     }
 
     getSet(field) {
+      console.log(field);
       return this.parseFieldsString(this.getAttribute('set-' + field));
     }
 
     parseFieldsString(fields) {
+      //console.log('parseFieldsString',fields);
       return fields.split(',').map(s => s.trim().split(/\./));
     }
 
@@ -213,8 +221,15 @@ const SIBWidgetMixin = superclass =>
       const name = field;
       const value = await this.getValue(field);
       const html = evalTemplateString(
+<<<<<<< HEAD
+        template.innerHTML.trim(), {
+          name,
+          value
+        }
+=======
         template.innerHTML.trim(),
         {name, value}
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
       );
       return stringToDom(html);
     }
@@ -241,7 +256,7 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      console.log('matchValue',propertyValue, filterValue);
+      console.log('matchValue', propertyValue, filterValue);
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
@@ -252,14 +267,19 @@ const SIBListMixin = superclass =>
           (initial, value) => initial || this.matchValue(value, filterValue),
           false,
         );
+<<<<<<< HEAD
       }
       if (propertyValue['@id']) {
         //search in ids
+=======
+      if (propertyValue['@id'])
+      //search in ids
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
         return (
-          filterValue['@id']=='' ||
           propertyValue['@id'] == filterValue ||
           propertyValue['@id'] == filterValue['@id']
         );
+<<<<<<< HEAD
       }
       if (typeof propertyValue === 'number' || propertyValue instanceof Number) {
         //check if integer match
@@ -267,6 +287,13 @@ const SIBListMixin = superclass =>
       }
       if (typeof propertyValue === 'string' || propertyValue instanceof String) {
         //search in strings
+=======
+      if (typeof propertyValue === 'number' || propertyValue instanceof Number)
+      //check if integer match
+        return propertyValue == filterValue;
+      if (typeof propertyValue === 'string' || propertyValue instanceof String)
+      //search in strings
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
         );
@@ -274,27 +301,38 @@ const SIBListMixin = superclass =>
       return false;
 
     }
+
     matchFilter(resource, filter, value) {
+<<<<<<< HEAD
+      console.log('matchFilter', resource, filter);
+      if (this.isSet(filter)) {
+        // for sets, return true if it matches at least one of the fields
+=======
       if (this.isSet(filter))
       // for sets, return true if it matches at least one of the fields
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
         return this.getSet(filter).reduce(
           (initial, field) =>
-            initial || this.matchFilter(resource, field, value),
+          initial || this.matchFilter(resource, field, value),
           false,
         );
-      return this.matchValue(resource[filter], value);
+      }
+      let matched = this.matchValue(resource[filter], value);
+      console.log(matched);
+      return matched;
     }
 
     matchFilters(resource) {
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
         (initial, filter) =>
-          initial && this.matchFilter(resource, filter, this.filters[filter]),
+        initial && this.matchFilter(resource, filter, this.filters[filter]),
         true,
       );
     }
 
     get resources() {
+      // main entry for execute filter and initial populate
       return super.resources.filter(this.matchFilters.bind(this));
     }
 
@@ -327,6 +365,11 @@ const SIBListMixin = superclass =>
             'widget-' + field,
             this.getAttribute('search-widget-' + field),
           );
+        if (this.hasAttribute('search-label-' + field))
+          formElt.setAttribute(
+            'label-' + field,
+            this.getAttribute('search-label-' + field),
+          );
       }
 
       if (this.shadowRoot)
@@ -347,8 +390,14 @@ const SIBListMixin = superclass =>
 
         if (this.hasAttribute('counter-template')) {
           const html = evalTemplateString(
+<<<<<<< HEAD
+            this.getAttribute('counter-template'), {
+              counter: this.resources.length
+            },
+=======
             this.getAttribute('counter-template'),
             {counter: this.resources.length},
+>>>>>>> e38ebf298b1e1e8f6961feb1163338fd61259312
           );
           this.div.insertBefore(stringToDom(html), this.div.firstChild);
         }
