@@ -1,92 +1,31 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
-        <link rel="import" href="sib-display.html" />
-        <link rel="import" href="sib-form.html" />
-        <link rel="import" href="extra/sib-calendar.html" />
-        <link rel="import" href="extra/sib-map.html" />
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function(event) {
-                document.getElementById('list').addEventListener('select', function(event) {
-                    console.log(event.detail.resource);
-                    //alert('selected!');
-                });
-            });
-        </script>
-        <style>
-            sib-display div{
-                display: flex;
-            }
-            #detail {
-                float: right;
-                border: solid blue;
-            }
-            .set1 {
-                display: flex;
-                color: orange;
-            }
-            .text {
-                font-weight: bold;
-            }
-            #form {
-                border: solid;
-                margin: 3em;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="loader" style="display:none">Chargement...</div>
-        <main>
-            <div id="detail">
-                <sib-display
-                    bind-resources
-                    loader-id="loader"
-                    data-src="http://localhost:8000/members/Alexandre/"
-                    data-fields="firstname, lastname, experience, number, skills"
-                    value-text="Ceci est un détail"
-                    widget-skills="sib-display-lookuplist"
-                ></sib-display>
-                <p>Projets :</p>
-                <sib-display
-                    bind-resources
-                    data-src="http://localhost:8000/members/Alexandre/"
-                    id-suffix="project_set"
-                    data-fields="name, number, client"
-                    widget-client="sib-display-lookuplist"
-                ></sib-display>
-            </div>
-            <sib-display 
-                id="list"
-                data-src="http://localhost:8000/sources/members/"
-                data-fields="set1, number"
-                set-set1="firstname, lastname, experience, skills"
-                value-text="youpi"
-                search-fields="set1, number, experience, skills"
-                search-range-skills="http://localhost:8000/skills/"
-                widget-skills="sib-display-lookuplist"
-                next="detail"
-            ></sib-display>
-            <div id="form">
-                <sib-form id="create" data-src="http://localhost:8000/members/"></sib-form>
-                <p>Modifier</p>
-                <sib-form
-                    id="edit"
-                    data-src="http://localhost:8000/members/Alexandre/"
-                    next="list"
-                    widget-done="sib-form-checkbox"
-                    widget-skills="sib-form-multiple-dropdown"
-                    widget-project_set="sib-form-json"
-                    widget-owned_chatrooms="sib-form-json"
-                    range-skills="http://localhost:8000/skills/"
-                    label-firstname="What's your name, honey?"
-                    range-cell="http://localhost:8000/cells/"
-                ></sib-form>
-            </div>
-            <sib-ac-checker data-src="http://localhost:8000/members/Sylvain/" permission="change">Modifier</sib-ac-checker>
-            <sib-calendar data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-calendar>
-            <sib-map id="map" search-fields="name" data-src="http://localhost:8000/members/" style="display: block; height: 300px; width: 500px;"></sib-map>
-        </main>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB tests</title>
+    <style>
+      html {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+        margin: 1em;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Startin’Blox</h1>
+    <h2>Home page</h2>
+    <p><a href="https://startinblox.com/">https://startinblox.com/</a></p>
+    <h2>Examples</h2>
+    <ul>
+      <li><a href="examples/sib-display.html">sib-display</a></li>
+      <li><a href="examples/sib-form.html">sib-form</a></li>
+      <li><a href="examples/search.html">search</a></li>
+      <li><a href="examples/counter.html">counter</a></li>
+      <li><a href="examples/template.html">template</a></li>
+      <li><a href="examples/route.html">route</a></li>
+    </ul>
+  </body>
 </html>
