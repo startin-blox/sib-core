@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: form</title>
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@1.2.7/webcomponents-loader.js"></script>
-    <link rel="import" href="../sib-display.html" />
-    <link rel="import" href="../sib-form.html" />
+    <title>SIB test: sib-form</title>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
+    <script type="module" src="../sib-base.mjs"></script>
+    <script type="module" src="../sib-form.mjs"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -26,21 +26,21 @@
     </details>
 
     <details>
-      <summary>Dropdown:</summary>
-      <sib-form
-        data-src="https://test-paris.happy-dev.fr/members/3/"
-        data-fields="cell"
-        range-cell="https://test-paris.happy-dev.fr/cells/"
-      ></sib-form>
-    </details>
-
-    <details>
       <summary>Multiple value:</summary>
       <sib-form
         data-src="https://test-paris.happy-dev.fr/members/3/"
         data-fields="skills"
         widget-skills="sib-form-multiple-value"
         range-skills="https://test-paris.happy-dev.fr/skills/"
+      ></sib-form>
+    </details>
+
+    <details>
+      <summary>Dropdown:</summary>
+      <sib-form
+        data-src="https://test-paris.happy-dev.fr/members/3/"
+        data-fields="cell"
+        range-cell="https://test-paris.happy-dev.fr/cells/"
       ></sib-form>
     </details>
 
