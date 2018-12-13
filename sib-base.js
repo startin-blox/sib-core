@@ -43,7 +43,9 @@ class SIBBase extends HTMLElement {
   }
 
   get context() {
-    return {...base_context, ...this.extra_context};
+    return { ...base_context,
+      ...this.extra_context
+    };
   }
 
   setLoaderDisplay(display) {
@@ -213,8 +215,10 @@ const SIBWidgetMixin = superclass =>
       const name = field;
       const value = await this.getValue(field);
       const html = evalTemplateString(
-        template.innerHTML.trim(),
-        {name, value}
+        template.innerHTML.trim(), {
+          name,
+          value
+        }
       );
       return stringToDom(html);
     }
@@ -241,11 +245,11 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      console.log('matchValue',propertyValue, filterValue);
+      console.log('matchValue', propertyValue, filterValue);
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
-        return this.matchValue(propertyValue['ldp:contains'],filterValue);
+        return this.matchValue(propertyValue['ldp:contains'], filterValue);
       }
       if (Array.isArray(propertyValue)) {
         return propertyValue.reduce(
@@ -256,7 +260,7 @@ const SIBListMixin = superclass =>
       if (propertyValue['@id']) {
         //search in ids
         return (
-          filterValue['@id']=='' ||
+          filterValue['@id'] == '' ||
           propertyValue['@id'] == filterValue ||
           propertyValue['@id'] == filterValue['@id']
         );
@@ -274,22 +278,38 @@ const SIBListMixin = superclass =>
       return false;
 
     }
+
+    applyFilterToResource(resource,filter){
+      if(Array.isArray(filter) && filter.length>1){
+        let firstFilter=filter.shift();
+        return this.applyFilterToResource(resource[firstFilter],filter);
+      } else if(Array.isArray(filter) && filter.length==1){
+        return resource[filter[0]];
+      } else {
+        return resource[filter];
+      }
+    }
+
     matchFilter(resource, filter, value) {
-      if (this.isSet(filter))
-      // for sets, return true if it matches at least one of the fields
+      if (this.isSet(filter)) {
+        // console.log('SET',resource, filter, value);
+        console.log('SET get',this.getSet(filter));
+        // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
-            initial || this.matchFilter(resource, field, value),
+          initial || this.matchFilter(resource, field, value),
           false,
         );
-      return this.matchValue(resource[filter], value);
+      }
+
+      return this.matchValue(this.applyFilterToResource(resource,filter), value);
     }
 
     matchFilters(resource) {
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
         (initial, filter) =>
-          initial && this.matchFilter(resource, filter, this.filters[filter]),
+        initial && this.matchFilter(resource, filter, this.filters[filter]),
         true,
       );
     }
@@ -347,8 +367,9 @@ const SIBListMixin = superclass =>
 
         if (this.hasAttribute('counter-template')) {
           const html = evalTemplateString(
-            this.getAttribute('counter-template'),
-            {counter: this.resources.length},
+            this.getAttribute('counter-template'), {
+              counter: this.resources.length
+            },
           );
           this.div.insertBefore(stringToDom(html), this.div.firstChild);
         }
