@@ -376,7 +376,9 @@ const SIBListMixin = superclass =>
               counter: this.resources.length
             },
           );
-          this.div.insertBefore(stringToDom(html), this.div.firstChild);
+          const counter = document.createElement('div')
+          counter.appendChild(stringToDom(html))
+          this.insertBefore(counter, this.div);
         }
 
         for (let resource of this.resources) {
