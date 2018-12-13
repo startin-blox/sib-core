@@ -128,8 +128,11 @@ const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.dataset.fields)
+      if(this.dataset.fields === 'data-fields') {
+        return [];
+      } else if (this.dataset.fields) {
         return this.parseFieldsString(this.dataset.fields);
+      }
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
@@ -260,19 +263,19 @@ const SIBListMixin = superclass =>
       if (propertyValue['@id']) {
         //search in ids
         return (
-          filterValue['@id'] == '' ||
-          propertyValue['@id'] == filterValue ||
-          propertyValue['@id'] == filterValue['@id']
+          filterValue['@id'] === '' ||
+          propertyValue['@id'] === filterValue ||
+          propertyValue['@id'] === filterValue['@id']
         );
       }
       if (typeof propertyValue === 'number' || propertyValue instanceof Number) {
         //check if integer match
-        return propertyValue == filterValue;
+        return propertyValue === filterValue;
       }
       if (typeof propertyValue === 'string' || propertyValue instanceof String) {
         //search in strings
         return (
-          propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
+          propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1
         );
       }
       return false;
@@ -283,7 +286,7 @@ const SIBListMixin = superclass =>
       if (Array.isArray(filter) && filter.length > 1) {
         let firstFilter = filter.shift();
         return this.applyFilterToResource(resource[firstFilter], filter);
-      } else if (Array.isArray(filter) && filter.length == 1) {
+      } else if (Array.isArray(filter) && filter.length === 1) {
         return resource[filter[0]];
       } else {
         return resource[filter];
@@ -381,14 +384,16 @@ const SIBListMixin = superclass =>
           this.insertBefore(counter, this.div);
         }
 
-        for (let resource of this.resources) {
-          //for federations, fetch every sib:source we find
-          if (resource['@type'] == 'sib:source')
-            store.get(resource.container).then(container => {
-              for (let resource of container['ldp:contains'])
-                this.appendChildElt(resource);
-            });
-          else this.appendChildElt(resource);
+        if(this.fields.length > 0) {
+          for (let resource of this.resources) {
+            //for federations, fetch every sib:source we find
+            if (resource['@type'] == 'sib:source')
+              store.get(resource.container).then(container => {
+                for (let resource of container['ldp:contains'])
+                  this.appendChildElt(resource);
+              });
+            else this.appendChildElt(resource);
+          }
         }
       } else this.appendSingleElt();
     }
@@ -409,7 +414,7 @@ class SIBACChecker extends SIBBase {
 
   populate() {
     for (let permission of this.resource.permissions) {
-      if (permission.mode == this.permission) {
+      if (permission.mode === this.permission) {
         this.removeAttribute('hidden');
       }
     }
