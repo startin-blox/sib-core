@@ -279,11 +279,11 @@ const SIBListMixin = superclass =>
 
     }
 
-    applyFilterToResource(resource,filter){
-      if(Array.isArray(filter) && filter.length>1){
-        let firstFilter=filter.shift();
-        return this.applyFilterToResource(resource[firstFilter],filter);
-      } else if(Array.isArray(filter) && filter.length==1){
+    applyFilterToResource(resource, filter) {
+      if (Array.isArray(filter) && filter.length > 1) {
+        let firstFilter = filter.shift();
+        return this.applyFilterToResource(resource[firstFilter], filter);
+      } else if (Array.isArray(filter) && filter.length == 1) {
         return resource[filter[0]];
       } else {
         return resource[filter];
@@ -293,7 +293,7 @@ const SIBListMixin = superclass =>
     matchFilter(resource, filter, value) {
       if (this.isSet(filter)) {
         // console.log('SET',resource, filter, value);
-        console.log('SET get',this.getSet(filter));
+        console.log('SET get', this.getSet(filter));
         // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
@@ -302,7 +302,7 @@ const SIBListMixin = superclass =>
         );
       }
 
-      return this.matchValue(this.applyFilterToResource(resource,filter), value);
+      return this.matchValue(this.applyFilterToResource(resource, filter), value);
     }
 
     matchFilters(resource) {
@@ -346,6 +346,11 @@ const SIBListMixin = superclass =>
           formElt.setAttribute(
             'widget-' + field,
             this.getAttribute('search-widget-' + field),
+          );
+        if (this.hasAttribute('search-label-' + field))
+          formElt.setAttribute(
+            'label-' + field,
+            this.getAttribute('search-label-' + field),
           );
       }
 
