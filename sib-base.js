@@ -426,6 +426,3 @@ class SIBACChecker extends SIBBase {
 }
 
 customElements.define('sib-ac-checker', SIBACChecker);
-
-
-exports.evalTemplateString = evalTemplateString;
