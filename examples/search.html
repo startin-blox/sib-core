@@ -14,11 +14,12 @@
 
   <body>
     <details>
-      <summary>One field:</summary>
+      <summary>One field & label:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="email"
+        search-label-email="mail"
       ></sib-display>
     </details>
 
@@ -52,6 +53,16 @@
     </details>
 
     <details>
+      <summary>Dropdown + One field: :</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/members/"
+        data-fields="pseudo, user.username, skills"
+        search-fields="skills,pseudo"
+        search-range-skills="https://test-paris.happy-dev.fr/skills/"
+      ></sib-display>
+    </details>
+
+    <details>
       <summary>Widget:</summary>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
@@ -75,8 +86,8 @@
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email, member.pseudo"
-        search-fields="set"
-        search-fields="member.pseudo"
+        set-nameSet="member.pseudo,first_name"
+        search-fields="nameSet"
       ></sib-display>
     </details>
   </body>

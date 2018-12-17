@@ -94,8 +94,11 @@ export const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.dataset.fields)
+      if(this.dataset.fields === 'data-fields') {
+        return [];
+      } else if (this.dataset.fields) {
         return this.parseFieldsString(this.dataset.fields);
+      }
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
@@ -205,6 +208,7 @@ export const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
+      console.log('matchValue', propertyValue, filterValue);
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
@@ -219,8 +223,9 @@ export const SIBListMixin = superclass =>
       if (propertyValue['@id']) {
         //search in ids
         return (
-          propertyValue['@id'] == filterValue ||
-          propertyValue['@id'] == filterValue['@id']
+          filterValue['@id'] === '' ||
+          propertyValue['@id'] === filterValue ||
+          propertyValue['@id'] === filterValue['@id']
         );
       }
       if (
@@ -228,7 +233,7 @@ export const SIBListMixin = superclass =>
         propertyValue instanceof Number
       ) {
         //check if integer match
-        return propertyValue == filterValue;
+        return propertyValue === filterValue;
       }
       if (
         typeof propertyValue === 'string' ||
@@ -236,27 +241,41 @@ export const SIBListMixin = superclass =>
       ) {
         //search in strings
         return (
-          propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) != -1
+          propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1
         );
       }
       return false;
     }
+
+    applyFilterToResource(resource, filter) {
+      if (Array.isArray(filter) && filter.length > 1) {
+        let firstFilter = filter.shift();
+        return this.applyFilterToResource(resource[firstFilter], filter);
+      } else if (Array.isArray(filter) && filter.length === 1) {
+        return resource[filter[0]];
+      } else {
+        return resource[filter];
+      }
+    }
+
     matchFilter(resource, filter, value) {
-      if (this.isSet(filter))
+      if (this.isSet(filter)) {
         // for sets, return true if it matches at least one of the fields
         return this.getSet(filter).reduce(
           (initial, field) =>
-            initial || this.matchFilter(resource, field, value),
+          initial || this.matchFilter(resource, field, value),
           false,
         );
-      return this.matchValue(resource[filter], value);
+      }
+
+      return this.matchValue(this.applyFilterToResource(resource, filter), value);
     }
 
     matchFilters(resource) {
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
         (initial, filter) =>
-          initial && this.matchFilter(resource, filter, this.filters[filter]),
+        initial && this.matchFilter(resource, filter, this.filters[filter]),
         true,
       );
     }
@@ -294,6 +313,11 @@ export const SIBListMixin = superclass =>
             'widget-' + field,
             this.getAttribute('search-widget-' + field),
           );
+        if (this.hasAttribute('search-label-' + field))
+          formElt.setAttribute(
+            'label-' + field,
+            this.getAttribute('search-label-' + field),
+          );
       }
 
       if (this.shadowRoot)
@@ -314,20 +338,25 @@ export const SIBListMixin = superclass =>
 
         if (this.hasAttribute('counter-template')) {
           const html = evalTemplateString(
-            this.getAttribute('counter-template'),
-            { counter: this.resources.length },
+            this.getAttribute('counter-template'), {
+              counter: this.resources.length
+            },
           );
-          this.div.insertBefore(stringToDom(html), this.div.firstChild);
+          const counter = document.createElement('div')
+          counter.appendChild(stringToDom(html))
+          this.insertBefore(counter, this.div);
         }
 
-        for (let resource of this.resources) {
-          //for federations, fetch every sib:source we find
-          if (resource['@type'] == 'sib:source')
-            store.get(resource.container).then(container => {
-              for (let resource of container['ldp:contains'])
-                this.appendChildElt(resource);
-            });
-          else this.appendChildElt(resource);
+        if(this.fields.length > 0) {
+          for (let resource of this.resources) {
+            //for federations, fetch every sib:source we find
+            if (resource['@type'] == 'sib:source')
+              store.get(resource.container).then(container => {
+                for (let resource of container['ldp:contains'])
+                  this.appendChildElt(resource);
+              });
+            else this.appendChildElt(resource);
+          }
         }
       } else this.appendSingleElt();
     }
@@ -348,7 +377,7 @@ export class SIBACChecker extends SIBBase {
 
   populate() {
     for (let permission of this.resource.permissions) {
-      if (permission.mode == this.permission) {
+      if (permission.mode === this.permission) {
         this.removeAttribute('hidden');
       }
     }
