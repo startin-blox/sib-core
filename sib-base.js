@@ -48,11 +48,10 @@ class SIBBase extends HTMLElement {
     };
   }
 
-  setLoaderDisplay(display) {
-    if (this.hasAttribute('loader-id'))
-      document.getElementById(
-        this.getAttribute('loader-id'),
-      ).style.display = display;
+  toggleLoaderHidden(toggle) {
+    const loaderId = this.hasAttribute('loader-id');
+    if (loaderId == null) return;
+    document.getElementById(loaderId).toggleAttribute('hidden', toggle)
   }
 
   attributeChangedCallback(attribute, oldValue, newValue) {
@@ -61,7 +60,7 @@ class SIBBase extends HTMLElement {
     this.empty();
 
     // brings a loader out if the attribute is set
-    this.setLoaderDisplay('block');
+    this.toggleLoaderHidden(false);
 
     if (!newValue) return
     
@@ -70,7 +69,7 @@ class SIBBase extends HTMLElement {
       this.empty();
       this.resource = resource;
       this.populate();
-      this.setLoaderDisplay('none');
+      this.toggleLoaderHidden(true);
     });
   }
 
