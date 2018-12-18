@@ -62,14 +62,14 @@
       resource['@context'] = this.context;
       this.save(resource);
 
-      if (this.next)
-        this.dispatchEvent(
-          new CustomEvent('requestNavigation', {
-            bubbles: true,
-            detail: { route: this.next, resource: resource },
-          })
-        );
-      return false;
+      if (!this.next) return false;
+      
+      this.dispatchEvent(
+        new CustomEvent('requestNavigation', {
+          bubbles: true,
+          detail: { route: this.next, resource: resource },
+        })
+      );
     }
     inputChange(event) {
       const resource = this.formToObject(this.form);
