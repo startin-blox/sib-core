@@ -269,11 +269,11 @@ const SIBListMixin = superclass =>
           propertyValue['@id'] === filterValue['@id']
         );
       }
-      if (typeof propertyValue === 'number' || propertyValue instanceof Number) {
+      if (typeof propertyValue === 'number') {
         //check if integer match
         return propertyValue === filterValue;
       }
-      if (typeof propertyValue === 'string' || propertyValue instanceof String) {
+      if (typeof propertyValue === 'string') {
         //search in strings
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1
