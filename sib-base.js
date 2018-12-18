@@ -167,8 +167,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     empty() {
-      for(let child of this.div.childNodes)
-        child.toggleAttribute('hidden', true);
+      while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
 
     getWidget(field) {
@@ -317,7 +316,7 @@ const SIBListMixin = superclass =>
     get resources() {
       return super.resources.filter(this.matchFilters.bind(this));
     }
-
+    
     filterList(filters) {
       this.filters = filters;
     }
