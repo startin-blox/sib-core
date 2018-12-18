@@ -167,7 +167,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     empty() {
-      for(child of this.div.childNodes)
+      for(let child of this.div.childNodes)
         child.toggleAttribute('hidden', true);
     }
 
@@ -338,7 +338,7 @@ const SIBListMixin = superclass =>
       //pass range attributes
       for (let field of formElt.fields) {
         for(let attr in ['range', 'widget', 'label']) {
-          value = this.getAttribute(`search-${attr}-${field}`);
+         const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
           formElt.setAttribute(`${attr}-${field}`, value);
         }
