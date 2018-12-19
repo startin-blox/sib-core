@@ -49,9 +49,9 @@ class SIBBase extends HTMLElement {
   }
 
   toggleLoaderHidden(toggle) {
-    const loaderId = this.hasAttribute('loader-id');
-    if (loaderId == null) return;
-    document.getElementById(loaderId).toggleAttribute('hidden', toggle)
+    if (this.hasAttribute('loader-id')) {
+      document.getElementById(this.getAttribute('loaderId')).toggleAttribute('hidden', toggle)
+    }
   }
 
   attributeChangedCallback(attribute, oldValue, newValue) {
