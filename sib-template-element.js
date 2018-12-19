@@ -1,4 +1,4 @@
-class SIBTemplateElement extends HTMLElement {
+export class SIBTemplateElement extends HTMLElement {
   constructor() {
     super();
     this.initProps();
