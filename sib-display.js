@@ -1,5 +1,5 @@
-import {SIBBase, SIBListMixin, SIBWidgetMixin} from "./sib-base.mjs";
-import './widgets/sib-display-widgets.mjs';
+import {SIBBase, SIBListMixin, SIBWidgetMixin} from "./sib-base.js";
+import './widgets/sib-display-widgets.js';
 
 class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   constructor() {

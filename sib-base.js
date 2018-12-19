@@ -1,5 +1,5 @@
-import {base_context, store} from './store.mjs';
-import { stringToDom, evalTemplateString } from './helpers.mjs';
+import {base_context, store} from './store.js';
+import { stringToDom, evalTemplateString } from './helpers.js';
 
 export class SIBBase extends HTMLElement {
   static get observedAttributes() {

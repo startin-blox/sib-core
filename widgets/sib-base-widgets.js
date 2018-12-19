@@ -1,4 +1,4 @@
-import { uniqID } from '../helpers.mjs';
+import { uniqID } from '../helpers.js';
 export class SIBWidget extends HTMLElement {
   connectedCallback() {
     this.render();

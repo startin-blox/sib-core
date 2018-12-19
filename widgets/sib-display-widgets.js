@@ -1,4 +1,4 @@
-import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.mjs";
+import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.js";
 
 class SIBDisplayDiv extends SIBWidget {
   get template() {

@@ -4,9 +4,9 @@ For a better experience Include Choices.js in html to use sib-form-auto-completi
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/styles/choices.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"></script>
 */
-import {store} from '../store.mjs';
-import { uniqID } from '../helpers.mjs';
-import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.mjs";
+import {store} from '../store.js';
+import { uniqID } from '../helpers.js';
+import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.js";
 
 class SIBFormPlaceholderText extends SIBWidget {
   get template() {

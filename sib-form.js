@@ -1,5 +1,5 @@
-import {SIBWidgetMixin, SIBBase} from "./sib-base.mjs";
-import "./widgets/sib-form-widgets.mjs";
+import {SIBWidgetMixin, SIBBase} from "./sib-base.js";
+import "./widgets/sib-form-widgets.js";
 
 export class SIBForm extends SIBWidgetMixin(SIBBase) {
   get defaultWidget() {
