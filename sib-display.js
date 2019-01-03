@@ -1,4 +1,4 @@
-import {SIBBase, SIBListMixin, SIBWidgetMixin} from "./sib-base.js";
+import { SIBBase, SIBListMixin, SIBWidgetMixin } from './sib-base.js';
 import './widgets/sib-display-widgets.js';
 
 class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
@@ -35,6 +35,15 @@ class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
           detail: { route: this.next, resource: resource },
         }),
       );
+
+    if (!this.next) return;
+
+    this.dispatchEvent(
+      new CustomEvent('requestNavigation', {
+        bubbles: true,
+        detail: { route: this.next, resource: resource },
+      }),
+    );
   }
   appendChildElt(resource) {
     const child = document.createElement(this.childTag);

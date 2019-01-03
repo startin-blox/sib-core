@@ -1,4 +1,4 @@
-import {base_context, store} from './store.js';
+import { base_context, store } from './store.js';
 import { stringToDom, evalTemplateString } from './helpers.js';
 
 export class SIBBase extends HTMLElement {
@@ -14,29 +14,31 @@ export class SIBBase extends HTMLElement {
     return { ...base_context, ...this.extra_context };
   }
 
-  setLoaderDisplay(display) {
-    if (this.hasAttribute('loader-id'))
-      document.getElementById(
-        this.getAttribute('loader-id'),
-      ).style.display = display;
+  toggleLoaderHidden(toggle) {
+    if (this.hasAttribute('loader-id')) {
+      document
+        .getElementById(this.getAttribute('loaderId'))
+        .toggleAttribute('hidden', toggle);
+    }
   }
 
   attributeChangedCallback(attribute, oldValue, newValue) {
-    if (attribute == 'data-src') {
+    if (attribute !== 'data-src') return;
+
+    this.empty();
+
+    // brings a loader out if the attribute is set
+    this.toggleLoaderHidden(false);
+
+    if (!newValue) return;
+
+    // gets the data through the store
+    store.get(newValue + this.idSuffix, this.context).then(resource => {
       this.empty();
-
-      // brings a loader out if the attribute is set
-      this.setLoaderDisplay('block');
-
-      // gets the data through the store
-      if (newValue)
-        store.get(newValue + this.idSuffix, this.context).then(resource => {
-          this.empty();
-          this.resource = resource;
-          this.populate();
-          this.setLoaderDisplay('none');
-        });
-    }
+      this.resource = resource;
+      this.populate();
+      this.toggleLoaderHidden(true);
+    });
   }
 
   populate() {
@@ -94,9 +96,10 @@ export const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if(this.dataset.fields === 'data-fields') {
+      if (this.dataset.fields === 'data-fields') {
         return [];
-      } else if (this.dataset.fields) {
+      }
+      if (this.dataset.fields) {
         return this.parseFieldsString(this.dataset.fields);
       }
 
@@ -135,9 +138,8 @@ export const SIBWidgetMixin = superclass =>
     }
 
     getWidget(field) {
-      return (
-        this.getAttribute('widget-' + field.join('.')) || this.defaultWidget
-      );
+      const value = this.getAttribute('widget-' + field.join('.'));
+      return value || this.defaultWidget;
     }
 
     async widgetAttributes(field) {
@@ -159,8 +161,7 @@ export const SIBWidgetMixin = superclass =>
         const div = document.createElement('div');
         div.setAttribute('name', field);
         parent.appendChild(div);
-        for (let item of this.getSet(field))
-          await this.appendWidget(item, div);
+        for (let item of this.getSet(field)) await this.appendWidget(item, div);
         return;
       }
       let widget;
@@ -168,8 +169,7 @@ export const SIBWidgetMixin = superclass =>
 
       widget = document.createElement(this.getWidget(field));
       attributes = await this.widgetAttributes(field);
-      for (let name of Object.keys(attributes))
-        widget[name] = attributes[name];
+      for (let name of Object.keys(attributes)) widget[name] = attributes[name];
       parent.appendChild(widget);
     }
 
@@ -201,10 +201,9 @@ export const SIBListMixin = superclass =>
 
     set filters(filters) {
       this._filters = filters;
-      if (this.resource) {
-        this.empty();
-        this.populate();
-      }
+      if (!this.resource) return;
+      this.empty();
+      this.populate();
     }
 
     matchValue(propertyValue, filterValue) {
@@ -228,17 +227,11 @@ export const SIBListMixin = superclass =>
           propertyValue['@id'] === filterValue['@id']
         );
       }
-      if (
-        typeof propertyValue === 'number' ||
-        propertyValue instanceof Number
-      ) {
+      if (typeof propertyValue === 'number') {
         //check if integer match
         return propertyValue === filterValue;
       }
-      if (
-        typeof propertyValue === 'string' ||
-        propertyValue instanceof String
-      ) {
+      if (typeof propertyValue === 'string') {
         //search in strings
         return (
           propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1
@@ -248,34 +241,34 @@ export const SIBListMixin = superclass =>
     }
 
     applyFilterToResource(resource, filter) {
-      if (Array.isArray(filter) && filter.length > 1) {
-        let firstFilter = filter.shift();
-        return this.applyFilterToResource(resource[firstFilter], filter);
-      } else if (Array.isArray(filter) && filter.length === 1) {
-        return resource[filter[0]];
-      } else {
-        return resource[filter];
-      }
+      if (!Array.isArray(filter)) return resource[filter];
+      if (filter.length === 0) return;
+      if (filter.length === 1) return resource[filter[0]];
+
+      let firstFilter = filter.shift();
+      return this.applyFilterToResource(resource[firstFilter], filter);
     }
 
     matchFilter(resource, filter, value) {
-      if (this.isSet(filter)) {
-        // for sets, return true if it matches at least one of the fields
-        return this.getSet(filter).reduce(
-          (initial, field) =>
-          initial || this.matchFilter(resource, field, value),
-          false,
+      if (!this.isSet(filter)) {
+        return this.matchValue(
+          this.applyFilterToResource(resource, filter),
+          value,
         );
       }
 
-      return this.matchValue(this.applyFilterToResource(resource, filter), value);
+      // for sets, return true if it matches at least one of the fields
+      return this.getSet(filter).reduce(
+        (initial, field) => initial || this.matchFilter(resource, field, value),
+        false,
+      );
     }
 
     matchFilters(resource) {
       //return true if all filters values are contained in the corresponding field of the resource
       return Object.keys(this.filters).reduce(
         (initial, filter) =>
-        initial && this.matchFilter(resource, filter, this.filters[filter]),
+          initial && this.matchFilter(resource, filter, this.filters[filter]),
         true,
       );
     }
@@ -303,21 +296,11 @@ export const SIBListMixin = superclass =>
 
       //pass range attributes
       for (let field of formElt.fields) {
-        if (this.hasAttribute('search-range-' + field))
-          formElt.setAttribute(
-            'range-' + field,
-            this.getAttribute('search-range-' + field),
-          );
-        if (this.hasAttribute('search-widget-' + field))
-          formElt.setAttribute(
-            'widget-' + field,
-            this.getAttribute('search-widget-' + field),
-          );
-        if (this.hasAttribute('search-label-' + field))
-          formElt.setAttribute(
-            'label-' + field,
-            this.getAttribute('search-label-' + field),
-          );
+        for (let attr in ['range', 'widget', 'label']) {
+          const value = this.getAttribute(`search-${attr}-${field}`);
+          if (value == null) continue;
+          formElt.setAttribute(`${attr}-${field}`, value);
+        }
       }
 
       if (this.shadowRoot)
@@ -332,33 +315,34 @@ export const SIBListMixin = superclass =>
     }
 
     populate() {
-      if (this.isContainer) {
-        if (!this._filtersAdded && this.hasAttribute('search-fields'))
-          this.appendFilters();
+      if (!this.isContainer) {
+        this.appendSingleElt();
+        return;
+      }
+      if (!this._filtersAdded && this.hasAttribute('search-fields'))
+        this.appendFilters();
 
-        if (this.hasAttribute('counter-template')) {
-          const html = evalTemplateString(
-            this.getAttribute('counter-template'), {
-              counter: this.resources.length
-            },
-          );
-          const counter = document.createElement('div')
-          counter.appendChild(stringToDom(html))
-          this.insertBefore(counter, this.div);
-        }
+      if (this.hasAttribute('counter-template')) {
+        const html = evalTemplateString(this.getAttribute('counter-template'), {
+          counter: this.resources.length,
+        });
+        const counter = document.createElement('div');
+        counter.appendChild(stringToDom(html));
+        this.insertBefore(counter, this.div);
+      }
 
-        if(this.fields.length > 0) {
-          for (let resource of this.resources) {
-            //for federations, fetch every sib:source we find
-            if (resource['@type'] == 'sib:source')
-              store.get(resource.container).then(container => {
-                for (let resource of container['ldp:contains'])
-                  this.appendChildElt(resource);
-              });
-            else this.appendChildElt(resource);
-          }
+      if (this.fields.length <= 0) return;
+      for (let resource of this.resources) {
+        //for federations, fetch every sib:source we find
+        if (resource['@type'] !== 'sib:source') {
+          this.appendChildElt(resource);
+          continue;
         }
-      } else this.appendSingleElt();
+        store.get(resource.container).then(container => {
+          for (let resource of container['ldp:contains'])
+            this.appendChildElt(resource);
+        });
+      }
     }
   };
 

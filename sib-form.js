@@ -1,5 +1,5 @@
-import {SIBWidgetMixin, SIBBase} from "./sib-base.js";
-import "./widgets/sib-form-widgets.js";
+import { SIBWidgetMixin, SIBBase } from './sib-base.js';
+import './widgets/sib-form-widgets.js';
 
 export class SIBForm extends SIBWidgetMixin(SIBBase) {
   get defaultWidget() {
@@ -64,14 +64,14 @@ export class SIBForm extends SIBWidgetMixin(SIBBase) {
     resource['@context'] = this.context;
     this.save(resource);
 
-    if (this.next)
-      this.dispatchEvent(
-        new CustomEvent('requestNavigation', {
-          bubbles: true,
-          detail: { route: this.next, resource: resource },
-        }),
-      );
-    return false;
+    if (this.next) if (!this.next) return false;
+
+    this.dispatchEvent(
+      new CustomEvent('requestNavigation', {
+        bubbles: true,
+        detail: { route: this.next, resource: resource },
+      }),
+    );
   }
   inputChange(event) {
     const resource = this.formToObject(this.form);

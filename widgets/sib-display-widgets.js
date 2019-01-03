@@ -30,7 +30,7 @@ customElements.define('sib-display-list', SIBDisplayList);
 
 class SIBDisplayLookupList extends SIBDisplayList {
   getTemplate(value, index) {
-    if (typeof value == 'object' && !('ldp:contains' in value))
+    if (typeof value == 'object' && !('ldp:contains' in value)) {
       if (value.name) value = value.name;
       else {
         store.get(value).then(resource => {
@@ -42,6 +42,7 @@ class SIBDisplayLookupList extends SIBDisplayList {
         else this.value = [];
         return '';
       }
+    }
     return super.getTemplate(value, index);
   }
 }
