@@ -1,13 +1,13 @@
 import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.js";
 
-class SIBDisplayDiv extends SIBWidget {
+export class SIBDisplayDiv extends SIBWidget {
   get template() {
     return `<div name="${this.name}">${this.value}</div>`;
   }
 }
 customElements.define('sib-display-div', SIBDisplayDiv);
 
-class SIBDisplayImg extends SIBWidget {
+export class SIBDisplayImg extends SIBWidget {
   get template() {
     return `<img
       name="${this.name}"
@@ -18,7 +18,7 @@ class SIBDisplayImg extends SIBWidget {
 }
 customElements.define('sib-display-img', SIBDisplayImg);
 
-class SIBDisplayList extends SIBMultipleWidget {
+export class SIBDisplayList extends SIBMultipleWidget {
   get parentTag() {
     return 'ul';
   }
@@ -28,7 +28,7 @@ class SIBDisplayList extends SIBMultipleWidget {
 }
 customElements.define('sib-display-list', SIBDisplayList);
 
-class SIBDisplayLookupList extends SIBDisplayList {
+export class SIBDisplayLookupList extends SIBDisplayList {
   getTemplate(value, index) {
     if (typeof value == 'object' && !('ldp:contains' in value)) {
       if (value.name) value = value.name;
@@ -48,7 +48,7 @@ class SIBDisplayLookupList extends SIBDisplayList {
 }
 customElements.define('sib-display-lookuplist', SIBDisplayLookupList);
 
-class SIBDisplayMailTo extends SIBWidget {
+export class SIBDisplayMailTo extends SIBWidget {
   get template() {
     return `<a href="mailto:${this.value}" name="${this.name}">${
       this.value
@@ -57,7 +57,7 @@ class SIBDisplayMailTo extends SIBWidget {
 }
 customElements.define('sib-display-mailto', SIBDisplayMailTo);
 
-class SIBDisplayTel extends SIBWidget {
+export class SIBDisplayTel extends SIBWidget {
   get template() {
     return `<a href="tel:${this.value}" name="${this.name}">${this.value}</a>`;
   }

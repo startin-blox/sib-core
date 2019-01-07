@@ -8,7 +8,7 @@ import {store} from '../store.js';
 import { uniqID } from '../helpers.js';
 import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.js";
 
-class SIBFormPlaceholderText extends SIBWidget {
+export class SIBFormPlaceholderText extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<input
@@ -22,7 +22,7 @@ class SIBFormPlaceholderText extends SIBWidget {
 }
 customElements.define('sib-form-placeholder-text', SIBFormPlaceholderText);
 
-class SIBFormLabelText extends SIBWidget {
+export class SIBFormLabelText extends SIBWidget {
   get template() {
     const id = uniqID();
     return `
@@ -36,7 +36,7 @@ class SIBFormLabelText extends SIBWidget {
 }
 customElements.define('sib-form-label-text', SIBFormLabelText);
 
-class SIBFormTextArea extends SIBWidget {
+export class SIBFormTextArea extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<label for="${id}">${this.label}</label>
@@ -49,7 +49,7 @@ class SIBFormTextArea extends SIBWidget {
 }
 customElements.define('sib-form-textarea', SIBFormTextArea);
 
-class SIBFormCheckbox extends SIBWidget {
+export class SIBFormCheckbox extends SIBWidget {
   get template() {
     const id = uniqID();
     const checked = this.value ? 'checked' : '';
@@ -64,7 +64,7 @@ class SIBFormCheckbox extends SIBWidget {
 }
 customElements.define('sib-form-checkbox', SIBFormCheckbox);
 
-class SIBFormJSON extends SIBWidget {
+export class SIBFormJSON extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<label for="${id}">${this.label}</label>
@@ -78,7 +78,7 @@ class SIBFormJSON extends SIBWidget {
 }
 customElements.define('sib-form-json', SIBFormJSON);
 
-class SIBFormDropdown extends SIBMultipleWidget {
+export class SIBFormDropdown extends SIBMultipleWidget {
   get parentTag() {
     return 'select';
   }
@@ -108,7 +108,7 @@ class SIBFormDropdown extends SIBMultipleWidget {
 }
 customElements.define('sib-form-dropdown', SIBFormDropdown);
 
-class SIBFormMultipleValue extends SIBMultipleWidget {
+export class SIBFormMultipleValue extends SIBMultipleWidget {
   getTemplate(item, index) {
     return `<div
       id="id-${this.name}-${index}-box"
@@ -171,7 +171,7 @@ class SIBFormMultipleValue extends SIBMultipleWidget {
 }
 customElements.define('sib-form-multiple-value', SIBFormMultipleValue);
 
-class SIBFormMultipleDropdown extends SIBFormMultipleValue {
+export class SIBFormMultipleDropdown extends SIBFormMultipleValue {
   getTemplate(item, index) {
     return `<div
       id="id-${this.name}-${index}-box"
@@ -211,7 +211,7 @@ class SIBFormMultipleDropdown extends SIBFormMultipleValue {
 }
 customElements.define('sib-form-multiple-dropdown', SIBFormMultipleDropdown);
 
-class SIBFormAutoCompletion extends SIBMultipleWidget {
+export class SIBFormAutoCompletion extends SIBMultipleWidget {
   constructor() {
     super();
     this.list = [];
