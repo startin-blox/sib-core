@@ -19,3 +19,14 @@ export function evalTemplateString(str, variables = {}) {
   }
   return '';
 }
+export function loadStyles(...stylesheets) {
+  return stylesheets.map(url => {
+    let link = Array.from(document.head.querySelectorAll('link')).find(link => link.href === url);
+    if (link) return link;
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+    return link;
+  });
+}

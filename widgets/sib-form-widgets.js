@@ -1,12 +1,7 @@
-/*
-For a better experience Include Choices.js in html to use sib-form-auto-completion
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/styles/choices.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"></script>
-*/
-import {store} from '../store.js';
-import { uniqID } from '../helpers.js';
-import {SIBWidget, SIBMultipleWidget} from "./sib-base-widgets.js";
+import { store } from '../store.js';
+import { uniqID, loadStyles } from '../helpers.js';
+import { SIBWidget, SIBMultipleWidget } from './sib-base-widgets.js';
+import Choices from 'https://dev.jspm.io/choices.js@4';
 
 export class SIBFormPlaceholderText extends SIBWidget {
   get template() {
@@ -234,13 +229,11 @@ export class SIBFormAutoCompletion extends SIBMultipleWidget {
     });
     options.forEach(option => select.appendChild(option));
     this.parent.appendChild(select);
-    if (window.Choices) {
-      new window.Choices(select, { removeItemButton: true });
-    }
+    new Choices(select, { removeItemButton: true });
+    loadStyles('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css')
   }
   set range(url) {
     store.list(url).then(list => {
-      console.log(list);
       this.list = list;
       this.render();
     });
