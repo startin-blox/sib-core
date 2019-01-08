@@ -1,4 +1,5 @@
 import { SIBWidgetMixin, SIBBase } from './sib-base.js';
+import { store } from './store.js';
 import './widgets/sib-form-widgets.js';
 
 export class SIBForm extends SIBWidgetMixin(SIBBase) {
