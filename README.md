@@ -112,6 +112,13 @@ The following widgets are available :
 - **sib-form-dropdown**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget. 
 - **sib-form-auto-completion**:
 
+## Helpers fonctions
+
+- `uniqID()`: créate an uniq ID, used for example to associate input with label
+- `stringToDom(html)`: parse html string and return DOM fragment
+- `evalTemplateString(str, variables = {})`: eval a string as an es6 template string example: `evalTemplateString('name: ${first}  ${last}', {first: 'John', last: 'Doe'})`
+- `importCSS(...stylesheets)`: add style in document if not present
+
 ## Events
 
 The component sib-display fires a "select" event when the user clicks an child in the list, with the resource as a detail of the event.
