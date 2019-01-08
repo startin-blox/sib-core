@@ -19,7 +19,7 @@ export function evalTemplateString(str, variables = {}) {
   }
   return '';
 }
-export function loadStyles(...stylesheets) {
+export function importCSS(...stylesheets) {
   return stylesheets.map(url => {
     let link = Array.from(document.head.querySelectorAll('link')).find(link => link.href === url);
     if (link) return link;
