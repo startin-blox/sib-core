@@ -1,7 +1,7 @@
 import { SIBBase, SIBListMixin, SIBWidgetMixin } from './sib-base.js';
 import './widgets/sib-display-widgets.js';
 
-class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
+export class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   constructor() {
     super();
     window.addEventListener('navigate', event => {
