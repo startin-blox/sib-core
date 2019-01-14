@@ -326,9 +326,12 @@ export const SIBListMixin = superclass =>
         const html = evalTemplateString(this.getAttribute('counter-template'), {
           counter: this.resources.length,
         });
-        const counter = document.createElement('div');
-        counter.appendChild(stringToDom(html));
-        this.insertBefore(counter, this.div);
+        if(!this.counter){
+          this.counter = document.createElement('div');
+          this.insertBefore(this.counter, this.div);
+        }
+        this.counter.innerHTML = '';
+        this.counter.appendChild(stringToDom(html));
       }
 
       if (this.fields.length <= 0) return;
