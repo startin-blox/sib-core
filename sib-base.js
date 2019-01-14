@@ -193,6 +193,7 @@ export const SIBListMixin = superclass =>
       super();
       this._filters = {};
       this._filtersAdded = false;
+      this._currentPage = 1;
     }
 
     get filters() {
@@ -273,6 +274,69 @@ export const SIBListMixin = superclass =>
       );
     }
 
+    get paginateBy() {
+      let pagination = this.getAttribute('paginate-by');
+      if (!pagination) return;
+      pagination = Number.parseInt(pagination, 10);
+      if (Number.isNaN(pagination)) return;
+      return pagination;
+    }
+    get currentPage() {
+      return this._currentPage;
+    }
+    set currentPage(page) {
+      if (page < 1) page = 1;
+      if (page > this.pageCount) page = this.pageCount;
+      this._currentPage = page;
+      this.populate;
+    }
+    get pageCount() {
+      return Math.ceil(this.resources.length / this.paginateBy);
+    }
+    get currentPageResources() {
+      const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
+      return this.resources.slice(
+        firstElementIndex,
+        firstElementIndex + this.paginateBy,
+      );
+    }
+
+    renderPaginationNav() {
+      const paginateBy = this.paginateBy;
+      if (this.paginationNav) {
+        this.paginationNav.toggleAttribute('hidden', paginateBy == null);
+      }
+      if (paginateBy == null) return;
+      if (!this.paginationNav) {
+        this.paginationNav = stringToDom(/*html*/ `<nav>
+        <button class="pagination-prev">←</button>
+        <button class="pagination-next">→</button>
+        <span>
+        <span class="pagination-current-page">0</span>
+        / <span class="pagination-page-count">0</span>
+        </span>
+        </nav>`).firstChild;
+        this.insertBefore(this.paginationNav, this.div.nextSibling);
+        this.paginationNav.addEventListener('click', ({ target }) => {
+          if (target.tagName !== 'BUTTON') return;
+          const pageOffset = target.classList.contains('pagination-prev')
+            ? -1
+            : 1;
+          this.currentPage += pageOffset;
+          console.log(this.currentPage);
+          this.empty();
+          this.populate();
+        });
+      }
+      this.paginationNav.querySelector(
+        '.pagination-current-page',
+      ).textContent = this.currentPage;
+      this.paginationNav.querySelector(
+        '.pagination-page-count',
+      ).textContent = this.pageCount;
+      return;
+    }
+
     get resources() {
       return super.resources.filter(this.matchFilters.bind(this));
     }
@@ -319,31 +383,34 @@ export const SIBListMixin = superclass =>
         this.appendSingleElt();
         return;
       }
-      if (!this._filtersAdded && this.hasAttribute('search-fields'))
+      if (!this._filtersAdded && this.hasAttribute('search-fields')) {
         this.appendFilters();
+      }
 
       if (this.hasAttribute('counter-template')) {
         const html = evalTemplateString(this.getAttribute('counter-template'), {
           counter: this.resources.length,
         });
-        if(!this.counter){
+        if (!this.counter) {
           this.counter = document.createElement('div');
           this.insertBefore(this.counter, this.div);
         }
         this.counter.innerHTML = '';
         this.counter.appendChild(stringToDom(html));
       }
+      this.renderPaginationNav();
 
       if (this.fields.length <= 0) return;
-      for (let resource of this.resources) {
+      for (let resource of this.currentPageResources) {
         //for federations, fetch every sib:source we find
         if (resource['@type'] !== 'sib:source') {
           this.appendChildElt(resource);
           continue;
         }
         store.get(resource.container).then(container => {
-          for (let resource of container['ldp:contains'])
+          for (let resource of container['ldp:contains']) {
             this.appendChildElt(resource);
+          }
         });
       }
     }
