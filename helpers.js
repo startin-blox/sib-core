@@ -15,9 +15,8 @@ export function evalTemplateString(str, variables = {}) {
     const func = Function.call(null, ...keys, 'return `' + str + '`');
     return func(...values);
   } catch (e) {
-    console.warn(e);
+    throw new SyntaxError('`' + str + '`');
   }
-  return '';
 }
 export function importCSS(...stylesheets) {
   return stylesheets.map(url => {

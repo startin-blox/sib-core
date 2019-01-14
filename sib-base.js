@@ -179,10 +179,15 @@ export const SIBWidgetMixin = superclass =>
       if (!(template instanceof HTMLTemplateElement)) return;
       const name = field;
       const value = await this.getValue(field);
-      const html = evalTemplateString(template.innerHTML.trim(), {
-        name,
-        value,
-      });
+      try {
+        const html = evalTemplateString(template.innerHTML.trim(), {
+          name,
+          value,
+        });
+      } catch (e) {
+        console.error(new Error(`error in template#${id}`), e);
+        throw e;
+      }
       return stringToDom(html);
     }
   };
@@ -323,10 +328,15 @@ export const SIBListMixin = superclass =>
         this.appendFilters();
 
       if (this.hasAttribute('counter-template')) {
-        const html = evalTemplateString(this.getAttribute('counter-template'), {
-          counter: this.resources.length,
-        });
-        if(!this.counter){
+        try{
+          const html = evalTemplateString(this.getAttribute('counter-template'), {
+            counter: this.resources.length,
+          });
+        }catch(e){
+          console.error(new Error('error in counter-template'), e);
+          throw e;
+        }
+        if (!this.counter) {
           this.counter = document.createElement('div');
           this.insertBefore(this.counter, this.div);
         }
