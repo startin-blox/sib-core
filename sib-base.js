@@ -179,8 +179,9 @@ export const SIBWidgetMixin = superclass =>
       if (!(template instanceof HTMLTemplateElement)) return;
       const name = field;
       const value = await this.getValue(field);
+      let html;
       try {
-        const html = evalTemplateString(template.innerHTML.trim(), {
+        html = evalTemplateString(template.innerHTML.trim(), {
           name,
           value,
         });
@@ -395,11 +396,12 @@ export const SIBListMixin = superclass =>
       }
 
       if (this.hasAttribute('counter-template')) {
+        let html;
         try{
-          const html = evalTemplateString(this.getAttribute('counter-template'), {
+          html = evalTemplateString(this.getAttribute('counter-template'), {
             counter: this.resources.length,
           });
-        }catch(e){
+        } catch(e) {
           console.error(new Error('error in counter-template'), e);
           throw e;
         }
