@@ -309,36 +309,45 @@ export const SIBListMixin = superclass =>
 
     renderPaginationNav() {
       const paginateBy = this.paginateBy;
-      if (this.paginationNav) {
-        this.paginationNav.toggleAttribute('hidden', paginateBy == null);
+      if (this._paginationElements) {
+        this._paginationElements.nav.toggleAttribute(
+          'hidden',
+          paginateBy == null,
+        );
       }
       if (paginateBy == null) return;
-      if (!this.paginationNav) {
-        this.paginationNav = stringToDom(/*html*/ `<nav>
-        <button class="pagination-prev">←</button>
-        <button class="pagination-next">→</button>
+      if (!this._paginationElements) {
+        const elements = (this._paginationElements = {});
+        const nav = stringToDom(/*html*/ `<nav data-id='nav'>
+        <button data-id="prev">←</button>
+        <button data-id="next">→</button>
         <span>
-        <span class="pagination-current-page">0</span>
-        / <span class="pagination-page-count">0</span>
+        <span data-id="current">0</span>
+        / <span data-id="count">0</span>
         </span>
-        </nav>`).firstChild;
-        this.insertBefore(this.paginationNav, this.div.nextSibling);
-        this.paginationNav.addEventListener('click', ({ target }) => {
-          if (target.tagName !== 'BUTTON') return;
-          const pageOffset = target.classList.contains('pagination-prev')
-            ? -1
-            : 1;
-          this.currentPage += pageOffset;
+        </nav>`);
+        nav.querySelectorAll('[data-id]').forEach(elm => {
+          const id = elm.dataset.id;
+          delete elm.dataset.id;
+          elements[id] = elm;
+        });
+        this.insertBefore(elements.nav, this.div.nextSibling);
+        elements.prev.addEventListener('click', () => {
+          this.currentPage -= 1;
+          this.empty();
+          this.populate();
+        });
+        elements.next.addEventListener('click', () => {
+          this.currentPage += 1;
           this.empty();
           this.populate();
         });
       }
-      this.paginationNav.querySelector(
-        '.pagination-current-page',
-      ).textContent = this.currentPage;
-      this.paginationNav.querySelector(
-        '.pagination-page-count',
-      ).textContent = this.pageCount;
+      const elements = this._paginationElements;
+      elements.current.textContent = this.currentPage;
+      elements.count.textContent = this.pageCount;
+      elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
+      elements.next.toggleAttribute('disabled',this.currentPage >= this.pageCount);
       return;
     }
 
@@ -395,11 +404,11 @@ export const SIBListMixin = superclass =>
 
       if (this.hasAttribute('counter-template')) {
         let html;
-        try{
+        try {
           html = evalTemplateString(this.getAttribute('counter-template'), {
             counter: this.resources.length,
           });
-        } catch(e) {
+        } catch (e) {
           console.error(new Error('error in counter-template'), e);
           throw e;
         }
