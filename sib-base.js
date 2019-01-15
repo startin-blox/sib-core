@@ -214,7 +214,6 @@ export const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      console.log('matchValue', propertyValue, filterValue);
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
@@ -330,7 +329,6 @@ export const SIBListMixin = superclass =>
             ? -1
             : 1;
           this.currentPage += pageOffset;
-          console.log(this.currentPage);
           this.empty();
           this.populate();
         });
