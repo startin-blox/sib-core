@@ -294,6 +294,7 @@ export const SIBListMixin = superclass =>
       return Math.ceil(this.resources.length / this.paginateBy);
     }
     get currentPageResources() {
+      if (this.paginateBy == null) return this.resources;
       const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
       return this.resources.slice(
         firstElementIndex,
@@ -354,10 +355,11 @@ export const SIBListMixin = superclass =>
       formElt.setAttribute('reset', '');
 
       //displays applied filter values in the form
-      for (let filter of Object.keys(this.filters))
-        if (formElt.dataset.fields.indexOf(filter) != -1)
+      for (let filter of Object.keys(this.filters)) {
+        if (formElt.dataset.fields.indexOf(filter) != -1) {
           formElt.setAttribute('value-' + filter, this.filters[filter]);
-
+        }
+      }
       //pass range attributes
       for (let field of formElt.fields) {
         for (let attr in ['range', 'widget', 'label']) {
