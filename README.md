@@ -26,9 +26,9 @@ Then you can use the new tags in your markup, for instance : `<sib-display>`. Mo
 
 ### sib-display
 
-Receives the URL of a ressource or of a contrainer of resources via its `data-src` attribute, and displays it. 
-Each field of the displayed resources can be rendered by a specific widget, either custom or chosen from the default ones. 
-Filters and searching capabilities can be easily added to interact with the list of data being displayed 
+Receives the URL of a ressource or of a contrainer of resources via its `data-src` attribute, and displays it.
+Each field of the displayed resources can be rendered by a specific widget, either custom or chosen from the default ones.
+Filters and searching capabilities can be easily added to interact with the list of data being displayed.
 
 ```html
 <sib-display
@@ -59,8 +59,9 @@ Filters and searching capabilities can be easily added to interact with the list
 - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
 - **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
 - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
+- **paginate-by**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
 - **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
-- **template-xyz**: You can choose how a given field will render by defining a template, see  the example above. 
+- **template-xyz**: You can choose how a given field will render by defining a template, see  the example above.
 
 
 ### sib-form
@@ -91,10 +92,10 @@ Hides an element from the page if the current user doesn't have the required per
 
 **Attributes :**
 - **permission**: Can take the following values :
-    - **view**: equivalent of [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
-    - **change**: equivalent of [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
-    - **add**: equivalent of [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
-    - **control**: equivalent of [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
+  - **view**: equivalent of [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
+  - **change**: equivalent of [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
+  - **add**: equivalent of [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
+  - **control**: equivalent of [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
 
 
 ## Widgets
@@ -109,7 +110,7 @@ The following widgets are available :
 - **sib-form-text**: Inserts an `<input/>` HTML tag of type "text".
 - **sib-form-textarea**:
 - **sib-form-checkbox**:
-- **sib-form-dropdown**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget. 
+- **sib-form-dropdown**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget.
 - **sib-form-auto-completion**:
 
 ## Helpers fonctions
