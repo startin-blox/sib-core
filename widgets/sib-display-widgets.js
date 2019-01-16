@@ -35,6 +35,7 @@ export class SIBDisplayLookupList extends SIBDisplayList {
       if (value.name) value = value.name;
       else {
         store.get(value).then(resource => {
+          if(!resource.name) return;
           this.value.push(resource);
           this.render();
         });
