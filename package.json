@@ -19,5 +19,20 @@
   "devDependencies": {
     "jest": "^23.6.0",
     "live-server": "^1.2.1"
+  },
+  "release": {
+    "branch": "master",
+    "plugins": [
+      ["@semantic-release/commit-analyzer", {
+        "preset": "angular",
+        "releaseRules": [
+          {"type": "major", "release": "major"},
+          {"type": "minor", "release": "minor"},
+          {"type": "/.*/", "release": "patch"}
+        ]
+      }],
+      "@semantic-release/gitlab",
+      "@semantic-release/npm"
+    ]
   }
 }

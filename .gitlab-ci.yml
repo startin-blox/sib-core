@@ -1,0 +1,26 @@
+---
+image: node
+
+stages:
+  - test
+  - release
+
+test:
+  stage: test
+  script:
+    - echo 'Make your tests here !'
+  except:
+    - master
+  tags:
+    - sib
+
+publish:
+  stage: release
+  before_script:
+    - npm install -g semantic-release @semantic-release/gitlab
+  script:
+    - semantic-release
+  only:
+    - master
+  tags:
+    - sib
