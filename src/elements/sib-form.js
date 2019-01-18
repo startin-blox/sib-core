@@ -1,8 +1,8 @@
-import { SIBWidgetMixin, SIBBase } from './sib-base.js';
-import { store } from './store.js';
-import './widgets/sib-form-widgets.js';
+import { SIBWidgetMixin } from '../mixins/index.js';
+import { SIBBase } from '../parents/index.js';
+import { store } from '../store.js';
 
-export class SIBForm extends SIBWidgetMixin(SIBBase) {
+export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   get defaultWidget() {
     return 'sib-form-label-text';
   }
