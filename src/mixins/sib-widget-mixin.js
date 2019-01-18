@@ -1,7 +1,7 @@
 import { store } from '../store.js';
 import { stringToDom, evalTemplateString } from '../helpers/index.js';
 
-export default const SIBWidgetMixin = superclass =>
+const SIBWidgetMixin = superclass =>
   class extends superclass {
     get div() {
       if (this._div) return this._div;
@@ -115,3 +115,5 @@ export default const SIBWidgetMixin = superclass =>
       return stringToDom(html);
     }
   };
+
+export default SIBWidgetMixin;

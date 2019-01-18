@@ -18,8 +18,8 @@
     ></my-custom-element>
 
     <script type="module">
-      import {SIBTemplateElement} from '../sib-template-element.js';
-      class MyCustomElement extends SIBTemplateElement {
+      import startinblox from '../src/index.js';
+      class MyCustomElement extends startinblox.SIBTemplateElement {
         static get propsDefinition() {
           return {
           title: {

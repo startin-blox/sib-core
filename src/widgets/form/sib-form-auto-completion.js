@@ -3,7 +3,7 @@ import { importCSS } from '../../helpers/index.js';
 import { SIBMultipleWidget } from '../../parents/index.js';
 import Choices from 'https://dev.jspm.io/choices.js@4';
 
-export class SIBFormAutoCompletion extends SIBMultipleWidget {
+export default class SIBFormAutoCompletion extends SIBMultipleWidget {
   constructor() {
     super();
     this.list = [];

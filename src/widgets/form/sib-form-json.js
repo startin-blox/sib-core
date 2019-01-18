@@ -1,7 +1,7 @@
 import { SIBWidget } from '../../parents/index.js';
 import { uniqID } from '../../helpers/index.js';
 
-export class SIBFormJSON extends SIBWidget {
+export default class SIBFormJSON extends SIBWidget {
   get template() {
     const id = uniqID();
     return `<label for="${id}">${this.label}</label>

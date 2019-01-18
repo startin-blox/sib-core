@@ -1,6 +1,6 @@
 import { SIBMultipleWidget } from '../../parents/index.js';
 
-export class SIBFormMultipleValue extends SIBMultipleWidget {
+export default class SIBFormMultipleValue extends SIBMultipleWidget {
   getTemplate(item, index) {
     return `<div
       id="id-${this.name}-${index}-box"

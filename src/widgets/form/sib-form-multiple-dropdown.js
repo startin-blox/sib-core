@@ -1,7 +1,7 @@
 import { store } from '../../store.js';
 import SIBFormMultipleValue from './sib-form-multiple-value.js';
 
-export class SIBFormMultipleDropdown extends SIBFormMultipleValue {
+export default class SIBFormMultipleDropdown extends SIBFormMultipleValue {
   getTemplate(item, index) {
     return `<div
       id="id-${this.name}-${index}-box"

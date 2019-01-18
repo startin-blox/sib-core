@@ -1,6 +1,6 @@
 import { SIBWidget } from '../../parents/index.js';
 
-export class SIBDisplayImg extends SIBWidget {
+export default class SIBDisplayImg extends SIBWidget {
   get template() {
     return `<img
       name="${this.name}"

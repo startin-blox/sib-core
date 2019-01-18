@@ -1,4 +1,5 @@
 import SIBWidget from './sib-widget.js';
+import { uniqID } from '../helpers/index.js';
 
 export default class SIBMultipleWidget extends SIBWidget {
   get parentTag() {

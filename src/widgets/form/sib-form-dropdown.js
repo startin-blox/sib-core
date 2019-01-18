@@ -1,7 +1,7 @@
 import { store } from '../../store.js';
 import { SIBMultipleWidget } from '../../parents/index.js';
 
-export class SIBFormDropdown extends SIBMultipleWidget {
+export default class SIBFormDropdown extends SIBMultipleWidget {
   get parentTag() {
     return 'select';
   }

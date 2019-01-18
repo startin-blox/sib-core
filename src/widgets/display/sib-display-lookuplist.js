@@ -1,7 +1,7 @@
-import { SIBMultipleWidget } from '../../parents/index.js';
+import SIBDisplayList from './sib-display-list.js';
 import { store } from '../../store.js';
 
-export class SIBDisplayLookupList extends SIBDisplayList {
+export default class SIBDisplayLookupList extends SIBDisplayList {
   getTemplate(value, index) {
     if (typeof value == 'object' && !('ldp:contains' in value)) {
       if (value.name) value = value.name;

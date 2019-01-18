@@ -1,6 +1,6 @@
 import { uniqID } from '../helpers/index.js';
 
-export class SIBWidget extends HTMLElement {
+export default class SIBWidget extends HTMLElement {
   connectedCallback() {
     this.render();
   }

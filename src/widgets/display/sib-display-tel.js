@@ -1,6 +1,6 @@
 import { SIBWidget } from '../../parents/index.js';
 
-export class SIBDisplayTel extends SIBWidget {
+export default class SIBDisplayTel extends SIBWidget {
   get template() {
     return `<a href="tel:${this.value}" name="${this.name}">${this.value}</a>`;
   }

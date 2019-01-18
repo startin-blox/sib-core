@@ -1,6 +1,6 @@
 import { SIBMultipleWidget } from '../../parents/index.js';
 
-export class SIBDisplayList extends SIBMultipleWidget {
+export default class SIBDisplayList extends SIBMultipleWidget {
   get parentTag() {
     return 'ul';
   }

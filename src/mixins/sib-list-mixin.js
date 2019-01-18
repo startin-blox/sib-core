@@ -1,7 +1,7 @@
 import { store } from '../store.js';
 import { stringToDom, evalTemplateString } from '../helpers/index.js';
 
-export default const SIBListMixin = superclass =>
+const SIBListMixin = superclass =>
   class extends superclass {
     constructor() {
       super();
@@ -244,3 +244,5 @@ export default const SIBListMixin = superclass =>
       }
     }
   };
+
+export default SIBListMixin;
