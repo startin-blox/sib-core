@@ -1,8 +1,8 @@
 {
-  "name": "sib-core",
-  "version": "1.0.0",
+  "name": "@startinblox/core",
+  "version": "0.0.0",
   "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
-  "main": "sib-base.js",
+  "main": "./index.js",
   "directories": {
     "example": "examples"
   },
