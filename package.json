@@ -34,5 +34,8 @@
       "@semantic-release/gitlab",
       "@semantic-release/npm"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
