@@ -1,7 +1,7 @@
-import { SIBBase, SIBListMixin, SIBWidgetMixin } from './sib-base.js';
-import './widgets/sib-display-widgets.js';
+import { SIBBase } from '../parents/index.js';
+import { SIBListMixin, SIBWidgetMixin } from '../mixins/index.js';
 
-export class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
+export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   constructor() {
     super();
     window.addEventListener('navigate', event => {
@@ -68,4 +68,5 @@ export class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     }
   }
 }
+
 customElements.define('sib-display', SIBDisplay);

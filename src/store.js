@@ -1,4 +1,4 @@
-import './ldpframework.js'
+import './legacy/ldpframework.js'
 
 const Store = window.MyStore;
 
