@@ -4,7 +4,7 @@ import { SIBACChecker, SIBDisplay, SIBForm } from './elements/index.js';
 import { SIBBase, SIBTemplateElement, SIBWidget, SIBMultipleWidget } from './parents/index.js'
 import { DisplayWidgets, FormWidgets } from './widgets/index.js';
 
-export default {
+export {
   Helpers,
   SIBListMixin,
   SIBWidgetMixin,
