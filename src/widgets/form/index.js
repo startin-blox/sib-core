@@ -8,7 +8,7 @@ import SIBFormMultipleValue from './sib-form-multiple-value.js';
 import SIBFormPlaceholderText from './sib-form-placeholder-text.js';
 import SIBFormTextarea from './sib-form-textarea.js';
 
-export default {
+export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDropdown,

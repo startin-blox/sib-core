@@ -1,5 +1,4 @@
-import * as _DisplayWidgets from './display/index.js';
-import * as _FormWidgets from './form/index.js';
+import * as DisplayWidgets from './display/index.js';
+import * as FormWidgets from './form/index.js';
 
-export const DisplayWidgets = _DisplayWidgets;
-export const FormWidgets = _FormWidgets;
+export { DisplayWidgets, FormWidgets };
