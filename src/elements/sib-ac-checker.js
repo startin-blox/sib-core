@@ -15,7 +15,7 @@ export default class SIBACChecker extends SIBBase {
 
   populate() {
     for (let permission of this.resource.permissions) {
-      if (permission.mode === this.permission) {
+      if (permission.mode['@type'] === this.permission) {
         this.removeAttribute('hidden');
       }
     }
