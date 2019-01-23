@@ -1,4 +1,38 @@
-import * as DisplayWidgets from './display/index.js';
-import * as FormWidgets from './form/index.js';
+import {
+  SIBDisplayDiv,
+  SIBDisplayImg,
+  SIBDisplayList,
+  SIBDisplayLookupList,
+  SIBDisplayMailTo,
+  SIBDisplayTel,
+} from './display/index.js';
 
-export { DisplayWidgets, FormWidgets };
+import {
+  SIBFormAutoCompletion,
+  SIBFormCheckbox,
+  SIBFormDropdown,
+  SIBFormJSON,
+  SIBFormLabelText,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
+  SIBFormPlaceholderText,
+  SIBFormTextarea,
+} from './form/index.js';
+
+export {
+  SIBDisplayDiv,
+  SIBDisplayImg,
+  SIBDisplayList,
+  SIBDisplayLookupList,
+  SIBDisplayMailTo,
+  SIBDisplayTel,
+  SIBFormAutoCompletion,
+  SIBFormCheckbox,
+  SIBFormDropdown,
+  SIBFormJSON,
+  SIBFormLabelText,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
+  SIBFormPlaceholderText,
+  SIBFormTextarea,
+};
