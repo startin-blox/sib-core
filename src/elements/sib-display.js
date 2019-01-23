@@ -28,22 +28,14 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     this.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
-    if (this.next)
+    if (this.next) {
       this.dispatchEvent(
         new CustomEvent('requestNavigation', {
           bubbles: true,
           detail: { route: this.next, resource: resource },
         }),
       );
-
-    if (!this.next) return;
-
-    this.dispatchEvent(
-      new CustomEvent('requestNavigation', {
-        bubbles: true,
-        detail: { route: this.next, resource: resource },
-      }),
-    );
+    }
   }
   appendChildElt(resource) {
     const child = document.createElement(this.childTag);
