@@ -83,7 +83,7 @@ If given the URL of a container of ressources, and displays a creation form to a
 
 Hides an element from the page if the current user doesn't have the required permissions on it.
 ```html
-  <sib-ac-checker permission="change" bind-resources>
+  <sib-ac-checker permission="acl:Write" bind-resources>
     <sib-route name="member-edit">
       <div>Edit</div>
     </sib-route>
@@ -92,10 +92,10 @@ Hides an element from the page if the current user doesn't have the required per
 
 **Attributes :**
 - **permission**: Can take the following values :
-  - **view**: equivalent of [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
-  - **change**: equivalent of [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
-  - **add**: equivalent of [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
-  - **control**: equivalent of [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
+  - [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
+  - [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
+  - [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
+  - [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
 
 
 ## Widgets
