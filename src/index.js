@@ -1,8 +1,25 @@
 import * as Helpers from './helpers/index.js';
 import { SIBListMixin, SIBWidgetMixin } from './mixins/index.js';
 import { SIBACChecker, SIBDisplay, SIBForm } from './elements/index.js';
-import { SIBBase, SIBTemplateElement, SIBWidget, SIBMultipleWidget } from './parents/index.js'
-import { DisplayWidgets, FormWidgets } from './widgets/index.js';
+import { SIBBase, SIBTemplateElement, SIBWidget, SIBMultipleWidget } from './parents/index.js';
+import { store } from './store.js';
+import {
+  SIBDisplayDiv,
+  SIBDisplayImg,
+  SIBDisplayList,
+  SIBDisplayLookupList,
+  SIBDisplayMailTo,
+  SIBDisplayTel,
+  SIBFormAutoCompletion,
+  SIBFormCheckbox,
+  SIBFormDropdown,
+  SIBFormJSON,
+  SIBFormLabelText,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
+  SIBFormPlaceholderText,
+  SIBFormTextarea,
+} from './widgets/index.js';
 
 export {
   Helpers,
@@ -15,6 +32,20 @@ export {
   SIBTemplateElement,
   SIBWidget,
   SIBMultipleWidget,
-  DisplayWidgets,
-  FormWidgets,
+  SIBDisplayDiv,
+  SIBDisplayImg,
+  SIBDisplayList,
+  SIBDisplayLookupList,
+  SIBDisplayMailTo,
+  SIBDisplayTel,
+  SIBFormAutoCompletion,
+  SIBFormCheckbox,
+  SIBFormDropdown,
+  SIBFormJSON,
+  SIBFormLabelText,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
+  SIBFormPlaceholderText,
+  SIBFormTextarea,
+  store,
 };
