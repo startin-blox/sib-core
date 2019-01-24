@@ -48,9 +48,12 @@ const SIBWidgetMixin = superclass =>
     }
 
     async getValue(field) {
-      if (this.hasAttribute('value-' + field))
+      if (this.getAction(field)) {
+        return this.getAction(field);
+      }
+      if (this.hasAttribute('value-' + field)) {
         return this.getAttribute('value-' + field);
-
+      }
       let resource = this.resource;
       for (let name of field) {
         resource = await this.fetchValue(resource, name);
@@ -63,16 +66,27 @@ const SIBWidgetMixin = superclass =>
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
 
+    getAction(field) {
+      const action = this.getAttribute('action-' + field);
+      return action;
+    }
+
     getWidget(field) {
+      if (this.getAction(field)) {
+        return 'sib-action';
+      }
       const value = this.getAttribute('widget-' + field.join('.'));
       return value || this.defaultWidget;
     }
 
     async widgetAttributes(field) {
-      return {
+      const attrs = {
         value: await this.getValue(field),
         name: field,
       };
+      const action = this.getAction(field);
+      if (action) attrs.src = this.resource['@id'];
+      return attrs;
     }
 
     async appendWidget(field, parent) {
@@ -85,6 +99,7 @@ const SIBWidgetMixin = superclass =>
       }
       if (this.isSet(field)) {
         const div = document.createElement('div');
+        console.log(field, this.resources['@id']);
         div.setAttribute('name', field);
         parent.appendChild(div);
         for (let item of this.getSet(field)) await this.appendWidget(item, div);
@@ -95,7 +110,9 @@ const SIBWidgetMixin = superclass =>
 
       widget = document.createElement(this.getWidget(field));
       attributes = await this.widgetAttributes(field);
-      for (let name of Object.keys(attributes)) widget[name] = attributes[name];
+      for (let name of Object.keys(attributes)) {
+        widget[name] = attributes[name];
+      }
       parent.appendChild(widget);
     }
 

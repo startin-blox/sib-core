@@ -27,7 +27,7 @@ export default class SIBFormAutoCompletion extends SIBMultipleWidget {
     options.forEach(option => select.appendChild(option));
     this.parent.appendChild(select);
     new Choices(select, { removeItemButton: true });
-    importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css')
+    importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css');
   }
   set range(url) {
     store.list(url).then(list => {

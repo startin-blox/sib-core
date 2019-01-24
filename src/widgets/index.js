@@ -5,6 +5,7 @@ import {
   SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
+  SIBAction,
 } from './display/index.js';
 
 import {
@@ -26,6 +27,7 @@ export {
   SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
+  SIBAction,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDropdown,
