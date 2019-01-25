@@ -1,4 +1,5 @@
 import { base_context, store } from '../store.js';
+import { domIsReady } from '../helpers/index.js';
 
 export default class SIBBase extends HTMLElement {
   static get observedAttributes() {
@@ -77,16 +78,6 @@ export default class SIBBase extends HTMLElement {
   }
 
   async getUser() {
-    const domIsReady = () => {
-      return new Promise(function(resolve) {
-        if (document.readyState === 'complete') {
-            resolve();
-        } else {
-          document.addEventListener('DOMContentLoaded', resolve);
-        }
-      });
-    }
-
     // wait for dom
     await domIsReady();
     const sibAuth = document.querySelector('sib-auth');
