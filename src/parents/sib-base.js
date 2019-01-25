@@ -75,4 +75,30 @@ export default class SIBBase extends HTMLElement {
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
   }
+
+  async getUser() {
+    const domIsReady = () => {
+      return new Promise(function(resolve) {
+        if (document.readyState === 'complete') {
+            resolve();
+        } else {
+          document.addEventListener('DOMContentLoaded', resolve);
+        }
+      });
+    }
+
+    // wait for dom
+    await domIsReady();
+    sibAuth = document.querySelector('sib-auth');
+
+    // if sib-auth element is not found, return undefined
+    if (!sibAuth) {
+      return undefined;
+    }
+
+    // if element is defined, wait custom element to be ready
+    await customElements.whenDefined('sib-auth');
+
+    return sibAuth.getUser();
+  }
 }
