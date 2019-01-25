@@ -89,7 +89,7 @@ export default class SIBBase extends HTMLElement {
 
     // wait for dom
     await domIsReady();
-    sibAuth = document.querySelector('sib-auth');
+    const sibAuth = document.querySelector('sib-auth');
 
     // if sib-auth element is not found, return undefined
     if (!sibAuth) {
