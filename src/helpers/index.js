@@ -32,4 +32,14 @@ function importCSS(...stylesheets) {
   });
 }
 
-export { uniqID, stringToDom, evalTemplateString, importCSS };
+function domIsReady() {
+  return new Promise(function(resolve) {
+    if (document.readyState === 'complete') {
+        resolve();
+    } else {
+      document.addEventListener('DOMContentLoaded', resolve);
+    }
+  });
+}
+
+export { uniqID, stringToDom, evalTemplateString, importCSS, domIsReady };

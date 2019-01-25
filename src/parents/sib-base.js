@@ -1,4 +1,5 @@
 import { base_context, store } from '../store.js';
+import { domIsReady } from '../helpers/index.js';
 
 export default class SIBBase extends HTMLElement {
   static get observedAttributes() {
@@ -74,5 +75,21 @@ export default class SIBBase extends HTMLElement {
     if (Array.isArray(this.resource['ldp:contains']))
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
+  }
+
+  async getUser() {
+    // wait for dom
+    await domIsReady();
+    const sibAuth = document.querySelector('sib-auth');
+
+    // if sib-auth element is not found, return undefined
+    if (!sibAuth) {
+      return undefined;
+    }
+
+    // if element is defined, wait custom element to be ready
+    await customElements.whenDefined('sib-auth');
+
+    return sibAuth.getUser();
   }
 }
