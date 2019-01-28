@@ -37,6 +37,7 @@ export default class SIBBase extends HTMLElement {
       this.empty();
       this.resource = resource;
       this.populate();
+      this.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
       this.toggleLoaderHidden(true);
     });
   }
