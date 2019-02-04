@@ -53,7 +53,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       .save(resource, this.resource['@id'])
       .then(() =>
         this.dispatchEvent(
-          new CustomEvent('save', { detail: { resource: resource } }),
+          new CustomEvent('save', {
+            bubbles: true,
+            detail: { resource: resource },
+          }),
         ),
       );
   }
