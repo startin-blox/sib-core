@@ -32,6 +32,7 @@
           {"type": "/.*/", "release": "patch"}
         ]
       }],
+      "@semantic-release/release-notes-generator",
       "@semantic-release/gitlab",
       "@semantic-release/npm"
     ]
