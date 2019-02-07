@@ -38,8 +38,11 @@ const SIBWidgetMixin = superclass =>
     }
 
     async fetchValue(resource, field) {
-      if ('@id' in resource && Object.keys(resource).length <= 1) {
+      if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource);
+      }
+      if(!(field in resource)){
+        resource[field] = undefined;
       }
       return resource[field];
     }
