@@ -33,7 +33,7 @@ export default class SIBBase extends HTMLElement {
     if (!newValue) return;
 
     // gets the data through the store
-    store.get(newValue + this.idSuffix, this.context).then(resource => {
+    store.get(newValue + this.idSuffix, this.context).then(async resource => {
       this.empty();
       this.resource = resource;
       await this.populate();
