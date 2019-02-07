@@ -35,7 +35,7 @@ export default class SIBBase extends HTMLElement {
     store.get(newValue + this.idSuffix, this.context).then(resource => {
       this.empty();
       this.resource = resource;
-      this.populate();
+      await this.populate();
       this.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
       this.toggleLoaderHidden(true);
     });
