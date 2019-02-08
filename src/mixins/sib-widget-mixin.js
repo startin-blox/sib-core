@@ -41,7 +41,7 @@ const SIBWidgetMixin = superclass =>
       if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource);
       }
-      if(!(field in resource)){
+      if (!(field in resource)) {
         resource[field] = undefined;
       }
       return resource[field];
@@ -109,7 +109,7 @@ const SIBWidgetMixin = superclass =>
       try {
         html = evalTemplateString(template.innerHTML.trim(), {
           name,
-          value,
+          value: value === undefined ? {} : value,
         });
       } catch (e) {
         console.error(new Error(`error in template#${id}`), e);

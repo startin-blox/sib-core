@@ -65,9 +65,15 @@
 
     <details>
       <summary>creation</summary>
+      <template id="myTemplate">
+        <sib-form data-src="${value['@id']}"
+          data-fields="identifier,title,tvaRate, htAmount"
+        ></sib-form>
+      </template>
       <sib-form
-        data-src="http://localhost:8000/invoices/client-invoices/1/"
-        data-fields="title,title,tvaRate, htAmount"
+        data-src="http://localhost:8000/invoices/batches/"
+        data-fields="title, htAmount, invoice"
+        template-invoice="myTemplate"
       ></sib-form>
     </details>
 
