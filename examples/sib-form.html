@@ -62,5 +62,20 @@
         range-skills="https://test-paris.happy-dev.fr/skills/"
       ></sib-form>
     </details>
+
+    <details>
+      <summary>creation</summary>
+      <template id="myTemplate">
+        <sib-form data-src="${value['@id']}"
+          data-fields="identifier,title,tvaRate, htAmount"
+        ></sib-form>
+      </template>
+      <sib-form
+        data-src="http://localhost:8000/invoices/batches/"
+        data-fields="title, htAmount, invoice"
+        template-invoice="myTemplate"
+      ></sib-form>
+    </details>
+
   </body>
 </html>
