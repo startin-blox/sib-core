@@ -4,6 +4,7 @@ import SIBDisplayList from './sib-display-list.js';
 import SIBDisplayLookupList from './sib-display-lookuplist.js';
 import SIBDisplayMailTo from './sib-display-mailto.js';
 import SIBDisplayTel from './sib-display-tel.js';
+import SIBAction from './sib-action.js';
 
 export {
   SIBDisplayDiv,
@@ -12,4 +13,5 @@ export {
   SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
+  SIBAction,
 };

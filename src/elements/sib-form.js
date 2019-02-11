@@ -48,17 +48,14 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       {},
     );
   }
-  save(resource) {
-    store
-      .save(resource, this.resource['@id'])
-      .then(() =>
-        this.dispatchEvent(
-          new CustomEvent('save', {
-            bubbles: true,
-            detail: { resource: resource },
-          }),
-        ),
-      );
+  async save(resource) {
+    await store.save(resource, this.resource['@id']);
+    this.dispatchEvent(
+      new CustomEvent('save', {
+        bubbles: true,
+        detail: { resource: resource },
+      }),
+    );
   }
   change(resource) {}
   submitForm(event) {
@@ -68,7 +65,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     resource['@context'] = this.context;
     this.save(resource);
 
-    if (this.next) if (!this.next) return false;
+    if (!this.next) return false;
 
     this.dispatchEvent(
       new CustomEvent('requestNavigation', {
