@@ -16,9 +16,11 @@ const SIBWidgetMixin = superclass =>
 
     parseFieldsString(fields) {
       fields = fields.split(',').map(s => s.trim().split(/\./));
-      fields.toString = function() {
-        return this.join('.');
-      };
+      fields.forEach(field => {
+        field.toString = function() {
+          return this.join('.');
+        };
+      });
       return fields;
     }
 
