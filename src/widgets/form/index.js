@@ -1,6 +1,7 @@
 import SIBFormAutoCompletion from './sib-form-auto-completion.js';
 import SIBFormCheckbox from './sib-form-checkbox.js';
 import SIBFormDropdown from './sib-form-dropdown.js';
+import SIBFormPlaceholderDropdown from './sib-form-placeholder-dropdown.js';
 import SIBFormJSON from './sib-form-json.js';
 import SIBFormLabelText from './sib-form-label-text.js';
 import SIBFormMultipleDropdown from './sib-form-multiple-dropdown.js';
@@ -12,6 +13,7 @@ export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDropdown,
+  SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormMultipleDropdown,
