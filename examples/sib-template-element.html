@@ -8,37 +8,55 @@
   </head>
 
   <body>
+    <template id="template">
+      <div>
+        aaaa tralalala
+        <span sib-value='test'></span>
+      </div>
+    </template>
+    <template id="template2">
+      moi
+    </template>
     <my-custom-element
-      data-title="test"
-      data-content="test"
-    ></my-custom-element>
-
+      id='un'
+      test='trooo'
+      template-selector='#template'
+    >
+    </my-custom-element>
     <my-custom-element
-      data-content="test 2"
-    ></my-custom-element>
-
+    >
+    </my-custom-element>
+    <my-custom-element
+      template-selector='#template2'
+    >
+    </my-custom-element>
     <script type="module">
-      import { SIBTemplateElement } from '../src/index.js';
-      class MyCustomElement extends SIBTemplateElement {
-        static get propsDefinition() {
+      import SIB from '../src/proposal/SIB.js';
+
+      import SIBElement from '../src/proposal/SIBElement.js';
+      class MyCustomElement extends SIBElement {
+        static get props() {
           return {
-          title: {
-            attribute: 'data-title',
-            default: 'My default title',
-          },
-          content: 'data-content',
-        };
+            test: 'test',
+          };
         }
-        template({ title, content }) {
-          return `
-            <div>
-              <h1>${title}</h1>
-              <p>${content}</p>
-            </div>
-          `;
+
+        static get selector() {
+          return 'my-custom-element';
+        }
+        get template() {
+          return '<div>bonjour</div>';
+        }
+        created() {
+          console.log('created');
+        }
+
+        attached() {
+          super.attached();
+          console.log('attached');
         }
       }
-      customElements.define('my-custom-element', MyCustomElement);
+      SIB.register(MyCustomElement);
     </script>
   </body>
 </html>
