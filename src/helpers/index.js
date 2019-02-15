@@ -1,5 +1,5 @@
 function uniqID() {
-  return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
+  return `_${(Math.random() * (36 ** 20)).toString(36).slice(0, 10)}`;
 }
 
 function stringToDom(html) {
@@ -12,16 +12,16 @@ function evalTemplateString(str, variables = {}) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const func = Function.call(null, ...keys, 'return `' + str + '`');
+    const func = Function.call(null, ...keys, `return \`${str}\``);
     return func(...values);
   } catch (e) {
-    throw new SyntaxError('`' + str + '`');
+    throw new SyntaxError(`\`${str}\``);
   }
 }
 function importCSS(...stylesheets) {
-  return stylesheets.map(url => {
+  return stylesheets.map((url) => {
     let link = Array.from(document.head.querySelectorAll('link')).find(
-      link => link.href === url,
+      lk => lk.href === url,
     );
     if (link) return link;
     link = document.createElement('link');
@@ -33,13 +33,15 @@ function importCSS(...stylesheets) {
 }
 
 function domIsReady() {
-  return new Promise(function(resolve) {
+  return new Promise(((resolve) => {
     if (document.readyState === 'complete') {
-        resolve();
+      resolve();
     } else {
       document.addEventListener('DOMContentLoaded', resolve);
     }
-  });
+  }));
 }
 
-export { uniqID, stringToDom, evalTemplateString, importCSS, domIsReady };
+export {
+  uniqID, stringToDom, evalTemplateString, importCSS, domIsReady,
+};

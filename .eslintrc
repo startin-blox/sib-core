@@ -8,13 +8,13 @@
   },
   "parserOptions": {
     "ecmaVersion": 6,
-    "sourceType": "module",
+    "sourceType": "module"
   },
   "rules": {
     "import/no-unresolved": 0,
     "import/extensions": [
         0,
         "always"
-    ],
+    ]
   }
 }
