@@ -9,7 +9,8 @@
   },
   "scripts": {
     "serve": "live-server --ignore=**/node_modules/** --no-browser",
-    "lint": "eslint --ext .js src"
+    "lint": "eslint --ext .js src",
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
