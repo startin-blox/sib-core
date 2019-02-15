@@ -8,7 +8,8 @@
     "example": "examples"
   },
   "scripts": {
-    "serve": "live-server --ignore=**/node_modules/** --no-browser"
+    "serve": "live-server --ignore=**/node_modules/** --no-browser",
+    "lint": "eslint --ext .js src"
   },
   "repository": {
     "type": "git",
@@ -49,5 +50,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-recommended": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0"
   }
 }
