@@ -57,7 +57,7 @@ export default class SIBBase extends HTMLElement {
   }
 
   get isContainer() {
-    return '@type' in this.resource && this.resource['@type']=="ldp:Container";
+    return this.resource['@type'] === 'ldp:Container';
   }
 
   get next() {
