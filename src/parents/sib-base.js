@@ -1,4 +1,4 @@
-import { baseContext, store } from '../store.js';
+import { base_context, store } from '../store.js';
 import { domIsReady } from '../helpers/index.js';
 
 export default class SIBBase extends HTMLElement {
@@ -6,12 +6,12 @@ export default class SIBBase extends HTMLElement {
     return ['data-src'];
   }
 
-  get extraContext() {
-    return JSON.parse(this.getAttribute('extra-context')) || {};
+  get extra_context() {
+    return JSON.parse(this.getAttribute("extra-context")) || {};
   }
 
   get context() {
-    return { ...baseContext, ...this.extraContext };
+    return { ...base_context, ...this.extra_context };
   }
 
   toggleLoaderHidden(toggle) {
@@ -33,25 +33,23 @@ export default class SIBBase extends HTMLElement {
     if (!newValue) return;
 
     // gets the data through the store
-    store.get(newValue + this.idSuffix, this.context).then(async (resource) => {
+    store.get(newValue + this.idSuffix, this.context).then(async resource => {
       this.empty();
       this.resource = resource;
       await this.populate();
-      this.dispatchEvent(new CustomEvent('populate', { detail: { resource } }));
+      this.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
       this.toggleLoaderHidden(true);
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   populate() {
-    // this method should be implemented by descending components to insert content
-    throw new Error('Not Implemented');
+    //this method should be implemented by descending components to insert content
+    throw 'Not Implemented';
   }
 
-  // eslint-disable-next-line class-methods-use-this
   empty() {
-    // this method should be implemented by descending components to remove all content
-    throw new Error('Not Implemented');
+    //this method should be implemented by descending components to remove all content
+    throw 'Not Implemented';
   }
 
   connectedCallback() {
@@ -68,17 +66,18 @@ export default class SIBBase extends HTMLElement {
 
   get idSuffix() {
     // attribute added to the id given as data-src
-    if (this.hasAttribute('id-suffix')) return `${this.getAttribute('id-suffix')}/`;
-    return '';
+    if (this.hasAttribute('id-suffix'))
+      return this.getAttribute('id-suffix') + '/';
+    else return '';
   }
 
   get resources() {
     if (!this.isContainer) return [];
-    if (Array.isArray(this.resource['ldp:contains'])) return this.resource['ldp:contains'];
+    if (Array.isArray(this.resource['ldp:contains']))
+      return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getUser() {
     // wait for dom
     await domIsReady();
