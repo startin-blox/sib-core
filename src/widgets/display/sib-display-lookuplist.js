@@ -2,17 +2,17 @@ import SIBDisplayList from './sib-display-list.js';
 import { store } from '../../store.js';
 
 export default class SIBDisplayLookupList extends SIBDisplayList {
-  getTemplate(val, index) {
-    let value = val;
-    if (typeof value === 'object' && !('ldp:contains' in value)) {
+  getTemplate(value, index) {
+    if (typeof value == 'object' && !('ldp:contains' in value)) {
       if (value.name) value = value.name;
       else {
-        store.get(value).then((resource) => {
-          if (!resource.name) return;
+        store.get(value).then(resource => {
+          if(!resource.name) return;
           this.value.push(resource);
           this.render();
         });
-        if (Array.isArray(this.value)) this.value.splice(this.value.indexOf(value), 1);
+        if (Array.isArray(this.value))
+          this.value.splice(this.value.indexOf(value), 1);
         else this.value = [];
         return '';
       }
