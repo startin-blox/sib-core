@@ -1,6 +1,6 @@
 import { evalTemplateString } from '../helpers/index.js';
 
-class BaseWidget extends HTMLElement{
+const widgetClass = (customTemplate) => class extends HTMLElement {
   connectedCallback() {
     this.render();
   }
@@ -21,16 +21,22 @@ class BaseWidget extends HTMLElement{
     this._value = value;
     this.render();
   }
-}
+  get template() {
+    return customTemplate
+  }
+};
 
 export default class SIBWidgetFactory extends HTMLElement {
   connectedCallback() {
-    BaseWidget.prototype.template = this.querySelector('template').innerHTML
-    customElements.define(this.name, BaseWidget);
+    customElements.define(this.name, widgetClass(this.getTemplate()))
   }
 
   get name() {
     return this.getAttribute('name');
+  }
+
+  getTemplate() {
+    return this.querySelector('template').innerHTML
   }
 }
 
