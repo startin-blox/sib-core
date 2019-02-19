@@ -15,23 +15,29 @@ export default class SIBFormMultipleDropdown extends SIBFormMultipleValue {
       >${this.optionList}</select>
       <button type="button"
         onclick="this.closest('${
-          this.tagName
-        }').removeField(${index});return false"
+  this.tagName
+}').removeField(${index});return false"
       >&times;</button>
     </div>`;
   }
+
+  // eslint-disable-next-line class-methods-use-this
   getOptionTemplate(item) {
     return `<option value='${item['@id']}'>${item.name}</option>`;
   }
+
   updateSelected() {
-    for (let select of this.querySelectorAll('select'))
-      select.value = select.getAttribute('value');
+    this.querySelectorAll('select').forEach((select) => {
+      select.value = select.getAttribute('value'); // eslint-disable-line no-param-reassign
+    });
   }
+
   appendField() {
     super.appendField();
   }
+
   set range(url) {
-    store.list(url).then(list => {
+    store.list(url).then((list) => {
       this.optionList = list.map(item => this.getOptionTemplate(item)).join('');
       this.renderList();
       this.updateSelected();

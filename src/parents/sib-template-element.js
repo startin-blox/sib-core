@@ -14,25 +14,25 @@ export default class SIBTemplateElement extends HTMLElement {
   }
 
   initProps() {
-    this.props = {}
-    for(let key in this.constructor.propsDefinition) {
+    this.props = {};
+    Object.keys(this.constructor.propsDefinition).forEach((key) => {
       this.props[key] = undefined;
-    }
+    });
   }
 
   updateProps() {
-    for(let key in this.constructor.propsDefinition) {
+    Object.keys(this.constructor.propsDefinition).forEach((key) => {
       const def = this.constructor.propsDefinition[key];
-      if (typeof def === "string") {
+      if (typeof def === 'string') {
         this.props[key] = this.hasAttribute(def) ? this.getAttribute(def) : undefined;
-      } else if (typeof def === "object" && def.attribute && typeof def.attribute === "string") {
-        this.props[key] = this.hasAttribute(def) ? this.getAttribute(def.attribute) : def.default || undefined;
+      } else if (typeof def === 'object' && def.attribute && typeof def.attribute === 'string') {
+        this.props[key] = this.hasAttribute(def)
+          ? this.getAttribute(def.attribute) : def.default || undefined;
       }
-    }
+    });
   }
 
-  attributeChangedCallback()
-  {
+  attributeChangedCallback() {
     this.updateProps();
     this.render();
   }
@@ -46,6 +46,7 @@ export default class SIBTemplateElement extends HTMLElement {
     this.innerHTML = this.template(this.props);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   template() {
     return '';
   }
