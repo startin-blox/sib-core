@@ -6,8 +6,8 @@ export default class SIBBase extends HTMLElement {
     return ['data-src'];
   }
 
-  get extra_context() {
-    return JSON.parse(this.getAttribute("extra-context")) || {};
+  get extraContext() {
+    return JSON.parse(this.getAttribute('extra-context')) || {};
   }
 
   get context() {

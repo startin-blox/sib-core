@@ -114,7 +114,6 @@ const SIBWidgetMixin = superclass => class extends superclass {
     }
     if (this.isSet(field)) {
       const div = document.createElement('div');
-      console.log(field, this.resources['@id']);
       div.setAttribute('name', field);
       parent.appendChild(div);
 
