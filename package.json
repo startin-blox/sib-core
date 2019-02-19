@@ -8,8 +8,9 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "jest",
-    "serve": "live-server --ignore=**/node_modules/** --no-browser"
+    "serve": "live-server --ignore=**/node_modules/** --no-browser",
+    "lint": "eslint --ext .js ./src/",
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -18,20 +19,35 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^23.6.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "live-server": "^1.2.1"
   },
   "release": {
     "branch": "master",
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "preset": "angular",
-        "releaseRules": [
-          {"type": "major", "release": "major"},
-          {"type": "minor", "release": "minor"},
-          {"type": "/.*/", "release": "patch"}
-        ]
-      }],
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "major",
+              "release": "major"
+            },
+            {
+              "type": "minor",
+              "release": "minor"
+            },
+            {
+              "type": "/.*/",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
       "@semantic-release/release-notes-generator",
       "@semantic-release/gitlab",
       "@semantic-release/npm"
@@ -39,5 +55,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "dependencies": {}
 }

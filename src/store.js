@@ -1,8 +1,8 @@
-import './legacy/ldpframework.js'
+import './legacy/ldpframework.js';
 
-const Store = window.MyStore;
+const Store = window.MyStore; // eslint-disable-line no-unused-vars
 
-export const base_context = {
+export const baseContext = {
   '@vocab': 'http://happy-dev.fr/owl/#',
   rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -12,6 +12,6 @@ export const base_context = {
 };
 
 export const store = new window.MyStore({
-  context: base_context,
+  context: baseContext,
   defaultSerializer: 'application/ld+json',
 });

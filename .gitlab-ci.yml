@@ -1,6 +1,9 @@
 ---
 image: node
 
+before_script:
+  - npm install
+
 stages:
   - test
   - release
@@ -8,7 +11,7 @@ stages:
 test:
   stage: test
   script:
-    - echo 'Make your tests here !'
+    - npm run test
   except:
     - master
   tags:

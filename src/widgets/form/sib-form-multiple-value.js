@@ -15,26 +15,29 @@ export default class SIBFormMultipleValue extends SIBMultipleWidget {
       >
       <button type="button"
         onclick="this.closest('${
-          this.tagName
-        }').removeField(${index});return false"
+  this.tagName
+}').removeField(${index});return false"
       >&times;</button>
     </div>`;
   }
+
   appendField() {
     const index = this.querySelectorAll(`.${this.tagName}-box`).length;
     const templateElement = document.createElement('template');
     templateElement.innerHTML = this.getTemplate({}, index);
-    const content = templateElement.content;
-    [...content.querySelectorAll('select')].forEach(input => {
-      input.value = null;
+    const { content } = templateElement;
+    [...content.querySelectorAll('select')].forEach((input) => {
+      input.value = null; // eslint-disable-line no-param-reassign
     });
     this.parent.appendChild(content);
     this.updateValue();
   }
+
   removeField(index) {
     document.getElementById(`id-${this.name}-${index}-box`).remove();
     this.updateValue();
   }
+
   get appendTemplate() {
     return `<button type="button"
       onclick="this.closest('${this.tagName}').appendField();return false"
@@ -45,13 +48,15 @@ export default class SIBFormMultipleValue extends SIBMultipleWidget {
       name="${this.name}"
     >`;
   }
+
   updateValue() {
     const valueList = Array.prototype.map.call(
       this.querySelectorAll(`.${this.tagName}-input`),
-      input => '{"@id": "' + input.value + '"}',
+      input => `{"@id": "${input.value}"}`,
     );
     this.appendBox.querySelector('input').value = `[${valueList.join(',')}]`;
   }
+
   render() {
     super.render();
     this.parent.id = this.id;
