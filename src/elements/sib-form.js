@@ -92,7 +92,11 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     }
   }
   async populate() {
+    const isNaked = this.hasAttribute('naked');
     if (!this.form) {
+      if (isNaked) {
+        this.form = this;
+      } else {
       this.form = document.createElement('form');
       this.form.addEventListener('submit', this.submitForm.bind(this));
       this.form.addEventListener('input', this.inputChange.bind(this));
@@ -100,12 +104,13 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
         setTimeout(this.inputChange.bind(this)),
       );
       this.appendChild(this.form);
+      }
     }
-
     for (let field of this.fields) {
       await this.appendWidget(field, this.form);
     }
 
+    if(isNaked) return;
     this.form.appendChild(this.createInput('submit'));
     if (this.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
