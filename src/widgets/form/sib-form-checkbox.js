@@ -1,7 +1,7 @@
 import { uniqID } from '../../helpers/index.js';
-import { SIBWidget } from '../../parents/index.js';
+import { SIBWidgetLegacy } from '../../parents/index.js';
 
-export default class SIBFormCheckbox extends SIBWidget {
+export default class SIBFormCheckbox extends SIBWidgetLegacy {
   get template() {
     const id = uniqID();
     const checked = this.value ? 'checked' : '';

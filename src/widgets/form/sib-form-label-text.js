@@ -1,7 +1,7 @@
 import { uniqID } from '../../helpers/index.js';
-import { SIBWidget } from '../../parents/index.js';
+import { SIBWidgetLegacy } from '../../parents/index.js';
 
-export default class SIBFormLabelText extends SIBWidget {
+export default class SIBFormLabelText extends SIBWidgetLegacy {
   get template() {
     const id = uniqID();
     return `

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <sib-widget-factory name="sib-test-customer">
+  <sib-widget name="sib-test-customer">
     <template>
       <p><strong>${name}</strong></p>
       <p>
@@ -19,19 +19,19 @@
         ${value.address}
       </p>
     </template>
-  </sib-widget-factory>
+  </sib-widget>
 
-  <sib-widget-factory name="sib-test-name">
+  <sib-widget name="sib-test-name">
     <template>
       <h1>Project: ${value}</h1>
     </template>
-  </sib-widget-factory>
+  </sib-widget>
 
   <sib-display
-  data-src="https://test-paris.happy-dev.fr/projects/1/"
-  data-fields="name, description, customer"
-  widget-name="sib-test-name"
-  widget-customer="sib-test-customer"
-  ></sib-display>
+    data-src="https://test-paris.happy-dev.fr/projects/1/"
+    data-fields="name, description, customer"
+    widget-name="sib-test-name"
+    widget-customer="sib-test-customer"
+    ></sib-display>
 </body>
 </html>
