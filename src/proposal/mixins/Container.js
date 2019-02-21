@@ -10,11 +10,13 @@ export default class {
 
     const rootElement = this.querySelector('[sib-container-repeat]');
     this.baseElement = rootElement.cloneNode(true);
-    this.repeatElement = document.createElement('div');
-    rootElement.replaceWith(this.repeatElement);
+
+    this.repeatElement = this.querySelector("slot[name='sib-container-repeat']");
+    this.repeatElement.innerHTML = '';
 
     if (this.sibContainerUri) {
       store.get(this.sibContainerUri, base_context).then(async container => {
+        console.log({ container });
         this.container = container['ldp:contains'] || [];
       });
     }
@@ -47,15 +49,15 @@ export default class {
 
     keys.forEach((key) => {
       const oldElement = this.querySelector(`[sib-resource-uri="${key}"]`);
-      console.log({key, oldElement, new: mappedContainer[key], old: oldContainer[key]});
       if (oldElement && !mappedContainer[key]) {
         oldElement.remove();
       } else {
         const element = this.baseElement.cloneNode(true);
         const attribute = element.getAttribute('sib-container-repeat');
         element.setAttribute(attribute, key);
-        console.log({element, repeatElement: this.repeatElement});
-        this.repeatElement.insertAdjacentElement('beforeend', element);
+        element.setAttribute('slot', 'sib-container-repeat');
+        // this.repeatElement.insertAdjacentElement('beforeend', element);
+        this.repeatElement.appendChild(element);
       }
       this.valueChanged(key, mappedContainer[key], oldContainer[key]);
     });
