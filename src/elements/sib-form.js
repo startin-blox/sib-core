@@ -3,6 +3,11 @@ import { SIBBase } from '../parents/index.js';
 import { store } from '../store.js';
 
 export default class SIBForm extends SIBWidgetMixin(SIBBase) {
+  constructor() {
+    super();
+    this.widgets = [];
+  }
+
   get defaultWidget() {
     return 'sib-form-label-text';
   }
@@ -16,6 +21,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       return 'sib-form-dropdown';
     else return super.getWidget(field);
   }
+
   async widgetAttributes(field) {
     let attributes = await super.widgetAttributes(field);
     if (this.hasAttribute('range-' + field))
@@ -32,21 +38,18 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     if (namelist.length) this.setValue(data[name], namelist, value);
     else data[name] = value;
   }
-  formToObject(form) {
-    return [].reduce.call(
-      form.elements,
-      (data, element) => {
-        let value;
-        try {
-          value = JSON.parse(element.value);
-        } catch (error) {
-          value = element.value;
-        }
-        this.setValue(data, element.name.split(','), value);
-        return data;
-      },
-      {},
-    );
+
+  getValues() {
+    const values = {};
+
+    this.widgets.forEach(({name, value}) => {
+      try {
+        value = JSON.parse(widget.value);
+      } catch (e) {}
+      this.setValue(values, name.split('.'), value);
+    });
+
+    return values;
   }
   async save(resource) {
     await store.save(resource, this.resource['@id']);
@@ -57,10 +60,11 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       }),
     );
   }
+
   change(resource) {}
   submitForm(event) {
     event.preventDefault();
-    const resource = this.formToObject(this.form);
+    const resource = this.getValues();
     if (!this.isContainer) resource['@id'] = this.resource['@id'];
     resource['@context'] = this.context;
     this.save(resource);
@@ -74,8 +78,9 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       }),
     );
   }
+
   inputChange(event) {
-    const resource = this.formToObject(this.form);
+    const resource = this.getValues();
     if (!this.isContainer) resource['@id'] = this.resource['@id'];
     this.change(resource);
   }
@@ -85,32 +90,35 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     input.type = type;
     return input;
   }
+
   empty() {
+    this.widgets.length = 0;
     if (!this.form) return;
     while (this.form.firstChild) {
       this.form.removeChild(this.form.firstChild);
     }
   }
+
   async populate() {
     const isNaked = this.hasAttribute('naked');
     if (!this.form) {
       if (isNaked) {
         this.form = this;
       } else {
-      this.form = document.createElement('form');
-      this.form.addEventListener('submit', this.submitForm.bind(this));
-      this.form.addEventListener('input', this.inputChange.bind(this));
-      this.form.addEventListener('reset', () =>
-        setTimeout(this.inputChange.bind(this)),
-      );
-      this.appendChild(this.form);
+        this.form = document.createElement('form');
+        this.form.addEventListener('submit', this.submitForm.bind(this));
+        this.form.addEventListener('input', this.inputChange.bind(this));
+        this.form.addEventListener('reset', () =>
+          setTimeout(this.inputChange.bind(this)),
+        );
+        this.appendChild(this.form);
       }
     }
     for (let field of this.fields) {
-      await this.appendWidget(field, this.form);
+      this.widgets.push(...(await this.appendWidget(field, this.form)));
     }
 
-    if(isNaked) return;
+    if (isNaked) return;
     this.form.appendChild(this.createInput('submit'));
     if (this.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));

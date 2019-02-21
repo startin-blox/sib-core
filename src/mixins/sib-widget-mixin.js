@@ -100,16 +100,15 @@ const SIBWidgetMixin = superclass =>
 
       const template = await this.getTemplate2(field);
       if (template) {
-        parent.appendChild(template);
-        return;
+        return [parent.appendChild(template)];
       }
       if (this.isSet(field)) {
         const div = document.createElement('div');
-        console.log(field, this.resources['@id']);
         div.setAttribute('name', field);
         parent.appendChild(div);
-        for (let item of this.getSet(field)) await this.appendWidget(item, div);
-        return;
+        const widgetList = [];
+        for (let item of this.getSet(field)) widgetList.push(await this.appendWidget(item, div));
+        return widgetList;
       }
       let widget;
       let attributes;
@@ -119,7 +118,7 @@ const SIBWidgetMixin = superclass =>
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
-      parent.appendChild(widget);
+      return [parent.appendChild(widget)];
     }
 
     async getTemplate2(field) {
