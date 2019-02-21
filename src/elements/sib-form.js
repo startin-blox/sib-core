@@ -1,6 +1,7 @@
 import { SIBWidgetMixin } from '../mixins/index.js';
 import { SIBBase } from '../parents/index.js';
 import { store } from '../store.js';
+import { setDeepProperty } from "../helpers/index.js";
 
 export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   constructor() {
@@ -32,13 +33,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   //form submission handling
-  setValue(data, namelist, value) {
-    const name = namelist.shift();
-    if (!(name in data)) data[name] = {};
-    if (namelist.length) this.setValue(data[name], namelist, value);
-    else data[name] = value;
-  }
-
   getValues() {
     const values = {};
 
@@ -46,7 +40,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       try {
         value = JSON.parse(widget.value);
       } catch (e) {}
-      this.setValue(values, name.split('.'), value);
+      setDeepProperty(values, name.split('.'), value);
     });
 
     return values;
