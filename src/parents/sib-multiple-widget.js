@@ -1,7 +1,7 @@
-import SIBWidget from './sib-widget.js';
+import SIBWidgetLegacy from './sib-widget-legacy.js'
 import { uniqID } from '../helpers/index.js';
 
-export default class SIBMultipleWidget extends SIBWidget {
+export default class SIBMultipleWidget extends SIBWidgetLegacy {
   get parentTag() {
     return 'div';
   }
