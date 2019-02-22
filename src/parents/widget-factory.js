@@ -22,11 +22,17 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
     this.render();
   }
   get value() {
-    return this._value || '';
+    return (this.dataHolder && Object.entries(this.dataHolder.value).length)
+      ? this.dataHolder.value
+      : this._value || ''
   }
   set value(value) {
-    this._value = value;
-    this.render();
+    if (this.dataHolder) {
+      this.dataHolder.value = value
+    } else {
+      this._value = value
+      this.render()
+    }
   }
   get template() {
     return customTemplate
@@ -36,5 +42,8 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
       .replace(/&/g, '&amp;')
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');
+  }
+  get dataHolder() {
+    return this.querySelector('[data-holder]')
   }
 };

@@ -13,6 +13,18 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     return 'sib-form-label-text';
   }
 
+  get value() {
+    return this.getValues()
+  }
+
+  set value(value) {
+    this.widgets.forEach(el => {
+      try {
+        if(value[el.name]) el.value = value[el.name]
+      } catch (e) {}
+    });
+  }
+
   //Special case of the dropdown
   getWidget(field) {
     if (
