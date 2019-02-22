@@ -1,5 +1,6 @@
 import mix from './helpers/mixin.js';
 import bindAttributes from './helpers/mixin/attributes/bind.js';
+import ElementFactory from './Core/Element.js';
 
 export default class SIB {
   static register(element, selector = null) {
@@ -9,9 +10,6 @@ export default class SIB {
 
   static build(element) {
     const patchedElement = mix(element);
-
-    bindAttributes(patchedElement);
-
-    return patchedElement;
+    return ElementFactory(patchedElement);
   }
 }

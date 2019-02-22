@@ -26,7 +26,6 @@ function define (mixin) {
 
           if (descriptor.set) {
             definition.set = function (value) {
-              this.valueChanged(value, this[property]);
               return descriptor.set.apply(this, [value])
             };
           }

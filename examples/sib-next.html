@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-template-element</title>
+  </head>
+
+  <body>
+    <template id="template">
+      <div class="test">
+        aaaa tralalala
+        <span sib-value='test'></span>
+      </div>
+    </template>
+    <template id="template2">
+      <li>
+        <span sib-value='first_name'></span>
+        <span sib-value='last_name'></span>
+        <span sib-value='username'></span>
+        <span sib-attribute sib-attribute:test='username'></span>
+        <img sib-attribute sib-attribute:src='avatar' style='width:50px; height:50px;'>
+      </li>
+    </template>
+    <template id="template3">
+      <ul>
+        <slot name='sib-container-repeat'>
+          <my-custom-element sib-template-selector='#template2' sib-container-repeat="sib-resource-uri"></my-custom-element>
+        </slot>
+      </ul>
+    </template>
+    <my-custom-element
+      id='un'
+      test='trooo'
+      sib-template-selector='#template'
+    >
+    </my-custom-element>
+    <my-custom-element
+    id='deux'
+    >
+    </my-custom-element>
+    <my-custom-element
+    id='trois'
+      sib-resource-uri="https://test-paris.happy-dev.fr/users/12/"
+      sib-template-selector='#template2'
+    >
+    </my-custom-element>
+    <my-element id='quatre'
+    sib-container-uri="https://test-paris.happy-dev.fr/users/"
+    sib-template-selector='#template3'
+    >
+    </my-element>
+    <script type="module">
+      import SIBComponent from '../src/proposal/Core/Component.js';
+      import Resource from '../src/proposal/mixins/Resource.js';
+      import Container from '../src/proposal/mixins/Container.js';
+
+      class MyCustomElement extends SIBComponent {
+        static get use() {
+            return [Resource]
+        }
+
+        static get attrs() {
+          return ['test'];
+        }
+
+        static get selector() {
+          return 'my-custom-element';
+        }
+        get template() {
+          return '<div>bonjour</div>';
+        }
+
+        created() {
+          console.log('created 2');
+          this.addEventListener('dataChanged:sibResourceUri', (event) => {
+            const { detail } = event;
+            if (detail.value) {
+              this.store.get(detail.value, 'account').then((account) => {
+                if (account && 'picture' in account) {
+                  this.state.follow('avatar', account.picture);
+                }
+              });
+            }
+          });
+        }
+        attached() {
+          console.log('attached element');
+        }
+      }
+      MyCustomElement.install();
+
+      class MyCustomElement2 extends SIBComponent {
+        static get use() {
+            return [Container];
+        }
+
+        static get attrs() {
+          return ['test'];
+        }
+
+        static get selector() {
+          return 'my-element';
+        }
+
+        created() {
+          console.log('created 2');
+        }
+
+        attached() {
+          console.log('attached element');
+        }
+      }
+      MyCustomElement2.install();
+    </script>
+  </body>
+</html>

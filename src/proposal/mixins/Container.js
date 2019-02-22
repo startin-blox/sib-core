@@ -1,31 +1,27 @@
-import { base_context, store } from '../../store.js';
 
 export default class {
   static get attrs() {
     return ['sib-container-uri'];
   }
 
-  attached() {
-    this._container = null;
-
-    const rootElement = this.querySelector('[sib-container-repeat]');
-    this.baseElement = rootElement.cloneNode(true);
-
-    this.repeatElement = this.querySelector("slot[name='sib-container-repeat']");
-    this.repeatElement.innerHTML = '';
-
-    if (this.sibContainerUri) {
-      store.get(this.sibContainerUri, base_context).then(async container => {
-        console.log({ container });
-        this.container = container['ldp:contains'] || [];
-      });
-    }
-
-    this.watch('sibContainerUri', (newValue) => {
-      store.get(newValue, base_context).then(async container => {
-        this.container = container['ldp:contains'] || [];
-      });
+  created() {
+    const repeatedElement = this._template.querySelector('[sib-container-repeat]');
+    this.repeatedElement = repeatedElement.cloneNode(true);
+    this.addEventListener('dataChanged:sibContainerUri', (event) => {
+      const { detail } = event;
+      if (detail.value && detail.value !== detail.oldValue) {
+        this.store.get(detail.value).then(container => {
+          this.container = container || [];
+        });
+      }
     });
+  }
+
+  attached() {
+    this._container = [];
+
+    this.containerElement = this.el.querySelector("slot[name='sib-container-repeat']");
+    this.containerElement.innerHTML = '';
   }
 
   get container() {
@@ -33,33 +29,22 @@ export default class {
   }
 
   set container(container) {
-    const oldContainer = { ...this._container };
-    const mappedContainer = {};
+    const oldContainer = [ ...this._container ];
+    this._container = container;
 
-    container.forEach((resource) => {
-      const id = resource['@id'];
-      if (id) {
-        mappedContainer[id] = resource;
-      }
-    });
-
-    this._container = mappedContainer;
-
-    const keys = new Set([...Reflect.ownKeys(mappedContainer), ...Reflect.ownKeys(oldContainer)]);
+    const keys = new Set([...oldContainer, ...container]);
 
     keys.forEach((key) => {
-      const oldElement = this.querySelector(`[sib-resource-uri="${key}"]`);
-      if (oldElement && !mappedContainer[key]) {
+      const oldElement = this.el.querySelector(`[sib-resource-uri="${key}"]`);
+      if (oldElement && container.indexOf(key) < 0) {
         oldElement.remove();
-      } else {
-        const element = this.baseElement.cloneNode(true);
+      } else if (!oldElement) {
+        const element = this.repeatedElement.cloneNode(true);
         const attribute = element.getAttribute('sib-container-repeat');
         element.setAttribute(attribute, key);
         element.setAttribute('slot', 'sib-container-repeat');
-        // this.repeatElement.insertAdjacentElement('beforeend', element);
-        this.repeatElement.appendChild(element);
+        this.containerElement.appendChild(element);
       }
-      this.valueChanged(key, mappedContainer[key], oldContainer[key]);
     });
   }
 }
