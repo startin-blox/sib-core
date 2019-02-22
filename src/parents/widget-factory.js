@@ -5,7 +5,7 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
     this.render();
   }
   render() {
-    this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label });
+    this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue });
   }
   get label() {
     return this.getAttribute('label') || this.name;
