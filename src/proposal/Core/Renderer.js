@@ -9,6 +9,19 @@ export default class Renderer {
 
   boot() {
     this.component.addEventListener('created', () => {
+      /* Sib if binding */
+      this.template.querySelectorAll('[sib-if]').forEach((node) => {
+        const propName = node.getAttribute('sib-if');
+        this.component.addEventListener(`dataChanged:${propName}`, (event) => {
+          const { detail } = event;
+          if (!detail.value) {
+            this.dispatchStyleToNode({ node, attribute: 'display', value: 'none'});
+          } else {
+            this.dispatchStyleToNode({ node, attribute: 'display', value: undefined});
+          }
+        });
+      });
+
       /* Sib value bindings */
       this.template.querySelectorAll('[sib-value]').forEach((node) => {
         const propName = node.getAttribute('sib-value');
@@ -48,9 +61,22 @@ export default class Renderer {
     });
   }
 
+  dispatchStyleToNode({ node, attribute, value }) {
+    if (value) {
+      node.style[attribute] = value;
+    } else {
+      node.style[attribute] = null;
+    }
+    this.component.dispatchEvent(new CustomEvent('updated'));
+  }
+
   dispatchDataToNode({ node, attribute, value }) {
     if (attribute) {
-      node.setAttribute(attribute, value);
+      if (value) {
+        node.setAttribute(attribute, value);
+      } else {
+        node.removeAttribute(attribute);
+      }
     } else {
       node.textContent = value
     }

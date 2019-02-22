@@ -19,8 +19,8 @@
         <span sib-value='first_name'></span>
         <span sib-value='last_name'></span>
         <span sib-value='username'></span>
-        <span sib-attribute sib-attribute:test='username'></span>
-        <img sib-attribute sib-attribute:src='avatar' style='width:50px; height:50px;'>
+        <span sib-value='test'></span>
+        <img sib-if="avatar" sib-attribute sib-attribute:src='avatar' style='width:50px; height:50px;'>
       </li>
     </template>
     <template id="template3">
@@ -71,7 +71,9 @@
         get template() {
           return '<div>bonjour</div>';
         }
-
+        get test() {
+          return 'aaaa';
+        }
         created() {
           console.log('created 2');
           this.addEventListener('dataChanged:sibResourceUri', (event) => {
@@ -80,6 +82,8 @@
               this.store.get(detail.value, 'account').then((account) => {
                 if (account && 'picture' in account) {
                   this.state.follow('avatar', account.picture);
+                } else {
+                  this.state.follow('avatar', undefined);
                 }
               });
             }

@@ -76,6 +76,14 @@ Example:
 <img sib-attribute sib-attribute:src="avatarUrl"></img>
 ```
 
+#### sib-if
+When attributes "sib-if" is set on a DOM element, display:none is set on element if the datapath of the attribute evaluation is false.
+
+Example:
+```html
+<img sib-if="avatarUrl" sib-attribute sib-attribute:src="avatarUrl"></img>
+```
+
 ### Mixins
 #### Resource
 The resource mixin add an attribute watched : "sib-resource-uri".
