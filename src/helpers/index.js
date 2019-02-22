@@ -35,11 +35,25 @@ function importCSS(...stylesheets) {
 function domIsReady() {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
-        resolve();
+      resolve();
     } else {
       document.addEventListener('DOMContentLoaded', resolve);
     }
   });
 }
 
-export { uniqID, stringToDom, evalTemplateString, importCSS, domIsReady };
+function setDeepProperty(obj, path, value) {
+  const name = path.shift();
+  if (!(name in obj)) obj[name] = {};
+  if (path.length) setDeepProperty(obj[name], path, value);
+  else obj[name] = value;
+}
+
+export {
+  uniqID,
+  stringToDom,
+  evalTemplateString,
+  importCSS,
+  domIsReady,
+  setDeepProperty,
+};
