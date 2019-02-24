@@ -14,6 +14,10 @@ const SIBWidgetMixin = superclass =>
       return this.parseFieldsString(this.getAttribute('set-' + field));
     }
 
+    isMultiple(field) {
+      return this.hasAttribute('multiple-' + field);
+    }
+
     parseFieldsString(fields) {
       fields = fields.split(',').map(s => s.trim().split(/\./));
       fields.forEach(field => {
@@ -98,7 +102,7 @@ const SIBWidgetMixin = superclass =>
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
 
-      const template = await this.getTemplate2(field);
+      const template = await this.getTemplate(field);
       if (template) {
         return [parent.appendChild(template)];
       }
@@ -107,21 +111,39 @@ const SIBWidgetMixin = superclass =>
         div.setAttribute('name', field);
         parent.appendChild(div);
         const widgetList = [];
-        for (let item of this.getSet(field)) widgetList.push(await this.appendWidget(item, div));
+        for (let item of this.getSet(field)) {
+          widgetList.push(await this.appendWidget(item, div));
+        }
         return widgetList;
       }
-      let widget;
-      let attributes;
-
-      widget = document.createElement(this.getWidget(field));
-      attributes = await this.widgetAttributes(field);
+      const attributes = await this.widgetAttributes(field);
+      if (this.isMultiple(field)) {
+        let values = attributes.value;
+        if ('ldp:contains' in values) values = values['ldp:contains'];
+        if (!Array.isArray(values)) values = [values];
+        const div = document.createElement('div');
+        div.setAttribute('name', field);
+        parent.appendChild(div);
+        const widgetList = [];
+        for(const value of values) {
+          console.log(value);
+          const widget = document.createElement(this.getWidget(field));
+          attributes.value = value;
+          for (let name of Object.keys(attributes)) {
+            widget[name] = attributes[name];
+          }
+          widgetList.push(div.appendChild(widget));
+        }
+        return widgetList;
+      }
+      const widget = document.createElement(this.getWidget(field));
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
       return [parent.appendChild(widget)];
     }
 
-    async getTemplate2(field) {
+    async getTemplate(field) {
       const id = this.getAttribute(`template-${field}`);
       const template = document.getElementById(id);
       if (!(template instanceof HTMLTemplateElement)) return;
