@@ -22,7 +22,7 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
     this.render();
   }
   get value() {
-    return (this.dataHolder && Object.entries(this.dataHolder.value).length)
+    return (this.dataHolder && JSON.stringify(this.dataHolder.value) != JSON.stringify({})) // if dataHolder is not an empty object
       ? this.dataHolder.value
       : this._value || ''
   }
