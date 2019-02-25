@@ -43,6 +43,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       setDeepProperty(values, name.split('.'), value);
     });
 
+    if (this.resource && !this.isContainer) values['@id'] = this.resource['@id'];
     return values;
   }
   set value(value) {
@@ -66,7 +67,8 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   submitForm(event) {
     event.preventDefault();
     const resource = this.value;
-    if (!this.isContainer) resource['@id'] = this.resource['@id'];
+    console.log(resource['@id']);
+    // if (!this.isContainer) resource['@id'] = this.resource['@id'];
     resource['@context'] = this.context;
     this.save(resource);
 
