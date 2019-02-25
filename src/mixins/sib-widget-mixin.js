@@ -77,6 +77,13 @@ const SIBWidgetMixin = superclass =>
       }
       return resource;
     }
+    async getValues(field) {
+      let value = await this.getValue(field);
+      if (!this.isMultiple(field)) return value;
+      if ('ldp:contains' in value) value = value['ldp:contains'];
+      if (!Array.isArray(value)) value = [value];
+      return value;
+    }
 
     empty() {
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
@@ -94,10 +101,9 @@ const SIBWidgetMixin = superclass =>
       const value = this.getAttribute('widget-' + field.join('.'));
       return value || this.defaultWidget;
     }
-
     async widgetAttributes(field) {
       const attrs = {
-        value: await this.getValue(field),
+        value: await this.getValues(field),
         name: field,
       };
       const action = this.getAction(field);
@@ -113,40 +119,63 @@ const SIBWidgetMixin = superclass =>
         return [parent.appendChild(template)];
       }
       if (this.isSet(field)) {
-        const div = document.createElement('div');
-        div.setAttribute('name', field);
-        parent.appendChild(div);
-        const widgetList = [];
-        for (let item of this.getSet(field)) {
-          widgetList.push(await this.appendWidget(item, div));
-        }
-        return widgetList;
+        return await this.appendSet(field, parent);
+      }
+      if (this.isMultiple(field)) {
+        return await this.appendMultipleWidget(field, parent);
       }
       const attributes = await this.widgetAttributes(field);
-      if (this.isMultiple(field)) {
-        let values = attributes.value;
-        if ('ldp:contains' in values) values = values['ldp:contains'];
-        if (!Array.isArray(values)) values = [values];
-        const div = document.createElement('div');
-        div.setAttribute('name', field);
-        parent.appendChild(div);
-        const widgetList = [];
-        for(const value of values) {
-          console.log(value);
-          const widget = document.createElement(this.getWidget(field));
-          attributes.value = value;
-          for (let name of Object.keys(attributes)) {
-            widget[name] = attributes[name];
-          }
-          widgetList.push(div.appendChild(widget));
-        }
-        return widgetList;
-      }
       const widget = document.createElement(this.getWidget(field));
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
       return [parent.appendChild(widget)];
+    }
+
+    get multipleElementWrapper() {
+      return 'div';
+    }
+
+    get singleElementWrapper() {
+      return null;
+    }
+
+    async appendMultipleWidget(field, parent) {
+      const attributes = await this.widgetAttributes(field);
+      let container;
+      if (this.multipleElementWrapper) {
+        container = document.createElement(this.multipleElementWrapper);
+        container.setAttribute('name', field);
+        parent.appendChild(container);
+      } else container = parent;
+      const widgetList = [];
+      const values = attributes.value;
+      for (const value of values) {
+        let wrapper;
+        if (this.singleElementWrapper) {
+          wrapper = document.createElement(this.singleElementWrapper);
+          wrapper.setAttribute('name', field);
+          container.appendChild(wrapper);
+        } else wrapper = container;
+        const widget = document.createElement(this.getWidget(field));
+        attributes.value = value;
+        for (let name of Object.keys(attributes)) {
+          widget[name] = attributes[name];
+        }
+        widgetList.push(wrapper.appendChild(widget));
+      }
+      return widgetList;
+    }
+
+    async appendSet(field, parent) {
+      const div = document.createElement('div');
+      div.setAttribute('name', field);
+      parent.appendChild(div);
+      const widgetList = [];
+      for (let item of this.getSet(field)) {
+        widgetList.push(await this.appendWidget(item, div));
+      }
+      return widgetList;
     }
 
     async getTemplate(field) {
