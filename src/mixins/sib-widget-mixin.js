@@ -14,10 +14,6 @@ const SIBWidgetMixin = superclass =>
       return this.parseFieldsString(this.getAttribute('set-' + field));
     }
 
-    isMultiple(field) {
-      return this.hasAttribute('multiple-' + field);
-    }
-
     parseFieldsString(fields) {
       fields = fields.split(',').map(s => s.trim().split(/\./));
       fields.forEach(field => {
@@ -132,38 +128,38 @@ const SIBWidgetMixin = superclass =>
       return [parent.appendChild(widget)];
     }
 
-    get multipleElementWrapper() {
-      return 'div';
+    isMultiple(field) {
+      return this.hasAttribute('multiple-' + field);
     }
 
-    get singleElementWrapper() {
-      return null;
+    multipleElementWrap(content, parent) {
+      const wrapper = document.createElement('div');
+      wrapper.appendChild(content);
+      if (parent) parent.appendChild(wrapper);
+      return wrapper;
+    }
+
+    singleElementWrap(content, parent) {
+      if (parent) parent.appendChild(content);
+      return content;
     }
 
     async appendMultipleWidget(field, parent) {
       const attributes = await this.widgetAttributes(field);
-      let container;
-      if (this.multipleElementWrapper) {
-        container = document.createElement(this.multipleElementWrapper);
-        container.setAttribute('name', field);
-        parent.appendChild(container);
-      } else container = parent;
       const widgetList = [];
       const values = attributes.value;
+      const widgetsFragments = document.createDocumentFragment();
       for (const value of values) {
         let wrapper;
-        if (this.singleElementWrapper) {
-          wrapper = document.createElement(this.singleElementWrapper);
-          wrapper.setAttribute('name', field);
-          container.appendChild(wrapper);
-        } else wrapper = container;
         const widget = document.createElement(this.getWidget(field));
         attributes.value = value;
         for (let name of Object.keys(attributes)) {
           widget[name] = attributes[name];
         }
-        widgetList.push(wrapper.appendChild(widget));
+        widgetList.push(widget);
+        this.singleElementWrap(widget, widgetsFragments);
       }
+      this.multipleElementWrap(widgetsFragments, parent);
       return widgetList;
     }
 
