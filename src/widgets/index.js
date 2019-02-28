@@ -1,3 +1,5 @@
+import SIBMultiple from './sib-multiple.js';
+
 import {
   SIBDisplayDiv,
   SIBDisplayImg,
@@ -22,6 +24,7 @@ import {
 } from './form/index.js';
 
 export {
+  SIBMultiple,
   SIBDisplayDiv,
   SIBDisplayImg,
   SIBDisplayList,
