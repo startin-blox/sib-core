@@ -29,6 +29,11 @@ const SIBWidgetMixin = superclass =>
       return fields;
     }
 
+    connectedCallback() {
+      super.connectedCallback()
+      if (!this.dataset.src && !this.resource) this.populate()
+    }
+
     get fields() {
       if (this.dataset.fields === 'data-fields') {
         return [];
@@ -161,7 +166,7 @@ const SIBWidgetMixin = superclass =>
       }
       return widget;
     }
-    
+
     insertSingleElement(field, attributes) {
       const element = this.createSingleElement(field, attributes);
       const wrapper = this.wrappers[field];
