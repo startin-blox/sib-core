@@ -143,7 +143,6 @@ const SIBWidgetMixin = superclass =>
       for (const value of values) {
         attributes.value = value;
         const widget = this.insertSingleElement(field, attributes);
-        wrapper.widgets.push(widget);
       }
       return wrapper;
     }
@@ -167,6 +166,7 @@ const SIBWidgetMixin = superclass =>
       const element = this.createSingleElement(field, attributes);
       const wrapper = this.wrappers[field];
       wrapper.appendChild(element);
+      wrapper.widgets.push(element);
       return element;
     }
 

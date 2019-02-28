@@ -32,7 +32,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     const values = {};
     this.widgets.forEach(({name, value}) => {
       try {
-        value = JSON.parse(widget.value);
+        value = JSON.parse(value);
       } catch (e) {}
       setDeepProperty(values, name.split('.'), value);
     });
@@ -55,7 +55,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     const resource = this.value;
     if (!this.isContainer) resource['@id'] = this.resource['@id'];
     resource['@context'] = this.context;
-    console.log(resource);
     this.save(resource);
 
     if (!this.next) return false;
@@ -144,6 +143,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     const element = this.createSingleElement(field, attributes);
     const wrapper = this.wrappers[field];
     wrapper.insertBefore(element, wrapper.lastChild);
+    wrapper.widgets.push(element.firstChild);
     return element.firstChild;
   }
 }
