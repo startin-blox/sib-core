@@ -72,9 +72,11 @@ const SIBWidgetMixin = superclass =>
       }
       return resource;
     }
+
     async getValues(field) {
       let value = await this.getValue(field);
       if (!this.isMultiple(field)) return value;
+      if (value == null) return [];
       if ('ldp:contains' in value) value = value['ldp:contains'];
       if (!Array.isArray(value)) value = [value];
       return value;
