@@ -31,7 +31,7 @@ const SIBWidgetMixin = superclass =>
 
     connectedCallback() {
       super.connectedCallback()
-      if (!this.attributes['data-src']) this.populate()
+      if (!this.dataset.src && !this.resource) this.populate()
     }
 
     get fields() {
@@ -167,7 +167,7 @@ const SIBWidgetMixin = superclass =>
       }
       return widget;
     }
-    
+
     insertSingleElement(field, attributes) {
       const element = this.createSingleElement(field, attributes);
       const wrapper = this.wrappers[field];
