@@ -63,7 +63,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     event.preventDefault();
     const resource = this.value;
     resource['@context'] = this.context;
-    console.log(resource);
     this.save(resource);
 
     if (!this.next) return false;
@@ -152,6 +151,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     const element = this.createSingleElement(field, attributes);
     const wrapper = this.wrappers[field];
     wrapper.insertBefore(element, wrapper.lastChild);
+    wrapper.widgets.push(element.firstChild);
     return element.firstChild;
   }
 }
