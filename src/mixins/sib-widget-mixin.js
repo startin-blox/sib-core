@@ -24,6 +24,11 @@ const SIBWidgetMixin = superclass =>
       return fields;
     }
 
+    connectedCallback() {
+      super.connectedCallback()
+      if (!this.attributes['data-src']) this.populate()
+    }
+
     get fields() {
       if (this.dataset.fields === 'data-fields') {
         return [];
@@ -44,6 +49,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     async fetchValue(resource, field) {
+      if(!resource) return null
       if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource);
       }

@@ -33,17 +33,25 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   //form submission handling
-  getValues() {
+  get value() {
     const values = {};
 
     this.widgets.forEach(({name, value}) => {
       try {
-        value = JSON.parse(widget.value);
+        value = JSON.parse(value);
       } catch (e) {}
       setDeepProperty(values, name.split('.'), value);
     });
 
+    if (this.resource && !this.isContainer) values['@id'] = this.resource['@id'];
     return values;
+  }
+  set value(value) {
+    this.widgets.forEach(el => {
+      try {
+        if(value[el.name]) el.value = value[el.name]
+      } catch (e) {}
+    });
   }
   async save(resource) {
     await store.save(resource, this.resource['@id']);
@@ -58,8 +66,9 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   change(resource) {}
   submitForm(event) {
     event.preventDefault();
-    const resource = this.getValues();
-    if (!this.isContainer) resource['@id'] = this.resource['@id'];
+    const resource = this.value;
+    console.log(resource['@id']);
+    // if (!this.isContainer) resource['@id'] = this.resource['@id'];
     resource['@context'] = this.context;
     this.save(resource);
 
@@ -74,7 +83,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   inputChange(event) {
-    const resource = this.getValues();
+    const resource = this.value;
     if (!this.isContainer) resource['@id'] = this.resource['@id'];
     this.change(resource);
   }

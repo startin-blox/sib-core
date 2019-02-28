@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>SIB Widget Factory</title>
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
+  <script type="module" src="../src/index.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <sib-widget name="sib-test-customer">
+    <template>
+      <p><strong>${name}</strong></p>
+      <p>
+        ${value.name} <br />
+        ${value.address}
+      </p>
+    </template>
+  </sib-widget>
+
+  <sib-widget name="sib-test-name">
+    <template>
+      <h1>Project: ${value}</h1>
+    </template>
+  </sib-widget>
+
+  <sib-display
+    data-src="https://test-paris.happy-dev.fr/projects/1/"
+    data-fields="name, description, customer"
+    widget-name="sib-test-name"
+    widget-customer="sib-test-customer"
+    ></sib-display>
+</body>
+</html>

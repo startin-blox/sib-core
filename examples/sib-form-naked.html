@@ -24,7 +24,7 @@
       data-fields="username, account.picture"
     ></sib-form>
     <hr>
-    <button id="f2o">sib-form.getValues()</button>
+    <button id="f2o">sib-form.value</button>
     <pre id="pre"></pre>
     <script>
       const sibForms = document.getElementsByTagName('sib-form');
@@ -32,7 +32,7 @@
         const data = {};
         for (elm of sibForms) {
           try {
-            data[elm.id] = elm.getValues();
+            data[elm.id] = elm.value;
           } catch (e) {console.error(e)}
         }
         console.log(data);
