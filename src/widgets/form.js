@@ -94,6 +94,18 @@ const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', 
 
 
 
+const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
+  <label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="number"
+      name="\${name}"
+      value="\${value}"
+    >
+  </label>
+`))
+
 export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
@@ -101,6 +113,9 @@ export {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };

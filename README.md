@@ -112,6 +112,7 @@ The following widgets are available :
 - **sib-form-checkbox**:
 - **sib-form-dropdown**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget.
 - **sib-form-auto-completion**:
+- **sib-form-number**: Inserts an `<input/>` HTML tag of type "number".
 
 ## Helpers fonctions
 

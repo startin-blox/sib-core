@@ -15,6 +15,9 @@ import {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 } from './form.js';
@@ -32,6 +35,9 @@ export {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
+  SIBFormMultipleDropdown,
+  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };
