@@ -3,8 +3,6 @@ import SIBMultiple from './sib-multiple.js';
 import {
   SIBDisplayDiv,
   SIBDisplayImg,
-  SIBDisplayList,
-  SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
@@ -17,8 +15,6 @@ import {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 } from './form/index.js';
@@ -27,8 +23,6 @@ export {
   SIBMultiple,
   SIBDisplayDiv,
   SIBDisplayImg,
-  SIBDisplayList,
-  SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
@@ -38,8 +32,6 @@ export {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };

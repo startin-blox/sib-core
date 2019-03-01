@@ -1,11 +1,16 @@
 import { evalTemplateString } from '../helpers/index.js';
+import { store } from '../store.js';
 
-export const widgetFactory = (customTemplate) => class extends HTMLElement {
+export const widgetFactory = (customTemplate, parentTemplate = null) => class extends HTMLElement {
   connectedCallback() {
     this.render();
   }
   render() {
-    this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue });
+    if (this.parentTemplate) {
+      this.innerHTML = evalTemplateString(this.parentTemplate, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue, range: this.htmlRange });
+    } else {
+      this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue });
+    }
   }
   get label() {
     return this.getAttribute('label') || this.name;
@@ -34,8 +39,15 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
       this.render()
     }
   }
+  get dataHolder() {
+    return this.querySelector('[data-holder]')
+  }
+
   get template() {
     return customTemplate
+  }
+  get parentTemplate() {
+    return parentTemplate
   }
   get escapedValue() {
     return ('' + this.value)
@@ -43,7 +55,27 @@ export const widgetFactory = (customTemplate) => class extends HTMLElement {
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');
   }
-  get dataHolder() {
-    return this.querySelector('[data-holder]')
+
+  get range() {
+    if (!this._range) return [];
+    if (!Array.isArray(this._range)) return [this._range];
+    return this._range;
+  }
+  set range(url) {
+    store.list(url).then(list => {
+      //this._range = [{ '@id': '', name: '---' }].concat(list);
+      this._range = list
+      this.render();
+      if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
+    });
+  }
+  get htmlRange() {
+    let htmlRange =''
+    if (this.range.length) {
+      this.range.forEach(element => {
+        htmlRange += evalTemplateString(this.template, {name: element.name, id: element['@id']})
+      });
+    }
+    return htmlRange || ''
   }
 };
