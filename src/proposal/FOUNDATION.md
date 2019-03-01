@@ -13,7 +13,7 @@ Les fonctionnalités ne sont pas cloisonnées. Par exemple, une partie de la log
 Proposition : Améliorer le système de mixins (voir B)
 
 # 3 Redondance du code
-Actuellement, il y a, par exemple, plusieurs composants qui implémente la manière dont on fait le rendu. Problèmes que cela pose :
+Actuellement, il y a, par exemple, plusieurs composants qui implémentent la manière dont on fait le rendu. Problèmes que cela pose :
 - évolutabilité (par exemple, si un jour on veut faire du shadow DOM)
 - maintenabilité
 
@@ -23,29 +23,29 @@ Proposition : One class responsability (voir A)
 De manière générale, le framework manque de normalisation. Notamment :
 - Développement de feature (voir 2)
 - Chemin des données (voir 5)
-- Normalisation des événéments (voir 9)
+- Normalisation des événements (voir 9)
 
 # 5 Chemin des données
-Actuellement, on peut avoir des données issues des attributs, des données qui sont liées à l'état du composant (par ex SIBDisplay) et des données qui sont fournie ou prise par des parents (par exemple, les mixins). Ca rend compliqué le débugage de l'app.
+Actuellement, on peut avoir des données issues des attributs, des données qui sont liées à l'état du composant (par ex SIBDisplay) et des données qui sont fournies ou prise par des parents (par exemple, les mixins). Ça rend compliqué le débugage de l'app.
 
 Proposition :
-- Normaliser le chemin des données : assez classiquement, on peut convenir que la données descends exclusivement. Pour la faire remonter, passer par des événements.
-- Rendre les données utilisées par le composant explicites (voir C)
+- Normaliser le chemin des données : assez classiquement, on peut convenir que la donnée descend exclusivement. Pour la faire remonter, passer par des événements.
+- Rendre les données utilisées par le composant explicite (voir C)
 
 # 6 Lifecycle
 Actuellement, on utilise les callbacks des customs elements. Problèmes que cela pose :
 - on a que 2 callbacks (connected/disconnected)
-- comme on utilise l'héritage, on est obligé de faire d'utiliser super pour appelé les callbacks en cascade, avec possiblement des effets de bords
+- comme on utilise l'héritage, on est obligé d'utiliser super pour appeler les callbacks en cascade, avec possiblement des effets de bords
 - pas de normalisation du cycle de vie du composant
 
 Proposition : Créer un système de hooks (voir E)
 
 # 7 Moteur de rendu
-Le moteur de rendu, au delà d'être éclaté (voir 2), s'appuie sur deux choses :
+Le moteur de rendu, au-delà d'être éclaté (voir 2), s'appuie sur deux choses :
 - l'utilisation de innerHTML
 - l'utilisation d'eval
 
-Tout d'abord, cela nous oblige à rerendre l'ensemble de l'élément si une données évolue donc niveau performance c'est pas l'idéal (voir 8).
+Tout d'abord, cela nous oblige à rerendre l'ensemble de l'élément si une donnée évolue donc niveau performance c'est pas l'idéal (voir 8).
 Ensuite, les fonctionnalités de templating reste "basique" : on affiche une valeur et c'est tout (pas de if, pas de loop, etc...). Enfin, il vaut mieux éviter d'utiliser un eval.
 
 Propositions :
@@ -58,8 +58,8 @@ Actuellement, on ne gère pas bien la mise à jour de données qui sont mises à
 Proposition : Créer un système de state qui surveille les données et notifie de tout changement (voir F)
 
 # 9 Store
-En attendant la réécriture du store, on a de sérieux problèmes de performances (redondance de requêtes notamment). De plus, certains éléments liés au store se retrouve dans le code, exemple :
-```
+En attendant la réécriture du store, on a de sérieux problèmes de performances (redondance de requêtes notamment). De plus, certains éléments liés au store se retrouvent dans le code, exemple :
+```js
 if (propertyValue['ldp:contains']) {
   //
 }
@@ -76,10 +76,10 @@ Permettre de connaître la responsabilité unique d'une classe. Voici la proposi
 - SIB : Construit et enregistre les composants
 
 # B Améliorer le système de mixins
-Permettre aux composants d'installer des mixins facilement via l'ajout d'une méthode statique use qui renvoie une tableau de mixins à installer.
+Permettre aux composants d'installer des mixins facilement via l'ajout d'une méthode statique use qui renvoie un tableau de mixins à installer.
 
 Exemple :
-```
+```js
 static get use() {
   return [
     MyAwesomeMixin,
@@ -91,17 +91,28 @@ Toutes les fonctionnalités qui ne sont pas utilisées partout doivent être mis
 
 # C Component data property
 Pour nourrir un composant avec des données, elles doivent être passées comme attribut de l'élément. Avant :
-```
-<sib-display data-src="https://test-paris.happy-dev.fr/users/" data-fields="@id, username, first_name, last_name, email">
-  <sib-display data-fields="@id, username, first_name, last_name, email"></sib-display>
+```html
+<sib-display
+  data-src="https://test-paris.happy-dev.fr/users/"
+  data-fields="@id, username, first_name, last_name, email"
+>
+  <sib-display 
+    data-fields="@id, username, first_name, last_name, email"
+  ></sib-display>
   ...
 </sib-display>
 ```
 
 Après :
-```
-<sib-display data-src="https://test-paris.happy-dev.fr/users/" data-fields="@id, username, first_name, last_name, email">
-  <sib-display data-fields="@id, username, first_name, last_name, email" data-src="https://test-paris.happy-dev.fr/users/1/"></sib-display>
+```html
+<sib-display
+  data-src="https://test-paris.happy-dev.fr/users/"
+  data-fields="@id, username, first_name, last_name, email"
+>
+  <sib-display
+    data-fields="@id, username, first_name, last_name, email"
+    data-src="https://test-paris.happy-dev.fr/users/1/"
+  ></sib-display>
   ...
 </sib-display>
 ```
@@ -111,7 +122,7 @@ Ainsi, l'élément "fils" peut être sorti de la boucle, il sera toujours utilis
 # D Système de templating
 Si on veut pouvoir se passer d'un eval et du innerHTML (voir 7), il faut mettre en place un système de templating.
 
-Ce système doit permettre de mettre à jour les données qui ont changées sans avoir à faire tout le rendu une nouvelle fois.
+Ce système doit permettre de mettre à jour les données qui ont changé sans avoir à faire tout le rendu une nouvelle fois.
 
 Propositions de "mot-clé" :
 - sib-value : met la valeur dans textContent de l'élément cible
@@ -144,7 +155,7 @@ Hooks :
 Exemple :
 - l'événement dataChanged:{prop} est lancé quand {prop} a été modifiée
 - accrocher cet événement à un callback via du sucre syntaxique, ex:
-```
+```js
 watchers: {
   prop(newValue, oldValue) {
     // do stuff
