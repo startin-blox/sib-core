@@ -1,4 +1,4 @@
-import { widgetFactory } from '../../parents/widget-factory.js';
+import { widgetFactory } from '../parents/widget-factory.js';
 
 const SIBFormLabelText = customElements.define('sib-form-label-text', widgetFactory(`
   <label>

@@ -6,7 +6,7 @@ import {
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
-} from './display/index.js';
+} from './display.js';
 
 import {
   SIBFormAutoCompletion,
@@ -17,7 +17,7 @@ import {
   SIBFormLabelText,
   SIBFormPlaceholderText,
   SIBFormTextarea,
-} from './form/index.js';
+} from './form.js';
 
 export {
   SIBMultiple,
