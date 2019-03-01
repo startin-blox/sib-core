@@ -27,11 +27,33 @@
     </template>
   </sib-widget>
 
+  <sib-widget name="sib-custom-dropdown">
+      <template data-parent>
+        <label>${label}</label>
+        <select>
+          ${range}
+        </select>
+      </template>
+
+      <template>
+          <option value="${name}">role: ${name}</option>
+      </template>
+    </sib-widget>
+
+
   <sib-display
     data-src="https://test-paris.happy-dev.fr/projects/1/"
     data-fields="name, description, customer"
     widget-name="sib-test-name"
     widget-customer="sib-test-customer"
     ></sib-display>
+
+    <h2>Edit members</h2>
+    <sib-form
+    data-src="https://test-paris.happy-dev.fr/projects/1/"
+    data-fields="members"
+    range-members="https://test-paris.happy-dev.fr/projects/1/members/"
+    widget-members="sib-custom-dropdown"
+    ></sib-form>
 </body>
 </html>

@@ -2,7 +2,7 @@ import { widgetFactory } from './widget-factory.js'
 
 export default class SIBWidget extends HTMLElement {
   connectedCallback() {
-    customElements.define(this.name, widgetFactory(this.template))
+    customElements.define(this.name, widgetFactory(this.template, this.parentTemplate))
   }
 
   get name() {
@@ -10,7 +10,12 @@ export default class SIBWidget extends HTMLElement {
   }
 
   get template() {
-    return this.querySelector('template').innerHTML
+    return this.querySelector('template:not([data-parent])').innerHTML
+  }
+
+  get parentTemplate() {
+    let parent = this.querySelector('template[data-parent]')
+    return parent ? this.querySelector('template[data-parent]').innerHTML : null
   }
 }
 
