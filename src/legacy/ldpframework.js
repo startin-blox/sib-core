@@ -30879,7 +30879,9 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
         if (error) {
           return callback(null, error);
         }
-  
+        
+        data = {"@context": "<http://owl.openinitiative.com/oicontext.jsonld>", "@graph": ${JSON.stringify(data)}};
+        
         self.request('PATCH', iri, headers, data, function (statusCode, headers, content, error) {
             // error during request
             if (error) {
