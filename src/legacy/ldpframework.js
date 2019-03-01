@@ -30835,7 +30835,10 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           return callback(null, error);
         }
         
-        data = `{"@context": "http://owl.openinitiative.com/oicontext.jsonld", "@graph": ${JSON.stringify(data)}}`;
+        data = JSON.stringify({
+          "@context": "http://owl.openinitiative.com/oicontext.jsonld",
+          "@graph": data,
+        });
   
         self.request(method, iri, headers, data, function (statusCode, headers, content, error) {
           // error during request
@@ -30880,7 +30883,10 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           return callback(null, error);
         }
         
-        data = {"@context": "<http://owl.openinitiative.com/oicontext.jsonld>", "@graph": ${JSON.stringify(data)}};
+        data = JSON.stringify({
+          "@context": "http://owl.openinitiative.com/oicontext.jsonld",
+          "@graph": data,
+        });
         
         self.request('PATCH', iri, headers, data, function (statusCode, headers, content, error) {
             // error during request
