@@ -17,7 +17,7 @@ export default class SIBBase extends HTMLElement {
   toggleLoaderHidden(toggle) {
     if (this.hasAttribute('loader-id')) {
       document
-        .getElementById(this.getAttribute('loaderId'))
+        .getElementById(this.getAttribute('loader-id'))
         .toggleAttribute('hidden', toggle);
     }
   }

@@ -49,13 +49,17 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   async save(resource) {
-    await store.save(resource, this.resource['@id']);
+    this.toggleLoaderHidden(false);
+    try {
+      await store.save(resource, this.resource['@id']);
+    } catch (e) { this.toggleLoaderHidden(true); }
     this.dispatchEvent(
       new CustomEvent('save', {
         bubbles: true,
         detail: { resource: resource },
       }),
     );
+    this.toggleLoaderHidden(true);
   }
 
   change(resource) {}
