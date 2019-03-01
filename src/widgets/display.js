@@ -1,6 +1,4 @@
-import { widgetFactory } from '../../parents/widget-factory.js'
-import SIBDisplayList from './sib-display-list.js';
-import SIBDisplayLookupList from './sib-display-lookuplist.js';
+import { widgetFactory } from '../parents/widget-factory.js'
 
 const SIBDisplayDiv = customElements.define('sib-display-div', widgetFactory(`
   <div name="\${name}">\${value}</div>
@@ -29,8 +27,6 @@ const SIBAction = customElements.define('sib-action', widgetFactory(`
 export {
   SIBDisplayDiv,
   SIBDisplayImg,
-  SIBDisplayList,
-  SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,

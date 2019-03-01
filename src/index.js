@@ -1,13 +1,12 @@
 import * as Helpers from './helpers/index.js';
 import { SIBListMixin, SIBWidgetMixin } from './mixins/index.js';
 import { SIBACChecker, SIBDisplay, SIBForm } from './elements/index.js';
-import { SIBBase, SIBTemplateElement, SIBWidget, SIBMultipleWidget } from './parents/index.js';
+import { SIBBase, SIBTemplateElement, SIBWidget } from './parents/index.js';
 import { store } from './store.js';
 import {
+  SIBMultiple,
   SIBDisplayDiv,
   SIBDisplayImg,
-  SIBDisplayList,
-  SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
@@ -17,8 +16,6 @@ import {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 } from './widgets/index.js';
@@ -33,11 +30,9 @@ export {
   SIBBase,
   SIBTemplateElement,
   SIBWidget,
-  SIBMultipleWidget,
+  SIBMultiple,
   SIBDisplayDiv,
   SIBDisplayImg,
-  SIBDisplayList,
-  SIBDisplayLookupList,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
@@ -47,8 +42,6 @@ export {
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   store,

@@ -4,11 +4,6 @@ import { store } from '../store.js';
 import { setDeepProperty } from "../helpers/index.js";
 
 export default class SIBForm extends SIBWidgetMixin(SIBBase) {
-  constructor() {
-    super();
-    this.widgets = [];
-  }
-
   get defaultWidget() {
     return 'sib-form-label-text';
   }
@@ -35,7 +30,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   //form submission handling
   get value() {
     const values = {};
-
     this.widgets.forEach(({name, value}) => {
       try {
         value = JSON.parse(value);
@@ -53,6 +47,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       } catch (e) {}
     });
   }
+
   async save(resource) {
     await store.save(resource, this.resource['@id']);
     this.dispatchEvent(
@@ -67,8 +62,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   submitForm(event) {
     event.preventDefault();
     const resource = this.value;
-    console.log(resource['@id']);
-    // if (!this.isContainer) resource['@id'] = this.resource['@id'];
     resource['@context'] = this.context;
     this.save(resource);
 
@@ -95,7 +88,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   empty() {
-    this.widgets.length = 0;
     if (!this.form) return;
     while (this.form.firstChild) {
       this.form.removeChild(this.form.firstChild);
@@ -117,15 +109,50 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
         this.appendChild(this.form);
       }
     }
-    for (let field of this.fields) {
-      this.widgets.push(...(await this.appendWidget(field, this.form)));
-    }
+    await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
 
     if (isNaked) return;
     this.form.appendChild(this.createInput('submit'));
     if (this.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
     }
+  }
+
+  createMultipleWrapper(field, attributes, parent = null) {
+    const wrapper = document.createElement('sib-multiple');
+    this.wrappers[field] = wrapper;
+    const addButton = document.createElement('button');
+    addButton.textContent = '+';
+    addButton.type = "button";
+    addButton.addEventListener('click', () => {
+      delete attributes.value;
+      this.insertSingleElement(field, attributes);
+    });
+    if (parent) parent.appendChild(wrapper);
+    wrapper.appendChild(addButton);
+    return wrapper;
+  }
+
+  createSingleElement(field, attributes) {
+    const childWrapper = document.createElement("div");
+    childWrapper.appendChild(super.createSingleElement(field, attributes));
+
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '×';
+    removeButton.type = "button";
+    removeButton.addEventListener('click', () => {
+      childWrapper.remove();
+    });
+    childWrapper.appendChild(removeButton);
+    return childWrapper;
+  }
+
+  insertSingleElement(field, attributes) {
+    const element = this.createSingleElement(field, attributes);
+    const wrapper = this.wrappers[field];
+    wrapper.insertBefore(element, wrapper.lastChild);
+    wrapper.widgets.push(element.firstChild);
+    return element.firstChild;
   }
 }
 

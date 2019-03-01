@@ -3,6 +3,11 @@ import { stringToDom, evalTemplateString } from '../helpers/index.js';
 
 const SIBWidgetMixin = superclass =>
   class extends superclass {
+    constructor() {
+      super();
+      this.widgets = [];
+      this.wrappers = {};
+    }
     get div() {
       if (this._div) return this._div;
       this._div = document.createElement('div');
@@ -26,7 +31,7 @@ const SIBWidgetMixin = superclass =>
 
     connectedCallback() {
       super.connectedCallback()
-      if (!this.attributes['data-src']) this.populate()
+      if (!this.dataset.src && !this.resource) this.populate()
     }
 
     get fields() {
@@ -74,7 +79,17 @@ const SIBWidgetMixin = superclass =>
       return resource;
     }
 
+    async getValues(field) {
+      let value = await this.getValue(field);
+      if (!this.isMultiple(field)) return value;
+      if (value == null) return [];
+      if ('ldp:contains' in value) value = value['ldp:contains'];
+      if (!Array.isArray(value)) value = [value];
+      return value;
+    }
+
     empty() {
+      this.widgets.length = 0;
       while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
     }
 
@@ -87,13 +102,12 @@ const SIBWidgetMixin = superclass =>
       if (this.getAction(field)) {
         return 'sib-action';
       }
-      const value = this.getAttribute('widget-' + field.join('.'));
+      const value = this.getAttribute('widget-' + field);
       return value || this.defaultWidget;
     }
-
     async widgetAttributes(field) {
       const attrs = {
-        value: await this.getValue(field),
+        value: await this.getValues(field),
         name: field,
       };
       const action = this.getAction(field);
@@ -103,31 +117,75 @@ const SIBWidgetMixin = superclass =>
 
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
-
-      const template = await this.getTemplate2(field);
+      const template = await this.getTemplate(field);
       if (template) {
-        return [parent.appendChild(template)];
+        parent.appendChild(template);
       }
       if (this.isSet(field)) {
-        const div = document.createElement('div');
-        div.setAttribute('name', field);
-        parent.appendChild(div);
-        const widgetList = [];
-        for (let item of this.getSet(field)) widgetList.push(await this.appendWidget(item, div));
-        return widgetList;
+        await this.appendSet(field, parent);
       }
-      let widget;
-      let attributes;
 
-      widget = document.createElement(this.getWidget(field));
-      attributes = await this.widgetAttributes(field);
+      const attributes = await this.widgetAttributes(field);
+      if (this.isMultiple(field)) {
+        return this.widgets.push(await this.appendMultipleWidget(field, attributes, parent));
+      }
+      const widget = document.createElement(this.getWidget(field));
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
-      return [parent.appendChild(widget)];
+
+      this.widgets.push(parent.appendChild(widget));
     }
 
-    async getTemplate2(field) {
+    isMultiple(field) {
+      return this.hasAttribute('multiple-' + field);
+    }
+
+    async appendMultipleWidget(field, attributes, parent=null) {
+      const values = attributes.value;
+      const wrapper = this.createMultipleWrapper(field, attributes, parent);
+      wrapper.name = field;
+      wrapper.widgets = [];
+      for (const value of values) {
+        attributes.value = value;
+        const widget = this.insertSingleElement(field, attributes);
+      }
+      return wrapper;
+    }
+
+    createMultipleWrapper(field, attributes, parent = null) {
+      const wrapper = document.createElement('sib-multiple');
+      this.wrappers[field] = wrapper;
+      if (parent) parent.appendChild(wrapper);
+      return wrapper;
+    }
+
+    createSingleElement(field, attributes) {
+      const widget = document.createElement(this.getWidget(field));
+      for (let name of Object.keys(attributes)) {
+        widget[name] = attributes[name];
+      }
+      return widget;
+    }
+
+    insertSingleElement(field, attributes) {
+      const element = this.createSingleElement(field, attributes);
+      const wrapper = this.wrappers[field];
+      wrapper.appendChild(element);
+      wrapper.widgets.push(element);
+      return element;
+    }
+
+    async appendSet(field, parent) {
+      const div = document.createElement('div');
+      div.setAttribute('name', field);
+      parent.appendChild(div);
+      for (let item of this.getSet(field)) {
+        this.appendWidget(item, div);
+      }
+    }
+
+    async getTemplate(field) {
       const id = this.getAttribute(`template-${field}`);
       const template = document.getElementById(id);
       if (!(template instanceof HTMLTemplateElement)) return;
