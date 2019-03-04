@@ -1,16 +1,12 @@
 import { evalTemplateString } from '../helpers/index.js';
 import { store } from '../store.js';
 
-export const widgetFactory = (customTemplate, parentTemplate = null) => class extends HTMLElement {
+export const widgetFactory = (customTemplate, childTemplate = null) => class extends HTMLElement {
   connectedCallback() {
     this.render();
   }
   render() {
-    if (this.parentTemplate) {
-      this.innerHTML = evalTemplateString(this.parentTemplate, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue, range: this.htmlRange });
-    } else {
-      this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue });
-    }
+    this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue, range: this.htmlRange });
   }
   get label() {
     return this.getAttribute('label') || this.name;
@@ -46,8 +42,8 @@ export const widgetFactory = (customTemplate, parentTemplate = null) => class ex
   get template() {
     return customTemplate
   }
-  get parentTemplate() {
-    return parentTemplate
+  get childTemplate() {
+    return childTemplate
   }
   get escapedValue() {
     return ('' + this.value)
@@ -73,7 +69,7 @@ export const widgetFactory = (customTemplate, parentTemplate = null) => class ex
     let htmlRange =''
     if (this.range.length) {
       this.range.forEach(element => {
-        htmlRange += evalTemplateString(this.template, {name: element.name, id: element['@id']})
+        htmlRange += evalTemplateString(this.childTemplate, {name: element.name, id: element['@id']})
       });
     }
     return htmlRange || ''

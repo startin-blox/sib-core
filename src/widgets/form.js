@@ -54,30 +54,33 @@ const SIBFormTextarea = customElements.define('sib-form-textarea', widgetFactory
   </label>
 `))
 
-const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory(`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`, `
+const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory(
+`
   <label>
     <div>\${label}</div>
     <select name="\${name}" data-holder>
       \${range}
     </select>
   </label>
+`,
+`
+  <option value='{"@id": "\${id}"}'>\${name}</option>
 `))
 
-const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`, `
+const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(
+`
   <select name="\${name}" data-holder>
     <option disabled>\${label}</option>
     \${range}
   </select>
-  `))
+`,
+`
+  <option value='{"@id": "\${id}"}'>\${name}</option>
+`))
 
 
-const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', widgetFactory(`
-  <option value='\${name}' />
-`, `
+const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', widgetFactory(
+`
   <label>
     <div>\${label}</div>
     <input type="text"
@@ -90,9 +93,10 @@ const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', 
         \${range}
       </datalist>
   </label>
+`,
+`
+  <option value='\${name}' />
 `))
-
-
 
 export {
   SIBFormAutoCompletion,
