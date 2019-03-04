@@ -72,7 +72,7 @@ const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory
 const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(
 `
   <select name="\${name}" data-holder>
-    <option disabled>\${label}</option>
+    <option disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
 `,
