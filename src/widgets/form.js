@@ -114,8 +114,6 @@ export {
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };

@@ -17,8 +17,6 @@ import {
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 } from './widgets/index.js';
@@ -46,8 +44,6 @@ export {
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
-  SIBFormMultipleDropdown,
-  SIBFormMultipleValue,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   store,
