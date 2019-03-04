@@ -11,6 +11,7 @@ import {
 import {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
+  SIBFormDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
@@ -31,6 +32,7 @@ export {
   SIBAction,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
+  SIBFormDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
