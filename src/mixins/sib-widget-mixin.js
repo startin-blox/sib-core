@@ -122,7 +122,8 @@ const SIBWidgetMixin = superclass =>
         parent.appendChild(template);
       }
       if (this.isSet(field)) {
-        await this.appendSet(field, parent);
+        this.appendSet(field, parent);
+        return;
       }
 
       const attributes = await this.widgetAttributes(field);
@@ -176,7 +177,7 @@ const SIBWidgetMixin = superclass =>
       return element;
     }
 
-    async appendSet(field, parent) {
+    appendSet(field, parent) {
       const div = document.createElement('div');
       div.setAttribute('name', field);
       parent.appendChild(div);
