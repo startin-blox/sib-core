@@ -1,4 +1,6 @@
 import { widgetFactory } from '../parents/widget-factory.js';
+import { importCSS } from '../helpers/index.js';
+import Choices from 'https://dev.jspm.io/choices.js@4';
 
 const SIBFormLabelText = customElements.define('sib-form-label-text', widgetFactory(`
   <label>
@@ -83,20 +85,21 @@ const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', 
 `
   <label>
     <div>\${label}</div>
-    <input type="text"
-      data-holder
-      type="text"
-      name="\${name}"
-      list="datalist" />
-
-      <datalist id="datalist">
-        \${range}
-      </datalist>
+    <select name="\${name}" data-holder multiple>
+      \${range}
+    </select>
   </label>
 `,
 `
-  <option value='\${name}' />
-`))
+  <option value="\${id}">\${name}</option>
+`,
+(formWidget) => {
+  let select = formWidget.querySelector('select');
+  if (select) {
+    new Choices(select, { removeItemButton: true });
+    importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css');
+  }
+}))
 
 export {
   SIBFormAutoCompletion,

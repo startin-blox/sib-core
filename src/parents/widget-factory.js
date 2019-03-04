@@ -1,12 +1,13 @@
 import { evalTemplateString } from '../helpers/index.js';
 import { store } from '../store.js';
 
-export const widgetFactory = (customTemplate, childTemplate = null) => class extends HTMLElement {
+export const widgetFactory = (customTemplate, childTemplate = null, callback = null) => class extends HTMLElement {
   connectedCallback() {
     this.render();
   }
   render() {
     this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue, range: this.htmlRange });
+    if(callback) callback(this)
   }
   get label() {
     return this.getAttribute('label') || this.name;
