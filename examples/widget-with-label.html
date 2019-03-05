@@ -12,18 +12,31 @@
 
 <body>
 
-    <sib-widget name="sib-labelled-div">
+    <h1>SIB Widget Factory</h1>
+
+    <h2>With custom HTML template:</h2>
+
+    <sib-widget name="my-custom-sib-labelled-div">
         <template>
             ${value ? "<label>" + label + "</label>" : ""}
             <div name="${name}">${value}</div>
         </template>
     </sib-widget>
 
-  <sib-display
-    data-src="https://test-paris.happy-dev.fr/projects/1/"
-    data-fields="description"
-    label-description="Project description:"
-    widget-description="sib-labelled-div"
+    <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/1/"
+        data-fields="description"
+        label-description="Project description:"
+        widget-description="my-custom-sib-labelled-div"
+    ></sib-display>
+
+    <h2>With SiB widget:</h2>
+
+    <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/1/"
+        data-fields="description"
+        label-description="Project description:"
+        widget-description="sib-display-labelled-div"
     ></sib-display>
     
 </body>
