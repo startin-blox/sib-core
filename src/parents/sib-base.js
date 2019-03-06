@@ -16,9 +16,8 @@ export default class SIBBase extends HTMLElement {
 
   toggleLoaderHidden(toggle) {
     if (this.hasAttribute('loader-id')) {
-      document
-        .getElementById(this.getAttribute('loaderId'))
-        .toggleAttribute('hidden', toggle);
+      const loader = document.getElementById(this.getAttribute('loader-id'));
+      if (loader) loader.toggleAttribute('hidden', toggle);
     }
   }
 
@@ -72,7 +71,7 @@ export default class SIBBase extends HTMLElement {
   }
 
   get resources() {
-    if (!this.isContainer) return [];
+    if (!this.isContainer || !this.resource['ldp:contains']) return [];
     if (Array.isArray(this.resource['ldp:contains']))
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
