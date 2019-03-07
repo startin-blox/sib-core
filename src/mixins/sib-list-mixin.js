@@ -236,7 +236,7 @@ const SIBListMixin = superclass =>
           this.appendChildElt(resource);
           continue;
         }
-        store.get(resource.container).then(container => {
+        store.get(resource.container, this.context).then(container => {
           for (let resource of container['ldp:contains']) {
             this.appendChildElt(resource);
           }

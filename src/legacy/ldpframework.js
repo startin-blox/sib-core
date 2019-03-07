@@ -250,7 +250,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
         * @param {Object} [context] JSON-LD context to compact the graph
         * @returns {Promise}
         */
-       this.get = function get(object, context) {
+       this.get = async function get(object, context) {
            var iri;
            if (typeof object === 'string') {
                iri = object;
@@ -258,8 +258,9 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
                this.resetId(object);
                iri = object['@id'];
            }
-           context = context || this.context;
-  
+          context = context || this.context;
+          iri = await this.getExpandedIri(iri, context)
+
            return store.graph(documentIri(iri), {'useEtag': true})
                .then(function(graph) {this.etags[iri]=graph.etag;return serializer.serialize(graph)}.bind(this))
                .then(function (expanded) { return JsonLdUtils.frame(expanded, {}); })
@@ -310,7 +311,13 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
            if(iri.startsWith("http://")||iri.startsWith("https://")) return iri;
            return (this.container||"") + iri;
        }
-  
+
+        this.getExpandedIri = async function getExpandedIri(iri, context) {
+          iri = (iri.slice(-1) != "/") ? iri + '/' : iri;
+          let expandedIri = await JsonLdUtils.expand({ "@id": iri, "fixExpand": "fixExpand" }, { expandContext: context })
+          return expandedIri[0]['@id']
+        }
+
        this.render = function render(div, objectIri, template, context, modelName, prefix) {
            var objectIri = this.getIri(objectIri);
            var template = template ? template : this.mainTemplate;
