@@ -1,4 +1,6 @@
 import { widgetFactory } from '../parents/widget-factory.js';
+import { importCSS } from '../helpers/index.js';
+import Choices from 'https://dev.jspm.io/choices.js@4';
 
 const SIBFormLabelText = customElements.define('sib-form-label-text', widgetFactory(`
   <label>
@@ -67,45 +69,50 @@ const SIBFormTextarea = customElements.define('sib-form-textarea', widgetFactory
   </label>
 `))
 
-const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory(`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`, `
+const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory(
+`
   <label>
     <div>\${label}</div>
     <select name="\${name}" data-holder>
       \${range}
     </select>
   </label>
+`,
+`
+  <option value='{"@id": "\${id}"}'>\${name}</option>
 `))
 
-const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`, `
+const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(
+`
   <select name="\${name}" data-holder>
-    <option disabled>\${label}</option>
+    <option disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
-  `))
-
-
-const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', widgetFactory(`
-  <option value='\${name}' />
-`, `
-  <label>
-    <div>\${label}</div>
-    <input type="text"
-      data-holder
-      type="text"
-      name="\${name}"
-      list="datalist" />
-
-      <datalist id="datalist">
-        \${range}
-      </datalist>
-  </label>
+`,
+`
+  <option value='{"@id": "\${id}"}'>\${name}</option>
 `))
 
 
+const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', widgetFactory(
+`
+  <label>
+    <div>\${label}</div>
+    <select name="\${name}" data-holder multiple>
+      \${range}
+    </select>
+  </label>
+`,
+`
+  <option value="\${id}">\${name}</option>
+`,
+(formWidget) => {
+  let select = formWidget.querySelector('select');
+  if (select) {
+    new Choices(select, { removeItemButton: true });
+    importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css');
+  }
+}))
 
 const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
   <label>
