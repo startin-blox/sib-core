@@ -2,7 +2,8 @@ import { widgetFactory } from './widget-factory.js'
 
 export default class SIBWidget extends HTMLElement {
   connectedCallback() {
-    customElements.define(this.name, widgetFactory(this.template, this.childTemplate));
+    if (!customElements.get(this.name))
+      customElements.define(this.name, widgetFactory(this.template, this.childTemplate))
   }
 
   get name() {

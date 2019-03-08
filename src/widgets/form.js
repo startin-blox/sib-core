@@ -25,6 +25,19 @@ const SIBFormCheckbox = customElements.define('sib-form-checkbox', widgetFactory
     >
   </label>
 `))
+
+const SIBFormDate = customElements.define('sib-form-date', widgetFactory(`
+  <label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="date"
+      name="\${name}"
+      value="\${escapedValue}"
+    >
+  </label>
+`))
+
 const SIBFormJSON = customElements.define('sib-form-json', widgetFactory(`
   <label>
     <div>\${label}</div>
@@ -101,13 +114,27 @@ const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', 
   }
 }))
 
+const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
+  <label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="number"
+      name="\${name}"
+      value="\${value}"
+    >
+  </label>
+`))
+
 export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
+  SIBFormDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };

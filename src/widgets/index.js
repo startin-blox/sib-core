@@ -11,10 +11,12 @@ import {
 import {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
+  SIBFormDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 } from './form.js';
@@ -28,10 +30,12 @@ export {
   SIBAction,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
+  SIBFormDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
+  SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
 };
