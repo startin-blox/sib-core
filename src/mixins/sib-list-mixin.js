@@ -183,7 +183,7 @@ const SIBListMixin = superclass =>
       }
       //pass range attributes
       for (let field of formElt.fields) {
-        for (let attr of ['range', 'widget', 'label']) {
+        for (let attr of ['range', 'widget', 'label', 'value']) {
           const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
           formElt.setAttribute(`${attr}-${field}`, value);
