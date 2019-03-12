@@ -35,7 +35,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.dataset.fields === 'data-fields') {
+      if (this.dataset.fields === '') {
         return [];
       }
       if (this.dataset.fields) {
