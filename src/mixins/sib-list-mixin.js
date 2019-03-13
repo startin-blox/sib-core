@@ -173,7 +173,7 @@ const SIBListMixin = superclass =>
       formElt.save = this.filterList.bind(this);
       formElt.change = this.filterList.bind(this);
       formElt.dataset.fields = this.getAttribute('search-fields');
-      formElt.setAttribute('reset', '');
+      formElt.toggleAttribute('naked', true);
 
       //displays applied filter values in the form
       for (let filter of Object.keys(this.filters)) {
