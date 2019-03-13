@@ -49,6 +49,7 @@ const SIBFormJSON = customElements.define('sib-form-json', widgetFactory(`
     >
   </label>
 `))
+
 const SIBFormPlaceholderText = customElements.define('sib-form-placeholder-text', widgetFactory(`
   <input
     data-holder
@@ -58,6 +59,7 @@ const SIBFormPlaceholderText = customElements.define('sib-form-placeholder-text'
     value="\${escapedValue}"
   >
 `))
+
 const SIBFormTextarea = customElements.define('sib-form-textarea', widgetFactory(`
   <label>
     <div>\${label}</div>
@@ -126,6 +128,15 @@ const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
   </label>
 `))
 
+const SIBFormHidden = customElements.define('sib-form-hidden', widgetFactory(`
+  <input
+    data-holder
+    type="hidden"
+    name="\${name}"
+    value="\${escapedValue}"
+  >
+`))
+
 export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
@@ -137,4 +148,5 @@ export {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
 };

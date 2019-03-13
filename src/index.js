@@ -20,6 +20,7 @@ import {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
 } from './widgets/index.js';
 
 export {
@@ -48,5 +49,6 @@ export {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
   store,
 };
