@@ -111,6 +111,10 @@ const SIBWidgetMixin = superclass =>
         name: field,
       };
       const action = this.getAction(field);
+      if (this.hasAttribute('range-' + field))
+        attrs.range = this.getAttribute('range-' + field);
+      if (this.hasAttribute('label-' + field))
+        attrs.label = this.getAttribute('label-' + field);
       if (action) attrs.src = this.resource['@id'];
       return attrs;
     }

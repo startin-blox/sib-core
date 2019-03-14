@@ -18,15 +18,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     else return super.getWidget(field);
   }
 
-  async widgetAttributes(field) {
-    let attributes = await super.widgetAttributes(field);
-    if (this.hasAttribute('range-' + field))
-      attributes.range = this.getAttribute('range-' + field);
-    if (this.hasAttribute('label-' + field))
-      attributes.label = this.getAttribute('label-' + field);
-    return attributes;
-  }
-
   //form submission handling
   get value() {
     const values = {};

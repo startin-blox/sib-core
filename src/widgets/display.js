@@ -4,6 +4,11 @@ const SIBDisplayDiv = customElements.define('sib-display-div', widgetFactory(`
   <div name="\${name}">\${value}</div>
 `))
 
+const SIBDisplayLabelledDiv = customElements.define('sib-display-labelled-div', widgetFactory(`
+  \${value ? "<label>" + label + "</label>" : ""}
+  <div name="\${name}">\${value}</div>
+`))
+
 const SIBDisplayImg = customElements.define('sib-display-img', widgetFactory(`
   <img
     name="\${name}"
@@ -26,6 +31,7 @@ const SIBAction = customElements.define('sib-action', widgetFactory(`
 
 export {
   SIBDisplayDiv,
+  SIBDisplayLabelledDiv,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
