@@ -41,31 +41,34 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
 
   async save(resource) {
     this.toggleLoaderHidden(false);
+    let saved;
     try {
-      await store.save(resource, this.resource['@id']);
-    } catch (e) { this.toggleLoaderHidden(true); }
+      saved = await store.save(resource, this.resource['@id']);
+    } catch (e) { 
+      this.toggleLoaderHidden(true); 
+    }
     this.dispatchEvent(
       new CustomEvent('save', {
         bubbles: true,
-        detail: { resource: resource },
+        detail: { resource },
       }),
     );
     this.toggleLoaderHidden(true);
+    return saved;
   }
-
-  change(resource) {}
-  submitForm(event) {
+  change(resource) { }
+  async submitForm(event) {
     event.preventDefault();
     const resource = this.value;
     resource['@context'] = this.context;
-    this.save(resource);
-
-    if (!this.next) return false;
-
+    const saved = this.save(resource);
+    if (!this.next) return;
+    const id = await saved;
+    resource['@id'] = id;
     this.dispatchEvent(
       new CustomEvent('requestNavigation', {
         bubbles: true,
-        detail: { route: this.next, resource: resource },
+        detail: { route: this.next, resource },
       }),
     );
   }
@@ -97,13 +100,14 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       } else {
         this.form = document.createElement('form');
         this.form.addEventListener('submit', this.submitForm.bind(this));
-        this.form.addEventListener('reset', () =>
-        setTimeout(this.inputChange.bind(this)),
+        this.form.addEventListener('reset', event =>
+        setTimeout(() => this.inputChange(event)),
         );
         this.appendChild(this.form);
       }
-      this.addEventListener('input', this.inputChange.bind(this));
+      this.addEventListener('input', event => this.inputChange(event));
     }
+
     await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
 
     if (isNaked) return;
