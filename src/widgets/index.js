@@ -19,6 +19,7 @@ import {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
 } from './form.js';
 
 export {
@@ -38,4 +39,5 @@ export {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
 };
