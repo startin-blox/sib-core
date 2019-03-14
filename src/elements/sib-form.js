@@ -97,12 +97,12 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       } else {
         this.form = document.createElement('form');
         this.form.addEventListener('submit', this.submitForm.bind(this));
-        this.form.addEventListener('input', this.inputChange.bind(this));
         this.form.addEventListener('reset', () =>
-          setTimeout(this.inputChange.bind(this)),
+        setTimeout(this.inputChange.bind(this)),
         );
         this.appendChild(this.form);
       }
+      this.addEventListener('input', this.inputChange.bind(this));
     }
     await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
 
