@@ -23,3 +23,12 @@ form > * {
 label {
   display: block;
 }
+sib-route{
+  display: inline-block;
+  background-color: #aaa;
+  padding: .5em;
+  cursor: pointer;
+}
+sib-route[active]{
+  background-color: #ccc;
+}

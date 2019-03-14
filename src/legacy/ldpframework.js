@@ -378,15 +378,33 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
       this.add = function () {
           var param = parseIriObjectsArgs(arguments);
           var context = this.context;
-  
+          var iri;
           return this.objectsToGraph("", param.objects)
-              .then(function (graph) { return store.add(documentIri(param.iri), graph, {'method': 'POST', 'headers': param.headers}); }.bind(this))
-              .then(function(graph) {return serializer.serialize(graph)}.bind(this))
-              .then(function (expanded) { return JsonLdUtils.frame(expanded, {}); })
-              .then(function (framed) {
-                  //var frame = framed['@graph'].reduce(function (p, c) { return (c['@id'] == iri ? c : p); }, {});
-                  return JsonLdUtils.compact(framed, context);
-              });
+          .then(function(graph) {
+            return store.add(documentIri(param.iri), graph, {
+              method: 'POST',
+              headers: param.headers,
+            });
+          })
+          .then(
+            function(graph) {
+              iri = graph['@id'];
+              const headers = graph.headers;
+              delete graph.headers;
+              return headers.location;
+              //return serializer.serialize(graph);
+            }.bind(this),
+          );
+          /*.then(function(expanded) {
+            return JsonLdUtils.frame(expanded, {});
+          })
+          .then(function(framed) {
+            var frame = framed['@graph'].reduce(function(p, c) {
+              return c['@id'] == iri ? c : p;
+            }, {});
+            const ret = JsonLdUtils.compact(framed, context);
+            return ret;
+          });*/
       };
       /**
        * Adds one or more JSON-LD objects to the given IRI
@@ -399,7 +417,10 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           var param = parseIriObjectsArgs(arguments);
   
           return this.objectsToGraph(param.iri, param.objects)
-              .then(function (graph) { graph.etag=this.etags[param.iri];return store.add(documentIri(param.iri), graph, {'useEtag': true}); }.bind(this))
+              .then(function (graph) {
+                  graph.etag = this.etags[param.iri];
+                  return store.add(documentIri(param.iri), graph, {'useEtag': true});
+              }.bind(this))
               .then(function (added, error) {
                   return new Promise(function (resolve, reject) {
                       if (error != null) {
@@ -30861,6 +30882,8 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           // use default parser...
           var contentType = self.defaultParser;
           (new rdf.JsonLdParser()).parse(content, function (graph, error) {
+              console.trace(headers);
+              graph.headers = headers;
               callback(graph);
           });
         });
