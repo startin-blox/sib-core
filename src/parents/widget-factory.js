@@ -6,7 +6,14 @@ export const widgetFactory = (customTemplate, childTemplate = null, callback = n
     this.render();
   }
   render() {
-    this.innerHTML = evalTemplateString(this.template, { name: this.name, value: this.value, label: this.label, escapedValue: this.escapedValue, range: this.htmlRange });
+    this.innerHTML = evalTemplateString(this.template, {
+      src: this.src,
+      name: this.name, 
+      label: this.label,
+      value: this.value, 
+      escapedValue: this.escapedValue, 
+      range: this.htmlRange,
+    });
     if(callback) callback(this)
   }
   get label() {
