@@ -10,39 +10,18 @@
   </head>
 
   <body>
+    <h1>sib-display</h1>
     <sib-widget name="hd-skill-name">
       <template>
-        <pre>${JSON.stringify(value['@id'],null,2)}</pre>
+        <pre>${JSON.stringify(value.name,null,2)}</pre>
       </template>
     </sib-widget>
-
-    <sib-display
-      data-src="https://test-paris.happy-dev.fr/members/20/"
-      data-fields="user.first_name, user.skills"
-      widget-user.skills="hd-skill-name"
-      multiple-user.skills
-    ></sib-display>
-
-    <sib-display
-    data-src="https://test-paris.happy-dev.fr/members/8/"
-    data-fields="user.first_name, user.skills"
-    widget-user.skills="hd-skill-name"
-    multiple-user.skills
-  ></sib-display>
-
     <sib-display
     data-src="https://test-paris.happy-dev.fr/members/31/"
     data-fields="user.first_name, user.skills"
     widget-user.skills="hd-skill-name"
     multiple-user.skills
   ></sib-display>
-    <!-- 
-    <h1>sib-display</h1>
-    <sib-display
-      data-src="https://test-paris.happy-dev.fr/users/38/"
-      data-fields="skills"
-      multiple-skills
-    ></sib-display>
     
     <h1>sib-form</h1>
     <sib-form
@@ -58,6 +37,6 @@
       data-fields="skills"
       range-skills="https://test-paris.happy-dev.fr/skills/"
       multiple-skills
-    ></sib-form> -->
+    ></sib-form>
   </body>
 </html>
