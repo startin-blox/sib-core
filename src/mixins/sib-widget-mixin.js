@@ -103,11 +103,10 @@ const SIBWidgetMixin = superclass =>
     }
 
     getWidget(field) {
-      if (this.getAction(field)) {
-        return 'sib-action';
-      }
-      const value = this.getAttribute('widget-' + field);
-      return value || this.defaultWidget;
+      const widget = this.getAttribute('widget-' + field);
+      if(widget) return widget;
+      if (this.getAction(field)) return 'sib-action';
+      return this.defaultWidget;
     }
     async widgetAttributes(field) {
       const attrs = {
