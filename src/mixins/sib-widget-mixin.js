@@ -30,8 +30,8 @@ const SIBWidgetMixin = superclass =>
     }
 
     connectedCallback() {
-      super.connectedCallback()
-      if (!this.dataset.src && !this.resource) this.populate()
+      super.connectedCallback();
+      if (!this.dataset.src && !this.resource) this.populate();
     }
 
     get fields() {
@@ -54,7 +54,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     async fetchValue(resource, field) {
-      if(!resource || this.isContainer) return null
+      if (!resource || this.isContainer) return null;
       if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource, this.context);
       }
@@ -83,7 +83,11 @@ const SIBWidgetMixin = superclass =>
       let value = await this.getValue(field);
       if (!this.isMultiple(field)) return value;
       if (value == null) return [];
-      if ('ldp:contains' in value) value = value['ldp:contains'];
+      if(value['@type'] !== 'ldp:Container'){
+        return [value];
+      }
+      if (!('ldp:contains' in value)) return [];
+      value = value['ldp:contains'];
       if (!Array.isArray(value)) value = [value];
       return value;
     }
@@ -132,7 +136,9 @@ const SIBWidgetMixin = superclass =>
 
       const attributes = await this.widgetAttributes(field);
       if (this.isMultiple(field)) {
-        return this.widgets.push(await this.appendMultipleWidget(field, attributes, parent));
+        return this.widgets.push(
+          await this.appendMultipleWidget(field, attributes, parent),
+        );
       }
       const widget = document.createElement(this.getWidget(field));
       for (let name of Object.keys(attributes)) {
@@ -146,7 +152,7 @@ const SIBWidgetMixin = superclass =>
       return this.hasAttribute('multiple-' + field);
     }
 
-    async appendMultipleWidget(field, attributes, parent=null) {
+    async appendMultipleWidget(field, attributes, parent = null) {
       const values = attributes.value;
       const wrapper = this.createMultipleWrapper(field, attributes, parent);
       wrapper.name = field;
