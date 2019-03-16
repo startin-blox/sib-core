@@ -83,12 +83,13 @@ const SIBWidgetMixin = superclass =>
       let value = await this.getValue(field);
       if (!this.isMultiple(field)) return value;
       if (value == null) return [];
-      if(value['@type'] !== 'ldp:Container'){
+      if (value['@type'] !== 'ldp:Container') {
         return [value];
       }
       if (!('ldp:contains' in value)) return [];
       value = value['ldp:contains'];
       if (!Array.isArray(value)) value = [value];
+      value = await Promise.all(value.map(a => store.get(a)));
       return value;
     }
 
