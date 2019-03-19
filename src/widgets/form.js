@@ -2,8 +2,9 @@ import { widgetFactory } from '../parents/widget-factory.js';
 import { importCSS } from '../helpers/index.js';
 import Choices from 'https://dev.jspm.io/choices.js@4';
 
-const SIBFormLabelText = customElements.define('sib-form-label-text', widgetFactory(`
-  <label>
+const SIBFormLabelText = widgetFactory(
+  'sib-form-label-text',
+  `<label>
     <div>\${label}</div>
     <input
       data-holder
@@ -11,11 +12,12 @@ const SIBFormLabelText = customElements.define('sib-form-label-text', widgetFact
       name="\${name}"
       value="\${escapedValue}"
     >
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormCheckbox = customElements.define('sib-form-checkbox', widgetFactory(`
-  <label>
+const SIBFormCheckbox = widgetFactory(
+  'sib-form-checkbox',
+  `<label>
     <div>\${label}</div>
     <input
       data-holder
@@ -23,11 +25,12 @@ const SIBFormCheckbox = customElements.define('sib-form-checkbox', widgetFactory
       name="\${name}"
       \${value ? 'checked' : ''}
     >
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormDate = customElements.define('sib-form-date', widgetFactory(`
-  <label>
+const SIBFormDate = widgetFactory(
+  'sib-form-date',
+  `<label>
     <div>\${label}</div>
     <input
       data-holder
@@ -35,11 +38,12 @@ const SIBFormDate = customElements.define('sib-form-date', widgetFactory(`
       name="\${name}"
       value="\${escapedValue}"
     >
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormJSON = customElements.define('sib-form-json', widgetFactory(`
-  <label>
+const SIBFormJSON = widgetFactory(
+  'sib-form-json',
+  `<label>
     <div>\${label}</div>
     <input
       data-holder
@@ -47,32 +51,35 @@ const SIBFormJSON = customElements.define('sib-form-json', widgetFactory(`
       name="\${name}"
       value='\${JSON.stringify(value)}'
     >
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormPlaceholderText = customElements.define('sib-form-placeholder-text', widgetFactory(`
-  <input
+const SIBFormPlaceholderText = widgetFactory(
+  'sib-form-placeholder-text',
+  `<input
     data-holder
     placeholder="\${label}"
     type="text"
     name="\${name}"
     value="\${escapedValue}"
-  >
-`))
+  >`,
+);
 
-const SIBFormTextarea = customElements.define('sib-form-textarea', widgetFactory(`
-  <label>
+const SIBFormTextarea = widgetFactory(
+  'sib-form-textarea',
+  `<label>
     <div>\${label}</div>
     <textarea
       data-holder
       type="text"
       name="\${name}"
     >\${escapedValue}</textarea>
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory(
-`
+const SIBFormDropdown = widgetFactory(
+  'sib-form-dropdown',
+  `
   <label>
     <div>\${label}</div>
     <select name="\${name}" data-holder>
@@ -80,24 +87,25 @@ const SIBFormDropdown = customElements.define('sib-form-dropdown', widgetFactory
     </select>
   </label>
 `,
-`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`))
+  `
+  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+);
 
-const SIBFormPlaceholderDropdown = customElements.define('sib-form-placeholder-dropdown', widgetFactory(
-`
+const SIBFormPlaceholderDropdown = widgetFactory(
+  'sib-form-placeholder-dropdown',
+  `
   <select name="\${name}" data-holder>
     <option disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
 `,
-`
-  <option value='{"@id": "\${id}"}'>\${name}</option>
-`))
+  `
+  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+);
 
-
-const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', widgetFactory(
-`
+const SIBFormAutoCompletion = widgetFactory(
+  'sib-form-auto-completion',
+  `
   <label>
     <div>\${label}</div>
     <select name="\${name}" data-holder multiple>
@@ -105,19 +113,20 @@ const SIBFormAutoCompletion = customElements.define('sib-form-auto-completion', 
     </select>
   </label>
 `,
-`
+  `
   <option value="\${id}">\${name}</option>
 `,
-(formWidget) => {
-  let select = formWidget.querySelector('select');
-  if (select) {
+  formWidget => {
+    let select = formWidget.querySelector('select');
+    if (!select) return;
     new Choices(select, { removeItemButton: true });
     importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css');
-  }
-}))
+  },
+);
 
-const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
-  <label>
+const SIBFormNumber = widgetFactory(
+  'sib-form-number',
+  `<label>
     <div>\${label}</div>
     <input
       data-holder
@@ -125,17 +134,18 @@ const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
       name="\${name}"
       value="\${value}"
     >
-  </label>
-`))
+  </label>`,
+);
 
-const SIBFormHidden = customElements.define('sib-form-hidden', widgetFactory(`
-  <input
+const SIBFormHidden = widgetFactory(
+  'sib-form-hidden',
+  `<input
     data-holder
     type="hidden"
     name="\${name}"
     value="\${escapedValue}"
-  >
-`))
+  >`,
+);
 
 export {
   SIBFormAutoCompletion,

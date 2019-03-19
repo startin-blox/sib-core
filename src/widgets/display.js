@@ -1,33 +1,46 @@
-import { widgetFactory } from '../parents/widget-factory.js'
+import { widgetFactory } from '../parents/widget-factory.js';
 
-const SIBDisplayDiv = customElements.define('sib-display-div', widgetFactory(`
-  <div name="\${name}">\${value}</div>
-`))
+const SIBDisplayDiv = widgetFactory(
+  'sib-display-div',
+  `<div name="\${name}">\${value}</div>`,
+);
 
-const SIBDisplayLabelledDiv = customElements.define('sib-display-labelled-div', widgetFactory(`
-  \${value ? "<label>" + label + "</label>" : ""}
-  <div name="\${name}">\${value}</div>
-`))
+const SIBDisplayLabelledDiv = widgetFactory(
+  'sib-display-labelled-div',
+  `\${value ? "<label>" + label + "</label>" : ""}
+  <div name="\${name}">\${value}</div>`,
+);
 
-const SIBDisplayImg = customElements.define('sib-display-img', widgetFactory(`
-  <img
+const SIBDisplayImg = widgetFactory(
+  'sib-display-img',
+  `<img
     name="\${name}"
     src="\${value}"
     style="max-width: 100%; max-height: 100%;"
-    />
-`))
+    />`,
+);
 
-const SIBDisplayMailTo = customElements.define('sib-display-mailto', widgetFactory(`
-  <a href="mailto:\${value}" name="\${name}">\${value}</a>
-`))
+const SIBDisplayMailTo = widgetFactory(
+  'sib-display-mailto',
+  `<a href="mailto:\${value}" name="\${name}">\${value}</a>
+`,
+);
 
-const SIBDisplayTel = customElements.define('sib-display-tel', widgetFactory(`
-  <a href="tel:\${value}" name="\${name}">\${value}</a>
-`))
+const SIBDisplayTel = widgetFactory(
+  'sib-display-tel',
+  `<a
+    href="tel:\${value}"
+    name="\${name}"
+  >\${value}</a>`,
+);
 
-const SIBAction = customElements.define('sib-action', widgetFactory(`
-  <sib-link data-src="\${src}" next="\${value}">\${label}</sib-link>
-`))
+const SIBAction = widgetFactory(
+  'sib-action',
+  `<sib-link
+    data-src="\${src}"
+    next="\${value}"
+  >\${label}</sib-link>`,
+);
 
 export {
   SIBDisplayDiv,
