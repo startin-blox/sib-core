@@ -16,7 +16,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   }
   
   get defaultWidget() {
-    return 'sib-display-div';
+    return 'sib-display-value';
   }
 
   get childTag() {
