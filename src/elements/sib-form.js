@@ -58,7 +58,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
   change(resource) { }
   async submitForm(event) {
-    event.preventDefault();
+    if(event) event.preventDefault();
     const resource = this.value;
     resource['@context'] = this.context;
     const saved = this.save(resource);
