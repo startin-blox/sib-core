@@ -229,7 +229,6 @@ const SIBListMixin = superclass =>
       }
       this.renderPaginationNav();
 
-      if (this.fields.length <= 0) return;
       for (let resource of this.currentPageResources) {
         //for federations, fetch every sib:source we find
         if (resource['@type'] !== 'sib:source') {
