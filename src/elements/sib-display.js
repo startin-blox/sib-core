@@ -47,6 +47,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     for (let attr of this.attributes) //copy widget and value attributes
       if (
         attr.name.startsWith('value-') ||
+        attr.name.startsWith('label-') ||
         attr.name.startsWith('set-') ||
         attr.name.startsWith('widget-') ||
         attr.name.startsWith('template-') ||

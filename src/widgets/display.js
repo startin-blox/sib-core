@@ -26,7 +26,7 @@ const SIBDisplayTel = customElements.define('sib-display-tel', widgetFactory(`
 `))
 
 const SIBAction = customElements.define('sib-action', widgetFactory(`
-  <sib-link data-src="\${src}" next="\${value}">\${name}</sib-link>
+  <sib-link data-src="\${src}" next="\${value}">\${label}</sib-link>
 `))
 
 export {
