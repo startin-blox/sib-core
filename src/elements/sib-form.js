@@ -57,8 +57,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     return saved;
   }
   change(resource) { }
-  async submitForm(event) {
-    if(event) event.preventDefault();
+  async submitForm() {
     const resource = this.value;
     resource['@context'] = this.context;
     const saved = this.save(resource);
@@ -99,7 +98,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
         this.form = this;
       } else {
         this.form = document.createElement('form');
-        this.form.addEventListener('submit', this.submitForm.bind(this));
+        this.form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          this.submitForm();
+        });
         this.form.addEventListener('reset', event =>
         setTimeout(() => this.inputChange(event)),
         );
