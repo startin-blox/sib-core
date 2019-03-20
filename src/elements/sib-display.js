@@ -49,6 +49,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
         attr.name.startsWith('value-') ||
         attr.name.startsWith('set-') ||
         attr.name.startsWith('widget-') ||
+        attr.name.startsWith('class-') ||
         attr.name.startsWith('template-') ||
         attr.name.startsWith('multiple-') ||
         attr.name.startsWith('action-')
