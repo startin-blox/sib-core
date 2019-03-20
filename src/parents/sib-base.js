@@ -72,7 +72,7 @@ export default class SIBBase extends HTMLElement {
   }
 
   get resources() {
-    if (!this.isContainer || !this.resource['ldp:contains']) return [];
+    if (!this.resource || !this.isContainer || !this.resource['ldp:contains']) return [];
     if (Array.isArray(this.resource['ldp:contains']))
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
