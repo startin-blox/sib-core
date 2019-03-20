@@ -1,6 +1,6 @@
 import { widgetFactory } from '../parents/widget-factory.js'
 
-const SIBDisplayValue = customElements.define('sib-display-value', widgetFactory(`${value}`));
+const SIBDisplayValue = customElements.define('sib-display-value', widgetFactory(`\${value}`));
 
 const SIBDisplayDiv = customElements.define('sib-display-div', widgetFactory(`
   <div name="\${name}">\${value}</div>
