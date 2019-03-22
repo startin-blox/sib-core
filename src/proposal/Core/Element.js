@@ -16,7 +16,8 @@ export default function ElementFactory(Component) {
 
     attributeChangedCallback(name, oldValue, newValue) {
       this.component.dispatchEvent(new CustomEvent('attributeChanged', {
-        detail: { name, oldValue, newValue }
+        detail: { name, oldValue, newValue },
+        passive: true,
       }));
     }
 

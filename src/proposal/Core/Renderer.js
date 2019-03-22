@@ -92,7 +92,6 @@ export default class Renderer {
 
   render() {
     this.el.innerHTML = '';
-    console.log({ template: this.template });
     this.el.appendChild(this.template);
     this.component.dispatchEvent(new CustomEvent('rendered'));
   }

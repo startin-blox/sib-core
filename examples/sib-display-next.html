@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-display</title>
+    <script type="module" src="../src/proposal/SIBDisplay.js"></script>
+    <script type="module" src="../src/widgets/display/sib-display-div.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-display
+      data-src="https://test-paris.happy-dev.fr/users/1/"
+      data-fields="@id, username, first_name, last_name, email"
+    ></sib-display>
+  </body>
+</html>

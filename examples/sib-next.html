@@ -16,14 +16,20 @@
     </template>
     <template id="template2">
       <li>
-        <span sib-value='first_name'></span>
+        <b><span sib-value='first_name'></span></b>
         <span sib-value='last_name'></span>
         <span sib-value='username'></span>
         <span sib-value='test'></span>
-        <img sib-if="avatar" sib-attribute sib-attribute:src='avatar' style='width:50px; height:50px;'>
+        <img
+          sib-if="avatar"
+          sib-attribute
+          sib-attribute:src='avatar'
+          style='width:50px; height:50px;'
+          >
       </li>
     </template>
     <template id="template3">
+      Voici la liste des utilisateurs :
       <ul>
         <slot name='sib-container-repeat'>
           <my-custom-element sib-template-selector='#template2' sib-container-repeat="sib-resource-uri"></my-custom-element>

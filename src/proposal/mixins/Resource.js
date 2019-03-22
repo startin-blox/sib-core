@@ -4,8 +4,10 @@ export default class {
   }
 
   created() {
+    console.log('Yep');
     this._resource = null;
     this.addEventListener('dataChanged:sibResourceUri', (event) => {
+      console.log('dataChanged:sibResourceUri');
       const { detail } = event;
       if ('value' in detail && detail.value) {
         this.store.get(detail.value).then(resource => {

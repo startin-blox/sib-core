@@ -60,7 +60,7 @@ export default class Component extends EventTarget {
     SIB.register(this);
   }
 
-  // TODO 
+  // TODO
   // watch(name, fn) {
   //   this.state.follow(name, fn);
   // }
@@ -84,12 +84,22 @@ export default class Component extends EventTarget {
 
   getTemplate() {
     const templateSelector = this.state.data.sibTemplateSelector;
+    let template = this.template;
+
     if (templateSelector) {
-      return document.querySelector(templateSelector).content.cloneNode(true);
+      template = document.querySelector(templateSelector);
     }
 
-    const template = document.createElement('template');
-    template.innerHTML = this.template;
-    return template.content;
+    if (template instanceof HTMLTemplateElement) {
+      return template.content.cloneNode(true);
+    }
+
+    if (template instanceof HTMLElement) {
+      return template;
+    }
+
+    const templateElement = document.createElement('template');
+    templateElement.innerHTML = template;
+    return templateElement.content;
   }
 }
