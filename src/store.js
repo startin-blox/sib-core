@@ -1,6 +1,4 @@
-import './legacy/ldpframework.js'
-
-const Store = window.MyStore;
+import './legacy/ldpframework.js';
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -11,7 +9,37 @@ export const base_context = {
   name: 'rdfs:label',
 };
 
-export const store = new window.MyStore({
+export class Store {
+  constructor(options) {
+    this.cache = new Map();
+    this.cacheList = new Map();
+    this.originalStore = new window.MyStore(options);
+  }
+
+  get(id, context) {
+    if (context) return this.originalStore.get(id, context);
+    if (!this.cache.has(id)) {
+      this.cache.set(id, this.originalStore.get(id));
+    }
+    return this.cache.get(id);
+  }
+
+  list(id, context) {
+    if (context) return this.originalStore.list(id, context);
+    if (!this.cacheList.has(id)) {
+      this.cacheList.set(id, this.originalStore.list(id));
+    }
+    return this.cacheList.get(id);
+  }
+
+  save(resource, id) {
+    this.cache.clear();
+    this.cacheList.clear();
+    return this.originalStore.save(resource, id);
+  }
+}
+
+export const store = new Store({
   context: base_context,
   defaultSerializer: 'application/ld+json',
 });
