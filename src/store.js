@@ -12,7 +12,6 @@ export const base_context = {
 export class Store {
   constructor(options) {
     this.cache = new Map();
-    this.cacheList = new Map();
     this.originalStore = new window.MyStore(options);
   }
 
@@ -24,17 +23,12 @@ export class Store {
     return this.cache.get(id);
   }
 
-  list(id, context) {
-    if (context) return this.originalStore.list(id, context);
-    if (!this.cacheList.has(id)) {
-      this.cacheList.set(id, this.originalStore.list(id));
-    }
-    return this.cacheList.get(id);
+  list(id) {
+    return this.originalStore.list.call(this, id);
   }
 
   save(resource, id) {
     this.cache.clear();
-    this.cacheList.clear();
     return this.originalStore.save(resource, id);
   }
 }
