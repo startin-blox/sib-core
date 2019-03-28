@@ -9,6 +9,9 @@ export const base_context = {
   ldp: 'http://www.w3.org/ns/ldp#',
   foaf: 'http://xmlns.com/foaf/0.1/',
   name: 'rdfs:label',
+  acl: "http://www.w3.org/ns/auth/acl#",
+  '@permissions': "acl:accessControl",
+  mode: 'acl:mode'
 };
 
 export const store = new window.MyStore({
