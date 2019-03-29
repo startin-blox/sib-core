@@ -44,6 +44,12 @@ const SIBWidgetMixin = superclass =>
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
+
+      if (!resource) {
+        console.error(new Error('You must provide a "data-fields" attribute'))
+        return []
+      }
+
       return Object.keys(resource)
         .filter(prop => !prop.startsWith('@'))
         .map(a => [a]);
