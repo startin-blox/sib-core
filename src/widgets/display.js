@@ -11,6 +11,11 @@ const SIBDisplayLabelledDiv = widgetFactory(
   <div name="\${name}">\${value}</div>`,
 );
 
+const SIBDisplayLabelledBoolean = widgetFactory(
+  'sib-display-labelled-boolean',
+  `\${value ? "<label>" + label + "</label>" : ""}`
+);
+
 const SIBDisplayImg = widgetFactory(
   'sib-display-img',
   `<img
