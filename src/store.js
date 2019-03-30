@@ -16,11 +16,15 @@ export class Store {
   }
 
   get(id, context) {
-    if (context) return this.originalStore.get(id, context);
-    if (!this.cache.has(id)) {
-      this.cache.set(id, this.originalStore.get(id));
+    try {
+      var hash = JSON.stringify([id, context]);
+    } catch (e) {}
+    if (hash && !this.cache.has(hash)) {
+      const get = this.originalStore.get(id)
+      this.cache.set(hash, get);
+      get.catch(e => console.error("store.get() Error", {id, e}))
     }
-    return this.cache.get(id);
+    return this.cache.get(hash);
   }
 
   list(id) {
