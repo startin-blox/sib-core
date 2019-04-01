@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-calendar</title>
+    <script type="module" src="../src/elements/sib-calendar.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', event => {
+        document
+          .querySelector('sib-calendar')
+          .addEventListener('resourceSelect', event =>
+            console.log(event.detail.resource),
+          );
+      });
+    </script>
+    <style>
+      sib-calendar {
+        display: block;
+        width: 800px;
+        height: 600px;
+        border: 1px solid red;
+        position: relative;
+      }
+      .tui-view-7{
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Sib Calendar</h2>
+    <sib-calendar data-src="sib-calendar.json"></sib-calendar>
+  </body>
+</html>
