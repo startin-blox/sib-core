@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-display</title>
+    <script type="module" src="../src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h2>Load datas from local file</h2>
+    <sib-display
+      data-src="./project.json"
+      data-fields="name, description"
+    ></sib-display>
+
+    <p>To use it:
+      <ul>
+        <li>Your server must return json files with the header <code>content-type: application/ld+json</code></li>
+        <li>In your datas, the @id of your resource must be the data-src of the component (ie: ./project.json)</li>
+      </ul>
+    </p>
+  </body>
+</html>
