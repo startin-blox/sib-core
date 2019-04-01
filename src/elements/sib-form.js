@@ -18,15 +18,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     else return super.getWidget(field);
   }
 
-  async widgetAttributes(field) {
-    let attributes = await super.widgetAttributes(field);
-    if (this.hasAttribute('range-' + field))
-      attributes.range = this.getAttribute('range-' + field);
-    if (this.hasAttribute('label-' + field))
-      attributes.label = this.getAttribute('label-' + field);
-    return attributes;
-  }
-
   //form submission handling
   get value() {
     const values = {};
@@ -50,31 +41,33 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
 
   async save(resource) {
     this.toggleLoaderHidden(false);
+    let saved;
     try {
-      await store.save(resource, this.resource['@id']);
-    } catch (e) { this.toggleLoaderHidden(true); }
+      saved = await store.save(resource, this.resource['@id']);
+    } catch (e) { 
+      this.toggleLoaderHidden(true); 
+    }
     this.dispatchEvent(
       new CustomEvent('save', {
         bubbles: true,
-        detail: { resource: resource },
+        detail: { resource },
       }),
     );
     this.toggleLoaderHidden(true);
+    return saved;
   }
-
-  change(resource) {}
-  submitForm(event) {
-    event.preventDefault();
+  change(resource) { }
+  async submitForm() {
     const resource = this.value;
     resource['@context'] = this.context;
-    this.save(resource);
-
-    if (!this.next) return false;
-
+    const saved = this.save(resource);
+    if (!this.next) return;
+    const id = await saved;
+    resource['@id'] = id;
     this.dispatchEvent(
       new CustomEvent('requestNavigation', {
         bubbles: true,
-        detail: { route: this.next, resource: resource },
+        detail: { route: this.next, resource },
       }),
     );
   }
@@ -105,14 +98,18 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
         this.form = this;
       } else {
         this.form = document.createElement('form');
-        this.form.addEventListener('submit', this.submitForm.bind(this));
-        this.form.addEventListener('input', this.inputChange.bind(this));
-        this.form.addEventListener('reset', () =>
-          setTimeout(this.inputChange.bind(this)),
+        this.form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          this.submitForm();
+        });
+        this.form.addEventListener('reset', event =>
+        setTimeout(() => this.inputChange(event)),
         );
         this.appendChild(this.form);
       }
+      this.addEventListener('input', event => this.inputChange(event));
     }
+
     await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
 
     if (isNaked) return;

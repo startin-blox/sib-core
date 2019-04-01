@@ -173,7 +173,7 @@ const SIBListMixin = superclass =>
       formElt.save = this.filterList.bind(this);
       formElt.change = this.filterList.bind(this);
       formElt.dataset.fields = this.getAttribute('search-fields');
-      formElt.setAttribute('reset', '');
+      formElt.toggleAttribute('naked', true);
 
       //displays applied filter values in the form
       for (let filter of Object.keys(this.filters)) {
@@ -183,7 +183,7 @@ const SIBListMixin = superclass =>
       }
       //pass range attributes
       for (let field of formElt.fields) {
-        for (let attr of ['range', 'widget', 'label']) {
+        for (let attr of ['range', 'widget', 'label', 'value']) {
           const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
           formElt.setAttribute(`${attr}-${field}`, value);
@@ -229,7 +229,6 @@ const SIBListMixin = superclass =>
       }
       this.renderPaginationNav();
 
-      //if (this.fields.length <= 0) return;
       for (let resource of this.currentPageResources) {
         //for federations, fetch every sib:source we find
         if (resource['@type'] !== 'sib:source') {

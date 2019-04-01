@@ -38,9 +38,10 @@
       <summary>Form widgets:</summary>
       <sib-form
         data-src="https://test-paris.happy-dev.fr/projects/1/"
-        data-fields="businessProvider, businessProviderFee"
+        data-fields="businessProvider, businessProviderFee, foaf:jabberID"
         widget-businessProvider="sib-form-placeholder-text"
         widget-businessProviderFee="sib-form-number"
+        widget-foaf:jabberID="sib-form-hidden"
       ></sib-form>
     </details>
 
@@ -75,7 +76,7 @@
     </details>
 
     <details>
-      <summary>auto complete:</summary>
+      <summary>Auto complete:</summary>
       <sib-form
         data-src="https://test-paris.happy-dev.fr/members/1/"
         data-fields="skills"
@@ -94,10 +95,10 @@
     </details>
 
     <details>
-      <summary>creation</summary>
+      <summary>Creation:</summary>
       <template id="myTemplate">
         <sib-form data-src="${value['@id']}"
-          data-fields="identifier,title,tvaRate, htAmount"
+          data-fields="identifier, title, tvaRate, htAmount"
         ></sib-form>
       </template>
       <sib-form

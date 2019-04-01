@@ -30,12 +30,12 @@ const SIBWidgetMixin = superclass =>
     }
 
     connectedCallback() {
-      super.connectedCallback()
-      if (!this.dataset.src && !this.resource) this.populate()
+      super.connectedCallback();
+      if (!this.dataset.src && !this.resource) this.populate();
     }
 
     get fields() {
-      if (this.dataset.fields === 'data-fields') {
+      if (this.dataset.fields === '') {
         return [];
       }
       if (this.dataset.fields) {
@@ -44,6 +44,12 @@ const SIBWidgetMixin = superclass =>
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
+
+      if (!resource) {
+        console.error(new Error('You must provide a "data-fields" attribute'))
+        return []
+      }
+
       return Object.keys(resource)
         .filter(prop => !prop.startsWith('@'))
         .map(a => [a]);
@@ -54,7 +60,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     async fetchValue(resource, field) {
-      if(!resource || this.isContainer) return null
+      if (!resource || this.isContainer) return null;
       if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource, this.context);
       }
@@ -83,8 +89,13 @@ const SIBWidgetMixin = superclass =>
       let value = await this.getValue(field);
       if (!this.isMultiple(field)) return value;
       if (value == null) return [];
-      if ('ldp:contains' in value) value = value['ldp:contains'];
+      if (value['@type'] !== 'ldp:Container') {
+        return [value];
+      }
+      if (!('ldp:contains' in value)) return [];
+      value = value['ldp:contains'];
       if (!Array.isArray(value)) value = [value];
+      value = await Promise.all(value.map(a => store.get(a)));
       return value;
     }
 
@@ -99,11 +110,10 @@ const SIBWidgetMixin = superclass =>
     }
 
     getWidget(field) {
-      if (this.getAction(field)) {
-        return 'sib-action';
-      }
-      const value = this.getAttribute('widget-' + field);
-      return value || this.defaultWidget;
+      const widget = this.getAttribute('widget-' + field);
+      if(widget) return widget;
+      if (this.getAction(field)) return 'sib-action';
+      return this.defaultWidget;
     }
     async widgetAttributes(field) {
       const attrs = {
@@ -111,6 +121,10 @@ const SIBWidgetMixin = superclass =>
         name: field,
       };
       const action = this.getAction(field);
+      if (this.hasAttribute('range-' + field))
+        attrs.range = this.getAttribute('range-' + field);
+      if (this.hasAttribute('label-' + field))
+        attrs.label = this.getAttribute('label-' + field);
       if (action) attrs.src = this.resource['@id'];
       return attrs;
     }
@@ -128,7 +142,9 @@ const SIBWidgetMixin = superclass =>
 
       const attributes = await this.widgetAttributes(field);
       if (this.isMultiple(field)) {
-        return this.widgets.push(await this.appendMultipleWidget(field, attributes, parent));
+        return this.widgets.push(
+          await this.appendMultipleWidget(field, attributes, parent),
+        );
       }
       const widget = document.createElement(this.getWidget(field));
       for (let name of Object.keys(attributes)) {
@@ -142,7 +158,7 @@ const SIBWidgetMixin = superclass =>
       return this.hasAttribute('multiple-' + field);
     }
 
-    async appendMultipleWidget(field, attributes, parent=null) {
+    async appendMultipleWidget(field, attributes, parent = null) {
       const values = attributes.value;
       const wrapper = this.createMultipleWrapper(field, attributes, parent);
       wrapper.name = field;

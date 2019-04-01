@@ -6,10 +6,12 @@ import { store } from './store.js';
 import {
   SIBMultiple,
   SIBDisplayDiv,
+  SIBDisplayLabelledDiv,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
+  SIBDisplayLink,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
@@ -20,6 +22,7 @@ import {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
 } from './widgets/index.js';
 
 export {
@@ -34,10 +37,12 @@ export {
   SIBWidget,
   SIBMultiple,
   SIBDisplayDiv,
+  SIBDisplayLabelledDiv,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
+  SIBDisplayLink,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
@@ -48,5 +53,6 @@ export {
   SIBFormNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
+  SIBFormHidden,
   store,
 };

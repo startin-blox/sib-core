@@ -4,19 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-display</title>
+    <title>SIB test: multiple</title>
     <script type="module" src="../src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
     <h1>sib-display</h1>
+    <sib-widget name="hd-skill-name">
+      <template>
+        <pre>${JSON.stringify(value.name,null,2)}</pre>
+      </template>
+    </sib-widget>
     <sib-display
-      data-src="https://test-paris.happy-dev.fr/users/38/"
-      data-fields="skills"
-      multiple-skills
-    ></sib-display>
-
+    data-src="https://test-paris.happy-dev.fr/members/31/"
+    data-fields="user.first_name, user.skills"
+    widget-user.skills="hd-skill-name"
+    multiple-user.skills
+  ></sib-display>
+    
     <h1>sib-form</h1>
     <sib-form
       data-src="https://test-paris.happy-dev.fr/users/38/"
