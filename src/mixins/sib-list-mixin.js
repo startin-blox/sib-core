@@ -182,11 +182,13 @@ const SIBListMixin = superclass =>
         }
       }
       //pass range attributes
+      let filters = {};
       for (let field of formElt.fields) {
         for (let attr of ['range', 'widget', 'label', 'value']) {
           const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
           formElt.setAttribute(`${attr}-${field}`, value);
+          if(field && attr == "value") filters[field] = value;
         }
       }
 
@@ -195,6 +197,7 @@ const SIBListMixin = superclass =>
       else this.insertBefore(formElt, this.firstChild);
 
       this._filtersAdded = true;
+      this.filterList(filters);
     }
 
     appendSingleElt() {
@@ -208,6 +211,7 @@ const SIBListMixin = superclass =>
       }
       if (!this._filtersAdded && this.hasAttribute('search-fields')) {
         this.appendFilters();
+        return;
       }
 
       if (this.hasAttribute('counter-template')) {
