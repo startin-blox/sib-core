@@ -41,8 +41,8 @@ const SIBListMixin = superclass =>
           propertyValue['@id'] === filterValue['@id']
         );
       }
-      if (typeof propertyValue === 'number') {
-        //check if integer match
+      if (typeof propertyValue === 'number' || typeof propertyValue === 'boolean') {
+        //check if integer or boolean match
         return propertyValue === filterValue;
       }
       if (typeof propertyValue === 'string') {
@@ -54,6 +54,7 @@ const SIBListMixin = superclass =>
       return false;
     }
 
+    // TODO : to be moved in the store and mutualized with widgetMixin.getValue
     applyFilterToResource(resource, filter) {
       if (!Array.isArray(filter)) return resource[filter];
       if (filter.length === 0) return;
