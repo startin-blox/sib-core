@@ -95,7 +95,7 @@ const SIBFormPlaceholderDropdown = widgetFactory(
   'sib-form-placeholder-dropdown',
   `
   <select name="\${name}" data-holder>
-    <option disabled \${value == "" ? 'selected' : ''}>\${label}</option>
+    <option value="" disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
 `,
