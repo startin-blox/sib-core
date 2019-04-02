@@ -19,7 +19,7 @@ export const widgetFactory = (
         name: this.name,
         label: this.label,
         value: this.value,
-        id: this.value['@id'],
+        id: this.value['@id'] || '',
         escapedValue: this.escapedValue,
         range: this.htmlRange,
       });
