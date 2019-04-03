@@ -111,7 +111,10 @@ const SIBWidgetMixin = superclass =>
 
     getWidget(field) {
       const widget = this.getAttribute('widget-' + field);
-      if(widget) return widget;
+      if (widget) {
+        if (!customElements.get(widget)) console.warn(`The widget ${widget} is not defined`);
+        return widget;
+      }
       if (this.getAction(field)) return 'sib-action';
       return this.defaultWidget;
     }
