@@ -48,7 +48,7 @@ const SIBListMixin = superclass =>
       if (typeof propertyValue === 'string') {
         //search in strings
         return (
-          propertyValue.toLowerCase().indexOf((`${filterValue}`).toLowerCase()) !== -1
+          propertyValue.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
         );
       }
       return false;
