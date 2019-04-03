@@ -7,6 +7,7 @@ export default class SIBMultiple extends HTMLElement {
   set name(name) {
     this.setAttribute('name', name);
   }
+
   get value() {
     return this.widgets.map(widget => widget.value);
   }

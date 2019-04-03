@@ -8,6 +8,11 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     return 'sib-form-label-text';
   }
 
+  get defaultMultipleWidget() {
+    return 'sib-multiple';
+    // return 'sib-multiple-form';
+  }
+
   //Special case of the dropdown
   getWidget(field) {
     if (
@@ -120,7 +125,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
 
   createMultipleWrapper(field, attributes, parent = null) {
-    const wrapper = document.createElement('sib-multiple');
+    const wrapper = document.createElement(this.multiple(field));
     this.wrappers[field] = wrapper;
     const addButton = document.createElement('button');
     addButton.textContent = '+';

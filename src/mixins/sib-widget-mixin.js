@@ -87,7 +87,7 @@ const SIBWidgetMixin = superclass =>
 
     async getValues(field) {
       let value = await this.getValue(field);
-      if (!this.isMultiple(field)) return value;
+      if (!this.multiple(field)) return value;
       if (value == null) return [];
       if (value['@type'] !== 'ldp:Container') {
         return [value];
@@ -123,14 +123,13 @@ const SIBWidgetMixin = superclass =>
         value: await this.getValues(field),
         name: field,
       };
-      const action = this.getAction(field);
       if (this.hasAttribute('class-' + field))
         attrs.className = this.getAttribute('class-' + field);
       if (this.hasAttribute('range-' + field))
         attrs.range = this.getAttribute('range-' + field);
       if (this.hasAttribute('label-' + field))
         attrs.label = this.getAttribute('label-' + field);
-      if (action) attrs.src = this.resource['@id'];
+      if (this.getAction(field)) attrs.src = this.resource['@id'];
       return attrs;
     }
 
@@ -142,7 +141,7 @@ const SIBWidgetMixin = superclass =>
       }
 
       const attributes = await this.widgetAttributes(field);
-      if (this.isMultiple(field)) {
+      if (this.multiple(field)) {
         return this.widgets.push(
           await this.appendMultipleWidget(field, attributes, parent),
         );
@@ -155,8 +154,8 @@ const SIBWidgetMixin = superclass =>
       this.widgets.push(parent.appendChild(widget));
     }
 
-    isMultiple(field) {
-      return this.hasAttribute('multiple-' + field);
+    multiple(field) {
+      return this.getAttribute('multiple-' + field) || this.defaultMultipleWidget;
     }
 
     async appendMultipleWidget(field, attributes, parent = null) {
@@ -166,13 +165,13 @@ const SIBWidgetMixin = superclass =>
       wrapper.widgets = [];
       for (const value of values) {
         attributes.value = value;
-        const widget = this.insertSingleElement(field, attributes);
+        this.insertSingleElement(field, attributes);
       }
       return wrapper;
     }
 
     createMultipleWrapper(field, attributes, parent = null) {
-      const wrapper = document.createElement('sib-multiple');
+      const wrapper = document.createElement(this.multiple(field));
       this.wrappers[field] = wrapper;
       if (parent) parent.appendChild(wrapper);
       return wrapper;
