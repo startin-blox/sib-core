@@ -1,6 +1,4 @@
-import './legacy/ldpframework.js'
-
-const Store = window.MyStore;
+import './legacy/ldpframework.js';
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -14,7 +12,35 @@ export const base_context = {
   mode: 'acl:mode'
 };
 
-export const store = new window.MyStore({
+export class Store {
+  constructor(options) {
+    this.cache = new Map();
+    this.originalStore = new window.MyStore(options);
+  }
+
+  get(id, context) {
+    try {
+      var hash = JSON.stringify([id, context]);
+    } catch (e) {}
+    if (hash && !this.cache.has(hash)) {
+      const get = this.originalStore.get(id)
+      this.cache.set(hash, get);
+      get.catch(e => console.error("store.get() Error", {id, e}))
+    }
+    return this.cache.get(hash);
+  }
+
+  list(id) {
+    return this.originalStore.list.call(this, id);
+  }
+
+  save(resource, id) {
+    this.cache.clear();
+    return this.originalStore.save(resource, id);
+  }
+}
+
+export const store = new Store({
   context: base_context,
   defaultSerializer: 'application/ld+json',
 });
