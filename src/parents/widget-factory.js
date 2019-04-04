@@ -31,20 +31,36 @@ export const widgetFactory = (customTemplate, childTemplate = null, callback = n
     this.render();
   }
   get value() {
-    return (this.dataHolder && JSON.stringify(this.dataHolder.value) != "{}") // if dataHolder is not an empty object
-      ? this.dataHolder.value
-      : this._value || ''
-  }
-  set value(value) {
     if (this.dataHolder) {
-      this.dataHolder.value = value
-    } else {
-      this._value = value
-      this.render()
+      let values = this.dataHolder.map(
+        (element => JSON.stringify(element.value) != '{}' ? element.value : this._value || '') // if value is defined, push it in the array
+      )
+      return values.length == 1 ? values[0] : values // If only one value, do not return an array
+    }
+    return this._value || '';
+  }
+
+  set value(value) {
+    if (!this.dataHolder) { // if no dataHolder in the widget...
+      this._value = value; // ... store `value` in the widget
+      this.render();
+    } else if (this.dataHolder.length === 1) { // if one dataHolder in the widget...
+      this.dataHolder[0].value = value; // ... set `value` to the dataHolder element
+    } else { // if multiple dataHolder in the widget ...
+      this.dataHolder.forEach((element, index) => element.value = value ? value[index] : ''); // ... set each `value` to each dataHolder element
     }
   }
   get dataHolder() {
-    return this.querySelector('[data-holder]')
+    let widgetDataHolders = [];
+
+    this.querySelectorAll('[data-holder]').forEach((element) => {
+      let dataHolderAncestors = element.parentElement.closest('[data-holder]');
+      // get the dataHolder of the widget only
+      if (!dataHolderAncestors || !this.contains(dataHolderAncestors)) { // if no dataHolder ancestor in the current widget
+        widgetDataHolders.push(element);
+      }
+    })
+    return widgetDataHolders.length ? widgetDataHolders : null;
   }
 
   get template() {

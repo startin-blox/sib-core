@@ -38,6 +38,22 @@ const SIBFormDate = customElements.define('sib-form-date', widgetFactory(`
   </label>
 `))
 
+const SIBFormRangeDate = customElements.define('sib-form-range-date', widgetFactory(`
+  <label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="date"
+      name="\${name}-start"
+      value="\${value[0]||''}" />
+    <input
+      data-holder
+      type="date"
+      name="\${name}-end"
+      value="\${value[1]||''}" />
+  </label>
+`))
+
 const SIBFormJSON = customElements.define('sib-form-json', widgetFactory(`
   <label>
     <div>\${label}</div>
@@ -128,6 +144,22 @@ const SIBFormNumber = customElements.define('sib-form-number', widgetFactory(`
   </label>
 `))
 
+const SIBFormRangeNumber = customElements.define('sib-form-range-number', widgetFactory(`
+<label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="number"
+      name="\${name}-start"
+      value="\${value[0]||''}" />
+    <input
+      data-holder
+      type="number"
+      name="\${name}-end"
+      value="\${value[1]||''}" />
+  </label>
+`))
+
 const SIBFormHidden = customElements.define('sib-form-hidden', widgetFactory(`
   <input
     data-holder
@@ -141,11 +173,13 @@ export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
+  SIBFormRangeDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
+  SIBFormRangeNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,

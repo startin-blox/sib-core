@@ -97,5 +97,21 @@
         search-fields="nameSet"
       ></sib-display>
     </details>
+
+    <details>
+      <summary>Range number + date:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/notifications/"
+        data-fields="type, date"
+        search-fields="date"
+        search-widget-date="sib-form-range-date"
+      ></sib-display>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/"
+        data-fields="name, number"
+        search-fields="number"
+        search-widget-number="sib-form-range-number"
+      ></sib-display>
+    </details>
   </body>
 </html>

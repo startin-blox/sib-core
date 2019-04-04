@@ -22,6 +22,7 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
+      if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
@@ -52,6 +53,16 @@ const SIBListMixin = superclass =>
         );
       }
       return false;
+    }
+
+    matchRangeValues(propertyValue, filterValues) {
+      if (propertyValue == null) return false;
+
+      if (typeof propertyValue === 'number' || typeof propertyValue === 'string') {
+        return (filterValues[0] ? propertyValue >= filterValues[0] : true) &&
+          (filterValues[1] ? propertyValue <= filterValues[1] : true)
+      }
+      console.warn(`Impossible to filter a ${typeof propertyValue} value with a range widget`)
     }
 
     applyFilterToResource(resource, filter) {
