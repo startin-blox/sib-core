@@ -51,15 +51,16 @@ export const widgetFactory = (customTemplate, childTemplate = null, callback = n
     }
   }
   get dataHolder() {
-    let allDataHolders = this.querySelectorAll('[data-holder]');
-      if (allDataHolders.length) {
-        let currentDataHolders = [allDataHolders[0]];
-        allDataHolders.forEach((element) => {
-          if (!allDataHolders[0].contains(element)) currentDataHolders.push(element);
-        })
-        return currentDataHolders;
+    let widgetDataHolders = [];
+
+    this.querySelectorAll('[data-holder]').forEach((element) => {
+      let dataHolderAncestors = element.parentElement.closest('[data-holder]');
+      // get the dataHolder of the widget only
+      if (!dataHolderAncestors || !this.contains(dataHolderAncestors)) { // if no dataHolder ancestor in the current widget
+        widgetDataHolders.push(element);
       }
-      return null;
+    })
+    return widgetDataHolders.length ? widgetDataHolders : null;
   }
 
   get template() {
