@@ -313,7 +313,6 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
        }
 
         this.getExpandedIri = async function getExpandedIri(iri, context) {
-          iri = (iri.slice(-1) != "/") ? iri + '/' : iri;
           let expandedIri = await JsonLdUtils.expand({ "@id": iri, "fixExpand": "fixExpand" }, { expandContext: context })
           return expandedIri[0]['@id']
         }
