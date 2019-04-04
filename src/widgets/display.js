@@ -11,6 +11,11 @@ const SIBDisplayLabelledDiv = widgetFactory(
   <div name="\${name}">\${value}</div>`,
 );
 
+const SIBDisplayLabelledBoolean = widgetFactory(
+  'sib-display-labelled-boolean',
+  `\${value ? "<label>" + label + "</label>" : ""}`
+);
+
 const SIBDisplayImg = widgetFactory(
   'sib-display-img',
   `<img
@@ -34,6 +39,14 @@ const SIBDisplayTel = widgetFactory(
   >\${value}</a>`,
 );
 
+const SIBDisplayLink = widgetFactory(
+  'sib-display-link',
+  `<a
+    href="\${value}"
+    name="\${name}"
+  >\${label}</a>`,
+);
+
 const SIBAction = widgetFactory(
   'sib-action',
   `<sib-link
@@ -48,5 +61,6 @@ export {
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
+  SIBDisplayLink,
   SIBAction,
 };
