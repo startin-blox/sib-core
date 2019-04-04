@@ -41,12 +41,14 @@ const SIBListMixin = superclass =>
           propertyValue['@id'] === filterValue['@id']
         );
       }
-      if (typeof propertyValue === 'number' || typeof propertyValue === 'boolean') {
-        //check if integer or boolean match
-        return propertyValue === filterValue;
+
+      if (typeof propertyValue === 'number') { //check if number
+        return propertyValue === Number(filterValue);
       }
-      if (typeof propertyValue === 'string') {
-        //search in strings
+      if (typeof propertyValue === 'boolean') { //check if boolean
+        return propertyValue === Boolean(filterValue);
+      }
+      if (typeof propertyValue === 'string') { //search in strings
         return (
           propertyValue.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
         );
