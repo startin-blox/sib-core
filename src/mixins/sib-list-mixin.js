@@ -42,14 +42,14 @@ const SIBListMixin = superclass =>
           propertyValue['@id'] === filterValue['@id']
         );
       }
-      if (typeof propertyValue === 'number') {
-        //check if integer match
+      if (typeof propertyValue === 'number' || typeof propertyValue === 'boolean') {
+        //check if integer or boolean match
         return propertyValue === filterValue;
       }
       if (typeof propertyValue === 'string') {
         //search in strings
         return (
-          propertyValue.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1
+          propertyValue.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
         );
       }
       return false;
@@ -65,6 +65,7 @@ const SIBListMixin = superclass =>
       console.warn(`Impossible to filter a ${typeof propertyValue} value with a range widget`)
     }
 
+    // TODO : to be moved in the store and mutualized with widgetMixin.getValue
     applyFilterToResource(resource, filter) {
       if (!Array.isArray(filter)) return resource[filter];
       if (filter.length === 0) return;
@@ -193,11 +194,13 @@ const SIBListMixin = superclass =>
         }
       }
       //pass range attributes
+      let filters = {};
       for (let field of formElt.fields) {
         for (let attr of ['range', 'widget', 'label', 'value']) {
           const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
           formElt.setAttribute(`${attr}-${field}`, value);
+          if(field && attr == "value") filters[field] = value;
         }
       }
 
@@ -206,6 +209,7 @@ const SIBListMixin = superclass =>
       else this.insertBefore(formElt, this.firstChild);
 
       this._filtersAdded = true;
+      this.filterList(filters);
     }
 
     appendSingleElt() {
@@ -219,6 +223,7 @@ const SIBListMixin = superclass =>
       }
       if (!this._filtersAdded && this.hasAttribute('search-fields')) {
         this.appendFilters();
+        return;
       }
 
       if (this.hasAttribute('counter-template')) {

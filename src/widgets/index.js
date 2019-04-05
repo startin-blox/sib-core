@@ -1,11 +1,15 @@
 import SIBMultiple from './sib-multiple.js';
 
 import {
+  SIBDisplayValue,
   SIBDisplayDiv,
+  SIBDisplayLabelledDiv,
+  SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
+  SIBDisplayLink,
 } from './display.js';
 
 import {
@@ -26,11 +30,15 @@ import {
 
 export {
   SIBMultiple,
+  SIBDisplayValue,
   SIBDisplayDiv,
+  SIBDisplayLabelledDiv,
+  SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBAction,
+  SIBDisplayLink,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,

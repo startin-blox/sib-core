@@ -44,6 +44,12 @@ const SIBWidgetMixin = superclass =>
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
+
+      if (!resource) {
+        console.error(new Error('You must provide a "data-fields" attribute'))
+        return []
+      }
+
       return Object.keys(resource)
         .filter(prop => !prop.startsWith('@'))
         .map(a => [a]);
@@ -105,7 +111,10 @@ const SIBWidgetMixin = superclass =>
 
     getWidget(field) {
       const widget = this.getAttribute('widget-' + field);
-      if(widget) return widget;
+      if (widget) {
+        if (!customElements.get(widget)) console.warn(`The widget ${widget} is not defined`);
+        return widget;
+      }
       if (this.getAction(field)) return 'sib-action';
       return this.defaultWidget;
     }

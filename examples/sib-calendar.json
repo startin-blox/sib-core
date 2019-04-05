@@ -1,0 +1,16 @@
+{
+	"@type": "ldp:Container",
+	"ldp:contains": [{
+		"@id": "http://localhost:8000/events/1/",
+		"name": "Test",
+		"deadline": "2019-04-09T19:55:44Z",
+		"permissions": []
+	}, {
+		"@id": "http://localhost:8000/events/2/",
+		"name": "Test demain",
+		"deadline": "2019-04-10T19:55:56Z",
+		"permissions": []
+	}],
+	"@id": "sib-calendar.json",
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

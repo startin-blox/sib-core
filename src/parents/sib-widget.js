@@ -1,9 +1,8 @@
-import { widgetFactory } from './widget-factory.js'
+import { widgetFactory } from './widget-factory.js';
 
 export default class SIBWidget extends HTMLElement {
   connectedCallback() {
-    if (!customElements.get(this.name))
-      customElements.define(this.name, widgetFactory(this.template, this.childTemplate))
+    widgetFactory(this.name, this.template, this.childTemplate);
   }
 
   get name() {
@@ -16,7 +15,7 @@ export default class SIBWidget extends HTMLElement {
 
   get childTemplate() {
     const child = this.querySelector('template[data-range]');
-    if(!child) return null;
+    if (!child) return null;
     return child.innerHTML;
   }
 }
