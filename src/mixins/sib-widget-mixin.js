@@ -141,6 +141,7 @@ const SIBWidgetMixin = superclass =>
       }
 
       const attributes = await this.widgetAttributes(field);
+
       if (this.multiple(field)) {
         return this.widgets.push(
           await this.appendMultipleWidget(field, attributes, parent),
@@ -155,42 +156,27 @@ const SIBWidgetMixin = superclass =>
     }
 
     multiple(field) {
-      return this.getAttribute('multiple-' + field) || this.defaultMultipleWidget;
+      const attribute = 'multiple-' + field;
+      if(!this.hasAttribute(attribute)) return null;
+      return this.getAttribute(attribute) || this.defaultMultipleWidget;
     }
 
     async appendMultipleWidget(field, attributes, parent = null) {
       const values = attributes.value;
-      const wrapper = this.createMultipleWrapper(field, attributes, parent);
-      wrapper.name = field;
-      wrapper.widgets = [];
-      for (const value of values) {
-        attributes.value = value;
-        this.insertSingleElement(field, attributes);
+      const widget = document.createElement(this.multiple(field));
+      // widget.dataset.src = this.dataset.src;
+      for (let attr of ['range', 'widget', 'label', 'value']) {
+        const value = this.getAttribute(`multiple-${attr}-${field}`);
+        if (value == null) continue;
+        widget.setAttribute(`${attr}-${field}`, value);
       }
-      return wrapper;
-    }
-
-    createMultipleWrapper(field, attributes, parent = null) {
-      const wrapper = document.createElement(this.multiple(field));
-      this.wrappers[field] = wrapper;
-      if (parent) parent.appendChild(wrapper);
-      return wrapper;
-    }
-
-    createSingleElement(field, attributes) {
-      const widget = document.createElement(this.getWidget(field));
-      for (let name of Object.keys(attributes)) {
-        widget[name] = attributes[name];
-      }
+      if (parent) parent.appendChild(widget);
+      widget.name = field;
+      console.log('–––––');
+      
+      console.log(this, attributes);
+      widget.value = values;
       return widget;
-    }
-
-    insertSingleElement(field, attributes) {
-      const element = this.createSingleElement(field, attributes);
-      const wrapper = this.wrappers[field];
-      wrapper.appendChild(element);
-      wrapper.widgets.push(element);
-      return element;
     }
 
     async appendSet(field, parent) {
