@@ -136,10 +136,6 @@ const SIBWidgetMixin = superclass =>
 
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
-      const template = await this.getTemplate(field);
-      if (template) {
-        parent.appendChild(template);
-      }
       if (this.isSet(field)) {
         this.appendSet(field, parent);
         return;
@@ -205,25 +201,6 @@ const SIBWidgetMixin = superclass =>
       for (let item of this.getSet(field)) {
         await this.appendWidget(item, div);
       }
-    }
-
-    async getTemplate(field) {
-      const id = this.getAttribute(`template-${field}`);
-      const template = document.getElementById(id);
-      if (!(template instanceof HTMLTemplateElement)) return;
-      const name = field;
-      const value = await this.getValue(field);
-      let html;
-      try {
-        html = evalTemplateString(template.innerHTML.trim(), {
-          name,
-          value: value === undefined ? {} : value,
-        });
-      } catch (e) {
-        console.error(new Error(`error in template#${id}`), e);
-        throw e;
-      }
-      return stringToDom(html);
     }
   };
 

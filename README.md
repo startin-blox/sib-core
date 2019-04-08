@@ -40,7 +40,6 @@ Filters and searching capabilities can be easily added to interact with the list
   set-status="state"
   data-fields="image, status, author, deadline"
   widget-image="sib-display-img"
-  template-deadline="deadline-template"
   search-fields="name, author"
   next="detail"
 ></sib-display>
@@ -57,11 +56,9 @@ Filters and searching capabilities can be easily added to interact with the list
 - **set-xyz**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`. By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
 - **data-fields**: the ordered list of fields to be displayed, separated by commas. By default, all the fields of the resource are displayed. To not show any fields, put an empty data-fields (eg. `<sib-display data-fields />)`
 - **widget-xyz**: the widgets to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
-- **template-xyz**: the widgets to be used to display the `xyz` field. template strings in `${}` format in the template content are parsed, you can use it to get `name` and `value` variables.
 - **search-fields**: It is possible to search/filter your list by choosing the fields you want to filter it with. To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
 - **paginate-by**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
 - **next**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
-- **template-xyz**: You can choose how a given field will render by defining a template, see  the example above.
 
 
 ### sib-form
