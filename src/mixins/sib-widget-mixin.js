@@ -100,8 +100,9 @@ const SIBWidgetMixin = superclass =>
     }
 
     empty() {
-      this.widgets.length = 0;
-      while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
+      // completely remove the div
+      if (this._div) this.removeChild(this._div)
+      this._div = null;
     }
 
     getAction(field) {
