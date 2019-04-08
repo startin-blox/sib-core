@@ -38,7 +38,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
       );
     }
   }
-  appendChildElt(resource) {
+  appendChildElt(resource, parent) {
     const child = document.createElement(this.childTag);
     child.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
@@ -56,7 +56,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
       )
         child.setAttribute(attr.name, attr.value);
 
-    this.div.appendChild(child);
+    parent.appendChild(child);
   }
   async appendSingleElt() {
     for (let field of this.fields) {

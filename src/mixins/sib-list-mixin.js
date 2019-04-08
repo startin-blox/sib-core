@@ -118,7 +118,7 @@ const SIBListMixin = superclass =>
       );
     }
 
-    renderPaginationNav() {
+    renderPaginationNav(div) {
       const paginateBy = this.paginateBy;
       if (this._paginationElements) {
         this._paginationElements.nav.toggleAttribute(
@@ -142,7 +142,7 @@ const SIBListMixin = superclass =>
           delete elm.dataset.id;
           elements[id] = elm;
         });
-        this.insertBefore(elements.nav, this.div.nextSibling);
+        this.insertBefore(elements.nav, div.nextSibling);
         elements.prev.addEventListener('click', () => {
           this.currentPage -= 1;
           this.empty();
@@ -203,13 +203,15 @@ const SIBListMixin = superclass =>
       this.filterList(filters);
     }
 
-    appendSingleElt() {
-      this.appendChildElt(this.resource);
+    appendSingleElt(parent) {
+      this.appendChildElt(this.resource, parent);
     }
 
     populate() {
+      const div = this.div // make sure we always insert datas in the right div
+
       if (!this.isContainer) {
-        this.appendSingleElt();
+        this.appendSingleElt(div);
         return;
       }
       if (!this._filtersAdded && this.hasAttribute('search-fields')) {
@@ -229,22 +231,22 @@ const SIBListMixin = superclass =>
         }
         if (!this.counter) {
           this.counter = document.createElement('div');
-          this.insertBefore(this.counter, this.div);
+          this.insertBefore(this.counter, div);
         }
         this.counter.innerHTML = '';
         this.counter.appendChild(stringToDom(html));
       }
-      this.renderPaginationNav();
+      this.renderPaginationNav(div);
 
       for (let resource of this.currentPageResources) {
         //for federations, fetch every sib:source we find
         if (resource['@type'] !== 'sib:source') {
-          this.appendChildElt(resource);
+          this.appendChildElt(resource, div);
           continue;
         }
         store.get(resource.container, this.context).then(container => {
           for (let resource of container['ldp:contains']) {
-            this.appendChildElt(resource);
+            this.appendChildElt(resource, div);
           }
         });
       }
