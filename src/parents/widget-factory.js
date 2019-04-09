@@ -1,7 +1,7 @@
 import { evalTemplateString } from '../helpers/index.js';
 import { store } from '../store.js';
 
-export class Widget extends HTMLElement {
+export class BaseWidget extends HTMLElement {
   connectedCallback() {
     this.render();
   }
@@ -118,7 +118,7 @@ export const widgetFactory = (
 ) => {
   const registered = customElements.get(tagName);
   if (registered) return registered;
-  const cls = class extends Widget {
+  const cls = class extends BaseWidget {
     render() {
       super.render();
       if (callback) callback(this);

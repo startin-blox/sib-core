@@ -1,7 +1,7 @@
 import * as Helpers from './helpers/index.js';
 import { SIBListMixin, SIBWidgetMixin } from './mixins/index.js';
 import { SIBACChecker, SIBDisplay, SIBForm } from './elements/index.js';
-import { SIBBase, SIBTemplateElement, SIBWidget, Widget, widgetFactory } from './parents/index.js';
+import { SIBBase, SIBTemplateElement, SIBWidget, BaseWidget, widgetFactory } from './parents/index.js';
 import { store } from './store.js';
 import {
   SIBMultiple,
@@ -39,7 +39,7 @@ export {
   SIBBase,
   SIBTemplateElement,
   SIBWidget,
-  Widget,
+  BaseWidget,
   widgetFactory,
   SIBMultiple,
   SIBDisplayValue,
