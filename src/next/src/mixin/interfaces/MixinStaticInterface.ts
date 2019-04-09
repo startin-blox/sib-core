@@ -1,12 +1,8 @@
-import { AttributesDefinitionInterface } from './AttributesDefinitionInterface';
-import { HookInterface } from './HookInterface';
+import { HasAttributesDefinitionInterface } from './HasAttributesDefinitionInterface';
+import { HasMixinsInterface } from './HasMixinsInterface';
+import { HasInitialStateInterface } from './HasInitialStateInterface';
+import { HasHooksInterface } from './HasHooksInterface';
 
-export interface MixinStaticInterface {
+export interface MixinStaticInterface extends HasAttributesDefinitionInterface, HasMixinsInterface, HasInitialStateInterface, HasHooksInterface {
   name: String;
-  use: MixinStaticInterface[] | undefined;
-  attributes: AttributesDefinitionInterface[] | undefined;
-  initialState: Object | undefined;
-  created: HookInterface | undefined;
-  attached: HookInterface | undefined;
-  detached: HookInterface | undefined;
 };
