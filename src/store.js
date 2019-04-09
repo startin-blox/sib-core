@@ -38,6 +38,11 @@ export class Store {
     this.cache.clear();
     return this.originalStore.save(resource, id);
   }
+
+  patch(id, resource) {
+    this.cache.clear();
+    return this.originalStore.patch(id, resource);
+  }
 }
 
 export const store = new Store({
