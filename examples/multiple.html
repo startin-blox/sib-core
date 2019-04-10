@@ -12,7 +12,8 @@
     <h1>sib-display</h1>
     <sib-widget name="hd-skill-name">
       <template>
-        <pre>${JSON.stringify(value.name,null,2)}</pre>
+        <small>${label}:</small>
+        <pre>${value.name}</pre>
       </template>
     </sib-widget>
     <sib-display
@@ -23,7 +24,7 @@
       each-label-user.skills="one skill"
       multiple-user.skills
     ></sib-display>
-
+ 
     <h1>sib-form</h1>
     <sib-form
       data-src="https://test-paris.happy-dev.fr/users/4/"

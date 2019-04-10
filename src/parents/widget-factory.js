@@ -11,7 +11,7 @@ export class BaseWidget extends HTMLElement {
       name: this.name,
       label: this.label,
       value: this.value,
-      id: this.value['@id'] || '',
+      id: (this.value && this.value['@id']) || '',
       escapedValue: this.escapedValue,
       range: this.htmlRange,
     });
@@ -91,10 +91,10 @@ export class BaseWidget extends HTMLElement {
   }
   set range(url) {
     store.list(url).then(list => {
-      //this._range = [{ '@id': '', name: '---' }].concat(list);
+      // this._range = [{ '@id': '', name: '---' }].concat(list);
       this._range = list;
       this.render();
-      if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
+      // if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
     });
   }
   get htmlRange() {

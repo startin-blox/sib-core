@@ -123,12 +123,10 @@ const SIBWidgetMixin = superclass =>
 
     async widgetAttributes(field) {
       const attrs = {
-        value: await this.getValues(field),
         name: field,
       };
       for (let attr of ['range', 'label', 'class']) {
         const value = this.getAttribute(`each-${attr}-${field}`);
-        console.log(`each-${attr}-${field}`, value);
 
         if (value == null) continue;
         attrs[`each-${attr}`] = value;
@@ -140,6 +138,7 @@ const SIBWidgetMixin = superclass =>
         attrs[attr] = value;
       }
       if (this.getAction(field)) attrs.src = this.resource['@id'];
+      attrs.value = await this.getValues(field);
       return attrs;
     }
 
@@ -152,16 +151,15 @@ const SIBWidgetMixin = superclass =>
 
       const attributes = await this.widgetAttributes(field);
 
+      const tagName = this.multiple(field) || this.getWidget(field);
+      const widget = document.createElement(tagName);
       if (this.multiple(field)) {
-        return this.widgets.push(
-          await this.appendMultipleWidget(field, attributes, parent),
-        );
+        widget.setAttribute('widget', this.getWidget(field));
       }
-      const widget = document.createElement(this.getWidget(field));
+
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
-
       this.widgets.push(parent.appendChild(widget));
     }
 
@@ -169,17 +167,6 @@ const SIBWidgetMixin = superclass =>
       const attribute = 'multiple-' + field;
       if (!this.hasAttribute(attribute)) return null;
       return this.getAttribute(attribute) || this.defaultMultipleWidget;
-    }
-
-    async appendMultipleWidget(field, attributes, parent = null) {
-      const values = attributes.value;
-      const widget = document.createElement(this.multiple(field));
-      widget.setAttribute('widget', this.getWidget(field));
-      // widget.dataset.src = this.dataset.src;
-      if (parent) parent.appendChild(widget);
-      widget.name = field;
-      widget.value = values;
-      return widget;
     }
 
     async appendSet(field, parent) {

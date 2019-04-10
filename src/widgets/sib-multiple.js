@@ -6,32 +6,29 @@ export default class SIBMultiple extends Widget {
     this.widgets = [];
   }
 
-  get name() {
-    return this.getAttribute('name');
-  }
-
-  set name(name) {
-    this.setAttribute('name', name);
-  }
-
-  get value() {
-    return this.widgets.map(widget => widget.value);
-  }
-
-  set value(values) {
+  render() {
     while (this.firstChild) this.firstChild.remove();
-    values.forEach(value => {
+
+    const label = document.createElement('label');
+    label.textContent = this.label;
+    this.appendChild(label);
+    if (!this.value) return;
+    this.value.forEach(value => {
       const elm = this.insertWidget(this.childAttributes);
       elm.value = value;
+      elm.toggleAttribute('data-holder', true);
     });
   }
+
   get childAttributes() {
     const attrs = {};
-    Array.from(this.attributes)
-      .filter(a => a.specified && a.name.startsWith('each-'))
-      .forEach(a => {
-        attrs[a.name] = a.textContent;
-      });
+
+    for (let attr of ['range', 'label', 'class']) {
+      const value = this[`each-${attr}`];
+      if (value == null) continue;
+      attrs[attr] = value;
+    }
+
     return attrs;
   }
 
