@@ -1,21 +1,11 @@
-import SIBWidgetMixin from "../mixins/sib-widget-mixin.js";
-import SIBBase from "../parents/sib-base.js";
+import { Widget } from '../parents/widget-factory.js';
 
-export default class SIBMultiple extends SIBWidgetMixin(SIBBase) {
+export default class SIBMultiple extends Widget {
   constructor() {
     super();
-    this._value = [];
     this.widgets = [];
   }
-  empty() {
-    this._value = this.value;
-    while (this.firstChild) this.firstChild.remove();
-  }
-  populate() {
-    this._value.forEach(value => {
-      this.insertWidget(this.name, value);
-    });
-  }
+
   get name() {
     return this.getAttribute('name');
   }
@@ -25,28 +15,34 @@ export default class SIBMultiple extends SIBWidgetMixin(SIBBase) {
   }
 
   get value() {
-    this._value = this.widgets.map(widget => widget.value);
-    return this._value;
+    return this.widgets.map(widget => widget.value);
   }
 
-  set value(value) {
-    this.empty();
-    this.populate();
+  set value(values) {
+    while (this.firstChild) this.firstChild.remove();
+    values.forEach(value => {
+      const elm = this.insertWidget(this.childAttributes);
+      elm.value = value;
+    });
+  }
+  get childAttributes() {
+    const attrs = {};
+    Array.from(this.attributes)
+      .filter(a => a.specified && a.name.startsWith('each-'))
+      .forEach(a => {
+        attrs[a.name] = a.textContent;
+      });
+    return attrs;
   }
 
-  createWidget(field, value) {
-    const widget = document.createElement(this.getWidget(field));
+  insertWidget(attributes) {
+    const widget = document.createElement(this.getAttribute('widget'));
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
+    this.appendChild(widget);
+    this.widgets.push(widget);
     return widget;
-  }
-
-  insertWidget(field, attributes) {
-    const element = this.createWidget(field, attributes);
-    this.appendChild(element);
-    this.widgets.push(element);
-    return element;
   }
 }
 customElements.define('sib-multiple', SIBMultiple);

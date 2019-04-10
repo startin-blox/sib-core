@@ -46,8 +46,8 @@ const SIBWidgetMixin = superclass =>
         this.isContainer && this.resources ? this.resources[0] : this.resource;
 
       if (!resource) {
-        console.error(new Error('You must provide a "data-fields" attribute'))
-        return []
+        console.error(new Error('You must provide a "data-fields" attribute'));
+        return [];
       }
 
       return Object.keys(resource)
@@ -112,23 +112,33 @@ const SIBWidgetMixin = superclass =>
     getWidget(field) {
       const widget = this.getAttribute('widget-' + field);
       if (widget) {
-        if (!customElements.get(widget)) console.warn(`The widget ${widget} is not defined`);
+        if (!customElements.get(widget)) {
+          console.warn(`The widget ${widget} is not defined`);
+        }
         return widget;
       }
       if (this.getAction(field)) return 'sib-action';
       return this.defaultWidget;
     }
+
     async widgetAttributes(field) {
       const attrs = {
         value: await this.getValues(field),
         name: field,
       };
-      if (this.hasAttribute('class-' + field))
-        attrs.className = this.getAttribute('class-' + field);
-      if (this.hasAttribute('range-' + field))
-        attrs.range = this.getAttribute('range-' + field);
-      if (this.hasAttribute('label-' + field))
-        attrs.label = this.getAttribute('label-' + field);
+      for (let attr of ['range', 'label', 'class']) {
+        const value = this.getAttribute(`each-${attr}-${field}`);
+        console.log(`each-${attr}-${field}`, value);
+
+        if (value == null) continue;
+        attrs[`each-${attr}`] = value;
+      }
+      for (let attr of ['range', 'label', 'class', 'widget']) {
+        const value = this.getAttribute(`${attr}-${field}`);
+        if (value == null) continue;
+        if (attr === 'class') attr = 'className';
+        attrs[attr] = value;
+      }
       if (this.getAction(field)) attrs.src = this.resource['@id'];
       return attrs;
     }
@@ -157,24 +167,17 @@ const SIBWidgetMixin = superclass =>
 
     multiple(field) {
       const attribute = 'multiple-' + field;
-      if(!this.hasAttribute(attribute)) return null;
+      if (!this.hasAttribute(attribute)) return null;
       return this.getAttribute(attribute) || this.defaultMultipleWidget;
     }
 
     async appendMultipleWidget(field, attributes, parent = null) {
       const values = attributes.value;
       const widget = document.createElement(this.multiple(field));
+      widget.setAttribute('widget', this.getWidget(field));
       // widget.dataset.src = this.dataset.src;
-      for (let attr of ['range', 'widget', 'label', 'value']) {
-        const value = this.getAttribute(`multiple-${attr}-${field}`);
-        if (value == null) continue;
-        widget.setAttribute(`${attr}-${field}`, value);
-      }
       if (parent) parent.appendChild(widget);
       widget.name = field;
-      console.log('–––––');
-      
-      console.log(this, attributes);
       widget.value = values;
       return widget;
     }
