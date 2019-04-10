@@ -18,13 +18,13 @@ const SIBFormLabelText = widgetFactory(
 const SIBFormCheckbox = widgetFactory(
   'sib-form-checkbox',
   `<label>
-    <div>\${label}</div>
     <input
       data-holder
       type="checkbox"
       name="\${name}"
       \${value ? 'checked' : ''}
     >
+    <div>\${label}</div>
   </label>`,
 );
 
