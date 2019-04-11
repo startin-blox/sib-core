@@ -17,7 +17,7 @@ export class BaseWidget extends HTMLElement {
     });
   }
   get label() {
-    return this.getAttribute('label') || this.name;
+    return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label) {
     this.setAttribute('label', label);
@@ -58,6 +58,12 @@ export class BaseWidget extends HTMLElement {
       ); // ... set each `value` to each dataHolder element
     }
   }
+  get ['each-label'](){
+    return this.getAttribute('each-label') || '';
+  }
+  set ['each-label'](label) {
+    this.setAttribute('each-label', label);
+  }
   get dataHolder() {
     let widgetDataHolders = [];
 
@@ -89,13 +95,19 @@ export class BaseWidget extends HTMLElement {
     if (!Array.isArray(this._range)) return [this._range];
     return this._range;
   }
-  set range(url) {
-    store.list(url).then(list => {
-      // this._range = [{ '@id': '', name: '---' }].concat(list);
-      this._range = list;
+  set range(range) {
+    if (Array.isArray(range)) {
+      this._range = range;
       this.render();
-      // if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
-    });
+      return;
+    }
+    store.list(range).then(list => (this.range = list));
+
+    // store.list(range).then(list => {
+    //   this._range = list;
+    //   this.render();
+    //   if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
+    // });
   }
   get htmlRange() {
     if (!this.range.length) return '';

@@ -96,8 +96,7 @@ const SIBFormTextarea = widgetFactory(
 
 const SIBFormDropdown = widgetFactory(
   'sib-form-dropdown',
-  `
-  <label>
+  `<label>
     <div>\${label}</div>
     <select name="\${name}" data-holder>
       \${range}
@@ -110,8 +109,7 @@ const SIBFormDropdown = widgetFactory(
 
 const SIBFormPlaceholderDropdown = widgetFactory(
   'sib-form-placeholder-dropdown',
-  `
-  <select name="\${name}" data-holder>
+  `<select name="\${name}" data-holder>
     <option value="" disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
@@ -122,8 +120,7 @@ const SIBFormPlaceholderDropdown = widgetFactory(
 
 const SIBFormAutoCompletion = widgetFactory(
   'sib-form-auto-completion',
-  `
-  <label>
+  `<label>
     <div>\${label}</div>
     <select name="\${name}" data-holder multiple>
       \${range}

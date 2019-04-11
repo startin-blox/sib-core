@@ -1,11 +1,6 @@
 import { Widget } from '../parents/widget-factory.js';
 
 export default class SIBMultiple extends Widget {
-  constructor() {
-    super();
-    this.widgets = [];
-  }
-
   render() {
     while (this.firstChild) this.firstChild.remove();
 
@@ -38,7 +33,6 @@ export default class SIBMultiple extends Widget {
       widget[name] = attributes[name];
     }
     this.appendChild(widget);
-    this.widgets.push(widget);
     return widget;
   }
 }
