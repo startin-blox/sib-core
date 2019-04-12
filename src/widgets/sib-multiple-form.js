@@ -1,6 +1,12 @@
 import { Widget } from '../parents/widget-factory.js';
 
 export default class SIBMultipleForm extends Widget {
+  get range() {
+    return this.getAttribute('range');
+  }
+  set range(range) {
+    this.setAttribute('range', range);
+  }
   render() {
     while (this.firstChild) this.firstChild.remove();
     const label = document.createElement('label');
@@ -22,14 +28,13 @@ export default class SIBMultipleForm extends Widget {
   }
   get childAttributes() {
     const attrs = {};
-    if (this.range && this.range.length) attrs.range = this.range;
+    if (this.range) attrs.range = this.range;
+    attrs.name = this.name;
     for (let attr of ['label', 'class']) {
       const value = this[`each-${attr}`];
-      console.log(`each-${attr}`,value);
       if (value == null) continue;
       attrs[attr] = value;
     }
-    console.log(attrs);
     return attrs;
   }
 

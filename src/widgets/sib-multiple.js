@@ -18,11 +18,13 @@ export default class SIBMultiple extends Widget {
   get childAttributes() {
     const attrs = {};
 
-    for (let attr of ['range', 'label', 'class']) {
+    for (let attr of ['label', 'class']) {
       const value = this[`each-${attr}`];
       if (value == null) continue;
       attrs[attr] = value;
     }
+
+    attrs.name = this.name;
 
     return attrs;
   }

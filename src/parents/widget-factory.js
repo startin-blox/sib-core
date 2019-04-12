@@ -44,9 +44,9 @@ export class BaseWidget extends HTMLElement {
     return this._value || '';
   }
   set value(value) {
+    this._value = value; // ... store `value` in the widget
     if (!this.dataHolder) {
       // if no dataHolder in the widget...
-      this._value = value; // ... store `value` in the widget
       this.render();
     } else if (this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
@@ -65,16 +65,12 @@ export class BaseWidget extends HTMLElement {
     this.setAttribute('each-label', label);
   }
   get dataHolder() {
-    let widgetDataHolders = [];
-
-    this.querySelectorAll('[data-holder]').forEach(element => {
-      let dataHolderAncestors = element.parentElement.closest('[data-holder]');
-      // get the dataHolder of the widget only
-      if (!dataHolderAncestors || !this.contains(dataHolderAncestors)) {
-        // if no dataHolder ancestor in the current widget
-        widgetDataHolders.push(element);
-      }
+    const widgetDataHolders = Array.from(this.querySelectorAll('[data-holder]')).filter(element => {
+      const dataHolderAncestor = element.parentElement.closest('[data-holder]');
+      // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
+      return dataHolderAncestor === this || !dataHolderAncestor || !this.contains(dataHolderAncestor)
     });
+    
     return widgetDataHolders.length ? widgetDataHolders : null;
   }
   get template() {
@@ -99,15 +95,10 @@ export class BaseWidget extends HTMLElement {
     if (Array.isArray(range)) {
       this._range = range;
       this.render();
+      if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
       return;
     }
     store.list(range).then(list => (this.range = list));
-
-    // store.list(range).then(list => {
-    //   this._range = list;
-    //   this.render();
-    //   if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
-    // });
   }
   get htmlRange() {
     if (!this.range.length) return '';
