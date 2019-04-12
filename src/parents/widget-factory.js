@@ -33,7 +33,7 @@ export class BaseWidget extends HTMLElement {
   get value() {
     if (this.dataHolder) {
       let values = this.dataHolder.map(element => {
-        if(element.type == "checkbox") return element.checked
+        if(element.tagName === "INPUT" && element.type == "checkbox") return element.checked
         // if value is defined, push it in the array
         return JSON.stringify(element.value) !== '{}'
           ? element.value
