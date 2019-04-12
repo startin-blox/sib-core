@@ -5,6 +5,7 @@ import { SIBBase, SIBTemplateElement, SIBWidget, BaseWidget, widgetFactory } fro
 import { store } from './store.js';
 import {
   SIBMultiple,
+  SIBMultipleForm,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
@@ -42,6 +43,7 @@ export {
   BaseWidget,
   widgetFactory,
   SIBMultiple,
+  SIBMultipleForm,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,

@@ -11,13 +11,13 @@ export class BaseWidget extends HTMLElement {
       name: this.name,
       label: this.label,
       value: this.value,
-      id: this.value['@id'] || '',
+      id: (this.value && this.value['@id']) || '',
       escapedValue: this.escapedValue,
       range: this.htmlRange,
     });
   }
   get label() {
-    return this.getAttribute('label') || this.name;
+    return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label) {
     this.setAttribute('label', label);
@@ -44,9 +44,9 @@ export class BaseWidget extends HTMLElement {
     return this._value || '';
   }
   set value(value) {
+    this._value = value; // ... store `value` in the widget
     if (!this.dataHolder) {
       // if no dataHolder in the widget...
-      this._value = value; // ... store `value` in the widget
       this.render();
     } else if (this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
@@ -58,17 +58,19 @@ export class BaseWidget extends HTMLElement {
       ); // ... set each `value` to each dataHolder element
     }
   }
+  get ['each-label'](){
+    return this.getAttribute('each-label') || '';
+  }
+  set ['each-label'](label) {
+    this.setAttribute('each-label', label);
+  }
   get dataHolder() {
-    let widgetDataHolders = [];
-
-    this.querySelectorAll('[data-holder]').forEach(element => {
-      let dataHolderAncestors = element.parentElement.closest('[data-holder]');
-      // get the dataHolder of the widget only
-      if (!dataHolderAncestors || !this.contains(dataHolderAncestors)) {
-        // if no dataHolder ancestor in the current widget
-        widgetDataHolders.push(element);
-      }
+    const widgetDataHolders = Array.from(this.querySelectorAll('[data-holder]')).filter(element => {
+      const dataHolderAncestor = element.parentElement.closest('[data-holder]');
+      // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
+      return dataHolderAncestor === this || !dataHolderAncestor || !this.contains(dataHolderAncestor)
     });
+    
     return widgetDataHolders.length ? widgetDataHolders : null;
   }
   get template() {
@@ -89,13 +91,14 @@ export class BaseWidget extends HTMLElement {
     if (!Array.isArray(this._range)) return [this._range];
     return this._range;
   }
-  set range(url) {
-    store.list(url).then(list => {
-      //this._range = [{ '@id': '', name: '---' }].concat(list);
-      this._range = list;
+  set range(range) {
+    if (Array.isArray(range)) {
+      this._range = range;
       this.render();
       if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
-    });
+      return;
+    }
+    store.list(range).then(list => (this.range = list));
   }
   get htmlRange() {
     if (!this.range.length) return '';

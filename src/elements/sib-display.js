@@ -18,6 +18,10 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   get defaultWidget() {
     return 'sib-display-value';
   }
+  
+  get defaultMultipleWidget() {
+    return 'sib-multiple';
+  }
 
   get childTag() {
     return this.dataset.child || this.tagName;
