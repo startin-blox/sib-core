@@ -126,7 +126,6 @@ Hides an element from the page if the current user doesn't have the required per
 The following widgets are available:
 
 ### Display
-
 - **sib-display-value** (default): Displays the value.
 - **sib-display-div**: Displays the `value` inside a `<div>` HTML tag.
 - **sib-display-labelled-div**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>`  HTML tag
@@ -135,10 +134,8 @@ The following widgets are available:
 - **sib-display-mailto**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path
 - **sib-display-tel**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
 - **sib-display-link**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
-- **sib-action**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
 
 ### Form
-
 - **sib-form-label-text**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag.
 - **sib-form-checkbox**: Inserts an `<input/>` HTML tag of type "checkbox", in a `<label>` HTML tag.
 - **sib-form-date**: Inserts an `<input/>` HTML tag of type "date", in a `<label>` HTML tag.
@@ -153,7 +150,8 @@ The following widgets are available:
 - **sib-form-range-number**:
 - **sib-form-hidden**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
-
+### Actions
+- **sib-action**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
 
 ## Helpers fonctions
 
