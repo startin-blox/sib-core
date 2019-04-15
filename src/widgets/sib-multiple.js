@@ -1,6 +1,6 @@
-import { Widget } from '../parents/widget-factory.js';
+import { BaseWidget } from '../parents/widget-factory.js';
 
-export default class SIBMultiple extends Widget {
+export default class SIBMultiple extends BaseWidget {
   render() {
     while (this.firstChild) this.firstChild.remove();
 

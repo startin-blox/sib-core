@@ -1,6 +1,6 @@
-import { Widget } from '../parents/widget-factory.js';
+import { BaseWidget } from '../parents/widget-factory.js';
 
-export default class SIBMultipleForm extends Widget {
+export default class SIBMultipleForm extends BaseWidget {
   get range() {
     return this.getAttribute('range');
   }
