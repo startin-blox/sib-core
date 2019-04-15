@@ -58,6 +58,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       }),
     );
     this.toggleLoaderHidden(true);
+    if (!resource['@id'] && this.form) this.form.reset() // we reset the form only in creation mode
     return saved;
   }
   change(resource) { }
