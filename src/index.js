@@ -6,7 +6,7 @@ import { store } from './store.js';
 import {
   SIBMultiple,
   SIBMultipleForm,
-  SIBMultipleAutoCompletion,
+  SIBMultipleSelect,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
@@ -45,7 +45,7 @@ export {
   widgetFactory,
   SIBMultiple,
   SIBMultipleForm,
-  SIBMultipleAutoCompletion,
+  SIBMultipleSelect,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,

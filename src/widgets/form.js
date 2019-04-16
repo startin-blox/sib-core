@@ -131,7 +131,7 @@ const SIBFormAutoCompletion = widgetFactory(
   'sib-form-auto-completion',
   `<label>
     <div>\${label}</div>
-    <select name="\${name}" data-holder>
+    <select name="\${name}" data-holder \${multiple?'multiple':''}>
       \${range}
     </select>
   </label>

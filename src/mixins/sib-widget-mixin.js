@@ -172,7 +172,6 @@ const SIBWidgetMixin = superclass =>
     multiple(field) {
       const attribute = 'multiple-' + field;
       if (!this.hasAttribute(attribute)) return null;
-      if (this.getWidget(field) === "sib-form-auto-completion") return "sib-multiple-auto-completion";
       return this.getAttribute(attribute) || this.defaultMultipleWidget;
     }
 
