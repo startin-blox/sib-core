@@ -1,5 +1,6 @@
 import SIBMultiple from './sib-multiple.js';
 import SIBMultipleForm from './sib-multiple-form.js';
+import SIBMultipleAutoCompletion from './sib-multiple-auto-completion.js';
 
 import {
   SIBDisplayValue,
@@ -32,6 +33,7 @@ import {
 export {
   SIBMultiple,
   SIBMultipleForm,
+  SIBMultipleAutoCompletion,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
