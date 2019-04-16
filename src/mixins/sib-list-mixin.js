@@ -23,6 +23,16 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
+      if(propertyValue && propertyValue.constructor === Object){
+        console.log('---', {propertyValue, filterValue});
+        console.log(Object.entries(filterValue));
+        
+        return Object.entries(filterValue).every(([k,v]) => {
+          const mv = this.matchValue(propertyValue[k], v);
+          console.log(mv, propertyValue[k], v);
+          return mv;
+        });
+      }
       if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
