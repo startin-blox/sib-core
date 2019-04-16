@@ -23,16 +23,7 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      if(propertyValue && propertyValue.constructor === Object){
-        console.log('---', {propertyValue, filterValue});
-        console.log(Object.entries(filterValue));
-        
-        return Object.entries(filterValue).every(([k,v]) => {
-          const mv = this.matchValue(propertyValue[k], v);
-          console.log(mv, propertyValue[k], v);
-          return mv;
-        });
-      }
+      console.log('---', {propertyValue, filterValue});
       if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
@@ -45,13 +36,18 @@ const SIBListMixin = superclass =>
           false,
         );
       }
-      if (propertyValue['@id']) {
-        //search in ids
-        return (
-          filterValue['@id'] === '' ||
-          propertyValue['@id'] === filterValue ||
-          propertyValue['@id'] === filterValue['@id']
-        );
+      if (propertyValue['@id'] && propertyValue['@id'] === filterValue) return true;
+      if(propertyValue.constructor === Object) {
+        console.log('###',Object.entries(filterValue));
+        
+        const ret =  Object.entries(filterValue).every(([k,v]) => {
+          const mv = this.matchValue(propertyValue[k], v);
+          console.log(mv, propertyValue[k], v);
+          return mv;
+        });
+        console.log('ret', ret);
+        
+        return ret;
       }
 
       if (typeof propertyValue === 'number') { //check if number
