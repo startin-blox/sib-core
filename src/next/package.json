@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "The next startin blox core.",
   "scripts": {
-    "test": "TS_NODE_PROJECT=tsconfig.test.json mocha",
-    "coverage": "TS_NODE_PROJECT=tsconfig.test.json nyc mocha",
+    "test": "TS_NODE_PROJECT=tsconfig.test.json mocha --require test/bootstrap.js",
+    "coverage": "TS_NODE_PROJECT=tsconfig.test.json nyc --reporter=html --reporter=text mocha --require test/bootstrap.js",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "build": "npm run build:types && npm run build:js",
@@ -15,6 +15,9 @@
     "include": [
       "src/**/*.ts",
       "src/**/*.tsx"
+    ],
+    "exclude": [
+      "src/**/*.spec.ts"
     ],
     "extension": [
       ".ts",
@@ -47,6 +50,7 @@
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
     "chai": "^4.2.0",
+    "jsdom": "^14.0.0",
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "ts-node": "^8.0.3",
