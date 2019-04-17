@@ -30,7 +30,9 @@ export default class SIBMultipleSelect extends BaseWidget {
     return Array.from(this.querySelectorAll('select option:checked')).map(el => el.value);
   }
   set value(values) {
-    // TODO with the Choices object
+    this.querySelectorAll('select option').forEach(element => element.selected = false); // unselect all options...
+    values.forEach(value => this.querySelector(`select option[value="${value}"]`).selected = true); // ... and select only "values"
+    this.querySelector('select').dispatchEvent(new Event('change')); // ... finally trigger change
   }
 
   insertWidget(attributes) {
