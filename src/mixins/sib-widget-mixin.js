@@ -146,7 +146,7 @@ const SIBWidgetMixin = superclass =>
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
       if (this.isSet(field)) {
-        this.appendSet(field, parent);
+        await this.appendSet(field, parent);
         return;
       }
 
