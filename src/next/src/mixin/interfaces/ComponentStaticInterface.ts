@@ -6,5 +6,5 @@ export interface ComponentStaticInterface extends HasAttributesDefinitionInterfa
   name: String;
 
   hooks: ArrayOfHooksInterface;
-  methods: Map<string, function>;
+  methods: Map<string, Function>;
 };

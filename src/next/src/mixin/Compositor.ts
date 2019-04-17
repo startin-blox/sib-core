@@ -89,6 +89,7 @@ export class Compositor {
     return hooks;
   }
 
+  // TODO add map typing
   public static mergeMethods(mixins: MixinStaticInterface[]): Map<any, any> {
     const methods = new Map();
 
