@@ -23,9 +23,8 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
-      console.log('---', {propertyValue, filterValue});
       if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
-      if (filterValue === '') return true;
+      if (JSON.stringify(filterValue).includes('""')) return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
         return this.matchValue(propertyValue['ldp:contains'], filterValue);
@@ -38,16 +37,8 @@ const SIBListMixin = superclass =>
       }
       if (propertyValue['@id'] && propertyValue['@id'] === filterValue) return true;
       if(propertyValue.constructor === Object) {
-        console.log('###',Object.entries(filterValue));
         
-        const ret =  Object.entries(filterValue).every(([k,v]) => {
-          const mv = this.matchValue(propertyValue[k], v);
-          console.log(mv, propertyValue[k], v);
-          return mv;
-        });
-        console.log('ret', ret);
-        
-        return ret;
+        return Object.entries(filterValue).every(([k,v]) => this.matchValue(propertyValue[k], v));
       }
 
       if (typeof propertyValue === 'number') { //check if number
@@ -86,10 +77,7 @@ const SIBListMixin = superclass =>
 
     matchFilter(resource, filter, value) {
       if (!this.isSet(filter)) {
-        return this.matchValue(
-          this.applyFilterToResource(resource, filter),
-          value,
-        );
+        return this.matchValue(this.applyFilterToResource(resource, filter),value);
       }
 
       // for sets, return true if it matches at least one of the fields
