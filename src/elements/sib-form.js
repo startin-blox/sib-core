@@ -43,8 +43,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     });
   }
 
-  async save(resource) {
+  async save() {
     this.toggleLoaderHidden(false);
+    const resource = this.value;
+    resource['@context'] = this.context;
     let saved;
     try {
       saved = await store.save(resource, this.resource['@id']);
@@ -63,9 +65,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   }
   change(resource) { }
   async submitForm() {
-    const resource = this.value;
-    resource['@context'] = this.context;
-    const saved = this.save(resource);
+    const saved = this.save();
     if (!this.next) return;
     const id = await saved;
     resource['@id'] = id;
