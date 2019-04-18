@@ -9,9 +9,16 @@ const SIBWidgetMixin = superclass =>
       this.wrappers = {};
     }
     get div() {
-      if (this._div) return this._div;
-      this._div = document.createElement('div');
-      this.appendChild(this._div);
+      if (this._div && !this._div.attributes.empty) return this._div; // if the div has not been emptied, return it
+      if (!this._div) { // Else, either create a new one ...
+        this._div = document.createElement('div');
+        this.appendChild(this._div);
+      } else { // ... or append a new one next to it and delete the old one
+        let oldDiv = this._div;
+        this._div = document.createElement('div');
+        this.insertBefore(this._div, oldDiv);
+        this.removeChild(oldDiv);
+      }
       return this._div;
     }
 
@@ -100,9 +107,9 @@ const SIBWidgetMixin = superclass =>
     }
 
     empty() {
-      // completely remove the div
-      if (this._div) this.removeChild(this._div)
-      this._div = null;
+      this.widgets.length = 0;
+      while (this.div.firstChild) this.div.removeChild(this.div.firstChild);
+      this.div.toggleAttribute('empty', true); // tag the div to remove it later
     }
 
     getAction(field) {
