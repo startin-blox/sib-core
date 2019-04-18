@@ -1,8 +1,11 @@
 import SIBMultiple from './sib-multiple.js';
+import SIBMultipleForm from './sib-multiple-form.js';
 
 import {
+  SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
+  SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
@@ -14,11 +17,13 @@ import {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
+  SIBFormRangeDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
+  SIBFormRangeNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,
@@ -26,8 +31,11 @@ import {
 
 export {
   SIBMultiple,
+  SIBMultipleForm,
+  SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
+  SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
@@ -36,11 +44,13 @@ export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
+  SIBFormRangeDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
+  SIBFormRangeNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,

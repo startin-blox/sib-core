@@ -8,6 +8,7 @@ const SIBListMixin = superclass =>
       this._filters = {};
       this._filtersAdded = false;
       this._currentPage = 1;
+      this.searchForm;
     }
 
     get filters() {
@@ -22,6 +23,7 @@ const SIBListMixin = superclass =>
     }
 
     matchValue(propertyValue, filterValue) {
+      if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
       if (filterValue === '') return true;
       if (propertyValue == null) return false;
       if (propertyValue['ldp:contains']) {
@@ -54,6 +56,16 @@ const SIBListMixin = superclass =>
         );
       }
       return false;
+    }
+
+    matchRangeValues(propertyValue, filterValues) {
+      if (propertyValue == null) return false;
+
+      if (typeof propertyValue === 'number' || typeof propertyValue === 'string') {
+        return (filterValues[0] ? propertyValue >= filterValues[0] : true) &&
+          (filterValues[1] ? propertyValue <= filterValues[1] : true)
+      }
+      console.warn(`Impossible to filter a ${typeof propertyValue} value with a range widget`)
     }
 
     // TODO : to be moved in the store and mutualized with widgetMixin.getValue
@@ -166,38 +178,38 @@ const SIBListMixin = superclass =>
       return super.resources.filter(this.matchFilters.bind(this));
     }
 
-    filterList(filters) {
-      this.filters = filters;
+    filterList() {
+      this.filters = this.searchForm.value;
     }
 
     appendFilters() {
-      const formElt = document.createElement('sib-form');
-      formElt.resource = this.resource;
-      formElt.save = this.filterList.bind(this);
-      formElt.change = this.filterList.bind(this);
-      formElt.dataset.fields = this.getAttribute('search-fields');
-      formElt.toggleAttribute('naked', true);
+      this.searchForm = document.createElement('sib-form');
+      this.searchForm.resource = this.resource;
+      this.searchForm.save = this.filterList.bind(this);
+      this.searchForm.change = this.filterList.bind(this);
+      this.searchForm.dataset.fields = this.getAttribute('search-fields');
+      this.searchForm.toggleAttribute('naked', true);
 
       //displays applied filter values in the form
       for (let filter of Object.keys(this.filters)) {
-        if (formElt.dataset.fields.indexOf(filter) != -1) {
-          formElt.setAttribute('value-' + filter, this.filters[filter]);
+        if (this.searchForm.dataset.fields.indexOf(filter) != -1) {
+          this.searchForm.setAttribute('value-' + filter, this.filters[filter]);
         }
       }
       //pass range attributes
       let filters = {};
-      for (let field of formElt.fields) {
+      for (let field of this.searchForm.fields) {
         for (let attr of ['range', 'widget', 'label', 'value']) {
           const value = this.getAttribute(`search-${attr}-${field}`);
           if (value == null) continue;
-          formElt.setAttribute(`${attr}-${field}`, value);
+          this.searchForm.setAttribute(`${attr}-${field}`, value);
           if(field && attr == "value") filters[field] = value;
         }
       }
 
       if (this.shadowRoot)
-        this.shadowRoot.insertBefore(formElt, this.shadowRoot.firstChild);
-      else this.insertBefore(formElt, this.firstChild);
+        this.shadowRoot.insertBefore(this.searchForm, this.shadowRoot.firstChild);
+      else this.insertBefore(this.searchForm, this.firstChild);
 
       this._filtersAdded = true;
       this.filterList(filters);

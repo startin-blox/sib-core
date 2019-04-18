@@ -46,8 +46,8 @@ const SIBWidgetMixin = superclass =>
         this.isContainer && this.resources ? this.resources[0] : this.resource;
 
       if (!resource) {
-        console.error(new Error('You must provide a "data-fields" attribute'))
-        return []
+        console.error(new Error('You must provide a "data-fields" attribute'));
+        return [];
       }
 
       return Object.keys(resource)
@@ -60,7 +60,7 @@ const SIBWidgetMixin = superclass =>
     }
 
     async fetchValue(resource, field) {
-      if (!resource || this.isContainer) return null;
+      if (this.isContainer) return null;
       if (!(field in resource) && '@id' in resource) {
         resource = await store.get(resource, this.context);
       }
@@ -87,7 +87,7 @@ const SIBWidgetMixin = superclass =>
 
     async getValues(field) {
       let value = await this.getValue(field);
-      if (!this.isMultiple(field)) return value;
+      if (!this.multiple(field)) return value;
       if (value == null) return [];
       if (value['@type'] !== 'ldp:Container') {
         return [value];
@@ -113,88 +113,62 @@ const SIBWidgetMixin = superclass =>
     getWidget(field) {
       const widget = this.getAttribute('widget-' + field);
       if (widget) {
-        if (!customElements.get(widget)) console.warn(`The widget ${widget} is not defined`);
+        if (!customElements.get(widget)) {
+          console.warn(`The widget ${widget} is not defined`);
+        }
         return widget;
       }
       if (this.getAction(field)) return 'sib-action';
       return this.defaultWidget;
     }
+
     async widgetAttributes(field) {
       const attrs = {
-        value: await this.getValues(field),
         name: field,
       };
-      const action = this.getAction(field);
-      if (this.hasAttribute('range-' + field))
-        attrs.range = this.getAttribute('range-' + field);
-      if (this.hasAttribute('label-' + field))
-        attrs.label = this.getAttribute('label-' + field);
-      if (action) attrs.src = this.resource['@id'];
+      for (let attr of ['range', 'label', 'class']) {
+        const value = this.getAttribute(`each-${attr}-${field}`);
+        
+        if (value == null) continue;
+        attrs[`each-${attr}`] = value;
+      }
+      for (let attr of ['range', 'label', 'class', 'widget']) {
+        const value = this.getAttribute(`${attr}-${field}`);
+        if (value == null) continue;
+        if (attr === 'class') attr = 'className';
+        attrs[attr] = value;
+      }
+      if (this.getAction(field)) attrs.src = this.resource['@id'];
+      attrs.value = await this.getValues(field);
+      
       return attrs;
     }
 
     async appendWidget(field, parent) {
       if (!parent) parent = this.div;
-      const template = await this.getTemplate(field);
-      if (template) {
-        parent.appendChild(template);
-      }
       if (this.isSet(field)) {
-        this.appendSet(field, parent);
+        await this.appendSet(field, parent);
         return;
       }
 
       const attributes = await this.widgetAttributes(field);
-      if (this.isMultiple(field)) {
-        return this.widgets.push(
-          await this.appendMultipleWidget(field, attributes, parent),
-        );
+
+      const tagName = this.multiple(field) || this.getWidget(field);
+      const widget = document.createElement(tagName);
+      if (this.multiple(field)) {
+        widget.setAttribute('widget', this.getWidget(field));
       }
-      const widget = document.createElement(this.getWidget(field));
+
       for (let name of Object.keys(attributes)) {
         widget[name] = attributes[name];
       }
-
       this.widgets.push(parent.appendChild(widget));
     }
 
-    isMultiple(field) {
-      return this.hasAttribute('multiple-' + field);
-    }
-
-    async appendMultipleWidget(field, attributes, parent = null) {
-      const values = attributes.value;
-      const wrapper = this.createMultipleWrapper(field, attributes, parent);
-      wrapper.name = field;
-      wrapper.widgets = [];
-      for (const value of values) {
-        attributes.value = value;
-        const widget = this.insertSingleElement(field, attributes);
-      }
-      return wrapper;
-    }
-
-    createMultipleWrapper(field, attributes, parent = null) {
-      const wrapper = document.createElement('sib-multiple');
-      this.wrappers[field] = wrapper;
-      if (parent) parent.appendChild(wrapper);
-      return wrapper;
-    }
-
-    createSingleElement(field, attributes) {
-      const widget = document.createElement(this.getWidget(field));
-      for (let name of Object.keys(attributes)) {
-        widget[name] = attributes[name];
-      }
-      return widget;
-    }
-
-    insertSingleElement(field, attributes) {
-      const element = this.createSingleElement(field, attributes);
-      const wrapper = this.wrappers[field];
-      wrapper.appendChild(element);
-      wrapper.widgets.push(element);
-      return element;
+    multiple(field) {
+      const attribute = 'multiple-' + field;
+      if (!this.hasAttribute(attribute)) return null;
+      return this.getAttribute(attribute) || this.defaultMultipleWidget;
     }
 
     async appendSet(field, parent) {
@@ -204,25 +178,6 @@ const SIBWidgetMixin = superclass =>
       for (let item of this.getSet(field)) {
         await this.appendWidget(item, div);
       }
-    }
-
-    async getTemplate(field) {
-      const id = this.getAttribute(`template-${field}`);
-      const template = document.getElementById(id);
-      if (!(template instanceof HTMLTemplateElement)) return;
-      const name = field;
-      const value = await this.getValue(field);
-      let html;
-      try {
-        html = evalTemplateString(template.innerHTML.trim(), {
-          name,
-          value: value === undefined ? {} : value,
-        });
-      } catch (e) {
-        console.error(new Error(`error in template#${id}`), e);
-        throw e;
-      }
-      return stringToDom(html);
     }
   };
 

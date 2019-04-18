@@ -56,7 +56,8 @@ export default class SIBBase extends HTMLElement {
   }
 
   get isContainer() {
-    return this.resource && '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
+    if (!this.resource) return true;
+    return '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
   }
 
   get next() {
@@ -71,7 +72,7 @@ export default class SIBBase extends HTMLElement {
   }
 
   get resources() {
-    if (!this.isContainer || !this.resource['ldp:contains']) return [];
+    if (!this.resource || !this.isContainer || !this.resource['ldp:contains']) return [];
     if (Array.isArray(this.resource['ldp:contains']))
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];

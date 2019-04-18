@@ -16,7 +16,11 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
   }
   
   get defaultWidget() {
-    return 'sib-display-div';
+    return 'sib-display-value';
+  }
+  
+  get defaultMultipleWidget() {
+    return 'sib-multiple';
   }
 
   get childTag() {
@@ -50,7 +54,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
         attr.name.startsWith('label-') ||
         attr.name.startsWith('set-') ||
         attr.name.startsWith('widget-') ||
-        attr.name.startsWith('template-') ||
+        attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||
         attr.name.startsWith('action-')
       )

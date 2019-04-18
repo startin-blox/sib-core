@@ -8,6 +8,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     return 'sib-form-label-text';
   }
 
+  get defaultMultipleWidget() {
+    return 'sib-multiple-form';
+  }
+
   //Special case of the dropdown
   getWidget(field) {
     if (
@@ -39,8 +43,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     });
   }
 
-  async save(resource) {
+  async save() {
     this.toggleLoaderHidden(false);
+    const resource = this.value;
+    resource['@context'] = this.context;
     let saved;
     try {
       saved = await store.save(resource, this.resource['@id']);
@@ -54,13 +60,12 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       }),
     );
     this.toggleLoaderHidden(true);
+    if (!resource['@id'] && this.form) this.form.reset() // we reset the form only in creation mode
     return saved;
   }
   change(resource) { }
   async submitForm() {
-    const resource = this.value;
-    resource['@context'] = this.context;
-    const saved = this.save(resource);
+    const saved = this.save();
     if (!this.next) return;
     const id = await saved;
     resource['@id'] = id;
@@ -117,43 +122,6 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     if (this.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
     }
-  }
-
-  createMultipleWrapper(field, attributes, parent = null) {
-    const wrapper = document.createElement('sib-multiple');
-    this.wrappers[field] = wrapper;
-    const addButton = document.createElement('button');
-    addButton.textContent = '+';
-    addButton.type = "button";
-    addButton.addEventListener('click', () => {
-      delete attributes.value;
-      this.insertSingleElement(field, attributes);
-    });
-    if (parent) parent.appendChild(wrapper);
-    wrapper.appendChild(addButton);
-    return wrapper;
-  }
-
-  createSingleElement(field, attributes) {
-    const childWrapper = document.createElement("div");
-    childWrapper.appendChild(super.createSingleElement(field, attributes));
-
-    const removeButton = document.createElement('button');
-    removeButton.textContent = '×';
-    removeButton.type = "button";
-    removeButton.addEventListener('click', () => {
-      childWrapper.remove();
-    });
-    childWrapper.appendChild(removeButton);
-    return childWrapper;
-  }
-
-  insertSingleElement(field, attributes) {
-    const element = this.createSingleElement(field, attributes);
-    const wrapper = this.wrappers[field];
-    wrapper.insertBefore(element, wrapper.lastChild);
-    wrapper.widgets.push(element.firstChild);
-    return element.firstChild;
   }
 }
 

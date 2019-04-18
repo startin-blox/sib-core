@@ -30395,7 +30395,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
     };
   
     var toArray = function (object) {
-      object = object || [];
+      object = object == null ? [] : object;
   
       if (Array.isArray(object)) {
         return object;

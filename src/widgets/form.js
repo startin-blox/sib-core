@@ -41,6 +41,23 @@ const SIBFormDate = widgetFactory(
   </label>`,
 );
 
+const SIBFormRangeDate = widgetFactory(
+  'sib-form-range-date',
+  `<label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="date"
+      name="\${name}-start"
+      value="\${value[0]||''}" />
+    <input
+      data-holder
+      type="date"
+      name="\${name}-end"
+      value="\${value[1]||''}" />
+  </label>`,
+);
+
 const SIBFormJSON = widgetFactory(
   'sib-form-json',
   `<label>
@@ -79,8 +96,7 @@ const SIBFormTextarea = widgetFactory(
 
 const SIBFormDropdown = widgetFactory(
   'sib-form-dropdown',
-  `
-  <label>
+  `<label>
     <div>\${label}</div>
     <select name="\${name}" data-holder>
       \${range}
@@ -93,8 +109,7 @@ const SIBFormDropdown = widgetFactory(
 
 const SIBFormPlaceholderDropdown = widgetFactory(
   'sib-form-placeholder-dropdown',
-  `
-  <select name="\${name}" data-holder>
+  `<select name="\${name}" data-holder>
     <option value="" disabled \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
@@ -105,8 +120,7 @@ const SIBFormPlaceholderDropdown = widgetFactory(
 
 const SIBFormAutoCompletion = widgetFactory(
   'sib-form-auto-completion',
-  `
-  <label>
+  `<label>
     <div>\${label}</div>
     <select name="\${name}" data-holder multiple>
       \${range}
@@ -137,6 +151,23 @@ const SIBFormNumber = widgetFactory(
   </label>`,
 );
 
+const SIBFormRangeNumber = widgetFactory(
+  'sib-form-range-number',
+  `<label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="number"
+      name="\${name}-start"
+      value="\${value[0]||''}" />
+    <input
+      data-holder
+      type="number"
+      name="\${name}-end"
+      value="\${value[1]||''}" />
+  </label>`,
+);
+
 const SIBFormHidden = widgetFactory(
   'sib-form-hidden',
   `<input
@@ -151,11 +182,13 @@ export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
+  SIBFormRangeDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,
+  SIBFormRangeNumber,
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,

@@ -1,5 +1,10 @@
 import { widgetFactory } from '../parents/widget-factory.js';
 
+const SIBDisplayValue = widgetFactory(
+  'sib-display-value',
+  `\${value}`,
+);
+
 const SIBDisplayDiv = widgetFactory(
   'sib-display-div',
   `<div name="\${name}">\${value}</div>`,
@@ -22,8 +27,8 @@ const SIBDisplayImg = widgetFactory(
     name="\${name}"
     src="\${value}"
     style="max-width: 100%; max-height: 100%;"
-    />`,
-);
+    />
+`);
 
 const SIBDisplayMailTo = widgetFactory(
   'sib-display-mailto',
@@ -55,9 +60,12 @@ const SIBAction = widgetFactory(
   >\${label}</sib-link>`,
 );
 
+
 export {
+  SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
+  SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,
   SIBDisplayTel,
