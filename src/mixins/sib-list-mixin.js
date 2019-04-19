@@ -178,8 +178,8 @@ const SIBListMixin = superclass =>
       return super.resources.filter(this.matchFilters.bind(this));
     }
 
-    filterList() {
-      this.filters = this.searchForm.value;
+    filterList(filters = null) {
+      this.filters = filters ? filters : this.searchForm.value;
     }
 
     appendFilters() {
