@@ -49,28 +49,30 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`value-xyz`**: To display a string not contained within the data.
 - **`set-xyz`**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`.
   By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
-- **`data-fields`**: the ordered list of fields to be displayed, separated by commas.
+- **`data-fields`**: The ordered list of fields to be displayed, separated by commas.
   By default, all the fields of the resource are displayed.
   To not show any fields, put an empty data-fields (eg. `<sib-display data-fields />)`
-- **`widget-xyz`**: the widget to be used to display the `xyz` field.
-  By default, the widget used is `<sib-display-div>`.
-  Cf the **Widgets** section below for more info.
+- **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
+- **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used.
+  - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
+  - **`each-class-xyz`**: Used with `multiple-xyz`, class of each child of multiple widget
+  - **`each-range-xyz`**: Used with `multiple-xyz`, range value of each child of multiple widget
 - **`search-fields`**: It is possible to search/filter your list by choosing the fields you want to filter it with.
   To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
-- **`search-value-xyz`**: the default value of the field `xyz`
-- **`search-widget-xyz`**: the form widget of the search field `xyz`
-- **`search-range-xyz`**: the range of values of the search field `xyz`
+  - **`search-value-xyz`**: The default value of the field `xyz`
+  - **`search-widget-xyz`**: The form widget of the search field `xyz`
+  - **`search-range-xyz`**: The range of values of the search field `xyz`
 - **`paginate-by`**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
 - **`next`**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
 - **`action-xyz`**:
-- **`label-xyz`**: set the label for the field `xyz`
-- **`counter-template`**: to display the number of resources fetched by the `sib-display`.
+- **`label-xyz`**: Set the label for the field `xyz`
+- **`counter-template`**: To display the number of resources fetched by the `sib-display`.
   It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
   i.e. `"<strong>${counter} results</strong>"`
 - **`extra-context`**:
-- **`loader-id`**: id of the loader element you want to display during the loading time
-- **`class-xyz`**: class attribute added to the fields `xyz`
-- **`id-suffix`**: string added at the end of the source url (`data-src`).
+- **`loader-id`**: Id of the loader element you want to display during the loading time
+- **`class-xyz`**: Class attribute added to the fields `xyz`
+- **`id-suffix`**: String added at the end of the source url (`data-src`).
   Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
 
 
