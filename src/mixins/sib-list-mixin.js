@@ -181,13 +181,13 @@ const SIBListMixin = superclass =>
       this.searchForm.resource = this.resource;
       this.searchForm.save = this.filterList.bind(this);
       this.searchForm.change = this.filterList.bind(this);
-      this.searchForm.dataset.fields = this.getAttribute('search-fields');
+      this.searchForm.setAttribute("fields", this.getAttribute('search-fields'));
       this.searchForm.toggleAttribute('naked', true);
       this.searchForm.addEventListener('input', () => this.currentPage = 1);
 
       //displays applied filter values in the form
       for (let filter of Object.keys(this.filters)) {
-        if (this.searchForm.dataset.fields.indexOf(filter) != -1) {
+        if (this.searchForm.getAttribute("fields").indexOf(filter) != -1) {
           this.searchForm.setAttribute('value-' + filter, this.filters[filter]);
         }
       }

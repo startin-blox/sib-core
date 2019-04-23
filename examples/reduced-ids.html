@@ -15,7 +15,7 @@
     <h2>Normal data-src</h2>
     <sib-display
         data-src="https://test-paris.happy-dev.fr/users/1/"
-        data-fields="@id, username, first_name, last_name, email"
+        fields="@id, username, first_name, last_name, email"
         paginate-by="4"
         next="detail"
       ></sib-display>
@@ -23,7 +23,7 @@
     <h2>Reduced id</h2>
     <sib-display
         data-src="user:1/"
-        data-fields="@id, username, first_name, last_name, email"
+        fields="@id, username, first_name, last_name, email"
         extra-context='{"user":"https://test-paris.happy-dev.fr/users/"}'
         paginate-by="4"
         next="detail"

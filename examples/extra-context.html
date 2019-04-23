@@ -22,7 +22,7 @@
       <h1>HOME</h1>
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
-        data-fields="@id, username, first_name, last_name, email"
+        fields="@id, username, first_name, last_name, email"
         extra-context='{"user":"https://test-paris.happy-dev.fr/users/"}'
         paginate-by="4"
         next="detail"
@@ -32,7 +32,7 @@
     <div id="detail">
       <h1>DETAIL</h1>
       <sib-display
-        data-fields="@id, username, first_name, last_name, email"
+        fields="@id, username, first_name, last_name, email"
         bind-resources
       ></sib-display>
     </div>

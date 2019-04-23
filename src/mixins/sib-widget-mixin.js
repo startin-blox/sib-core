@@ -35,18 +35,18 @@ const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.dataset.fields === '') {
+      if (this.getAttribute("fields") === '') {
         return [];
       }
-      if (this.dataset.fields) {
-        return this.parseFieldsString(this.dataset.fields);
+      if (this.getAttribute("fields")) {
+        return this.parseFieldsString(this.getAttribute("fields"));
       }
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
 
       if (!resource) {
-        console.error(new Error('You must provide a "data-fields" attribute'));
+        console.error(new Error('You must provide a "fields" attribute'));
         return [];
       }
 
