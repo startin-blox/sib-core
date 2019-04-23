@@ -60,12 +60,14 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       }),
     );
     this.toggleLoaderHidden(true);
-    if (!resource['@id'] && this.form) this.form.reset() // we reset the form only in creation mode
     return saved;
   }
   change(resource) { }
   async submitForm() {
+    const resource = this.value;
+    resource['@context'] = this.context;
     const saved = this.save();
+    if (!resource['@id'] && this.form) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     const id = await saved;
     resource['@id'] = id;
