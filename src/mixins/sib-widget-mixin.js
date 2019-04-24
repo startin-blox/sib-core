@@ -100,9 +100,13 @@ const SIBWidgetMixin = superclass =>
     }
 
     empty() {
-      // completely remove the div
-      if (this._div) this.removeChild(this._div)
-      this._div = null;
+      // create a new empty div next to the old one
+      if (this._div) {
+        let newDiv = document.createElement('div')
+        this.insertBefore(newDiv, this._div)
+        this.removeChild(this._div)
+        this._div = newDiv
+      }
     }
 
     getAction(field) {
