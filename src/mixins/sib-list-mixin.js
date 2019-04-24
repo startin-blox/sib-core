@@ -119,7 +119,7 @@ const SIBListMixin = superclass =>
       this.populate;
     }
     get pageCount() {
-      return Math.ceil(this.resources.length / this.paginateBy);
+      return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
     }
     get currentPageResources() {
       if (this.paginateBy == null) return this.resources;
