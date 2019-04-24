@@ -187,7 +187,10 @@ const SIBListMixin = superclass =>
       //pass attributes to search form
       const searchAttributes = Array.from(this.attributes)
         .filter(attr => attr.name.startsWith('search-'))
-        .map(attr => { return { name: attr.name.replace('search-', ''), value: attr.value }});
+        .map(attr => ({
+          name: attr.name.replace('search-', ''),
+          value: attr.value,
+        }));
 
       searchAttributes.forEach(({name, value}) => {
         this.searchForm.setAttribute(name, value);

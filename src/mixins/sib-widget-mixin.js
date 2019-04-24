@@ -35,11 +35,12 @@ const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.getAttribute("fields") === '') {
+      const attr = this.getAttribute("fields");
+      if (attr === '') {
         return [];
       }
-      if (this.getAttribute("fields")) {
-        return this.parseFieldsString(this.getAttribute("fields"));
+      if (attr) {
+        return this.parseFieldsString(attr);
       }
 
       const resource =
