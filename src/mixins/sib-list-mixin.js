@@ -212,7 +212,7 @@ const SIBListMixin = superclass =>
       else this.insertBefore(this.searchForm, this.firstChild);
 
       this._filtersAdded = true;
-      this.filterList(filters);
+      this.filters = filters;
     }
 
     appendSingleElt(parent) {
