@@ -11,6 +11,6 @@
 		"deadline": "2019-04-10T19:55:56Z",
 		"permissions": []
 	}],
-	"@id": "sib-calendar.json",
+	"@id": "",
 	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

@@ -1,0 +1,21 @@
+{
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "name": "Test",
+      "lat": "21.028511",
+      "lng": "105.804817",
+      "permissions": [],
+      "@id": "event:1"
+    },
+    {
+      "name": "Test",
+      "lat": "48.864716",
+      "lng": "2.349014",
+      "permissions": [],
+      "@id": "event:2"
+    }
+  ],
+  "@id": "",
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
