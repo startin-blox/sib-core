@@ -2,22 +2,29 @@ import { Compositor } from './mixin/Compositor';
 import { Component } from './parents/Component';
 import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface';
 import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface';
+import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface';
+import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface';
+import { ComponentInterface } from './mixin/interfaces/ComponentInterface';
 
 export class ComponentFactory {
-  public static build(component: MixinStaticInterface): any {
-    // const { name, initialState, , hooks } = Compositor.merge(component, Compositor.mergeMixin(component));
-    const { initialState, attributes, methods } = Compositor.merge(component, Compositor.mergeMixin(component));
+  public static build(component: MixinStaticInterface): ComponentConstructorInterface {
+    const { initialState, attributes, methods, hooks, name } = Compositor.merge(component, Compositor.mergeMixin(component));
 
     let componentConstructor = class extends Component {};
 
     componentConstructor = ComponentFactory.bindInitialState(componentConstructor, initialState);
     componentConstructor = ComponentFactory.bindAttributes(componentConstructor, attributes);
     componentConstructor = ComponentFactory.bindMethods(componentConstructor, methods);
+    componentConstructor = ComponentFactory.bindHooks(componentConstructor, hooks);
+
+    Reflect.defineProperty(componentConstructor, 'name', {
+      value: name,
+    });
 
     return componentConstructor;
   }
 
-  public static bindInitialState(componentConstructor: any, initialState: object | undefined) {
+  protected static bindInitialState(componentConstructor: ComponentConstructorInterface, initialState: object | undefined):any {
     if (initialState) {
       Reflect.ownKeys(initialState).forEach(key => {
         Reflect.defineProperty(componentConstructor.prototype, key, {
@@ -31,88 +38,115 @@ export class ComponentFactory {
     return componentConstructor;
   }
 
-  public static bindAttributes(componentConstructor: any, attributes: AttributesDefinitionInterface | undefined) {
+  protected static bindAttributes(componentConstructor: ComponentConstructorInterface, attributes: AttributesDefinitionInterface | undefined): ComponentConstructorInterface {
     if (attributes) {
       const attributesList = Reflect.ownKeys(attributes).map(key => String(key));
-      const requiredAttributesList: String[] = [];
 
       attributesList.forEach(key => {
         const { default: def, type, required, callback } = attributes[key];
 
-        Reflect.defineProperty(componentConstructor.prototype, `_${key}`, {
-          enumerable: true,
-          writable: true,
-          value: def,
-        });
-
         let fromType;
-        // let toType;
+        let toType;
 
         switch (type) {
           case String:
             fromType = value => String(value);
+            toType = value => value;
             break;
           case Object:
             fromType = value => JSON.parse(value);
+            toType = value => JSON.stringify(value);
             break;
           case Number:
             fromType = value => Number(value);
+            toType = value => Number(value).toString();
             break;
           case Boolean:
             fromType = value => Boolean(value);
+            toType = value => value;
             break;
           default:
             fromType = value => value;
+            toType = value => value;
             break;
         }
 
-        const definition = {
+        const attribute = key.replace(/([a-z0-9])([A-Z0-9])/g, '$1_$2').toLowerCase();
+
+        Reflect.defineProperty(componentConstructor.prototype, key, {
           enumerable: true,
           configurable: false,
-          get: function () { return this[`_${key}`];},
-          set: function (value) {
-            this[`_${key}`] = fromType(value);
+          get: function () {
+            const element = (<ComponentInterface>this).element;
+            if (!element.hasAttribute(attribute)) {
+              if (required && type !== Boolean) {
+                throw new Error(`Attribute ${key} is required`);
+              }
+              return def;
+            }
+            return fromType(element.getAttribute(attribute));
           },
-        };
-
-
-        if (callback && typeof callback === 'function') {
-          definition.set = function (value) {
-            const oldValue = this[`_${key}`];
-            this[`_${key}`] = fromType(value);
-            callback.call(this, value, oldValue);
-          }
-        }
-
-        Reflect.defineProperty(componentConstructor.prototype, key, definition);
-
-        if (required) {
-          requiredAttributesList.push(key);
-        }
+          set: function (value) {
+            const oldValue = this[key];
+            const element = (<ComponentInterface>this).element;
+            if (type === Boolean) {
+              if (!value) {
+                element.removeAttribute(attribute);
+              } else {
+                element.setAttribute(attribute, '');
+              }
+            } else {
+              element.setAttribute(attribute, toType(value));
+            }
+            if (callback && typeof callback === 'function') {
+              Reflect.apply(callback, this, [value, oldValue]);
+            }
+          },
+        });
       });
 
       Reflect.defineProperty(componentConstructor, 'observedAttributes', {
         get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1_$2').toLowerCase()),
       });
-
-      Reflect.defineProperty(componentConstructor, 'observedRequiredAttributes', {
-        get: () => requiredAttributesList,
-      });
     }
-
     return componentConstructor;
   }
 
-  public static bindMethods(componentConstructor: any, methods: Map<string, Function>) {
+  protected static bindMethods(componentConstructor: ComponentConstructorInterface, methods: Map<string, Function>): ComponentConstructorInterface {
     methods.forEach((method, methodName: string) => {
       Reflect.defineProperty(componentConstructor.prototype, methodName, {
         value: function(...args) {
-          return method.call(this, ...args);
+          return Reflect.apply(method, this, args);
         }
       });
     });
     return componentConstructor;
   }
 
-  public static bindHooks() {}
+  protected static bindHooks(componentConstructor: ComponentConstructorInterface, hooks: ArrayOfHooksInterface): ComponentConstructorInterface {
+    Reflect.defineProperty(componentConstructor.prototype, 'created', {
+      value: function() {
+        hooks.created.forEach(hook => {
+          Reflect.apply(hook, this, []);
+        });
+      },
+    });
+
+    Reflect.defineProperty(componentConstructor.prototype, 'attached', {
+      value: function() {
+        hooks.attached.forEach(hook => {
+          Reflect.apply(hook, this, []);
+        });
+      },
+    });
+
+    Reflect.defineProperty(componentConstructor.prototype, 'detached', {
+      value: function() {
+        hooks.detached.forEach(hook => {
+          Reflect.apply(hook, this, []);
+        });
+      },
+    });
+    return componentConstructor;
+  }
 }

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { ComponentFactory } from './ComponentFactory';
 
 const MixinTestTwo = {
@@ -14,10 +13,10 @@ const MixinTestTwo = {
     a: 0,
   },
   created() {
-    console.log('created2');
+    (<any>this).message = 'hello ';
   },
   attached() {
-    console.log('attached2');
+    (<any>this).message = 'hooks respect ';
   },
   methodA() {
     console.log('methodAMixin2');
@@ -41,10 +40,10 @@ const MixinTestOne = {
     a: 1,
   },
   created() {
-    console.log('created1');
+    (<any>this).message += 'world ';
   },
   detached() {
-    console.log('detached2');
+    (<any>this).message = 'and ';
   },
   methodA() {
     return 'A';
@@ -62,7 +61,7 @@ const Component = {
       type: String,
       default: 'awesome',
       callback: function() {
-        (this as any).change = true;
+        (<any>this).change = true;
       }
     },
     data: {
@@ -70,84 +69,133 @@ const Component = {
       default: {
         hello: 'world',
       },
-    }
+    },
+    works: {
+      type: Boolean, 
+      default: false,
+    },
+    required: {
+      required: true,
+    },
   },
   initialState: {
     c: {
       test: 0,
     },
     change: false,
+    message: '',
   },
   created() {
-    console.log('created3');
+    (<any>this).message += '!!';
   },
   attached() {
-    console.log('attached3');
+    (<any>this).message += 'order';
   },
   detached() {
-    console.log('detached3');
+    (<any>this).message += 'context';
   },
   methodC() {
     return 'C';
   },
   methodD() {
-    (this as any).change = true;
+    (<any>this).change = true;
   },
 };
 
 describe('Component factory', function() {
-  it('expose html element', () => {
+  test('expose html element', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.element).a.instanceOf(HTMLElement);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect(component.element).toBeInstanceOf(HTMLElement);
   });
 
-  it('initialize state', () => {
+  test('initialize state', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.a).equal(1);
-    expect(component.c.test).equal(0);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect((<any>component).a).toEqual(1);
+    expect((<any>component).c.test).toEqual(0);
   });
 
-  it('bind attribute default', () => {
+  test('bind attribute default', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.test).equal(0);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect((<any>component).test).toEqual(0);
   });
 
-  it('bind attribute', () => {
+  test('list attributes on static', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.myAttribute).equal('awesome');
-    component.myAttribute = 'a';
-    expect(component.myAttribute).equal('a');
+    expect((<any>ComponentConstructor).observedAttributes).toEqual([
+      'test',
+      'my_attribute',
+      'data',
+      'works',
+      'required',
+    ]);
   });
 
-  it('bind attribute with typecasting', () => {
+  test('bind attribute', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    component.test = '1';
-    expect(component.test).equal(1);
-    component.data = "{ \"hello\": \"world!\" }";
-    expect(component.data.hello).equal('world!');
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect((<any>component).myAttribute).toEqual('awesome');
+    (<any>component).myAttribute = 'a';
+    expect((<any>component).myAttribute).toEqual('a');
+    expect(component.element.getAttribute('my_attribute')).toEqual('a');
   });
 
-  it('bind attribute with callback', () => {
+  test('bind attribute with typecasting', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.change).equal(false);
-    component.myAttribute = '1';
-    expect(component.change).equal(true);
+    const component = new ComponentConstructor(document.createElement('p'));
+    (<any>component).test = '1';
+    expect((<any>component).test).toEqual(1);
+    const data = { hello: 'world!' };
+    (<any>component).data = data;
+    expect((<any>component).data).toEqual(data);
+    expect(component.element.getAttribute('data')).toEqual(JSON.stringify(data));
   });
 
-  it('bind methods', () => {
+  test('bind boolean attribute', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    const component = new ComponentConstructor(document.createElement('p'), ComponentConstructor.observedAttributes, ComponentConstructor.requiredObservedAttributes);
-    expect(component.methodA()).equal('A');
-    expect(component.methodB()).equal('B');
-    expect(component.methodC()).equal('C');
-    component.methodD();
-    expect(component.change).equal(true);
+    const component = new ComponentConstructor(document.createElement('p'));
+    (<any>component).works = true;
+    expect(component.element.hasAttribute('works')).toEqual(true);
+    (<any>component).works = false;
+    expect(component.element.hasAttribute('works')).toEqual(false);
   });
-  
+
+  test('bind throw error if required attribute missing', () => {
+    const ComponentConstructor = ComponentFactory.build(Component);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect(() => (<any>component).required).toThrowError('Attribute required is required');
+  });
+
+  test('bind attribute with callback', () => {
+    const ComponentConstructor = ComponentFactory.build(Component);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect((<any>component).change).toEqual(false);
+    (<any>component).myAttribute = '1';
+    expect((<any>component).change).toEqual(true);
+  });
+
+  test('bind methods', () => {
+    const ComponentConstructor = ComponentFactory.build(Component);
+    const component = new ComponentConstructor(document.createElement('p'));
+    expect((<any>component).methodA()).toEqual('A');
+    expect((<any>component).methodB()).toEqual('B');
+    expect((<any>component).methodC()).toEqual('C');
+    (<any>component).methodD();
+    expect((<any>component).change).toEqual(true);
+  });
+
+  test('bind hooks', () => {
+    const ComponentConstructor = ComponentFactory.build(Component);
+    const component = new ComponentConstructor(document.createElement('p'));
+    component.created();
+    expect((<any>component).message).toEqual('hello world !!');
+
+    component.attached();
+    expect((<any>component).message).toEqual('hooks respect order');
+
+    component.detached();
+    expect((<any>component).message).toEqual('and context');
+  });
 });
