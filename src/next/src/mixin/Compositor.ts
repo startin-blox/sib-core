@@ -75,21 +75,20 @@ export class Compositor {
       attached: [],
       detached: [],
     };
-
-    HOOKS.forEach(hookName => {
-      mixins
-        .reverse()
-        .forEach(mixin => {
-            if(!!mixin[hookName] && typeof mixin[hookName] === 'function') {
-              hooks[hookName].push(mixin[hookName]);
-            }
+    mixins
+      .reverse()
+      .forEach(mixin => {
+        HOOKS.forEach(hookName => {
+          if(!!mixin[hookName] && typeof mixin[hookName] === 'function') {
+            hooks[hookName].push(mixin[hookName]);
+          }
         });
-    });
+      });
+    
 
     return hooks;
   }
 
-  // TODO add map typing
   public static mergeMethods(mixins: MixinStaticInterface[]): Map<any, any> {
     const methods = new Map();
 

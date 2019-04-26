@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { Compositor } from './Compositor';
 
 const MixinTestTwo = {
@@ -82,60 +81,60 @@ const component = {
 };
 
 describe('Mixin Compositor', function() {
-  it('merge mixin', () => {
+  test('merge mixin', () => {
     const result = Compositor.mergeMixin(component);
-    expect(result.length).equal(2);
-    expect(result[0].name).equal('mixin1');
-    expect(result[1].name).equal('mixin2');
+    expect(result.length).toEqual(2);
+    expect(result[0].name).toEqual('mixin1');
+    expect(result[1].name).toEqual('mixin2');
   });
 
-  it('merge attributes', () => {
+  test('merge attributes', () => {
     const result = Compositor.mergeAttributes([component, MixinTestOne, MixinTestTwo]);
-    expect(Reflect.ownKeys(result).length).equal(2);
-    expect(result.myAttribute.type).equal(String);
-    expect(result.test.type).equal(String);
+    expect(Reflect.ownKeys(result).length).toEqual(2);
+    expect(result.myAttribute.type).toEqual(String);
+    expect(result.test.type).toEqual(String);
   });
 
-  it('merge initial state', () => {
+  test('merge initial state', () => {
     const result = Compositor.mergeInitialState([component, MixinTestOne, MixinTestTwo]);
-    expect(Reflect.ownKeys(result).length).equal(3);
-    expect(result.a).equal(0);
-    expect(result.b).equal(0);
-    expect(result.c.test).equal(0);
+    expect(Reflect.ownKeys(result).length).toEqual(3);
+    expect(result.a).toEqual(0);
+    expect(result.b).toEqual(0);
+    expect(result.c.test).toEqual(0);
   });
 
-  it('merge hooks', () => {
+  test('merge hooks', () => {
     const result = Compositor.mergeHooks([component, MixinTestOne, MixinTestTwo]);
     const hookNames = Reflect.ownKeys(result);
 
-    expect(hookNames.length).equal(3);
+    expect(hookNames.length).toEqual(3);
     hookNames.forEach(hookName => {
       result[hookName].forEach(hook => {
-        expect(typeof hook).equal('function');
+        expect(typeof hook).toEqual('function');
       });
     });
 
-    expect(result.created.length).equal(3);
-    expect(result.attached.length).equal(2);
-    expect(result.detached.length).equal(2);
+    expect(result.created.length).toEqual(3);
+    expect(result.attached.length).toEqual(2);
+    expect(result.detached.length).toEqual(2);
 
-    expect(result.created[0].toString()).equal(MixinTestTwo.created.toString());
-    expect(result.created[1].toString()).equal(MixinTestOne.created.toString());
-    expect(result.created[2].toString()).equal(component.created.toString());
+    expect(result.created[0].toString()).toEqual(MixinTestTwo.created.toString());
+    expect(result.created[1].toString()).toEqual(MixinTestOne.created.toString());
+    expect(result.created[2].toString()).toEqual(component.created.toString());
   });
 
-  it('merge methods', () => {
+  test('merge methods', () => {
     const result = Compositor.mergeMethods([component, MixinTestOne, MixinTestTwo]);
     const methodNames = Array.from(result.keys());
 
-    expect(methodNames.length).equal(4);
+    expect(methodNames.length).toEqual(4);
     methodNames.forEach(methodName => {
-      expect(typeof result.get(methodName)).equal('function');
+      expect(typeof result.get(methodName)).toEqual('function');
     });
 
-    expect(result.get('methodA').toString()).equal(MixinTestOne.methodA.toString());
-    expect(result.get('methodB').toString()).equal(MixinTestTwo.methodB.toString());
-    expect(result.get('methodC').toString()).equal(component.methodC.toString());
-    expect(result.get('methodD').toString()).equal(component.methodD.toString());
+    expect(result.get('methodA').toString()).toEqual(MixinTestOne.methodA.toString());
+    expect(result.get('methodB').toString()).toEqual(MixinTestTwo.methodB.toString());
+    expect(result.get('methodC').toString()).toEqual(component.methodC.toString());
+    expect(result.get('methodD').toString()).toEqual(component.methodD.toString());
   });
 });
