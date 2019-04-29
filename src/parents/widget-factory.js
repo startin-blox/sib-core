@@ -123,6 +123,10 @@ export class BaseWidget extends HTMLElement {
     });
     return htmlRange || '';
   }
+  activateEditableField() {
+    const editableField = this.querySelector('[data-editable]');
+    if (editableField) editableField.setAttribute('contenteditable', 'true');
+  }
 }
 
 export const widgetFactory = (
