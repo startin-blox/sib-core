@@ -23,9 +23,12 @@ export class Store {
       var hash = JSON.stringify([id, context]);
     } catch (e) {}
     if (hash && !this.cache.has(hash)) {
-      const get = this.originalStore.get(id)
+      const get = this.originalStore.get(id);
       this.cache.set(hash, get);
-      get.catch(e => console.error("store.get() Error", {id, e}))
+      get.catch(error => {
+        console.error('store.get() Error: ', id);
+        throw error;
+      });
     }
     return this.cache.get(hash);
   }
