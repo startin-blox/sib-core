@@ -1,0 +1,6 @@
+{
+  "@id": "",
+  "name": "circle",
+  "description": "A circle just for testing purpose",
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

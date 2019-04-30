@@ -1,0 +1,15 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "circles-1.jsonld"
+    },
+    {
+      "@id": "circles-2.jsonld",
+      "name": "Les poètes disparus",
+      "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit?"
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
