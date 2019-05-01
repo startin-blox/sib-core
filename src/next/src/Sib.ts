@@ -28,20 +28,22 @@ export class Sib {
             set component(component: ComponentInterface) {
                 this._component = component;
             }
-    
+
             static get observedAttributes() {
                 return (<any>component).observedAttributes;
             }
-            
-            attributeChangedCallback(name, _oldValue, newValue) {
+
+            attributeChangedCallback(name, oldValue, newValue) {
                 const attr = name.replace(/([a-z0-9])_([a-z0-9])/g, (_c, p1, p2) => `${p1}${p2.toUpperCase()}`);
-                this.component[attr] = newValue;
+                if ('attributesCallback' in this.component && attr in this.component.attributesCallback) {
+                  this.component.attributesCallback[attr](newValue, oldValue);
+                }
             }
-    
+
             connectedCallback() {
                 this.component.attached();
             }
-    
+
             disconnectedCallback() {
                 this.component.detached();
             }

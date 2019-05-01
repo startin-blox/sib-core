@@ -41,6 +41,7 @@ export class ComponentFactory {
   protected static bindAttributes(componentConstructor: ComponentConstructorInterface, attributes: AttributesDefinitionInterface | undefined): ComponentConstructorInterface {
     if (attributes) {
       const attributesList = Reflect.ownKeys(attributes).map(key => String(key));
+      const attributesCallback = {};
 
       attributesList.forEach(key => {
         const { default: def, type, required, callback } = attributes[key];
@@ -98,16 +99,19 @@ export class ComponentFactory {
             } else {
               element.setAttribute(attribute, toType(value));
             }
-            if (callback && typeof callback === 'function') {
-              Reflect.apply(callback, this, [value, oldValue]);
-            }
           },
         });
+
+        if (callback && typeof callback === 'function') {
+          attributesCallback[key] = Reflect.apply(callback, this, [value, oldValue]);
+        }
       });
 
       Reflect.defineProperty(componentConstructor, 'observedAttributes', {
         get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1_$2').toLowerCase()),
       });
+
+      Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', attributesCallback);
     }
     return componentConstructor;
   }
