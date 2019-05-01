@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jest",
-    "serve": "live-server --ignore=**/node_modules/** --no-browser"
+    "serve": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -24,14 +24,26 @@
   "release": {
     "branch": "master",
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "preset": "angular",
-        "releaseRules": [
-          {"type": "major", "release": "major"},
-          {"type": "minor", "release": "minor"},
-          {"type": "/.*/", "release": "patch"}
-        ]
-      }],
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "major",
+              "release": "major"
+            },
+            {
+              "type": "minor",
+              "release": "minor"
+            },
+            {
+              "type": "/.*/",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
       "@semantic-release/release-notes-generator",
       "@semantic-release/gitlab",
       "@semantic-release/npm"
@@ -39,5 +51,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }
