@@ -46,7 +46,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     const child = document.createElement(this.childTag);
     child.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.dataset.fields) child.dataset.fields = this.dataset.fields;
+    if (this.dataset.fields != null) child.dataset.fields = this.dataset.fields;
 
     for (let attr of this.attributes) //copy widget and value attributes
       if (
