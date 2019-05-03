@@ -1,6 +1,6 @@
-import { HasAttributesDefinitionInterface } from './HasAttributesDefinitionInterface';
-import { HasInitialStateInterface } from './HasInitialStateInterface';
-import { ArrayOfHooksInterface } from './ArrayOfHooksInterface';
+import { HasAttributesDefinitionInterface } from './HasAttributesDefinitionInterface.js';
+import { HasInitialStateInterface } from './HasInitialStateInterface.js';
+import { ArrayOfHooksInterface } from './ArrayOfHooksInterface.js';
 
 export interface ComponentStaticInterface extends HasAttributesDefinitionInterface, HasInitialStateInterface {
   name: String;

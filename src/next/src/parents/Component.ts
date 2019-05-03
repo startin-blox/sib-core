@@ -1,4 +1,4 @@
-import { ComponentInterface } from "../mixin/interfaces/ComponentInterface";
+import { ComponentInterface } from "../mixin/interfaces/ComponentInterface.js";
 
 export abstract class Component implements ComponentInterface {
   public element: HTMLElement;

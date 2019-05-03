@@ -1,4 +1,4 @@
-import { AttributesDefinitionInterface } from './AttributesDefinitionInterface';
+import { AttributesDefinitionInterface } from './AttributesDefinitionInterface.js';
 
 export interface HasAttributesDefinitionInterface {
   attributes?: AttributesDefinitionInterface | undefined;
