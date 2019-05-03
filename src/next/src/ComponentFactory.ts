@@ -4,7 +4,6 @@ import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface.js
 import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface.js';
 import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface.js';
 import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface.js';
-import { ComponentInterface } from './mixin/interfaces/ComponentInterface.js';
 
 export class ComponentFactory {
   public static build(component: MixinStaticInterface): ComponentConstructorInterface {
@@ -78,7 +77,7 @@ export class ComponentFactory {
           enumerable: true,
           configurable: false,
           get: function () {
-            const element = (<ComponentInterface>this).element;
+            const element = this.element;
             if (!element.hasAttribute(attribute)) {
               if (required && type !== Boolean) {
                 throw new Error(`Attribute ${key} is required`);
@@ -88,7 +87,7 @@ export class ComponentFactory {
             return fromType(element.getAttribute(attribute));
           },
           set: function (value) {
-            const element = (<ComponentInterface>this).element;
+            const element = this.element;
             if (type === Boolean) {
               if (!value) {
                 element.removeAttribute(attribute);
@@ -102,7 +101,7 @@ export class ComponentFactory {
         });
 
         if (callback && typeof callback === 'function') {
-          attributesCallback[key] = (newValue, oldValue) => Reflect.apply(callback, componentConstructor.prototype, [newValue, oldValue]);
+          attributesCallback[key] = callback;
         }
       });
 
@@ -110,8 +109,12 @@ export class ComponentFactory {
         get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase()),
       });
 
-      Reflect.defineProperty(componentConstructor, 'attributesCallback', {
-        value: attributesCallback
+      Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', {
+        value: function(key, newValue, oldValue) {
+          if (key in attributesCallback) {
+            Reflect.apply(attributesCallback[key], this, [newValue, oldValue]);
+          }
+        }
       });
 
       Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', attributesCallback);
@@ -122,9 +125,9 @@ export class ComponentFactory {
   protected static bindMethods(componentConstructor: ComponentConstructorInterface, methods: Map<string, Function>): ComponentConstructorInterface {
     methods.forEach((method, methodName: string) => {
       Reflect.defineProperty(componentConstructor.prototype, methodName, {
-        value: function(...args) {
+        value: function (...args) {
           return Reflect.apply(method, this, args);
-        }
+        },
       });
     });
     return componentConstructor;

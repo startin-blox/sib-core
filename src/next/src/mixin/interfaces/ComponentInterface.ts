@@ -3,4 +3,6 @@ export interface ComponentInterface {
     created():void;
     attached():void;
     detached():void;
+
+    attributesCallback(key: string, value: any, oldValue: any):void;
 }
