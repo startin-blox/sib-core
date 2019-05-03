@@ -1,4 +1,4 @@
-import { AttributeChangedCallbackInterface } from './AttributeChangedCallbackInterface';
+import { AttributeChangedCallbackInterface } from './AttributeChangedCallbackInterface.js';
 
 export interface AttributeDefinitionInterface {
   type?: any;

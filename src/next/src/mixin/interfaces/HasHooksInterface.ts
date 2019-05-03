@@ -1,4 +1,4 @@
-import { HookInterface } from './HookInterface';
+import { HookInterface } from './HookInterface.js';
 
 export interface HasHooksInterface {
   created?: HookInterface;

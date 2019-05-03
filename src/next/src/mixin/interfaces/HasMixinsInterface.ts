@@ -1,4 +1,4 @@
-import { MixinStaticInterface } from './MixinStaticInterface';
+import { MixinStaticInterface } from './MixinStaticInterface.js';
 
 export interface HasMixinsInterface {
   use?: MixinStaticInterface[] | undefined;

@@ -1,10 +1,10 @@
-import { Compositor } from './mixin/Compositor';
-import { Component } from './parents/Component';
-import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface';
-import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface';
-import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface';
-import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface';
-import { ComponentInterface } from './mixin/interfaces/ComponentInterface';
+import { Compositor } from './mixin/Compositor.js';
+import { Component } from './parents/Component.js';
+import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface.js';
+import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface.js';
+import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface.js';
+import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface.js';
+import { ComponentInterface } from './mixin/interfaces/ComponentInterface.js';
 
 export class ComponentFactory {
   public static build(component: MixinStaticInterface): ComponentConstructorInterface {
@@ -72,7 +72,7 @@ export class ComponentFactory {
             break;
         }
 
-        const attribute = key.replace(/([a-z0-9])([A-Z0-9])/g, '$1_$2').toLowerCase();
+        const attribute = key.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase();
 
         Reflect.defineProperty(componentConstructor.prototype, key, {
           enumerable: true,
@@ -88,7 +88,6 @@ export class ComponentFactory {
             return fromType(element.getAttribute(attribute));
           },
           set: function (value) {
-            const oldValue = this[key];
             const element = (<ComponentInterface>this).element;
             if (type === Boolean) {
               if (!value) {
@@ -103,12 +102,16 @@ export class ComponentFactory {
         });
 
         if (callback && typeof callback === 'function') {
-          attributesCallback[key] = Reflect.apply(callback, this, [value, oldValue]);
+          attributesCallback[key] = (newValue, oldValue) => Reflect.apply(callback, componentConstructor.prototype, [newValue, oldValue]);
         }
       });
 
       Reflect.defineProperty(componentConstructor, 'observedAttributes', {
-        get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1_$2').toLowerCase()),
+        get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase()),
+      });
+
+      Reflect.defineProperty(componentConstructor, 'attributesCallback', {
+        value: attributesCallback
       });
 
       Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', attributesCallback);
