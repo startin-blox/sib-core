@@ -50,9 +50,11 @@ function setDeepProperty(obj, path, value) {
 }
 
 function parseFieldsString(fields) {
-  const fieldsArray = fields.split(',').map(s => s.trim().split(/\./));
-  fieldsArray.forEach(field => {
-    field.toString = () => this.join('.');
+  fields = fields.split(',').map(s => s.trim().split(/\./));
+  fields.forEach(field => {
+    field.toString = function() {
+      return this.join('.');
+    };
   });
   return fields;
 }
