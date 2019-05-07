@@ -23,16 +23,16 @@ const SibDisplay = {
     });
   },
   getChildTag() {
-    return this.dataset.child || this.tagName;
+    return this.element.dataset.child || this.element.tagName;
   },
   // Here "even.target" points to the content of the widgets of the children of sib-display
   dispatchSelect(event) {
     const resource = event.target.closest(this.childTag).resource;
-    this.dispatchEvent(
+    this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
     if (this.next) {
-      this.dispatchEvent(
+      this.element.dispatchEvent(
         new CustomEvent('requestNavigation', {
           bubbles: true,
           detail: { route: this.next, resource: resource },
@@ -43,9 +43,9 @@ const SibDisplay = {
   appendChildElt(resource, parent) {
     const child = document.createElement(this.getChildTag());
     child.resource = resource;
-    if (this.dataset.fields != null) child.dataset.fields = this.dataset.fields;
+    if (this.dataFields != null) child.dataset.fields = this.dataFields;
 
-    for (let attr of this.attributes) //copy widget and value attributes
+    for (let attr of this.element.attributes) //copy widget and value attributes
       if (
         attr.name.startsWith('value-') ||
         attr.name.startsWith('label-') ||

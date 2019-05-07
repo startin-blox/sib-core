@@ -20,7 +20,7 @@ const StoreMixin = {
           this.empty();
           this.resource = resource;
           await this.populate();
-          // this.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
+          this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
           this.toggleLoaderHidden(true);
         });
       },
@@ -45,9 +45,12 @@ const StoreMixin = {
   initialState: {
     resource: {},
   },
-  /*attached() {
-    if (this.resource) this.populate();
-  },*/
+  attached() {
+    if (this.element.resource) {
+      this.resource = this.element.resource; // TODO: not good
+      this.populate();
+    }
+  },
   getContext() {
     return { ...base_context, ...JSON.parse(this.extraContext) };
   },

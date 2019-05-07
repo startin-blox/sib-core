@@ -4,6 +4,13 @@ import { stringToDom, evalTemplateString } from '../helpers/index.js';
 const ListMixin = {
   name: 'list-mixin',
   use: [],
+  initialState: {
+    filters: {},
+    filtersAdded: false,
+    currentPage: 1,
+    searchForm: null,
+    paginationElements: null
+  },
   attributes: {
     paginateBy: {
       type: Number,
@@ -13,12 +20,6 @@ const ListMixin = {
       type: String,
       default: ''
     }
-  },
-  initialState: {
-    filters: {},
-    filtersAdded: false,
-    currentPage: 1,
-    searchForm: null,
   },
   setFilters(filters) {
     this.filters = filters;
@@ -102,35 +103,35 @@ const ListMixin = {
       true,
     );
   },
-  setCurrentPage(page) {
+  setCurrentPage(page: number) {
     if (page < 1) page = 1;
     if (page > this.getPageCount()) page = this.getPageCount();
     this.currentPage = page;
     this.populate();
   },
   getPageCount() {
-    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
+    return Math.max(1, Math.ceil(this.getResources().length / this.paginateBy));
   },
   getCurrentPageResources() {
-    if (this.paginateBy == 0) return this.resources;
+    if (this.paginateBy == 0) return this.getResources();
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return this.resources.slice(
+    return this.getResources().slice(
       firstElementIndex,
       firstElementIndex + this.paginateBy,
     );
   },
   renderPaginationNav() {
-    const paginateBy = this.paginateBy;
-    if (this._paginationElements) {
-      this._paginationElements.nav.toggleAttribute(
+    /*const paginateBy = this.paginateBy;
+    if (this.paginationElements) {
+      this.paginationElements.nav.toggleAttribute(
         'hidden',
         paginateBy == null,
       );
     }
     if (paginateBy == null) return;
-    if (!this._paginationElements) {
-      //const elements = (this._paginationElements = {});
-      stringToDom(/*html*/ `<nav data-id='nav'>
+    if (!this.paginationElements) {
+      //const elements = (this.paginationElements = {});
+      stringToDom(`<nav data-id='nav'>
       <button data-id="prev">←</button>
       <button data-id="next">→</button>
       <span>
@@ -138,7 +139,7 @@ const ListMixin = {
       / <span data-id="count">0</span>
       </span>
       </nav>`);
-      /*nav.querySelectorAll('[data-id]').forEach(elm => {
+      nav.querySelectorAll('[data-id]').forEach(elm => {
         const id = elm.dataset.id;
         delete elm.dataset.id;
         elements[id] = elm;
@@ -153,24 +154,24 @@ const ListMixin = {
         this.currentPage += 1;
         this.empty();
         this.populate();
-      });*/
+      });
     }
-    const elements = this._paginationElements;
+    const elements = this.paginationElements;
     elements.current.textContent = this.currentPage;
-    elements.count.textContent = this.pageCount;
+    elements.count.textContent = this.getPageCount();
     elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
-    elements.next.toggleAttribute('disabled',this.currentPage >= this.pageCount);
+    elements.next.toggleAttribute('disabled',this.currentPage >= this.getPageCount());*/
     return;
   },
-  getResources() {
-    return this.resources.filter(this.matchFilters.bind(this));
-  },
+  /*getResources() {
+    return this.resources.filter(this.matchFilters.bind(this)); // TODO : check that
+  },*/
   appendFilters() {
     this.searchForm = document.createElement('sib-form');
     this.searchForm.resource = this.resource;
     this.searchForm.save = this.filterList.bind(this);
     this.searchForm.change = this.filterList.bind(this);
-    this.searchForm.dataset.fields = this.getAttribute('search-fields');
+    this.searchForm.dataset.fields = this.element.getAttribute('search-fields');
     this.searchForm.toggleAttribute('naked', true);
     this.searchForm.addEventListener('input', () => this.currentPage = 1);
 
@@ -184,19 +185,22 @@ const ListMixin = {
     let filters = {};
     for (let field of this.searchForm.fields) {
       for (let attr of ['range', 'widget', 'label', 'value']) {
-        const value = this.getAttribute(`search-${attr}-${field}`);
+        const value = this.element.getAttribute(`search-${attr}-${field}`);
         if (value == null) continue;
         this.searchForm.setAttribute(`${attr}-${field}`, value);
         if(field && attr == "value") filters[field] = value;
       }
     }
 
-    if (this.shadowRoot)
-      this.shadowRoot.insertBefore(this.searchForm, this.shadowRoot.firstChild);
-    else this.insertBefore(this.searchForm, this.firstChild);
+    if (this.element.shadowRoot)
+      this.element.shadowRoot.insertBefore(this.searchForm, this.shadowRoot.firstChild);
+    else this.element.insertBefore(this.searchForm, this.firstChild);
 
     this.filtersAdded = true;
     this.filters = filters;
+  },
+  filterList() {
+    this.filters = this.searchForm.value;
   },
   populate() {
     const div = this.getDiv();
@@ -205,15 +209,15 @@ const ListMixin = {
       this.appendSingleElt();
       return;
     }
-    if (!this.filtersAdded && this.hasAttribute('search-fields')) {
+    if (!this.filtersAdded && this.element.hasAttribute('search-fields')) {
       this.appendFilters();
       return;
     }
 
     if (this.counterTemplate) {
-      let html;
+      let html: string;
       try {
-        html = evalTemplateString(this.getAttribute('counter-template'), {
+        html = evalTemplateString(this.element.getAttribute('counter-template'), {
           counter: this.resources.length,
         });
       } catch (e) {
@@ -222,7 +226,7 @@ const ListMixin = {
       }
       if (!this.counter) {
         this.counter = document.createElement('div');
-        this.insertBefore(this.counter, div);
+        this.element.insertBefore(this.counter, div);
       }
       this.counter.innerHTML = '';
       this.counter.appendChild(stringToDom(html));
