@@ -56,6 +56,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
         attr.name.startsWith('widget-') ||
         attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||
+        attr.name.startsWith('editable-') ||
         attr.name.startsWith('action-')
       )
         child.setAttribute(attr.name, attr.value);
@@ -66,33 +67,6 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     for (let field of this.fields) {
       await this.appendWidget(field);
     }
-  }
-
-  populate() {
-    super.populate()
-
-    if (this.hasAttribute('editable') && !this.editButtonInserted) {
-      const edit = document.createElement('button');
-      edit.innerText = "Modifier";
-      edit.onclick = this.activateEditableFields.bind(this);
-      this.insertAdjacentElement('afterbegin', edit);
-      this.editButtonInserted = true;
-    }
-  }
-
-  activateEditableFields(e) {
-    e.target.disabled = true;
-    this.widgets.forEach(widget => widget.activateEditableField());
-
-    const save = document.createElement('button');
-    save.innerText = "Sauvegarder";
-    save.onclick = this.save.bind(this);
-    this.insertAdjacentElement('beforeend', save);
-  }
-
-  save() {
-    this.widgets.forEach(widget => console.log(widget.value)); // Override get value in widgets ? Other method ?
-    // store.patch
   }
 }
 

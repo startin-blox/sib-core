@@ -15,7 +15,10 @@ export class BaseWidget extends HTMLElement {
       escapedValue: this.escapedValue,
       range: this.htmlRange,
       multiple: this.multiple,
+      editable: this.editable === '' ? true : false
     });
+
+    this.addEditButtons();
   }
   get label() {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
@@ -123,9 +126,36 @@ export class BaseWidget extends HTMLElement {
     });
     return htmlRange || '';
   }
-  activateEditableField() {
+
+  // Editable widgets
+  addEditButtons() {
     const editableField = this.querySelector('[data-editable]');
-    if (editableField) editableField.setAttribute('contenteditable', 'true');
+
+    if (editableField) {
+      // Add edit button
+      const editButton = document.createElement('button');
+      editButton.innerText = "Modifier";
+      editButton.onclick = () => this.activateEditableField(editableField, editButton);
+      editableField.insertAdjacentElement('afterend', editButton);
+
+      // Save on focusout
+      editableField.addEventListener('focusout', () => this.save(editableField, editButton));
+    }
+  }
+  activateEditableField(editableField, editButton) {
+    editableField.setAttribute('contenteditable', 'true');
+    editableField.focus();
+    editButton.setAttribute("disabled", true);
+  }
+  save(editableField, editButton) {
+    editableField.setAttribute('contenteditable', 'false');
+    editButton.removeAttribute("disabled");
+
+    if (!this.name) return;
+    const resource = {};
+    resource[this.name] = editableField.innerText;
+
+    if(this.resourceId && resource) store.patch(this.resourceId, resource)
   }
 }
 

@@ -137,7 +137,7 @@ const SIBWidgetMixin = superclass =>
         if (value == null) continue;
         attrs[`each-${attr}`] = value;
       }
-      for (let attr of ['range', 'label', 'class', 'widget']) {
+      for (let attr of ['range', 'label', 'class', 'widget', 'editable']) {
         const value = this.getAttribute(`${attr}-${field}`);
         if (value == null) continue;
         if (attr === 'class') attr = 'className';
@@ -145,7 +145,8 @@ const SIBWidgetMixin = superclass =>
       }
       if (this.getAction(field)) attrs.src = this.resource['@id'];
       attrs.value = await this.getValues(field);
-      
+      attrs.resourceId = this.resource['@id'];
+
       return attrs;
     }
 
