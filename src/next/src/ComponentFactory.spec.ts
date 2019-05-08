@@ -126,7 +126,7 @@ describe('Component factory', function() {
     const ComponentConstructor = ComponentFactory.build(Component);
     expect((<any>ComponentConstructor).observedAttributes).toEqual([
       'test',
-      'my_attribute',
+      'my-attribute',
       'data',
       'works',
       'required',
@@ -139,7 +139,7 @@ describe('Component factory', function() {
     expect((<any>component).myAttribute).toEqual('awesome');
     (<any>component).myAttribute = 'a';
     expect((<any>component).myAttribute).toEqual('a');
-    expect(component.element.getAttribute('my_attribute')).toEqual('a');
+    expect(component.element.getAttribute('my-attribute')).toEqual('a');
   });
 
   test('bind attribute with typecasting', () => {
