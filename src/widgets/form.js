@@ -99,8 +99,7 @@ const SIBFormPlaceholderTextarea = widgetFactory(
       data-holder
       placeholder="\${label}"
       name="\${name}"
-    >\${escapedValue}</textarea>
-  </label>`,
+    >\${escapedValue}</textarea>`,
 );
 
 const SIBFormDropdown = widgetFactory(
