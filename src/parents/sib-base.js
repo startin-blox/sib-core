@@ -7,7 +7,12 @@ export default class SIBBase extends HTMLElement {
   }
 
   get extra_context() {
-    return JSON.parse(this.getAttribute("extra-context")) || {};
+    let extraContextElement = this.getAttribute("extra-context") ?
+      document.getElementById(this.getAttribute("extra-context")) : // take element extra context first
+      document.querySelector('[data-default-context]'); // ... or look for a default extra context
+
+    if (extraContextElement) return JSON.parse(extraContextElement.textContent);
+    return {}
   }
 
   get context() {

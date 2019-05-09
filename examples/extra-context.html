@@ -9,13 +9,18 @@
     <script type="module" src="https://unpkg.com/@startinblox/router@latest"></script>
     <script type="module" src="../src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <script id="alpha" type="application/ld+json">
+      {
+        "user":"https://test-paris.happy-dev.fr/users/"
+      }
+    </script>
   </head>
 
   <body>
 
     <sib-router default-route="home">
       <sib-route name="home">home</sib-route>
-      <sib-route name="detail"></sib-route>
+      <sib-route name="detail" use-id></sib-route>
     </sib-router>
 
     <div id="home">
@@ -23,9 +28,8 @@
       <sib-display
         data-src="https://test-paris.happy-dev.fr/users/"
         fields="@id, username, first_name, last_name, email"
-        extra-context='{"user":"https://test-paris.happy-dev.fr/users/"}'
-        paginate-by="4"
         next="detail"
+        extra-context="alpha"
       ></sib-display>
     </div>
 
@@ -34,6 +38,7 @@
       <sib-display
         fields="@id, username, first_name, last_name, email"
         bind-resources
+        extra-context="alpha"
       ></sib-display>
     </div>
   </body>
