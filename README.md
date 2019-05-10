@@ -69,7 +69,13 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`counter-template`**: To display the number of resources fetched by the `sib-display`.
   It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
   i.e. `"<strong>${counter} results</strong>"`
-- **`extra-context`**:
+- **`extra-context`**: The id of the `<script>` tag which contains the context you want to add for this component. An extra context looks like this:
+  ```html
+    <script id="custom-context" type="application/ld+json">
+      { "user":"https://test-paris.happy-dev.fr/users/" }
+    </script>
+  ```
+  If your `<script>` tag has the attribute `data-default-context`, this extra context will be applied on all the components which doesn't have an `extra-context` attribute.
 - **`loader-id`**: Id of the loader element you want to display during the loading time
 - **`class-xyz`**: Class attribute added to the fields `xyz`
 - **`id-suffix`**: String added at the end of the source url (`data-src`).
