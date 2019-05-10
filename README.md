@@ -66,6 +66,8 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`next`**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
 - **`action-xyz`**:
 - **`label-xyz`**: Set the label for the field `xyz`
+- **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.
+  The editable attribute works with the following widgets: `sib-display-div`, `sib-display-labelled-div`, `sib-display-mailto` and `sib-display-tel`
 - **`counter-template`**: To display the number of resources fetched by the `sib-display`.
   It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
   i.e. `"<strong>${counter} results</strong>"`
