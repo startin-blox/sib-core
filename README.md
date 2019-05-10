@@ -83,8 +83,6 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`id-suffix`**: String added at the end of the source url (`data-src`).
   Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
 
-
-
 ### `sib-form`
 
 Receives the URL of a ressource via its `data-src` attribute, and displays a form to edit the resource.
