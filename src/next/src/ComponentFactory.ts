@@ -4,16 +4,18 @@ import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface.js
 import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface.js';
 import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface.js';
 import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface.js';
+import { AccessorStaticInterface } from './mixin/interfaces/AccessorStaticInterface.js';
 
 export class ComponentFactory {
   public static build(component: MixinStaticInterface): ComponentConstructorInterface {
-    const { initialState, attributes, methods, hooks, name } = Compositor.merge(component, Compositor.mergeMixin(component));
+    const { initialState, attributes, methods, hooks, accessors, name } = Compositor.merge(component, Compositor.mergeMixin(component));
 
     let componentConstructor = class extends Component {};
 
     componentConstructor = ComponentFactory.bindInitialState(componentConstructor, initialState);
     componentConstructor = ComponentFactory.bindAttributes(componentConstructor, attributes);
     componentConstructor = ComponentFactory.bindMethods(componentConstructor, methods);
+    componentConstructor = ComponentFactory.bindAccessors(componentConstructor, accessors);
     componentConstructor = ComponentFactory.bindHooks(componentConstructor, hooks);
 
     Reflect.defineProperty(componentConstructor, 'name', {
@@ -118,6 +120,19 @@ export class ComponentFactory {
       });
 
       Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', attributesCallback);
+    }
+    return componentConstructor;
+  }
+
+  protected static bindAccessors(componentConstructor: ComponentConstructorInterface, accessors: AccessorStaticInterface): ComponentConstructorInterface {
+    if (accessors) {
+      Object.keys(accessors).forEach(property => {
+        const accessorsObject = {}
+        if (accessors[property].get) accessorsObject['get'] = () => Reflect.apply(accessors[property].get, componentConstructor.prototype, []);
+        if (accessors[property].set) accessorsObject['set'] = (value) => Reflect.apply(accessors[property].set, componentConstructor.prototype, [value]);
+
+        Reflect.defineProperty(componentConstructor.prototype, property, accessorsObject);
+      });
     }
     return componentConstructor;
   }

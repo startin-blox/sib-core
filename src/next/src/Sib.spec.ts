@@ -14,12 +14,19 @@ const MixinTestTwo = {
   },
   initialState: {
     a: 0,
+    accessorValue: "test"
+  },
+  get accessor() {
+    return this.accessorValue;
+  },
+  set accessor(value) {
+    this.accessorValue = value;
   },
   created() {
-    (<any>this).message = 'hello ';
+    this.message = 'hello ';
   },
   attached() {
-    (<any>this).message = 'hooks respect ';
+    this.message = 'hooks respect ';
   },
   methodA() {
     console.log('methodAMixin2');
@@ -43,10 +50,10 @@ const MixinTestOne = {
     a: 1,
   },
   created() {
-    (<any>this).message += 'world ';
+    this.message += 'world ';
   },
   detached() {
-    (<any>this).message = 'and ';
+    this.message = 'and ';
   },
   methodA() {
     return 'A';
@@ -64,7 +71,7 @@ const Component = {
       type: String,
       default: 'awesome',
       callback: function() {
-        (this as any).change = true;
+        this.change = "new value";
       }
     },
     data: {
@@ -74,34 +81,37 @@ const Component = {
       },
     },
     works: {
-      type: Boolean, 
+      type: Boolean,
       default: false,
     },
     required: {
       required: true,
     },
+    dataChange: {
+      type: String,
+      default: "value"
+    }
   },
   initialState: {
     c: {
       test: 0,
     },
-    change: false,
     message: '',
   },
   created() {
-    (<any>this).message += '!!';
+    this.message += '!!';
   },
   attached() {
-    (<any>this).message += 'order';
+    this.message += 'order';
   },
   detached() {
-    (<any>this).message += 'context';
+    this.message += 'context';
   },
   methodC() {
     return 'C';
   },
   methodD() {
-    (this as any).change = true;
+    this.change = true;
   },
 };
 
@@ -111,4 +121,11 @@ describe('Component factory', function() {
       const el = document.createElement('app-comp');
       expect(el).toBeInstanceOf(HTMLElement);
   });
+
+  /*test('bind attribute with callback', () => {
+    const el = document.createElement('app-comp');
+    expect(el.getAttribute('data-change')).toEqual("value");
+    el.setAttribute('my-attribute', "1");
+    expect(el.getAttribute('data-change')).toEqual("new value");
+  });*/
 });

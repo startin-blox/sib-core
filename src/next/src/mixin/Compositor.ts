@@ -3,6 +3,7 @@ import { ComponentStaticInterface } from './interfaces/ComponentStaticInterface.
 
 import { AttributesDefinitionInterface } from './interfaces/AttributesDefinitionInterface.js';
 import { ArrayOfHooksInterface } from './interfaces/ArrayOfHooksInterface.js';
+import { AccessorStaticInterface } from './interfaces/AccessorStaticInterface.js';
 
 const HOOKS = ['created', 'attached', 'detached'];
 const API = [
@@ -20,6 +21,7 @@ export class Compositor {
       attributes: Compositor.mergeAttributes([ component, ...mixins ]),
       initialState: Compositor.mergeInitialState([ component, ...mixins ]),
       methods: Compositor.mergeMethods([ component, ...mixins]),
+      accessors: Compositor.mergeAccessors([ component, ...mixins]),
       hooks: Compositor.mergeHooks([ component, ...mixins ]),
     };
   }
@@ -101,7 +103,21 @@ export class Compositor {
         methods.set(key, mixin[key]);
       });
     });
-
     return methods;
+  }
+
+  public static mergeAccessors(mixins: MixinStaticInterface[]): AccessorStaticInterface {
+    const accessors = {};
+    mixins.reverse().forEach(mixin => {
+      Reflect
+      .ownKeys(mixin)
+      .filter(key => (typeof key === 'string' && API.indexOf(key) < 0 && typeof mixin[key] !== 'function'))
+      .forEach(prop => {
+        accessors[prop] = { ...accessors[prop] };
+        if (Reflect.getOwnPropertyDescriptor(mixin, prop)!.get) accessors[prop].get = Reflect.getOwnPropertyDescriptor(mixin, prop)!.get;
+        if (Reflect.getOwnPropertyDescriptor(mixin, prop)!.set) accessors[prop].set = Reflect.getOwnPropertyDescriptor(mixin, prop)!.set;
+      });
+    });
+    return accessors;
   }
 }

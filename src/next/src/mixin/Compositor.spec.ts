@@ -35,6 +35,13 @@ const MixinTestOne = {
   },
   initialState: {
     b: 0,
+    accessorValue: "world"
+  },
+  get accessorTest() {
+    return this.accessorValue;
+  },
+  set accessorTest(value) {
+    this.accessorValue = value;
   },
   created() {
     console.log('created1');
@@ -62,6 +69,9 @@ const component = {
     c: {
       test: 0,
     },
+  },
+  get accessorTest() {
+    return "hello " + this.accessorValue;
   },
   created() {
     console.log('created3');
@@ -97,10 +107,11 @@ describe('Mixin Compositor', function() {
 
   test('merge initial state', () => {
     const result = Compositor.mergeInitialState([component, MixinTestOne, MixinTestTwo]);
-    expect(Reflect.ownKeys(result).length).toEqual(3);
+    expect(Reflect.ownKeys(result).length).toEqual(4);
     expect(result.a).toEqual(0);
     expect(result.b).toEqual(0);
     expect(result.c.test).toEqual(0);
+    expect(result.accessorValue).toEqual("world");
   });
 
   test('merge hooks', () => {
@@ -121,6 +132,20 @@ describe('Mixin Compositor', function() {
     expect(result.created[0].toString()).toEqual(MixinTestTwo.created.toString());
     expect(result.created[1].toString()).toEqual(MixinTestOne.created.toString());
     expect(result.created[2].toString()).toEqual(component.created.toString());
+  });
+
+  test('merge accessors', () => {
+    const result = Compositor.mergeAccessors([component, MixinTestOne, MixinTestTwo]);
+    const accessors = Object.keys(result);
+
+    expect(accessors.length).toEqual(1);
+    accessors.forEach(accessorName => {
+      expect(typeof result[accessorName].get).toEqual('function');
+      expect(typeof result[accessorName].set).toEqual('function');
+    });
+
+    expect(result["accessorTest"].get.toString()).toEqual(Reflect.getOwnPropertyDescriptor(component, 'accessorTest')!.get!.toString());
+    expect(result["accessorTest"].set.toString()).toEqual(Reflect.getOwnPropertyDescriptor(MixinTestOne, 'accessorTest')!.set!.toString());
   });
 
   test('merge methods', () => {

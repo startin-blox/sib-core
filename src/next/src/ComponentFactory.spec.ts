@@ -13,10 +13,10 @@ const MixinTestTwo = {
     a: 0,
   },
   created() {
-    (<any>this).message = 'hello ';
+    this.message = 'hello ';
   },
   attached() {
-    (<any>this).message = 'hooks respect ';
+    this.message = 'hooks respect ';
   },
   methodA() {
     console.log('methodAMixin2');
@@ -38,12 +38,19 @@ const MixinTestOne = {
   },
   initialState: {
     a: 1,
+    accessorValue: "world"
+  },
+  get accessorTest() {
+    return this.accessorValue;
+  },
+  set accessorTest(value) {
+    this.accessorValue = value;
   },
   created() {
-    (<any>this).message += 'world ';
+    this.message += 'world ';
   },
   detached() {
-    (<any>this).message = 'and ';
+    this.message = 'and ';
   },
   methodA() {
     return 'A';
@@ -61,7 +68,7 @@ const Component = {
       type: String,
       default: 'awesome',
       callback: function() {
-        (<any>this).change = true;
+        this.change = true;
       }
     },
     data: {
@@ -71,7 +78,7 @@ const Component = {
       },
     },
     works: {
-      type: Boolean, 
+      type: Boolean,
       default: false,
     },
     required: {
@@ -85,20 +92,23 @@ const Component = {
     change: false,
     message: '',
   },
+  get accessorTest() {
+    return "hello " + this.accessorValue;
+  },
   created() {
-    (<any>this).message += '!!';
+    this.message += '!!';
   },
   attached() {
-    (<any>this).message += 'order';
+    this.message += 'order';
   },
   detached() {
-    (<any>this).message += 'context';
+    this.message += 'context';
   },
   methodC() {
     return 'C';
   },
   methodD() {
-    (<any>this).change = true;
+    this.change = true;
   },
 };
 
@@ -113,6 +123,7 @@ describe('Component factory', function() {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
     expect((<any>component).a).toEqual(1);
+    expect((<any>component).accessorValue).toEqual("world");
     expect((<any>component).c.test).toEqual(0);
   });
 
@@ -168,12 +179,13 @@ describe('Component factory', function() {
     expect(() => (<any>component).required).toThrowError('Attribute required is required');
   });
 
-  test('bind attribute with callback', () => {
+  test('bind accessors', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).change).toEqual(false);
-    (<any>component).myAttribute = '1';
-    expect((<any>component).change).toEqual(true);
+    expect((<any>component).accessorTest).toEqual("hello world");
+    (<any>component).accessorTest = "you";
+    expect((<any>component).accessorTest).toEqual('hello you');
+    expect((<any>component).accessorValue).toEqual('you');
   });
 
   test('bind methods', () => {
