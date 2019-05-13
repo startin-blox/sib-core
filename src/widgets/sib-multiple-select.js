@@ -27,7 +27,7 @@ export default class SIBMultipleSelect extends BaseWidget {
   }
 
   get value() {
-    return Array.from(this.querySelectorAll('select option:checked')).map(el => el.value);
+    return Array.from(this.querySelectorAll('select option:checked')).map(el => ({ "@id": el.value }));
   }
   set value(values) {
     this.querySelectorAll('select option').forEach(element => element.selected = false); // unselect all options...
