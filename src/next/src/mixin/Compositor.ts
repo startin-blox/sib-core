@@ -97,7 +97,12 @@ export class Compositor {
     mixins.reverse().forEach(mixin => {
       const keys = Reflect
         .ownKeys(mixin)
-        .filter(key => (typeof key === 'string' && API.indexOf(key) < 0 && typeof mixin[key] === 'function'));
+        .filter(key => (
+          typeof key === 'string' &&
+          API.indexOf(key) < 0 &&
+          !Object.getOwnPropertyDescriptor(mixin, key)!.get &&
+          !Object.getOwnPropertyDescriptor(mixin, key)!.set &&
+          typeof mixin[key] === 'function'));
 
       keys.forEach(key => {
         methods.set(key, mixin[key]);
@@ -111,7 +116,11 @@ export class Compositor {
     mixins.reverse().forEach(mixin => {
       Reflect
       .ownKeys(mixin)
-      .filter(key => (typeof key === 'string' && API.indexOf(key) < 0 && typeof mixin[key] !== 'function'))
+      .filter(key => (
+        typeof key === 'string' &&
+        API.indexOf(key) < 0 &&
+        (Object.getOwnPropertyDescriptor(mixin, key)!.get || Object.getOwnPropertyDescriptor(mixin, key)!.set)
+      ))
       .forEach(prop => {
         accessors[prop] = { ...accessors[prop] };
         if (Reflect.getOwnPropertyDescriptor(mixin, prop)!.get) accessors[prop].get = Reflect.getOwnPropertyDescriptor(mixin, prop)!.get;

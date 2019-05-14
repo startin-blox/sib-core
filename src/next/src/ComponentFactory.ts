@@ -127,11 +127,14 @@ export class ComponentFactory {
   protected static bindAccessors(componentConstructor: ComponentConstructorInterface, accessors: AccessorStaticInterface): ComponentConstructorInterface {
     if (accessors) {
       Object.keys(accessors).forEach(property => {
-        const accessorsObject = {}
-        if (accessors[property].get) accessorsObject['get'] = () => Reflect.apply(accessors[property].get, componentConstructor.prototype, []);
-        if (accessors[property].set) accessorsObject['set'] = (value) => Reflect.apply(accessors[property].set, componentConstructor.prototype, [value]);
-
-        Reflect.defineProperty(componentConstructor.prototype, property, accessorsObject);
+        Reflect.defineProperty(componentConstructor.prototype, property, {
+          get: function () {
+            return Reflect.apply(accessors[property].get, this, [])
+          },
+          set: function (value) {
+            return Reflect.apply(accessors[property].set, this, [value])
+          }
+        });
       });
     }
     return componentConstructor;
