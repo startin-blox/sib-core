@@ -12,17 +12,17 @@ const SibDisplay = {
     fields: []
   },
   created() {
-    window.addEventListener('navigate', () => {
+    window.addEventListener('navigate', event => {
       if (this.resource == null) return;
-      //if (event.detail.resource == null) return;
-      /*if (this.resource['@id'] == null) return;
+      if (event['detail'].resource == null) return;
+      if (this.resource['@id'] == null) return;
       this.toggleAttribute(
         'active',
-        this.resource['@id'] === event.detail.resource['@id'],
-      );*/
+        this.resource['@id'] === event['detail'].resource['@id'],
+      );
     });
   },
-  getChildTag() {
+  get childTag() {
     return this.element.dataset.child || this.element.tagName;
   },
   // Here "even.target" points to the content of the widgets of the children of sib-display
@@ -41,8 +41,9 @@ const SibDisplay = {
     }
   },
   appendChildElt(resource, parent) {
-    const child = document.createElement(this.getChildTag());
+    const child = document.createElement(this.childTag);
     child.resource = resource;
+    child.addEventListener('click', this.dispatchSelect.bind(this));
     if (this.dataFields != null) child.dataset.fields = this.dataFields;
 
     for (let attr of this.element.attributes) //copy widget and value attributes

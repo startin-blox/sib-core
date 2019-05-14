@@ -16,6 +16,7 @@ const WidgetMixin = {
     div: null
   },
   attached() {
+    // TODO : super. ?
     if (!this.element.dataset.src && !this.resource) this.populate();
   },
   getDiv() {
@@ -46,7 +47,7 @@ const WidgetMixin = {
     }
 
     const resource =
-      this.isContainer() && this.getResources() ? this.getResources()[0] : this.resource;
+      this.isContainer() && this.resources ? this.resources[0] : this.resource;
 
       if (!resource) {
         console.error(new Error('You must provide a "data-fields" attribute'));
@@ -60,7 +61,7 @@ const WidgetMixin = {
   async fetchValue(resource, field: string) {
     if (this.isContainer()) return null;
     if (!(field in resource) && '@id' in resource) {
-      resource = await store.get(resource, this.getContext());
+      resource = await store.get(resource, this.context);
     }
     if (!(field in resource)) {
       resource[field] = undefined;
@@ -117,8 +118,6 @@ const WidgetMixin = {
   async widgetAttributes(field: string) {
     const attrs = {
       name: field,
-      value: null,
-      src: null
     };
     for (let attr of ['range', 'label', 'class']) {
       const value = this.element.getAttribute(`each-${attr}-${field}`);
@@ -132,8 +131,8 @@ const WidgetMixin = {
       if (attr === 'class') attr = 'className';
       attrs[attr] = value;
     }
-    if (this.getAction(field)) attrs.src = this.resource['@id'];
-    attrs.value = await this.getValues(field);
+    if (this.getAction(field)) attrs['src'] = this.resource['@id'];
+    attrs['value'] = await this.getValues(field);
 
     return attrs;
   },
@@ -171,7 +170,7 @@ const WidgetMixin = {
     div.setAttribute('name', field);
     parent.appendChild(div);
     for (let item of this.getSet(field)) {
-      await this.element.appendWidget(item, div);
+      await this.appendWidget(item, div);
     }
   }
 }

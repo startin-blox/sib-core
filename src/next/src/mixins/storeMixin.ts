@@ -16,7 +16,7 @@ const StoreMixin = {
         if (!value) return;
 
         // gets the data through the store
-        store.get(value + this.idSuffix, this.getContext()).then(async resource => {
+        store.get(value + this.idSuffix, this.context).then(async resource => {
           this.empty();
           this.resource = resource;
           await this.populate();
@@ -51,17 +51,17 @@ const StoreMixin = {
       this.populate();
     }
   },
-  getContext() {
+  get context() {
     return { ...base_context, ...JSON.parse(this.extraContext) };
   },
-  isContainer() {
-    return '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
-  },
-  getResources() {
+  get resources() {
     if (!this.isContainer() || !this.resource['ldp:contains']) return [];
     if (Array.isArray(this.resource['ldp:contains']))
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
+  },
+  isContainer() {
+    return '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
   },
   toggleLoaderHidden(toggle: boolean) {
     if (this.loaderId) {

@@ -1,0 +1,42 @@
+sib-display,
+sib-display-value,
+sib-multiple,
+sib-link {
+  border: 1px solid blue;
+  display: block;
+  padding: 0.3em;
+  margin: 0.3em;
+}
+sib-display-value {
+  border-color: orangered;
+}
+sib-multiple {
+  border-color: seagreen;
+}
+sib-link {
+  border-color: purple;
+  cursor: pointer;
+}
+summary {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.5em 0;
+  margin: 0.5em 0;
+}
+
+form > * {
+  display: block;
+  margin: 1em 0;
+}
+label {
+  display: block;
+}
+sib-route {
+  display: inline-block;
+  background-color: #aaa;
+  padding: 0.5em;
+  cursor: pointer;
+}
+sib-route[active] {
+  background-color: #ccc;
+}

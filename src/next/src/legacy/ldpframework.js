@@ -1,4 +1,3 @@
-
   var jsonld
   var jsonldjs
 export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -313,7 +312,6 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
        }
 
         this.getExpandedIri = async function getExpandedIri(iri, context) {
-          iri = (iri.slice(-1) != "/") ? iri + '/' : iri;
           let expandedIri = await JsonLdUtils.expand({ "@id": iri, "fixExpand": "fixExpand" }, { expandContext: context })
           return expandedIri[0]['@id']
         }
@@ -30397,7 +30395,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
     };
   
     var toArray = function (object) {
-      object = object || [];
+      object = object == null ? [] : object;
   
       if (Array.isArray(object)) {
         return object;
@@ -30844,10 +30842,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           return callback(null, error);
         }
         
-        data = JSON.stringify({
-          "@context": "http://owl.openinitiative.com/oicontext.jsonld",
-          "@graph": data,
-        });
+        data = JSON.stringify(data);
   
         self.request(method, iri, headers, data, function (statusCode, headers, content, error) {
           // error during request
@@ -30892,10 +30887,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           return callback(null, error);
         }
         
-        data = JSON.stringify({
-          "@context": "http://owl.openinitiative.com/oicontext.jsonld",
-          "@graph": data,
-        });
+        data = JSON.stringify(data);
         
         self.request('PATCH', iri, headers, data, function (statusCode, headers, content, error) {
             // error during request

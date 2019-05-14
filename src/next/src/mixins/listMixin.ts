@@ -110,18 +110,18 @@ const ListMixin = {
     this.populate();
   },
   getPageCount() {
-    return Math.max(1, Math.ceil(this.getResources().length / this.paginateBy));
+    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
   },
   getCurrentPageResources() {
-    if (this.paginateBy == 0) return this.getResources();
+    if (this.paginateBy == 0) return this.resources;
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return this.getResources().slice(
+    return this.resources.slice(
       firstElementIndex,
       firstElementIndex + this.paginateBy,
     );
   },
-  renderPaginationNav() {
-    /*const paginateBy = this.paginateBy;
+  renderPaginationNav(div) {
+    const paginateBy = this.paginateBy;
     if (this.paginationElements) {
       this.paginationElements.nav.toggleAttribute(
         'hidden',
@@ -130,8 +130,8 @@ const ListMixin = {
     }
     if (paginateBy == null) return;
     if (!this.paginationElements) {
-      //const elements = (this.paginationElements = {});
-      stringToDom(`<nav data-id='nav'>
+      const elements = (this.paginationElements = {});
+      const nav = stringToDom(/*html*/ `<nav data-id='nav'>
       <button data-id="prev">←</button>
       <button data-id="next">→</button>
       <span>
@@ -140,17 +140,17 @@ const ListMixin = {
       </span>
       </nav>`);
       nav.querySelectorAll('[data-id]').forEach(elm => {
-        const id = elm.dataset.id;
-        delete elm.dataset.id;
-        elements[id] = elm;
+        const id = elm.getAttribute('data-id');
+        elm.removeAttribute('data-id')
+        if(id) elements[id] = elm;
       });
-      this.insertBefore(elements.nav, div.nextSibling);
-      elements.prev.addEventListener('click', () => {
+      this.element.insertBefore(elements['nav'], div.nextSibling);
+      elements['prev'].addEventListener('click', () => {
         this.currentPage -= 1;
         this.empty();
         this.populate();
       });
-      elements.next.addEventListener('click', () => {
+      elements['next'].addEventListener('click', () => {
         this.currentPage += 1;
         this.empty();
         this.populate();
@@ -160,10 +160,10 @@ const ListMixin = {
     elements.current.textContent = this.currentPage;
     elements.count.textContent = this.getPageCount();
     elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
-    elements.next.toggleAttribute('disabled',this.currentPage >= this.getPageCount());*/
+    elements.next.toggleAttribute('disabled',this.currentPage >= this.getPageCount());
     return;
   },
-  /*getResources() {
+  /*get resources() {
     return this.resources.filter(this.matchFilters.bind(this)); // TODO : check that
   },*/
   appendFilters() {
@@ -199,6 +199,9 @@ const ListMixin = {
     this.filtersAdded = true;
     this.filters = filters;
   },
+  appendSingleElt(parent) {
+    this.appendChildElt(this.resource, parent);
+  },
   filterList() {
     this.filters = this.searchForm.value;
   },
@@ -233,7 +236,7 @@ const ListMixin = {
     }
     this.renderPaginationNav(div);
 
-    for (let resource of this.getResources()) {
+    for (let resource of this.resources) {
       //for federations, fetch every sib:source we find
       if (resource['@type'] !== 'sib:source') {
         this.appendChildElt(resource, div);
