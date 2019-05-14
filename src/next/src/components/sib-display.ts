@@ -67,5 +67,4 @@ const SibDisplay = {
   }
 };
 
-Sib.register(SibDisplay);
-document.createElement('sib-display');
+export default Sib.register(SibDisplay);
