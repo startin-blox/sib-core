@@ -183,7 +183,7 @@ const ListMixin = {
     }
     //pass range attributes
     let filters = {};
-    for (let field of this.searchForm.fields) {
+    for (let field of this.searchForm.component.getFields()) {
       for (let attr of ['range', 'widget', 'label', 'value']) {
         const value = this.element.getAttribute(`search-${attr}-${field}`);
         if (value == null) continue;

@@ -7,11 +7,16 @@ import { setDeepProperty } from '../helpers/index.js';
 const SibForm = {
   name: 'sib-form',
   use: [WidgetMixin, StoreMixin],
+  attributes: {
+    naked: {
+      type: String,
+      default: null
+    }
+  },
   initialState: {
     defaultWidget: 'sib-form-label-text',
     defaultMultipleWidget: 'sib-multiple-form',
   },
-  //form submission handling
   get value() {
     const values = {};
     this.widgets.forEach(({name, value}) => {
@@ -21,7 +26,7 @@ const SibForm = {
       setDeepProperty(values, name.split('.'), value);
     });
 
-    if (this.resource && !this.isContainer) values['@id'] = this.resource['@id'];
+    if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id'];
     return values;
   },
   set value(value) {
@@ -32,12 +37,19 @@ const SibForm = {
     });
   },
   getWidget(field: string) {
-    if (
-      !this.element.hasAttribute('widget-' + field) &&
-      this.element.hasAttribute('range-' + field)
-    )
+    if (!this.element.hasAttribute('widget-' + field)
+      && this.element.hasAttribute('range-' + field)) {
       return 'sib-form-dropdown';
-    else return this.getWidget(field); // TODO super ?
+    } else {
+      const widget = this.element.getAttribute('widget-' + field); // TODO : duplicated code
+      if (widget) {
+        if (!customElements.get(widget)) {
+          console.warn(`The widget ${widget} is not defined`);
+        }
+        return widget;
+      }
+      return this.defaultWidget;
+    }
   },
   async save() {
     this.toggleLoaderHidden(false);
@@ -46,7 +58,7 @@ const SibForm = {
     let saved;
     try {
       saved = await store.save(resource, this.resource['@id']);
-    } catch (e) { 
+    } catch (e) {
       this.toggleLoaderHidden(true);
     }
     this.element.dispatchEvent(
@@ -64,7 +76,7 @@ const SibForm = {
     if (isCreation && this.form) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     const id = await saved;
-    this.dispatchEvent(
+    this.element.dispatchEvent(
       new CustomEvent('requestNavigation', {
         bubbles: true,
         detail: { route: this.next, resource: {'@id': id} },
@@ -73,8 +85,8 @@ const SibForm = {
   },
   inputChange() {
     const resource = this.value;
-    if (!this.isContainer) resource['@id'] = this.resource['@id'];
-    this.change(resource);
+    if (!this.isContainer()) resource['@id'] = this.resource['@id'];
+    // this.change(resource); // TODO : fix this
   },
   createInput(type) {
     const input = document.createElement('input');
@@ -88,10 +100,9 @@ const SibForm = {
     }
   },
   async populate() {
-    const isNaked = this.element.hasAttribute('naked');
     if (!this.form) {
-      if (isNaked) {
-        this.form = this;
+      if (this.naked !== null) {
+        this.form = this.element;
       } else {
         this.form = document.createElement('form');
         this.form.addEventListener('submit', (event) => {
@@ -108,9 +119,9 @@ const SibForm = {
 
     await Promise.all(this.getFields().map(field => this.appendWidget(field, this.form)));
 
-    if (isNaked) return;
+    if (this.naked !== null) return;
     this.form.appendChild(this.createInput('submit'));
-    if (this.hasAttribute('reset')) {
+    if (this.element.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
     }
   }
