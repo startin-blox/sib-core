@@ -16,7 +16,7 @@ const SibDisplay = {
       if (this.resource == null) return;
       if (event['detail'].resource == null) return;
       if (this.resource['@id'] == null) return;
-      this.toggleAttribute(
+      this.element.toggleAttribute(
         'active',
         this.resource['@id'] === event['detail'].resource['@id'],
       );

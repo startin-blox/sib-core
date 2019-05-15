@@ -6,7 +6,7 @@ const StoreMixin = {
   attributes: {
     dataSrc: {
       type: String,
-      default: '',
+      default: null,
       callback: function (value: string) {
         this.empty();
 

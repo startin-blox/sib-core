@@ -16,8 +16,7 @@ const WidgetMixin = {
     div: null
   },
   attached() {
-    // TODO : super. ?
-    if (!this.element.dataset.src && !this.resource) this.populate();
+    if (!this.dataSrc && !Object.keys(this.resource).length) this.populate();
   },
   getDiv() {
     if (this.div) return this.div;
