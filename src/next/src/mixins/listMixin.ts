@@ -8,7 +8,6 @@ const ListMixin = {
     filters: {},
     filtersAdded: false,
     currentPage: 1,
-    searchForm: null,
     paginationElements: null
   },
   attributes: {
@@ -18,8 +17,26 @@ const ListMixin = {
     },
     counterTemplate: {
       type: String,
-      default: ''
+      default: null
+    },
+    searchFields: {
+      type: String,
+      default: null
     }
+  },
+  get pageCount() {
+    return Math.max(1, Math.ceil(this.resourcesFiltered.length / this.paginateBy));
+  },
+  get currentPageResources() {
+    if (this.paginateBy == 0) return this.resourcesFiltered;
+    const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
+    return this.resourcesFiltered.slice(
+      firstElementIndex,
+      firstElementIndex + this.paginateBy,
+    );
+  },
+  get searchForm() {
+    return this.element.querySelector('sib-form');
   },
   setFilters(filters) {
     this.filters = filters;
@@ -105,30 +122,19 @@ const ListMixin = {
   },
   setCurrentPage(page: number) {
     if (page < 1) page = 1;
-    if (page > this.getPageCount()) page = this.getPageCount();
+    if (page > this.pageCount) page = this.pageCount;
     this.currentPage = page;
     this.populate();
-  },
-  getPageCount() {
-    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
-  },
-  getCurrentPageResources() {
-    if (this.paginateBy == 0) return this.resources;
-    const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return this.resources.slice(
-      firstElementIndex,
-      firstElementIndex + this.paginateBy,
-    );
   },
   renderPaginationNav(div) {
     const paginateBy = this.paginateBy;
     if (this.paginationElements) {
       this.paginationElements.nav.toggleAttribute(
         'hidden',
-        paginateBy == null,
+        paginateBy == 0,
       );
     }
-    if (paginateBy == null) return;
+    if (!paginateBy) return;
     if (!this.paginationElements) {
       const elements = (this.paginationElements = {});
       const nav = stringToDom(/*html*/ `<nav data-id='nav'>
@@ -158,52 +164,52 @@ const ListMixin = {
     }
     const elements = this.paginationElements;
     elements.current.textContent = this.currentPage;
-    elements.count.textContent = this.getPageCount();
+    elements.count.textContent = this.pageCount;
     elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
-    elements.next.toggleAttribute('disabled',this.currentPage >= this.getPageCount());
+    elements.next.toggleAttribute('disabled',this.currentPage >= this.pageCount);
     return;
   },
-  /*get resources() {
-    return this.resources.filter(this.matchFilters.bind(this)); // TODO : check that
-  },*/
+  get resourcesFiltered() {
+    return this.resources.filter(this.matchFilters.bind(this));
+  },
   appendFilters() {
-    this.searchForm = document.createElement('sib-form');
-    this.searchForm.resource = this.resource;
-    this.searchForm.save = this.filterList.bind(this);
-    this.searchForm.change = this.filterList.bind(this);
-    this.searchForm.dataset.fields = this.element.getAttribute('search-fields');
-    this.searchForm.toggleAttribute('naked', true);
-    this.searchForm.addEventListener('input', () => this.currentPage = 1);
+    const searchForm = document.createElement('sib-form');
+    // this.searchForm.resource = this.resource;
+    // searchForm['save'] = this.filterList.bind(this);
+    // searchForm['change'] = this.filterList.bind(this);
+    searchForm.setAttribute('data-fields', this.searchFields);
+    searchForm.toggleAttribute('naked', true);
+    searchForm.addEventListener('input', () => this.currentPage = 1);
 
     //displays applied filter values in the form
     for (let filter of Object.keys(this.filters)) {
-      if (this.searchForm.dataset.fields.indexOf(filter) != -1) {
-        this.searchForm.setAttribute('value-' + filter, this.filters[filter]);
+      if (this.searchFields.indexOf(filter) != -1) {
+        searchForm.setAttribute('value-' + filter, this.filters[filter]);
       }
     }
     //pass range attributes
     let filters = {};
-    for (let field of this.searchForm.component.getFields()) {
+    for (let field of this.searchFields) {
       for (let attr of ['range', 'widget', 'label', 'value']) {
         const value = this.element.getAttribute(`search-${attr}-${field}`);
         if (value == null) continue;
-        this.searchForm.setAttribute(`${attr}-${field}`, value);
+        searchForm.setAttribute(`${attr}-${field}`, value);
         if(field && attr == "value") filters[field] = value;
       }
     }
 
     if (this.element.shadowRoot)
-      this.element.shadowRoot.insertBefore(this.searchForm, this.shadowRoot.firstChild);
-    else this.element.insertBefore(this.searchForm, this.firstChild);
+      this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);
+    else this.element.insertBefore(searchForm, this.element.firstChild);
 
     this.filtersAdded = true;
-    this.filters = filters;
+    this.setFilters(filters);
   },
   appendSingleElt(parent) {
     this.appendChildElt(this.resource, parent);
   },
   filterList() {
-    this.filters = this.searchForm.value;
+    this.setFilters(this.searchForm.value);
   },
   populate() {
     const div = this.getDiv();
@@ -212,7 +218,7 @@ const ListMixin = {
       this.appendSingleElt();
       return;
     }
-    if (!this.filtersAdded && this.element.hasAttribute('search-fields')) {
+    if (!this.filtersAdded && this.searchFields) {
       this.appendFilters();
       return;
     }
@@ -220,8 +226,8 @@ const ListMixin = {
     if (this.counterTemplate) {
       let html: string;
       try {
-        html = evalTemplateString(this.element.getAttribute('counter-template'), {
-          counter: this.resources.length,
+        html = evalTemplateString(this.counterTemplate, {
+          counter: this.resourcesFiltered.length,
         });
       } catch (e) {
         console.error(new Error('error in counter-template'), e);
@@ -236,7 +242,7 @@ const ListMixin = {
     }
     this.renderPaginationNav(div);
 
-    for (let resource of this.resources) {
+    for (let resource of this.currentPageResources) {
       //for federations, fetch every sib:source we find
       if (resource['@type'] !== 'sib:source') {
         this.appendChildElt(resource, div);

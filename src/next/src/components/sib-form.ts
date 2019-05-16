@@ -51,6 +51,7 @@ const SibForm = {
       return this.defaultWidget;
     }
   },
+  change(resource){ console.log(resource) },
   async save() {
     this.toggleLoaderHidden(false);
     const resource = this.value;
@@ -84,9 +85,9 @@ const SibForm = {
     );
   },
   inputChange() {
-    const resource = this.value;
+    const resource = this.value; // TODO : fix this
     if (!this.isContainer()) resource['@id'] = this.resource['@id'];
-    // this.change(resource); // TODO : fix this
+    this.change(resource); // TODO : fix this
   },
   createInput(type) {
     const input = document.createElement('input');

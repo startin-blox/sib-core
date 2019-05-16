@@ -8,8 +8,7 @@ const SibDisplay = {
   use: [WidgetMixin, ListMixin, StoreMixin],
   initialState: {
     defaultWidget: 'sib-display-value',
-    defaultMultipleWidget: 'sib-multiple',
-    fields: []
+    defaultMultipleWidget: 'sib-multiple'
   },
   created() {
     window.addEventListener('navigate', event => {
