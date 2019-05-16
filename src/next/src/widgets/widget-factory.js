@@ -35,8 +35,8 @@ export class BaseWidget extends HTMLElement {
       let values = this.dataHolder.map(element => {
         if(element instanceof HTMLInputElement && element.type == "checkbox") return element.checked
         // if value is defined, push it in the array
-        return JSON.stringify(element.value) !== '{}'
-          ? element.value
+        return JSON.stringify(this.getValueHolder(element).value) !== '{}'
+          ? this.getValueHolder(element).value
           : this._value || '';
       });
       // If only one value, do not return an array
@@ -51,15 +51,17 @@ export class BaseWidget extends HTMLElement {
       this.render();
     } else if (this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
-      if (this.dataHolder[0].type == "checkbox") {
-        this.dataHolder[0].checked = value;
+      const element = this.getValueHolder(this.dataHolder[0]);
+      if (element.type == "checkbox") {
+        element.checked = value;
       } else {
-        this.dataHolder[0].value = value || ''; // ... set `value` to the dataHolder element
+        element.value = value || ''; // ... set `value` to the dataHolder element
       }
     } else {
       // if multiple dataHolder in the widget ...
       this.dataHolder.forEach(
-        (element, index) => {
+        (el, index) => {
+          const element = this.getValueHolder(el);
           if (element.type == "checkbox") {
             element.checked = value ? value[index] : ''
           } else {
@@ -121,6 +123,9 @@ export class BaseWidget extends HTMLElement {
       });
     });
     return htmlRange || '';
+  }
+  getValueHolder(element) {
+    return element.component ? element.component : element;
   }
 }
 
