@@ -62,7 +62,7 @@ const StoreMixin = {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
   isContainer() {
-    return '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
+    return this.resource && '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
   },
   toggleLoaderHidden(toggle: boolean) {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);

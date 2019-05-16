@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: multiple</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>sib-display</h1>
+    <sib-widget name="hd-skill-name">
+      <template>
+        <small>${label}:</small>
+        <pre>${value.name}</pre>
+      </template>
+    </sib-widget>
+    <sib-display
+      data-src="https://test-paris.happy-dev.fr/members/4/"
+      data-fields="user.first_name, user.skills"
+      widget-user.skills="hd-skill-name"
+      label-user.skills="all skills"
+      each-label-user.skills="one skill"
+      multiple-user.skills
+    ></sib-display>
+ 
+    <h1>sib-form</h1>
+    <sib-form
+      data-src="https://test-paris.happy-dev.fr/users/4/"
+      data-fields="skills"
+      range-skills="https://test-paris.happy-dev.fr/skills/"
+      multiple-skills
+      label-skills="Skills:"
+    ></sib-form>
+
+    <h1>creation</h1>
+    <sib-form
+      data-src="https://test-paris.happy-dev.fr/users/"
+      data-fields="skills"
+      range-skills="https://test-paris.happy-dev.fr/skills/"
+      multiple-skills
+    ></sib-form>
+  </body>
+</html>

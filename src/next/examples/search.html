@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: search</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <details>
+      <summary>One field & label:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="email"
+        search-label-email="mail"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>One field & value:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="email"
+        search-value-email="startinblox"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Multiple fields:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="first_name, last_name"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Set:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="nameSet"
+        set-nameSet="first_name, last_name"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Dropdown:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/members/"
+        data-fields="user.username, skills"
+        search-fields="skills"
+        search-range-skills="https://test-paris.happy-dev.fr/skills/"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Dropdown + One field: :</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/members/"
+        data-fields="pseudo, user.username, skills"
+        search-fields="skills,pseudo"
+        search-range-skills="https://test-paris.happy-dev.fr/skills/"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Widget:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email"
+        search-fields="email"
+        search-widget-email="sib-form-textarea"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Dotted field:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email, profile.city"
+        search-fields="profile.city"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Set + dotted field:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="username, first_name, last_name, email, member.pseudo"
+        set-nameSet="member.pseudo,first_name"
+        search-fields="nameSet"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Range number + date:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/notifications/"
+        data-fields="type, date"
+        search-fields="date"
+        search-widget-date="sib-form-range-date"
+      ></sib-display>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/projects/"
+        data-fields="name, number"
+        search-fields="number"
+        search-widget-number="sib-form-range-number"
+      ></sib-display>
+    </details>
+  </body>
+</html>

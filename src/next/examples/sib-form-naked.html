@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-form naked</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h3>Normal sib-form</h3>
+    <sib-form
+      id="normal"
+      data-src="https://test-paris.happy-dev.fr/users/4/"
+      data-fields="username, account.picture"
+    ></sib-form>
+    <h3>Naked sib-form</h3>
+    <sib-form
+      id="naked"
+      naked
+      data-src="https://test-paris.happy-dev.fr/users/4/"
+      data-fields="username, account.picture"
+    ></sib-form>
+    <hr>
+    <button id="f2o">sib-form.value</button>
+    <pre id="pre"></pre>
+    <script>
+      const sibForms = document.getElementsByTagName('sib-form');
+      f2o.onclick = () => {
+        const data = {};
+        for (elm of sibForms) {
+          try {
+            data[elm.id] = elm.value;
+          } catch (e) {console.error(e)}
+        }
+        console.log(data);
+        pre.textContent = JSON.stringify(data, null, 2);
+      };
+    </script>
+  </body>
+</html>

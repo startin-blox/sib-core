@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: pagination</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <details>
+      <summary>Pagination:</summary>
+      <sib-display
+        data-src="https://test-paris.happy-dev.fr/users/"
+        data-fields="@id, username, first_name, last_name, email"
+        paginate-by="5"
+      ></sib-display>
+    </details>
+
+    <details>
+        <summary>Search + Pagination:</summary>
+        <sib-display
+          data-src="https://test-paris.happy-dev.fr/users/"
+          data-fields="@id, username, first_name, last_name, email"
+          search-fields="email"
+          paginate-by="5"
+        ></sib-display>
+      </details>
+  </body>
+</html>

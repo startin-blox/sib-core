@@ -13,6 +13,9 @@ const SibForm = {
       default: null
     }
   },
+  initialState: {
+    formInitialized: false
+  },
   get defaultWidget() {
     return 'sib-form-label-text';
   },
@@ -56,7 +59,14 @@ const SibForm = {
       return this.defaultWidget;
     }
   },
-  change(resource){ console.log(resource) },
+  change(resource) {
+    this.element.dispatchEvent(
+      new CustomEvent('formChange', {
+        bubbles: true,
+        detail: { resource },
+      }),
+    );
+  },
   async save() {
     this.toggleLoaderHidden(false);
     const resource = this.value;
@@ -106,7 +116,7 @@ const SibForm = {
     }
   },
   async populate() {
-    if (!this.form) {
+    if (!this.formInitialized) {
       if (this.naked == null) {
         const form = document.createElement('form');
         form.addEventListener('submit', (event) => {
@@ -119,6 +129,7 @@ const SibForm = {
         this.element.appendChild(form);
       }
       this.element.addEventListener('input', event => this.inputChange(event));
+      this.formInitialized = true;
     }
 
     await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));

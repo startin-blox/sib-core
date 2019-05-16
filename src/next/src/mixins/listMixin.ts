@@ -174,9 +174,8 @@ const ListMixin = {
   },
   appendFilters() {
     const searchForm = document.createElement('sib-form');
-    // this.searchForm.resource = this.resource;
-    // searchForm['save'] = this.filterList.bind(this);
-    // searchForm['change'] = this.filterList.bind(this);
+    (<any>searchForm).component.resource = this.resource;
+    searchForm.addEventListener('formChange', (event) => this.filterList(event['detail'].resource))
     searchForm.setAttribute('data-fields', this.searchFields);
     searchForm.toggleAttribute('naked', true);
     searchForm.addEventListener('input', () => this.currentPage = 1);
@@ -189,7 +188,7 @@ const ListMixin = {
     }
     //pass range attributes
     let filters = {};
-    for (let field of this.searchFields) {
+    for (let field of (<any>searchForm).component.fields) {
       for (let attr of ['range', 'widget', 'label', 'value']) {
         const value = this.element.getAttribute(`search-${attr}-${field}`);
         if (value == null) continue;
@@ -209,7 +208,7 @@ const ListMixin = {
     this.appendChildElt(this.resource, parent);
   },
   filterList() {
-    this.setFilters(this.searchForm.value);
+    this.setFilters(this.searchForm.component.value);
   },
   populate() {
     const div = this.div;

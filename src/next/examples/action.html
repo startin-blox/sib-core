@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:action</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <script type="module" src="https://unpkg.com/@startinblox/router"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-router default-route="home" use-hash>
+      <sib-route name="home">home</sib-route>
+      <sib-route
+        hidden
+        use-id
+        name="circle-infos"
+      ></sib-route>
+    </sib-router>
+
+    <div id="home" hidden>
+      <h1>Home</h1>
+      <sib-display
+        data-src="./data/action/circles.jsonld"
+        data-fields="name, description, click"
+        label-click="click !"
+        action-click="circle-infos"
+      ></sib-display>
+    </div>
+    <div id="circle-infos" hidden>
+      <sib-display
+        bind-resources
+        data-fields="name, description"
+      ></sib-display>
+    </div>
+  </body>
+</html>

@@ -11,11 +11,14 @@ const WidgetMixin = {
     }
   },
   initialState: {
-    widgets: [],
+    widgets: null,
     _div: null
   },
+  created() {
+    this.widgets = [];
+  },
   attached() {
-    if (!this.dataSrc && !Object.keys(this.resource).length) this.populate();
+    if (!this.dataSrc && !this.resource) this.populate();
   },
   get div() {
     if (this._div) return this._div;
@@ -72,7 +75,7 @@ const WidgetMixin = {
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resource = this.resource;
+    let resource = this.resource || {};
     for (let name of field) {
       resource = await this.fetchValue(resource, name);
       if (resource == null) return;
