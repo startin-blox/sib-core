@@ -1,4 +1,5 @@
 import { base_context, store } from '../store.js';
+import { domIsReady } from '../helpers/index.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -43,13 +44,10 @@ const StoreMixin = {
     },
   },
   initialState: {
-    resource: {},
+    resource: null,
   },
   attached() {
-    if (this.element.resource) {
-      this.resource = this.element.resource; // TODO: not good
-      this.populate();
-    }
+    if (this.resource) this.populate();
   },
   get context() {
     return { ...base_context, ...JSON.parse(this.extraContext) };
@@ -60,16 +58,16 @@ const StoreMixin = {
       return this.resource['ldp:contains'];
     return [this.resource['ldp:contains']];
   },
+  get loader() {
+    return this.loaderId ? document.getElementById(this.loaderId) : null;
+  },
   isContainer() {
     return '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
   },
   toggleLoaderHidden(toggle: boolean) {
-    if (this.loaderId) {
-      const loader = document.getElementById(this.loaderId);
-      if (loader) loader.toggleAttribute('hidden', toggle);
-    }
+    if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  /*async getUser() {
+  async getUser() {
     // wait for dom
     await domIsReady();
     const sibAuth = document.querySelector('sib-auth');
@@ -82,8 +80,9 @@ const StoreMixin = {
     // if element is defined, wait custom element to be ready
     await customElements.whenDefined('sib-auth');
 
-    return sibAuth.getUser();
-  }*/
+    //@ts-ignore
+    return sibAuth.getUser(); // TODO : improve this
+  }
 };
 
 export {

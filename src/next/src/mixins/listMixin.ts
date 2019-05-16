@@ -212,7 +212,7 @@ const ListMixin = {
     this.setFilters(this.searchForm.value);
   },
   populate() {
-    const div = this.getDiv();
+    const div = this.div;
 
     if (!this.isContainer()) {
       this.appendSingleElt();

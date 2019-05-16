@@ -12,50 +12,48 @@ const WidgetMixin = {
   },
   initialState: {
     widgets: [],
-    wrappers: {},
-    div: null
+    _div: null
   },
   attached() {
     if (!this.dataSrc && !Object.keys(this.resource).length) this.populate();
   },
-  getDiv() {
-    if (this.div) return this.div;
-    this.div = document.createElement('div');
-    this.element.appendChild(this.div);
-    return this.div;
+  get div() {
+    if (this._div) return this._div;
+    this._div = document.createElement('div');
+    this.element.appendChild(this._div);
+    return this._div;
   },
-  getSet(field: string) {
-    return parseFieldsString(this.element.getAttribute('set-' + field));
+  set div(value) {
+    this._div = value
+  },
+  get fields() {
+    if (this.dataFields === '') return [];
+    if (this.dataFields) return parseFieldsString(this.dataFields);
+
+    const resource =
+      this.isContainer() && this.resources ? this.resources[0] : this.resource;
+
+    if (!resource) {
+      console.error(new Error('You must provide a "data-fields" attribute'));
+      return [];
+    }
+
+    return Object.keys(resource)
+      .filter(prop => !prop.startsWith('@'))
+      .map(a => [a]);
   },
   getAction(field: string) {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
-  isMultiple(field:string) {
-    return this.element.hasAttribute('multiple-' + field);
+  getSet(field: string) {
+    return parseFieldsString(this.element.getAttribute('set-' + field));
   },
   isSet(field: string) {
     return this.element.hasAttribute('set-' + field);
   },
-  getFields() {
-    if (this.dataFields === '') {
-      return [];
-    }
-    if (this.dataFields) {
-      return parseFieldsString(this.dataFields);
-    }
-
-    const resource =
-      this.isContainer() && this.resources ? this.resources[0] : this.resource;
-
-      if (!resource) {
-        console.error(new Error('You must provide a "data-fields" attribute'));
-        return [];
-      }
-
-    return Object.keys(resource)
-      .filter(prop => !prop.startsWith('@'))
-      .map(a => [a]);
+  isMultiple(field:string) {
+    return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
     if (this.isContainer()) return null;
@@ -96,10 +94,10 @@ const WidgetMixin = {
   },
   empty() {
     // create a new empty div next to the old one
-    if (this.div) {
+    if (this._div) {
       let newDiv = document.createElement('div')
-      this.element.insertBefore(newDiv, this.div)
-      this.element.removeChild(this.div)
+      this.element.insertBefore(newDiv, this._div)
+      this.element.removeChild(this._div)
       this.div = newDiv
     }
   },
@@ -136,7 +134,7 @@ const WidgetMixin = {
     return attrs;
   },
   async appendWidget(field: string, parent: HTMLElement) {
-    if (!parent) parent = this.getDiv();
+    if (!parent) parent = this.div;
     if (this.isSet(field)) {
       await this.appendSet(field, parent);
       return;
@@ -156,8 +154,6 @@ const WidgetMixin = {
 
     this.widgets.push(parent.appendChild(widget));
   },
-
-
   multiple(field: string) {
     const attribute = 'multiple-' + field;
     if (!this.element.hasAttribute(attribute)) return null;

@@ -13,9 +13,11 @@ const SibForm = {
       default: null
     }
   },
-  initialState: {
-    defaultWidget: 'sib-form-label-text',
-    defaultMultipleWidget: 'sib-multiple-form',
+  get defaultWidget() {
+    return 'sib-form-label-text';
+  },
+  get defaultMultipleWidget() {
+    return 'sib-multiple-form';
   },
   get value() {
     const values = {};
@@ -35,6 +37,9 @@ const SibForm = {
         if(value[el.name]) el.value = value[el.name]
       } catch (e) {}
     });
+  },
+  get form() {
+    return this.naked == null ? this.element.querySelector('form') : this.element;
   },
   getWidget(field: string) {
     if (!this.element.hasAttribute('widget-' + field)
@@ -102,23 +107,21 @@ const SibForm = {
   },
   async populate() {
     if (!this.form) {
-      if (this.naked !== null) {
-        this.form = this.element;
-      } else {
-        this.form = document.createElement('form');
-        this.form.addEventListener('submit', (event) => {
+      if (this.naked == null) {
+        const form = document.createElement('form');
+        form.addEventListener('submit', (event) => {
           event.preventDefault();
           this.submitForm();
         });
-        this.form.addEventListener('reset', event =>
-        setTimeout(() => this.inputChange(event)),
+        form.addEventListener('reset', event =>
+          setTimeout(() => this.inputChange(event)),
         );
-        this.element.appendChild(this.form);
+        this.element.appendChild(form);
       }
       this.element.addEventListener('input', event => this.inputChange(event));
     }
 
-    await Promise.all(this.getFields().map(field => this.appendWidget(field, this.form)));
+    await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
 
     if (this.naked !== null) return;
     this.form.appendChild(this.createInput('submit'));

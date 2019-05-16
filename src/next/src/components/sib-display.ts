@@ -5,11 +5,7 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 
 const SibDisplay = {
   name: 'sib-display',
-  use: [WidgetMixin, ListMixin, StoreMixin],
-  initialState: {
-    defaultWidget: 'sib-display-value',
-    defaultMultipleWidget: 'sib-multiple'
-  },
+  use: [ WidgetMixin, ListMixin, StoreMixin ],
   created() {
     window.addEventListener('navigate', event => {
       if (this.resource == null) return;
@@ -24,9 +20,15 @@ const SibDisplay = {
   get childTag() {
     return this.element.dataset.child || this.element.tagName;
   },
+  get defaultWidget() {
+    return 'sib-display-value';
+  },
+  get defaultMultipleWidget() {
+    return 'sib-multiple';
+  },
   // Here "even.target" points to the content of the widgets of the children of sib-display
   dispatchSelect(event) {
-    const resource = event.target.closest(this.childTag).resource;
+    const resource = event.target.closest(this.childTag).component.resource;
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
@@ -39,9 +41,9 @@ const SibDisplay = {
       );
     }
   },
-  appendChildElt(resource, parent) {
+  appendChildElt(resource: Object, parent) {
     const child = document.createElement(this.childTag);
-    child.resource = resource;
+    child.component.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
     if (this.dataFields != null) child.dataset.fields = this.dataFields;
 
@@ -60,7 +62,7 @@ const SibDisplay = {
     parent.appendChild(child);
   },
   async appendSingleElt() {
-    for (let field of this.getFields()) {
+    for (let field of this.fields) {
       await this.appendWidget(field);
     }
   }

@@ -22,8 +22,7 @@ const SibWidget = {
   },
   get childTemplate() {
     const child = this.element.querySelector('template[data-range]');
-    if (!child) return null;
-    return child.innerHTML;
+    return child ? child.innerHTML : null;
   }
 };
 
