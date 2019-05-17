@@ -45,6 +45,10 @@ const StoreMixin = {
   },
   initialState: {
     resource: null,
+    resourcesFilters: null
+  },
+  created() {
+    this.resourcesFilters = [];
   },
   attached() {
     if (this.resource) this.populate();
@@ -53,10 +57,13 @@ const StoreMixin = {
     return { ...base_context, ...JSON.parse(this.extraContext) };
   },
   get resources() {
-    if (!this.isContainer() || !this.resource['ldp:contains']) return [];
-    if (Array.isArray(this.resource['ldp:contains']))
-      return this.resource['ldp:contains'];
-    return [this.resource['ldp:contains']];
+    let resources;
+    if (!this.isContainer() || !this.resource['ldp:contains']) resources = [];
+    else if (Array.isArray(this.resource['ldp:contains'])) resources = this.resource['ldp:contains'];
+    else resources = [this.resource['ldp:contains']];
+
+    this.resourcesFilters.forEach(filter => resources = resources.filter(filter.bind(this)));
+    return resources;
   },
   get loader() {
     return this.loaderId ? document.getElementById(this.loaderId) : null;

@@ -23,13 +23,16 @@ const ListMixin = {
       default: null
     }
   },
+  created() {
+    this.resourcesFilters.push((resource) => this.matchFilters(resource))
+  },
   get pageCount() {
-    return Math.max(1, Math.ceil(this.resourcesFiltered.length / this.paginateBy));
+    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
   },
   get currentPageResources() {
-    if (this.paginateBy == 0) return this.resourcesFiltered;
+    if (this.paginateBy == 0) return this.resources;
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return this.resourcesFiltered.slice(
+    return this.resources.slice(
       firstElementIndex,
       firstElementIndex + this.paginateBy,
     );
@@ -174,9 +177,6 @@ const ListMixin = {
     elements.next.toggleAttribute('disabled',this.currentPage >= this.pageCount);
     return;
   },
-  get resourcesFiltered() {
-    return this.resources.filter(this.matchFilters.bind(this));
-  },
   appendFilters() {
     const searchForm = document.createElement('sib-form');
     (<any>searchForm).component.resource = this.resource;
@@ -222,7 +222,7 @@ const ListMixin = {
       let html: string;
       try {
         html = evalTemplateString(this.counterTemplate, {
-          counter: this.resourcesFiltered.length,
+          counter: this.resources.length,
         });
       } catch (e) {
         console.error(new Error('error in counter-template'), e);
