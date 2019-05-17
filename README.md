@@ -78,8 +78,9 @@ Filters and searching capabilities can be easily added to interact with the list
     </script>
   ```
   If your `<script>` tag has the attribute `data-default-context`, this extra context will be applied on all the components which doesn't have an `extra-context` attribute.
-- **`loader-id`**: Id of the loader element you want to display during the loading time
-- **`class-xyz`**: Class attribute added to the fields `xyz`
+- **`loader-id`**: Id of the loader element you want to display during the loading time.
+- **`class-xyz`**: Class attribute added to the fields `xyz`.
+- **`child-xyz`**: add attribute `xyz` to all children.
 - **`id-suffix`**: String added at the end of the source url (`data-src`).
   Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
 
