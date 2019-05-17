@@ -5,7 +5,6 @@ const ListMixin = {
   name: 'list-mixin',
   use: [],
   initialState: {
-    filters: {},
     filtersAdded: false,
     currentPage: 1,
     paginationElements: null
@@ -38,8 +37,14 @@ const ListMixin = {
   get searchForm() {
     return this.element.querySelector('sib-form');
   },
-  setFilters(filters) {
-    this.filters = filters;
+  get filters() {
+    return this.searchForm ? this.searchForm.component.value : {};
+  },
+  set filters(filters) {
+    this.searchForm.component.value = filters;
+    this.filterList();
+  },
+  filterList() {
     if (!this.resource) return;
     this.empty();
     this.populate();
@@ -175,25 +180,17 @@ const ListMixin = {
   appendFilters() {
     const searchForm = document.createElement('sib-form');
     (<any>searchForm).component.resource = this.resource;
-    searchForm.addEventListener('formChange', (event) => this.filterList(event['detail'].resource))
+    searchForm.addEventListener('formChange', () => this.filterList())
     searchForm.setAttribute('data-fields', this.searchFields);
     searchForm.toggleAttribute('naked', true);
     searchForm.addEventListener('input', () => this.currentPage = 1);
 
-    //displays applied filter values in the form
-    for (let filter of Object.keys(this.filters)) {
-      if (this.searchFields.indexOf(filter) != -1) {
-        searchForm.setAttribute('value-' + filter, this.filters[filter]);
-      }
-    }
     //pass range attributes
-    let filters = {};
     for (let field of (<any>searchForm).component.fields) {
       for (let attr of ['range', 'widget', 'label', 'value']) {
         const value = this.element.getAttribute(`search-${attr}-${field}`);
         if (value == null) continue;
         searchForm.setAttribute(`${attr}-${field}`, value);
-        if(field && attr == "value") filters[field] = value;
       }
     }
 
@@ -201,14 +198,13 @@ const ListMixin = {
       this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);
     else this.element.insertBefore(searchForm, this.element.firstChild);
 
-    this.filtersAdded = true;
-    this.setFilters(filters);
+    setTimeout(() => {
+      this.filtersAdded = true;
+      this.filterList();
+    });
   },
   appendSingleElt(parent) {
     this.appendChildElt(this.resource, parent);
-  },
-  filterList() {
-    this.setFilters(this.searchForm.component.value);
   },
   populate() {
     const div = this.div;
