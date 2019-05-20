@@ -63,6 +63,7 @@ Filters and searching capabilities can be easily added to interact with the list
   - **`search-widget-xyz`**: The form widget of the search field `xyz`
   - **`search-range-xyz`**: The range of values of the search field `xyz`
 - **`paginate-by`**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
+- **`order-by`**: The name of the field you want to use to order the list. For example, `order-by="username"` will order the users list alphabetically based on the username.
 - **`next`**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
 - **`action-xyz`**:
 - **`label-xyz`**: Set the label for the field `xyz`

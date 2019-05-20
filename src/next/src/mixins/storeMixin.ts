@@ -62,7 +62,7 @@ const StoreMixin = {
     else if (Array.isArray(this.resource['ldp:contains'])) resources = this.resource['ldp:contains'];
     else resources = [this.resource['ldp:contains']];
 
-    this.resourcesFilters.forEach(filter => resources = resources.filter(filter.bind(this)));
+    this.resourcesFilters.forEach(filter => resources = filter(resources));
     return resources;
   },
   get loader() {

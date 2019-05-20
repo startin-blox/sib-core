@@ -11,7 +11,7 @@ const FilterMixin = {
     }
   },
   created() {
-    this.resourcesFilters.push((resource) => this.matchFilters(resource))
+    this.resourcesFilters.push(resources => this.filterCallback(resources))
   },
   get searchForm() {
     return this.element.querySelector('sib-form');
@@ -22,6 +22,9 @@ const FilterMixin = {
   set filters(filters) {
     this.searchForm.component.value = filters;
     this.filterList();
+  },
+  filterCallback(resources) {
+    return resources.filter(this.matchFilters.bind(this));
   },
   filterList() {
     if (!this.resource) return;
