@@ -17,14 +17,31 @@ const ListMixin = {
     },
   },
   created() {
-    this.resourcesFilters.push(resources => this.orderCallback(resources))
+    this.resourcesFilters.push(
+      resources => this.orderCallback(resources),
+      resources => this.hightlightCallback(resources)
+    )
+  },
+  hightlightCallback(resources) {
+    for (let attr of this.element.attributes) {
+      if (attr.name.startsWith('highlight-')) {
+        const field = attr.name.split('highlight-')[1];
+        for (let [index, res] of resources.entries()) {
+          if (res[field] && res[field] == attr.value) {
+            // put the current element at the beginning of the array
+            resources.splice(0, 0, resources.splice(index, 1)[0]);
+          }
+        }
+      }
+    }
+    return resources
   },
   orderCallback(resources) {
     if(this.orderBy)
-      return resources.sort(this.compareValues(this.orderBy))
+      return resources.sort(this.sortValuesByKey(this.orderBy))
     return resources
   },
-  compareValues(key: string, order='asc') {
+  sortValuesByKey(key: string) {
     return function(a, b) {
       if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
@@ -36,7 +53,7 @@ const ListMixin = {
       if (varA > varB) comparison = 1;
       else if (varA < varB) comparison = -1;
 
-      return (order == 'desc') ? (comparison * -1) : comparison
+      return comparison
     }
   },
   appendSingleElt(parent) {
