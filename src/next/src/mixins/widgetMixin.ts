@@ -20,7 +20,7 @@ const WidgetMixin = {
   attached() {
     if (!this.dataSrc && !this.resource) this.populate();
   },
-  get div() {
+  get div(): HTMLElement {
     if (this._div) return this._div;
     this._div = document.createElement('div');
     this.element.appendChild(this._div);
