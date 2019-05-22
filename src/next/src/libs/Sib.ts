@@ -1,7 +1,9 @@
-import { ComponentConstructorInterface } from "./mixin/interfaces/ComponentConstructorInterface.js";
-import { ComponentInterface } from "./mixin/interfaces/ComponentInterface.js";
-import { MixinStaticInterface } from "./mixin/interfaces/MixinStaticInterface.js";
 import { ComponentFactory } from "./ComponentFactory.js";
+import {
+    ComponentConstructorInterface,
+    ComponentInterface,
+    MixinStaticInterface
+} from "./interfaces.js";
 
 export class Sib {
     public static register(componentDefinition: MixinStaticInterface):void {

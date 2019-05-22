@@ -1,5 +1,5 @@
-import { base_context, store } from '../store.js';
-import { domIsReady } from '../helpers/index.js';
+import { base_context, store } from '../store/store.js';
+import { domIsReady } from '../libs/helpers.js';
 
 const StoreMixin = {
   name: 'store-mixin',

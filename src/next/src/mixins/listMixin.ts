@@ -1,5 +1,5 @@
-import { store } from '../store.js';
-import { stringToDom, evalTemplateString } from '../helpers/index.js';
+import { store } from '../store/store.js';
+import { stringToDom, evalTemplateString } from '../libs/helpers.js';
 import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 

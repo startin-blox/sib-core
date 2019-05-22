@@ -1,9 +1,10 @@
-import { MixinStaticInterface } from './interfaces/MixinStaticInterface.js';
-import { ComponentStaticInterface } from './interfaces/ComponentStaticInterface.js';
-
-import { AttributesDefinitionInterface } from './interfaces/AttributesDefinitionInterface.js';
-import { ArrayOfHooksInterface } from './interfaces/ArrayOfHooksInterface.js';
-import { AccessorStaticInterface } from './interfaces/AccessorStaticInterface.js';
+import {
+  MixinStaticInterface,
+  ComponentStaticInterface,
+  AttributesDefinitionInterface,
+  ArrayOfHooksInterface,
+  AccessorStaticInterface
+} from './interfaces.js';
 
 const HOOKS = ['created', 'attached', 'detached'];
 const API = [

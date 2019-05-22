@@ -1,7 +1,7 @@
 /**
  * @jest-environment jest-environment-jsdom-fourteen
  */
-import { Sib } from './Sib';
+import { Sib } from '../libs/Sib';
 
 const MixinTestTwo = {
   name: 'mixin2',

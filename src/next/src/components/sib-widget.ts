@@ -1,4 +1,4 @@
-import { Sib } from '../Sib.js';
+import { Sib } from '../libs/Sib.js';
 import { widgetFactory } from '../widgets/widget-factory.js';
 
 const SibWidget = {

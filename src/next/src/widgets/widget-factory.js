@@ -1,5 +1,5 @@
-import { evalTemplateString } from '../helpers/index.js';
-import { store } from '../store.js';
+import { evalTemplateString } from '../libs/helpers.js';
+import { store } from '../store/store.js';
 
 export class BaseWidget extends HTMLElement {
   connectedCallback() {

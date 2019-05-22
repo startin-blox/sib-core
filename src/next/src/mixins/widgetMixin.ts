@@ -1,5 +1,5 @@
-import { store } from '../store.js';
-import { parseFieldsString } from '../helpers/index.js';
+import { store } from '../store/store.js';
+import { parseFieldsString } from '../libs/helpers.js';
 
 const WidgetMixin = {
   name: 'widget-mixin',

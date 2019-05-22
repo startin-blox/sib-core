@@ -1,3 +1,8 @@
+# Get started
+```
+npm install && npm run build
+```
+
 # Mixin API
 ## Name
 ```js

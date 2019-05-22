@@ -1,4 +1,4 @@
-import { stringToDom } from '../helpers/index.js';
+import { stringToDom } from '../libs/helpers.js';
 
 const PaginateMixin = {
   name: 'paginate-mixin',

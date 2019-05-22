@@ -1,4 +1,4 @@
-import { ComponentFactory } from './ComponentFactory';
+import { ComponentFactory } from '../libs/ComponentFactory';
 
 const MixinTestTwo = {
   name: 'mixin2',

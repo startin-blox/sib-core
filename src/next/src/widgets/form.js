@@ -1,5 +1,5 @@
 import { widgetFactory } from './widget-factory.js';
-import { importCSS } from '../helpers/index.js';
+import { importCSS } from '../libs/helpers.js';
 import Choices from 'https://dev.jspm.io/choices.js@4';
 
 const SIBFormLabelText = widgetFactory(

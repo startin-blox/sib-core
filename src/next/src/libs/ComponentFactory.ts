@@ -1,10 +1,12 @@
-import { Compositor } from './mixin/Compositor.js';
-import { Component } from './parents/Component.js';
-import { MixinStaticInterface } from './mixin/interfaces/MixinStaticInterface.js';
-import { AttributesDefinitionInterface } from './mixin/interfaces/AttributesDefinitionInterface.js';
-import { ComponentConstructorInterface } from './mixin/interfaces/ComponentConstructorInterface.js';
-import { ArrayOfHooksInterface } from './mixin/interfaces/ArrayOfHooksInterface.js';
-import { AccessorStaticInterface } from './mixin/interfaces/AccessorStaticInterface.js';
+import { Compositor } from './Compositor.js';
+import { Component } from './Component.js';
+import {
+  MixinStaticInterface,
+  AttributesDefinitionInterface,
+  ComponentConstructorInterface,
+  ArrayOfHooksInterface,
+  AccessorStaticInterface
+} from './interfaces.js';
 
 export class ComponentFactory {
   public static build(component: MixinStaticInterface): ComponentConstructorInterface {

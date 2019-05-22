@@ -1,4 +1,4 @@
-import { Compositor } from './Compositor';
+import { Compositor } from '../libs/Compositor';
 
 const MixinTestTwo = {
   name: 'mixin2',

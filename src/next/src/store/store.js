@@ -1,4 +1,4 @@
-import './legacy/ldpframework.js';
+import './ldpframework.js';
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',

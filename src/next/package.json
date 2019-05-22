@@ -19,6 +19,9 @@
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"
     ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
     "resolver": "jest-ts-webcompat-resolver"
   },
   "author": "StartinBlox",
@@ -31,6 +34,7 @@
     "jest": "^24.7.1",
     "jest-environment-jsdom-fourteen": "^0.1.0",
     "jest-ts-webcompat-resolver": "^1.0.0",
+    "ts-jest": "^24.0.2",
     "ts-node": "^8.0.3",
     "typescript": "^3.4.1"
   }
