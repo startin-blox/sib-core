@@ -62,9 +62,9 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
 
     parent.appendChild(child);
   }
-  async appendSingleElt() {
+  async appendSingleElt(parent) {
     for (let field of this.fields) {
-      await this.appendWidget(field);
+      await this.appendWidget(field, parent);
     }
   }
 }
