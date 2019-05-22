@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local file</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-display
+      data-src="data/group-by.jsonld"
+      data-fields="name, date"
+      group-by="date"
+    ></sib-display>
+
+    <style>
+      span{
+        font-weight: bold;
+        color: seagreen;
+      }
+    </style>
+  </body>
+</html>

@@ -2,10 +2,11 @@ import { store } from '../store/store.js';
 import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 import { CounterMixin } from './counterMixin.js';
+import { grouperMixin } from './grouperMixin.js';
 
 const ListMixin = {
   name: 'list-mixin',
-  use: [ FilterMixin, PaginateMixin, CounterMixin ],
+  use: [ FilterMixin, PaginateMixin, CounterMixin, grouperMixin ],
   attributes: {
     orderBy: {
       type: String,
@@ -68,6 +69,12 @@ const ListMixin = {
     }
 
     this.renderCounter(div);
+
+    if (this.groupBy) {
+      this.renderGroupedElements(div);
+      return;
+    }
+
     this.renderPaginationNav(div);
 
     for (let resource of this.currentPageResources) {
