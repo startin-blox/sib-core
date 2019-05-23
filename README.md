@@ -233,6 +233,9 @@ The following widgets are available:
 | `populate`       | `sib-display`, `sib-form`, `sib-calendar`, `sib-map` | the component got and displayed all its datas.               |
 | `save`           | `sib-form`                                           | the user validates the form.                                 |
 
+## Contribute
+If you want to contribute to `sib-core`, you may be interested by the [developers documentation](doc/README-developers.md).
+
 ## License
 
 Licence MIT

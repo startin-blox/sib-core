@@ -24,8 +24,7 @@
   "jest": {
     "verbose": true,
     "setupFiles": [
-      "<rootDir>/node_modules/document-register-element/build/document-register-element.node.js",
-      "<rootDir>/test/bootstrap.js"
+      "<rootDir>/node_modules/document-register-element/build/document-register-element.node.js"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/lib/",

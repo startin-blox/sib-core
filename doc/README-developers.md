@@ -1,10 +1,42 @@
-# Get started
+# Getting started
+## Installation
+To start developing in `sib-core`, you need:
+```shell
+# 1. Install the dependencies
+npm install
+
+# 2. Build the framework
+npm run build
+
+# 3. Launch a web server
+npm run serve
 ```
-npm install && npm run build
+
+You can now see examples at [http://127.0.0.1:3000](http://127.0.0.1:3000/).
+
+## Adding new features
+To develop new features of `sib-core`, you can add an HTML example file in `/examples` and link it in `/index.html`.
+Don't forget to import the framework:
+
+```html
+<script type="module" src="../lib/src/index.js"></script>
+```
+You can now write HTML using `sib-core` and test it in your browser.
+
+
+## Test
+You can test the API by running:
+```shell
+npm run test
 ```
 
 # Mixin API
+## How it works
+Here is a simplified schema of how the API works to create a component:
+![sib-api](./images/sib-api.png)
+
 ## Name
+
 ```js
   static get name() {
     return 'string';
