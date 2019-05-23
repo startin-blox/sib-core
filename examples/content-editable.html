@@ -10,22 +10,11 @@
   </head>
 
   <body>
-    <h2>Simple display</h2>
     <sib-display
-      data-src="data/sib-display.jsonld"
+      data-src="http://127.0.0.1:8000/conversations/"
+      fields="title"
+      widget-title="sib-display-div"
+      editable-title
     ></sib-display>
-    <h2>With fields and sets</h2>
-    <sib-display
-      data-src="data/sib-display.jsonld"
-      fields="@id, username, name, email"
-      set-name="first_name, last_name"
-      class-username="name"
-    ></sib-display>
-    <style>
-      .name{
-        font-family: cursive;
-        color: green;
-      }
-    </style>
   </body>
 </html>

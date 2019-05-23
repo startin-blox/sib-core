@@ -35,18 +35,19 @@ const SIBWidgetMixin = superclass =>
     }
 
     get fields() {
-      if (this.dataset.fields === '') {
+      const attr = this.getAttribute("fields");
+      if (attr === '') {
         return [];
       }
-      if (this.dataset.fields) {
-        return this.parseFieldsString(this.dataset.fields);
+      if (attr) {
+        return this.parseFieldsString(attr);
       }
 
       const resource =
         this.isContainer && this.resources ? this.resources[0] : this.resource;
 
       if (!resource) {
-        console.error(new Error('You must provide a "data-fields" attribute'));
+        console.error(new Error('You must provide a "fields" attribute'));
         return [];
       }
 
@@ -136,7 +137,7 @@ const SIBWidgetMixin = superclass =>
         if (value == null) continue;
         attrs[`each-${attr}`] = value;
       }
-      for (let attr of ['range', 'label', 'class', 'widget']) {
+      for (let attr of ['range', 'label', 'class', 'widget', 'editable']) {
         const value = this.getAttribute(`${attr}-${field}`);
         if (value == null) continue;
         if (attr === 'class') attr = 'className';
@@ -144,7 +145,8 @@ const SIBWidgetMixin = superclass =>
       }
       if (this.getAction(field)) attrs.src = this.resource['@id'];
       attrs.value = await this.getValues(field);
-      
+      attrs.resourceId = this.resource['@id'];
+
       return attrs;
     }
 

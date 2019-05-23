@@ -14,11 +14,11 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
       );
     });
   }
-  
+
   get defaultWidget() {
     return 'sib-display-value';
   }
-  
+
   get defaultMultipleWidget() {
     return 'sib-multiple';
   }
@@ -46,9 +46,12 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
     const child = document.createElement(this.childTag);
     child.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.dataset.fields != null) child.dataset.fields = this.dataset.fields;
+    if (this.hasAttribute('fields')) {
+      child.setAttribute('fields', this.getAttribute('fields'));
+    }
 
-    for (let attr of this.attributes) //copy widget and value attributes
+    for (let attr of this.attributes) {
+      //copy widget and value attributes
       if (
         attr.name.startsWith('value-') ||
         attr.name.startsWith('label-') ||
@@ -56,9 +59,13 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
         attr.name.startsWith('widget-') ||
         attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||
+        attr.name.startsWith('editable-') ||
         attr.name.startsWith('action-')
       )
         child.setAttribute(attr.name, attr.value);
+      if (attr.name.startsWith('child-'))
+        child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
+    }
 
     parent.appendChild(child);
   }

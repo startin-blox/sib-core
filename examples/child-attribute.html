@@ -4,28 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-display</title>
+    <title>SIB test: child attribute</title>
     <script type="module" src="../src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <h2>Simple display</h2>
-    <sib-display
-      data-src="data/sib-display.jsonld"
-    ></sib-display>
-    <h2>With fields and sets</h2>
     <sib-display
       data-src="data/sib-display.jsonld"
       fields="@id, username, name, email"
       set-name="first_name, last_name"
-      class-username="name"
+      child-style="border: 3px dashed purple"
     ></sib-display>
-    <style>
-      .name{
-        font-family: cursive;
-        color: green;
-      }
-    </style>
   </body>
 </html>
