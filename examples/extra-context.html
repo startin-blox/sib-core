@@ -7,18 +7,18 @@
     <title>SIB test: extra-context</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
     <script type="module" src="https://unpkg.com/@startinblox/router@latest"></script>
-    <script type="module" src="../src/index.js"></script>
+    <script type="module" src="../lib/src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <script id="alpha" type="application/ld+json">
       {
-        "user":"https://test-paris.happy-dev.fr/users/"
+        "user":"https://api.test-paris.happy-dev.fr/users/"
       }
     </script>
   </head>
 
   <body>
 
-    <sib-router default-route="home">
+    <sib-router default-route="home" route-prefix="examples/extra-context.html">
       <sib-route name="home">home</sib-route>
       <sib-route name="detail" use-id></sib-route>
     </sib-router>
@@ -26,7 +26,7 @@
     <div id="home">
       <h1>HOME</h1>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         fields="@id, username, first_name, last_name, email"
         next="detail"
         extra-context="alpha"

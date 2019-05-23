@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>SIB test: Widget Factory</title>
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
-  <script type="module" src="../src/index.js"></script>
+  <script type="module" src="../lib/src/index.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -42,7 +42,7 @@
 
 
   <sib-display
-    data-src="https://test-paris.happy-dev.fr/projects/1/"
+    data-src="data/project.jsonld"
     fields="name, description, customer"
     widget-name="sib-test-name"
     widget-customer="sib-test-customer"
@@ -51,7 +51,7 @@
     <h2>Choose skills</h2>
     <sib-form
     fields="skills"
-    range-skills="https://test-paris.happy-dev.fr/skills/"
+    range-skills="data/skills.jsonld"
     widget-skills="sib-custom-dropdown"
     ></sib-form>
 </body>

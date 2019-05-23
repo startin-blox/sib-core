@@ -2,13 +2,17 @@
   "name": "@startinblox/core",
   "version": "0.0.0",
   "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
-  "main": "./src/index.js",
-  "module": "./src/index.js",
+  "main": "./src/lib/index.js",
+  "module": "./src/lib/index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
     "test": "jest",
+    "coverage": "jest --coverage",
+    "tsc": "tsc",
+    "watch": "npm run tsc -- --watch",
+    "build": "npm run tsc",
     "serve": "node server.js"
   },
   "repository": {
@@ -17,10 +21,34 @@
   },
   "author": "",
   "license": "MIT",
+  "jest": {
+    "verbose": true,
+    "setupFiles": [
+      "<rootDir>/node_modules/document-register-element/build/document-register-element.node.js",
+      "<rootDir>/test/bootstrap.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "resolver": "jest-ts-webcompat-resolver"
+  },
   "devDependencies": {
     "find-free-port": "^2.0.0",
-    "jest": "^23.6.0",
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "@types/chai": "^4.1.7",
+    "@types/jest": "^24.0.11",
+    "babel-jest": "^24.7.1",
+    "document-register-element": "^1.13.2",
+    "jest": "^24.7.1",
+    "jest-environment-jsdom-fourteen": "^0.1.0",
+    "jest-ts-webcompat-resolver": "^1.0.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.1"
   },
   "release": {
     "branch": "master",

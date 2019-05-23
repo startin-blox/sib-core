@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: sib-form</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
-    <script type="module" src="../src/index.js"></script>
+    <script type="module" src="../lib/src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -14,30 +14,30 @@
     <details>
       <summary>Some fields:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/users/4/"
+        data-src="https://api.test-paris.happy-dev.fr/users/1/"
         fields="username, first_name, last_name, email"
       ></sib-form>
     </details>
 
     <details>
       <summary>All fields:</summary>
-      <sib-form data-src="https://test-paris.happy-dev.fr/users/4/"></sib-form>
+      <sib-form data-src="https://api.test-paris.happy-dev.fr/users/1/"></sib-form>
     </details>
 
     <details>
       <summary>Multiple value:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/members/1/"
+        data-src="https://api.test-paris.happy-dev.fr/members/1/"
         fields="skills"
         widget-skills="sib-form-multiple-value"
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Form widgets:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/projects/1/"
+        data-src="data/project.jsonld"
         fields="businessProvider, businessProviderFee, foaf:jabberID"
         widget-businessProvider="sib-form-placeholder-text"
         widget-businessProviderFee="sib-form-number"
@@ -48,30 +48,30 @@
     <details>
       <summary>Dropdown:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/members/1/"
+        data-src="https://api.test-paris.happy-dev.fr/members/1/"
         fields="skills"
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Placeholder dropdown:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/members/1/"
+        data-src="https://api.test-paris.happy-dev.fr/members/1/"
         fields="skills"
         widget-skills="sib-form-placeholder-dropdown"
         label-skills='select a skill:'
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Multiple dropdown:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/members/1/"
+        data-src="https://api.test-paris.happy-dev.fr/members/1/"
         fields="skills"
         widget-skills="sib-form-multiple-dropdown"
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
       ></sib-form>
     </details>
 
@@ -82,14 +82,14 @@
         data-src="https://test-paris.happy-dev.fr/members/1/"
         fields="skills"
         widget-skills="sib-form-auto-completion"
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
       ></sib-form>
       <h2>Multiple skills</h2>
       <sib-form
         data-src="https://test-paris.happy-dev.fr/members/1/"
         fields="skills"
         widget-skills="sib-form-auto-completion"
-        range-skills="https://test-paris.happy-dev.fr/skills/"
+        range-skills="data/skills.jsonld"
         multiple-skills="sib-multiple-select"
       ></sib-form>
     </details>
@@ -97,7 +97,7 @@
     <details>
       <summary>Date widget:</summary>
       <sib-form
-        data-src="https://test-paris.happy-dev.fr/job-offers/8/"
+        data-src="https://api.test-paris.happy-dev.fr/job-offers/1/"
         fields="creationDate"
         widget-creationDate='sib-form-date'
       ></sib-form>

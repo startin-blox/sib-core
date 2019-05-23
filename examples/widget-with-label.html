@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>SIB test: Widget with label</title>
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
-  <script type="module" src="../src/index.js"></script>
+  <script type="module" src="../lib/src/index.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -24,7 +24,7 @@
     </sib-widget>
 
     <sib-display
-        data-src="https://test-paris.happy-dev.fr/projects/1/"
+        data-src="data/project.jsonld"
         fields="description"
         label-description="Project description:"
         widget-description="my-custom-sib-labelled-div"
@@ -33,12 +33,12 @@
     <h2>With SiB widget:</h2>
 
     <sib-display
-        data-src="https://test-paris.happy-dev.fr/projects/1/"
+        data-src="data/project.jsonld"
         fields="description"
         label-description="Project description:"
         widget-description="sib-display-labelled-div"
     ></sib-display>
-    
+
 </body>
 </html>
 

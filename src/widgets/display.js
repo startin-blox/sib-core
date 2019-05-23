@@ -1,4 +1,4 @@
-import { widgetFactory } from '../parents/widget-factory.js';
+import { widgetFactory } from './widget-factory.js';
 
 const SIBDisplayValue = widgetFactory(
   'sib-display-value',

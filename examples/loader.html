@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: loader</title>
-    <script type="module" src="../src/index.js"></script>
+    <script type="module" src="../lib/src/index.js"></script>
     <script type="module" src="https://unpkg.com/@startinblox/router"></script>
-    <script type="module" src="./debug.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -15,7 +14,7 @@
     <h2>Loader on sib-display</h2>
     <div id="my-custom-loader" hidden>Loading, please wait...</div>
     <sib-display
-      data-src="https://test-paris.happy-dev.fr/users/"
+      data-src="data/sib-display.jsonld"
       fields="username"
       loader-id="my-custom-loader"
     ></sib-display>
@@ -23,7 +22,7 @@
     <h2>Loader on sib-form</h2>
     <div id="my-form-loader" hidden>Please wait...</div>
     <sib-form
-    data-src="https://test-paris.happy-dev.fr/skills/12/"
+    data-src="data/project.jsonld"
     fields="name"
     loader-id="my-form-loader"
     ></sib-form>

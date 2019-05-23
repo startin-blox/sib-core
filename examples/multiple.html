@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: multiple</title>
-    <script type="module" src="../src/index.js"></script>
+    <script type="module" src="../lib/src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -17,7 +17,7 @@
       </template>
     </sib-widget>
     <sib-display
-      data-src="https://test-paris.happy-dev.fr/members/4/"
+      data-src="https://api.test-paris.happy-dev.fr/members/1/"
       fields="user.first_name, user.skills"
       widget-user.skills="hd-skill-name"
       label-user.skills="all skills"
@@ -27,18 +27,18 @@
  
     <h1>sib-form</h1>
     <sib-form
-      data-src="https://test-paris.happy-dev.fr/users/4/"
+      data-src="https://api.test-paris.happy-dev.fr/users/1/"
       fields="skills"
-      range-skills="https://test-paris.happy-dev.fr/skills/"
+      range-skills="data/skills.jsonld"
       multiple-skills
       label-skills="Skills:"
     ></sib-form>
 
     <h1>creation</h1>
     <sib-form
-      data-src="https://test-paris.happy-dev.fr/users/"
+      data-src="https://api.test-paris.happy-dev.fr/users/"
       fields="skills"
-      range-skills="https://test-paris.happy-dev.fr/skills/"
+      range-skills="data/skills.jsonld"
       multiple-skills
     ></sib-form>
   </body>

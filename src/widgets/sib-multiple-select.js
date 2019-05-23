@@ -1,4 +1,4 @@
-import { BaseWidget } from '../parents/widget-factory.js';
+import { BaseWidget } from './widget-factory.js';
 
 export default class SIBMultipleSelect extends BaseWidget {
   get range() {
