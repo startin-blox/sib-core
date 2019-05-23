@@ -1,5 +1,6 @@
 import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
+//@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select';
 
 const SIBFormLabelText = widgetFactory(
@@ -195,6 +196,7 @@ export {
   SIBFormRangeDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
+  SIBFormPlaceholderTextarea,
   SIBFormJSON,
   SIBFormLabelText,
   SIBFormNumber,

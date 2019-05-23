@@ -10,8 +10,10 @@ export default class SIBMultiple extends BaseWidget {
     if (!this.value) return;
     this.value.forEach(value => {
       const elm = this.insertWidget(this.childAttributes);
-      elm.value = value;
-      elm.toggleAttribute('data-holder', true);
+      if (elm) {
+        elm['value'] = value;
+        elm.toggleAttribute('data-holder', true);
+      }
     });
   }
 
@@ -24,13 +26,16 @@ export default class SIBMultiple extends BaseWidget {
       attrs[attr] = value;
     }
 
-    attrs.name = this.name;
+    attrs['name'] = this.name;
 
     return attrs;
   }
 
   insertWidget(attributes) {
-    const widget = document.createElement(this.getAttribute('widget'));
+    const widgetTag = this.getAttribute('widget');
+    const widget = widgetTag ? document.createElement(widgetTag) : null;
+    if (!widget) return;
+
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }

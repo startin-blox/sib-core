@@ -5,7 +5,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return this.getAttribute('range');
   }
   set range(range) {
-    this.setAttribute('range', range);
+    if (range) this.setAttribute('range', range);
   }
   render() {
     while (this.firstChild) this.firstChild.remove();
@@ -22,14 +22,16 @@ export default class SIBMultipleForm extends BaseWidget {
     if (!this.value) return;
     this.value.forEach(value => {
       const elm = this.insertWidget(this.childAttributes);
-      elm.value = value;
-      elm.toggleAttribute('data-holder', true);
+      if (elm) {
+        elm['value'] = value;
+        elm.toggleAttribute('data-holder', true);
+      }
     });
   }
   get childAttributes() {
     const attrs = {};
-    if (this.range) attrs.range = this.range;
-    attrs.name = this.name;
+    if (this.range) attrs['range'] = this.range;
+    attrs['name'] = this.name;
     for (let attr of ['label', 'class']) {
       const value = this[`each-${attr}`];
       if (value == null) continue;
@@ -40,7 +42,10 @@ export default class SIBMultipleForm extends BaseWidget {
 
   insertWidget(attributes) {
     const childWrapper = document.createElement('div');
-    const widget = document.createElement(this.getAttribute('widget'));
+    const widgetTag = this.getAttribute('widget');
+    const widget = widgetTag ? document.createElement(widgetTag) : null;
+    if (!widget) return;
+
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
