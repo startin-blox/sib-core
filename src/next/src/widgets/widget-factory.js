@@ -14,6 +14,7 @@ export class BaseWidget extends HTMLElement {
       id: (this.value && this.value['@id']) || '',
       escapedValue: this.escapedValue,
       range: this.htmlRange,
+      multiple: this.multiple,
     });
   }
   get label() {

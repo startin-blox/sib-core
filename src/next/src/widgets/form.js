@@ -1,6 +1,6 @@
 import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
-import Choices from 'https://dev.jspm.io/choices.js@4';
+import SlimSelect from 'https://dev.jspm.io/slim-select';
 
 const SIBFormLabelText = widgetFactory(
   'sib-form-label-text',
@@ -88,10 +88,18 @@ const SIBFormTextarea = widgetFactory(
     <div>\${label}</div>
     <textarea
       data-holder
-      type="text"
       name="\${name}"
     >\${escapedValue}</textarea>
   </label>`,
+);
+
+const SIBFormPlaceholderTextarea = widgetFactory(
+  'sib-form-placeholder-textarea',
+  `<textarea
+    data-holder
+    placeholder="\${label}"
+    name="\${name}"
+  >\${escapedValue}</textarea>`,
 );
 
 const SIBFormDropdown = widgetFactory(
@@ -123,7 +131,7 @@ const SIBFormAutoCompletion = widgetFactory(
   'sib-form-auto-completion',
   `<label>
     <div>\${label}</div>
-    <select name="\${name}" data-holder multiple>
+    <select name="\${name}" data-holder \${multiple?'multiple':''}>
       \${range}
     </select>
   </label>
@@ -134,8 +142,9 @@ const SIBFormAutoCompletion = widgetFactory(
   formWidget => {
     let select = formWidget.querySelector('select');
     if (!select) return;
-    new Choices(select, { removeItemButton: true });
-    importCSS('https://dev.jspm.io/npm:choices.js@4/public/assets/styles/choices.min.css');
+    const slimSelect = new SlimSelect({select: select});
+    importCSS('https://dev.jspm.io/slim-select/dist/slimselect.min.css');
+    select.addEventListener('change', () => slimSelect.render());
   },
 );
 

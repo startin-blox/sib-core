@@ -61,9 +61,9 @@ const SibDisplay = {
 
     parent.appendChild(child);
   },
-  async appendSingleElt() {
+  async appendSingleElt(parent: HTMLElement) {
     for (let field of this.fields) {
-      await this.appendWidget(field);
+      await this.appendWidget(field, parent);
     }
   }
 };

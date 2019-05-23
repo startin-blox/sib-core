@@ -77,11 +77,20 @@
 
     <details>
       <summary>Auto complete:</summary>
+      <h2>Single skill</h2>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
+        data-src="https://test-paris.happy-dev.fr/members/1/"
         data-fields="skills"
         widget-skills="sib-form-auto-completion"
-        range-skills="https://api.test-paris.happy-dev.fr/skills/"
+        range-skills="https://test-paris.happy-dev.fr/skills/"
+      ></sib-form>
+      <h2>Multiple skills</h2>
+      <sib-form
+        data-src="https://test-paris.happy-dev.fr/members/1/"
+        data-fields="skills"
+        widget-skills="sib-form-auto-completion"
+        range-skills="https://test-paris.happy-dev.fr/skills/"
+        multiple-skills="sib-multiple-select"
       ></sib-form>
     </details>
 
