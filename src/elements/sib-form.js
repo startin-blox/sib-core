@@ -66,7 +66,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   async submitForm() {
     const isCreation = !('@id' in this.value);
     const saved = this.save();
-    if (isCreation && this.form) this.form.reset(); // we reset the form only in creation mode
+    if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     const id = await saved;
     this.dispatchEvent(

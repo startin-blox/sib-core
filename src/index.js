@@ -6,6 +6,7 @@ import { store } from './store.js';
 import {
   SIBMultiple,
   SIBMultipleForm,
+  SIBMultipleSelect,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
@@ -44,6 +45,7 @@ export {
   widgetFactory,
   SIBMultiple,
   SIBMultipleForm,
+  SIBMultipleSelect,
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
