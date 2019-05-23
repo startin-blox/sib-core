@@ -8,13 +8,9 @@ import L from 'https://dev.jspm.io/leaflet';
 const SibMap = {
   name: 'sib-map',
   use: [ListMixin, StoreMixin],
-  attributes: {
-    extraContext: {
-      default: `{
-        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
-        "lat": "geo:lat",
-        "lng": "geo:long"
-      }`
+  initialState: {
+    markers: {
+      default: null
     }
   },
   created() {
@@ -28,6 +24,13 @@ const SibMap = {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
     ).addTo(this.map);
     this.element.appendChild(div);
+  },
+  get extra_context() {
+    return {
+      geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+      lat: "geo:lat",
+      lng: "geo:long"
+    }
   },
   dispatchSelect(event) {
     const resource = event.target.options.resource;
@@ -56,6 +59,7 @@ const SibMap = {
     for (let marker of this.markers) this.map.removeLayer(marker);
   },
   populate() {
+    for (let resource of this.resources) this.appendChildElt(resource);
     console.log(this.markers);
     this.map.fitBounds(L.featureGroup(this.markers).getBounds());
   }

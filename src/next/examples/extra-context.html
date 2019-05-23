@@ -9,6 +9,11 @@
     <script type="module" src="https://unpkg.com/@startinblox/router@latest"></script>
     <script type="module" src="../lib/src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <script id="alpha" type="application/ld+json">
+      {
+        "user":"https://api.test-paris.happy-dev.fr/users/"
+      }
+    </script>
   </head>
 
   <body>
@@ -22,18 +27,18 @@
       <h1>HOME</h1>
       <sib-display
         data-src="https://api.test-paris.happy-dev.fr/users/"
-        data-fields="@id, username, first_name, last_name, email"
-        extra-context='{"user":"https://api.test-paris.happy-dev.fr/users/"}'
-        paginate-by="4"
+        fields="@id, username, first_name, last_name, email"
         next="detail"
+        extra-context="alpha"
       ></sib-display>
     </div>
 
     <div id="detail">
       <h1>DETAIL</h1>
       <sib-display
-        data-fields="@id, username, first_name, last_name, email"
+        fields="@id, username, first_name, last_name, email"
         bind-resources
+        extra-context="alpha"
       ></sib-display>
     </div>
   </body>

@@ -14,7 +14,7 @@
     <sib-display
       id="guineapig"
       data-src="data/sib-display.jsonld"
-      data-fields="@id, username, first_name, last_name, email"
+      fields="@id, username, first_name, last_name, email"
     ></sib-display>
   </body>
 
@@ -26,7 +26,7 @@
     document.addEventListener("DOMContentLoaded", event => {
       console.log(`sib-display length when "DOMContentLoaded" event detected on document: ${target.children.length}.`);
     });
-    
+
     target.addEventListener("populate", event => {
       console.log(`sib-display length when "populate" event detected on #${target.id}: ${target.children.length}.`);
     });

@@ -17,7 +17,7 @@ const StoreMixin = {
         if (!value) return;
 
         // gets the data through the store
-        store.get(value + this.idSuffix, this.context).then(async resource => {
+        store.get(value + this.id_suffix, this.context).then(async resource => {
           this.empty();
           this.resource = resource;
           await this.populate();
@@ -28,11 +28,11 @@ const StoreMixin = {
     },
     idSuffix: {
       type: String,
-      default: ''
+      default: null
     },
     extraContext: {
       type: String,
-      default: '{}'
+      default: null
     },
     next: {
       type: String,
@@ -54,7 +54,18 @@ const StoreMixin = {
     if (this.resource) this.populate();
   },
   get context() {
-    return { ...base_context, ...JSON.parse(this.extraContext) };
+    return { ...base_context, ...this.extra_context };
+  },
+  get extra_context() {
+    let extraContextElement = this.extraContext ?
+    document.getElementById(this.extraContext) : // take element extra context first
+    document.querySelector('[data-default-context]'); // ... or look for a default extra context
+
+    if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
+    return {}
+  },
+  get id_suffix() {
+    return this.idSuffix ? this.idSuffix + '/' : ''
   },
   get resources() {
     let resources;

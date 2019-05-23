@@ -5,7 +5,7 @@ const WidgetMixin = {
   name: 'widget-mixin',
   use: [],
   attributes: {
-    dataFields: {
+    fields: {
       type: String,
       default: null,
     }
@@ -29,15 +29,19 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
-  get fields() {
-    if (this.dataFields === '') return [];
-    if (this.dataFields) return parseFieldsString(this.dataFields);
-
+  get fieldsWidget() {
+    const attr = this.fields;
+    if (attr === '') {
+      return [];
+    }
+    if (attr) {
+      return parseFieldsString(attr);
+    }
     const resource =
       this.isContainer() && this.resources ? this.resources[0] : this.resource;
 
     if (!resource) {
-      console.error(new Error('You must provide a "data-fields" attribute'));
+      console.error(new Error('You must provide a "fields" attribute'));
       return [];
     }
 
@@ -125,7 +129,7 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
-    for (let attr of ['range', 'label', 'class', 'widget']) {
+    for (let attr of ['range', 'label', 'class', 'widget', 'editable']) {
       const value = this.element.getAttribute(`${attr}-${field}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
@@ -133,6 +137,7 @@ const WidgetMixin = {
     }
     if (this.getAction(field)) attrs['src'] = this.resource['@id'];
     attrs['value'] = await this.getValues(field);
+    attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
     return attrs;
   },

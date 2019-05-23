@@ -132,7 +132,7 @@ const SibForm = {
       this.formInitialized = true;
     }
 
-    await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
+    await Promise.all(this.fieldsWidget.map(field => this.appendWidget(field, this.form)));
 
     if (this.naked !== null) return;
     this.form.appendChild(this.createInput('submit'));

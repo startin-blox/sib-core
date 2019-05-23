@@ -33,7 +33,7 @@ const FilterMixin = {
   },
   matchValue(propertyValue, filterValue) {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
-    if (filterValue === '') return true;
+    if (JSON.stringify(filterValue).includes('""')) return true;
     if (propertyValue == null) return false;
     if (propertyValue['ldp:contains']) {
       return this.matchValue(propertyValue['ldp:contains'], filterValue);
@@ -44,13 +44,9 @@ const FilterMixin = {
         false,
       );
     }
-    if (propertyValue['@id']) {
-      //search in ids
-      return (
-        filterValue['@id'] === '' ||
-        propertyValue['@id'] === filterValue ||
-        propertyValue['@id'] === filterValue['@id']
-      );
+    if (propertyValue['@id'] && propertyValue['@id'] === filterValue) return true;
+    if (propertyValue.constructor === Object) {
+      return Object.keys(filterValue).every(index => this.matchValue(propertyValue[index], filterValue[index]));
     }
 
     if (typeof propertyValue === 'number') { //check if number
@@ -87,10 +83,7 @@ const FilterMixin = {
   },
   matchFilter(resource, filter, value) {
     if (!this.isSet(filter)) {
-      return this.matchValue(
-        this.applyFilterToResource(resource, filter),
-        value,
-      );
+      return this.matchValue(this.applyFilterToResource(resource, filter),value);
     }
     // for sets, return true if it matches at least one of the fields
     return this.getSet(filter).reduce(
@@ -110,18 +103,20 @@ const FilterMixin = {
     const searchForm = document.createElement('sib-form');
     (<any>searchForm).component.resource = this.resource;
     searchForm.addEventListener('formChange', () => this.filterList())
-    searchForm.setAttribute('data-fields', this.searchFields);
     searchForm.toggleAttribute('naked', true);
     searchForm.addEventListener('input', () => this.setCurrentPage(1));
 
-    //pass range attributes
-    for (let field of (<any>searchForm).component.fields) {
-      for (let attr of ['range', 'widget', 'label', 'value']) {
-        const value = this.element.getAttribute(`search-${attr}-${field}`);
-        if (value == null) continue;
-        searchForm.setAttribute(`${attr}-${field}`, value);
-      }
-    }
+    //pass attributes to search form
+    const searchAttributes = Array.from(this.element.attributes)
+    .filter(attr => attr['name'].startsWith('search-'))
+    .map(attr => ({
+      name: attr['name'].replace('search-', ''),
+      value: attr['value'],
+    }));
+
+    searchAttributes.forEach(({name, value}) => {
+      searchForm.setAttribute(name, value);
+    });
 
     if (this.element.shadowRoot)
       this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);

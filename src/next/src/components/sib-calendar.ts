@@ -8,11 +8,6 @@ import Calendar from 'https://dev.jspm.io/tui-calendar';
 const SibCalendar = {
   name: 'sib-calendar',
   use: [ListMixin, StoreMixin],
-  attributes: {
-    extraContext: {
-      default: '{ "date": "http://www.w3.org/2001/XMLSchema#dateTime" }'
-    }
-  },
   created() {
     importCSS('https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css');
     const div = document.createElement('div');
@@ -22,6 +17,9 @@ const SibCalendar = {
     this.element.appendChild(div);
     this.calendar = new Calendar(div, { defaultView: 'month' });
     this.calendar.on('clickSchedule', this.dispatchSelect.bind(this));
+  },
+  get extra_context() {
+    return { date: "http://www.w3.org/2001/XMLSchema#dateTime" }
   },
   dispatchSelect(event) {
     const resource = { '@id': event.schedule.id };

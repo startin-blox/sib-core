@@ -24,7 +24,7 @@
       <h1>Home</h1>
       <sib-display
         data-src="./data/action/circles.jsonld"
-        data-fields="name, description, click"
+        fields="name, description, click"
         label-click="click !"
         action-click="circle-infos"
       ></sib-display>
@@ -32,7 +32,7 @@
     <div id="circle-infos" hidden>
       <sib-display
         bind-resources
-        data-fields="name, description"
+        fields="name, description"
       ></sib-display>
     </div>
   </body>

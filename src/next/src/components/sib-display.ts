@@ -45,9 +45,10 @@ const SibDisplay = {
     const child = document.createElement(this.childTag);
     child.component.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.dataFields != null) child.dataset.fields = this.dataFields;
+    if (this.fields) child.setAttribute('fields', this.fields);
 
-    for (let attr of this.element.attributes) //copy widget and value attributes
+    for (let attr of this.element.attributes) {
+      //copy widget and value attributes
       if (
         attr.name.startsWith('value-') ||
         attr.name.startsWith('label-') ||
@@ -55,14 +56,18 @@ const SibDisplay = {
         attr.name.startsWith('widget-') ||
         attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||
+        attr.name.startsWith('editable-') ||
         attr.name.startsWith('action-')
       )
         child.setAttribute(attr.name, attr.value);
+      if (attr.name.startsWith('child-'))
+        child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
+    }
 
     parent.appendChild(child);
   },
   async appendSingleElt(parent: HTMLElement) {
-    for (let field of this.fields) {
+    for (let field of this.fieldsWidget) {
       await this.appendWidget(field, parent);
     }
   }

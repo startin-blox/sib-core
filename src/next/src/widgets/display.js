@@ -7,13 +7,13 @@ const SIBDisplayValue = widgetFactory(
 
 const SIBDisplayDiv = widgetFactory(
   'sib-display-div',
-  `<div name="\${name}">\${value}</div>`,
+  `<div name="\${name}" \${editable?'data-editable':''}>\${value}</div>`,
 );
 
 const SIBDisplayLabelledDiv = widgetFactory(
   'sib-display-labelled-div',
   `\${value ? "<label>" + label + "</label>" : ""}
-  <div name="\${name}">\${value}</div>`,
+  <div name="\${name}" \${editable?'data-editable':''}>\${value}</div>`,
 );
 
 const SIBDisplayLabelledBoolean = widgetFactory(
@@ -32,15 +32,15 @@ const SIBDisplayImg = widgetFactory(
 
 const SIBDisplayMailTo = widgetFactory(
   'sib-display-mailto',
-  `<a href="mailto:\${value}" name="\${name}">\${value}</a>
-`,
-);
+  `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${value}</a>
+`);
 
 const SIBDisplayTel = widgetFactory(
   'sib-display-tel',
   `<a
     href="tel:\${value}"
     name="\${name}"
+    \${editable?'data-editable':''}
   >\${value}</a>`,
 );
 

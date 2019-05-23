@@ -1,0 +1,66 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/skills/1/",
+      "name": "HTML",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/skills/2/",
+      "name": "CSS",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/skills/3/",
+      "name": "Javascript",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/skills/4/",
+      "name": "DevOps",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/skills/5/",
+      "name": "Design",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    }
+  ],
+  "permissions": [
+    { "mode": { "@type": "view" }},
+    { "mode": { "@type": "add" }}
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
