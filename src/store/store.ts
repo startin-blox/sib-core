@@ -13,14 +13,18 @@ export const base_context = {
 };
 
 export class Store {
-  constructor(options) {
+  cache: Map<string, any>;
+  originalStore: any;
+
+  constructor(options: object) {
     this.cache = new Map();
-    this.originalStore = new window.MyStore(options);
+    this.originalStore = new (<any>window).MyStore(options);
   }
 
-  get(id, context) {
+  get(id: string, context = null) {
+    let hash = '';
     try {
-      var hash = JSON.stringify([id, context]);
+      hash = JSON.stringify([id, context]);
     } catch (e) {}
     if (hash && !this.cache.has(hash)) {
       const get = this.originalStore.get(id, context);
@@ -33,16 +37,16 @@ export class Store {
     return this.cache.get(hash);
   }
 
-  list(id) {
+  list(id: string) {
     return this.originalStore.list.call(this, id);
   }
 
-  save(resource, id) {
+  save(resource: object, id: string) {
     this.cache.clear();
     return this.originalStore.save(resource, id);
   }
 
-  patch(id, resource) {
+  patch(id: string, resource: object) {
     this.cache.clear();
     return this.originalStore.patch(id, resource);
   }
