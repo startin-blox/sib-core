@@ -6,7 +6,7 @@ To start developing in `sib-core`, you need:
 npm install
 
 # 2. Build the framework
-npm run build
+npm run build:dev
 
 # 3. Launch a web server
 npm run serve

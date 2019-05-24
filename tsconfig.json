@@ -1,17 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "ES6",
+    "target": "ES6",
     "allowJs": true,
     "jsx": "preserve",
     "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
-    "sourceMap": true,
     "outDir": "lib",
     "rootDir": "./",
     "composite": false,
-    "removeComments": true,
     "downlevelIteration": true,
     "strict": true,
     "noImplicitAny": false,

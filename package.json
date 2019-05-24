@@ -10,9 +10,9 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "tsc": "tsc",
-    "watch": "npm run tsc -- --watch",
-    "build": "npm run tsc",
+    "build:prod": "tsc --removeComments",
+    "build:dev": "tsc  --target ESNext --sourceMap",
+    "watch": "npm run build:dev -- --watch",
     "serve": "node server.js"
   },
   "repository": {
