@@ -1,4 +1,4 @@
-import { store } from '../store/store.js';
+import { store } from '../libs/store/store.js';
 import { parseFieldsString } from '../libs/helpers.js';
 
 const WidgetMixin = {

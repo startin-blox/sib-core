@@ -1,4 +1,4 @@
-import { store } from '../store/store.js';
+import { store } from '../libs/store/store.js';
 import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 import { CounterMixin } from './counterMixin.js';

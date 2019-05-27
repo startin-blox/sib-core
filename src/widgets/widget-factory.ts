@@ -1,5 +1,5 @@
 import { evalTemplateString } from '../libs/helpers.js';
-import { store } from '../store/store.js';
+import { store } from '../libs/store/store.js';
 
 export class BaseWidget extends HTMLElement {
   private src: string | undefined;

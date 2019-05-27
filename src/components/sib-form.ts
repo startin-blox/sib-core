@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
-import { store } from '../store/store.js';
+import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 
 const SibForm = {

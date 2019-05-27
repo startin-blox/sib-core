@@ -1,4 +1,4 @@
-import { base_context, store } from '../store/store.js';
+import { base_context, store } from '../libs/store/store.js';
 import { domIsReady } from '../libs/helpers.js';
 
 const StoreMixin = {
