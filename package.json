@@ -11,7 +11,7 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "build:prod": "tsc --removeComments",
-    "build:dev": "tsc  --target ESNext --sourceMap",
+    "build:dev": "tsc --sourceMap",
     "watch": "npm run build:dev -- --watch",
     "serve": "node server.js"
   },
