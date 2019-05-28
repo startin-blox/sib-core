@@ -3,7 +3,7 @@ import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
-const SibDisplay = {
+export const SibDisplay = {
   name: 'sib-display',
   use: [ WidgetMixin, ListMixin, StoreMixin ],
   created() {
@@ -73,4 +73,4 @@ const SibDisplay = {
   }
 };
 
-export default Sib.register(SibDisplay);
+Sib.register(SibDisplay);

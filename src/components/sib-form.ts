@@ -4,7 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 
-const SibForm = {
+export const SibForm = {
   name: 'sib-form',
   use: [WidgetMixin, StoreMixin],
   attributes: {
@@ -142,4 +142,4 @@ const SibForm = {
   }
 };
 
-export default Sib.register(SibForm);
+Sib.register(SibForm);

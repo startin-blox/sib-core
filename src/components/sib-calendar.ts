@@ -5,7 +5,7 @@ import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import Calendar from 'https://dev.jspm.io/tui-calendar';
 
-const SibCalendar = {
+export const SibCalendar = {
   name: 'sib-calendar',
   use: [ListMixin, StoreMixin],
   created() {
@@ -53,4 +53,4 @@ const SibCalendar = {
   }
 };
 
-export default Sib.register(SibCalendar);
+Sib.register(SibCalendar);

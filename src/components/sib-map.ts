@@ -5,7 +5,7 @@ import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import L from 'https://dev.jspm.io/leaflet';
 
-const SibMap = {
+export const SibMap = {
   name: 'sib-map',
   use: [ListMixin, StoreMixin],
   initialState: {
@@ -65,4 +65,4 @@ const SibMap = {
   }
 };
 
-export default Sib.register(SibMap);
+Sib.register(SibMap);

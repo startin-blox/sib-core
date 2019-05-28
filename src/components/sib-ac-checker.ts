@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
-const SIBACChecker = {
+export const SibAcChecker = {
   name: 'sib-ac-checker',
   use: [StoreMixin],
   attributes: {
@@ -22,4 +22,4 @@ const SIBACChecker = {
   }
 };
 
-export default Sib.register(SIBACChecker);
+Sib.register(SibAcChecker);
