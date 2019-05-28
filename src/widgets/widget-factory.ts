@@ -9,10 +9,10 @@ export class BaseWidget extends HTMLElement {
   private _value: any | undefined;
   private _range: any | undefined;
 
-  connectedCallback() {
+  connectedCallback(): void {
     this.render();
   }
-  render() {
+  render(): void {
     this.innerHTML = evalTemplateString(this.template, {
       src: this.src,
       name: this.name,
@@ -27,17 +27,17 @@ export class BaseWidget extends HTMLElement {
 
     this.addEditButtons();
   }
-  get label() {
+  get label(): string | null {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
-  set label(label) {
+  set label(label: string | null) {
     if(label) this.setAttribute('label', label);
     this.render();
   }
-  get name() {
+  get name(): string | null {
     return this.getAttribute('name');
   }
-  set name(name) {
+  set name(name: string | null) {
     if(name) this.setAttribute('name', name);
     this.render();
   }
@@ -82,13 +82,13 @@ export class BaseWidget extends HTMLElement {
       ); // ... set each `value` to each dataHolder element
     }
   }
-  get ['each-label'](){
+  get ['each-label'](): string{
     return this.getAttribute('each-label') || '';
   }
-  set ['each-label'](label) {
+  set ['each-label'](label: string) {
     this.setAttribute('each-label', label);
   }
-  get dataHolder() {
+  get dataHolder(): Element[] | null {
     const widgetDataHolders = Array.from(this.querySelectorAll('[data-holder]')).filter(element => {
       const dataHolderAncestor = element.parentElement ? element.parentElement.closest('[data-holder]') : null;
       // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
@@ -97,13 +97,13 @@ export class BaseWidget extends HTMLElement {
 
     return widgetDataHolders.length ? widgetDataHolders : null;
   }
-  get template() {
+  get template(): string {
     return '';
   }
-  get childTemplate() {
+  get childTemplate(): string {
     return '';
   }
-  get escapedValue() {
+  get escapedValue(): string {
     return ('' + this.value)
       .replace(/&/g, '&amp;')
       .replace(/'/g, '&apos;')
@@ -124,7 +124,7 @@ export class BaseWidget extends HTMLElement {
     }
     store.list(range).then(list => (this.range = list));
   }
-  get htmlRange() {
+  get htmlRange(): string {
     if (!this.range.length) return '';
     let htmlRange = '';
     this.range.forEach(element => {
@@ -140,8 +140,8 @@ export class BaseWidget extends HTMLElement {
   }
 
   // Editable widgets
-  addEditButtons() {
-    const editableField = (this.querySelector('[data-editable]') as HTMLElement);
+  addEditButtons(): void {
+    const editableField = this.querySelector('[data-editable]') as HTMLElement;
 
     if (editableField) {
       // Add edit button
@@ -154,12 +154,12 @@ export class BaseWidget extends HTMLElement {
       editableField.addEventListener('focusout', () => this.save(editableField, editButton));
     }
   }
-  activateEditableField(editableField: HTMLElement, editButton: HTMLButtonElement) {
+  activateEditableField(editableField: HTMLElement, editButton: HTMLButtonElement): void {
     editableField.setAttribute('contenteditable', 'true');
     editableField.focus();
     editButton.setAttribute("disabled", "disabled");
   }
-  save(editableField: HTMLElement, editButton: HTMLButtonElement) {
+  save(editableField: HTMLElement, editButton: HTMLButtonElement): void {
     editableField.setAttribute('contenteditable', 'false');
     editButton.removeAttribute("disabled");
 

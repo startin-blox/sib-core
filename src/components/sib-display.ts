@@ -6,8 +6,8 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 export const SibDisplay = {
   name: 'sib-display',
   use: [ WidgetMixin, ListMixin, StoreMixin ],
-  created() {
-    window.addEventListener('navigate', event => {
+  created(): void {
+    window.addEventListener('navigate', (event: Event) => {
       if (this.resource == null) return;
       if (event['detail'].resource == null) return;
       if (this.resource['@id'] == null) return;
@@ -17,31 +17,34 @@ export const SibDisplay = {
       );
     });
   },
-  get childTag() {
+  get childTag(): string {
     return this.element.dataset.child || this.element.tagName;
   },
-  get defaultWidget() {
+  get defaultWidget(): string {
     return 'sib-display-value';
   },
-  get defaultMultipleWidget() {
+  get defaultMultipleWidget(): string {
     return 'sib-multiple';
   },
   // Here "even.target" points to the content of the widgets of the children of sib-display
-  dispatchSelect(event) {
-    const resource = event.target.closest(this.childTag).component.resource;
-    this.element.dispatchEvent(
-      new CustomEvent('resourceSelect', { detail: { resource: resource } }),
-    );
-    if (this.next) {
+  dispatchSelect(event: Event): void {
+    if (event.target) {
+      const target = event.target as Element;
+      const resource = target.closest(this.childTag).component.resource;
       this.element.dispatchEvent(
-        new CustomEvent('requestNavigation', {
-          bubbles: true,
-          detail: { route: this.next, resource: resource },
-        }),
+        new CustomEvent('resourceSelect', { detail: { resource: resource } }),
       );
+      if (this.next) {
+        this.element.dispatchEvent(
+          new CustomEvent('requestNavigation', {
+            bubbles: true,
+            detail: { route: this.next, resource: resource },
+          }),
+        );
+      }
     }
   },
-  appendChildElt(resource: Object, parent) {
+  appendChildElt(resource: Object, parent: Element): void {
     const child = document.createElement(this.childTag);
     child.component.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
@@ -66,7 +69,7 @@ export const SibDisplay = {
 
     parent.appendChild(child);
   },
-  async appendSingleElt(parent: HTMLElement) {
+  async appendSingleElt(parent: HTMLElement): Promise<void> {
     for (let field of this.fieldsWidget) {
       await this.appendWidget(field, parent);
     }

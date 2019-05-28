@@ -10,14 +10,14 @@ export const SibAcChecker = {
       default: "view",
     }
   },
-  populate() {
+  populate(): void {
     for (let permission of this.resource['@permissions']) {
       if (permission.mode['@type'] === this.permission) {
         this.element.removeAttribute('hidden');
       }
     }
   },
-  empty() {
+  empty(): void {
     this.element.setAttribute('hidden', '');
   }
 };

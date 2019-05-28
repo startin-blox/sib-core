@@ -9,7 +9,7 @@ const CounterMixin = {
       default: null
     },
   },
-  renderCounter(div: HTMLElement) {
+  renderCounter(div: HTMLElement): void {
     if (this.counterTemplate) {
       let html: string;
       try {

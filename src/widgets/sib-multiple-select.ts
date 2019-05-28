@@ -1,14 +1,14 @@
 import { BaseWidget } from './widget-factory.js';
 
 export default class SIBMultipleSelect extends BaseWidget {
-  get range() {
+  get range(): string | null {
     return this.getAttribute('range');
   }
-  set range(range) {
+  set range(range: string | null) {
     if (range) this.setAttribute('range', range);
   }
 
-  render() {
+  render(): void {
     while (this.firstChild) this.firstChild.remove();
 
     const elm = this.insertWidget(this.attributes);
@@ -28,7 +28,7 @@ export default class SIBMultipleSelect extends BaseWidget {
     return attrs;
   }
 
-  get value() {
+  get value(): object[] {
     return Array.from(this.querySelectorAll('select option:checked')).map(el => ({ "@id": el['value'] }));
   }
   set value(values) {
@@ -43,7 +43,7 @@ export default class SIBMultipleSelect extends BaseWidget {
     if (select) select.dispatchEvent(new Event('change')); // ... finally trigger change
   }
 
-  insertWidget(attributes) {
+  insertWidget(attributes: object): HTMLElement | undefined {
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;

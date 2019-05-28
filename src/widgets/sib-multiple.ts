@@ -1,7 +1,7 @@
 import { BaseWidget } from './widget-factory.js';
 
 export default class SIBMultiple extends BaseWidget {
-  render() {
+  render(): void {
     while (this.firstChild) this.firstChild.remove();
 
     const label = document.createElement('label');
@@ -17,7 +17,7 @@ export default class SIBMultiple extends BaseWidget {
     });
   }
 
-  get childAttributes() {
+  get childAttributes(): object {
     const attrs = {};
 
     for (let attr of ['label', 'class']) {
@@ -31,7 +31,7 @@ export default class SIBMultiple extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes) {
+  insertWidget(attributes: object): HTMLElement | undefined {
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;

@@ -21,7 +21,7 @@ export class Store {
     this.originalStore = new (<any>window).MyStore(options);
   }
 
-  get(id: string, context = null) {
+  get(id: string, context = null): Promise<object> {
     let hash = '';
     try {
       hash = JSON.stringify([id, context]);

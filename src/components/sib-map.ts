@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
+import { LocationResourceInterface } from '../libs/interfaces.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import L from 'https://dev.jspm.io/leaflet';
@@ -13,7 +14,7 @@ export const SibMap = {
       default: null
     }
   },
-  created() {
+  created(): void {
     importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
     this.markers = [];
     const div = document.createElement('div');
@@ -25,15 +26,16 @@ export const SibMap = {
     ).addTo(this.map);
     this.element.appendChild(div);
   },
-  get extra_context() {
+  get extra_context(): object {
     return {
       geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
       lat: "geo:lat",
       lng: "geo:long"
     }
   },
-  dispatchSelect(event) {
-    const resource = event.target.options.resource;
+  dispatchSelect(event: CustomEvent): void {
+    const target = event.target as Element;
+    const resource = target['options'].resource;
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
@@ -46,7 +48,7 @@ export const SibMap = {
       );
     }
   },
-  appendChildElt(resource) {
+  appendChildElt(resource: LocationResourceInterface): void {
     if (resource.lat && resource.lng) {
       const marker = L.marker([resource.lat, resource.lng], {
         resource: resource,
@@ -55,10 +57,10 @@ export const SibMap = {
       this.markers.push(marker);
     }
   },
-  empty() {
+  empty(): void {
     for (let marker of this.markers) this.map.removeLayer(marker);
   },
-  populate() {
+  populate(): void {
     for (let resource of this.resources) this.appendChildElt(resource);
     console.log(this.markers);
     this.map.fitBounds(L.featureGroup(this.markers).getBounds());

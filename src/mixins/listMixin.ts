@@ -13,13 +13,13 @@ const ListMixin = {
       default: null
     },
   },
-  created() {
+  created(): void {
     this.resourcesFilters.push(
-      resources => this.orderCallback(resources),
-      resources => this.hightlightCallback(resources)
+      (resources: object[]) => this.orderCallback(resources),
+      (resources: object[]) => this.hightlightCallback(resources)
     )
   },
-  hightlightCallback(resources) {
+  hightlightCallback(resources: object[]): object[] {
     for (let attr of this.element.attributes) {
       if (attr.name.startsWith('highlight-')) {
         const field = attr.name.split('highlight-')[1];
@@ -33,13 +33,13 @@ const ListMixin = {
     }
     return resources
   },
-  orderCallback(resources) {
+  orderCallback(resources: object[]): object[] {
     if(this.orderBy)
       return resources.sort(this.sortValuesByKey(this.orderBy))
     return resources
   },
-  sortValuesByKey(key: string) {
-    return function(a, b) {
+  sortValuesByKey(key: string): Function {
+    return function(a: object, b: object): number {
       if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
         return 0;
@@ -53,10 +53,10 @@ const ListMixin = {
       return comparison
     }
   },
-  appendSingleElt(parent) {
+  appendSingleElt(parent: HTMLElement): void {
     this.appendChildElt(this.resource, parent);
   },
-  populate() {
+  populate(): void {
     const div = this.div;
 
     if (!this.isContainer()) {
