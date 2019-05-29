@@ -60,7 +60,8 @@ export const SibDisplay = {
         attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||
         attr.name.startsWith('editable-') ||
-        attr.name.startsWith('action-')
+        attr.name.startsWith('action-') ||
+        attr.name.startsWith('default-')
       )
         child.setAttribute(attr.name, attr.value);
       if (attr.name.startsWith('child-'))

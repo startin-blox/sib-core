@@ -17,8 +17,10 @@
     <h2>With fields and sets</h2>
     <sib-display
       data-src="data/sib-display.jsonld"
-      fields="@id, username, name, email"
+      fields="@id, username, name, email, profile.city"
       set-name="first_name, last_name"
+      default-email="no email yet"
+      default-profile.city="no city yet"
       class-username="name"
     ></sib-display>
     <style>

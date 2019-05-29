@@ -86,6 +86,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`child-xyz`**: add attribute `xyz` to all children.
 - **`id-suffix`**: String added at the end of the source url (`data-src`).
   Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
+- **`default-xyz`**: Value displayed for field `xyz` when it's empty or not defined
 
 ### `sib-form`
 

@@ -82,7 +82,9 @@ const WidgetMixin = {
     let resource = this.resource || {};
     for (let name of field) {
       resource = await this.fetchValue(resource, name);
-      if (resource == null) return;
+      if (resource == null || resource == "") // If null or empty, return field default value
+        return this.element.hasAttribute('default-' + field) ?
+          this.element.getAttribute('default-' + field) : undefined;
     }
     return resource;
   },
