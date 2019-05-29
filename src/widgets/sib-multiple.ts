@@ -3,11 +3,12 @@ import { BaseWidget } from './widget-factory.js';
 export default class SIBMultiple extends BaseWidget {
   render(): void {
     while (this.firstChild) this.firstChild.remove();
-
-    const label = document.createElement('label');
-    label.textContent = this.label;
-    this.appendChild(label);
     if (!this.value) return;
+    if (this.value.length) {
+      const label = document.createElement('label');
+      label.textContent = this.label;
+      this.appendChild(label);
+    }
     this.value.forEach(value => {
       const elm = this.insertWidget(this.childAttributes);
       if (elm) {
