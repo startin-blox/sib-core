@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
-const SIBACChecker = {
+export const SibAcChecker = {
   name: 'sib-ac-checker',
   use: [StoreMixin],
   attributes: {
@@ -10,16 +10,16 @@ const SIBACChecker = {
       default: "view",
     }
   },
-  populate() {
+  populate(): void {
     for (let permission of this.resource['@permissions']) {
       if (permission.mode['@type'] === this.permission) {
         this.element.removeAttribute('hidden');
       }
     }
   },
-  empty() {
+  empty(): void {
     this.element.setAttribute('hidden', '');
   }
 };
 
-export default Sib.register(SIBACChecker);
+Sib.register(SibAcChecker);

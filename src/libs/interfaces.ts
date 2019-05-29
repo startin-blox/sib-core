@@ -70,3 +70,8 @@ export interface HookInterface {
 export interface MixinStaticInterface extends HasAttributesDefinitionInterface, HasMixinsInterface, HasInitialStateInterface, HasHooksInterface {
   name: String;
 };
+
+export interface LocationResourceInterface {
+  lat?: HookInterface;
+  lng?: HookInterface;
+}

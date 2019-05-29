@@ -14,10 +14,10 @@ const WidgetMixin = {
     widgets: null,
     _div: null
   },
-  created() {
+  created(): void {
     this.widgets = [];
   },
-  attached() {
+  attached(): void {
     if (!this.dataSrc && !this.resource) this.populate();
   },
   get div(): HTMLElement {
@@ -29,8 +29,8 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
-  get fieldsWidget() {
-    const attr = this.fields;
+  get fieldsWidget(): string[][] {
+    const attr = this.fields as string;
     if (attr === '') {
       return [];
     }
@@ -49,17 +49,17 @@ const WidgetMixin = {
       .filter(prop => !prop.startsWith('@'))
       .map(a => [a]);
   },
-  getAction(field: string) {
+  getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
-  getSet(field: string) {
+  getSet(field: string): string[][] {
     return parseFieldsString(this.element.getAttribute('set-' + field));
   },
-  isSet(field: string) {
+  isSet(field: string): boolean {
     return this.element.hasAttribute('set-' + field);
   },
-  isMultiple(field:string) {
+  isMultiple(field:string): boolean {
     return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
@@ -99,7 +99,7 @@ const WidgetMixin = {
     value = await Promise.all(value.map(a => store.get(a)));
     return value;
   },
-  empty() {
+  empty(): void {
     // create a new empty div next to the old one
     if (this._div) {
       let newDiv = document.createElement('div')
@@ -108,7 +108,7 @@ const WidgetMixin = {
       this.div = newDiv
     }
   },
-  getWidget(field: string) {
+  getWidget(field: string): string {
     const widget = this.element.getAttribute('widget-' + field);
     if (widget) {
       if (!customElements.get(widget)) {
@@ -119,7 +119,7 @@ const WidgetMixin = {
     if (this.getAction(field)) return 'sib-action';
     return this.defaultWidget;
   },
-  async widgetAttributes(field: string) {
+  async widgetAttributes(field: string): Promise<object> {
     const attrs = {
       name: field,
     };
@@ -141,7 +141,7 @@ const WidgetMixin = {
 
     return attrs;
   },
-  async appendWidget(field: string, parent: HTMLElement) {
+  async appendWidget(field: string, parent: HTMLElement): Promise<void> {
     if (!parent) parent = this.div;
     if (this.isSet(field)) {
       await this.appendSet(field, parent);
@@ -162,19 +162,19 @@ const WidgetMixin = {
 
     this.widgets.push(parent.appendChild(widget));
   },
-  multiple(field: string) {
+  multiple(field: string): string | null {
     const attribute = 'multiple-' + field;
     if (!this.element.hasAttribute(attribute)) return null;
     return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
   },
 
-  async appendSet(field: string, parent) {
+  async appendSet(field: string, parent: Element): Promise<void> {
     const div = document.createElement('div');
     div.setAttribute('name', field);
-    parent.appendChild(div);
     for (let item of this.getSet(field)) {
       await this.appendWidget(item, div);
     }
+    parent.appendChild(div);
   }
 }
 

@@ -7,10 +7,10 @@ const grouperMixin = {
       default: null
     },
   },
-  renderGroupedElements(div: HTMLElement) {
+  renderGroupedElements(div: HTMLElement): void {
     let groups = {};
 
-    this.resources.forEach(resource => {
+    this.resources.forEach((resource: object) => {
       let valueGroup = resource[this.groupBy];
       if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...
       groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
@@ -23,7 +23,7 @@ const grouperMixin = {
 
       div.appendChild(groupDiv);
       groupDiv.appendChild(groupDivTitle);
-      groups[group].resources.forEach(resource => this.appendChildElt(resource, groupDiv))
+      groups[group].resources.forEach((resource: object) => this.appendChildElt(resource, groupDiv))
     });
   }
 }

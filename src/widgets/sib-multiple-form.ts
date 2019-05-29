@@ -1,13 +1,13 @@
 import { BaseWidget } from './widget-factory.js';
 
 export default class SIBMultipleForm extends BaseWidget {
-  get range() {
+  get range(): string | null {
     return this.getAttribute('range');
   }
-  set range(range) {
+  set range(range: string | null) {
     if (range) this.setAttribute('range', range);
   }
-  render() {
+  render(): void {
     while (this.firstChild) this.firstChild.remove();
     const label = document.createElement('label');
     label.textContent = this.label;
@@ -28,7 +28,7 @@ export default class SIBMultipleForm extends BaseWidget {
       }
     });
   }
-  get childAttributes() {
+  get childAttributes(): object {
     const attrs = {};
     if (this.range) attrs['range'] = this.range;
     attrs['name'] = this.name;
@@ -40,7 +40,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes) {
+  insertWidget(attributes: object): HTMLElement | undefined {
     const childWrapper = document.createElement('div');
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;

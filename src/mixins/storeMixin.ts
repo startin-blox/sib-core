@@ -47,16 +47,16 @@ const StoreMixin = {
     resource: null,
     resourcesFilters: null
   },
-  created() {
+  created(): void {
     this.resourcesFilters = [];
   },
-  attached() {
+  attached(): void {
     if (this.resource) this.populate();
   },
-  get context() {
+  get context(): object {
     return { ...base_context, ...this.extra_context };
   },
-  get extra_context() {
+  get extra_context(): object {
     let extraContextElement = this.extraContext ?
     document.getElementById(this.extraContext) : // take element extra context first
     document.querySelector('[data-default-context]'); // ... or look for a default extra context
@@ -64,25 +64,25 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get id_suffix() {
+  get id_suffix(): string {
     return this.idSuffix ? this.idSuffix + '/' : ''
   },
-  get resources() {
-    let resources;
+  get resources(): object[]{
+    let resources: object[];
     if (!this.isContainer() || !this.resource['ldp:contains']) resources = [];
     else if (Array.isArray(this.resource['ldp:contains'])) resources = this.resource['ldp:contains'];
     else resources = [this.resource['ldp:contains']];
 
-    this.resourcesFilters.forEach(filter => resources = filter(resources));
+    this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
     return resources;
   },
-  get loader() {
+  get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  isContainer() {
+  isContainer(): boolean {
     return this.resource && '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
   },
-  toggleLoaderHidden(toggle: boolean) {
+  toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
   async getUser() {

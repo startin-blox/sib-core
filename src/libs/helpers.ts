@@ -8,7 +8,7 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
-function evalTemplateString(str: string, variables = {}) {
+function evalTemplateString(str: string, variables = {}): string {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
@@ -18,7 +18,7 @@ function evalTemplateString(str: string, variables = {}) {
     throw new SyntaxError('`' + str + '`');
   }
 }
-function importCSS(...stylesheets) {
+function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
   return stylesheets.map(url => {
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
@@ -32,7 +32,7 @@ function importCSS(...stylesheets) {
   });
 }
 
-function domIsReady() {
+function domIsReady(): Promise<any> {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
       resolve();
@@ -42,21 +42,24 @@ function domIsReady() {
   });
 }
 
-function setDeepProperty(obj, path, value) {
+function setDeepProperty(obj: object, path: string[], value: object) {
   const name = path.shift();
-  if (!(name in obj)) obj[name] = {};
-  if (path.length) setDeepProperty(obj[name], path, value);
-  else obj[name] = value;
+  if (name) {
+    if (!(name in obj)) obj[name] = {};
+    if (path.length) setDeepProperty(obj[name], path, value);
+    else obj[name] = value;
+  }
 }
 
-function parseFieldsString(fields): string[] {
-  fields = fields.split(',').map(s => s.trim().split(/\./));
-  fields.forEach(field => {
+function parseFieldsString(fields: string): string[][] {
+  let fieldsArray: string[][];
+  fieldsArray = fields.split(',').map(s => s.trim().split(/\./));
+  fieldsArray.forEach(field => {
     field.toString = function() {
       return this.join('.');
     };
   });
-  return fields;
+  return fieldsArray;
 }
 
 export {
