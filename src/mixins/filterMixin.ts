@@ -1,3 +1,5 @@
+import { ComponentInterface } from "../libs/interfaces.js";
+
 const FilterMixin = {
   name: 'filter-mixin',
   use: [],
@@ -10,28 +12,28 @@ const FilterMixin = {
       default: null
     }
   },
-  created() {
-    this.resourcesFilters.push(resources => this.filterCallback(resources))
+  created(): void {
+    this.resourcesFilters.push((resources: object[]) => this.filterCallback(resources))
   },
-  get searchForm() {
+  get searchForm(): ComponentInterface {
     return this.element.querySelector('sib-form');
   },
-  get filters() {
+  get filters(): object {
     return this.searchForm ? this.searchForm.component.value : {};
   },
   set filters(filters) {
     this.searchForm.component.value = filters;
     this.filterList();
   },
-  filterCallback(resources) {
+  filterCallback(resources: object[]): object[] {
     return resources.filter(this.matchFilters.bind(this));
   },
-  filterList() {
+  filterList(): void {
     if (!this.resource) return;
     this.empty();
     this.populate();
   },
-  matchValue(propertyValue, filterValue) {
+  matchValue(propertyValue, filterValue): boolean {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
     if (JSON.stringify(filterValue).includes('""')) return true;
     if (propertyValue == null) return false;
@@ -62,7 +64,7 @@ const FilterMixin = {
     }
     return false;
   },
-  matchRangeValues(propertyValue, filterValues) {
+  matchRangeValues(propertyValue, filterValues): boolean | undefined {
     if (propertyValue == null) return false;
 
     if (typeof propertyValue === 'number' || typeof propertyValue === 'string') {
@@ -73,7 +75,7 @@ const FilterMixin = {
     return;
   },
   // TODO : to be moved in the store and mutualized with widgetMixin.getValue
-  applyFilterToResource(resource, filter) {
+  applyFilterToResource(resource: object, filter: string) {
     if (!Array.isArray(filter)) return resource[filter];
     if (filter.length === 0) return;
     if (filter.length === 1) return resource[filter[0]];
@@ -81,7 +83,7 @@ const FilterMixin = {
     let firstFilter = filter.shift();
     return this.applyFilterToResource(resource[firstFilter], filter);
   },
-  matchFilter(resource, filter, value) {
+  matchFilter(resource: object, filter: string, value) {
     if (!this.isSet(filter)) {
       return this.matchValue(this.applyFilterToResource(resource, filter),value);
     }
@@ -91,7 +93,7 @@ const FilterMixin = {
       false,
     );
   },
-  matchFilters(resource) {
+  matchFilters(resource: object): boolean {
     //return true if all filters values are contained in the corresponding field of the resource
     return Object.keys(this.filters).reduce(
       (initial, filter) =>
@@ -99,7 +101,7 @@ const FilterMixin = {
       true,
     );
   },
-  appendFilters() {
+  appendFilters(): void {
     const searchForm = document.createElement('sib-form');
     (<any>searchForm).component.resource = this.resource;
     searchForm.addEventListener('formChange', () => this.filterList())

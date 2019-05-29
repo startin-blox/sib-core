@@ -4,7 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 
-const SibForm = {
+export const SibForm = {
   name: 'sib-form',
   use: [WidgetMixin, StoreMixin],
   attributes: {
@@ -16,13 +16,13 @@ const SibForm = {
   initialState: {
     formInitialized: false
   },
-  get defaultWidget() {
+  get defaultWidget(): string {
     return 'sib-form-label-text';
   },
-  get defaultMultipleWidget() {
+  get defaultMultipleWidget(): string {
     return 'sib-multiple-form';
   },
-  get value() {
+  get value(): object {
     const values = {};
     this.widgets.forEach(({name, value}) => {
       try {
@@ -41,10 +41,10 @@ const SibForm = {
       } catch (e) {}
     });
   },
-  get form() {
+  get form(): Element {
     return this.naked == null ? this.element.querySelector('form') : this.element;
   },
-  getWidget(field: string) {
+  getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('range-' + field)) {
       return 'sib-form-dropdown';
@@ -59,7 +59,7 @@ const SibForm = {
       return this.defaultWidget;
     }
   },
-  change(resource) {
+  change(resource: object): void {
     this.element.dispatchEvent(
       new CustomEvent('formChange', {
         bubbles: true,
@@ -67,11 +67,11 @@ const SibForm = {
       }),
     );
   },
-  async save() {
+  async save(): Promise<object> {
     this.toggleLoaderHidden(false);
     const resource = this.value;
     resource['@context'] = this.context;
-    let saved;
+    let saved: object = {};
     try {
       saved = await store.save(resource, this.resource['@id']);
     } catch (e) {
@@ -86,7 +86,7 @@ const SibForm = {
     this.toggleLoaderHidden(true);
     return saved;
   },
-  async submitForm() {
+  async submitForm(): Promise<void> {
     const isCreation = !('@id' in this.value);
     const saved = this.save();
     if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
@@ -99,27 +99,27 @@ const SibForm = {
       }),
     );
   },
-  inputChange() {
+  inputChange(): void {
     const resource = this.value; // TODO : fix this
     if (!this.isContainer()) resource['@id'] = this.resource['@id'];
     this.change(resource); // TODO : fix this
   },
-  createInput(type) {
+  createInput(type: string): HTMLInputElement {
     const input = document.createElement('input');
     input.type = type;
     return input;
   },
-  empty() {
+  empty(): void {
     if (!this.form) return;
     while (this.form.firstChild) {
       this.form.removeChild(this.form.firstChild);
     }
   },
-  async populate() {
+  async populate(): Promise<void> {
     if (!this.formInitialized) {
       if (this.naked == null) {
         const form = document.createElement('form');
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', event => {
           event.preventDefault();
           this.submitForm();
         });
@@ -128,7 +128,7 @@ const SibForm = {
         );
         this.element.appendChild(form);
       }
-      this.element.addEventListener('input', event => this.inputChange(event));
+      this.element.addEventListener('input', (event: Event) => this.inputChange(event));
       this.formInitialized = true;
     }
 
@@ -142,4 +142,4 @@ const SibForm = {
   }
 };
 
-export default Sib.register(SibForm);
+Sib.register(SibForm);

@@ -13,10 +13,10 @@ const PaginateMixin = {
       default: 0
     },
   },
-  get pageCount() {
+  get pageCount(): number {
     return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
   },
-  get currentPageResources() {
+  get currentPageResources(): object[] {
     if (this.paginateBy == 0) return this.resources;
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
     return this.resources.slice(
@@ -24,13 +24,13 @@ const PaginateMixin = {
       firstElementIndex + this.paginateBy,
     );
   },
-  setCurrentPage(page: number) {
+  setCurrentPage(page: number): void {
     if (page < 1) page = 1;
     if (page > this.pageCount) page = this.pageCount;
     this.currentPage = page;
     this.populate();
   },
-  renderPaginationNav(div) {
+  renderPaginationNav(div: Element): void {
     const paginateBy = this.paginateBy;
     if (this.paginationElements) {
       this.paginationElements.nav.toggleAttribute(

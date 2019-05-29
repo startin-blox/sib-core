@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { widgetFactory } from '../widgets/widget-factory.js';
 
-const SibWidget = {
+export const SibWidget = {
   name: 'sib-widget',
   use: [],
   attributes: {
@@ -11,19 +11,16 @@ const SibWidget = {
       required: true
     }
   },
-  initialState: {
-
-  },
-  attached() {
+  attached(): void {
     widgetFactory(this.name, this.template, this.childTemplate);
   },
-  get template() {
+  get template(): string {
     return this.element.querySelector('template:not([data-range])').innerHTML;
   },
-  get childTemplate() {
+  get childTemplate(): string | null {
     const child = this.element.querySelector('template[data-range]');
     return child ? child.innerHTML : null;
   }
 };
 
-export default Sib.register(SibWidget);
+Sib.register(SibWidget);
