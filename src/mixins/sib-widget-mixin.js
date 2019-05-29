@@ -178,10 +178,10 @@ const SIBWidgetMixin = superclass =>
     async appendSet(field, parent) {
       const div = document.createElement('div');
       div.setAttribute('name', field);
-      parent.appendChild(div);
       for (let item of this.getSet(field)) {
         await this.appendWidget(item, div);
       }
+      parent.appendChild(div);
     }
   };
 
