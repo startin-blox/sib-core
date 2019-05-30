@@ -23,7 +23,10 @@
     "live-server": "^1.2.1"
   },
   "release": {
-    "branch": "master",
+    "branches": [
+        "master",
+        {"name": "beta", "prerelease": true}
+    ],
     "plugins": [
       [
         "@semantic-release/commit-analyzer",

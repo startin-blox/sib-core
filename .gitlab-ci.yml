@@ -10,17 +10,19 @@ test:
   script:
     - echo 'Make your tests here !'
   except:
-    - master
+    - tags
   tags:
     - sib
 
 publish:
   stage: release
   before_script:
-    - npm install -g semantic-release @semantic-release/gitlab
+    - npm install -g semantic-release@v16.0.0-beta.18 @semantic-release/gitlab
+    - git checkout $CI_COMMIT_REF_NAME
   script:
     - semantic-release
   only:
     - master
+    - beta
   tags:
     - sib
