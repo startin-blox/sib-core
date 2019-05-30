@@ -50,6 +50,12 @@ export class Store {
     this.cache.clear();
     return this.originalStore.patch(id, resource);
   }
+
+  async delete(id: string) {
+    let deleted = await this.originalStore.delete(id);
+    this.cache.clear();
+    return deleted;
+  }
 }
 
 export const store = new Store({
