@@ -16,6 +16,12 @@ const SIBDisplayLabelledDiv = widgetFactory(
   <div name="\${name}">\${value}</div>`,
 );
 
+const SIBDisplayBackspacedLabelledDiv = widgetFactory(
+  'sib-display-backspaced-labelled-div',
+  `\${value ? "<label>" + label + "</label>" : ""}
+  <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
+);
+
 const SIBDisplayLabelledBoolean = widgetFactory(
   'sib-display-labelled-boolean',
   `\${value ? "<label>" + label + "</label>" : ""}`
