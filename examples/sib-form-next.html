@@ -11,14 +11,29 @@
   </head>
 
   <body>
-      <sib-router default-route="form" use-hash>
-        <sib-route name="form">add new</sib-route>
+      <sib-router default-route="all" use-hash>
+        <sib-route name="all">view all</sib-route>
+        <sib-route name="edit">edit</sib-route>
+        <sib-route name="add">add new</sib-route>
         <sib-route name="view">view it</sib-route>
       </sib-router>
-
-      <div id="form" hidden>
+      <div id="all" hidden>
+        <sib-display
+        data-src="https://api.test-paris.happy-dev.fr/skills/"
+        data-fields="name"
+        next="edit"
+        ></sib-display>
+      </div>
+      <div id="edit" hidden>
         <sib-form
-        data-src="https://test-paris.happy-dev.fr/skills/"
+          bind-resources
+          data-fields="name"
+          next="view"
+        ></sib-form>
+      </div>
+      <div id="add" hidden>
+        <sib-form
+        data-src="https://api.test-paris.happy-dev.fr/skills/"
         data-fields="name"
         next="view"
         ></sib-form>

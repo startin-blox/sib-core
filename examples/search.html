@@ -13,7 +13,7 @@
     <details>
       <summary>One field & label:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="email"
         search-label-email="mail"
@@ -23,7 +23,7 @@
     <details>
       <summary>One field & value:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="email"
         search-value-email="startinblox"
@@ -33,7 +33,7 @@
     <details>
       <summary>Multiple fields:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="first_name, last_name"
       ></sib-display>
@@ -42,7 +42,7 @@
     <details>
       <summary>Set:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="nameSet"
         set-nameSet="first_name, last_name"
@@ -52,27 +52,27 @@
     <details>
       <summary>Dropdown:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/members/"
+        data-src="https://api.test-paris.happy-dev.fr/members/"
         data-fields="user.username, skills"
         search-fields="skills"
-        search-range-skills="https://test-paris.happy-dev.fr/skills/"
+        search-range-skills="https://api.test-paris.happy-dev.fr/skills/"
       ></sib-display>
     </details>
 
     <details>
       <summary>Dropdown + One field: :</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/members/"
+        data-src="https://api.test-paris.happy-dev.fr/members/"
         data-fields="pseudo, user.username, skills"
         search-fields="skills,pseudo"
-        search-range-skills="https://test-paris.happy-dev.fr/skills/"
+        search-range-skills="https://api.test-paris.happy-dev.fr/skills/"
       ></sib-display>
     </details>
 
     <details>
       <summary>Widget:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email"
         search-fields="email"
         search-widget-email="sib-form-textarea"
@@ -82,7 +82,7 @@
     <details>
       <summary>Dotted field:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email, profile.city"
         search-fields="profile.city"
       ></sib-display>
@@ -91,7 +91,7 @@
     <details>
       <summary>Set + dotted field:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/users/"
+        data-src="https://api.test-paris.happy-dev.fr/users/"
         data-fields="username, first_name, last_name, email, member.pseudo"
         set-nameSet="member.pseudo,first_name"
         search-fields="nameSet"
@@ -101,13 +101,13 @@
     <details>
       <summary>Range number + date:</summary>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/notifications/"
+        data-src="https://api.test-paris.happy-dev.fr/notifications/"
         data-fields="type, date"
         search-fields="date"
         search-widget-date="sib-form-range-date"
       ></sib-display>
       <sib-display
-        data-src="https://test-paris.happy-dev.fr/projects/"
+        data-src="https://api.test-paris.happy-dev.fr/projects/"
         data-fields="name, number"
         search-fields="number"
         search-widget-number="sib-form-range-number"

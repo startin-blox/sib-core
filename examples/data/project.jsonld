@@ -9,7 +9,7 @@
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
   "customer": {
-    "@id": "https://test-paris.happy-dev.fr/customers/1/",
+    "@id": "https://api.test-paris.happy-dev.fr/customers/1/",
     "name": "Test customer",
     "address": "Petaouchnok",
     "logo": "https://nologo.lol/willfail.jpg",
@@ -27,7 +27,7 @@
     ]
   },
   "team": {
-    "@id": "https://test-paris.happy-dev.fr/projects/1/team/",
+    "@id": "https://api.test-paris.happy-dev.fr/projects/1/team/",
     "@type": "ldp:Container",
     "ldp:contains": [],
     "permissions": [
@@ -36,7 +36,7 @@
     ]
   },
   "members": {
-    "@id": "https://test-paris.happy-dev.fr/projects/1/members/",
+    "@id": "https://api.test-paris.happy-dev.fr/projects/1/members/",
     "@type": "ldp:Container",
     "ldp:contains": [],
     "permissions": [
