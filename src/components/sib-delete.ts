@@ -19,9 +19,9 @@ export const SibDelete = {
   },
   async delete(): Promise<void> {
     if (!this.dataSrc) return;
-    return store.delete(this.dataSrc).then(resource => {
+    return store.delete(this.dataSrc).then(() => {
       this.element.dispatchEvent(
-        new CustomEvent('resourceDeleted', { detail: { resource: resource } }),
+        new CustomEvent('resourceDeleted', { detail: { resource: { "@id": this.dataSrc } } }),
       );
     });
   },

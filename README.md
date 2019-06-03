@@ -191,6 +191,26 @@ In a `sib-widget`, you have access to these values:
 > NB: Do not forget to define your custom template in a `<template>` tag. Otherwise, your widget will not be declared properly.
 
 
+### `sib-delete`
+
+Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays a button to delete it when clicked.
+
+```html
+<sib-delete
+  data-src="http://localhost:8000/conversations/9/"
+></sib-delete>
+```
+
+**Attributes:**
+
+- **`data-src`**: The uri of the LDP resource you want to delete.
+- **`data-label`**: The text to display on the delete button.
+
+**Events:**
+
+- **`resourceDeleted`**: triggered when the resource is successfully deleted.
+
+
 ## Widgets
 
 The following widgets are available:
