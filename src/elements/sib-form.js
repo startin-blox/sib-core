@@ -115,7 +115,10 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       this.addEventListener('input', event => this.inputChange(event));
     }
 
-    await Promise.all(this.fields.map(field => this.appendWidget(field, this.form)));
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i];
+      await this.appendWidget(field, this.form);
+    }
 
     if (isNaked) return;
     this.form.appendChild(this.createInput('submit'));
