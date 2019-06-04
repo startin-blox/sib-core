@@ -11,6 +11,10 @@ export const SibForm = {
     naked: {
       type: String,
       default: null
+    },
+    submitButton: {
+      type: String,
+      default: null
     }
   },
   initialState: {
@@ -160,7 +164,9 @@ export const SibForm = {
     await Promise.all(this.fieldsWidget.map(field => this.appendWidget(field, this.form)));
 
     if (this.naked !== null) return;
-    this.form.appendChild(this.createInput('submit'));
+    const submitButtonElement = this.createInput('submit');
+    if (this.submitButton) submitButtonElement.value = this.submitButton;
+    this.form.appendChild(submitButtonElement);
     if (this.element.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
     }
