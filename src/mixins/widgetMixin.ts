@@ -127,7 +127,6 @@ const WidgetMixin = {
     };
     for (let attr of ['range', 'label', 'class']) {
       const value = this.element.getAttribute(`each-${attr}-${field}`);
-
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
@@ -135,6 +134,11 @@ const WidgetMixin = {
       const value = this.element.getAttribute(`${attr}-${field}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
+      attrs[attr] = value;
+    }
+    for (let attr of ['add-label', 'remove-label']) {
+      const value = this.element.getAttribute(`multiple-${field}-${attr}`);
+      if (value == null) continue;
       attrs[attr] = value;
     }
     if (this.getAction(field)) attrs['src'] = this.resource['@id'];

@@ -7,13 +7,19 @@ export default class SIBMultipleForm extends BaseWidget {
   set range(range: string | null) {
     if (range) this.setAttribute('range', range);
   }
+  get addLabel(): string | null {
+    return this.getAttribute('add-label') || '+';
+  }
+  get removeLabel(): string | null {
+    return this.getAttribute('remove-label') || '×';
+  }
   render(): void {
     while (this.firstChild) this.firstChild.remove();
     const label = document.createElement('label');
     label.textContent = this.label;
     this.appendChild(label);
     const addButton = document.createElement('button');
-    addButton.textContent = '+';
+    addButton.textContent = this.addLabel;
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
       this.insertWidget(this.childAttributes);
@@ -52,7 +58,7 @@ export default class SIBMultipleForm extends BaseWidget {
     childWrapper.appendChild(widget);
 
     const removeButton = document.createElement('button');
-    removeButton.textContent = '×';
+    removeButton.textContent = this.removeLabel;
     removeButton.type = 'button';
     removeButton.addEventListener('click', () => {
       childWrapper.remove();
