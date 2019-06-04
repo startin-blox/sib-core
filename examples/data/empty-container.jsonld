@@ -1,0 +1,10 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [],
+  "permissions": [
+    { "mode": { "@type": "view" } },
+    { "mode": { "@type": "add" } }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

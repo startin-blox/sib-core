@@ -12,6 +12,14 @@ const ListMixin = {
       type: String,
       default: null
     },
+    emptyWidget: {
+      type: String,
+      default: null
+    },
+    emptyValue: {
+      type: String,
+      default: ''
+    }
   },
   created(): void {
     this.resourcesFilters.push(
@@ -76,6 +84,13 @@ const ListMixin = {
     }
 
     this.renderPaginationNav(div);
+
+    if (this.resources.length === 0 && this.emptyWidget) {
+      const emptyWidgetElement = document.createElement(this.emptyWidget);
+      emptyWidgetElement.value = this.emptyValue;
+      this.div.appendChild(emptyWidgetElement);
+      return;
+    }
 
     for (let resource of this.currentPageResources) {
       //for federations, fetch every sib:source we find

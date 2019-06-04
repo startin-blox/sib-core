@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: default</title>
+    <script type="module" src="../lib/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-widget name="empty-widget">
+      <template>
+        <small>No user yet in the list. <sib-link next="${value}">click here to add one</sib-link></small>
+      </template>
+    </sib-widget>
+
+    <sib-display
+      data-src="data/empty-container.jsonld"
+      fields="@id, username, email"
+      empty-widget="empty-widget"
+      empty-value="add-user"
+    ></sib-display>
+  </body>
+</html>

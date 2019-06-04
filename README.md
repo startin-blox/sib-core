@@ -87,6 +87,8 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`id-suffix`**: String added at the end of the source url (`data-src`).
   Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
 - **`default-xyz`**: Value displayed for field `xyz` when it's empty or not defined
+- **`empty-widget`**: Widget to display when there is no element in the container
+- **`empty-value`**: To display a value in the empty widget. It can be accessed in the widget like this: `${value}`
 
 ### `sib-form`
 
