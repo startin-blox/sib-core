@@ -57,6 +57,8 @@ Filters and searching capabilities can be easily added to interact with the list
   - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
   - **`each-class-xyz`**: Used with `multiple-xyz`, class of each child of multiple widget
   - **`each-range-xyz`**: Used with `multiple-xyz`, range value of each child of multiple widget
+  - **`multiple-xyz-add-label`**: Used with `multiple-xyz`, text of the "+" button
+  - **`multiple-xyz-remove-label`**: Used with `multiple-xyz`, text of the "×" button
 - **`search-fields`**: It is possible to search/filter your list by choosing the fields you want to filter it with.
   To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
   - **`search-value-xyz`**: The default value of the field `xyz`

@@ -88,6 +88,12 @@ export class BaseWidget extends HTMLElement {
   set ['each-label'](label: string) {
     this.setAttribute('each-label', label);
   }
+  set ['add-label'](label: string) {
+    this.setAttribute('add-label', label);
+  }
+  set ['remove-label'](label: string) {
+    this.setAttribute('remove-label', label);
+  }
   get dataHolder(): Element[] | null {
     const widgetDataHolders = Array.from(this.querySelectorAll('[data-holder]')).filter(element => {
       const dataHolderAncestor = element.parentElement ? element.parentElement.closest('[data-holder]') : null;
