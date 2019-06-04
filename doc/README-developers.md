@@ -19,7 +19,7 @@ To develop new features of `sib-core`, you can add an HTML example file in `/exa
 Don't forget to import the framework:
 
 ```html
-<script type="module" src="../lib/src/index.js"></script>
+<script type="module" src="../dist/src/index.js"></script>
 ```
 You can now write HTML using `sib-core` and test it in your browser.
 
