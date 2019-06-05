@@ -182,6 +182,7 @@ The following widgets are available:
 - **`sib-display-value`** (default): Displays the value.
 - **`sib-display-div`**: Displays the `value` inside a `<div>` HTML tag.
 - **`sib-display-labelled-div`**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>`  HTML tag
+- **`sib-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
 - **`sib-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
 - **`sib-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
 - **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path
