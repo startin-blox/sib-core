@@ -16,8 +16,8 @@ const SIBDisplayLabelledDiv = widgetFactory(
   <div name="\${name}">\${value}</div>`,
 );
 
-const SIBDisplayBackspacedLabelledDiv = widgetFactory(
-  'sib-display-backspaced-labelled-div',
+const sibDisplayMultiline = widgetFactory(
+  'sib-display-multiline',
   `\${value ? "<label>" + label + "</label>" : ""}
   <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
 );
