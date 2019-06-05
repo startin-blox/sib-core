@@ -84,8 +84,9 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`loader-id`**: Id of the loader element you want to display during the loading time.
 - **`class-xyz`**: Class attribute added to the fields `xyz`.
 - **`child-xyz`**: add attribute `xyz` to all children.
-- **`id-suffix`**: String added at the end of the source url (`data-src`).
-  Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to customize it.
+- **`nested-field`**: Name of the field of the requested resource to display.
+  Useful when the source url is auto-generated (for instance, with the attribute `bind-resources`) but you need to display another field of this source.
+
 - **`default-xyz`**: Value displayed for field `xyz` when it's empty or not defined
 - **`empty-widget`**: Widget to display when there is no element in the container
 - **`empty-value`**: To display a value in the empty widget. It can be accessed in the widget like this: `${value}`
