@@ -10,7 +10,7 @@ export default class SIBDisplay extends SIBListMixin(SIBWidgetMixin(SIBBase)) {
       if (this.resource['@id'] == null) return;
       this.toggleAttribute(
         'active',
-        this.resource['@id'] === event.detail.resource['@id'],
+        this.resource['@id'] === event.detail.resource.id,
       );
     });
   }
