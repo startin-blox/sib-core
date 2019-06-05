@@ -75,6 +75,13 @@ export default class SIBBase extends HTMLElement {
     return getArrayFrom(this.resource, "ldp:contains");
   }
 
+  get permissions() {
+    if (!this.resource || !this.resource['@permissions']) return [];
+    if (Array.isArray(this.resource['@permissions']))
+      return this.resource['@permissions'];
+    return [this.resource['@permissions']];
+  }
+
   async getUser() {
     // wait for dom
     await domIsReady();
