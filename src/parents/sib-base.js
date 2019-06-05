@@ -1,5 +1,5 @@
 import { base_context, store } from '../store.js';
-import { domIsReady } from '../helpers/index.js';
+import { domIsReady, getArrayFrom } from '../helpers/index.js';
 
 export default class SIBBase extends HTMLElement {
   static get observedAttributes() {
@@ -72,10 +72,7 @@ export default class SIBBase extends HTMLElement {
   }
 
   get resources() {
-    if (!this.resource || !this.isContainer || !this.resource['ldp:contains']) return [];
-    if (Array.isArray(this.resource['ldp:contains']))
-      return this.resource['ldp:contains'];
-    return [this.resource['ldp:contains']];
+    return getArrayFrom(this.resource, "ldp:contains");
   }
 
   async getUser() {

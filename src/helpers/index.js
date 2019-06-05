@@ -51,6 +51,12 @@ function setDeepProperty(obj, path, value) {
   else obj[name] = value;
 }
 
+function getArrayFrom(object, key) {
+  if (!object || !object[key]) return [];
+  if (Array.isArray(object[key])) return object[key];
+  return [object[key]];
+}
+
 export {
   uniqID,
   stringToDom,
@@ -58,4 +64,5 @@ export {
   importCSS,
   domIsReady,
   setDeepProperty,
+  getArrayFrom
 };

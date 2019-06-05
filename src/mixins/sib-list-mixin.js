@@ -1,5 +1,5 @@
 import { store } from '../store.js';
-import { stringToDom, evalTemplateString } from '../helpers/index.js';
+import { stringToDom, evalTemplateString, getArrayFrom } from '../helpers/index.js';
 
 const SIBListMixin = superclass =>
   class extends superclass {
@@ -258,7 +258,7 @@ const SIBListMixin = superclass =>
           continue;
         }
         store.get(resource.container, this.context).then(container => {
-          for (let resource of container['ldp:contains']) {
+          for (let resource of getArrayFrom(container, 'ldp:contains')) {
             this.appendChildElt(resource, div);
           }
         });
