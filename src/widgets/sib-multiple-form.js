@@ -23,7 +23,6 @@ export default class SIBMultipleForm extends BaseWidget {
     this.value.forEach(value => {
       const elm = this.insertWidget(this.childAttributes);
       elm.value = value;
-      elm.toggleAttribute('data-holder', true);
     });
   }
   get childAttributes() {
