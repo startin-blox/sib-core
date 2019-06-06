@@ -8,10 +8,10 @@ export default class SIBMultipleForm extends BaseWidget {
     if (range) this.setAttribute('range', range);
   }
   get addLabel(): string | null {
-    return this.getAttribute('add-label') || '+';
+    return this.hasAttribute('add-label') ? this.getAttribute('add-label') : '+';
   }
   get removeLabel(): string | null {
-    return this.getAttribute('remove-label') || '×';
+    return this.hasAttribute('remove-label') ? this.getAttribute('remove-label') : '×';
   }
   render(): void {
     while (this.firstChild) this.firstChild.remove();
