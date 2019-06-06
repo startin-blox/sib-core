@@ -43,6 +43,18 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     });
   }
 
+  get isNaked() {
+    return this.hasAttribute('naked');
+  }
+
+  get form() {
+    if (this._form) return this._form;
+    if (this.isNaked) return this;
+    this._form = document.createElement('form');
+    this.appendChild(this._form);
+    return this._form;
+  }
+
   async save() {
     this.toggleLoaderHidden(false);
     const resource = this.value;
@@ -91,39 +103,41 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
 
   empty() {
     if (!this.form) return;
-    while (this.form.firstChild) {
-      this.form.removeChild(this.form.firstChild);
+    if (this.isNaked) {
+      while (this.form.firstChild) {
+        this.form.removeChild(this.form.firstChild);
+      }
+    } else {
+      let newForm = document.createElement('form');
+      this.appendChild(newForm);
+      this.removeChild(this._form);
+      this._form = newForm;
     }
   }
 
   async populate() {
-    const isNaked = this.hasAttribute('naked');
-    if (!this.form) {
-      if (isNaked) {
-        this.form = this;
-      } else {
-        this.form = document.createElement('form');
-        this.form.addEventListener('submit', (event) => {
-          event.preventDefault();
-          this.submitForm();
-        });
-        this.form.addEventListener('reset', event =>
-        setTimeout(() => this.inputChange(event)),
-        );
-        this.appendChild(this.form);
-      }
-      this.addEventListener('input', event => this.inputChange(event));
+    const form = this.form;
+    if (!this.isNaked) {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        this.submitForm();
+      });
+      form.addEventListener('reset', event =>
+      setTimeout(() => this.inputChange(event)),
+      );
+      this.appendChild(form);
     }
+    this.addEventListener('input', event => this.inputChange(event));
 
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i];
-      await this.appendWidget(field, this.form);
+      await this.appendWidget(field, form);
     }
 
-    if (isNaked) return;
-    this.form.appendChild(this.createInput('submit'));
+    if (this.isNaked) return;
+    form.appendChild(this.createInput('submit'));
     if (this.hasAttribute('reset')) {
-      this.form.appendChild(this.createInput('reset'));
+      form.appendChild(this.createInput('reset'));
     }
   }
 }
