@@ -6,7 +6,7 @@
     "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "rootDir": "./",
     "composite": false,
     "sourceMap": true,

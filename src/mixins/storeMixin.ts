@@ -17,18 +17,20 @@ const StoreMixin = {
         if (!value) return;
 
         // gets the data through the store
-        store.get(value + this.id_suffix, this.context).then(async resource => {
+        store.get(value, this.context).then(async resource => {
           this.empty();
-          this.resource = resource;
+          if (this.nestedField) {
+            if (!(this.nestedField in resource))
+              throw `Error: the key "${this.nestedField}" does not exist on the resource`
+            this.resource = resource[this.nestedField];
+          } else {
+            this.resource = resource;
+          }
           await this.populate();
-          this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: resource } }));
+          this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } }));
           this.toggleLoaderHidden(true);
         });
       },
-    },
-    idSuffix: {
-      type: String,
-      default: null
     },
     extraContext: {
       type: String,
@@ -41,6 +43,10 @@ const StoreMixin = {
     loaderId: {
       type: String,
       default: ''
+    },
+    nestedField: {
+      type: String,
+      default: null
     },
   },
   initialState: {
@@ -63,9 +69,6 @@ const StoreMixin = {
 
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
-  },
-  get id_suffix(): string {
-    return this.idSuffix ? this.idSuffix + '/' : ''
   },
   get resources(): object[]{
     let resources: object[];

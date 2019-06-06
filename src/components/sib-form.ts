@@ -11,6 +11,10 @@ export const SibForm = {
     naked: {
       type: String,
       default: null
+    },
+    submitButton: {
+      type: String,
+      default: null
     }
   },
   initialState: {
@@ -69,6 +73,7 @@ export const SibForm = {
   },
   async save(): Promise<object> {
     this.toggleLoaderHidden(false);
+    this.hideError();
     const resource = this.value;
     resource['@context'] = this.context;
     let saved: object = {};
@@ -76,6 +81,8 @@ export const SibForm = {
       saved = await store.save(resource, this.resource['@id']);
     } catch (e) {
       this.toggleLoaderHidden(true);
+      this.showError(e);
+      throw e;
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {
@@ -88,10 +95,12 @@ export const SibForm = {
   },
   async submitForm(): Promise<void> {
     const isCreation = !('@id' in this.value);
-    const saved = this.save();
+    let id;
+    try {
+      id = await this.save();
+    } catch (e) { return }
     if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
-    const id = await saved;
     this.element.dispatchEvent(
       new CustomEvent('requestNavigation', {
         bubbles: true,
@@ -115,6 +124,26 @@ export const SibForm = {
       this.form.removeChild(this.form.firstChild);
     }
   },
+  showError(e: object) {
+    let errorContent = `
+      <p>An error has occured.</p>
+      <ul>
+    `;
+    Object.keys(e['error']).forEach(field => (
+      errorContent += !field.startsWith('@') ? // remove @context object
+        `<li>${field}: ${e['error'][field]}</li>` : ''
+    ));
+    errorContent += '</ul>';
+
+    const error = document.createElement('div');
+    error.setAttribute('data-id', 'form-error');
+    error.innerHTML = errorContent;
+    this.element.insertBefore(error, this.form);
+  },
+  hideError() {
+    const error = this.element.querySelector('[data-id=form-error]');
+    if (error) this.element.removeChild(error);
+  },
   async populate(): Promise<void> {
     if (!this.formInitialized) {
       if (this.naked == null) {
@@ -135,7 +164,9 @@ export const SibForm = {
     await Promise.all(this.fieldsWidget.map(field => this.appendWidget(field, this.form)));
 
     if (this.naked !== null) return;
-    this.form.appendChild(this.createInput('submit'));
+    const submitButtonElement = this.createInput('submit');
+    if (this.submitButton) submitButtonElement.value = this.submitButton;
+    this.form.appendChild(submitButtonElement);
     if (this.element.hasAttribute('reset')) {
       this.form.appendChild(this.createInput('reset'));
     }

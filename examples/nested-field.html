@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-display</title>
+    <title>SIB test: nested-field</title>
     <script type="module" src="../dist/src/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
+    <h2>Team of project 1</h2>
     <sib-display
-      data-src="http://127.0.0.1:8000/conversations/"
-      fields="title"
-      widget-title="sib-display-div"
-      editable-title
+      data-src="https://api.test-paris.happy-dev.fr/projects/1/"
+      nested-field="team"
+      fields="@id, username, email, profile.city"
     ></sib-display>
   </body>
 </html>

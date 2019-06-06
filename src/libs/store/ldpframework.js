@@ -30770,7 +30770,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
           if (!httpSuccess(statusCode)) {
             // in case of GET allow statusCode of 0 for browser local load
             if (statusCode !== 0) {
-              return callback(null, 'status code error: ' + statusCode);
+              return callback(null, {statusCode: statusCode, error: JSON.parse(content)});
             }
           }
   
@@ -30852,7 +30852,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
   
           // http status code != success
           if (!httpSuccess(statusCode)) {
-            return callback(null, 'status code error: ' + statusCode);
+            return callback(null, {statusCode: statusCode, error: JSON.parse(content)});
           }
   
           // use default parser...
@@ -30897,7 +30897,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
   
             // http status code != success
             if (!httpSuccess(statusCode)) {
-              return callback(null, 'status code error: ' + statusCode);
+              return callback(null, {statusCode: statusCode, error: JSON.parse(content)});
             }
   
             callback(graph);
@@ -30924,7 +30924,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
   
           // http status code != success
           if (!httpSuccess(statusCode)) {
-            return callback(false, 'status code error: ' + statusCode);
+            return callback(false, {statusCode: statusCode, error: JSON.parse(content)});
           }
   
           callback(true);
@@ -32261,7 +32261,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
   
           // http status code != success
           if (!httpSuccess(statusCode)) {
-            return callback(null, 'status code error: ' + statusCode);
+            return callback(null, {statusCode: statusCode, error: JSON.parse(content)});
           }
   
           // TODO: use limit parameters
@@ -32280,7 +32280,7 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
   
           // http status code != success
           if (!httpSuccess(statusCode)) {
-            return callback(null, 'status code error: ' + statusCode);
+            return callback(null, {statusCode: statusCode, error: JSON.parse(content)});
           }
   
           callback(callbackValue);
