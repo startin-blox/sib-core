@@ -50,7 +50,13 @@
     "typescript": "^3.4.1"
   },
   "release": {
-    "branch": "master",
+    "branches": [
+      "master",
+      {
+        "name": "beta",
+        "prerelease": true
+      }
+    ],
     "plugins": [
       [
         "@semantic-release/commit-analyzer",
@@ -66,7 +72,7 @@
               "release": "minor"
             },
             {
-              "type": "/.*/",
+              "type": "*",
               "release": "patch"
             }
           ]

@@ -97,7 +97,7 @@ export const SibForm = {
     const isCreation = !('@id' in this.value);
     let id;
     try {
-      id = await this.save();
+      id = await this.save() || this.value['@id'];
     } catch (e) { return }
     if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
@@ -161,7 +161,10 @@ export const SibForm = {
       this.formInitialized = true;
     }
 
-    await Promise.all(this.fieldsWidget.map(field => this.appendWidget(field, this.form)));
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i];
+      await this.appendWidget(field, this.form);
+    }
 
     if (this.naked !== null) return;
     const submitButtonElement = this.createInput('submit');
