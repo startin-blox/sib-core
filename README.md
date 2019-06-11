@@ -79,7 +79,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`extra-context`**: The id of the `<script>` tag which contains the context you want to add for this component. An extra context looks like this:
   ```html
     <script id="custom-context" type="application/ld+json">
-      { "user":"https://test-paris.happy-dev.fr/users/" }
+      { "user":"https://api.test-paris.happy-dev.fr/users/" }
     </script>
   ```
   If your `<script>` tag has the attribute `data-default-context`, this extra context will be applied on all the components which doesn't have an `extra-context` attribute.
