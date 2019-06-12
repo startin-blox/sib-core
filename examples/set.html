@@ -10,22 +10,15 @@
   </head>
 
   <body>
-    <h2>Simple display</h2>
     <sib-display
       data-src="data/sib-display.jsonld"
-    ></sib-display>
-    <h2>With fields and sets</h2>
-    <sib-display
-      data-src="data/sib-display.jsonld"
-      fields="@id, username, name(first_name, last_name), email, profile.city"
-      default-email="no email yet"
-      default-profile.city="no city yet"
-      class-username="name"
+      fields="@id, name(first_name, last_name, username), infos(email, profile.city)"
     ></sib-display>
     <style>
-      .name{
-        font-family: cursive;
-        color: green;
+      sib-display > div > div{
+        border: 2px dotted plum;
+        margin-top: 20px;
+        padding: 10px;
       }
     </style>
   </body>

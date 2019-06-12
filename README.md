@@ -34,11 +34,8 @@ Filters and searching capabilities can be easily added to interact with the list
 <sib-display
   id="list"
   data-src="http://localhost:8000/todos/"
-  set-info="task, date"
   value-created="Created by:"
-  set-author="created, name"
-  set-status="state"
-  fields="image, status, author, deadline"
+  fields="image, status(state), author(created, name), info(task, date), deadline"
   widget-image="sib-display-img"
   search-fields="name, author"
   next="detail"
@@ -50,11 +47,11 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`data-src`**: The uri of the LDP resource you want to display.
   If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
 - **`value-xyz`**: To display a string not contained within the data.
-- **`set-xyz`**: To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`.
-  By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
 - **`fields`**: The ordered list of fields to be displayed, separated by commas.
   By default, all the fields of the resource are displayed.
   To not show any fields, put an empty fields (eg. `<sib-display fields />)`
+  To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`, enclose some fields in parenthesis. For example: `fields="xyz(first_name, last_name), email"`
+  By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
 - **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
 - **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used.
   - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
