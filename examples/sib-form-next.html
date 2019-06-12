@@ -20,21 +20,21 @@
       <div id="all" hidden>
         <sib-display
         data-src="https://api.test-paris.happy-dev.fr/skills/"
-        data-fields="name"
+        fields="name"
         next="edit"
         ></sib-display>
       </div>
       <div id="edit" hidden>
         <sib-form
           bind-resources
-          data-fields="name"
+          fields="name"
           next="view"
         ></sib-form>
       </div>
       <div id="add" hidden>
         <sib-form
         data-src="https://api.test-paris.happy-dev.fr/skills/"
-        data-fields="name"
+        fields="name"
         next="view"
         ></sib-form>
       </div>
@@ -42,7 +42,7 @@
       <div id="view" hidden>
         <sib-display
           bind-resources
-          data-fields="name"
+          fields="name"
         ></sib-display>
       </div>
   </body>

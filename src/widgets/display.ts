@@ -16,7 +16,7 @@ const SIBDisplayLabelledDiv = widgetFactory(
   <div name="\${name}" \${editable?'data-editable':''}>\${value}</div>`,
 );
 
-const sibDisplayMultiline = widgetFactory(
+const SIBDisplayMultiline = widgetFactory(
   'sib-display-multiline',
   `\${value ? "<label>" + label + "</label>" : ""}
   <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
@@ -73,7 +73,7 @@ export {
   SIBDisplayValue,
   SIBDisplayDiv,
   SIBDisplayLabelledDiv,
-  sibDisplayMultiline,
+  SIBDisplayMultiline,
   SIBDisplayLabelledBoolean,
   SIBDisplayImg,
   SIBDisplayMailTo,

@@ -170,7 +170,7 @@ Take a `name` as an attribute and a HTML template, and create an HTML custom ele
 <!-- ... used in a sib-display -->
 <sib-display
   data-src="http://server/projects/"
-  data-fields="name, customer"
+  fields="name, customer"
   widget-customer="my-custom-widget"
 ></sib-display>
 ```
