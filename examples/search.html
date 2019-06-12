@@ -53,9 +53,8 @@
       <summary>Set:</summary>
       <sib-display
         data-src="./data/sib-display.jsonld"
-        fields="username, first_name, last_name, email"
+        fields="username, nameSet(first_name, last_name), email"
         search-fields="nameSet"
-        set-nameSet="first_name, last_name"
       ></sib-display>
     </details>
 
@@ -102,8 +101,7 @@
       <summary>Set + dotted field:</summary>
       <sib-display
         data-src="./data/sib-display.jsonld"
-        fields="username, first_name, last_name, email"
-        set-nameSet=" profile.city, first_name"
+        fields="username, first_name, last_name, email, nameSet(profile.city, first_name)"
         search-fields="nameSet"
       ></sib-display>
     </details>

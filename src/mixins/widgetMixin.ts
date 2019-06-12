@@ -49,15 +49,26 @@ const WidgetMixin = {
       .filter(prop => !prop.startsWith('@'))
       .map(a => [a]);
   },
+  getSetRegexp(field: string): RegExp {
+    return new RegExp(field + '\\s*\\(([^)]+)\\)', 'g');
+  },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
   getSet(field: string): string[][] {
-    return parseFieldsString(this.element.getAttribute('set-' + field));
+    let set = this.fields.match(this.getSetRegexp(field))[0];
+    if (!set) return [];
+    set = set.substring(
+      set.lastIndexOf('(') + 1,
+      set.lastIndexOf(')'),
+    );
+    return parseFieldsString(set);
   },
   isSet(field: string): boolean {
-    return this.element.hasAttribute('set-' + field);
+    if (!this.fields) return false;
+    let foundSets = this.fields.match(this.getSetRegexp(field));
+    return foundSets ? foundSets.length > 0 : false;
   },
   isMultiple(field:string): boolean {
     return this.element.hasAttribute('multiple-' + field);
