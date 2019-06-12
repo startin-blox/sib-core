@@ -107,7 +107,8 @@ export class BaseWidget extends HTMLElement {
     if (Array.isArray(range)) {
       this._range = range;
       this.render();
-      if (this._value) this.value = `{"@id": "${this._value['@id']}"}`; // set the value to define the selected option once the list is loaded and the select rendered
+      if (Array.isArray(this.value)) this.value = this.value;
+      else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
       return;
     }
     store.list(range).then(list => (this.range = list));

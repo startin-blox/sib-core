@@ -137,7 +137,7 @@ const SIBFormAutoCompletion = widgetFactory(
   </label>
 `,
   `
-  <option value="\${id}">\${name}</option>
+  <option value='{"@id": "\${id}"}'>\${name}</option>
 `,
   formWidget => {
     let select = formWidget.querySelector('select');
