@@ -62,6 +62,12 @@ function parseFieldsString(fields: string): string[][] {
   return fieldsArray;
 }
 
+function getArrayFrom(object: object, key: string): object[] {
+  if (!object || !object[key]) return [];
+  if (Array.isArray(object[key])) return object[key];
+  return [object[key]];
+}
+
 export {
   uniqID,
   stringToDom,
@@ -70,4 +76,5 @@ export {
   domIsReady,
   setDeepProperty,
   parseFieldsString,
+  getArrayFrom
 };

@@ -3,6 +3,7 @@ import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 import { CounterMixin } from './counterMixin.js';
 import { grouperMixin } from './grouperMixin.js';
+import { getArrayFrom } from '../libs/helpers.js';
 
 const ListMixin = {
   name: 'list-mixin',
@@ -99,7 +100,7 @@ const ListMixin = {
         continue;
       }
       store.get(resource.container, this.context).then(container => {
-        for (let resource of container['ldp:contains']) {
+        for (let resource of getArrayFrom(container, 'ldp:contains')) {
           this.appendChildElt(resource, div);
         }
       });
