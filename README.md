@@ -112,7 +112,8 @@ If given the URL of a container of ressources, and displays a creation form to a
   i.e. `label-username="Your name"`
 - **`naked`**: When the attribute is set, the submit button will be removed.
   It's particularly useful to prevent the nested forms to display their own submit button.
-- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
+- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`. 
+- **`upload-url-xyz`**: URL to upload file for field `xyz`, it automatically set `widget-xyz` to `sib-form-file` if net defined. 
   It's particularly useful with a dropdown field.
 - **`submit-button`**: Text of the submit button of the form.
 
@@ -232,6 +233,7 @@ The following widgets are available:
 - **`sib-form-auto-completion`**: Inserts a `<input />` HTML tag and load an autocomplete plugin. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-auto-completion` widget.
 - **`sib-form-number`**: Inserts an `<input/>` HTML tag of type "number", in a `<label>` HTML tag.
 - **`sib-form-range-number`**:
+- **`sib-form-file`**: Inserts an `<input/>` and an `<input type="file"/>`. when a file is selected it's uploaded, URL of file is returned by request and set as the `<input/>` value. The upload URL is provided via the `upload-url` attribute.
 - **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
 ### Actions
