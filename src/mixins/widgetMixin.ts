@@ -130,7 +130,7 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
-    for (let attr of ['range', 'label', 'class', 'widget', 'editable']) {
+    for (let attr of ['range', 'label', 'class', 'widget', 'editable', 'upload-url']) {
       const value = this.element.getAttribute(`${attr}-${field}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';

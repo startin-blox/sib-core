@@ -56,6 +56,9 @@ export const SibForm = {
   },
   getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
+      && this.element.hasAttribute('upload-url-' + field)) {
+      return 'sib-form-file';
+    } else if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('range-' + field)) {
       return 'sib-form-dropdown';
     } else {
