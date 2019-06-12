@@ -2,6 +2,7 @@ import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select';
+import SIBFormFile from "./sib-form-file.js";
 
 const SIBFormLabelText = widgetFactory(
   'sib-form-label-text',
@@ -204,4 +205,5 @@ export {
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,
+  SIBFormFile,
 };

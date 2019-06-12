@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local file</title>
+    <script type="module" src="../dist/src/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-form-file label="upload (wrong url):" upload-url="http://127.0.0.255/upload"></sib-form-file>
+    <sib-form-file label="upload:" upload-url="/upload"></sib-form-file>
+  </body>
+</html>
