@@ -46,7 +46,7 @@ export const SibForm = {
   },
   get form(): Element {
     if (this._form) return this._form;
-    if (this.isNaked) return this;
+    if (this.isNaked) return this.element;
     this._form = document.createElement('form');
     this.element.appendChild(this._form);
     return this._form;
