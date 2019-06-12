@@ -53,7 +53,10 @@ function setDeepProperty(obj: object, path: string[], value: object) {
 
 function parseFieldsString(fields: string): string[][] {
   let fieldsArray: string[][];
-  fieldsArray = fields.split(',').map(s => s.trim().split(/\./));
+  fieldsArray = fields
+    .replace(/\(([^)]+)\)/g, "") // remove sets from fields
+    .split(',') // separate fields
+    .map(s => s.trim().split(/\./)); // separate nested fields
   fieldsArray.forEach(field => {
     field.toString = function() {
       return this.join('.');
