@@ -30,5 +30,5 @@ function address(address) {
 }
 
 function uniqID() {
-  return btoa(Math.random().toString(36)).slice(-12,-2)
+  return crypto.randomBytes(5).toString('hex');
 }
