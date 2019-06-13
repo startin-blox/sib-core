@@ -8,22 +8,25 @@ export default class SIBMultipleForm extends BaseWidget {
     this.setAttribute('range', range);
   }
   render() {
-    while (this.firstChild) this.firstChild.remove();
+    const fragment = document.createDocumentFragment();
     const label = document.createElement('label');
     label.textContent = this.label;
-    this.appendChild(label);
+    fragment.appendChild(label);
     const addButton = document.createElement('button');
     addButton.textContent = '+';
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-      this.insertWidget(this.childAttributes);
+      this.insertWidget(this.childAttributes, parent);
     });
-    this.appendChild(addButton);
+    fragment.appendChild(addButton);
     if (!this.value) return;
     this.value.forEach(value => {
-      const elm = this.insertWidget(this.childAttributes);
+      const elm = this.insertWidget(this.childAttributes, fragment);
       elm.value = value;
+      elm.toggleAttribute('data-holder', true);
     });
+    while(this.firstChild) this.firstChild.remove()
+    this.appendChild(fragment);
   }
   get childAttributes() {
     const attrs = {};
@@ -37,7 +40,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes) {
+  insertWidget(attributes, parent) {
     const childWrapper = document.createElement('div');
     const widget = document.createElement(this.getAttribute('widget'));
     for (let name of Object.keys(attributes)) {
@@ -52,7 +55,7 @@ export default class SIBMultipleForm extends BaseWidget {
       childWrapper.remove();
     });
     childWrapper.appendChild(removeButton);
-    this.insertBefore(childWrapper, this.lastChild);
+    parent.insertBefore(childWrapper, parent.lastChild);
     return widget;
   }
 }
