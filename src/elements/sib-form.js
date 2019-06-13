@@ -78,7 +78,7 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
   async submitForm() {
     const isCreation = !('@id' in this.value);
     const saved = this.save();
-    if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
+    if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     const id = await saved || this.value['@id'];
     this.dispatchEvent(
@@ -99,6 +99,14 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
     const input = document.createElement('input');
     input.type = type;
     return input;
+  }
+
+  reset() {
+    this.form.reset();
+    this.form.querySelectorAll('select[multiple]').forEach(select => { // reset multiple select
+      select.querySelectorAll('option:checked').forEach(option => option.selected = false);
+      select.dispatchEvent(new Event('change'));
+    })
   }
 
   empty() {
