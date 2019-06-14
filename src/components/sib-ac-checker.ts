@@ -11,7 +11,7 @@ export const SibAcChecker = {
     }
   },
   populate(): void {
-    for (let permission of this.resource['@permissions']) {
+    for (let permission of this.permissions) {
       if (permission.mode['@type'] === this.permission) {
         this.element.removeAttribute('hidden');
       }

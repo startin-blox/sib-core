@@ -1,5 +1,5 @@
 import { base_context, store } from '../libs/store/store.js';
-import { domIsReady } from '../libs/helpers.js';
+import { domIsReady, getArrayFrom } from '../libs/helpers.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -71,13 +71,13 @@ const StoreMixin = {
     return {}
   },
   get resources(): object[]{
-    let resources: object[];
-    if (!this.isContainer() || !this.resource['ldp:contains']) resources = [];
-    else if (Array.isArray(this.resource['ldp:contains'])) resources = this.resource['ldp:contains'];
-    else resources = [this.resource['ldp:contains']];
+    let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
 
     this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
     return resources;
+  },
+  get permissions(): object[]{
+    return getArrayFrom(this.resource, "@permissions");
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;

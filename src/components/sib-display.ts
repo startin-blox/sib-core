@@ -7,15 +7,16 @@ export const SibDisplay = {
   name: 'sib-display',
   use: [ WidgetMixin, ListMixin, StoreMixin ],
   created(): void {
-    window.addEventListener('navigate', (event: Event) => {
+    window.addEventListener('navigate', ((event: CustomEvent) => {
       if (this.resource == null) return;
       if (event['detail'].resource == null) return;
       if (this.resource['@id'] == null) return;
       this.element.toggleAttribute(
         'active',
-        this.resource['@id'] === event['detail'].resource['@id'],
+        this.resource['@id'] === event.detail.resource.id,
+
       );
-    });
+    }) as EventListener);
   },
   get childTag(): string {
     return this.element.dataset.child || this.element.tagName;

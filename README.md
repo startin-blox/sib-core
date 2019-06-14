@@ -12,7 +12,10 @@ All the examples can be found in `/examples/`
 You first need to load the webcomponents polyfill for the browsers that have not implemented them yet, and import the components you want to use in your HTML file:
 
 ```html
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.20/webcomponents-loader.js"
+></script>
 <script type="module" src="https://unpkg.com/@startinblox/core"></script>
 <script type="module" src="https://unpkg.com/@startinblox/router"></script>
 ```
@@ -58,7 +61,8 @@ Filters and searching capabilities can be easily added to interact with the list
   - **`multiple-xyz-remove-label`**: Used with `multiple-xyz`, text of the "×" button
 - **`search-fields`**: It is possible to search/filter your list by choosing the fields you want to filter it with.
   To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
-  - **`search-value-xyz`**: The default value of the field `xyz`
+  - **`search-value-xyz`**: The default value of the search field `xyz`
+  - **`search-label-xyz`**: Set the label for the search field `xyz`
   - **`search-widget-xyz`**: The form widget of the search field `xyz`
   - **`search-range-xyz`**: The range of values of the search field `xyz`
 - **`paginate-by`**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
@@ -75,9 +79,9 @@ Filters and searching capabilities can be easily added to interact with the list
   i.e. `"<strong>${counter} results</strong>"`
 - **`extra-context`**: The id of the `<script>` tag which contains the context you want to add for this component. An extra context looks like this:
   ```html
-    <script id="custom-context" type="application/ld+json">
-      { "user":"https://api.test-paris.happy-dev.fr/users/" }
-    </script>
+  <script id="custom-context" type="application/ld+json">
+    { "user": "https://api.test-paris.happy-dev.fr/users/" }
+  </script>
   ```
   If your `<script>` tag has the attribute `data-default-context`, this extra context will be applied on all the components which doesn't have an `extra-context` attribute.
 - **`loader-id`**: Id of the loader element you want to display during the loading time.
@@ -95,7 +99,6 @@ Filters and searching capabilities can be easily added to interact with the list
 Receives the URL of a ressource via its `data-src` attribute, and displays a form to edit the resource.
 If given the URL of a container of ressources, and displays a creation form to add a resource to the container.
 
-
 ```html
 <sib-form data-src="http://localhost:8000/todos/"></sib-form>
 ```
@@ -106,31 +109,29 @@ If given the URL of a container of ressources, and displays a creation form to a
   i.e. `label-username="Your name"`
 - **`naked`**: When the attribute is set, the submit button will be removed.
   It's particularly useful to prevent the nested forms to display their own submit button.
-- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`. 
+- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
   It's particularly useful with a dropdown field.
 - **`submit-button`**: Text of the submit button of the form.
-
-
 
 ### `sib-ac-checker`
 
 Hides an element from the page if the current user doesn't have the required permissions on it.
+
 ```html
-  <sib-ac-checker permission="acl:Write" bind-resources>
-    <sib-route name="member-edit">
-      <div>Edit</div>
-    </sib-route>
-  </sib-ac-checker>
+<sib-ac-checker permission="acl:Write" bind-resources>
+  <sib-route name="member-edit">
+    <div>Edit</div>
+  </sib-route>
+</sib-ac-checker>
 ```
 
 **Attributes :**
+
 - **`permission`**: Can take the following values :
   - [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
   - [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
   - [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
   - [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
-
-
 
 ### `sib-calendar`
 
@@ -140,8 +141,6 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 - `date`: date on which the resource will be displayed
 
 Like for sib-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
-
-
 
 ### `sib-map`
 
@@ -153,11 +152,9 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 
 Like for sib-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
 
-
-
 ### `sib-widget`
 
-Take a `name`  as an attribute and a HTML template, and create an HTML custom element you can use as a widget. i.e.
+Take a `name` as an attribute and a HTML template, and create an HTML custom element you can use as a widget. i.e.
 
 ```html
 <!-- Your custom widget to display a customer... -->
@@ -170,8 +167,8 @@ Take a `name`  as an attribute and a HTML template, and create an HTML custom el
 <!-- ... used in a sib-display -->
 <sib-display
   data-src="http://server/projects/"
-  data-fields="name, customer"
-	widget-customer="my-custom-widget"
+  fields="name, customer"
+  widget-customer="my-custom-widget"
 ></sib-display>
 ```
 
@@ -183,19 +180,14 @@ In a `sib-widget`, you have access to these values:
 - **`label`**: if defined, label of the current field
 - **`range`**: if defined, range of the current field
 
-
-
 > NB: Do not forget to define your custom template in a `<template>` tag. Otherwise, your widget will not be declared properly.
-
 
 ### `sib-delete`
 
 Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays a button to delete it when clicked.
 
 ```html
-<sib-delete
-  data-src="http://localhost:8000/conversations/9/"
-></sib-delete>
+<sib-delete data-src="http://localhost:8000/conversations/9/"></sib-delete>
 ```
 
 **Attributes:**
@@ -207,15 +199,16 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 
 - **`resourceDeleted`**: triggered when the resource is successfully deleted.
 
-
 ## Widgets
 
 The following widgets are available:
 
 ### Display
+
 - **`sib-display-value`** (default): Displays the value.
 - **`sib-display-div`**: Displays the `value` inside a `<div>` HTML tag.
-- **`sib-display-labelled-div`**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>`  HTML tag
+- **`sib-display-labelled-div`**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>` HTML tag
+- **`sib-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
 - **`sib-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
 - **`sib-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
 - **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path
@@ -223,6 +216,7 @@ The following widgets are available:
 - **`sib-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
 
 ### Form
+
 - **`sib-form-label-text`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag.
 - **`sib-form-checkbox`**: Inserts an `<input/>` HTML tag of type "checkbox", in a `<label>` HTML tag.
 - **`sib-form-date`**: Inserts an `<input/>` HTML tag of type "date", in a `<label>` HTML tag.
@@ -238,30 +232,30 @@ The following widgets are available:
 - **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
 ### Actions
+
 - **`sib-action`**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
 
 ## Helpers fonctions
 
-| Function             | Parameters            | Description                                                  |
-| -------------------- | --------------------- | ------------------------------------------------------------ |
-| `uniqID`             |                       | create an uniq ID, used for example to associate input with label |
-| `stringToDom`        | `html`                | parse html string and return DOM fragment                    |
-| `evalTemplateString` | `str, variables = {}` | eval a string as an es6 template string. example: `evalTemplateString('name: ${first}  ${last}', {first: 'John', last: 'Doe'})` |
-| `importCSS`          | `[...stylesheets]`    | add style in document if not present                         |
+| Function             | Parameters            | Description                                                                                                                    |
+| -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `uniqID`             |                       | create an uniq ID, used for example to associate input with label                                                              |
+| `stringToDom`        | `html`                | parse html string and return DOM fragment                                                                                      |
+| `evalTemplateString` | `str, variables = {}` | eval a string as an es6 template string. example: `evalTemplateString('name: ${first} ${last}', {first: 'John', last: 'Doe'})` |
+| `importCSS`          | `[...stylesheets]`    | add style in document if not present                                                                                           |
 
 ## Events
 
-| Event name       | Fired by                                             | Fired when                                                   |
-| ---------------- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| Event name       | Fired by                                             | Fired when                                                                        |
+| ---------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
 | `resourceSelect` | `sib-display`, `sib-calendar`, `sib-map`             | the user clicks an child in the list, with the resource as a detail of the event. |
-| `populate`       | `sib-display`, `sib-form`, `sib-calendar`, `sib-map` | the component got and displayed all its datas.               |
-| `save`           | `sib-form`                                           | the user validates the form.                                 |
+| `populate`       | `sib-display`, `sib-form`, `sib-calendar`, `sib-map` | the component got and displayed all its datas.                                    |
+| `save`           | `sib-form`                                           | the user validates the form.                                                      |
 
 ## Contribute
+
 If you want to contribute to `sib-core`, you may be interested by the [developers documentation](doc/README-developers.md).
 
 ## License
 
 Licence MIT
-
-

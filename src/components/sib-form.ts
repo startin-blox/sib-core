@@ -18,7 +18,6 @@ export const SibForm = {
     }
   },
   initialState: {
-    formInitialized: false
   },
   get defaultWidget(): string {
     return 'sib-form-label-text';
@@ -46,7 +45,14 @@ export const SibForm = {
     });
   },
   get form(): Element {
-    return this.naked == null ? this.element.querySelector('form') : this.element;
+    if (this._form) return this._form;
+    if (this.isNaked) return this.element;
+    this._form = document.createElement('form');
+    this.element.appendChild(this._form);
+    return this._form;
+  },
+  get isNaked(): boolean {
+    return this.element.hasAttribute('naked');
   },
   getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
@@ -97,7 +103,7 @@ export const SibForm = {
     const isCreation = !('@id' in this.value);
     let id;
     try {
-      id = await this.save();
+      id = await this.save() || this.value['@id'];
     } catch (e) { return }
     if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
     if (!this.next) return;
@@ -120,8 +126,15 @@ export const SibForm = {
   },
   empty(): void {
     if (!this.form) return;
-    while (this.form.firstChild) {
-      this.form.removeChild(this.form.firstChild);
+    if (this.isNaked) {
+      while (this.form.firstChild) {
+        this.form.removeChild(this.form.firstChild);
+      }
+    } else {
+      let newForm = document.createElement('form');
+      this.element.appendChild(newForm);
+      this.element.removeChild(this._form);
+      this._form = newForm;
     }
   },
   showError(e: object) {
@@ -145,30 +158,30 @@ export const SibForm = {
     if (error) this.element.removeChild(error);
   },
   async populate(): Promise<void> {
-    if (!this.formInitialized) {
-      if (this.naked == null) {
-        const form = document.createElement('form');
-        form.addEventListener('submit', event => {
-          event.preventDefault();
-          this.submitForm();
-        });
-        form.addEventListener('reset', event =>
-          setTimeout(() => this.inputChange(event)),
-        );
-        this.element.appendChild(form);
-      }
-      this.element.addEventListener('input', (event: Event) => this.inputChange(event));
-      this.formInitialized = true;
+    const form = this.form;
+    if (!this.isNaked) {
+      form.addEventListener('submit', (event: Event) => {
+        event.preventDefault();
+        this.submitForm();
+      });
+      form.addEventListener('reset', (event: Event) =>
+        setTimeout(() => this.inputChange(event)),
+      );
+      this.element.appendChild(form);
+    }
+    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
+
+    for (let i = 0; i < this.fieldsWidget.length; i++) {
+      const field = this.fieldsWidget[i];
+      await this.appendWidget(field, form);
     }
 
-    await Promise.all(this.fieldsWidget.map(field => this.appendWidget(field, this.form)));
-
-    if (this.naked !== null) return;
+    if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');
     if (this.submitButton) submitButtonElement.value = this.submitButton;
-    this.form.appendChild(submitButtonElement);
+    form.appendChild(submitButtonElement);
     if (this.element.hasAttribute('reset')) {
-      this.form.appendChild(this.createInput('reset'));
+      form.appendChild(this.createInput('reset'));
     }
   }
 };

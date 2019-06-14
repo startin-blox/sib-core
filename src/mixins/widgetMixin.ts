@@ -49,6 +49,9 @@ const WidgetMixin = {
       .filter(prop => !prop.startsWith('@'))
       .map(a => [a]);
   },
+  getSetRegexp(field: string): RegExp {
+    return new RegExp(field + '\\s*\\(([^)]+)\\)', 'g');
+  },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
@@ -59,6 +62,7 @@ const WidgetMixin = {
     const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
     const lastSetBracket = findClosingBracketMatchIndex(this.fields, firstSetBracket);
     const set = this.fields.substring(firstSetBracket + 1, lastSetBracket);
+
     return parseFieldsString(set);
   },
   isSet(field: string): boolean {

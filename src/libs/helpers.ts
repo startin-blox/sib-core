@@ -77,15 +77,21 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   let depth = 1;
   for (let i = pos + 1; i < str.length; i++) {
     switch (str[i]) {
-    case '(':
-      depth++;
-      break;
-    case ')':
-      if (--depth == 0) return i;
-      break;
+      case '(':
+        depth++;
+        break;
+      case ')':
+        if (--depth == 0) return i;
+        break;
     }
   }
   return -1;
+}
+
+function getArrayFrom(object: object, key: string): object[] {
+  if (!object || !object[key]) return [];
+  if (Array.isArray(object[key])) return object[key];
+  return [object[key]];
 }
 
 export {
@@ -96,5 +102,6 @@ export {
   domIsReady,
   setDeepProperty,
   parseFieldsString,
-  findClosingBracketMatchIndex
+  findClosingBracketMatchIndex,
+  getArrayFrom
 };
