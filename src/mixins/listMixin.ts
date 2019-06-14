@@ -1,9 +1,7 @@
-import { store } from '../libs/store/store.js';
 import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 import { CounterMixin } from './counterMixin.js';
 import { grouperMixin } from './grouperMixin.js';
-import { getArrayFrom } from '../libs/helpers.js';
 
 const ListMixin = {
   name: 'list-mixin',
@@ -94,16 +92,7 @@ const ListMixin = {
     }
 
     for (let resource of this.currentPageResources) {
-      //for federations, fetch every sib:source we find
-      if (resource['@type'] !== 'sib:source') {
-        this.appendChildElt(resource, div);
-        continue;
-      }
-      store.get(resource.container, this.context).then(container => {
-        for (let resource of getArrayFrom(container, 'ldp:contains')) {
-          this.appendChildElt(resource, div);
-        }
-      });
+      this.appendChildElt(resource, div);
     }
   }
 }

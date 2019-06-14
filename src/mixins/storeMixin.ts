@@ -18,7 +18,6 @@ const StoreMixin = {
 
         // gets the data through the store
         store.get(value, this.context).then(async resource => {
-          this.empty();
           if (this.nestedField) {
             if (!(this.nestedField in resource))
               throw `Error: the key "${this.nestedField}" does not exist on the resource`
@@ -26,9 +25,14 @@ const StoreMixin = {
           } else {
             this.resource = resource;
           }
-          await this.populate();
-          this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } }));
-          this.toggleLoaderHidden(true);
+
+          // fetch all sources
+          if (this.isContainer()) {
+            for (resource of getArrayFrom(this.resource,'ldp:contains')) {
+              if (resource['@type'] === "sib:source") this.fetchSource(resource).then(() => this.updateDOM())
+            }
+          }
+          await this.updateDOM();
         });
       },
     },
@@ -74,6 +78,7 @@ const StoreMixin = {
     let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
 
     this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
+    resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
     return resources;
   },
   get permissions(): object[]{
@@ -87,6 +92,18 @@ const StoreMixin = {
   },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
+  },
+  async fetchSource(resource: object): Promise<object> {
+    return store.get(resource['container'], this.context).then((data) => {
+      this.resource['ldp:contains'].push(...getArrayFrom(data, 'ldp:contains')); // add new resources to the current container
+      return resource;
+    })
+  },
+  async updateDOM(): Promise<void> {
+    this.empty();
+    await this.populate();
+    this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } }));
+    this.toggleLoaderHidden(true);
   },
   async getUser() {
     // wait for dom
