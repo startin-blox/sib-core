@@ -49,6 +49,9 @@ const WidgetMixin = {
       .filter(prop => !prop.startsWith('@'))
       .map(a => [a]);
   },
+  getSetRegexp(field: string): RegExp {
+    return new RegExp(field + '\\s*\\(([^)]+)\\)', 'g');
+  },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
