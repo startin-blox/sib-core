@@ -40,7 +40,6 @@ export default class SIBMap extends SIBListMixin(SIBBase) {
     }
   }
   appendChildElt(resource) {
-    
     if (resource.lat && resource.lng) {
       const marker = L.marker([resource.lat, resource.lng], {
         resource: resource,
@@ -51,12 +50,15 @@ export default class SIBMap extends SIBListMixin(SIBBase) {
   }
   empty() {
     for (let marker of this.markers) this.map.removeLayer(marker);
+    this.markers = [];
   }
   populate() {
     super.populate();
-    console.log(this.markers);
     
     this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+  }
+  isSet() {
+    return false;
   }
 }
 customElements.define('sib-map', SIBMap);
