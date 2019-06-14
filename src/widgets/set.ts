@@ -2,23 +2,17 @@ import { widgetFactory } from './widget-factory.js';
 
 const SIBSetDiv = widgetFactory(
   'sib-set-div',
-  `<div>
-    \${content}
-  </div>`,
+  `<div data-content></div>`,
 );
 
 const SIBSetUl = widgetFactory(
   'sib-set-ul',
-  `<ul>
-    \${content}
-  </ul>`,
+  `<ul data-content></ul>`,
 );
 
 const SIBSetFieldset = widgetFactory(
   'sib-set-fieldset',
-  `<fieldset>
-    \${content}
-  </fieldset>`,
+  `<fieldset data-content></fieldset>`,
 );
 
 

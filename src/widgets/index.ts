@@ -36,7 +36,9 @@ import {
 } from './group.js';
 
 import{
-  SIBSetUl
+  SIBSetUl,
+  SIBSetDiv,
+  SIBSetFieldset
 } from './set.js';
 
 export {
@@ -67,5 +69,7 @@ export {
   SIBFormTextarea,
   SIBFormHidden,
   SIBGroupDiv,
-  SIBSetUl
+  SIBSetUl,
+  SIBSetDiv,
+  SIBSetFieldset
 };

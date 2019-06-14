@@ -8,7 +8,6 @@ export class BaseWidget extends HTMLElement {
   private resourceId: string | undefined;
   private _value: any | undefined;
   private _range: any | undefined;
-  private _content: string | undefined;
 
   connectedCallback(): void {
     this.render();
@@ -24,7 +23,6 @@ export class BaseWidget extends HTMLElement {
       range: this.htmlRange,
       multiple: this.multiple,
       editable: this.editable === '' ? true : false,
-      content: this.content
     });
 
     this.addEditButtons();
@@ -42,12 +40,6 @@ export class BaseWidget extends HTMLElement {
   set name(name: string | null) {
     if(name) this.setAttribute('name', name);
     this.render();
-  }
-  get content(): string | undefined {
-    return this._content;
-  }
-  set content(content: string | undefined) {
-    this._content = content;
   }
   get value() {
     if (this.dataHolder) {
