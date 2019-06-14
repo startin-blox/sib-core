@@ -54,11 +54,7 @@ export default class SIBMap extends SIBListMixin(SIBBase) {
   }
   populate() {
     super.populate();
-    
     this.map.fitBounds(L.featureGroup(this.markers).getBounds());
-  }
-  isSet() {
-    return false;
   }
 }
 customElements.define('sib-map', SIBMap);
