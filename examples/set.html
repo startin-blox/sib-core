@@ -10,12 +10,24 @@
   </head>
 
   <body>
+    <details>
+      <summary>Set</summary>
     <sib-display
       data-src="data/sib-display.jsonld"
       fields="@id, name(first_name, last_name, username), infos(email, profile.city)"
     ></sib-display>
+    </details>
+
+    <details>
+      <summary>Nested set</summary>
+      <sib-display
+        data-src="data/sib-display.jsonld"
+        fields="@id, name(first_name, last_name, username, infos(email, profile.city))"
+      ></sib-display>
+    </details>
+
     <style>
-      sib-display > div > div{
+      [name="name"], [name="infos"]{
         border: 2px dotted plum;
         margin-top: 20px;
         padding: 10px;
