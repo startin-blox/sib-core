@@ -25,6 +25,9 @@ export const SibForm = {
   get defaultMultipleWidget(): string {
     return 'sib-multiple-form';
   },
+  get defaultSetWidget(): string {
+    return 'sib-set-div';
+  },
   get value(): object {
     const values = {};
     this.widgets.forEach(({name, value}) => {

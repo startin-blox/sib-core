@@ -182,12 +182,14 @@ const WidgetMixin = {
   },
 
   async appendSet(field: string, parent: Element): Promise<void> {
-    const div = document.createElement('div');
-    div.setAttribute('name', field);
+    const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
+    widget.setAttribute('name', field);
+    const tempDiv = document.createElement('div')
     for (let item of this.getSet(field)) {
-      await this.appendWidget(item, div);
+      await this.appendWidget(item, tempDiv);
     }
-    parent.appendChild(div);
+    widget.content = tempDiv.innerHTML;
+    parent.appendChild(widget);
   }
 }
 
