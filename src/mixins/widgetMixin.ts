@@ -1,5 +1,5 @@
 import { store } from '../libs/store/store.js';
-import { parseFieldsString } from '../libs/helpers.js';
+import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers.js';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -49,25 +49,21 @@ const WidgetMixin = {
       .filter(prop => !prop.startsWith('@'))
       .map(a => [a]);
   },
-  getSetRegexp(field: string): RegExp {
-    return new RegExp(field + '\\s*\\(([^)]+)\\)', 'g');
-  },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
   getSet(field: string): string[][] {
-    let set = this.fields.match(this.getSetRegexp(field))[0];
-    if (!set) return [];
-    set = set.substring(
-      set.lastIndexOf('(') + 1,
-      set.lastIndexOf(')'),
-    );
+    const setString = this.fields.match(new RegExp(field + '\\s*\\(', 'g'));
+    if (!setString) return [];
+    const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
+    const lastSetBracket = findClosingBracketMatchIndex(this.fields, firstSetBracket);
+    const set = this.fields.substring(firstSetBracket + 1, lastSetBracket);
     return parseFieldsString(set);
   },
   isSet(field: string): boolean {
     if (!this.fields) return false;
-    let foundSets = this.fields.match(this.getSetRegexp(field));
+    let foundSets = this.fields.match(new RegExp(field + '\\s*\\(', 'g')); // get field name followed by "("
     return foundSets ? foundSets.length > 0 : false;
   },
   isMultiple(field:string): boolean {

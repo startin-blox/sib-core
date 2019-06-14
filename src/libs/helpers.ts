@@ -53,8 +53,15 @@ function setDeepProperty(obj: object, path: string[], value: object) {
 
 function parseFieldsString(fields: string): string[][] {
   let fieldsArray: string[][];
+
+  // remove all sets from fields
+  while(fields.indexOf('(') > 0){
+    let firstBracket = fields.indexOf('(');
+    let noset = fields.substring(firstBracket, findClosingBracketMatchIndex(fields, firstBracket)+1)
+    fields = fields.replace(noset, '')
+  }
+
   fieldsArray = fields
-    .replace(/\(([^)]+)\)/g, "") // remove sets from fields
     .split(',') // separate fields
     .map(s => s.trim().split(/\./)); // separate nested fields
   fieldsArray.forEach(field => {
@@ -71,6 +78,22 @@ function getArrayFrom(object: object, key: string): object[] {
   return [object[key]];
 }
 
+function findClosingBracketMatchIndex(str: string, pos: number) {
+  if (str[pos] != '(') throw new Error("No '(' at index " + pos);
+  let depth = 1;
+  for (let i = pos + 1; i < str.length; i++) {
+    switch (str[i]) {
+    case '(':
+      depth++;
+      break;
+    case ')':
+      if (--depth == 0) return i;
+      break;
+    }
+  }
+  return -1;
+}
+
 export {
   uniqID,
   stringToDom,
@@ -79,5 +102,6 @@ export {
   domIsReady,
   setDeepProperty,
   parseFieldsString,
-  getArrayFrom
+  getArrayFrom,
+  findClosingBracketMatchIndex
 };
