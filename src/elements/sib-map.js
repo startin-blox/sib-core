@@ -20,22 +20,26 @@ export default class SIBMap extends SIBListMixin(SIBBase) {
     div.style = 'width: 100%; height: 100%';
     this.map = L.map(div);
     L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
     this.appendChild(div);
+  }
+  reset() {
+    this.map.invalidateSize();
+    this.map.fitBounds(L.featureGroup(this.markers).getBounds());
   }
 
   dispatchSelect(event) {
     const resource = event.target.options.resource;
     this.dispatchEvent(
-      new CustomEvent('resourceSelect', { detail: { resource: resource } }),
+      new CustomEvent('resourceSelect', { detail: { resource: resource } })
     );
     if (this.next) {
       this.dispatchEvent(
         new CustomEvent('requestNavigation', {
           bubbles: true,
-          detail: { route: this.next, resource: resource },
-        }),
+          detail: { route: this.next, resource: resource }
+        })
       );
     }
   }
@@ -54,7 +58,7 @@ export default class SIBMap extends SIBListMixin(SIBBase) {
   }
   populate() {
     super.populate();
-    this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+    this.reset();
   }
 }
 customElements.define('sib-map', SIBMap);
