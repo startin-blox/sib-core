@@ -27,7 +27,7 @@
       "<rootDir>/node_modules/document-register-element/build/document-register-element.node.js"
     ],
     "testPathIgnorePatterns": [
-      "<rootDir>/lib/",
+      "<rootDir>/dist/",
       "<rootDir>/node_modules/"
     ],
     "transform": {
