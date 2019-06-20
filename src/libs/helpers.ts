@@ -1,3 +1,4 @@
+import fieldsParser from "./fields-parser.js";
 function uniqID(): string {
   return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
 }
@@ -7,7 +8,6 @@ function stringToDom(html: string): DocumentFragment {
   template.innerHTML = html;
   return template.content;
 }
-
 function evalTemplateString(str: string, variables = {}): string {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
@@ -51,6 +51,9 @@ function setDeepProperty(obj: object, path: string[], value: object) {
   }
 }
 
+function parseFieldsStringNew(fields:string){
+  return fieldsParser.parse(fields);
+}
 function parseFieldsString(fields: string): string[][] {
   let fieldsArray: string[][];
   fieldsArray = fields.split(',').map(s => s.trim().split(/\./));
@@ -76,5 +79,6 @@ export {
   domIsReady,
   setDeepProperty,
   parseFieldsString,
+  parseFieldsStringNew,
   getArrayFrom
 };

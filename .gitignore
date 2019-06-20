@@ -4,3 +4,4 @@ lib
 dist
 coverage
 .nyc_output
+src/libs/fields-parser.js
