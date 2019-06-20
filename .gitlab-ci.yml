@@ -28,5 +28,6 @@ publish:
     - semantic-release
   only:
     - master
+    - beta
   tags:
     - sib
