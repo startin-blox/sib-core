@@ -34,6 +34,19 @@ function importCSS(...stylesheets) {
   });
 }
 
+function importJS(...plugins) {
+  return plugins.map(url => {
+    let script = Array.from(document.querySelectorAll('script')).find(
+      script => script.src === url,
+    );
+    if (script) return script;
+    script = document.createElement('script');
+    script.src = url;
+    document.head.appendChild(script);
+    return script;
+  });
+}
+
 function domIsReady() {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
@@ -62,6 +75,7 @@ export {
   stringToDom,
   evalTemplateString,
   importCSS,
+  importJS,
   domIsReady,
   setDeepProperty,
   getArrayFrom
