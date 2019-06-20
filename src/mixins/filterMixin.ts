@@ -109,7 +109,7 @@ const FilterMixin = {
     searchForm.addEventListener('input', () => this.setCurrentPage(1));
 
     //pass attributes to search form
-    const searchAttributes = Array.from(this.element.attributes)
+    const searchAttributes = Array.from((this.element as Element).attributes)
     .filter(attr => attr['name'].startsWith('search-'))
     .map(attr => ({
       name: attr['name'].replace('search-', ''),
