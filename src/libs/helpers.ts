@@ -15,6 +15,7 @@ function evalTemplateString(str: string, variables = {}): string {
     const func = Function.call(null, ...keys, 'return `' + str + '`');
     return func(...values);
   } catch (e) {
+    console.log(e);
     throw new SyntaxError('`' + str + '`');
   }
 }

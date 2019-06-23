@@ -1,3 +1,4 @@
+import "./libs/polyfills.js";
 import { SibDisplay } from './components/sib-display.js';
 import { SibForm } from './components/sib-form.js';
 import { SibWidget } from './components/sib-widget.js';
