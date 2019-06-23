@@ -2,14 +2,14 @@
   "name": "@startinblox/core",
   "version": "0.0.0",
   "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "directories": {
     "example": "examples"
   },
-  "files":[
-    "dist",
-    "doc"
+  "files": [
+    "./dist/",
+    "./doc/"
   ],
   "scripts": {
     "test": "jest",
