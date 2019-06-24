@@ -11,7 +11,8 @@ export default class SIBMultipleSelect extends BaseWidget {
 
   render() {
     if(!this.firstChild) this.insertWidget(this.attributes);
-    if(this.value) this.firstChild.value = this.value;
+    if (this.label) this.firstChild.label = this.label;
+    if (this.value) this.firstChild.value = this.value;
     this.firstChild.toggleAttribute('data-holder', true);
   }
 
@@ -57,7 +58,7 @@ export default class SIBMultipleSelect extends BaseWidget {
         }
       }
     });
-
+    console.log('attrs', attributes, this);
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
