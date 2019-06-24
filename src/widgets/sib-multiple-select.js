@@ -58,7 +58,7 @@ export default class SIBMultipleSelect extends BaseWidget {
         }
       }
     });
-    console.log('attrs', attributes, this);
+
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
