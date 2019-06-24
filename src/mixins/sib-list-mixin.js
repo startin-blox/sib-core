@@ -48,7 +48,9 @@ const SIBListMixin = superclass =>
         return propertyValue === Number(filterValue);
       }
       if (typeof propertyValue === 'boolean') { //check if boolean
-        return propertyValue === Boolean(filterValue);
+        const compareValue = (typeof filterValue === "boolean") ?
+          filterValue : (filterValue == "true");
+        return propertyValue === compareValue;
       }
       if (typeof propertyValue === 'string') { //search in strings
         return (
