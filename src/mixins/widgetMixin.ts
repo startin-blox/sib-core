@@ -184,12 +184,10 @@ const WidgetMixin = {
   async appendSet(field: string, parent: Element): Promise<void> {
     const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
     widget.setAttribute('name', field);
-    const fragment = document.createDocumentFragment();
-    for (let item of this.getSet(field)) {
-      await this.appendWidget(item, fragment);
-    }
     parent.appendChild(widget);
-    widget.querySelector('[data-content]').appendChild(fragment);
+    for (let item of this.getSet(field)) {
+      await this.appendWidget(item,  widget.querySelector('[data-content]'));
+    }
   }
 }
 
