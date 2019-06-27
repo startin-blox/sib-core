@@ -233,6 +233,11 @@ The following widgets are available:
 - **`sib-form-file`**: Inserts an `<input/>` and an `<input type="file"/>`. when a file is selected it's uploaded, URL of file is returned by request and set as the `<input/>` value. The upload URL is provided via the `upload-url` attribute.
 - **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
+### Set
+- **`sib-set-div`** (default): Inserts content in a `<div/>` HTML tag
+- **`sib-set-ul`** (default): Inserts content in a `<ul/>` HTML tag
+- **`sib-set-fieldset`** (default): Inserts content in a `<fieldset/>` HTML tag
+
 ### Actions
 
 - **`sib-action`**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
