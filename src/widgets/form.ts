@@ -60,6 +60,17 @@ const SIBFormRangeDate = widgetFactory(
   </label>`,
 );
 
+const SIBFormPlaceholderDate = widgetFactory(
+  'sib-form-placeholder-date',
+  `<input
+     data-holder
+     type="date"
+     placeholder="\${label}"
+     name="\${name}"
+     value="\${escapedValue}"
+   />`,
+);
+
 const SIBFormJSON = widgetFactory(
   'sib-form-json',
   `<label>
@@ -195,6 +206,7 @@ export {
   SIBFormCheckbox,
   SIBFormDate,
   SIBFormRangeDate,
+  SIBFormPlaceholderDate,
   SIBFormDropdown,
   SIBFormPlaceholderDropdown,
   SIBFormPlaceholderTextarea,
