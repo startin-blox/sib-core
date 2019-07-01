@@ -31,6 +31,10 @@ import {
   SIBFormHidden,
 } from './form.js';
 
+import {
+  SIBGroupDiv,
+} from './group.js';
+
 export {
   SIBMultiple,
   SIBMultipleForm,
@@ -58,4 +62,5 @@ export {
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,
+  SIBGroupDiv
 };

@@ -10,11 +10,31 @@
   </head>
 
   <body>
-    <sib-display
-      data-src="data/group-by.jsonld"
-      fields="name, date"
-      group-by="date"
-    ></sib-display>
+    <details>
+      <summary>Group By</summary>
+      <sib-display
+        data-src="data/group-by.jsonld"
+        fields="name, date"
+        group-by="date"
+      ></sib-display>
+    </details>
+
+    <details>
+      <summary>Group by  + custom widget</summary>
+        <sib-widget name="custom-group">
+          <template>
+            <h2 data-title></h2>
+            <strong data-content></strong>
+          </template>
+        </sib-widget>
+
+        <sib-display
+          data-src="data/group-by.jsonld"
+          fields="name, date"
+          group-by="date"
+          group-by-widget="custom-group"
+        ></sib-display>
+    </details>
 
     <style>
       span{

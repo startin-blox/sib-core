@@ -6,6 +6,10 @@ const grouperMixin = {
       type: String,
       default: null
     },
+    groupByWidget: {
+      type: String,
+      default: 'sib-group-div'
+    }
   },
   renderGroupedElements(div: HTMLElement): void {
     let groups = {};
@@ -17,13 +21,17 @@ const grouperMixin = {
     });
 
     Object.keys(groups).forEach(group => { // For each group, render it and its children inside
-      const groupDiv = document.createElement('div');
-      const groupDivTitle = document.createElement('span');
-      groupDivTitle.textContent = group;
-
+      const groupDiv = document.createElement(this.groupByWidget);
       div.appendChild(groupDiv);
-      groupDiv.appendChild(groupDivTitle);
-      groups[group].resources.forEach((resource: object) => this.appendChildElt(resource, groupDiv))
+
+      if (!groupDiv.querySelector('[data-content]') || !groupDiv.querySelector('[data-title]')) {
+        throw new Error(`The group widgets must have one element with a data-title attribute, and one element with a data-content attribute to display datas.`);
+      }
+
+      groupDiv.querySelector('[data-title]').textContent = group;
+      groups[group].resources.forEach((resource: object) =>
+        this.appendChildElt(resource, groupDiv.querySelector('[data-content]'))
+      )
     });
   }
 }
