@@ -65,4 +65,5 @@ export default class SIBFormFile extends BaseWidget {
   }
 }
 
-customElements.define('sib-form-file', SIBFormFile);
+if (!customElements.get('sib-form-file'))
+  customElements.define('sib-form-file', SIBFormFile);

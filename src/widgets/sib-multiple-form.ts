@@ -68,4 +68,6 @@ export default class SIBMultipleForm extends BaseWidget {
     return widget;
   }
 }
-customElements.define('sib-multiple-form', SIBMultipleForm);
+
+if (!customElements.get('sib-multiple-form'))
+  customElements.define('sib-multiple-form', SIBMultipleForm);

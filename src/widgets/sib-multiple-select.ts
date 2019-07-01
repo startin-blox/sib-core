@@ -56,4 +56,6 @@ export default class SIBMultipleSelect extends BaseWidget {
     return widget;
   }
 }
-customElements.define('sib-multiple-select', SIBMultipleSelect);
+
+if (!customElements.get('sib-multiple-select'))
+  customElements.define('sib-multiple-select', SIBMultipleSelect);

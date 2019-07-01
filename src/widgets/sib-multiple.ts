@@ -44,4 +44,6 @@ export default class SIBMultiple extends BaseWidget {
     return widget;
   }
 }
-customElements.define('sib-multiple', SIBMultiple);
+
+if (!customElements.get('sib-multiple'))
+  customElements.define('sib-multiple', SIBMultiple);
