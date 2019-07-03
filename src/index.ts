@@ -6,6 +6,8 @@ import { SibAcChecker } from './components/sib-ac-checker.js';
 import { SibDelete } from './components/sib-delete.js';
 
 import './widgets/index.js';
+import { store } from './libs/store/store.js';
+import * as Helpers from './libs/helpers.js';
 import SIBTemplateElement from './sib-template-element.js';
 
 export {
@@ -14,5 +16,7 @@ export {
   SibForm,
   SibWidget,
   SibAcChecker,
-  SibDelete
+  SibDelete,
+  store,
+  Helpers
 }
