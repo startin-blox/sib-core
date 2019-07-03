@@ -142,7 +142,9 @@ export default class SIBForm extends SIBWidgetMixin(SIBBase) {
       const field = this.fields[i];
       await this.appendWidget(field, fragment);
     }
-    form.innerHTML = "";
+    while (form.firstChild) {
+      form.removeChild(form.firstChild);
+    }
     form.appendChild(fragment);
 
     if (this.isNaked) return;
