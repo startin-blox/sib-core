@@ -102,7 +102,9 @@ const StoreMixin = {
   async updateDOM(): Promise<void> {
     this.empty();
     await this.populate();
-    this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } }));
+    setTimeout(() => (
+      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } })))
+    );
     this.toggleLoaderHidden(true);
   },
   async getUser() {
