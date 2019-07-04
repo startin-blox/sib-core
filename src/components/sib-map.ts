@@ -22,7 +22,7 @@ export const SibMap = {
     div.style.height = '100%';
     this.map = L.map(div);
     L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
     this.element.appendChild(div);
   },
@@ -33,18 +33,22 @@ export const SibMap = {
       lng: "geo:long"
     }
   },
+  reset() {
+    this.map.invalidateSize();
+    this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+  },
   dispatchSelect(event: CustomEvent): void {
     const target = event.target as Element;
     const resource = target['options'].resource;
     this.element.dispatchEvent(
-      new CustomEvent('resourceSelect', { detail: { resource: resource } }),
+      new CustomEvent('resourceSelect', { detail: { resource: resource } })
     );
     if (this.next) {
       this.element.dispatchEvent(
         new CustomEvent('requestNavigation', {
           bubbles: true,
-          detail: { route: this.next, resource: resource },
-        }),
+          detail: { route: this.next, resource: resource }
+        })
       );
     }
   },
@@ -59,12 +63,15 @@ export const SibMap = {
   },
   empty(): void {
     for (let marker of this.markers) this.map.removeLayer(marker);
+    this.markers = [];
+  },
+  isSet() {
+    return false;
   },
   populate(): void {
     for (let resource of this.resources) this.appendChildElt(resource);
-    console.log(this.markers);
-    this.map.fitBounds(L.featureGroup(this.markers).getBounds());
-  }
+    this.reset();
+  },
 };
 
 Sib.register(SibMap);
