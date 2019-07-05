@@ -8,8 +8,8 @@
     "example": "examples"
   },
   "files": [
-    "./dist/",
-    "./doc/"
+    "dist",
+    "doc"
   ],
   "scripts": {
     "test": "jest",
