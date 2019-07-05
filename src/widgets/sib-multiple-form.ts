@@ -23,7 +23,7 @@ export default class SIBMultipleForm extends BaseWidget {
     addButton.textContent = this.addLabel;
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-      this.insertWidget(this.childAttributes, fragment);
+      this.insertWidget(this.childAttributes, this);
     });
     fragment.appendChild(addButton);
     if (!this.value) return;
@@ -49,7 +49,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes: object, parent: DocumentFragment): HTMLElement | undefined {
+  insertWidget(attributes: object, parent): HTMLElement | undefined {
     const childWrapper = document.createElement('div');
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
