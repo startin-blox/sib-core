@@ -66,9 +66,7 @@ export class BaseWidget extends HTMLElement {
       if (element.type == "checkbox") {
         element.checked = value;
       } else {
-        setTimeout(() => {
-          element.value = value || ''; // ... set `value` to the dataHolder element
-        })
+        element.value = value || ''; // ... set `value` to the dataHolder element
       }
     } else {
       // if multiple dataHolder in the widget ...
