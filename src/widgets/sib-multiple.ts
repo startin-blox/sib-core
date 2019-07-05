@@ -1,5 +1,5 @@
 import { BaseWidget } from './widget-factory.js';
-
+import { defineComponent } from "../libs/helpers.js";
 export default class SIBMultiple extends BaseWidget {
   render(): void {
     while (this.firstChild) this.firstChild.remove();
@@ -45,5 +45,4 @@ export default class SIBMultiple extends BaseWidget {
   }
 }
 
-if (!customElements.get('sib-multiple'))
-  customElements.define('sib-multiple', SIBMultiple);
+defineComponent('sib-multiple', SIBMultiple);

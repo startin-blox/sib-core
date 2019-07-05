@@ -1,4 +1,5 @@
 import { BaseWidget } from './widget-factory.js';
+import { defineComponent } from "../libs/helpers.js";
 
 export default class SIBMultipleSelect extends BaseWidget {
   get range(): string | null {
@@ -57,5 +58,4 @@ export default class SIBMultipleSelect extends BaseWidget {
   }
 }
 
-if (!customElements.get('sib-multiple-select'))
-  customElements.define('sib-multiple-select', SIBMultipleSelect);
+defineComponent('sib-multiple-select', SIBMultipleSelect);

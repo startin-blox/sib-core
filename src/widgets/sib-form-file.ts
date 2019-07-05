@@ -1,4 +1,5 @@
 import { BaseWidget } from './widget-factory.js';
+import { defineComponent } from "../libs/helpers.js";
 
 export default class SIBFormFile extends BaseWidget {
   input!: HTMLInputElement;
@@ -65,5 +66,4 @@ export default class SIBFormFile extends BaseWidget {
   }
 }
 
-if (!customElements.get('sib-form-file'))
-  customElements.define('sib-form-file', SIBFormFile);
+defineComponent('sib-form-file', SIBFormFile);

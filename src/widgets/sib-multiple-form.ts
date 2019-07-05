@@ -1,4 +1,5 @@
 import { BaseWidget } from './widget-factory.js';
+import { defineComponent } from "../libs/helpers.js";
 
 export default class SIBMultipleForm extends BaseWidget {
   get range(): string | null {
@@ -69,5 +70,4 @@ export default class SIBMultipleForm extends BaseWidget {
   }
 }
 
-if (!customElements.get('sib-multiple-form'))
-  customElements.define('sib-multiple-form', SIBMultipleForm);
+defineComponent('sib-multiple-form', SIBMultipleForm);

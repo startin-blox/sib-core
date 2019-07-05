@@ -95,6 +95,14 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   return -1;
 }
 
+function defineComponent(name: string, componentClass: Function) {
+  if (!customElements.get(name)) {
+    customElements.define(name, componentClass);
+  } else {
+    console.warn(`Warning: the component "${name}" has already been loaded in another version of sib-core.`)
+  }
+}
+
 export {
   uniqID,
   stringToDom,
@@ -104,5 +112,6 @@ export {
   setDeepProperty,
   parseFieldsString,
   getArrayFrom,
-  findClosingBracketMatchIndex
+  findClosingBracketMatchIndex,
+  defineComponent
 };

@@ -1,4 +1,5 @@
 import { ComponentFactory } from "./ComponentFactory.js";
+import { defineComponent } from "./helpers.js";
 import {
     ComponentConstructorInterface,
     ComponentInterface,
@@ -8,8 +9,7 @@ import {
 export class Sib {
     public static register(componentDefinition: MixinStaticInterface):void {
         const component = ComponentFactory.build(componentDefinition);
-        if (!window.customElements.get(component.name))
-            window.customElements.define(component.name, this.toElement(component));
+        defineComponent(component.name, this.toElement(component));
     }
 
     protected static toElement(component: ComponentConstructorInterface): Function {
