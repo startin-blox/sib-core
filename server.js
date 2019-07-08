@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const distPath = '.';
 
 const { resolve } = require('path');
