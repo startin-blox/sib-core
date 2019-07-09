@@ -17,6 +17,8 @@ export const SibMap = {
   created(): void {
     importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
     this.markers = [];
+  },
+  attached(): void {
     const div = document.createElement('div');
     div.style.width = '100%';
     div.style.height = '100%';

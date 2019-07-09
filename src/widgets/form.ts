@@ -201,6 +201,31 @@ const SIBFormHidden = widgetFactory(
   >`,
 );
 
+const SIBFormLabelPlaceholderText = widgetFactory(
+  'sib-form-label-placeholder-text',
+  `<label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="text"
+      name="\${name}"
+      placeholder="\${label}"
+      value="\${escapedValue}"
+    >
+  </label>`,
+);
+
+const SIBFormPlaceholderNumber = widgetFactory(
+  'sib-form-placeholder-number',
+  `<input
+    data-holder
+    placeholder="\${label}"
+    type="number"
+    name="\${name}"
+    value="\${value}"
+  >`,
+);
+
 export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
@@ -218,4 +243,6 @@ export {
   SIBFormTextarea,
   SIBFormHidden,
   SIBFormFile,
+  SIBFormLabelPlaceholderText,
+  SIBFormPlaceholderNumber
 };
