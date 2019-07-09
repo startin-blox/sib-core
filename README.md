@@ -61,6 +61,7 @@ Filters and searching capabilities can be easily added to interact with the list
   - **`multiple-xyz-remove-label`**: Used with `multiple-xyz`, text of the "×" button
 - **`search-fields`**: It is possible to search/filter your list by choosing the fields you want to filter it with.
   To be able to filter my users by `name` for instance, I can set `search-fields="name"`. This will display a form with the appropriate inputs to filter the list.
+
   - **`search-value-xyz`**: The default value of the search field `xyz`
   - **`search-label-xyz`**: Set the label for the search field `xyz`
   - **`search-widget-xyz`**: The form widget of the search field `xyz`
@@ -109,10 +110,11 @@ If given the URL of a container of ressources, and displays a creation form to a
   i.e. `label-username="Your name"`
 - **`naked`**: When the attribute is set, the submit button will be removed.
   It's particularly useful to prevent the nested forms to display their own submit button.
-- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`. 
 - **`upload-url-xyz`**: URL to upload file for field `xyz`, it automatically set `widget-xyz` to `sib-form-file` if net defined. 
   It's particularly useful with a dropdown field.
 - **`submit-button`**: Text of the submit button of the form.
+- **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
+  It's particularly useful with a dropdown field.
 
 ### `sib-ac-checker`
 
@@ -200,6 +202,7 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 
 - **`resourceDeleted`**: triggered when the resource is successfully deleted.
 
+
 ## Widgets
 
 The following widgets are available:
@@ -223,7 +226,7 @@ The following widgets are available:
 - **`sib-form-date`**: Inserts an `<input/>` HTML tag of type "date", in a `<label>` HTML tag.
 - **`sib-form-range-date`**:
 - **`sib-form-json`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag, and with its `value` converted from JSON to string
-- **`sib-form-placeholder-text`**: Inserts an `<input/>` HTML tag of type "text", with the `label` as placeholder
+- **`sib-form-placeholder-text`**: Inserts an `<input/>` HTML tag of type "text", with the `label` as placeholder.
 - **`sib-form-textarea`**: Inserts an `<textarea>` HTML tag in a `<label>` HTML tag.
 - **`sib-form-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget.
 - **`sib-form-placeholder-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. It has no label but a default disabled value as a label

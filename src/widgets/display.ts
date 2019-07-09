@@ -22,7 +22,6 @@ const SIBDisplayMultiline = widgetFactory(
   <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
 );
 
-
 const SIBDisplayLabelledBoolean = widgetFactory(
   'sib-display-labelled-boolean',
   `\${value ? "<label>" + label + "</label>" : ""}`
