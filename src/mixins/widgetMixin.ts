@@ -148,7 +148,7 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[attr] = value;
     }
-    if (this.getAction(field)) attrs['src'] = this.resource['@id'];
+    if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['value'] = await this.getValues(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
