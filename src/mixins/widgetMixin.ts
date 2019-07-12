@@ -185,9 +185,11 @@ const WidgetMixin = {
     const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
     widget.setAttribute('name', field);
     parent.appendChild(widget);
-    for (let item of this.getSet(field)) {
-      await this.appendWidget(item,  widget.querySelector('[data-content]'));
-    }
+    setTimeout(async () => {
+      for (let item of this.getSet(field)) {
+        await this.appendWidget(item,  widget.querySelector('[data-content]'));
+      }
+    });
   }
 }
 

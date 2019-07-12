@@ -185,15 +185,15 @@ export const SibForm = {
     }
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
-    const fragment = document.createDocumentFragment();
+    const template = document.createElement('template');
     for (let i = 0; i < this.fieldsWidget.length; i++) {
       const field = this.fieldsWidget[i];
-      await this.appendWidget(field, fragment);
+      await this.appendWidget(field, template.content);
     }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
     }
-    form.appendChild(fragment);
+    form.appendChild(template.content);
 
     if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');
