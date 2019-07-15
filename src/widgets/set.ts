@@ -1,5 +1,10 @@
 import { widgetFactory } from './widget-factory.js';
 
+const SIBSetDefault = widgetFactory(
+  'sib-set-default',
+  ``,
+);
+
 const SIBSetDiv = widgetFactory(
   'sib-set-div',
   `<div data-content></div>`,
@@ -17,6 +22,7 @@ const SIBSetFieldset = widgetFactory(
 
 
 export {
+  SIBSetDefault,
   SIBSetDiv,
   SIBSetUl,
   SIBSetFieldset

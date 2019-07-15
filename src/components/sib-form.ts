@@ -26,7 +26,7 @@ export const SibForm = {
     return 'sib-multiple-form';
   },
   get defaultSetWidget(): string {
-    return 'sib-set-div';
+    return 'sib-set-default';
   },
   get value(): object {
     const values = {};

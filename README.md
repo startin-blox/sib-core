@@ -237,9 +237,10 @@ The following widgets are available:
 - **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
 ### Set
-- **`sib-set-div`** (default): Inserts content in a `<div/>` HTML tag
-- **`sib-set-ul`** (default): Inserts content in a `<ul/>` HTML tag
-- **`sib-set-fieldset`** (default): Inserts content in a `<fieldset/>` HTML tag
+- **`sib-set-default`** (default): Inserts content directly in the set tag.
+- **`sib-set-div`**: Inserts content in a `<div/>` HTML tag
+- **`sib-set-ul`**: Inserts content in a `<ul/>` HTML tag
+- **`sib-set-fieldset`**: Inserts content in a `<fieldset/>` HTML tag
 
 ### Actions
 

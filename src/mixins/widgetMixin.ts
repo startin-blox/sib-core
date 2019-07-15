@@ -186,10 +186,11 @@ const WidgetMixin = {
     widget.setAttribute('name', field);
     parent.appendChild(widget);
     setTimeout(async () => {
+      const parentNode = widget.querySelector('[data-content]') || widget;
       for (let item of this.getSet(field)) {
-        await this.appendWidget(item,  widget.querySelector('[data-content]'));
+        await this.appendWidget(item, parentNode);
       }
-    });
+    })
   }
 }
 
