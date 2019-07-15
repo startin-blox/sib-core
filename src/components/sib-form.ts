@@ -164,7 +164,7 @@ export const SibForm = {
     if (error) this.element.removeChild(error);
   },
   reset() {
-    this.form.reset();
+    if(!this.isNaked) this.form.reset();
     this.form.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
       const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
       options.forEach(option => option.selected = false );
