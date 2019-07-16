@@ -126,7 +126,7 @@ const SIBFormDropdown = widgetFactory(
   </label>
 `,
   `
-  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : '' }>\${name}</option>`,
 );
 
 const SIBFormPlaceholderDropdown = widgetFactory(
@@ -137,7 +137,7 @@ const SIBFormPlaceholderDropdown = widgetFactory(
   </select>
 `,
   `
-  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : ''}>\${name}</option>`,
 );
 
 const SIBFormAutoCompletion = widgetFactory(
@@ -150,7 +150,7 @@ const SIBFormAutoCompletion = widgetFactory(
   </label>
 `,
   `
-  <option value='{"@id": "\${id}"}'>\${name}</option>
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : ''}>\${name}</option>
 `,
   formWidget => {
     let select = formWidget.querySelector('select');

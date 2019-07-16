@@ -135,9 +135,16 @@ export class BaseWidget extends HTMLElement {
     if (!this.range.length) return '';
     let htmlRange = '';
     this.range.forEach(element => {
+      let selected: boolean;
+      if (Array.isArray(this.value)) {
+        selected = !!this.value.some((e) => e['@id'] == element['@id'])
+      } else {
+        selected = this.value == `{"@id": "${element['@id']}"}`
+      }
       htmlRange += evalTemplateString(this.childTemplate, {
         name: element.name,
         id: element['@id'],
+        selected: selected
       });
     });
     return htmlRange || '';
