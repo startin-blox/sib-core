@@ -36,8 +36,10 @@ export const SibMap = {
     }
   },
   reset() {
-    this.map.invalidateSize();
-    this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+    if (this.markers.length) {
+      this.map.invalidateSize();
+      this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+    }
   },
   dispatchSelect(event: CustomEvent): void {
     const target = event.target as Element;
