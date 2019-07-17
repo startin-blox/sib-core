@@ -53,8 +53,11 @@ const WidgetMixin = {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
+  getSetRegexp(field: string) {
+    return new RegExp(`(^|\\,|\\(|\\s)\\s*${field}\\s*\\(`, 'g')
+  },
   getSet(field: string): string[][] {
-    const setString = this.fields.match(new RegExp(field + '\\s*\\(', 'g'));
+    const setString = this.fields.match(this.getSetRegexp(field));
     if (!setString) return [];
     const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
     const lastSetBracket = findClosingBracketMatchIndex(this.fields, firstSetBracket);
@@ -63,7 +66,7 @@ const WidgetMixin = {
   },
   isSet(field: string): boolean {
     if (!this.fields) return false;
-    let foundSets = this.fields.match(new RegExp(field + '\\s*\\(', 'g')); // get field name followed by "("
+    let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
   isMultiple(field:string): boolean {
