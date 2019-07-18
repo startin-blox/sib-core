@@ -31,7 +31,7 @@ export class BaseWidget extends HTMLElement {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label: string | null) {
-    if(label) this.setAttribute('label', label);
+    if(label != null) this.setAttribute('label', label);
     this.render();
   }
   get name(): string | null {
