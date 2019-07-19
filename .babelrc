@@ -1,0 +1,12 @@
+{
+  "presets": [
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-parameters",
+    "@babel/plugin-transform-spread"
+  ],
+  "ignore": [
+    "**/tests"
+  ]
+}
