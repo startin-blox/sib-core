@@ -144,6 +144,7 @@ const WidgetMixin = {
       const value = this.element.getAttribute(`${attr}-${field}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
+      if(attr === 'upload-url') attr = 'uploadURL';
       attrs[attr] = value;
     }
     for (let attr of ['add-label', 'remove-label']) {
