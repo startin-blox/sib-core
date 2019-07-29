@@ -64,6 +64,7 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
+  empty() { },
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
