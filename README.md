@@ -57,6 +57,7 @@ Filters and searching capabilities can be easily added to interact with the list
 
   By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
 - **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **[Display widgets](#display-widgets)** section below for more info.
+- **`default-widget`**: The widget to use for all the fields, except if a specific one is defined for a field.
 - **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used. Cf the **[Multiple widgets](#multiple-widgets)** section below for more info.
   - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
   - **`each-class-xyz`**: Used with `multiple-xyz`, class of each child of multiple widget
