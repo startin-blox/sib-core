@@ -8,6 +8,10 @@ export const SibForm = {
   name: 'sib-form',
   use: [WidgetMixin, StoreMixin],
   attributes: {
+    defaultWidget: {
+      type: String,
+      default: 'sib-form-label-text'
+    },
     naked: {
       type: String,
       default: null
@@ -18,9 +22,6 @@ export const SibForm = {
     }
   },
   initialState: {
-  },
-  get defaultWidget(): string {
-    return 'sib-form-label-text';
   },
   get defaultMultipleWidget(): string {
     return 'sib-multiple-form';

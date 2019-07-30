@@ -5,7 +5,13 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 
 export const SibDisplay = {
   name: 'sib-display',
-  use: [ WidgetMixin, ListMixin, StoreMixin ],
+  use: [WidgetMixin, ListMixin, StoreMixin],
+  attributes: {
+    defaultWidget: {
+      type: String,
+      default: 'sib-display-value'
+    },
+  },
   created(): void {
     window.addEventListener('navigate', ((event: CustomEvent) => {
       if (this.resource == null) return;
@@ -20,9 +26,6 @@ export const SibDisplay = {
   },
   get childTag(): string {
     return this.element.dataset.child || this.element.tagName;
-  },
-  get defaultWidget(): string {
-    return 'sib-display-value';
   },
   get defaultMultipleWidget(): string {
     return 'sib-multiple';
