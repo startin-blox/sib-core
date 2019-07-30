@@ -4,7 +4,7 @@ export default class SIBMultiple extends BaseWidget {
   render(): void {
     while (this.firstChild) this.firstChild.remove();
     if (!this.value) return;
-    if (this.value.length) {
+    if (this.value.length && this.label) {
       const label = document.createElement('label');
       label.textContent = this.label;
       this.appendChild(label);
@@ -30,6 +30,15 @@ export default class SIBMultiple extends BaseWidget {
     attrs['name'] = this.name;
 
     return attrs;
+  }
+
+  get label(): string | null {
+    return this.hasAttribute('label') ? this.getAttribute('label') : null;
+  }
+
+  set label(label: string | null) {
+    if(label != null) this.setAttribute('label', label);
+    this.render();
   }
 
   insertWidget(attributes: object): HTMLElement | undefined {
