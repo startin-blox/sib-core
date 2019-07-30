@@ -12,6 +12,7 @@ import {
   SIBDisplayTel,
   SIBAction,
   SIBDisplayLink,
+  SIBDisplayBlankLink
 } from './display.js';
 
 import {
@@ -29,11 +30,19 @@ import {
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,
+  SIBFormLabelPlaceholderText,
+  SIBFormPlaceholderNumber
 } from './form.js';
 
 import {
   SIBGroupDiv,
 } from './group.js';
+
+import{
+  SIBSetUl,
+  SIBSetDiv,
+  SIBSetFieldset
+} from './set.js';
 
 export {
   SIBMultiple,
@@ -48,6 +57,7 @@ export {
   SIBDisplayTel,
   SIBAction,
   SIBDisplayLink,
+  SIBDisplayBlankLink,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,
@@ -62,5 +72,10 @@ export {
   SIBFormPlaceholderText,
   SIBFormTextarea,
   SIBFormHidden,
-  SIBGroupDiv
+  SIBFormLabelPlaceholderText,
+  SIBFormPlaceholderNumber,
+  SIBGroupDiv,
+  SIBSetUl,
+  SIBSetDiv,
+  SIBSetFieldset
 };

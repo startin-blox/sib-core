@@ -53,8 +53,11 @@ const WidgetMixin = {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
+  getSetRegexp(field: string) {
+    return new RegExp(`(^|\\,|\\(|\\s)\\s*${field}\\s*\\(`, 'g')
+  },
   getSet(field: string): string[][] {
-    const setString = this.fields.match(new RegExp(field + '\\s*\\(', 'g'));
+    const setString = this.fields.match(this.getSetRegexp(field));
     if (!setString) return [];
     const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
     const lastSetBracket = findClosingBracketMatchIndex(this.fields, firstSetBracket);
@@ -63,7 +66,7 @@ const WidgetMixin = {
   },
   isSet(field: string): boolean {
     if (!this.fields) return false;
-    let foundSets = this.fields.match(new RegExp(field + '\\s*\\(', 'g')); // get field name followed by "("
+    let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
   isMultiple(field:string): boolean {
@@ -148,7 +151,7 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[attr] = value;
     }
-    if (this.getAction(field)) attrs['src'] = this.resource['@id'];
+    if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['value'] = await this.getValues(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
@@ -182,12 +185,15 @@ const WidgetMixin = {
   },
 
   async appendSet(field: string, parent: Element): Promise<void> {
-    const div = document.createElement('div');
-    div.setAttribute('name', field);
-    for (let item of this.getSet(field)) {
-      await this.appendWidget(item, div);
-    }
-    parent.appendChild(div);
+    const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
+    widget.setAttribute('name', field);
+    parent.appendChild(widget);
+    setTimeout(async () => {
+      const parentNode = widget.querySelector('[data-content]') || widget;
+      for (let item of this.getSet(field)) {
+        await this.appendWidget(item, parentNode);
+      }
+    })
   }
 }
 

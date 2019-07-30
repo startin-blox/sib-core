@@ -22,7 +22,7 @@ export class BaseWidget extends HTMLElement {
       escapedValue: this.escapedValue,
       range: this.htmlRange,
       multiple: this.multiple,
-      editable: this.editable === '' ? true : false
+      editable: this.editable === '' ? true : false,
     });
 
     this.addEditButtons();
@@ -31,7 +31,7 @@ export class BaseWidget extends HTMLElement {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label: string | null) {
-    if(label) this.setAttribute('label', label);
+    if(label != null) this.setAttribute('label', label);
     this.render();
   }
   get name(): string | null {
@@ -125,7 +125,8 @@ export class BaseWidget extends HTMLElement {
     if (Array.isArray(range)) {
       this._range = range;
       this.render();
-      if (this._value) this.value = `{"@id": "${this._value['@id']}"}`; // set the value to define the selected option once the list is loaded and the select rendered
+      if (Array.isArray(this.value)) this.value = this.value;
+      else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
       return;
     }
     store.list(range).then(list => (this.range = list));
@@ -134,9 +135,16 @@ export class BaseWidget extends HTMLElement {
     if (!this.range.length) return '';
     let htmlRange = '';
     this.range.forEach(element => {
+      let selected: boolean;
+      if (Array.isArray(this.value)) {
+        selected = !!this.value.some((e) => e['@id'] == element['@id'])
+      } else {
+        selected = this.value == `{"@id": "${element['@id']}"}`
+      }
       htmlRange += evalTemplateString(this.childTemplate, {
         name: element.name,
         id: element['@id'],
+        selected: selected
       });
     });
     return htmlRange || '';

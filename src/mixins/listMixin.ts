@@ -67,7 +67,7 @@ const ListMixin = {
     const div = this.div;
 
     if (!this.isContainer()) {
-      this.appendSingleElt();
+      this.appendSingleElt(div);
       return;
     }
     if (!this.filtersAdded && this.searchFields) {

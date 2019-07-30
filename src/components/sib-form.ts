@@ -25,6 +25,9 @@ export const SibForm = {
   get defaultMultipleWidget(): string {
     return 'sib-multiple-form';
   },
+  get defaultSetWidget(): string {
+    return 'sib-set-default';
+  },
   get value(): object {
     const values = {};
     this.widgets.forEach(({name, value}) => {
@@ -108,7 +111,7 @@ export const SibForm = {
     try {
       id = await this.save() || this.value['@id'];
     } catch (e) { return }
-    if (isCreation && this.form !== this) this.form.reset(); // we reset the form only in creation mode
+    if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     this.element.dispatchEvent(
       new CustomEvent('requestNavigation', {
@@ -160,6 +163,14 @@ export const SibForm = {
     const error = this.element.querySelector('[data-id=form-error]');
     if (error) this.element.removeChild(error);
   },
+  reset() {
+    if(!this.isNaked) this.form.reset();
+    this.form.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
+      const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
+      options.forEach(option => option.selected = false );
+      select.dispatchEvent(new Event('change'));
+    })
+  },
   async populate(): Promise<void> {
     const form = this.form;
     if (!this.isNaked) {
@@ -174,10 +185,15 @@ export const SibForm = {
     }
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
+    const fragment = document.createDocumentFragment();
     for (let i = 0; i < this.fieldsWidget.length; i++) {
       const field = this.fieldsWidget[i];
-      await this.appendWidget(field, form);
+      await this.appendWidget(field, fragment);
     }
+    while (form.firstChild) {
+      form.removeChild(form.firstChild);
+    }
+    form.appendChild(fragment);
 
     if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');

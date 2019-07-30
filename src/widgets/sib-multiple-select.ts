@@ -7,15 +7,15 @@ export default class SIBMultipleSelect extends BaseWidget {
   }
   set range(range: string | null) {
     if (range) this.setAttribute('range', range);
+    if (this.firstChild) this.firstChild['range'] = range;
   }
 
   render(): void {
-    while (this.firstChild) this.firstChild.remove();
-
-    const elm = this.insertWidget(this.attributes);
-    if (elm) {
-      elm['value'] = this.value;
-      elm.toggleAttribute('data-holder', true);
+    if (!this.firstChild) this.insertWidget(this.attributes);
+    if (this.firstChild) {
+      if (this.label) this.firstChild['label'] = this.label;
+      if (this.value) this.firstChild['value'] = this.value;
+      (this.firstChild as Element).toggleAttribute('data-holder', true);
     }
   }
 
@@ -30,24 +30,40 @@ export default class SIBMultipleSelect extends BaseWidget {
   }
 
   get value(): object[] {
-    return Array.from(this.querySelectorAll('select option:checked')).map(el => ({ "@id": el['value'] }));
+    return this.firstChild ? this.firstChild['value'] : null;
   }
-  set value(values) {
-    this.querySelectorAll('select option').forEach(element => element['selected'] = false); // unselect all options...
-
-    values.forEach(value => { // ... and select only "values"
-      const toSelect = this.querySelector(`select option[value="${value}"]`);
-      if (toSelect) toSelect['selected'] = true;
-    });
-
-    const select = this.querySelector('select');
-    if (select) select.dispatchEvent(new Event('change')); // ... finally trigger change
+  set value(value) {
+    if(this.firstChild) this.firstChild['value'] = value;
   }
 
   insertWidget(attributes: object): HTMLElement | undefined {
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;
+
+    // Override getter and setter of widget
+    Reflect.defineProperty(widget, 'value', {
+      get: function () {
+        if (this.querySelectorAll('select option:checked').length) {
+          const options = this.querySelectorAll('select option:checked') as NodeListOf<HTMLOptionElement>;
+          return Array.from(options).map(el => JSON.parse(el.value));
+        }
+        return this._value || '';
+      },
+      set: function (values) {
+        this._value = values
+        const selectElement = this.querySelector('select');
+        selectElement.querySelectorAll('option').forEach(element => element.selected = false); // unselect all options...
+        if (selectElement && values) {
+          values.forEach(value => { // ... and select only "values"
+            const selectedValue = value.hasOwnProperty('@id') ? value['@id'] : value;
+            const selectedElement = selectElement.querySelector(`option[value='{"@id": "${selectedValue}"}']`);
+            if (selectedElement) selectedElement.selected = true
+          });
+          selectElement.dispatchEvent(new Event('change')); // ... finally trigger change
+        }
+      }
+    });
 
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];

@@ -21,12 +21,12 @@ export class Store {
     this.originalStore = new (<any>window).MyStore(options);
   }
 
-  get(id: string, context = null): Promise<object> {
+  get(id: string, context = null, force = false): Promise<object> {
     let hash = '';
     try {
       hash = JSON.stringify([id, context]);
     } catch (e) {}
-    if (hash && !this.cache.has(hash)) {
+    if (hash && !this.cache.has(hash) || force) {
       const get = this.originalStore.get(id, context);
       this.cache.set(hash, get);
       get.catch(error => {

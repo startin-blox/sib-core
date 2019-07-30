@@ -1,0 +1,20 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [">1%", "not ie 11"]
+        },
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-parameters",
+    "@babel/plugin-transform-spread"
+  ],
+  "ignore": ["**/tests"]
+}

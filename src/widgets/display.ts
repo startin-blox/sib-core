@@ -22,7 +22,6 @@ const SIBDisplayMultiline = widgetFactory(
   <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
 );
 
-
 const SIBDisplayLabelledBoolean = widgetFactory(
   'sib-display-labelled-boolean',
   `\${value ? "<label>" + label + "</label>" : ""}`
@@ -60,6 +59,15 @@ const SIBDisplayLink = widgetFactory(
   >\${label}</a>`,
 );
 
+const SIBDisplayBlankLink = widgetFactory(
+  'sib-display-blank-link',
+  `<a
+    href="\${value}"
+    name="\${name}"
+    target="_blank"
+  >\${label}</a>`,
+);
+
 const SIBAction = widgetFactory(
   'sib-action',
   `<sib-link
@@ -79,5 +87,6 @@ export {
   SIBDisplayMailTo,
   SIBDisplayTel,
   SIBDisplayLink,
+  SIBDisplayBlankLink,
   SIBAction,
 };

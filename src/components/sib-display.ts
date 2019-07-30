@@ -27,6 +27,9 @@ export const SibDisplay = {
   get defaultMultipleWidget(): string {
     return 'sib-multiple';
   },
+  get defaultSetWidget(): string {
+    return 'sib-set-default';
+  },
   // Here "even.target" points to the content of the widgets of the children of sib-display
   dispatchSelect(event: Event): void {
     if (event.target) {

@@ -126,7 +126,7 @@ const SIBFormDropdown = widgetFactory(
   </label>
 `,
   `
-  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : '' }>\${name}</option>`,
 );
 
 const SIBFormPlaceholderDropdown = widgetFactory(
@@ -137,7 +137,7 @@ const SIBFormPlaceholderDropdown = widgetFactory(
   </select>
 `,
   `
-  <option value='{"@id": "\${id}"}'>\${name}</option>`,
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : ''}>\${name}</option>`,
 );
 
 const SIBFormAutoCompletion = widgetFactory(
@@ -150,7 +150,7 @@ const SIBFormAutoCompletion = widgetFactory(
   </label>
 `,
   `
-  <option value="\${id}">\${name}</option>
+  <option value='{"@id": "\${id}"}' \${selected ? 'selected' : ''}>\${name}</option>
 `,
   formWidget => {
     let select = formWidget.querySelector('select');
@@ -201,6 +201,31 @@ const SIBFormHidden = widgetFactory(
   >`,
 );
 
+const SIBFormLabelPlaceholderText = widgetFactory(
+  'sib-form-label-placeholder-text',
+  `<label>
+    <div>\${label}</div>
+    <input
+      data-holder
+      type="text"
+      name="\${name}"
+      placeholder="\${label}"
+      value="\${escapedValue}"
+    >
+  </label>`,
+);
+
+const SIBFormPlaceholderNumber = widgetFactory(
+  'sib-form-placeholder-number',
+  `<input
+    data-holder
+    placeholder="\${label}"
+    type="number"
+    name="\${name}"
+    value="\${value}"
+  >`,
+);
+
 export {
   SIBFormAutoCompletion,
   SIBFormCheckbox,
@@ -218,4 +243,6 @@ export {
   SIBFormTextarea,
   SIBFormHidden,
   SIBFormFile,
+  SIBFormLabelPlaceholderText,
+  SIBFormPlaceholderNumber
 };

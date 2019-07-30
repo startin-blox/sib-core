@@ -43,10 +43,12 @@ export default class SIBFormFile extends BaseWidget {
     if (this.filePicker.files!.length < 1) return;
     const file = this.filePicker.files![0];
     this.output.textContent = '⏳';
+    const formData = new FormData()
+    formData.append('file', file);
     fetch(this.uploadURL, {
       method: 'POST',
       // headers: {},
-      body: file,
+      body: formData,
     })
       .then(response => {
         this.filePicker.value = '';

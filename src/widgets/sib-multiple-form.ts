@@ -15,25 +15,27 @@ export default class SIBMultipleForm extends BaseWidget {
     return this.hasAttribute('remove-label') ? this.getAttribute('remove-label') : '×';
   }
   render(): void {
-    while (this.firstChild) this.firstChild.remove();
+    const fragment = document.createDocumentFragment();
     const label = document.createElement('label');
     label.textContent = this.label;
-    this.appendChild(label);
+    fragment.appendChild(label);
     const addButton = document.createElement('button');
     addButton.textContent = this.addLabel;
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-      this.insertWidget(this.childAttributes);
+      this.insertWidget(this.childAttributes, this);
     });
-    this.appendChild(addButton);
+    fragment.appendChild(addButton);
     if (!this.value) return;
     this.value.forEach(value => {
-      const elm = this.insertWidget(this.childAttributes);
+      const elm = this.insertWidget(this.childAttributes, fragment);
       if (elm) {
         elm['value'] = value;
         elm.toggleAttribute('data-holder', true);
       }
     });
+    while(this.firstChild) this.firstChild.remove()
+    this.appendChild(fragment);
   }
   get childAttributes(): object {
     const attrs = {};
@@ -47,7 +49,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes: object): HTMLElement | undefined {
+  insertWidget(attributes: object, parent): HTMLElement | undefined {
     const childWrapper = document.createElement('div');
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
@@ -65,7 +67,7 @@ export default class SIBMultipleForm extends BaseWidget {
       childWrapper.remove();
     });
     childWrapper.appendChild(removeButton);
-    this.insertBefore(childWrapper, this.lastChild);
+    parent.insertBefore(childWrapper, parent.lastChild);
     return widget;
   }
 }

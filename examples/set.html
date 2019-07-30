@@ -23,6 +23,7 @@
       <sib-display
         data-src="data/sib-display.jsonld"
         fields="@id, name(first_name, last_name, username, infos(email, profile.city))"
+        widget-name="sib-set-ul"
       ></sib-display>
     </details>
 
@@ -31,6 +32,11 @@
         border: 2px dotted plum;
         margin-top: 20px;
         padding: 10px;
+        display: block;
+      }
+
+      ul{
+        border: 2px dashed aquamarine;
       }
     </style>
   </body>
