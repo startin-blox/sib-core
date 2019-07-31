@@ -36,12 +36,13 @@ export const SibMap = {
     }
   },
   reset() {
-    const bounds = this.markers.length ?
-      L.featureGroup(this.markers).getBounds() : // get bounds from markers
-      [[38.7077, -9.1365], [56.8245, 60.6072]]; // default bounds if no marker (Europe)
-
     this.map.invalidateSize();
-    this.map.fitBounds(bounds);
+
+    if (this.markers.length) {
+      this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
+    } else {
+      this.map.fitWorld(); // ... or on the world if not
+    }
   },
   dispatchSelect(event: CustomEvent): void {
     const target = event.target as Element;
