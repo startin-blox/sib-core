@@ -135,11 +135,14 @@ Hides an element from the page if the current user doesn't have the required per
 
 **Attributes :**
 
-- **`permission`**: Can take the following values :
-  - [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
-  - [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
-  - [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
-  - [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
+- **`permission`**: Displays the element if the user has the specified right
+- **`no-permission`**: Displays the element if the user has not the specified right
+
+Possible values:
+- [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
+- [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
+- [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
+- [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
 
 ### `sib-calendar`
 

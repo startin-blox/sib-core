@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib-display</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div>
+      <strong>Use case:</strong> Current user has no permission to view project
+    </div>
+
+    <div>
+      <strong>1. Should not display</strong>
+      <sib-ac-checker permission="acl:View" data-src="./data/project.jsonld">
+        <sib-display
+          data-src="./data/project.jsonld"
+          fields="name, description"
+        ></sib-display>
+      </sib-ac-checker>
+    </div>
+    <div>
+        <strong>2. Should display</strong>
+        <sib-ac-checker no-permission="acl:View" data-src="./data/project.jsonld">
+          <sib-display
+            data-src="./data/project.jsonld"
+            fields="name, description"
+          ></sib-display>
+        </sib-ac-checker>
+      </div>
+  </body>
+</html>
