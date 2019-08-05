@@ -36,7 +36,8 @@
       "<rootDir>/node_modules/"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "ts-jest"
     },
     "resolver": "jest-ts-webcompat-resolver"
   },

@@ -21,13 +21,13 @@ export class Store {
     this.originalStore = new (<any>window).MyStore(options);
   }
 
-  get(id: string, context = null, force = false): Promise<object> {
+  get(id: string, context = null, force = false, page = null, offset = null): Promise<object> {
     let hash = '';
     try {
       hash = JSON.stringify([id, context]);
     } catch (e) {}
     if (hash && !this.cache.has(hash) || force) {
-      const get = this.originalStore.get(id, context);
+            const get = this.originalStore.get(Store.paginatedUrl(id, page, offset), context);
       this.cache.set(hash, get);
       get.catch(error => {
         console.error('store.get() Error: ', id);
@@ -55,6 +55,18 @@ export class Store {
     let deleted = await this.originalStore.delete(id);
     this.cache.clear();
     return deleted;
+  }
+
+  static paginatedUrl(id: string, page, offset) {
+    let url =  new URL(id);
+    let searchParams = url.searchParams;
+    if(page) {
+      searchParams.set('page', page)
+    }
+    if(offset) {
+      searchParams.set('offset', offset)
+    }
+    return url.toString();
   }
 }
 
