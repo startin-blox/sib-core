@@ -4,7 +4,6 @@ const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
   initialState: {
-    currentPage: 1,
     paginationElements: null
   },
   attributes: {
@@ -12,12 +11,16 @@ const PaginateMixin = {
       type: Number,
       default: 0
     },
+    currentPage: {
+      type: Number,
+      default: 1
+    }
   },
   get pageCount(): number {
-    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
+    return Math.max(1, this.resource.count | Math.ceil(this.resources.length / this.paginateBy));
   },
   get currentPageResources(): object[] {
-    if (this.paginateBy == 0) return this.resources;
+    if (this.paginateBy == 0 || this.resource.count) return this.resources;
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
     return this.resources.slice(
       firstElementIndex,
@@ -59,11 +62,17 @@ const PaginateMixin = {
         this.currentPage -= 1;
         this.empty();
         this.populate();
+        if(this.resource.previous) {
+          this.element.dataset.src = this.resource.previous
+        }
       });
       elements['next'].addEventListener('click', () => {
         this.currentPage += 1;
         this.empty();
         this.populate();
+        if(this.resource.next) {
+          this.element.dataset.src = this.resource.next
+        }
       });
     }
     const elements = this.paginationElements;

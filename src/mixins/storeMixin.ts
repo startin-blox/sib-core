@@ -17,7 +17,7 @@ const StoreMixin = {
         if (!value) return;
 
         // gets the data through the store
-        store.get(value, this.context).then(async resource => {
+        store.get(value, this.contex, false, this.currentPage, this.paginateBy).then(async resource => {
           if (this.nestedField) {
             if (!(this.nestedField in resource))
               throw `Error: the key "${this.nestedField}" does not exist on the resource`
