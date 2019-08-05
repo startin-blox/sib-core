@@ -1,21 +1,22 @@
 import { BaseWidget } from './widget-factory.js';
-import { defineComponent } from "../libs/helpers.js";
+import { defineComponent, uniqID } from "../libs/helpers.js";
 
 export default class SIBFormFile extends BaseWidget {
   input!: HTMLInputElement;
   filePicker!: HTMLInputElement;
   output!: HTMLSpanElement;
   get template() {
-    return `<label>
-  <div>\${label}</div>
-  <input
-    data-holder
-    type="text"
-    name="\${name}"
-    value="\${value}"
-  >
-  <input type="file"/>
-</label>`;
+    const id = uniqID();
+    return `<div>
+      <label for="${id}">\${label}</label>
+      <input
+        data-holder
+        type="text"
+        name="\${name}"
+        value="\${value}"
+      >
+      <input type="file" id="${id}"/>
+    </div>`;
   }
   get uploadURL() {
     return this.getAttribute('upload-url');
