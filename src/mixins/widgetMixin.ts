@@ -83,8 +83,9 @@ const WidgetMixin = {
     return resource[field];
   },
   async getValue(field: string) {
-    if (this.getAction(field)) {
-      return this.getAction(field);
+    const escapedField = this.getEscapedField(field);
+    if (this.getAction(escapedField)) {
+      return this.getAction(escapedField);
     }
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
@@ -135,24 +136,25 @@ const WidgetMixin = {
     const attrs = {
       name: field,
     };
+    const escapedField = this.getEscapedField(field);
     for (let attr of ['range', 'label', 'class']) {
-      const value = this.element.getAttribute(`each-${attr}-${field}`);
+      const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
     for (let attr of ['range', 'label', 'class', 'widget', 'editable', 'upload-url']) {
-      const value = this.element.getAttribute(`${attr}-${field}`);
+      const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
       if(attr === 'upload-url') attr = 'uploadURL';
       attrs[attr] = value;
     }
     for (let attr of ['add-label', 'remove-label']) {
-      const value = this.element.getAttribute(`multiple-${field}-${attr}`);
+      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
       if (value == null) continue;
       attrs[attr] = value;
     }
-    if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
+    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['value'] = await this.getValues(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
@@ -167,10 +169,11 @@ const WidgetMixin = {
 
     const attributes = await this.widgetAttributes(field);
 
-    const tagName = this.multiple(field) || this.getWidget(field);
+    const escapedField = this.getEscapedField(field);
+    const tagName = this.multiple(escapedField) || this.getWidget(escapedField);
     const widget = document.createElement(tagName);
-    if (this.multiple(field)) {
-      widget.setAttribute('widget', this.getWidget(field));
+    if (this.multiple(escapedField)) {
+      widget.setAttribute('widget', this.getWidget(escapedField));
     }
 
     for (let name of Object.keys(attributes)) {
@@ -195,6 +198,13 @@ const WidgetMixin = {
         await this.appendWidget(item, parentNode);
       }
     })
+  },
+  /**
+   * Returns field name without starting "@"
+   * @param field
+   */
+  getEscapedField(field: string[]): string[] {
+    return field.map(prop => prop.startsWith('@') ? prop.slice(1, prop.length) : prop);
   }
 }
 
