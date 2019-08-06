@@ -12,7 +12,8 @@ import {
   SIBDisplayTel,
   SIBAction,
   SIBDisplayLink,
-  SIBDisplayBlankLink
+  SIBDisplayBlankLink,
+  SIBDisplayAutolink
 } from './display.js';
 
 import {
@@ -58,6 +59,7 @@ export {
   SIBAction,
   SIBDisplayLink,
   SIBDisplayBlankLink,
+  SIBDisplayAutolink,
   SIBFormAutoCompletion,
   SIBFormCheckbox,
   SIBFormDate,

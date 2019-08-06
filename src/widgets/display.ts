@@ -1,4 +1,5 @@
 import { widgetFactory } from './widget-factory.js';
+import "https://unpkg.com/autolinker/dist/Autolinker.min.js";
 
 const SIBDisplayValue = widgetFactory(
   'sib-display-value',
@@ -76,6 +77,15 @@ const SIBAction = widgetFactory(
   >\${label}</sib-link>`,
 );
 
+const SIBDisplayAutolink = widgetFactory(
+  'sib-display-autolink',
+  `\${value}`,
+  '',
+  content => {
+    //@ts-ignore
+    content.innerHTML = Autolinker.link(content.textContent);
+  },
+);
 
 export {
   SIBDisplayValue,
@@ -89,4 +99,5 @@ export {
   SIBDisplayLink,
   SIBDisplayBlankLink,
   SIBAction,
+  SIBDisplayAutolink
 };
