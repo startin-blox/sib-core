@@ -215,7 +215,7 @@ The following widgets are available:
 - **`sib-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
 - **`sib-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
 - **`sib-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
-- **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path
+- **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path. If a label is defined for this field, it's displayed as the content of the link.
 - **`sib-display-tel`**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
 - **`sib-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
 

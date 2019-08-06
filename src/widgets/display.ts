@@ -38,7 +38,7 @@ const SIBDisplayImg = widgetFactory(
 
 const SIBDisplayMailTo = widgetFactory(
   'sib-display-mailto',
-  `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${value}</a>
+  `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${label != name ? label : value}</a>
 `,
 );
 
