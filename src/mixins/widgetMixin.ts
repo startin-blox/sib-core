@@ -7,7 +7,7 @@ const WidgetMixin = {
   attributes: {
     fields: {
       type: String,
-      default: null,
+      default: '',
     }
   },
   initialState: {
