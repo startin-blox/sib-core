@@ -9,13 +9,15 @@ export default class SIBMultiple extends BaseWidget {
       label.textContent = this.label;
       this.appendChild(label);
     }
+    const parent = document.createElement('div');
     this.value.forEach(value => {
-      const elm = this.insertWidget(this.childAttributes);
+      const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
         elm['value'] = value;
         elm.toggleAttribute('data-holder', true);
       }
     });
+    this.appendChild(parent);
   }
 
   get childAttributes(): object {
@@ -41,7 +43,7 @@ export default class SIBMultiple extends BaseWidget {
     this.render();
   }
 
-  insertWidget(attributes: object): HTMLElement | undefined {
+  insertWidget(attributes: object, parent: HTMLElement): HTMLElement | undefined {
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;
@@ -49,7 +51,7 @@ export default class SIBMultiple extends BaseWidget {
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
-    this.appendChild(widget);
+    parent.appendChild(widget);
     return widget;
   }
 }
