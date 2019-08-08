@@ -26,6 +26,7 @@ export class BaseWidget extends HTMLElement {
     });
 
     this.addEditButtons();
+    this.initChangeEvents();
   }
   get label(): string | null {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
@@ -174,6 +175,21 @@ export class BaseWidget extends HTMLElement {
     editableField.setAttribute('contenteditable', 'true');
     editableField.focus();
     editButton.setAttribute("disabled", "disabled");
+  }
+  /**
+   * Dispatch change events of data holders from the current widget
+   */
+  initChangeEvents(): void {
+    if (this.dataHolder) {
+      const event = new Event('change', { bubbles: true });
+      this.dataHolder.forEach(element => {
+        element.addEventListener('change', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.dispatchEvent(event);
+        });
+      });
+    }
   }
   save(editableField: HTMLElement, editButton: HTMLButtonElement): void {
     editableField.setAttribute('contenteditable', 'false');
