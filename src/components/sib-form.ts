@@ -19,6 +19,10 @@ export const SibForm = {
     submitButton: {
       type: String,
       default: null
+    },
+    partial: {
+      type: Boolean,
+      default: null
     }
   },
   initialState: {
@@ -91,7 +95,11 @@ export const SibForm = {
     resource['@context'] = this.context;
     let saved: object = {};
     try {
-      saved = await store.save(resource, this.resource['@id']);
+      if (this.partial == null) {
+        saved = await store.save(resource, this.resource['@id']);
+      } else {
+        saved = await store.patch(this.resource['@id'], resource);
+      }
     } catch (e) {
       this.toggleLoaderHidden(true);
       if (e.error) { // if server error

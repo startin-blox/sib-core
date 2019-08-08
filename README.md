@@ -120,6 +120,7 @@ If given the URL of a container of ressources, and displays a creation form to a
 - **`submit-button`**: Text of the submit button of the form.
 - **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
   It's particularly useful with a dropdown field.
+- **`partial`**: Add this attribute when the form does not include all the fields of the resource to update.
 
 ### `sib-ac-checker`
 
