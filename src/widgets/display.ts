@@ -82,7 +82,6 @@ const SIBDisplayAutolink = widgetFactory(
   `\${value}`,
   '',
   content => {
-    //@ts-ignore
     content.innerHTML = Autolinker.link(content.textContent);
   },
 );

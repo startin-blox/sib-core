@@ -50,6 +50,7 @@
     "@babel/plugin-transform-typescript": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
+    "@types/autolinker": "^0.24.28",
     "@types/chai": "^4.1.7",
     "@types/jest": "^24.0.15",
     "babel-jest": "^24.8.0",
