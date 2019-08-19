@@ -73,6 +73,11 @@ export const SibMap = {
     return false;
   },
   populate(): void {
+    if (!this.filtersAdded && this.searchFields) {
+      this.appendFilters();
+      return;
+    }
+
     for (let resource of this.resources) this.appendChildElt(resource);
     this.reset();
   },
