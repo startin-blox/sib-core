@@ -1,4 +1,5 @@
 import './ldpframework.js';
+import LDFlexGetter from '../../../sib-store/LDFlexGetter.js';
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -10,31 +11,18 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   '@permissions': 'acl:accessControl',
   mode: 'acl:mode',
+  email: 'http://happy-dev.fr/owl/#email',
 };
 
 export class Store {
-  cache: Map<string, any>;
   originalStore: any;
 
   constructor(options: object) {
-    this.cache = new Map();
     this.originalStore = new (<any>window).MyStore(options);
   }
 
-  get(id: string, context = null, force = false): Promise<object> {
-    let hash = '';
-    try {
-      hash = JSON.stringify([id, context]);
-    } catch (e) {}
-    if (hash && !this.cache.has(hash) || force) {
-      const get = this.originalStore.get(id, context);
-      this.cache.set(hash, get);
-      get.catch(error => {
-        console.error('store.get() Error: ', id);
-        throw error;
-      });
-    }
-    return this.cache.get(hash);
+  async get(id: string, context = null): Promise<object> {
+    return await new LDFlexGetter(id, context).getProxy();
   }
 
   list(id: string) {
@@ -42,18 +30,15 @@ export class Store {
   }
 
   save(resource: object, id: string) {
-    this.cache.clear();
     return this.originalStore.save(resource, id);
   }
 
   patch(id: string, resource: object) {
-    this.cache.clear();
     return this.originalStore.patch(id, resource);
   }
 
   async delete(id: string) {
     let deleted = await this.originalStore.delete(id);
-    this.cache.clear();
     return deleted;
   }
 }

@@ -8,7 +8,7 @@ const StoreMixin = {
     dataSrc: {
       type: String,
       default: null,
-      callback: function (value: string) {
+      callback: async function (value: string) {
         this.empty();
 
         // brings a loader out if the attribute is set
@@ -17,23 +17,22 @@ const StoreMixin = {
         if (!value) return;
 
         // gets the data through the store
-        store.get(value, this.context).then(async resource => {
-          if (this.nestedField) {
-            if (!(this.nestedField in resource))
-              throw `Error: the key "${this.nestedField}" does not exist on the resource`
-            this.resource = await store.get(resource[this.nestedField], this.context);
-          } else {
-            this.resource = resource;
-          }
+        this.resource = await store.get(value, this.context)
+        // TODO : GET LDP CONTAINS
+        if (this.nestedField) {
+          const nestedResource = await this.resource[this.nestedField];
+          if (!nestedResource) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+          this.resource = await store.get(nestedResource, this.context);
+        }
 
-          // fetch all sources
-          if (this.isContainer()) {
-            for (resource of getArrayFrom(this.resource,'ldp:contains')) {
-              if (resource['@type'] === "sib:source") this.fetchSource(resource).then(() => this.updateDOM())
-            }
-          }
-          await this.updateDOM();
-        });
+        // fetch all sources
+        // if (await this.isContainer()) {
+        //   for (let res of getArrayFrom(this.resource,'ldp:contains')) {
+        //     if (res['@type'] === "sib:source") this.fetchSource(res).then(() => this.updateDOM())
+        //   }
+        // }
+
+        await this.updateDOM();
       },
     },
     extraContext: {
@@ -74,21 +73,22 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resources(): object[]{
-    let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
+  get resources(): Symbol{
+    // TODO : filter resources
+    // let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
 
-    this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
-    resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
-    return resources;
+    // this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
+    // resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
+    return this.resource['ldp:contains']
   },
   get permissions(): object[]{
-    return getArrayFrom(this.resource, "@permissions");
+    return getArrayFrom(this.resource, "@permissions"); // TODO : fix here
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  isContainer(): boolean {
-    return this.resource && '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
+  async isContainer(): Promise<boolean> {
+    return await this.resource['ldp:contains'] !== undefined;
   },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);

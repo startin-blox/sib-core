@@ -29,7 +29,7 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
-  get fieldsWidget(): string[][] {
+  get fieldsWidget(): string[] {
     const attr = this.fields as string;
     if (attr === '') {
       return [];
@@ -38,7 +38,7 @@ const WidgetMixin = {
       return parseFieldsString(attr);
     }
     const resource =
-      this.isContainer() && this.resources ? this.resources[0] : this.resource;
+      this.isContainer() && this.resources ? this.resources[0] : this.resource; // TODO get all properties
 
     if (!resource) {
       console.error(new Error('You must provide a "fields" attribute'));
@@ -46,8 +46,7 @@ const WidgetMixin = {
     }
 
     return Object.keys(resource)
-      .filter(prop => !prop.startsWith('@'))
-      .map(a => [a]);
+      .filter(prop => !prop.startsWith('@'));
   },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
@@ -56,7 +55,7 @@ const WidgetMixin = {
   getSetRegexp(field: string) {
     return new RegExp(`(^|\\,|\\(|\\s)\\s*${field}\\s*\\(`, 'g')
   },
-  getSet(field: string): string[][] {
+  getSet(field: string): string[] {
     const setString = this.fields.match(this.getSetRegexp(field));
     if (!setString) return [];
     const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
@@ -73,14 +72,8 @@ const WidgetMixin = {
     return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
-    if (this.isContainer()) return null;
-    if (!(field in resource) && '@id' in resource) {
-      resource = await store.get(resource, this.context);
-    }
-    if (!(field in resource)) {
-      resource[field] = undefined;
-    }
-    return resource[field];
+    if (await this.isContainer()) return null;
+    return await resource[field];
   },
   async getValue(field: string) {
     if (this.getAction(field)) {
@@ -89,20 +82,18 @@ const WidgetMixin = {
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resource = this.resource || {};
-    for (let name of field) {
-      resource = await this.fetchValue(resource, name);
-      if (resource == null || resource == "") // If null or empty, return field default value
-        return this.element.hasAttribute('default-' + field) ?
-          this.element.getAttribute('default-' + field) : undefined;
-    }
+    let resource = this.resource || {};
+    resource = await this.fetchValue(resource, field);
+    if (resource == null || resource == "") // If null or empty, return field default value
+      return this.element.hasAttribute('default-' + field) ?
+        this.element.getAttribute('default-' + field) : undefined;
     return resource;
   },
   async getValues(field: string) {
     let value = await this.getValue(field);
     if (!this.isMultiple(field)) return value;
     if (value == null) return [];
-    if (value['@type'] !== 'ldp:Container') {
+    if (value['@type'] !== 'ldp:Container') { // TODO : fix here
       return [value];
     }
     if (!('ldp:contains' in value)) return [];

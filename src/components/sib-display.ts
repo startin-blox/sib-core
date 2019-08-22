@@ -48,7 +48,7 @@ export const SibDisplay = {
       }
     }
   },
-  appendChildElt(resource: Object, parent: Element): void {
+  appendChildElt(resource, parent: Element): void {
     const child = document.createElement(this.childTag);
     child.component.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));

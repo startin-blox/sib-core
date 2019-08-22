@@ -37,7 +37,7 @@ export const SibForm = {
       setDeepProperty(values, name.split('.'), value);
     });
 
-    if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id'];
+    if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id']; // TODO : fix is container here
     return values;
   },
   set value(value) {
