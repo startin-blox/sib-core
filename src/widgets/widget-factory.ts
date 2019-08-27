@@ -68,6 +68,7 @@ export class BaseWidget extends HTMLElement {
       } else {
         element.value = value || ''; // ... set `value` to the dataHolder element
       }
+      element.dispatchEvent(new Event('change')); // trigger change manually
     } else {
       // if multiple dataHolder in the widget ...
       this.dataHolder.forEach(
@@ -78,6 +79,7 @@ export class BaseWidget extends HTMLElement {
           } else {
             element.value = value ? value[index] : ''
           }
+          element.dispatchEvent(new Event('change')); // trigger change manually
         },
       ); // ... set each `value` to each dataHolder element
     }

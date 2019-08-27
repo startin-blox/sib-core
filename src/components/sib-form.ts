@@ -93,8 +93,10 @@ export const SibForm = {
       saved = await store.save(resource, this.resource['@id']);
     } catch (e) {
       this.toggleLoaderHidden(true);
-      this.showError(e);
-      throw e;
+      if (e.error) { // if server error
+        this.showError(e);
+        throw e;
+      } // else, ldpframework error, we continue
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {
