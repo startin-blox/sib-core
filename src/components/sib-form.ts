@@ -186,8 +186,9 @@ export const SibForm = {
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < this.fieldsWidget.length; i++) {
-      const field = this.fieldsWidget[i];
+    const fields = await this.getFields();
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
       await this.appendWidget(field, fragment);
     }
     while (form.firstChild) {

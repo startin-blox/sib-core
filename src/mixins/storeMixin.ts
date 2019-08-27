@@ -18,7 +18,7 @@ const StoreMixin = {
 
         // gets the data through the store
         this.resource = await store.get(value, this.context)
-        // TODO : GET LDP CONTAINS
+
         if (this.nestedField) {
           const nestedResource = await this.resource[this.nestedField];
           if (!nestedResource) throw `Error: the key "${this.nestedField}" does not exist on the resource`
@@ -60,7 +60,7 @@ const StoreMixin = {
     this.resourcesFilters = [];
   },
   attached(): void {
-    if (this.resource) this.populate();
+    if (this.resource) this.populate(); // TODO : if we want to be stateless, we must remove this
   },
   get context(): object {
     return { ...base_context, ...this.extra_context };
@@ -81,19 +81,13 @@ const StoreMixin = {
     // resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
     return this.resource['ldp:contains']
   },
-  get permissions(): object[]{
-    return getArrayFrom(this.resource, "@permissions"); // TODO : fix here
-  },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
-  },
-  async isContainer(): Promise<boolean> {
-    return await this.resource['ldp:contains'] !== undefined;
   },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  async fetchSource(resource: object): Promise<object> {
+  async fetchSource(resource: object): Promise<object> { // TODO : fix here
     return store.get(resource['container'], this.context).then((data) => {
       this.resource['ldp:contains'].push(...getArrayFrom(data, 'ldp:contains')); // add new resources to the current container
       return resource;

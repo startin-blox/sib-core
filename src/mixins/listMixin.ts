@@ -61,12 +61,12 @@ const ListMixin = {
     }
   },
   appendSingleElt(parent: HTMLElement): void {
-    this.appendChildElt(this.resource, parent);
+    this.appendChildElt(this.resource['@id'], parent);
   },
   async populate(): Promise<void> {
     const div = this.div;
 
-    if (!(await this.isContainer())) {
+    if (!(await this.resource.isContainer)) {
       this.appendSingleElt(div);
       return;
     }
@@ -84,14 +84,16 @@ const ListMixin = {
 
     this.renderPaginationNav(div);
 
-    if ((await this.resources).length === 0 && this.emptyWidget) {
+    let resourcesLength = 0;
+    for await (let resource of this.resources) {
+      this.appendChildElt(resource.toString(), div); // call toString() on resource returns its @id
+      resourcesLength ++;
+    }
+
+    if (resourcesLength === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
       this.div.appendChild(emptyWidgetElement);
-      return;
-    }
-    for (let resource of await this.resources) {
-      this.appendChildElt(resource, div);
     }
   }
 }

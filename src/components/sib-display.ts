@@ -48,9 +48,9 @@ export const SibDisplay = {
       }
     }
   },
-  appendChildElt(resource, parent: Element): void {
+  appendChildElt(resourceId: string, parent: Element): void {
     const child = document.createElement(this.childTag);
-    child.component.resource = resource;
+    child.dataset.src = resourceId;
     child.addEventListener('click', this.dispatchSelect.bind(this));
     if (this.fields) child.setAttribute('fields', this.fields);
 
@@ -74,7 +74,7 @@ export const SibDisplay = {
     parent.appendChild(child);
   },
   async appendSingleElt(parent: HTMLElement): Promise<void> {
-    for (let field of this.fieldsWidget) {
+    for (let field of await this.getFields()) {
       await this.appendWidget(field, parent);
     }
   }

@@ -10,9 +10,9 @@ export const SibAcChecker = {
       default: "view",
     }
   },
-  populate(): void {
-    for (let permission of this.permissions) {
-      if (permission.mode['@type'] === this.permission) {
+  async populate(): Promise<void> {
+    for await (const permission of this.resource.permissions.mode.type) {
+      if (permission.toString() === this.permission) { // TODO : get compacted field
         this.element.removeAttribute('hidden');
       }
     }

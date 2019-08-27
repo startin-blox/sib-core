@@ -7,7 +7,7 @@ const WidgetMixin = {
   attributes: {
     fields: {
       type: String,
-      default: '',
+      default: null,
     }
   },
   initialState: {
@@ -29,24 +29,29 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
-  get fieldsWidget(): string[] {
-    const attr = this.fields as string;
-    if (attr === '') {
-      return [];
+  async getFields(): Promise<string[]>{ // TODO : improve code
+    const attr = this.fields;
+    if (attr === '') return [];
+    if (attr) return parseFieldsString(attr);
+
+    let resource = this.resource;
+    if (await resource.isContainer) { // If container, keep the 1rst resource
+      for await (let res of resource['ldp:contains']) {
+        resource = res;
+        break;
+      }
     }
-    if (attr) {
-      return parseFieldsString(attr);
-    }
-    const resource =
-      this.isContainer() && this.resources ? this.resources[0] : this.resource; // TODO get all properties
 
     if (!resource) {
       console.error(new Error('You must provide a "fields" attribute'));
       return [];
     }
 
-    return Object.keys(resource)
-      .filter(prop => !prop.startsWith('@'));
+    let fields: string[] = [];
+    for await (const prop of resource.properties) {
+      if(!prop.startsWith('@')) fields.push(prop)
+    }
+    return fields;
   },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
@@ -72,8 +77,7 @@ const WidgetMixin = {
     return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
-    if (await this.isContainer()) return null;
-    return await resource[field];
+    return !(await this.resource.isContainer) ? await resource[field] : null;
   },
   async getValue(field: string) {
     if (this.getAction(field)) {
