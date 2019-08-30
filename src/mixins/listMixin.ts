@@ -1,16 +1,15 @@
 import { PaginateMixin } from './paginateMixin.js';
 import { FilterMixin } from './filterMixin.js';
 import { CounterMixin } from './counterMixin.js';
+import { SorterMixin } from './sorterMixin.js';
 import { grouperMixin } from './grouperMixin.js';
+import { FederationMixin } from './federationMixin.js';
+import { HighlighterMixin } from './highlighterMixin.js';
 
 const ListMixin = {
   name: 'list-mixin',
-  use: [ FilterMixin, PaginateMixin, CounterMixin, grouperMixin ],
+  use: [ PaginateMixin, grouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
   attributes: {
-    orderBy: {
-      type: String,
-      default: null
-    },
     emptyWidget: {
       type: String,
       default: null
@@ -20,80 +19,69 @@ const ListMixin = {
       default: ''
     }
   },
-  created(): void {
-    this.resourcesFilters.push(
-      (resources: object[]) => this.orderCallback(resources),
-      (resources: object[]) => this.hightlightCallback(resources)
-    )
+  initialState: {
+    listPostProcessors: [],
+    listRenderingCallbacks: [],
+    resources: [],
   },
-  hightlightCallback(resources: object[]): object[] {
-    for (let attr of this.element.attributes) {
-      if (attr.name.startsWith('highlight-')) {
-        const field = attr.name.split('highlight-')[1];
-        for (let [index, res] of resources.entries()) {
-          if (res[field] && res[field] == attr.value) {
-            // put the current element at the beginning of the array
-            resources.splice(0, 0, resources.splice(index, 1)[0]);
-          }
-        }
-      }
-    }
-    return resources
-  },
-  orderCallback(resources: object[]): object[] {
-    if(this.orderBy)
-      return resources.sort(this.sortValuesByKey(this.orderBy))
-    return resources
-  },
-  sortValuesByKey(key: string): Function {
-    return function(a: object, b: object): number {
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        // property doesn't exist on either object
-        return 0;
-      }
-      const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
-      let comparison = 0;
-      if (varA > varB) comparison = 1;
-      else if (varA < varB) comparison = -1;
-
-      return comparison
-    }
+  created() {
+    this.resources = [];
   },
   appendSingleElt(parent: HTMLElement): void {
     this.appendChildElt(this.resource['@id'], parent);
   },
+  /**
+   * Transform resources AsyncIterator into object[]
+   */
+  async generateList() {
+    for await (const resource of this.resource['ldp:contains']) {
+      //if source, add to array
+      this.resources.push({
+        "@id": resource.toString(),
+        name: (await resource.name).toString(),
+        email: (await resource.email).toString(),
+        // type: "sib:source", //(await resource['@type']).toString()
+        // container: (await resource.container).toString()
+      })
+    }
+  },
   async populate(): Promise<void> {
     const div = this.div;
 
+    // Not a container but a single resource
     if (!(await this.resource.isContainer)) {
       this.appendSingleElt(div);
       return;
     }
-    if (!this.filtersAdded && this.searchFields) {
+
+    if (!this.filtersAdded && this.searchFields) { // TODO : remove after #358
       this.appendFilters();
       return;
     }
 
-    this.renderCounter(div);
+    await this.generateList();
 
-    if (this.groupBy) {
-      this.renderGroupedElements(div);
-      return;
+    // Post process the list
+    for (const postProcessor of this.listPostProcessors) {
+      this.resources = postProcessor(this.resources)
     }
 
-    this.renderPaginationNav(div);
-
-    let resourcesLength = 0;
-    for await (let resource of this.resources) {
-      this.appendChildElt(resource.toString(), div); // call toString() on resource returns its @id
-      resourcesLength ++;
-    }
-
-    if (resourcesLength === 0 && this.emptyWidget) {
+    // Nothing in list
+    if (this.resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
       this.div.appendChild(emptyWidgetElement);
+      return;
+    }
+
+    // Create child components
+    for (let resource of this.resources) {
+      this.appendChildElt(resource['@id'], div);
+    }
+
+    // Process modifications on the rendered DOM
+    for (let renderingCallback of this.listRenderingCallbacks) {
+      renderingCallback(this.div)
     }
   }
 }

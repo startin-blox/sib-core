@@ -37,7 +37,7 @@ export const SibForm = {
       setDeepProperty(values, name.split('.'), value);
     });
 
-    if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id']; // TODO : fix is container here
+    // if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id']; // TODO : fix is container here
     return values;
   },
   set value(value) {
@@ -120,9 +120,9 @@ export const SibForm = {
       }),
     );
   },
-  inputChange(): void {
+  async inputChange(): Promise<void> {
     const resource = this.value; // TODO : fix this
-    if (!this.isContainer()) resource['@id'] = this.resource['@id'];
+    if (!(await this.resource.isContainer)) resource['@id'] = this.resourceId;
     this.change(resource); // TODO : fix this
   },
   createInput(type: string): HTMLInputElement {

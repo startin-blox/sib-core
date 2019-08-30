@@ -13,13 +13,18 @@ const PaginateMixin = {
       default: 0
     },
   },
+  created(): void {
+    this.listPostProcessors.push((resources: object[]) => this.getCurrentPageResources(resources))
+    this.listRenderingCallbacks.push((parent: HTMLElement) => this.renderPaginationNav(parent))
+  },
   get pageCount(): number {
     return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
   },
-  get currentPageResources(): object[] {
-    if (this.paginateBy == 0) return this.resources;
+  getCurrentPageResources(resources: object[]): object[] {
+    console.log("6. paginate");
+    if (this.paginateBy == 0) return resources;
     const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return this.resources.slice(
+    return resources.slice(
       firstElementIndex,
       firstElementIndex + this.paginateBy,
     );
@@ -28,6 +33,7 @@ const PaginateMixin = {
     if (page < 1) page = 1;
     if (page > this.pageCount) page = this.pageCount;
     this.currentPage = page;
+    this.empty();
     this.populate();
   },
   renderPaginationNav(div: Element): void {

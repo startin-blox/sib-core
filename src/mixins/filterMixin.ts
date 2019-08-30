@@ -13,7 +13,7 @@ const FilterMixin = {
     }
   },
   created(): void {
-    this.resourcesFilters.push((resources: object[]) => this.filterCallback(resources))
+    this.listPostProcessors.push((resources: object[]) => this.filterCallback(resources))
   },
   get searchForm(): ComponentInterface {
     return this.element.querySelector('sib-form');
@@ -26,6 +26,7 @@ const FilterMixin = {
     this.filterList();
   },
   filterCallback(resources: object[]): object[] {
+    console.log('2. filter');
     return resources.filter(this.matchFilters.bind(this));
   },
   filterList(): void {
@@ -105,8 +106,7 @@ const FilterMixin = {
   },
   appendFilters(): void {
     const searchForm = document.createElement('sib-form');
-    (<any>searchForm).component.resource = this.resource;
-    searchForm.addEventListener('formChange', () => this.filterList())
+    //searchForm.addEventListener('formChange', () => this.filterList())
     searchForm.toggleAttribute('naked', true);
     searchForm.addEventListener('input', () => this.setCurrentPage(1));
 
@@ -125,6 +125,8 @@ const FilterMixin = {
     if (this.element.shadowRoot)
       this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);
     else this.element.insertBefore(searchForm, this.element.firstChild);
+
+    (<any>searchForm).component.populate(); // TODO : handle this in search form
 
     setTimeout(() => {
       this.filtersAdded = true;

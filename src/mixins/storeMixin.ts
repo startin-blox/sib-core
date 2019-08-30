@@ -1,5 +1,4 @@
 import { base_context, store } from '../libs/store/store.js';
-import { domIsReady, getArrayFrom } from '../libs/helpers.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -10,27 +9,17 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         this.empty();
-
-        // brings a loader out if the attribute is set
-        this.toggleLoaderHidden(false);
-
         if (!value) return;
 
-        // gets the data through the store
-        this.resource = await store.get(value, this.context)
+        this.resourceId = value;
+        await store.initGraph(this.resourceId, this.context);
 
+        // Init graph for nested fields
         if (this.nestedField) {
-          const nestedResource = await this.resource[this.nestedField];
-          if (!nestedResource) throw `Error: the key "${this.nestedField}" does not exist on the resource`
-          this.resource = await store.get(nestedResource, this.context);
+          this.resourceId = (await this.resource[this.nestedField]).toString()
+          if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+          await store.initGraph(this.resourceId, this.context);
         }
-
-        // fetch all sources
-        // if (await this.isContainer()) {
-        //   for (let res of getArrayFrom(this.resource,'ldp:contains')) {
-        //     if (res['@type'] === "sib:source") this.fetchSource(res).then(() => this.updateDOM())
-        //   }
-        // }
 
         await this.updateDOM();
       },
@@ -53,15 +42,11 @@ const StoreMixin = {
     },
   },
   initialState: {
-    resource: null,
-    resourcesFilters: null
+    resourceId: null
   },
-  created(): void {
-    this.resourcesFilters = [];
-  },
-  attached(): void {
+  /* attached(): void {
     if (this.resource) this.populate(); // TODO : if we want to be stateless, we must remove this
-  },
+  },*/
   get context(): object {
     return { ...base_context, ...this.extra_context };
   },
@@ -73,13 +58,8 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resources(): Symbol{
-    // TODO : filter resources
-    // let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
-
-    // this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
-    // resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
-    return this.resource['ldp:contains']
+  get resource(): object{
+    return this.resourceId ? store.get(this.resourceId) : {};
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
@@ -87,20 +67,16 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  async fetchSource(resource: object): Promise<object> { // TODO : fix here
-    return store.get(resource['container'], this.context).then((data) => {
-      this.resource['ldp:contains'].push(...getArrayFrom(data, 'ldp:contains')); // add new resources to the current container
-      return resource;
-    })
-  },
   async updateDOM(): Promise<void> {
+    this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.populate();
-    setTimeout(() => (
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } })))
+    setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
+      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
   },
+  /*
   async getUser() {
     // wait for dom
     await domIsReady();
@@ -117,6 +93,7 @@ const StoreMixin = {
     //@ts-ignore
     return sibAuth.getUser(); // TODO : improve this
   }
+  */
 };
 
 export {

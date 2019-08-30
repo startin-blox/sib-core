@@ -15,13 +15,30 @@ export const base_context = {
 
 export class Store {
   originalStore: any;
+  cache: Map<string, any>;
 
   constructor(options: object) {
+    this.cache = new Map();
     this.originalStore = new (<any>window).MyStore(options);
   }
 
-  async get(id: string, context = {}): Promise<object> {
-    return await new LDFlexGetter(id, context).getProxy();
+  async initGraph(id: string, context = {}): Promise<void> {
+    let hash = '';
+    try {
+      hash = JSON.stringify(id);
+    } catch (e) {}
+    if (hash && !this.cache.has(hash)) {
+      const getter = await new LDFlexGetter(id, context).getProxy();
+      this.cache.set(hash, getter);
+    }
+  }
+
+  get(id: string): object {
+    let hash = '';
+    try {
+      hash = JSON.stringify(id);
+    } catch (e) {}
+    return this.cache.get(hash) || null;
   }
 
   list(id: string) {
@@ -106,6 +123,7 @@ class LDFlexGetter {
             case 'properties':
             case 'ldp:contains':
             case 'permissions':
+            case 'type':
               return this.resource[property];
             case 'isContainer':
               return resource.isContainer();

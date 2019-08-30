@@ -9,12 +9,24 @@ const CounterMixin = {
       default: null
     },
   },
+  initialState: {
+    countResources: 0
+  },
+  created() {
+    this.listPostProcessors.push((resources: object[]) => this.countResources(resources))
+    this.listRenderingCallbacks.push((parent: HTMLElement) => this.renderCounter(parent))
+  },
+  countResources(resources: object[]) {
+    console.log('4. count');
+    this.countResources = resources.length;
+    return resources;
+  },
   renderCounter(div: HTMLElement): void {
     if (this.counterTemplate) {
       let html: string;
       try {
         html = evalTemplateString(this.counterTemplate, {
-          counter: this.resources.length,
+          counter: this.countResources,
         });
       } catch (e) {
         console.error(new Error('error in counter-template'), e);

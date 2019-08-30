@@ -11,7 +11,24 @@ const grouperMixin = {
       default: 'sib-group-div'
     }
   },
+  created() {
+    this.listPostProcessors.push((resources: object[]) => this.groupResources(resources))
+    this.listRenderingCallbacks.push((parent: HTMLElement) => this.renderGroupedElements(parent))
+  },
+  groupResources(resources: object[]) {
+    console.log("5. group");
+    if (!this.groupBy) return;
+    let groups = {};
+    resources.forEach((resource: object) => {
+      let valueGroup = resource[this.groupBy];
+      if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...
+      groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
+    });
+    console.log(groups);
+    return resources;
+  },
   renderGroupedElements(div: HTMLElement): void {
+    if (!this.groupBy) return;
     let groups = {};
 
     this.resources.forEach((resource: object) => {
