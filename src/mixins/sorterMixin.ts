@@ -7,18 +7,16 @@ const SorterMixin = {
       default: null
     }
   },
-  created(): void {
-    this.listPostProcessors.push((resources: object[]) => this.orderCallback(resources))
+  attached(): void {
+    this.listPostProcessors.push(this.orderCallback.bind(this));
   },
-  orderCallback(resources: object[]): object[] {
-    console.log('1. sort');
-    if(this.orderBy)
-      return resources.sort(this.sortValuesByKey(this.orderBy))
-    return resources
+  orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number): void {
+    if (this.orderBy) resources = resources.sort(this.sortValuesByKey(this.orderBy));
+    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
   },
   sortValuesByKey(key: string): Function {
     return function (a: object, b: object): number { // need key
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
         return 0;
       }
@@ -28,7 +26,7 @@ const SorterMixin = {
       if (varA > varB) comparison = 1;
       else if (varA < varB) comparison = -1;
 
-      return comparison
+      return comparison;
     }
   },
 }

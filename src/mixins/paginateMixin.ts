@@ -3,31 +3,29 @@ import { stringToDom } from '../libs/helpers.js';
 const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
-  initialState: {
-    currentPage: 1,
-    paginationElements: null
-  },
   attributes: {
     paginateBy: {
       type: Number,
       default: 0
     },
   },
-  created(): void {
-    this.listPostProcessors.push((resources: object[]) => this.getCurrentPageResources(resources))
-    this.listRenderingCallbacks.push((parent: HTMLElement) => this.renderPaginationNav(parent))
+  initialState: {
+    currentPage: 1,
+    paginationElements: null
   },
-  get pageCount(): number {
-    return Math.max(1, Math.ceil(this.resources.length / this.paginateBy));
+  attached(): void {
+    this.listPostProcessors.push(this.paginateCallback.bind(this));
   },
-  getCurrentPageResources(resources: object[]): object[] {
-    console.log("6. paginate");
-    if (this.paginateBy == 0) return resources;
-    const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
-    return resources.slice(
-      firstElementIndex,
-      firstElementIndex + this.paginateBy,
-    );
+  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number) {
+    if (this.paginateBy > 0) {
+      this.renderPaginationNav(div, resources);
+      const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
+      resources = resources.slice(
+        firstElementIndex,
+        firstElementIndex + this.paginateBy,
+      );
+    }
+    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
   },
   setCurrentPage(page: number): void {
     if (page < 1) page = 1;
@@ -36,7 +34,10 @@ const PaginateMixin = {
     this.empty();
     this.populate();
   },
-  renderPaginationNav(div: Element): void {
+  getPageCount(resources: object[]): number {
+    return Math.max(1, Math.ceil(resources.length / this.paginateBy));
+  },
+  renderPaginationNav(div: Element, resources: object[]): void {
     const paginateBy = this.paginateBy;
     if (this.paginationElements) {
       this.paginationElements.nav.toggleAttribute(
@@ -44,7 +45,6 @@ const PaginateMixin = {
         paginateBy == 0,
       );
     }
-    if (!paginateBy) return;
     if (!this.paginationElements) {
       const elements = (this.paginationElements = {});
       const nav = stringToDom(/*html*/ `<nav data-id='nav'>
@@ -73,10 +73,11 @@ const PaginateMixin = {
       });
     }
     const elements = this.paginationElements;
+    const pageCount = this.getPageCount(resources);
     elements.current.textContent = this.currentPage;
-    elements.count.textContent = this.pageCount;
+    elements.count.textContent = pageCount;
     elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
-    elements.next.toggleAttribute('disabled',this.currentPage >= this.pageCount);
+    elements.next.toggleAttribute('disabled', this.currentPage >= pageCount);
     return;
   },
 }

@@ -2,10 +2,17 @@ import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
+import { PaginateMixin } from '../mixins/paginateMixin.js';
+import { FilterMixin } from '../mixins/filterMixin.js';
+import { CounterMixin } from '../mixins/counterMixin.js';
+import { SorterMixin } from '../mixins/sorterMixin.js';
+import { GrouperMixin } from '../mixins/grouperMixin.js';
+import { FederationMixin } from '../mixins/federationMixin.js';
+import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 
 export const SibDisplay = {
   name: 'sib-display',
-  use: [ WidgetMixin, ListMixin, StoreMixin ],
+  use: [ WidgetMixin, ListMixin, StoreMixin, PaginateMixin, GrouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
   created(): void {
     window.addEventListener('navigate', ((event: CustomEvent) => {
       if (this.resource == null) return;

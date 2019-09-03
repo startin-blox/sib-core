@@ -10,23 +10,21 @@ const CounterMixin = {
     },
   },
   initialState: {
-    countResources: 0
+    counter: null
   },
-  created() {
-    this.listPostProcessors.push((resources: object[]) => this.countResources(resources))
-    this.listRenderingCallbacks.push((parent: HTMLElement) => this.renderCounter(parent))
+  attached() {
+    this.listPostProcessors.push(this.countResources.bind(this));
   },
-  countResources(resources: object[]) {
-    console.log('4. count');
-    this.countResources = resources.length;
-    return resources;
+  countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number) {
+    this.renderCounter(div, resources.length);
+    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
   },
-  renderCounter(div: HTMLElement): void {
+  renderCounter(div: HTMLElement, resourceNumber: number): void {
     if (this.counterTemplate) {
       let html: string;
       try {
         html = evalTemplateString(this.counterTemplate, {
-          counter: this.countResources,
+          counter: resourceNumber,
         });
       } catch (e) {
         console.error(new Error('error in counter-template'), e);

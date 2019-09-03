@@ -4,7 +4,6 @@ const FilterMixin = {
   name: 'filter-mixin',
   use: [],
   initialState: {
-    filtersAdded: false
   },
   attributes: {
     searchFields: {
@@ -12,8 +11,8 @@ const FilterMixin = {
       default: null
     }
   },
-  created(): void {
-    this.listPostProcessors.push((resources: object[]) => this.filterCallback(resources))
+  attached(): void {
+    this.listPostProcessors.push(this.filterCallback.bind(this));
   },
   get searchForm(): ComponentInterface {
     return this.element.querySelector('sib-form');
@@ -25,14 +24,17 @@ const FilterMixin = {
     this.searchForm.component.value = filters;
     this.filterList();
   },
-  filterCallback(resources: object[]): object[] {
-    console.log('2. filter');
-    return resources.filter(this.matchFilters.bind(this));
+  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number): Promise<void> {
+    if (this.searchFields) {
+      if (!this.searchForm) await this.appendFilters();
+      resources = resources.filter(this.matchFilters.bind(this));
+    }
+    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
   },
-  filterList(): void {
+  async filterList(): Promise<void> {
     if (!this.resource) return;
     this.empty();
-    this.populate();
+    await this.populate();
   },
   matchValue(propertyValue, filterValue): boolean {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
@@ -104,11 +106,11 @@ const FilterMixin = {
       true,
     );
   },
-  appendFilters(): void {
+  async appendFilters(): Promise<void> {
     const searchForm = document.createElement('sib-form');
-    //searchForm.addEventListener('formChange', () => this.filterList())
+    searchForm.addEventListener('formChange', () => this.filterList())
     searchForm.toggleAttribute('naked', true);
-    searchForm.addEventListener('input', () => this.setCurrentPage(1));
+    searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
@@ -122,16 +124,9 @@ const FilterMixin = {
       searchForm.setAttribute(name, value);
     });
 
-    if (this.element.shadowRoot)
-      this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);
-    else this.element.insertBefore(searchForm, this.element.firstChild);
+    this.element.insertBefore(searchForm, this.element.firstChild);
 
-    (<any>searchForm).component.populate(); // TODO : handle this in search form
-
-    setTimeout(() => {
-      this.filtersAdded = true;
-      this.filterList();
-    });
+    await (<any>searchForm).component.populate(); // TODO : handle this in search form
   }
 }
 

@@ -1,14 +1,6 @@
-import { PaginateMixin } from './paginateMixin.js';
-import { FilterMixin } from './filterMixin.js';
-import { CounterMixin } from './counterMixin.js';
-import { SorterMixin } from './sorterMixin.js';
-import { grouperMixin } from './grouperMixin.js';
-import { FederationMixin } from './federationMixin.js';
-import { HighlighterMixin } from './highlighterMixin.js';
-
 const ListMixin = {
   name: 'list-mixin',
-  use: [ PaginateMixin, grouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
+  use: [],
   attributes: {
     emptyWidget: {
       type: String,
@@ -20,12 +12,10 @@ const ListMixin = {
     }
   },
   initialState: {
-    listPostProcessors: [],
-    listRenderingCallbacks: [],
-    resources: [],
+    listPostProcessors: []
   },
   created() {
-    this.resources = [];
+    this.listPostProcessors = [];
   },
   appendSingleElt(parent: HTMLElement): void {
     this.appendChildElt(this.resource['@id'], parent);
@@ -33,18 +23,22 @@ const ListMixin = {
   /**
    * Transform resources AsyncIterator into object[]
    */
-  async generateList() {
+  async generateList(): Promise<object[]> {
+    let resources: object[] = [];
     for await (const resource of this.resource['ldp:contains']) {
       //if source, add to array
-      this.resources.push({
+      resources.push({ // TODO : refactor
         "@id": resource.toString(),
         name: (await resource.name).toString(),
         email: (await resource.email).toString(),
+        // comingsoon: (await resource.comingsoon).toString(),
         // type: "sib:source", //(await resource['@type']).toString()
         // container: (await resource.container).toString()
       })
     }
+    return resources;
   },
+
   async populate(): Promise<void> {
     const div = this.div;
 
@@ -54,35 +48,27 @@ const ListMixin = {
       return;
     }
 
-    if (!this.filtersAdded && this.searchFields) { // TODO : remove after #358
-      this.appendFilters();
-      return;
-    }
+    const resources = await this.generateList();
+    this.listPostProcessors.push(this.renderDOM.bind(this));
 
-    await this.generateList();
+    // Execute the first post-processor of the list
+    this.listPostProcessors[0](resources, this.listPostProcessors, div, 1);
+  },
 
-    // Post process the list
-    for (const postProcessor of this.listPostProcessors) {
-      this.resources = postProcessor(this.resources)
-    }
-
+  renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, nextToExecute: number) {
     // Nothing in list
-    if (this.resources.length === 0 && this.emptyWidget) {
+    if (resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
-      this.div.appendChild(emptyWidgetElement);
+      div.appendChild(emptyWidgetElement);
       return;
     }
 
     // Create child components
-    for (let resource of this.resources) {
+    for (let resource of resources) {
       this.appendChildElt(resource['@id'], div);
     }
-
-    // Process modifications on the rendered DOM
-    for (let renderingCallback of this.listRenderingCallbacks) {
-      renderingCallback(this.div)
-    }
+    this.listPostProcessors.pop(); // remove renderDOM from array
   }
 }
 

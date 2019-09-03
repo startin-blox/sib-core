@@ -75,25 +75,7 @@ const StoreMixin = {
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
-  },
-  /*
-  async getUser() {
-    // wait for dom
-    await domIsReady();
-    const sibAuth = document.querySelector('sib-auth');
-
-    // if sib-auth element is not found, return undefined
-    if (!sibAuth) {
-      return undefined;
-    }
-
-    // if element is defined, wait custom element to be ready
-    await customElements.whenDefined('sib-auth');
-
-    //@ts-ignore
-    return sibAuth.getUser(); // TODO : improve this
   }
-  */
 };
 
 export {
