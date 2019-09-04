@@ -10,9 +10,11 @@ const SorterMixin = {
   attached(): void {
     this.listPostProcessors.push(this.orderCallback.bind(this));
   },
-  orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number): void {
+  orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement): void {
     if (this.orderBy) resources = resources.sort(this.sortValuesByKey(this.orderBy));
-    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
   sortValuesByKey(key: string): Function {
     return function (a: object, b: object): number { // need key

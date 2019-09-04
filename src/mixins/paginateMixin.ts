@@ -16,7 +16,7 @@ const PaginateMixin = {
   attached(): void {
     this.listPostProcessors.push(this.paginateCallback.bind(this));
   },
-  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number) {
+  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
     if (this.paginateBy > 0) {
       this.renderPaginationNav(div, resources);
       const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
@@ -25,7 +25,9 @@ const PaginateMixin = {
         firstElementIndex + this.paginateBy,
       );
     }
-    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
   setCurrentPage(page: number): void {
     if (page < 1) page = 1;

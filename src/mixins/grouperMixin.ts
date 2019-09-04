@@ -14,7 +14,9 @@ const GrouperMixin = {
   attached() {
     this.listPostProcessors.push(this.groupResources.bind(this));
   },
-  groupResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number) {
+  groupResources(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
+    const nextProcessor = listPostProcessors.shift();
+
     if (this.groupBy) {
       let groups = {};
       resources.forEach((resource: object) => {
@@ -26,10 +28,10 @@ const GrouperMixin = {
       // Render group parents and call next processor
       for (let group of Object.keys(groups)) {
         const parent = this.renderGroup(group, div);
-        this.listPostProcessors[toExecuteNext](groups[group].resources, listPostProcessors, parent, toExecuteNext + 1);
+        if(nextProcessor) nextProcessor(groups[group].resources, listPostProcessors, parent);
       }
     } else {
-      this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+      if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
     }
   },
   renderGroup(groupName: string, div: HTMLElement) {

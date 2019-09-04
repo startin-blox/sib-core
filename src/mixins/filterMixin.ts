@@ -24,12 +24,14 @@ const FilterMixin = {
     this.searchForm.component.value = filters;
     this.filterList();
   },
-  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number): Promise<void> {
+  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement): Promise<void> {
     if (this.searchFields) {
       if (!this.searchForm) await this.appendFilters();
       resources = resources.filter(this.matchFilters.bind(this));
     }
-    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
   async filterList(): Promise<void> {
     if (!this.resource) return;

@@ -15,9 +15,11 @@ const CounterMixin = {
   attached() {
     this.listPostProcessors.push(this.countResources.bind(this));
   },
-  countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number) {
+  countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
     this.renderCounter(div, resources.length);
-    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
   renderCounter(div: HTMLElement, resourceNumber: number): void {
     if (this.counterTemplate) {

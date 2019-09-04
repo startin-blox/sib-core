@@ -49,13 +49,15 @@ const ListMixin = {
     }
 
     const resources = await this.generateList();
-    this.listPostProcessors.push(this.renderDOM.bind(this));
+    const listPostProcessors = [...this.listPostProcessors];
+    listPostProcessors.push(this.renderDOM.bind(this));
 
     // Execute the first post-processor of the list
-    this.listPostProcessors[0](resources, this.listPostProcessors, div, 1);
+    const nextProcessor = listPostProcessors.shift();
+    nextProcessor(resources, listPostProcessors, div);
   },
 
-  renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, nextToExecute: number) {
+  renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
     // Nothing in list
     if (resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
@@ -68,7 +70,9 @@ const ListMixin = {
     for (let resource of resources) {
       this.appendChildElt(resource['@id'], div);
     }
-    this.listPostProcessors.pop(); // remove renderDOM from array
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   }
 }
 

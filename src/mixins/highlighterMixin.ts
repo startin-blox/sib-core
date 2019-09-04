@@ -4,7 +4,7 @@ const HighlighterMixin = {
   attached(): void {
     this.listPostProcessors.push(this.hightlightCallback.bind(this));
   },
-  hightlightCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, toExecuteNext: number): void {
+  hightlightCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement): void {
     for (let attr of this.element.attributes) {
       if (attr.name.startsWith('highlight-')) {
         const field = attr.name.split('highlight-')[1];
@@ -16,7 +16,9 @@ const HighlighterMixin = {
         }
       }
     }
-    this.listPostProcessors[toExecuteNext](resources, listPostProcessors, div, toExecuteNext + 1);
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
 }
 
