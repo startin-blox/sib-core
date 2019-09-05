@@ -25,16 +25,24 @@ const ListMixin = {
    */
   async generateList(): Promise<object[]> {
     let resources: object[] = [];
+
+    // let attributesToWatch = [this.searchFields, this.orderBy, this.groupBy];
+    // let fieldsToFetch = [];
+    // for (let attribute of attributesToWatch) {
+    //   if(attribute) fieldsToFetch.push(...attribute.split(',').map((a: string) => a.trim()))
+    // }
+    let fieldsToFetch = Array.from(new Set([ // Get all fields used by post processors
+      // ...this.searchFields.split(','),
+      // this.orderBy,
+      this.groupBy
+    ].map(f => f.trim())));
+
     for await (const resource of this.resource['ldp:contains']) {
-      //if source, add to array
-      resources.push({ // TODO : refactor
-        "@id": resource.toString(),
-        name: (await resource.name).toString(),
-        email: (await resource.email).toString(),
-        // comingsoon: (await resource.comingsoon).toString(),
-        // type: "sib:source", //(await resource['@type']).toString()
-        // container: (await resource.container).toString()
-      })
+      let getResource = { "@id": resource.toString() }
+      for (let field of fieldsToFetch) {
+        getResource[field] = (await resource[field]).toString() || '';
+      }
+      resources.push(getResource)
     }
     return resources;
   },
@@ -54,10 +62,10 @@ const ListMixin = {
 
     // Execute the first post-processor of the list
     const nextProcessor = listPostProcessors.shift();
-    nextProcessor(resources, listPostProcessors, div);
+    nextProcessor(resources, listPostProcessors, div, this.dataSrc);
   },
 
-  renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
+  renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     // Nothing in list
     if (resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
@@ -72,7 +80,7 @@ const ListMixin = {
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div, context);
   }
 }
 

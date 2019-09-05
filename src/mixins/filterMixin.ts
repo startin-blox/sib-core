@@ -24,14 +24,14 @@ const FilterMixin = {
     this.searchForm.component.value = filters;
     this.filterList();
   },
-  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement): Promise<void> {
+  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.searchFields) {
       if (!this.searchForm) await this.appendFilters();
       resources = resources.filter(this.matchFilters.bind(this));
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
+    if(nextProcessor) nextProcessor(resources, listPostProcessors, div, context);
   },
   async filterList(): Promise<void> {
     if (!this.resource) return;
@@ -112,7 +112,7 @@ const FilterMixin = {
     const searchForm = document.createElement('sib-form');
     searchForm.addEventListener('formChange', () => this.filterList())
     searchForm.toggleAttribute('naked', true);
-    searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
+    // searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)

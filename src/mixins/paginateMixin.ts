@@ -1,5 +1,3 @@
-import { stringToDom } from '../libs/helpers.js';
-
 const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
@@ -10,16 +8,19 @@ const PaginateMixin = {
     },
   },
   initialState: {
-    currentPage: 1,
-    paginationElements: null
+    currentPage: []
+  },
+  created() {
+    this.currentPage = [];
   },
   attached(): void {
     this.listPostProcessors.push(this.paginateCallback.bind(this));
   },
-  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement) {
+  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.paginateBy > 0) {
-      this.renderPaginationNav(div, resources);
-      const firstElementIndex = (this.currentPage - 1) * this.paginateBy;
+      if (!this.currentPage[context]) this.currentPage[context] = 1;
+      this.renderPaginationNav(div, this.getPageCount(resources), context);
+      const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
       resources = resources.slice(
         firstElementIndex,
         firstElementIndex + this.paginateBy,
@@ -29,58 +30,47 @@ const PaginateMixin = {
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
   },
-  setCurrentPage(page: number): void {
+  getCurrentPage(context: string) {
+    return this.currentPage[context];
+  },
+  setCurrentPage(page: number, context: string): void {
     if (page < 1) page = 1;
-    if (page > this.pageCount) page = this.pageCount;
-    this.currentPage = page;
+    // if (page > this.pageCount) page = this.pageCount; // TODO : handle this
+    this.currentPage[context] = page;
     this.empty();
     this.populate();
   },
   getPageCount(resources: object[]): number {
     return Math.max(1, Math.ceil(resources.length / this.paginateBy));
   },
-  renderPaginationNav(div: Element, resources: object[]): void {
-    const paginateBy = this.paginateBy;
-    if (this.paginationElements) {
-      this.paginationElements.nav.toggleAttribute(
-        'hidden',
-        paginateBy == 0,
-      );
-    }
-    if (!this.paginationElements) {
-      const elements = (this.paginationElements = {});
-      const nav = stringToDom(/*html*/ `<nav data-id='nav'>
+  renderPaginationNav(div: Element, pageCount: number, context: string): void {
+    let insertNode = div.parentNode || div;
+    let nav = insertNode.querySelector('nav');
+    if (!nav) {
+      nav = document.createElement("nav");
+      nav.dataset.id = "nav";
+      nav.innerHTML = `
       <button data-id="prev">←</button>
       <button data-id="next">→</button>
       <span>
-      <span data-id="current">0</span>
-      / <span data-id="count">0</span>
-      </span>
-      </nav>`);
-      nav.querySelectorAll('[data-id]').forEach(elm => {
-        const id = elm.getAttribute('data-id');
-        elm.removeAttribute('data-id')
-        if(id) elements[id] = elm;
-      });
-      this.element.insertBefore(elements['nav'], div.nextSibling);
-      elements['prev'].addEventListener('click', () => {
-        this.currentPage -= 1;
-        this.empty();
-        this.populate();
-      });
-      elements['next'].addEventListener('click', () => {
-        this.currentPage += 1;
-        this.empty();
-        this.populate();
-      });
+        <span data-id="current">0</span> / <span data-id="count">0</span>
+      </span>`;
     }
-    const elements = this.paginationElements;
-    const pageCount = this.getPageCount(resources);
-    elements.current.textContent = this.currentPage;
-    elements.count.textContent = pageCount;
-    elements.prev.toggleAttribute('disabled', this.currentPage <= 1);
-    elements.next.toggleAttribute('disabled', this.currentPage >= pageCount);
-    return;
+
+    const currentPage = this.getCurrentPage(context);
+    insertNode.insertBefore(nav, div.nextSibling);
+
+    nav.querySelector('[data-id="prev"]')!.addEventListener('click', () => {
+      this.setCurrentPage(currentPage - 1, context);
+    });
+    nav.querySelector('[data-id="next"]')!.addEventListener('click', () => {
+      this.setCurrentPage(currentPage + 1, context);
+    });
+
+    nav.querySelector('[data-id="current"]')!.textContent = currentPage;
+    nav.querySelector('[data-id="count"]')!.textContent = String(pageCount);
+    nav.querySelector('[data-id="prev"]')!.toggleAttribute('disabled', currentPage <= 1);
+    nav.querySelector('[data-id="next"]')!.toggleAttribute('disabled', currentPage >= pageCount);
   },
 }
 
