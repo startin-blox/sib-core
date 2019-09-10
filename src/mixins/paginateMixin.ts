@@ -1,3 +1,8 @@
+//@ts-ignore
+import asyncSlice from 'https://dev.jspm.io/iter-tools/es2018/async-slice';
+//@ts-ignore
+import asyncSize from 'https://dev.jspm.io/iter-tools/es2018/async-size';
+
 const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
@@ -16,19 +21,20 @@ const PaginateMixin = {
   attached(): void {
     this.listPostProcessors.push(this.paginateCallback.bind(this));
   },
-  paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
-    if (this.paginateBy > 0) {
+  async paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  if (this.paginateBy > 0) {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
-      this.renderPaginationNav(div, this.getPageCount(resources), context);
+      this.renderPaginationNav(div, await this.getPageCount(resources), context);
+
       const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
-      resources = resources.slice(
-        firstElementIndex,
-        firstElementIndex + this.paginateBy,
-      );
+      resources = asyncSlice({
+        start: firstElementIndex,
+        end: firstElementIndex + this.paginateBy
+      }, resources);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) nextProcessor(resources, listPostProcessors, div);
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div);
   },
   getCurrentPage(context: string) {
     return this.currentPage[context];
@@ -40,8 +46,9 @@ const PaginateMixin = {
     this.empty();
     this.populate();
   },
-  getPageCount(resources: object[]): number {
-    return Math.max(1, Math.ceil(resources.length / this.paginateBy));
+  async getPageCount(resources: object[]): Promise<number> {
+    const size = await asyncSize(resources);
+    return Math.max(1, Math.ceil(size / this.paginateBy));
   },
   renderPaginationNav(div: Element, pageCount: number, context: string): void {
     let insertNode = div.parentNode || div;

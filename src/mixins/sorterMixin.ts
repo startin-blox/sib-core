@@ -1,3 +1,8 @@
+//@ts-ignore
+import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
+//@ts-ignore
+import asyncToArray from 'https://dev.jspm.io/iter-tools/es2018/async-to-array';
+
 const SorterMixin = {
   name: 'sorter-mixin',
   use: [],
@@ -10,17 +15,24 @@ const SorterMixin = {
   attached(): void {
     this.listPostProcessors.push(this.orderCallback.bind(this));
   },
-  orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): void {
-    if (this.orderBy) resources = resources.sort(this.sortValuesByKey(this.orderBy));
+  async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+    if (this.orderBy) {
+      resources = await asyncMap(async (resource) => ({
+        sortingKey: (await resource[this.orderBy]).toString(), // fetch sorting value
+        proxy: resource // and keep proxy
+      }), resources);
+      resources = await asyncToArray(resources); // tranform in array
+      resources = resources.sort(this.sortValuesByKey("sortingKey")); // sort this array
+      resources = await asyncMap(resource => resource.proxy, resources); // and re-transform in async iterator
+    }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) nextProcessor(resources, listPostProcessors, div, context);
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
   sortValuesByKey(key: string): Function {
-    return function (a: object, b: object): number { // need key
-      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        // property doesn't exist on either object
-        return 0;
+    return function (a: object, b: object): number {
+      if (!a[key] || !b[key]) {
+        return 0; // property doesn't exist on either object
       }
       const varA = a[key].toUpperCase();
       const varB = b[key].toUpperCase();

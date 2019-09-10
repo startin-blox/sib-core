@@ -1,30 +1,33 @@
+//@ts-ignore
+import asyncChain from 'https://dev.jspm.io/iter-tools/es2018/async-chain';
+//@ts-ignore
+import asyncFilter from 'https://dev.jspm.io/iter-tools/es2018/async-filter';
 import { store } from '../libs/store/store.js';
 
 const FederationMixin = {
   name: 'federation-mixin',
   use: [],
-  created(): void {
+  attached(): void {
     this.listPostProcessors.push(this.fetchSources.bind(this));
   },
-  fetchSources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): void {
-    // var i = resources.length + 1
-    // while (i--) {
-    //   this.fetchSource(resources[i]['container']); // fetch source
-    //   if (resources[i]['type'] == "sib:source") resources.splice(i, 1); // remove from array
-    // }
+  async fetchSources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+    for await (let res of resources) { // TODO : test with different response timings
+      let type = await res['type'];
+      if (type && type.toString() == "http://www.w3.org/ns/ldp#Container") {
+        const containerId = res.toString();
+        resources = asyncChain(resources, await this.fetchSource(containerId)); // Add content of sources to array...
+        resources = asyncFilter(2, resource => resource.toString() != containerId, resources); // ...and remove source from array
+      }
+    }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) nextProcessor(resources, listPostProcessors, div, context);
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
 
-  async fetchSource(containerId: string): Promise<object> { // TODO : fix here
+  async fetchSource(containerId: string): Promise<object> {
     await store.initGraph(containerId);
-    let container = store.get(containerId);
-    for await (let res of container['ldp:contains']) {
-      console.log(res.toString())
-      // TODO : add to array and update DOM
-    }
-    return {}
+    const container = store.get(containerId);
+    return container['ldp:contains'];
   },
 }
 

@@ -14,23 +14,23 @@ const GrouperMixin = {
   attached() {
     this.listPostProcessors.push(this.groupResources.bind(this));
   },
-  groupResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async groupResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     const nextProcessor = listPostProcessors.shift();
     if (this.groupBy) {
       let groups = {};
-      resources.forEach((resource: object) => {
-        let valueGroup = resource[this.groupBy];
+      for await (let resource of resources) {
+        let valueGroup = (await resource[this.groupBy]).toString();
         if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...
         groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
-      });
+      }
 
       // Render group parents and call next processor
       for (let group of Object.keys(groups)) {
         const parent = this.renderGroup(group, div);
-        if (nextProcessor) nextProcessor(groups[group].resources, [...listPostProcessors], parent, context+"_"+group);
+        if (nextProcessor) await nextProcessor(groups[group].resources, [...listPostProcessors], parent, context+"_"+group);
       }
     } else {
-      if(nextProcessor) nextProcessor(resources, listPostProcessors, div, context);
+      if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
     }
   },
   renderGroup(groupName: string, div: HTMLElement) {
