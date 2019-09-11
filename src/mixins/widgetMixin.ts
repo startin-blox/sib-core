@@ -86,7 +86,7 @@ const WidgetMixin = {
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resourceValue = await this.fetchValue(await this.resource, field);
+    let resourceValue = await this.fetchValue(this.resource, field);
     if (resourceValue == undefined || resourceValue == "") // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
         this.element.getAttribute('default-' + field) : undefined;
@@ -96,13 +96,7 @@ const WidgetMixin = {
     let value = await this.getValue(field);
     if (!this.isMultiple(field)) return value;
     if (value == null) return [];
-    if (value['@type'] !== 'ldp:Container') { // TODO : fix here
-      return [value];
-    }
-    if (!('ldp:contains' in value)) return [];
     value = value['ldp:contains'];
-    if (!Array.isArray(value)) value = [value];
-    value = await Promise.all(value.map(a => store.get(a)));
     return value;
   },
   empty(): void {

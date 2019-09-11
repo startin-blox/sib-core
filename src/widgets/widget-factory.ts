@@ -10,7 +10,7 @@ export class BaseWidget extends HTMLElement {
   private _range: any | undefined;
 
   connectedCallback(): void {
-    this.render();
+    this.render(); // TODO : handle async
   }
   async render() {
     this.innerHTML = await evalTemplateString(this.template, {
@@ -32,14 +32,14 @@ export class BaseWidget extends HTMLElement {
   }
   set label(label: string | null) {
     if(label != null) this.setAttribute('label', label);
-    this.render();
+    this.render(); // TODO : handle async
   }
   get name(): string | null {
     return this.getAttribute('name');
   }
   set name(name: string | null) {
     if(name) this.setAttribute('name', name);
-    this.render();
+    this.render(); // TODO : handle async
   }
   get value() {
     if (this.dataHolder) {
@@ -59,7 +59,7 @@ export class BaseWidget extends HTMLElement {
     this._value = value; // ... store `value` in the widget
     if (!this.dataHolder) {
       // if no dataHolder in the widget...
-      this.render();
+      this.render(); // TODO : handle async
     } else if (this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
       const element = this.getValueHolder(this.dataHolder[0]);
@@ -126,7 +126,7 @@ export class BaseWidget extends HTMLElement {
   set range(range) {
     if (Array.isArray(range)) {
       this._range = range;
-      this.render();
+      this.render(); // TODO : handle async
       if (Array.isArray(this.value)) this.value = this.value;
       else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
       return;

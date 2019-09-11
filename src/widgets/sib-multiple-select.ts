@@ -10,7 +10,7 @@ export default class SIBMultipleSelect extends BaseWidget {
     if (this.firstChild) this.firstChild['range'] = range;
   }
 
-  render(): void {
+  async render() {
     if (!this.firstChild) this.insertWidget(this.attributes);
     if (this.firstChild) {
       if (this.label) this.firstChild['label'] = this.label;
