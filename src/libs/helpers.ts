@@ -8,12 +8,13 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
-function evalTemplateString(str: string, variables = {}): string {
+async function evalTemplateString(str: string, variables = {}) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const func = Function.call(null, ...keys, 'return `' + str + '`');
-    return func(...values);
+    const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
+    const func = AsyncFunction.call(null, ...keys, 'return `' + str + '`');
+    return await func(...values);
   } catch (e) {
     console.log(e);
     throw new SyntaxError('`' + str + '`');

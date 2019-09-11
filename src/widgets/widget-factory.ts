@@ -12,15 +12,15 @@ export class BaseWidget extends HTMLElement {
   connectedCallback(): void {
     this.render();
   }
-  render(): void {
-    this.innerHTML = evalTemplateString(this.template, {
+  async render() {
+    this.innerHTML = await evalTemplateString(this.template, {
       src: this.src,
       name: this.name,
       label: this.label,
       value: this.value,
       id: (this.value && this.value['@id']) || '',
       escapedValue: this.escapedValue,
-      range: this.htmlRange,
+      range: await this.htmlRange,
       multiple: this.multiple,
       editable: this.editable === '' ? true : false,
     });
@@ -133,23 +133,25 @@ export class BaseWidget extends HTMLElement {
     }
     store.list(range).then(list => (this.range = list));
   }
-  get htmlRange(): string {
-    if (!this.range.length) return '';
-    let htmlRange = '';
-    this.range.forEach(element => {
-      let selected: boolean;
-      if (Array.isArray(this.value)) {
-        selected = !!this.value.some((e) => e['@id'] == element['@id'])
-      } else {
-        selected = this.value == `{"@id": "${element['@id']}"}`
-      }
-      htmlRange += evalTemplateString(this.childTemplate, {
-        name: element.name,
-        id: element['@id'],
-        selected: selected
+  get htmlRange(): Promise<string> {
+    return (async () => {
+      if (!this.range.length) return '';
+      let htmlRange = '';
+      this.range.forEach(async element => {
+        let selected: boolean;
+        if (Array.isArray(this.value)) {
+          selected = !!this.value.some((e) => e['@id'] == element['@id'])
+        } else {
+          selected = this.value == `{"@id": "${element['@id']}"}`
+        }
+        htmlRange += await evalTemplateString(this.childTemplate, {
+          name: element.name,
+          id: element['@id'],
+          selected: selected
+        });
       });
-    });
-    return htmlRange || '';
+      return htmlRange || '';
+    })();
   }
   getValueHolder(element) {
     return element.component ? element.component : element;
@@ -196,8 +198,8 @@ export const widgetFactory = (
   const registered = customElements.get(tagName);
   if (registered) return registered;
   const cls = class extends BaseWidget {
-    render() {
-      super.render();
+    async render() {
+      await super.render();
       if (callback) callback(this);
     }
     get template(): string {

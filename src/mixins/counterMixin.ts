@@ -22,17 +22,17 @@ const CounterMixin = {
   async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.counterTemplate) {
       const resourcesToCount = await asyncToArray(resources); // create an array and consume iterator
-      this.renderCounter(div, resourcesToCount.length); // count resources
+      await this.renderCounter(div, resourcesToCount.length); // count resources
       resources = await asyncMap(resource => resource, resourcesToCount); // re-create an iterator
     }
 
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
-  renderCounter(div: HTMLElement, resourceNumber: number): void {
+  async renderCounter(div: HTMLElement, resourceNumber: number) {
     let html: string;
     try {
-      html = evalTemplateString(this.counterTemplate, {
+      html = await evalTemplateString(this.counterTemplate, {
         counter: resourceNumber,
       });
     } catch (e) {

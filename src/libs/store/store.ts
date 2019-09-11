@@ -102,13 +102,24 @@ class LDFlexGetter {
       const lastPath1El = path1.pop();
       if(lastPath1El) path2.unshift(lastPath1El);
     }
-    if (path2.length === 0) return value; // end of the path
+    if (path2.length === 0) { // end of the path
+      switch (value.termType) {
+        case "NamedNode": // resource, return proxy
+          return await new LDFlexGetter(value.toString(), this.context).getProxy();
+        case "Literal": // property, return value
+          return value;
+        default:
+          return undefined
+      }
+    }
     return new LDFlexGetter(value.toString(), this.context).init().then(res => res.get(path2.join('.')));
   }
 
   async isContainer() {
     return await this.resource.type == "http://www.w3.org/ns/ldp#Container"; // TODO : get compacted field
   }
+  toString() { return this.resource.toString() }
+  [Symbol.toPrimitive](){ return this.resource.toString() }
 
   // Returns a Proxy which handles the different get requests
   async getProxy() {
@@ -116,17 +127,16 @@ class LDFlexGetter {
       await this.init();
       this.proxy = new Proxy(this, {
         get: (resource, property) => {
+          if (typeof resource[property] === 'function') return resource[property].bind(resource)
+
           switch (property) {
             case '@id':
-            case 'then':
               return this.resource.toString();
             case 'properties':
             case 'ldp:contains':
             case 'permissions':
             case 'type':
               return this.resource[property];
-            case 'isContainer':
-              return resource.isContainer();
             default:
               return resource.get(property);
           }

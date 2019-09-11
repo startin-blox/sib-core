@@ -35,7 +35,7 @@ const WidgetMixin = {
     if (attr) return parseFieldsString(attr);
 
     let resource = this.resource;
-    if (await resource.isContainer) { // If container, keep the 1rst resource
+    if (await resource.isContainer()) { // If container, keep the 1rst resource
       for await (let res of resource['ldp:contains']) {
         resource = res;
         break;
@@ -77,7 +77,7 @@ const WidgetMixin = {
     return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
-    return !(await this.resource.isContainer) ? await resource[field] : null;
+    return !(await this.resource.isContainer()) ? await resource[field] : undefined;
   },
   async getValue(field: string) {
     if (this.getAction(field)) {
@@ -87,7 +87,7 @@ const WidgetMixin = {
       return this.element.getAttribute('value-' + field);
     }
     let resourceValue = await this.fetchValue(await this.resource, field);
-    if (resourceValue == null || resourceValue == "") // If null or empty, return field default value
+    if (resourceValue == undefined || resourceValue == "") // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
         this.element.getAttribute('default-' + field) : undefined;
     return resourceValue;
