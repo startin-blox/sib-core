@@ -16,10 +16,13 @@ export const base_context = {
 export class Store {
   originalStore: any;
   cache: Map<string, any>;
+  headers: HeadersInit;
 
   constructor(options: object) {
     this.cache = new Map();
     this.originalStore = new (<any>window).MyStore(options);
+    this.headers = new Headers();
+    this.headers.set('Content-Type', 'application/ld+json');
   }
 
   async initGraph(id: string, context = {}): Promise<void> {
@@ -45,16 +48,41 @@ export class Store {
     return this.originalStore.list.call(this, id);
   }
 
-  save(resource: object, id: string) {
-    return this.originalStore.save(resource, id);
+  post(resource: object, id: string) {
+    return fetch(id, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(resource),
+      credentials: 'include'
+    });
+  }
+
+  put(resource: object, id: string) {
+    this.cache.clear();
+    return fetch(id, {
+      method: 'PUT',
+      headers: this.headers,
+      body: JSON.stringify(resource),
+      credentials: 'include'
+    });
   }
 
   patch(id: string, resource: object) {
-    return this.originalStore.patch(id, resource);
+    return fetch(id, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify(resource),
+      credentials: 'include'
+    });
   }
 
   async delete(id: string) {
-    let deleted = await this.originalStore.delete(id);
+    const deleted = await fetch(id, {
+      method: 'DELETE',
+      headers: this.headers,
+      credentials: 'include'
+    });
+    this.cache.clear();
     return deleted;
   }
 }

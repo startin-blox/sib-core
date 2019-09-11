@@ -90,7 +90,10 @@ export const SibForm = {
     resource['@context'] = this.context;
     let saved: object = {};
     try {
-      saved = await store.save(resource, this.resource['@id']);
+      saved = resource['@id'] ?
+        await store.put(resource, this.resource['@id']) :
+        await store.post(resource, this.resource['@id']);
+        // TODO : if partial form, store.patch
     } catch (e) {
       this.toggleLoaderHidden(true);
       this.showError(e);
