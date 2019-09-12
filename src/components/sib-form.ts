@@ -125,7 +125,7 @@ export const SibForm = {
   },
   async inputChange(): Promise<void> {
     const resource = this.value; // TODO : fix this
-    if (!(await this.resource.isContainer())) resource['@id'] = this.resourceId;
+    if (this.resource && !(await this.resource.isContainer())) resource['@id'] = this.resourceId;
     this.change(resource); // TODO : fix this
   },
   createInput(type: string): HTMLInputElement {

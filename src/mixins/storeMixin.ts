@@ -58,8 +58,8 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resource(): object{
-    return this.resourceId ? store.get(this.resourceId) : {};
+  get resource(): object|null{
+    return this.resourceId ? store.get(this.resourceId) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
