@@ -27,14 +27,14 @@ export default class SIBMultipleForm extends BaseWidget {
     });
     fragment.appendChild(addButton);
     if (!this.value) return;
-    for await (const resource of this.value) {
+    for await (const resource of this.value['ldp:contains']) {
       const elm = this.insertWidget(this.childAttributes, fragment);
       if (elm) {
         elm['value'] = resource;
         elm.toggleAttribute('data-holder', true);
       }
     }
-    while(this.firstChild) this.firstChild.remove()
+    while (this.firstChild) this.firstChild.remove();
     this.appendChild(fragment);
   }
   get childAttributes(): object {

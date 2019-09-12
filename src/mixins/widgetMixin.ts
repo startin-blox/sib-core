@@ -91,13 +91,6 @@ const WidgetMixin = {
         this.element.getAttribute('default-' + field) : undefined;
     return resourceValue;
   },
-  async getValues(field: string) {
-    let value = await this.getValue(field);
-    if (!this.isMultiple(field)) return value;
-    if (value == null) return [];
-    value = value['ldp:contains'];
-    return value;
-  },
   empty(): void {
     // create a new empty div next to the old one
     if (this._div) {
@@ -139,7 +132,7 @@ const WidgetMixin = {
       attrs[attr] = value;
     }
     if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
-    attrs['value'] = await this.getValues(field);
+    attrs['value'] = await this.getValue(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
     return attrs;
