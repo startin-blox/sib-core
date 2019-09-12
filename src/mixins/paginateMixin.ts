@@ -1,7 +1,9 @@
 //@ts-ignore
 import asyncSlice from 'https://dev.jspm.io/iter-tools/es2018/async-slice';
 //@ts-ignore
-import asyncSize from 'https://dev.jspm.io/iter-tools/es2018/async-size';
+import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
+//@ts-ignore
+import asyncToArray from 'https://dev.jspm.io/iter-tools/es2018/async-to-array';
 
 const PaginateMixin = {
   name: 'paginate-mixin',
@@ -22,9 +24,13 @@ const PaginateMixin = {
     this.listPostProcessors.push(this.paginateCallback.bind(this));
   },
   async paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
-  if (this.paginateBy > 0) {
+    if (this.paginateBy > 0) {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
-      this.renderPaginationNav(div, await this.getPageCount(resources), context);
+
+      // Get paginate size to count pages
+      const resourcesToCount = await asyncToArray(resources); // create an array and consume iterator
+      this.renderPaginationNav(div, this.getPageCount(resourcesToCount.length), context);
+      resources = await asyncMap(resource => resource, resourcesToCount); // re-create an iterator
 
       const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
       resources = asyncSlice({
@@ -34,7 +40,7 @@ const PaginateMixin = {
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div);
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div);
   },
   getCurrentPage(context: string) {
     return this.currentPage[context];
@@ -46,8 +52,7 @@ const PaginateMixin = {
     this.empty();
     this.populate();
   },
-  async getPageCount(resources: object[]): Promise<number> {
-    const size = await asyncSize(resources);
+  getPageCount(size: number): number {
     return Math.max(1, Math.ceil(size / this.paginateBy));
   },
   renderPaginationNav(div: Element, pageCount: number, context: string): void {
