@@ -38,17 +38,18 @@ const ListMixin = {
   },
 
   async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+    // Create child components
+    let childrenAdded = 0;
+    for await (let resource of resources) {
+      this.appendChildElt(resource.toString(), div); // toString on resource returns its @id
+      childrenAdded++;
+    }
+
     // Nothing in list
-    if (resources.length === 0 && this.emptyWidget) {
+    if (!childrenAdded && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
       div.appendChild(emptyWidgetElement);
-      return;
-    }
-
-    // Create child components
-    for await (let resource of resources) {
-      this.appendChildElt(resource.toString(), div); // toString on resource returns its @id
     }
 
     const nextProcessor = listPostProcessors.shift();
