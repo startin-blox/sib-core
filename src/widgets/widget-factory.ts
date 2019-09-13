@@ -8,6 +8,7 @@ export class BaseWidget extends HTMLElement {
   private resourceId: string | undefined;
   private _value: any | undefined;
   private _range: any | undefined;
+  private _context: object | undefined;
 
   connectedCallback(): void {
     this.render(); // TODO : handle async
@@ -117,6 +118,12 @@ export class BaseWidget extends HTMLElement {
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');
   }
+  set context(value) {
+    this._context = value;
+  }
+  get context() {
+    return this._context || {};
+  }
 
   get range(): any {
     if (!this._range) return [];
@@ -184,6 +191,7 @@ export class BaseWidget extends HTMLElement {
     if (!this.name) return;
     const resource = {};
     resource[this.name] = editableField.innerText;
+    resource['@context'] = this.context;
 
     if(this.resourceId && resource) store.patch(this.resourceId, resource)
   }
