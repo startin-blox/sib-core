@@ -37,7 +37,6 @@ export const SibForm = {
       setDeepProperty(values, name.split('.'), value);
     });
 
-    // if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id']; // TODO : fix is container here
     return values;
   },
   set value(value) {
@@ -56,6 +55,11 @@ export const SibForm = {
   },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
+  },
+  async getFormValue() {
+    let value = this.value;
+    if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
+    return value
   },
   getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
@@ -86,13 +90,13 @@ export const SibForm = {
   async save(): Promise<object> {
     this.toggleLoaderHidden(false);
     this.hideError();
-    const resource = this.value;
+    const resource = await this.getFormValue();
     resource['@context'] = this.context;
     let saved: object = {};
     try {
       saved = resource['@id'] ?
-        await store.put(resource, this.resource['@id']) :
-        await store.post(resource, this.resource['@id']);
+        await store.put(resource, this.resourceId) :
+        await store.post(resource, this.resourceId);
         // TODO : if partial form, store.patch
     } catch (e) {
       this.toggleLoaderHidden(true);
@@ -109,10 +113,10 @@ export const SibForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    const isCreation = !('@id' in this.value);
+    const isCreation = !('@id' in (await this.getFormValue()));
     let id;
     try {
-      id = await this.save() || this.value['@id'];
+      id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return }
     if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
@@ -124,9 +128,7 @@ export const SibForm = {
     );
   },
   async inputChange(): Promise<void> {
-    const resource = this.value; // TODO : fix this
-    if (this.resource && !(await this.resource.isContainer())) resource['@id'] = this.resourceId;
-    this.change(resource); // TODO : fix this
+    this.change(await this.getFormValue());
   },
   createInput(type: string): HTMLInputElement {
     const input = document.createElement('input');
