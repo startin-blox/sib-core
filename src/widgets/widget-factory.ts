@@ -11,7 +11,7 @@ export class BaseWidget extends HTMLElement {
   private _context: object | undefined;
 
   connectedCallback(): void {
-    this.render(); // TODO : handle async
+    this.render();
   }
   async render() {
     this.innerHTML = await evalTemplateString(this.template, {
@@ -33,14 +33,14 @@ export class BaseWidget extends HTMLElement {
   }
   set label(label: string | null) {
     if(label != null) this.setAttribute('label', label);
-    this.render(); // TODO : handle async
+    this.render();
   }
   get name(): string | null {
     return this.getAttribute('name');
   }
   set name(name: string | null) {
     if(name) this.setAttribute('name', name);
-    this.render(); // TODO : handle async
+    this.render();
   }
   get value() {
     if (this.dataHolder) {
@@ -60,7 +60,7 @@ export class BaseWidget extends HTMLElement {
     this._value = value; // ... store `value` in the widget
     if (!this.dataHolder) {
       // if no dataHolder in the widget...
-      this.render(); // TODO : handle async
+      this.render();
     } else if (this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
       const element = this.getValueHolder(this.dataHolder[0]);
@@ -126,37 +126,37 @@ export class BaseWidget extends HTMLElement {
   }
 
   get range(): any {
-    if (!this._range) return [];
-    if (!Array.isArray(this._range)) return [this._range];
-    return this._range;
+    return this._range ? this._range['ldp:contains'] : null;
   }
   set range(range) {
-    if (Array.isArray(range)) {
-      this._range = range;
-      this.render(); // TODO : handle async
+    (async () => {
+      await store.initGraph(range, this.context);
+      this._range = store.get(range);
+      await this.render();
       if (Array.isArray(this.value)) this.value = this.value;
       else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
-      return;
-    }
-    store.list(range).then(list => (this.range = list));
+    })();
   }
-  get htmlRange(): Promise<string> {
+  get htmlRange(): Promise<string|undefined> {
     return (async () => {
-      if (!this.range.length) return '';
       let htmlRange = '';
-      this.range.forEach(async element => {
+      if (!this.range) return;
+      for await (let element of this.range) {
+        await store.initGraph(element.toString(), this.context); // fetch the resource
+        element = store.get(element.toString());
+
         let selected: boolean;
         if (Array.isArray(this.value)) {
-          selected = !!this.value.some((e) => e['@id'] == element['@id'])
+          selected = !!this.value.some((e) => e['@id'] == element.toString());
         } else {
-          selected = this.value == `{"@id": "${element['@id']}"}`
+          selected = this.value == `{"@id": "${element.toString()}"}`;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
-          name: element.name,
-          id: element['@id'],
+          name: (await element.name).toString(),
+          id: element.toString(),
           selected: selected
         });
-      });
+      }
       return htmlRange || '';
     })();
   }
