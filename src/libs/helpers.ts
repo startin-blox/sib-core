@@ -47,6 +47,26 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
   });
 }
 
+function loadScript(source: string) {
+  if (!source) return;
+  return new Promise(resolve => {
+    var script = document.createElement('script');
+    var head = document.querySelector('head');
+    script.async = true;
+
+    //@ts-ignore
+    script.onload = script['onreadystatechange'] = function (_, isAbort): any {
+      if (isAbort || !script['readyState'] || /loaded|complete/.test(script['readyState'])) {
+        script.onload = script['onreadystatechange'] = null;
+        if (!isAbort) setTimeout(resolve, 0);
+      }
+    };
+
+    script.src = source;
+    if(head) head.appendChild(script);
+  });
+}
+
 function domIsReady(): Promise<any> {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
@@ -118,6 +138,7 @@ export {
   evalTemplateString,
   importCSS,
   importJS,
+  loadScript,
   domIsReady,
   setDeepProperty,
   parseFieldsString,

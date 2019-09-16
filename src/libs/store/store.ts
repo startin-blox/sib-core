@@ -1,4 +1,10 @@
 import './ldpframework.js';
+import { loadScript } from '../helpers.js';
+
+const scriptsLoading = Promise.all([
+  loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js'),
+  loadScript('/sib-core/dist/libs/store/solid-query-ldflex.bundle.js')
+]);
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -108,7 +114,8 @@ class LDFlexGetter {
     this.context = context;
   }
 
-  async init() { // TODO : Put this in store wrapper ?
+  async init() {
+    await scriptsLoading; // Load solid scripts
     //@ts-ignore
     if(Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
     //@ts-ignore
