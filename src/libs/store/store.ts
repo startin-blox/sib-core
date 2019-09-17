@@ -110,7 +110,7 @@ class LDFlexGetter {
   proxy: any;
 
   constructor(resourceId: string, context: object) {
-    this.resourceId = resourceId;
+    this.resourceId = new URL(resourceId, document.location.href).href;
     this.context = context;
   }
 
