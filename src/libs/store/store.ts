@@ -3,7 +3,7 @@ import { loadScript } from '../helpers.js';
 
 const scriptsLoading = Promise.all([
   loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js'),
-  loadScript('/sib-core/dist/libs/store/solid-query-ldflex.bundle.js')
+  loadScript('./solid-query-ldflex.bundle.js')
 ]);
 
 export const base_context = {

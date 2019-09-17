@@ -47,15 +47,29 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
   });
 }
 
+function relativeSource(source) {
+  if (source.indexOf('./') !== 0) return source
+  const e = new Error();
+  if(!e.stack) return source;
+  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
+  let line = f2.match(/[a-z]+:.*$/);
+  if (!line) return source;
+  const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/,'');
+  source = new URL(source, calledFile).href;
+  return source;
+  
+}
+
 function loadScript(source: string) {
+  source = relativeSource(source);
+  
   if (!source) return;
   return new Promise(resolve => {
     var script = document.createElement('script');
     var head = document.querySelector('head');
     script.async = true;
 
-    //@ts-ignore
-    script.onload = script['onreadystatechange'] = function (_, isAbort): any {
+    script.onload = script['onreadystatechange'] = function (_, isAbort?) {
       if (isAbort || !script['readyState'] || /loaded|complete/.test(script['readyState'])) {
         script.onload = script['onreadystatechange'] = null;
         if (!isAbort) setTimeout(resolve, 0);
