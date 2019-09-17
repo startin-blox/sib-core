@@ -116,9 +116,9 @@ class LDFlexGetter {
 
   async init() {
     await scriptsLoading; // Load solid scripts
-    //@ts-ignore
+
     if(Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
-    //@ts-ignore
+
     this.resource = solid.data[this.resourceId]; // ... then we get the resource datas
     return this;
   }
