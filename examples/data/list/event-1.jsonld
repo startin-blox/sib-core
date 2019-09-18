@@ -1,0 +1,8 @@
+{
+	"@id": "event-1.jsonld",
+	"name": "Coliving",
+	"date": "2019-07-09",
+	"seats": 12,
+	"permissions": [],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

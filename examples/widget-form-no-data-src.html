@@ -11,18 +11,21 @@
 </head>
 
 <body>
-    <sib-widget name="sib-form-customer">
+    <sib-widget name="sib-form-profile">
       <template>
         <h3>Nested form</h3>
         <sib-form
-        fields="name, email, phone"></sib-form>
+        data-holder
+        naked
+        data-src="${id}"
+        fields="city, phone, bio"></sib-form>
       </template>
     </sib-widget>
 
     <h3>Form</h3>
     <sib-form
-    data-src="https://api.test-paris.happy-dev.fr/projects/1/"
-    fields="name, customer"
-    widget-customer="sib-form-customer"></sib-form>
+    data-src="data/list/user-1.jsonld"
+    fields="username, profile"
+    widget-profile="sib-form-profile"></sib-form>
 </body>
 </html>

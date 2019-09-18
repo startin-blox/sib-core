@@ -1,0 +1,353 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "user-1.jsonld",
+      "first_name": "Test",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/1/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "User",
+      "username": "admin",
+      "email": "test-paris@happy-dev.fr",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/1/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chat-profile/1/"
+      },
+      "name": "Test User",
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/1/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "user-1-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "skill-2.jsonld"
+          },
+          {
+            "@id": "skill-3.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/1/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-1.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "user-2.jsonld",
+      "first_name": "Paris",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/2/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "Hilton",
+      "username": "paris",
+      "email": "paris@hilton.hi",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/2/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chat-profile/2/"
+      },
+      "name": "Paris Hilton",
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/2/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "user-2-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "skill-1.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/2/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-2.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "user-4.jsonld",
+      "first_name": "Pierre",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/4/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "DLC",
+      "username": "pierre",
+      "email": "pierredelacroix@happy-dev.fr",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/4/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chat-profile/4/"
+      },
+      "name": "Pierre DLC",
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/4/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "user-4-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "skill-1.jsonld"
+          },
+          {
+            "@id": "skill-2.jsonld"
+          },
+          {
+            "@id": "skill-4.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/4/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-4.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "user-3.jsonld",
+      "first_name": "Not A",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/3/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "Paris Member",
+      "username": "not-member-paris",
+      "email": "not-a@paris.members",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/3/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chat-profile/3/"
+      },
+      "name": "Not A Paris Member",
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/3/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "user-3-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/3/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-3.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

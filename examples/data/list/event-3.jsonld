@@ -1,0 +1,8 @@
+{
+	"@id": "event-3.jsonld",
+	"name": "Réunion d'information",
+	"date": "2019-07-10",
+	"seats": 230,
+	"permissions": [],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

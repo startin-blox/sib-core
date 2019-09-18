@@ -1,0 +1,20 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "skill-2.jsonld"
+    },
+    {
+      "@id": "skill-3.jsonld"
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
