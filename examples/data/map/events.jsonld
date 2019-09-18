@@ -6,14 +6,14 @@
       "lat": "21.028511",
       "lng": "105.804817",
       "permissions": [],
-      "@id": "event:1"
+      "@id": "event-1.jsonld"
     },
     {
       "name": "Test",
       "lat": "48.864716",
       "lng": "2.349014",
       "permissions": [],
-      "@id": "event:2"
+      "@id": "event-2.jsonld"
     }
   ],
   "@id": "",
