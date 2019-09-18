@@ -1,14 +1,14 @@
 {
 	"@type": "ldp:Container",
 	"ldp:contains": [{
-		"@id": "http://localhost:8000/events/1/",
+		"@id": "event-1.jsonld",
 		"name": "Test",
-		"deadline": "2019-05-09T19:55:44Z",
+		"deadline": "2019-09-09T19:55:44Z",
 		"permissions": []
 	}, {
-		"@id": "http://localhost:8000/events/2/",
+		"@id": "event-2.jsonld",
 		"name": "Test demain",
-		"deadline": "2019-05-10T19:55:56Z",
+		"deadline": "2019-09-10T19:55:56Z",
 		"permissions": []
 	}],
 	"@id": "",
