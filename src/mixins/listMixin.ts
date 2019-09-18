@@ -22,9 +22,10 @@ const ListMixin = {
   },
   async populate(): Promise<void> {
     const div = this.div;
+    if (!this.resource) return;
 
     // Not a container but a single resource
-    if (this.resource && !(await this.resource.isContainer())) {
+    if (!(await this.resource.isContainer())) {
       this.appendSingleElt(div);
       return;
     }
@@ -41,7 +42,7 @@ const ListMixin = {
     // Create child components
     let childrenAdded = 0;
     for await (let resource of resources) {
-      this.appendChildElt(resource.toString(), div); // toString on resource returns its @id
+      this.appendChildElt(resource['@id'], div);
       childrenAdded++;
     }
 

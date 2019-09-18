@@ -16,7 +16,7 @@ const StoreMixin = {
 
         // Init graph for nested fields
         if (this.nestedField) {
-          this.resourceId = (await this.resource[this.nestedField]).toString()
+          this.resourceId = (await this.resource[this.nestedField])['@id']
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
           await store.initGraph(this.resourceId, this.context);
         }

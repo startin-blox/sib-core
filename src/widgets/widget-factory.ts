@@ -142,18 +142,18 @@ export class BaseWidget extends HTMLElement {
       let htmlRange = '';
       if (!this.range) return;
       for await (let element of this.range) {
-        await store.initGraph(element.toString(), this.context); // fetch the resource
-        element = store.get(element.toString());
+        await store.initGraph(element['@id'], this.context); // fetch the resource
+        element = store.get(element['@id']);
 
         let selected: boolean;
         if (Array.isArray(this.value)) {
-          selected = !!this.value.some((e) => e['@id'] == element.toString());
+          selected = !!this.value.some((e) => e['@id'] == element['@id']);
         } else {
-          selected = this.value == `{"@id": "${element.toString()}"}`;
+          selected = this.value == `{"@id": "${element['@id']}"}`;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
           name: (await element.name).toString(),
-          id: element.toString(),
+          id: element['@id'],
           selected: selected
         });
       }

@@ -1,10 +1,16 @@
-import './ldpframework.js';
+//@ts-ignore
+import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
+//@ts-ignore
+import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
 import { loadScript } from '../helpers.js';
 
 const scriptsLoading = Promise.all([
   loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js'),
   loadScript('./solid-query-ldflex.bundle.js')
 ]);
+
+const ContextParser = JSONLDContextParser.ContextParser;
+const myParser = new ContextParser();
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -20,13 +26,11 @@ export const base_context = {
 };
 
 export class Store {
-  originalStore: any;
   cache: Map<string, any>;
   headers: HeadersInit;
 
-  constructor(options: object) {
+  constructor() {
     this.cache = new Map();
-    this.originalStore = new (<any>window).MyStore(options);
     this.headers = new Headers();
     this.headers.set('Content-Type', 'application/ld+json');
   }
@@ -50,10 +54,6 @@ export class Store {
     return this.cache.get(hash) || null;
   }
 
-  list(id: string) {
-    return this.originalStore.list.call(this, id);
-  }
-
   post(resource: object, id: string) {
     return fetch(id, {
       method: 'POST',
@@ -64,7 +64,6 @@ export class Store {
   }
 
   put(resource: object, id: string) {
-    this.cache.clear();
     return fetch(id, {
       method: 'PUT',
       headers: this.headers,
@@ -88,16 +87,11 @@ export class Store {
       headers: this.headers,
       credentials: 'include'
     });
-    this.cache.clear();
     return deleted;
   }
 }
 
-export const store = new Store({
-  context: base_context,
-  defaultSerializer: 'application/ld+json',
-});
-
+export const store = new Store();
 
 /**
  * LDFLEX WRAPPER
@@ -110,16 +104,18 @@ class LDFlexGetter {
   proxy: any;
 
   constructor(resourceId: string, context: object) {
-    this.resourceId = new URL(resourceId, document.location.href).href;
+    this.resourceId = resourceId;
     this.context = context;
   }
 
   async init() {
     await scriptsLoading; // Load solid scripts
+    if (Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
 
-    if(Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
-
-    this.resource = solid.data[this.resourceId]; // ... then we get the resource datas
+    this.context = await myParser.parse(this.context);
+    let iri = ContextParser.expandTerm(this.resourceId, this.context); // expand if reduced ids
+    iri = new URL(iri, document.location.href).href; // and get full URL for local files
+    this.resource = solid.data[iri]; // ... then we get the resource datas
     return this;
   }
 
@@ -151,10 +147,21 @@ class LDFlexGetter {
   }
 
   async isContainer() {
-    return await this.resource.type == "http://www.w3.org/ns/ldp#Container"; // TODO : get compacted field
+    const type = await this.resource.type;
+    if (!type) return false;
+    return this.getCompactedIri(type.toString()) == "ldp:Container"; // TODO : ldflex should return compacted field
   }
-  toString() { return this.resource.toString() }
-  [Symbol.toPrimitive](){ return this.resource.toString() }
+
+  getCompactedIri(id: string) { return ContextParser.compactIri(id, this.context) }
+  toString() { return this.getCompactedIri(this.resource.toString()) }
+  [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource.toString()) }
+
+  getAsyncIterable(property: string) {
+    return asyncMap(
+      resource => new LDFlexGetter(resource.toString(), this.context).getProxy(),
+      this.resource[property]
+    );
+  }
 
   // Returns a Proxy which handles the different get requests
   async getProxy() {
@@ -166,12 +173,12 @@ class LDFlexGetter {
 
           switch (property) {
             case '@id':
-              return this.resource.toString();
+              return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
             case 'properties':
-            case 'ldp:contains':
             case 'permissions':
-            case 'type':
-              return this.resource[property];
+              return this.resource[property]
+            case 'ldp:contains':
+              return this.getAsyncIterable(property);
             default:
               return resource.get(property);
           }

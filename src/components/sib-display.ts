@@ -57,7 +57,6 @@ export const SibDisplay = {
   },
   appendChildElt(resourceId: string, parent: Element): void {
     const child = document.createElement(this.childTag);
-    child.dataset.src = resourceId;
     child.addEventListener('click', this.dispatchSelect.bind(this));
     if (this.fields) child.setAttribute('fields', this.fields);
 
@@ -71,12 +70,14 @@ export const SibDisplay = {
         attr.name.startsWith('multiple-') ||
         attr.name.startsWith('editable-') ||
         attr.name.startsWith('action-') ||
-        attr.name.startsWith('default-')
+        attr.name.startsWith('default-') ||
+        attr.name == 'extra-context'
       )
         child.setAttribute(attr.name, attr.value);
       if (attr.name.startsWith('child-'))
         child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
     }
+    child.dataset.src = resourceId; // set id after the extra-context is
 
     parent.appendChild(child);
   },
