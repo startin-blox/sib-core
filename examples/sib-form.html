@@ -30,7 +30,7 @@
       <sib-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="sib-form-multiple-value"
+        multiple-skills
         range-skills="data/list/skills.jsonld"
       ></sib-form>
     </details>
@@ -39,10 +39,10 @@
       <summary>Form widgets:</summary>
       <sib-form
         data-src="data/project.jsonld"
-        fields="businessProvider, businessProviderFee, foaf:jabberID"
+        fields="businessProvider, businessProviderFee, jabberID"
         widget-businessProvider="sib-form-placeholder-text"
         widget-businessProviderFee="sib-form-number"
-        widget-foaf:jabberID="sib-form-hidden"
+        widget-jabberID="sib-form-hidden"
       ></sib-form>
     </details>
 
@@ -71,7 +71,7 @@
       <sib-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="sib-form-multiple-dropdown"
+        multiple-skills="sib-multiple-select"
         range-skills="data/list/skills.jsonld"
       ></sib-form>
     </details>
