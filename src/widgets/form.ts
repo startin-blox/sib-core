@@ -120,7 +120,7 @@ const SIBFormDropdown = widgetFactory(
   `<label>
     <div>\${label}</div>
     <select name="\${name}" \${multiple?'multiple':''} data-holder>
-    <option value="" \${value == "" ? 'selected' : ''}>―</option>
+      \${multiple ? "" : \`<option value="" \${value == "" ? "selected" : ""}>―</option>\`}
       \${range}
     </select>
   </label>

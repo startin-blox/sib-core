@@ -45,11 +45,9 @@ export class BaseWidget extends HTMLElement {
   get value() {
     if (this.dataHolder) {
       let values = this.dataHolder.map(element => {
-        if(element instanceof HTMLInputElement && element.type == "checkbox") return element.checked
+        if (element instanceof HTMLInputElement && element.type == "checkbox") return element.checked;
         // if value is defined, push it in the array
-        return JSON.stringify(this.getValueHolder(element).value) !== '{}'
-          ? this.getValueHolder(element).value
-          : this._value || '';
+        return this.getValueHolder(element).value;
       });
       // If only one value, do not return an array
       return values.length === 1 ? values[0] : values;
@@ -132,9 +130,10 @@ export class BaseWidget extends HTMLElement {
     (async () => {
       await store.initGraph(range, this.context);
       this._range = store.get(range);
+      if (this._value && !(this.value.isContainer && await this.value.isContainer())) { // if value set and not a container
+        this.value = `{"@id": "${this._value['@id']}"}`;
+      }
       await this.render();
-      if (this.value && await this.value.isContainer()) this.value = this.value;
-      else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
     })();
   }
   get htmlRange(): Promise<string|undefined> {
@@ -146,10 +145,16 @@ export class BaseWidget extends HTMLElement {
         element = store.get(element['@id']);
 
         let selected: boolean;
-        if (Array.isArray(this.value)) { // TODO : not working ?
-          selected = !!this.value.some((e) => e['@id'] == element['@id']);
-        } else {
-          selected = this.value == `{"@id": "${element['@id']}"}`;
+        if (this.value && this.value.isContainer && this.value.isContainer()) { // selected options for multiple select
+          selected = false;
+          for await (let value of this.value["ldp:contains"]) {
+            if (value['@id'] == element['@id']) {
+              selected = true;
+              break;
+            }
+          }
+        } else { // selected options for simple dropdowns
+          selected = this._value == `{"@id": "${element['@id']}"}`;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
           name: (await element.name).toString(),
