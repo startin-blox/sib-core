@@ -44,25 +44,25 @@
         widget-businessProviderFee="sib-form-number"
         widget-jabberID="sib-form-hidden"
       ></sib-form>
-    </details>
+  </details>
 
     <details>
       <summary>Dropdown:</summary>
       <sib-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        range-skills="data/list/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        range-contact="data/list/users.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Placeholder dropdown:</summary>
       <sib-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        widget-skills="sib-form-placeholder-dropdown"
-        label-skills='select a skill:'
-        range-skills="data/list/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="sib-form-placeholder-dropdown"
+        label-contact='select a contact:'
+        range-contact="data/list/users.jsonld"
       ></sib-form>
     </details>
 
@@ -80,10 +80,10 @@
       <summary>Auto complete:</summary>
       <h2>Single skill</h2>
       <sib-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        widget-skills="sib-form-auto-completion"
-        range-skills="data/list/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="sib-form-auto-completion"
+        range-contact="data/list/users.jsonld"
       ></sib-form>
       <h2>Multiple skills</h2>
       <sib-form

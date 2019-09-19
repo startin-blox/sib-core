@@ -133,7 +133,7 @@ export class BaseWidget extends HTMLElement {
       await store.initGraph(range, this.context);
       this._range = store.get(range);
       await this.render();
-      if (Array.isArray(this.value)) this.value = this.value;
+      if (this.value && await this.value.isContainer()) this.value = this.value;
       else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
     })();
   }
@@ -146,7 +146,7 @@ export class BaseWidget extends HTMLElement {
         element = store.get(element['@id']);
 
         let selected: boolean;
-        if (Array.isArray(this.value)) {
+        if (Array.isArray(this.value)) { // TODO : not working ?
           selected = !!this.value.some((e) => e['@id'] == element['@id']);
         } else {
           selected = this.value == `{"@id": "${element['@id']}"}`;
