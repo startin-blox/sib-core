@@ -1,0 +1,20 @@
+{
+  "@id": "profile-2.jsonld",
+  "jabberID": "paris@test-paris.happy-dev.fr",
+  "user": {
+    "@id": "user-2.jsonld"
+  },
+  "available": null,
+  "bio": "",
+  "city": "Paris",
+  "phone": "",
+  "website": "",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

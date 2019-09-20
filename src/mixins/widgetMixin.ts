@@ -1,4 +1,3 @@
-import { store } from '../libs/store/store.js';
 import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers.js';
 
 const WidgetMixin = {
@@ -29,25 +28,29 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
-  get fieldsWidget(): string[][] {
-    const attr = this.fields as string;
-    if (attr === '') {
-      return [];
+  async getFields(): Promise<string[]>{ // TODO : improve code
+    const attr = this.fields;
+    if (attr === '') return [];
+    if (attr) return parseFieldsString(attr);
+
+    let resource = this.resource;
+    if (resource && await resource.isContainer()) { // If container, keep the 1rst resource
+      for await (let res of resource['ldp:contains']) {
+        resource = res;
+        break;
+      }
     }
-    if (attr) {
-      return parseFieldsString(attr);
-    }
-    const resource =
-      this.isContainer() && this.resources ? this.resources[0] : this.resource;
 
     if (!resource) {
       console.error(new Error('You must provide a "fields" attribute'));
       return [];
     }
 
-    return Object.keys(resource)
-      .filter(prop => !prop.startsWith('@'))
-      .map(a => [a]);
+    let fields: string[] = [];
+    for await (const prop of resource.properties) {
+      if(!prop.startsWith('@')) fields.push(prop)
+    }
+    return fields;
   },
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
@@ -56,7 +59,7 @@ const WidgetMixin = {
   getSetRegexp(field: string) {
     return new RegExp(`(^|\\,|\\(|\\s)\\s*${field}\\s*\\(`, 'g')
   },
-  getSet(field: string): string[][] {
+  getSet(field: string): string[] {
     const setString = this.fields.match(this.getSetRegexp(field));
     if (!setString) return [];
     const firstSetBracket = this.fields.indexOf(setString[0]) + (setString[0].length) - 1;
@@ -73,14 +76,7 @@ const WidgetMixin = {
     return this.element.hasAttribute('multiple-' + field);
   },
   async fetchValue(resource, field: string) {
-    if (this.isContainer()) return null;
-    if (!(field in resource) && '@id' in resource) {
-      resource = await store.get(resource, this.context);
-    }
-    if (!(field in resource)) {
-      resource[field] = undefined;
-    }
-    return resource[field];
+    return this.resource && !(await this.resource.isContainer()) ? await resource[field] : undefined;
   },
   async getValue(field: string) {
     if (this.getAction(field)) {
@@ -89,27 +85,11 @@ const WidgetMixin = {
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resource = this.resource || {};
-    for (let name of field) {
-      resource = await this.fetchValue(resource, name);
-      if (resource == null || resource == "") // If null or empty, return field default value
-        return this.element.hasAttribute('default-' + field) ?
-          this.element.getAttribute('default-' + field) : undefined;
-    }
-    return resource;
-  },
-  async getValues(field: string) {
-    let value = await this.getValue(field);
-    if (!this.isMultiple(field)) return value;
-    if (value == null) return [];
-    if (value['@type'] !== 'ldp:Container') {
-      return [value];
-    }
-    if (!('ldp:contains' in value)) return [];
-    value = value['ldp:contains'];
-    if (!Array.isArray(value)) value = [value];
-    value = await Promise.all(value.map(a => store.get(a)));
-    return value;
+    let resourceValue = await this.fetchValue(this.resource, field);
+    if (resourceValue == undefined || resourceValue == "") // If null or empty, return field default value
+      return this.element.hasAttribute('default-' + field) ?
+        this.element.getAttribute('default-' + field) : undefined;
+    return resourceValue;
   },
   empty(): void {
     // create a new empty div next to the old one
@@ -152,8 +132,9 @@ const WidgetMixin = {
       attrs[attr] = value;
     }
     if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
-    attrs['value'] = await this.getValues(field);
+    attrs['value'] = await this.getValue(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
+    attrs['context'] = this.context;
 
     return attrs;
   },

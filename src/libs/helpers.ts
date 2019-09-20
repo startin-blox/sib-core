@@ -8,12 +8,13 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
-function evalTemplateString(str: string, variables = {}): string {
+async function evalTemplateString(str: string, variables = {}) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const func = Function.call(null, ...keys, 'return `' + str + '`');
-    return func(...values);
+    const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
+    const func = AsyncFunction.call(null, ...keys, 'return `' + str + '`');
+    return await func(...values);
   } catch (e) {
     console.log(e);
     throw new SyntaxError('`' + str + '`');
@@ -46,6 +47,40 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
   });
 }
 
+function relativeSource(source) {
+  if (source.indexOf('./') !== 0) return source
+  const e = new Error();
+  if(!e.stack) return source;
+  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
+  let line = f2.match(/[a-z]+:.*$/);
+  if (!line) return source;
+  const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/,'');
+  source = new URL(source, calledFile).href;
+  return source;
+  
+}
+
+function loadScript(source: string) {
+  source = relativeSource(source);
+  
+  if (!source) return;
+  return new Promise(resolve => {
+    var script = document.createElement('script');
+    var head = document.querySelector('head');
+    script.async = true;
+
+    script.onload = script['onreadystatechange'] = function (_, isAbort?) {
+      if (isAbort || !script['readyState'] || /loaded|complete/.test(script['readyState'])) {
+        script.onload = script['onreadystatechange'] = null;
+        if (!isAbort) setTimeout(resolve, 0);
+      }
+    };
+
+    script.src = source;
+    if(head) head.appendChild(script);
+  });
+}
+
 function domIsReady(): Promise<any> {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
@@ -65,8 +100,8 @@ function setDeepProperty(obj: object, path: string[], value: object) {
   }
 }
 
-function parseFieldsString(fields: string): string[][] {
-  let fieldsArray: string[][];
+function parseFieldsString(fields: string): string[] {
+  let fieldsArray: string[];
 
   // remove all sets from fields
   while(fields.indexOf('(') > 0){
@@ -77,12 +112,7 @@ function parseFieldsString(fields: string): string[][] {
 
   fieldsArray = fields
     .split(',') // separate fields
-    .map(s => s.trim().split(/\./)); // separate nested fields
-  fieldsArray.forEach(field => {
-    field.toString = function() {
-      return this.join('.');
-    };
-  });
+    .map(a => a.trim()) // and remove spaces
   return fieldsArray;
 }
 
@@ -122,6 +152,7 @@ export {
   evalTemplateString,
   importCSS,
   importJS,
+  loadScript,
   domIsReady,
   setDeepProperty,
   parseFieldsString,

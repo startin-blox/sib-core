@@ -1,5 +1,4 @@
 import { base_context, store } from '../libs/store/store.js';
-import { domIsReady, getArrayFrom } from '../libs/helpers.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -8,32 +7,21 @@ const StoreMixin = {
     dataSrc: {
       type: String,
       default: null,
-      callback: function (value: string) {
+      callback: async function (value: string) {
         this.empty();
-
-        // brings a loader out if the attribute is set
-        this.toggleLoaderHidden(false);
-
         if (!value) return;
 
-        // gets the data through the store
-        store.get(value, this.context).then(async resource => {
-          if (this.nestedField) {
-            if (!(this.nestedField in resource))
-              throw `Error: the key "${this.nestedField}" does not exist on the resource`
-            this.resource = resource[this.nestedField];
-          } else {
-            this.resource = resource;
-          }
+        this.resourceId = value;
+        await store.initGraph(this.resourceId, this.context);
 
-          // fetch all sources
-          if (this.isContainer()) {
-            for (resource of getArrayFrom(this.resource,'ldp:contains')) {
-              if (resource['@type'] === "sib:source") this.fetchSource(resource).then(() => this.updateDOM())
-            }
-          }
-          await this.updateDOM();
-        });
+        // Init graph for nested fields
+        if (this.nestedField) {
+          this.resourceId = (await this.resource[this.nestedField])['@id']
+          if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+          await store.initGraph(this.resourceId, this.context);
+        }
+
+        await this.updateDOM();
       },
     },
     extraContext: {
@@ -54,15 +42,11 @@ const StoreMixin = {
     },
   },
   initialState: {
-    resource: null,
-    resourcesFilters: null
+    resourceId: null
   },
-  created(): void {
-    this.resourcesFilters = [];
-  },
-  attached(): void {
-    if (this.resource) this.populate();
-  },
+  /* attached(): void {
+    if (this.resource) this.populate(); // TODO : if we want to be stateless, we must remove this
+  },*/
   get context(): object {
     return { ...base_context, ...this.extra_context };
   },
@@ -74,54 +58,23 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resources(): object[]{
-    let resources: object[] = getArrayFrom(this.resource, "ldp:contains");
-
-    this.resourcesFilters.forEach((filter: Function) => resources = filter(resources));
-    resources = resources.filter(res => res['@type'] !== 'sib:source'); // remove sources from displayed results
-    return resources;
-  },
-  get permissions(): object[]{
-    return getArrayFrom(this.resource, "@permissions");
+  get resource(): object|null{
+    return this.resourceId ? store.get(this.resourceId) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  isContainer(): boolean {
-    return this.resource && '@type' in this.resource && this.resource['@type'] === 'ldp:Container';
-  },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  async fetchSource(resource: object): Promise<object> {
-    return store.get(resource['container'], this.context).then((data) => {
-      this.resource['ldp:contains'].push(...getArrayFrom(data, 'ldp:contains')); // add new resources to the current container
-      return resource;
-    })
-  },
   async updateDOM(): Promise<void> {
+    this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.populate();
-    setTimeout(() => (
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: this.resource } })))
+    setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
+      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
-  },
-  async getUser() {
-    // wait for dom
-    await domIsReady();
-    const sibAuth = document.querySelector('sib-auth');
-
-    // if sib-auth element is not found, return undefined
-    if (!sibAuth) {
-      return undefined;
-    }
-
-    // if element is defined, wait custom element to be ready
-    await customElements.whenDefined('sib-auth');
-
-    //@ts-ignore
-    return sibAuth.getUser(); // TODO : improve this
   }
 };
 

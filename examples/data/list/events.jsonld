@@ -1,0 +1,31 @@
+{
+	"@type": "ldp:Container",
+	"ldp:contains": [
+		{
+			"@id": "event-1.jsonld",
+			"name": "Coliving",
+			"date": "2019-07-09",
+			"permissions": []
+		},
+		{
+			"@id": "event-2.jsonld",
+			"name": "Workshop",
+			"date": "2019-05-10",
+			"permissions": []
+		},
+		{
+			"@id": "event-3.jsonld",
+			"name": "Réunion d'information",
+			"date": "2019-07-10",
+			"permissions": []
+		},
+		{
+			"@id": "event-4.jsonld",
+			"name": "Assemblée générale",
+			"date": "2019-05-10",
+			"permissions": []
+		}
+	],
+	"@id": "",
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

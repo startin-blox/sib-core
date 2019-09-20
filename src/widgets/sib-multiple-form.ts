@@ -14,7 +14,7 @@ export default class SIBMultipleForm extends BaseWidget {
   get removeLabel(): string | null {
     return this.hasAttribute('remove-label') ? this.getAttribute('remove-label') : '×';
   }
-  render(): void {
+  async render(){
     const fragment = document.createDocumentFragment();
     const label = document.createElement('label');
     label.textContent = this.label;
@@ -26,15 +26,16 @@ export default class SIBMultipleForm extends BaseWidget {
       this.insertWidget(this.childAttributes, this);
     });
     fragment.appendChild(addButton);
-    if (!this.value) return;
-    this.value.forEach(value => {
-      const elm = this.insertWidget(this.childAttributes, fragment);
-      if (elm) {
-        elm['value'] = value;
-        elm.toggleAttribute('data-holder', true);
+    if (this.value) {
+      for await (const resource of this.value['ldp:contains']) {
+        const elm = this.insertWidget(this.childAttributes, fragment);
+        if (elm) {
+          elm['value'] = resource;
+          elm.toggleAttribute('data-holder', true);
+        }
       }
-    });
-    while(this.firstChild) this.firstChild.remove()
+    }
+    while (this.firstChild) this.firstChild.remove();
     this.appendChild(fragment);
   }
   get childAttributes(): object {

@@ -11,19 +11,19 @@
 </head>
 
 <body>
-  <sib-widget name="sib-test-customer">
+  <sib-widget name="sib-test-profile">
     <template>
       <p><strong>${name}</strong></p>
       <p>
-        ${value.name} <br />
-        ${value.address}
+        ${await value.city} <br />
+        ${await value.phone}
       </p>
     </template>
   </sib-widget>
 
   <sib-widget name="sib-test-name">
     <template>
-      <h1>Project: ${value}</h1>
+      <h1>Name: ${value}</h1>
     </template>
   </sib-widget>
 
@@ -36,22 +36,22 @@
       </template>
 
       <template data-range>
-          <option value="${name}">role: ${name}</option>
+          <option value="${name}">skill: ${name}</option>
       </template>
     </sib-widget>
 
 
   <sib-display
-    data-src="data/project.jsonld"
-    fields="name, description, customer"
+    data-src="data/list/user-1.jsonld"
+    fields="name, profile"
     widget-name="sib-test-name"
-    widget-customer="sib-test-customer"
+    widget-profile="sib-test-profile"
     ></sib-display>
 
     <h2>Choose skills</h2>
     <sib-form
     fields="skills"
-    range-skills="data/skills.jsonld"
+    range-skills="data/list/skills.jsonld"
     widget-skills="sib-custom-dropdown"
     ></sib-form>
 </body>

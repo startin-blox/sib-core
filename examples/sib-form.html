@@ -14,7 +14,7 @@
     <details>
       <summary>Some fields:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/users/1/"
+        data-src="data/list/user-1.jsonld"
         fields="username, first_name, last_name, email"
         submit-button="Enregistrer l'utilisateur"
       ></sib-form>
@@ -22,16 +22,16 @@
 
     <details>
       <summary>All fields:</summary>
-      <sib-form data-src="https://api.test-paris.happy-dev.fr/users/1/"></sib-form>
+      <sib-form data-src="data/list/user-1.jsonld"></sib-form>
     </details>
 
     <details>
       <summary>Multiple value:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
+        data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="sib-form-multiple-value"
-        range-skills="data/skills.jsonld"
+        multiple-skills
+        range-skills="data/list/skills.jsonld"
       ></sib-form>
     </details>
 
@@ -39,40 +39,40 @@
       <summary>Form widgets:</summary>
       <sib-form
         data-src="data/project.jsonld"
-        fields="businessProvider, businessProviderFee, foaf:jabberID"
+        fields="businessProvider, businessProviderFee, jabberID"
         widget-businessProvider="sib-form-placeholder-text"
         widget-businessProviderFee="sib-form-number"
-        widget-foaf:jabberID="sib-form-hidden"
+        widget-jabberID="sib-form-hidden"
       ></sib-form>
-    </details>
+  </details>
 
     <details>
       <summary>Dropdown:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
-        fields="skills"
-        range-skills="data/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        range-contact="data/list/users.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Placeholder dropdown:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
-        fields="skills"
-        widget-skills="sib-form-placeholder-dropdown"
-        label-skills='select a skill:'
-        range-skills="data/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="sib-form-placeholder-dropdown"
+        label-contact='select a contact:'
+        range-contact="data/list/users.jsonld"
       ></sib-form>
     </details>
 
     <details>
       <summary>Multiple dropdown:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
+        data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="sib-form-multiple-dropdown"
-        range-skills="data/skills.jsonld"
+        multiple-skills="sib-multiple-select"
+        range-skills="data/list/skills.jsonld"
       ></sib-form>
     </details>
 
@@ -80,17 +80,17 @@
       <summary>Auto complete:</summary>
       <h2>Single skill</h2>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
-        fields="skills"
-        widget-skills="sib-form-auto-completion"
-        range-skills="data/skills.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="sib-form-auto-completion"
+        range-contact="data/list/users.jsonld"
       ></sib-form>
       <h2>Multiple skills</h2>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/members/1/"
+        data-src="data/list/user-1.jsonld"
         fields="skills"
         widget-skills="sib-form-auto-completion"
-        range-skills="data/skills.jsonld"
+        range-skills="data/list/skills.jsonld"
         multiple-skills="sib-multiple-select"
       ></sib-form>
     </details>
@@ -98,9 +98,9 @@
     <details>
       <summary>Date widget:</summary>
       <sib-form
-        data-src="https://api.test-paris.happy-dev.fr/job-offers/1/"
-        fields="creationDate"
-        widget-creationDate='sib-form-date'
+        data-src="data/list/event-1.jsonld"
+        fields="date"
+        widget-date='sib-form-date'
       ></sib-form>
     </details>
   </body>

@@ -27,8 +27,8 @@ export default class SIBFormFile extends BaseWidget {
     }
     this.setAttribute('upload-url', url);
   }
-  render() {
-    super.render();
+  async render() {
+    await super.render();
     this.input = this.querySelector('input[type="text"]') as HTMLInputElement;
     this.filePicker = this.querySelector(
       'input[type="file"]',
