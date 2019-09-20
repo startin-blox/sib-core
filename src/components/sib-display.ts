@@ -58,7 +58,7 @@ export const SibDisplay = {
   appendChildElt(resourceId: string, parent: Element): void {
     const child = document.createElement(this.childTag);
     child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.fields) child.setAttribute('fields', this.fields);
+    if (this.fields != null) child.setAttribute('fields', this.fields);
 
     for (let attr of this.element.attributes) {
       //copy widget and value attributes

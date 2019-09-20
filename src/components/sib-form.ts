@@ -100,8 +100,10 @@ export const SibForm = {
         // TODO : if partial form, store.patch
     } catch (e) {
       this.toggleLoaderHidden(true);
-      this.showError(e);
-      throw e;
+      if (e.error) { // if server error
+        this.showError(e);
+        throw e;
+      } // else, ldpframework error, we continue
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {

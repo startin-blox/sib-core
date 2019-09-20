@@ -80,8 +80,12 @@ export const SibMap = {
     return false;
   },
   async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+    if (!this.filtersAdded && this.searchFields) {
+      this.appendFilters();
+      return;
+    }
+    
     for await (let resource of resources) await this.appendChildElt(resource['@id']);
-
     this.reset();
 
     const nextProcessor = listPostProcessors.shift();
