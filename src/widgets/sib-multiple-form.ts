@@ -16,10 +16,7 @@ export default class SIBMultipleForm extends BaseWidget {
   }
   get value() {
     if (!this.dataHolder) return [];
-    return this.dataHolder.map(element => {
-      if (element instanceof HTMLInputElement && element.type == "checkbox") return element.checked;
-      return this.getValueHolder(element).value;
-    });
+    return this.dataHolder.map(element => element['value']);
   }
   set value(value) {
     this._value = value;
@@ -69,6 +66,7 @@ export default class SIBMultipleForm extends BaseWidget {
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
+    widget.toggleAttribute("data-holder");
     childWrapper.appendChild(widget);
 
     const removeButton = document.createElement('button');

@@ -44,12 +44,11 @@ export default class SIBMultipleSelect extends BaseWidget {
     // Override getter and setter of widget
     Reflect.defineProperty(widget, 'value', {
       get: function () {
-        const options = Array.from(document.querySelectorAll('select option'));
-        const selectedOptions = options.filter(el => el['selected']);
-        if (selectedOptions.length) {
-          return selectedOptions.map(el => el['value'] ? JSON.parse(el['value']) : null);
-        }
-        return options.length ? [] : (this._value || ''); // if options in DOM, return nothing selected. Else return original value
+        if (!this.dataHolder) return this._value || '';
+        const options = Array.from(this.getValueHolder(this.dataHolder[0]).querySelectorAll('option')) as HTMLOptionElement[];
+        const selectedOptions = options.filter(el => el.selected);
+        return selectedOptions.length ?
+          selectedOptions.map(el => el.value ? JSON.parse(el.value) : null) : [];
       },
       set: function (values) {
         (async () => {
