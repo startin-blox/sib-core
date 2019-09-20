@@ -14,6 +14,16 @@ export default class SIBMultipleForm extends BaseWidget {
   get removeLabel(): string | null {
     return this.hasAttribute('remove-label') ? this.getAttribute('remove-label') : '×';
   }
+  get value() {
+    if (!this.dataHolder) return [];
+    return this.dataHolder.map(element => {
+      if (element instanceof HTMLInputElement && element.type == "checkbox") return element.checked;
+      return this.getValueHolder(element).value;
+    });
+  }
+  set value(value) {
+    this._value = value;
+  }
   async render(){
     const fragment = document.createDocumentFragment();
     const label = document.createElement('label');
@@ -26,8 +36,8 @@ export default class SIBMultipleForm extends BaseWidget {
       this.insertWidget(this.childAttributes, this);
     });
     fragment.appendChild(addButton);
-    if (this.value) {
-      for await (const resource of this.value['ldp:contains']) {
+    if (this._value) {
+      for await (const resource of this._value['ldp:contains']) {
         const elm = this.insertWidget(this.childAttributes, fragment);
         if (elm) {
           elm['value'] = resource;

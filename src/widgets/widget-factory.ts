@@ -6,7 +6,7 @@ export class BaseWidget extends HTMLElement {
   private multiple: string | undefined;
   private editable: string | undefined;
   private resourceId: string | undefined;
-  private _value: any | undefined;
+  public _value: any | undefined;
   private _range: any | undefined;
   private _context: object | undefined;
 
@@ -130,7 +130,7 @@ export class BaseWidget extends HTMLElement {
     (async () => {
       await store.initGraph(range, this.context);
       this._range = store.get(range);
-      if (this._value && !(this.value.isContainer && await this.value.isContainer())) { // if value set and not a container
+      if (this._value && !(this._value.isContainer && await this._value.isContainer())) { // if value set and not a container
         this.value = `{"@id": "${this._value['@id']}"}`;
       }
       await this.render();
@@ -145,9 +145,9 @@ export class BaseWidget extends HTMLElement {
         element = store.get(element['@id']);
 
         let selected: boolean;
-        if (this.value && this.value.isContainer && this.value.isContainer()) { // selected options for multiple select
+        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
           selected = false;
-          for await (let value of this.value["ldp:contains"]) {
+          for await (let value of this._value["ldp:contains"]) {
             if (value['@id'] == element['@id']) {
               selected = true;
               break;
