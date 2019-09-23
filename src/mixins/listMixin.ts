@@ -1,16 +1,7 @@
-import { PaginateMixin } from './paginateMixin.js';
-import { FilterMixin } from './filterMixin.js';
-import { CounterMixin } from './counterMixin.js';
-import { grouperMixin } from './grouperMixin.js';
-
 const ListMixin = {
   name: 'list-mixin',
-  use: [ FilterMixin, PaginateMixin, CounterMixin, grouperMixin ],
+  use: [],
   attributes: {
-    orderBy: {
-      type: String,
-      default: null
-    },
     emptyWidget: {
       type: String,
       default: null
@@ -20,80 +11,50 @@ const ListMixin = {
       default: ''
     }
   },
-  created(): void {
-    this.resourcesFilters.push(
-      (resources: object[]) => this.orderCallback(resources),
-      (resources: object[]) => this.hightlightCallback(resources)
-    )
+  initialState: {
+    listPostProcessors: []
   },
-  hightlightCallback(resources: object[]): object[] {
-    for (let attr of this.element.attributes) {
-      if (attr.name.startsWith('highlight-')) {
-        const field = attr.name.split('highlight-')[1];
-        for (let [index, res] of resources.entries()) {
-          if (res[field] && res[field] == attr.value) {
-            // put the current element at the beginning of the array
-            resources.splice(0, 0, resources.splice(index, 1)[0]);
-          }
-        }
-      }
-    }
-    return resources
-  },
-  orderCallback(resources: object[]): object[] {
-    if(this.orderBy)
-      return resources.sort(this.sortValuesByKey(this.orderBy))
-    return resources
-  },
-  sortValuesByKey(key: string): Function {
-    return function(a: object, b: object): number {
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        // property doesn't exist on either object
-        return 0;
-      }
-      const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
-      let comparison = 0;
-      if (varA > varB) comparison = 1;
-      else if (varA < varB) comparison = -1;
-
-      return comparison
-    }
+  created() {
+    this.listPostProcessors = [];
   },
   appendSingleElt(parent: HTMLElement): void {
-    this.appendChildElt(this.resource, parent);
+    this.appendChildElt(this.resource['@id'], parent);
   },
-  populate(): void {
+  async populate(): Promise<void> {
     const div = this.div;
+    if (!this.resource) return;
 
-    if (!this.isContainer()) {
+    // Not a container but a single resource
+    if (!(await this.resource.isContainer())) {
       this.appendSingleElt(div);
       return;
     }
-    if (!this.filtersAdded && this.searchFields) {
-      this.appendFilters();
-      return;
+
+    const listPostProcessors = [...this.listPostProcessors];
+    listPostProcessors.push(this.renderDOM.bind(this));
+
+    // Execute the first post-processor of the list
+    const nextProcessor = listPostProcessors.shift();
+    await nextProcessor(this.resource['ldp:contains'], listPostProcessors, div, this.dataSrc);
+  },
+
+  async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+    // Create child components
+    let childrenAdded = 0;
+    for await (let resource of resources) {
+      this.appendChildElt(resource['@id'], div);
+      childrenAdded++;
     }
 
-    this.renderCounter(div);
-
-    if (this.groupBy) {
-      this.renderGroupedElements(div);
-      return;
-    }
-
-    this.renderPaginationNav(div);
-
-    if (this.resources.length === 0 && this.emptyWidget) {
+    // Nothing in list
+    if (!childrenAdded && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
-      this.div.appendChild(emptyWidgetElement);
-      return;
+      div.appendChild(emptyWidgetElement);
     }
 
-    for (let resource of this.currentPageResources) {
-      this.appendChildElt(resource, div);
-    }
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   }
 }
 

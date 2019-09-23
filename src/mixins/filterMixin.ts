@@ -1,10 +1,11 @@
+//@ts-ignore
+import asyncFilter from 'https://dev.jspm.io/iter-tools/es2018/async-filter';
 import { ComponentInterface } from "../libs/interfaces.js";
 
 const FilterMixin = {
   name: 'filter-mixin',
   use: [],
   initialState: {
-    filtersAdded: false
   },
   attributes: {
     searchFields: {
@@ -12,8 +13,8 @@ const FilterMixin = {
       default: null
     }
   },
-  created(): void {
-    this.resourcesFilters.push((resources: object[]) => this.filterCallback(resources))
+  attached(): void {
+    this.listPostProcessors.push(this.filterCallback.bind(this));
   },
   get searchForm(): ComponentInterface {
     return this.element.querySelector('sib-form');
@@ -25,15 +26,21 @@ const FilterMixin = {
     this.searchForm.component.value = filters;
     this.filterList();
   },
-  filterCallback(resources: object[]): object[] {
-    return resources.filter(this.matchFilters.bind(this));
+  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+    if (this.searchFields) {
+      if (!this.searchForm) await this.appendFilters();
+      resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
+    }
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
-  filterList(): void {
+  async filterList(): Promise<void> {
     if (!this.resource) return;
     this.empty();
-    this.populate();
+    await this.populate();
   },
-  matchValue(propertyValue, filterValue): boolean {
+  async matchValue(propertyValue, filterValue): Promise<boolean> {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
     if (JSON.stringify(filterValue).includes('""')) return true;
     if (propertyValue == null) return false;
@@ -50,21 +57,8 @@ const FilterMixin = {
     if (propertyValue.constructor === Object) {
       return Object.keys(filterValue).every(index => this.matchValue(propertyValue[index], filterValue[index]));
     }
-
-    if (typeof propertyValue === 'number') { //check if number
-      return propertyValue === Number(filterValue);
-    }
-    if (typeof propertyValue === 'boolean') { //check if boolean
-      const compareValue = (typeof filterValue === "boolean") ?
-        filterValue : (filterValue == "true");
-      return propertyValue === compareValue;
-    }
-    if (typeof propertyValue === 'string') { //search in strings
-      return (
-        propertyValue.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
-      );
-    }
-    return false;
+    const value = (await propertyValue).toString()
+    return value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     if (propertyValue == null) return false;
@@ -77,38 +71,39 @@ const FilterMixin = {
     return;
   },
   // TODO : to be moved in the store and mutualized with widgetMixin.getValue
-  applyFilterToResource(resource: object, filter: string) {
-    if (!Array.isArray(filter)) return resource[filter];
+  async applyFilterToResource(resource: object, filter: string) {
+    if (!Array.isArray(filter)) return await resource[filter];
     if (filter.length === 0) return;
-    if (filter.length === 1) return resource[filter[0]];
+    if (filter.length === 1) return await resource[filter[0]];
 
     let firstFilter = filter.shift();
-    return this.applyFilterToResource(resource[firstFilter], filter);
+    return this.applyFilterToResource(await resource[firstFilter], filter);
   },
-  matchFilter(resource: object, filter: string, value) {
+  async matchFilter(resource: object, filter: string, value: any): Promise<boolean> {
     if (!this.isSet(filter)) {
       return this.matchValue(this.applyFilterToResource(resource, filter),value);
     }
+    return false;
+    // TODO : handle sets
     // for sets, return true if it matches at least one of the fields
-    return this.getSet(filter).reduce(
-      (initial, field) => initial || this.matchFilter(resource, field, value),
-      false,
-    );
+    // return this.getSet(filter).reduce(
+    //   (initial, field) => initial || this.matchFilter(resource, field, value),
+    //   false,
+    // );
   },
-  matchFilters(resource: object): boolean {
+  async matchFilters(resource: object): Promise<boolean> {
     //return true if all filters values are contained in the corresponding field of the resource
     return Object.keys(this.filters).reduce(
-      (initial, filter) =>
-        initial && this.matchFilter(resource, filter, this.filters[filter]),
-      true,
+      async (initial, filter) =>
+        initial && await this.matchFilter(resource, filter, this.filters[filter]),
+      Promise.resolve(true)
     );
   },
-  appendFilters(): void {
+  async appendFilters(): Promise<void> {
     const searchForm = document.createElement('sib-form');
-    (<any>searchForm).component.resource = this.resource;
     searchForm.addEventListener('formChange', () => this.filterList())
     searchForm.toggleAttribute('naked', true);
-    searchForm.addEventListener('input', () => this.setCurrentPage(1));
+    // searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
@@ -122,14 +117,9 @@ const FilterMixin = {
       searchForm.setAttribute(name, value);
     });
 
-    if (this.element.shadowRoot)
-      this.element.shadowRoot.insertBefore(searchForm, this.shadowRoot.firstChild);
-    else this.element.insertBefore(searchForm, this.element.firstChild);
+    this.element.insertBefore(searchForm, this.element.firstChild);
 
-    setTimeout(() => {
-      this.filtersAdded = true;
-      this.filterList();
-    });
+    await (<any>searchForm).component.populate(); // TODO : handle this in search form
   }
 }
 

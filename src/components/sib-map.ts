@@ -1,8 +1,9 @@
 import { Sib } from '../libs/Sib.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
-import { LocationResourceInterface } from '../libs/interfaces.js';
 import { importCSS } from '../libs/helpers.js';
+import { store } from '../libs/store/store.js';
+
 //@ts-ignore
 import L from 'https://dev.jspm.io/leaflet';
 
@@ -59,11 +60,17 @@ export const SibMap = {
       );
     }
   },
-  appendChildElt(resource: LocationResourceInterface): void {
-    if (resource.lat && resource.lng) {
-      const marker = L.marker([resource.lat, resource.lng], {
+  async appendChildElt(resourceId: string) {
+    await store.initGraph(resourceId, this.context);
+    const resource = store.get(resourceId);
+    const lat = await resource['lat'];
+    const lng = await resource['lng'];
+
+    if (lat && lng) {
+      const marker = L.marker([lat.toString(), lng.toString()], {
         resource: resource,
       });
+
       marker.addTo(this.map).on('click', this.dispatchSelect.bind(this));
       this.markers.push(marker);
     }
@@ -75,15 +82,18 @@ export const SibMap = {
   isSet() {
     return false;
   },
-  populate(): void {
+  async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (!this.filtersAdded && this.searchFields) {
       this.appendFilters();
       return;
     }
 
-    for (let resource of this.resources) this.appendChildElt(resource);
+    for await (let resource of resources) await this.appendChildElt(resource['@id']);
     this.reset();
-  },
+
+    const nextProcessor = listPostProcessors.shift();
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+  }
 };
 
 Sib.register(SibMap);

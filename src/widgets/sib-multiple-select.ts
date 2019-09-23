@@ -10,7 +10,7 @@ export default class SIBMultipleSelect extends BaseWidget {
     if (this.firstChild) this.firstChild['range'] = range;
   }
 
-  render(): void {
+  async render() {
     if (!this.firstChild) this.insertWidget(this.attributes);
     if (this.firstChild) {
       if (this.label) this.firstChild['label'] = this.label;
@@ -44,24 +44,27 @@ export default class SIBMultipleSelect extends BaseWidget {
     // Override getter and setter of widget
     Reflect.defineProperty(widget, 'value', {
       get: function () {
-        if (this.querySelectorAll('select option:checked').length) {
-          const options = this.querySelectorAll('select option:checked') as NodeListOf<HTMLOptionElement>;
-          return Array.from(options).map(el => JSON.parse(el.value));
-        }
-        return this._value || '';
+        if (!this.dataHolder) return this._value || '';
+        const options = Array.from(this.getValueHolder(this.dataHolder[0]).querySelectorAll('option')) as HTMLOptionElement[];
+        const selectedOptions = options.filter(el => el.selected);
+        return selectedOptions.length ?
+          selectedOptions.map(el => el.value ? JSON.parse(el.value) : null) : [];
       },
       set: function (values) {
-        this._value = values
-        const selectElement = this.querySelector('select');
-        selectElement.querySelectorAll('option').forEach(element => element.selected = false); // unselect all options...
-        if (selectElement && values) {
-          values.forEach(value => { // ... and select only "values"
-            const selectedValue = value.hasOwnProperty('@id') ? value['@id'] : value;
-            const selectedElement = selectElement.querySelector(`option[value='{"@id": "${selectedValue}"}']`);
-            if (selectedElement) selectedElement.selected = true
-          });
-          selectElement.dispatchEvent(new Event('change')); // ... finally trigger change
-        }
+        (async () => {
+          this._value = values
+          const selectElement = this.querySelector('select');
+          if (!selectElement) return;
+          selectElement.querySelectorAll('option').forEach(element => element.selected = false); // unselect all options...
+          if (selectElement && values) {
+            for await (let value of values['ldp:contains']) {
+              const selectedValue = value['@id'];
+              const selectedElement = selectElement.querySelector(`option[value='{"@id": "${selectedValue}"}']`);
+              if (selectedElement) selectedElement.selected = true;
+            }
+            selectElement.dispatchEvent(new Event('change')); // ... finally trigger change
+          }
+        })();
       }
     });
 

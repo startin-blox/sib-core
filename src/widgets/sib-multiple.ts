@@ -1,23 +1,28 @@
 import { BaseWidget } from './widget-factory.js';
 import { defineComponent } from "../libs/helpers.js";
 export default class SIBMultiple extends BaseWidget {
-  render(): void {
-    while (this.firstChild) this.firstChild.remove();
+  async render() {
+    const fragment = document.createDocumentFragment();
     if (!this.value) return;
-    if (this.value.length && this.label) {
-      const label = document.createElement('label');
-      label.textContent = this.label;
-      this.appendChild(label);
-    }
+
+    const label = document.createElement('label');
+    label.textContent = this.label;
+    fragment.appendChild(label);
+
+    let i = 0;
     const parent = document.createElement('div');
-    this.value.forEach(value => {
+    for await (const resource of this.value['ldp:contains']) {
       const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
-        elm['value'] = value;
+        elm['value'] = resource;
         elm.toggleAttribute('data-holder', true);
       }
-    });
-    this.appendChild(parent);
+      i++;
+    }
+
+    if (i == 0) fragment.removeChild(label); // if nothing added, remove the label
+    while(this.firstChild) this.firstChild.remove()
+    this.appendChild(fragment);
   }
 
   get childAttributes(): object {

@@ -6,21 +6,22 @@ export class BaseWidget extends HTMLElement {
   private multiple: string | undefined;
   private editable: string | undefined;
   private resourceId: string | undefined;
-  private _value: any | undefined;
+  public _value: any | undefined;
   private _range: any | undefined;
+  private _context: object | undefined;
 
   connectedCallback(): void {
     this.render();
   }
-  render(): void {
-    this.innerHTML = evalTemplateString(this.template, {
+  async render() {
+    this.innerHTML = await evalTemplateString(this.template, {
       src: this.src,
       name: this.name,
       label: this.label,
       value: this.value,
       id: (this.value && this.value['@id']) || '',
       escapedValue: this.escapedValue,
-      range: this.htmlRange,
+      range: await this.htmlRange,
       multiple: this.multiple,
       editable: this.editable === '' ? true : false,
     });
@@ -45,11 +46,9 @@ export class BaseWidget extends HTMLElement {
   get value() {
     if (this.dataHolder) {
       let values = this.dataHolder.map(element => {
-        if(element instanceof HTMLInputElement && element.type == "checkbox") return element.checked
+        if (element instanceof HTMLInputElement && element.type == "checkbox") return element.checked;
         // if value is defined, push it in the array
-        return JSON.stringify(this.getValueHolder(element).value) !== '{}'
-          ? this.getValueHolder(element).value
-          : this._value || '';
+        return this.getValueHolder(element).value;
       });
       // If only one value, do not return an array
       return values.length === 1 ? values[0] : values;
@@ -118,39 +117,54 @@ export class BaseWidget extends HTMLElement {
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');
   }
+  set context(value) {
+    this._context = value;
+  }
+  get context() {
+    return this._context || {};
+  }
 
   get range(): any {
-    if (!this._range) return [];
-    if (!Array.isArray(this._range)) return [this._range];
-    return this._range;
+    return this._range ? this._range['ldp:contains'] : null;
   }
   set range(range) {
-    if (Array.isArray(range)) {
-      this._range = range;
-      this.render();
-      if (Array.isArray(this.value)) this.value = this.value;
-      else if (this._value) this.value = `{"@id": "${this._value['@id']}"}`;
-      return;
-    }
-    store.list(range).then(list => (this.range = list));
-  }
-  get htmlRange(): string {
-    if (!this.range.length) return '';
-    let htmlRange = '';
-    this.range.forEach(element => {
-      let selected: boolean;
-      if (Array.isArray(this.value)) {
-        selected = !!this.value.some((e) => e['@id'] == element['@id'])
-      } else {
-        selected = this.value == `{"@id": "${element['@id']}"}`
+    (async () => {
+      await store.initGraph(range, this.context);
+      this._range = store.get(range);
+      if (this._value && !(this._value.isContainer && await this._value.isContainer())) { // if value set and not a container
+        this.value = `{"@id": "${this._value['@id']}"}`;
       }
-      htmlRange += evalTemplateString(this.childTemplate, {
-        name: element.name,
-        id: element['@id'],
-        selected: selected
-      });
-    });
-    return htmlRange || '';
+      await this.render();
+    })();
+  }
+  get htmlRange(): Promise<string|undefined> {
+    return (async () => {
+      let htmlRange = '';
+      if (!this.range) return;
+      for await (let element of this.range) {
+        await store.initGraph(element['@id'], this.context); // fetch the resource
+        element = store.get(element['@id']);
+
+        let selected: boolean;
+        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
+          selected = false;
+          for await (let value of this._value["ldp:contains"]) {
+            if (value['@id'] == element['@id']) {
+              selected = true;
+              break;
+            }
+          }
+        } else { // selected options for simple dropdowns
+          selected = this._value == `{"@id": "${element['@id']}"}`;
+        }
+        htmlRange += await evalTemplateString(this.childTemplate, {
+          name: (await element.name).toString(),
+          id: element['@id'],
+          selected: selected
+        });
+      }
+      return htmlRange || '';
+    })();
   }
   getValueHolder(element) {
     return element.component ? element.component : element;
@@ -198,6 +212,7 @@ export class BaseWidget extends HTMLElement {
     if (!this.name) return;
     const resource = {};
     resource[this.name] = editableField.innerText;
+    resource['@context'] = this.context;
 
     if(this.resourceId && resource) store.patch(this.resourceId, resource)
   }
@@ -212,8 +227,8 @@ export const widgetFactory = (
   const registered = customElements.get(tagName);
   if (registered) return registered;
   const cls = class extends BaseWidget {
-    render() {
-      super.render();
+    async render() {
+      await super.render();
       if (callback) callback(this);
     }
     get template(): string {

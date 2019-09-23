@@ -4,6 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import Calendar from 'https://dev.jspm.io/tui-calendar';
+import { store } from '../libs/store/store.js';
 
 export const SibCalendar = {
   name: 'sib-calendar',
@@ -35,14 +36,19 @@ export const SibCalendar = {
       );
     }
   },
-  appendChildElt(resource): void {
-    if (resource.name && resource.date) {
+  async appendChildElt(resourceId: string) {
+    await store.initGraph(resourceId, this.context);
+    const resource = store.get(resourceId);
+    const date = await resource['date'];
+    const name = await resource['name'];
+
+    if (name && date) {
       this.calendar.createSchedules([
         {
           id: resource['@id'],
-          title: resource.name,
+          title: name.toString(),
           category: 'time',
-          start: resource.date,
+          start: date.toString(),
         },
       ]);
     }

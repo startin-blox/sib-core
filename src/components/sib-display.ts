@@ -2,10 +2,17 @@ import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
+import { PaginateMixin } from '../mixins/paginateMixin.js';
+import { FilterMixin } from '../mixins/filterMixin.js';
+import { CounterMixin } from '../mixins/counterMixin.js';
+import { SorterMixin } from '../mixins/sorterMixin.js';
+import { GrouperMixin } from '../mixins/grouperMixin.js';
+import { FederationMixin } from '../mixins/federationMixin.js';
+import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 
 export const SibDisplay = {
   name: 'sib-display',
-  use: [WidgetMixin, ListMixin, StoreMixin],
+  use: [ WidgetMixin, ListMixin, StoreMixin, PaginateMixin, GrouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
   attributes: {
     defaultWidget: {
       type: String,
@@ -51,9 +58,8 @@ export const SibDisplay = {
       }
     }
   },
-  appendChildElt(resource: Object, parent: Element): void {
+  appendChildElt(resourceId: string, parent: Element): void {
     const child = document.createElement(this.childTag);
-    child.component.resource = resource;
     child.addEventListener('click', this.dispatchSelect.bind(this));
     if (this.fields != null) child.setAttribute('fields', this.fields);
 
@@ -67,17 +73,19 @@ export const SibDisplay = {
         attr.name.startsWith('multiple-') ||
         attr.name.startsWith('editable-') ||
         attr.name.startsWith('action-') ||
-        attr.name.startsWith('default-')
+        attr.name.startsWith('default-') ||
+        attr.name == 'extra-context'
       )
         child.setAttribute(attr.name, attr.value);
       if (attr.name.startsWith('child-'))
         child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
     }
+    child.dataset.src = resourceId; // set id after the extra-context is
 
     parent.appendChild(child);
   },
   async appendSingleElt(parent: HTMLElement): Promise<void> {
-    for (let field of this.fieldsWidget) {
+    for (let field of await this.getFields()) {
       await this.appendWidget(field, parent);
     }
   }

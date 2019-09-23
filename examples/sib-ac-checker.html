@@ -16,18 +16,18 @@
 
     <div>
       <strong>1. Should not display</strong>
-      <sib-ac-checker permission="acl:View" data-src="./data/project.jsonld">
+      <sib-ac-checker permission="http://www.w3.org/ns/auth/acl#Read" data-src="data/project.jsonld">
         <sib-display
-          data-src="./data/project.jsonld"
+          data-src="data/project.jsonld"
           fields="name, description"
         ></sib-display>
       </sib-ac-checker>
     </div>
     <div>
         <strong>2. Should display</strong>
-        <sib-ac-checker no-permission="acl:View" data-src="./data/project.jsonld">
+        <sib-ac-checker no-permission="http://www.w3.org/ns/auth/acl#Read" data-src="data/project.jsonld">
           <sib-display
-            data-src="./data/project.jsonld"
+            data-src="data/project.jsonld"
             fields="name, description"
           ></sib-display>
         </sib-ac-checker>

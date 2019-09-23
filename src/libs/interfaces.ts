@@ -75,10 +75,3 @@ export interface LocationResourceInterface {
   lat?: HookInterface;
   lng?: HookInterface;
 }
-
-export interface ModePermissionInterface {
-  "@type": string
-}
-export interface PermissionInterface {
-  mode: ModePermissionInterface;
-};

@@ -1,0 +1,55 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "skill-1.jsonld",
+      "name": "HTML",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-2.jsonld",
+      "name": "CSS",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-3.jsonld",
+      "name": "Javascript",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-4.jsonld",
+      "name": "DevOps",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    }
+  ],
+  "permissions": [
+    { "mode": { "@type": "view" }},
+    { "mode": { "@type": "add" }}
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

@@ -1,0 +1,20 @@
+{
+  "@id": "profile-1.jsonld",
+  "jabberID": "admin@test-paris.happy-dev.fr",
+  "user": {
+    "@id": "user-1.jsonld"
+  },
+  "available": null,
+  "bio": "",
+  "city": "Paris",
+  "phone": "06-03-23-98-23",
+  "website": "www.startinblox.com",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

@@ -1,0 +1,11 @@
+{
+	"@id": "event-2.jsonld",
+	"name": "Workshop",
+	"date": "2019-05-10",
+	"seats": 2,
+	"contact": {
+		"@id": "user-2.jsonld"
+	},
+	"permissions": [],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

@@ -1,0 +1,11 @@
+{
+	"@id": "event-4.jsonld",
+	"name": "Assemblée générale",
+	"date": "2019-05-10",
+	"seats": 55,
+	"contact": {
+		"@id": "user-4.jsonld"
+	},
+	"permissions": [],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

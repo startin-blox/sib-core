@@ -42,7 +42,6 @@ export const SibForm = {
       setDeepProperty(values, name.split('.'), value);
     });
 
-    if (this.resource && !this.isContainer()) values['@id'] = this.resource['@id'];
     return values;
   },
   set value(value) {
@@ -61,6 +60,11 @@ export const SibForm = {
   },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
+  },
+  async getFormValue() {
+    let value = this.value;
+    if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
+    return value
   },
   getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
@@ -91,14 +95,16 @@ export const SibForm = {
   async save(): Promise<object> {
     this.toggleLoaderHidden(false);
     this.hideError();
-    const resource = this.value;
+    const resource = await this.getFormValue();
     resource['@context'] = this.context;
     let saved: object = {};
     try {
       if (this.partial == null) {
-        saved = await store.save(resource, this.resource['@id']);
+      saved = resource['@id'] ?
+        await store.put(resource, this.resourceId) :
+        await store.post(resource, this.resourceId);
       } else {
-        saved = await store.patch(this.resource['@id'], resource);
+        saved = await store.patch(this.resourceId, resource);
       }
     } catch (e) {
       this.toggleLoaderHidden(true);
@@ -117,10 +123,10 @@ export const SibForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    const isCreation = !('@id' in this.value);
+    const isCreation = !('@id' in (await this.getFormValue()));
     let id;
     try {
-      id = await this.save() || this.value['@id'];
+      id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return }
     if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
@@ -131,10 +137,8 @@ export const SibForm = {
       }),
     );
   },
-  inputChange(): void {
-    const resource = this.value; // TODO : fix this
-    if (!this.isContainer()) resource['@id'] = this.resource['@id'];
-    this.change(resource); // TODO : fix this
+  async inputChange(): Promise<void> {
+    this.change(await this.getFormValue());
   },
   createInput(type: string): HTMLInputElement {
     const input = document.createElement('input');
@@ -197,8 +201,9 @@ export const SibForm = {
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < this.fieldsWidget.length; i++) {
-      const field = this.fieldsWidget[i];
+    const fields = await this.getFields();
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
       await this.appendWidget(field, fragment);
     }
     while (form.firstChild) {

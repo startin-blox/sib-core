@@ -13,7 +13,7 @@
     <details>
       <summary>Set</summary>
       <sib-display
-        data-src="data/sib-display.jsonld"
+        data-src="data/list/users.jsonld"
         fields="@id, name(first_name, last_name, username), infos(email, profile.city)"
       ></sib-display>
     </details>
@@ -21,7 +21,7 @@
     <details>
       <summary>Nested set</summary>
       <sib-display
-        data-src="data/sib-display.jsonld"
+        data-src="data/list/users.jsonld"
         fields="@id, name(first_name, last_name, username, infos(email, profile.city))"
         widget-name="sib-set-ul"
       ></sib-display>
