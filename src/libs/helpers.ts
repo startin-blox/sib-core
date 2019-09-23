@@ -62,8 +62,6 @@ function relativeSource(source) {
 
 function loadScript(source: string) {
   source = relativeSource(source);
-  
-  if (!source) return;
   return new Promise(resolve => {
     var script = document.createElement('script');
     var head = document.querySelector('head');

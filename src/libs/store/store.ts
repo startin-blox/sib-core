@@ -4,10 +4,10 @@ import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
 import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
 import { loadScript } from '../helpers.js';
 
-const scriptsLoading = Promise.all([
-  loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js'),
-  loadScript('./solid-query-ldflex.bundle.js')
-]);
+const scriptsLoading = (async () => {
+  loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js');
+  loadScript('./solid-query-ldflex.bundle.js');
+})();
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
