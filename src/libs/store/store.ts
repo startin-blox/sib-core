@@ -190,6 +190,7 @@ class LDFlexGetter {
             case 'properties':
               return this.getProperties();
             case 'permissions':
+            case 'termType':
               return this.resource[property]
             case 'ldp:contains':
               return this.getAsyncIterable(property);

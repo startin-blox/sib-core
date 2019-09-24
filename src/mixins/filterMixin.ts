@@ -1,5 +1,9 @@
 //@ts-ignore
 import asyncFilter from 'https://dev.jspm.io/iter-tools/es2018/async-filter';
+//@ts-ignore
+import asyncReduce from 'https://dev.jspm.io/iter-tools/es2018/async-reduce';
+//@ts-ignore
+import asyncEvery from 'https://dev.jspm.io/iter-tools/es2018/async-every';
 import { ComponentInterface } from "../libs/interfaces.js";
 
 const FilterMixin = {
@@ -41,61 +45,65 @@ const FilterMixin = {
     await this.populate();
   },
   async matchValue(propertyValue, filterValue): Promise<boolean> {
-    if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue)
-    if (JSON.stringify(filterValue).includes('""')) return true;
-    if (propertyValue == null) return false;
-    if (propertyValue['ldp:contains']) {
-      return this.matchValue(propertyValue['ldp:contains'], filterValue);
-    }
-    if (Array.isArray(propertyValue)) {
-      return propertyValue.reduce(
-        (initial, value) => initial || this.matchValue(value, filterValue),
-        false,
+    if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
+    if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
+    if (propertyValue == null) return false; // property does not exist on resource
+    if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
+
+    // Filter on a container
+    if (propertyValue.termType && propertyValue.termType !== "Literal" && await propertyValue.isContainer()) {
+      return await asyncReduce(
+        Promise.resolve(false),
+        async (initial, value) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),
+        propertyValue['ldp:contains']
       );
     }
+
+    // Filter on a resource
     if (propertyValue['@id'] && propertyValue['@id'] === filterValue) return true;
-    if (propertyValue.constructor === Object) {
-      return Object.keys(filterValue).every(index => this.matchValue(propertyValue[index], filterValue[index]));
+
+    // Filter on a nested field
+    if (filterValue.constructor === Object) {
+      return await asyncEvery(
+        async (index) => await this.matchValue(await propertyValue[index], filterValue[index]),
+        Object.keys(filterValue)
+      );
     }
-    const value = (await propertyValue).toString()
-    return value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1
+
+    // Filter on a value
+    const value = propertyValue.toString();
+    return value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1;
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
-    if (propertyValue == null) return false;
+    const propertyValueString = propertyValue ? propertyValue.toString() : null;
+    if (!propertyValueString) return false;
 
-    if (typeof propertyValue === 'number' || typeof propertyValue === 'string') {
+    // Cast to number if possible
+    const propertyValueNumber = Number(propertyValueString);
+    propertyValue = !isNaN(propertyValueNumber) ? propertyValueNumber : propertyValueString;
+
+    if (typeof propertyValue == "string" || typeof propertyValue == "number") {
       return (filterValues[0] ? propertyValue >= filterValues[0] : true) &&
         (filterValues[1] ? propertyValue <= filterValues[1] : true)
     }
     console.warn(`Impossible to filter a ${typeof propertyValue} value with a range widget`)
     return;
   },
-  // TODO : to be moved in the store and mutualized with widgetMixin.getValue
-  async applyFilterToResource(resource: object, filter: string) {
-    if (!Array.isArray(filter)) return await resource[filter];
-    if (filter.length === 0) return;
-    if (filter.length === 1) return await resource[filter[0]];
-
-    let firstFilter = filter.shift();
-    return this.applyFilterToResource(await resource[firstFilter], filter);
-  },
   async matchFilter(resource: object, filter: string, value: any): Promise<boolean> {
     if (!this.isSet(filter)) {
-      return this.matchValue(this.applyFilterToResource(resource, filter),value);
+      return this.matchValue(await resource[filter],value);
     }
-    return false;
-    // TODO : handle sets
     // for sets, return true if it matches at least one of the fields
-    // return this.getSet(filter).reduce(
-    //   (initial, field) => initial || this.matchFilter(resource, field, value),
-    //   false,
-    // );
+    return this.getSet(filter).reduce(
+      async (initial, field) => await initial || await this.matchFilter(resource, field, value),
+      Promise.resolve(false),
+    );
   },
   async matchFilters(resource: object): Promise<boolean> {
     //return true if all filters values are contained in the corresponding field of the resource
     return Object.keys(this.filters).reduce(
       async (initial, filter) =>
-        initial && await this.matchFilter(resource, filter, this.filters[filter]),
+        await initial && await this.matchFilter(resource, filter, this.filters[filter]),
       Promise.resolve(true)
     );
   },
