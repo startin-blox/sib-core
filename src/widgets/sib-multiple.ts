@@ -19,6 +19,7 @@ export default class SIBMultiple extends BaseWidget {
       }
       i++;
     }
+    fragment.appendChild(parent);
 
     if (i == 0) fragment.removeChild(label); // if nothing added, remove the label
     while(this.firstChild) this.firstChild.remove()
