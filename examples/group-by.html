@@ -20,24 +20,17 @@
     </details>
 
     <details>
-      <summary>Group by  + custom widget</summary>
-        <sib-widget name="custom-group">
-          <template>
-            <h2 data-title></h2>
-            <strong data-content></strong>
-          </template>
-        </sib-widget>
-
+      <summary>Group by  + pagination</summary>
         <sib-display
           data-src="data/list/events.jsonld"
           fields="name, date"
           group-by="date"
-          group-by-widget="custom-group"
+          paginate-by="1"
         ></sib-display>
     </details>
 
     <style>
-      span{
+      span[data-title]{
         font-weight: bold;
         color: seagreen;
       }
