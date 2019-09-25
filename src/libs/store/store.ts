@@ -125,7 +125,7 @@ class LDFlexGetter {
     let value: any;
     while (true) {
       try {
-        value = await this.resource.resolve(path1.join('.'));
+        value = await this.resource.resolve(`["${path1.join('.')}"]`); // TODO: remove when https://github.com/solid/query-ldflex/issues/40 fixed
       } catch (e) { break }
 
       if (value !== undefined) break;
@@ -163,6 +163,14 @@ class LDFlexGetter {
     );
   }
 
+  // TODO : remove when https://github.com/solid/query-ldflex/issues/39 fixed
+  getProperties() {
+    return asyncMap(
+      (prop: string) => ContextParser.compactIri(prop, this.context, true),
+      this.resource.properties
+    );
+  }
+
   // Returns a Proxy which handles the different get requests
   async getProxy() {
     if (!this.proxy) {
@@ -175,6 +183,7 @@ class LDFlexGetter {
             case '@id':
               return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
             case 'properties':
+              return this.getProperties();
             case 'permissions':
               return this.resource[property]
             case 'ldp:contains':
