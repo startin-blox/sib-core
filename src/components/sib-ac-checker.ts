@@ -23,9 +23,9 @@ export const SibAcChecker = {
     let displayElement: boolean;
 
     if (this.permission) { // User has permission of ...
-      displayElement = await asyncSome((permission: object) => permission.toString() === this.permission, this.resource.permissions.mode.type)
+      displayElement = await asyncSome((permission: object) => permission.toString() === this.permission, this.resource.permissions.mode['rdf:type'])
     } else if (this.noPermission) { // User has no permission of ...
-      displayElement = await asyncEvery((permission: object) => permission.toString() !== this.permission, this.resource.permissions.mode.type)
+      displayElement = await asyncEvery((permission: object) => permission.toString() !== this.permission, this.resource.permissions.mode['rdf:type'])
     } else { // No parameter provided
       console.warn('sib-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
       return;

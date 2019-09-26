@@ -22,7 +22,10 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
-  email: 'http://happy-dev.fr/owl/#email',
+  email: 'http://happy-dev.fr/owl/#email', // TODO : workaround for https://github.com/solid/query-ldflex/issues/36
+  firstName: 'http://happy-dev.fr/owl/#first_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
+  lastName: 'http://happy-dev.fr/owl/#last_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
+  type: 'http://happy-dev.fr/owl/#type',  // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
 };
 
 export class Store {
@@ -147,7 +150,7 @@ class LDFlexGetter {
   }
 
   async isContainer() {
-    const type = await this.resource.type;
+    const type = await this.resource['rdf:type'];
     if (!type) return false;
     return this.getCompactedIri(type.toString()) == "ldp:Container"; // TODO : ldflex should return compacted field
   }
@@ -182,6 +185,8 @@ class LDFlexGetter {
           switch (property) {
             case '@id':
               return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
+            case '@type':
+              return this.resource['rdf:type']; // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
             case 'properties':
               return this.getProperties();
             case 'permissions':
