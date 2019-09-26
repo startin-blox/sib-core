@@ -117,7 +117,6 @@ const FilterMixin = {
     const searchForm = document.createElement('sib-form');
     searchForm.addEventListener('formChange', () => this.filterList(context))
     searchForm.toggleAttribute('naked', true);
-    // searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)

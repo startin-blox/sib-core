@@ -64,13 +64,12 @@ const ListMixin = {
     }
 
     const nextProcessor = listPostProcessors.shift();
-    console.log(nextProcessor);
     if (nextProcessor)
       await nextProcessor(
         resources,
         listPostProcessors,
         div,
-        context + Math.random(),
+        context
       );
   },
 };
