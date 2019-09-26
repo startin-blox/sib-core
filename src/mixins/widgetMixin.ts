@@ -170,13 +170,19 @@ const WidgetMixin = {
   },
 
   async createSet(field: string): Promise<void> {
-    const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
+    const widget = document.createElement(
+      this.element.getAttribute('widget-' + field) || this.defaultSetWidget,
+    );
     widget.setAttribute('name', field);
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;
+      const promises: Promise<Element>[] = [];
       for (let item of this.getSet(field)) {
-        parentNode.appendChild(await this.createWidget(item));
+        promises.push(this.createWidget(item));
       }
+      Promise.all(promises).then(elements =>
+        elements.forEach(element => parentNode.appendChild(element))
+      );
     });
     return widget;
   },

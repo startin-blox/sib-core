@@ -200,16 +200,16 @@ export const SibForm = {
     }
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
-    const fragment = document.createDocumentFragment();
-    const fields = await this.getFields();
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
-      fragment.appendChild(await this.createWidget(field));
+    const promises: Promise<Element>[] = [];
+    for (const field of await this.getFields()) {
+      promises.push(await this.createWidget(field));
     }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
     }
-    form.appendChild(fragment);
+    Promise.all(promises).then(elements =>
+      elements.forEach(element => form.appendChild(element)),
+    );
 
     if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');
