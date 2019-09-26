@@ -16,7 +16,7 @@
     "coverage": "jest --coverage",
     "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
     "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
-    "watch": "npm run build:dev -- --watch",
+    "watch": "npm run build:dev -- --watch --verbose",
     "check-types": "tsc",
     "serve": "node server.js"
   },
