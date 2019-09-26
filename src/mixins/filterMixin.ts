@@ -10,12 +10,16 @@ const FilterMixin = {
   name: 'filter-mixin',
   use: [],
   initialState: {
+    searchCount: [],
   },
   attributes: {
     searchFields: {
       type: String,
       default: null
     }
+  },
+  created() {
+    this.searchCount = [];
   },
   attached(): void {
     this.listPostProcessors.push(this.filterCallback.bind(this));
@@ -32,14 +36,16 @@ const FilterMixin = {
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.searchFields) {
-      if (!this.searchForm) await this.appendFilters();
+      if (!this.searchCount[context]) this.searchCount[context] = 1;
+      if (!this.searchForm) await this.appendFilters(context);
       resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount[context] || ''));
   },
-  async filterList(): Promise<void> {
+  async filterList(context: string): Promise<void> {
+    this.searchCount[context] ++;
     if (!this.resource) return;
     this.empty();
     await this.populate();
@@ -107,9 +113,9 @@ const FilterMixin = {
       Promise.resolve(true)
     );
   },
-  async appendFilters(): Promise<void> {
+  async appendFilters(context: string): Promise<void> {
     const searchForm = document.createElement('sib-form');
-    searchForm.addEventListener('formChange', () => this.filterList())
+    searchForm.addEventListener('formChange', () => this.filterList(context))
     searchForm.toggleAttribute('naked', true);
     // searchForm.addEventListener('input', () => this.setCurrentPage(1)); // TODO : handle dependency
 
