@@ -141,11 +141,10 @@ const WidgetMixin = {
 
     return attrs;
   },
-  async appendWidget(field: string, parent: HTMLElement): Promise<void> {
+  async createWidget(field: string): Promise<void> {
     if (!parent) parent = this.div;
     if (this.isSet(field)) {
-      await this.appendSet(field, parent);
-      return;
+      return this.createSet(field);
     }
 
     const attributes = await this.widgetAttributes(field);
@@ -161,7 +160,8 @@ const WidgetMixin = {
       widget[name] = attributes[name];
     }
 
-    this.widgets.push(parent.appendChild(widget));
+    this.widgets.push(widget);
+    return widget;
   },
   multiple(field: string): string | null {
     const attribute = 'multiple-' + field;
@@ -169,16 +169,16 @@ const WidgetMixin = {
     return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
   },
 
-  async appendSet(field: string, parent: Element): Promise<void> {
+  async createSet(field: string): Promise<void> {
     const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
     widget.setAttribute('name', field);
-    parent.appendChild(widget);
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;
       for (let item of this.getSet(field)) {
-        await this.appendWidget(item, parentNode);
+        parentNode.appendChild(await this.createWidget(item));
       }
-    })
+    });
+    return widget;
   },
   /**
    * Returns field name without starting "@"

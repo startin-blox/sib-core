@@ -86,7 +86,7 @@ export const SibDisplay = {
   },
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     for (let field of await this.getFields()) {
-      await this.appendWidget(field, parent);
+      parent.appendChild(await this.createWidget(field, parent));
     }
   }
 };

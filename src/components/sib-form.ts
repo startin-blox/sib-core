@@ -204,7 +204,7 @@ export const SibForm = {
     const fields = await this.getFields();
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i];
-      await this.appendWidget(field, fragment);
+      fragment.appendChild(await this.createWidget(field));
     }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
