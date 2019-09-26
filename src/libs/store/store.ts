@@ -75,7 +75,7 @@ export class Store {
     });
   }
 
-  patch(id: string, resource: object) {
+  patch(resource: object, id: string) {
     return fetch(id, {
       method: 'PATCH',
       headers: this.headers,
@@ -194,6 +194,8 @@ class LDFlexGetter {
               return this.resource[property]
             case 'ldp:contains':
               return this.getAsyncIterable(property);
+            case 'then':
+              return;
             default:
               return resource.get(property);
           }

@@ -104,7 +104,7 @@ export const SibForm = {
         await store.put(resource, this.resourceId) :
         await store.post(resource, this.resourceId);
       } else {
-        saved = await store.patch(this.resourceId, resource);
+        saved = await store.patch(resource, this.resourceId);
       }
     } catch (e) {
       this.toggleLoaderHidden(true);

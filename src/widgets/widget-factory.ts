@@ -214,7 +214,7 @@ export class BaseWidget extends HTMLElement {
     resource[this.name] = editableField.innerText;
     resource['@context'] = this.context;
 
-    if(this.resourceId && resource) store.patch(this.resourceId, resource)
+    if(this.resourceId && resource) store.patch(resource, this.resourceId)
   }
 }
 
