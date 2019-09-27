@@ -131,8 +131,6 @@ const FilterMixin = {
     });
 
     this.element.insertBefore(searchForm, this.element.firstChild);
-
-    await (<any>searchForm).component.populate(); // TODO : handle this in search form
   }
 }
 
