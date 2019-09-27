@@ -202,7 +202,7 @@ export const SibForm = {
 
     const promises: Promise<Element>[] = [];
     for (const field of await this.getFields()) {
-      promises.push(await this.createWidget(field));
+      promises.push(this.createWidget(field));
     }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
