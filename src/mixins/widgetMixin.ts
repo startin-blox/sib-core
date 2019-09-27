@@ -169,20 +169,20 @@ const WidgetMixin = {
     return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
   },
 
-  async createSet(field: string): Promise<void> {
+  async createSet(field: string): Promise<Element> {
     const widget = document.createElement(
       this.element.getAttribute('widget-' + field) || this.defaultSetWidget,
     );
     widget.setAttribute('name', field);
     setTimeout(async () => {
-      const parentNode = widget.querySelector('[data-content]') || widget;
       const promises: Promise<Element>[] = [];
       for (let item of this.getSet(field)) {
         promises.push(this.createWidget(item));
       }
-      Promise.all(promises).then(elements =>
+      Promise.all(promises).then(elements => {
+        const parentNode = widget.querySelector('[data-content]') || widget;
         elements.forEach(element => parentNode.appendChild(element))
-      );
+      });
     });
     return widget;
   },
