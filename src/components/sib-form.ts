@@ -8,6 +8,10 @@ export const SibForm = {
   name: 'sib-form',
   use: [WidgetMixin, StoreMixin],
   attributes: {
+    defaultWidget: {
+      type: String,
+      default: 'sib-form-label-text'
+    },
     naked: {
       type: String,
       default: null
@@ -15,12 +19,13 @@ export const SibForm = {
     submitButton: {
       type: String,
       default: null
+    },
+    partial: {
+      type: Boolean,
+      default: null
     }
   },
   initialState: {
-  },
-  get defaultWidget(): string {
-    return 'sib-form-label-text';
   },
   get defaultMultipleWidget(): string {
     return 'sib-multiple-form';
@@ -94,14 +99,19 @@ export const SibForm = {
     resource['@context'] = this.context;
     let saved: object = {};
     try {
+      if (this.partial == null) {
       saved = resource['@id'] ?
         await store.put(resource, this.resourceId) :
         await store.post(resource, this.resourceId);
-        // TODO : if partial form, store.patch
+      } else {
+        saved = await store.patch(resource, this.resourceId);
+      }
     } catch (e) {
       this.toggleLoaderHidden(true);
-      this.showError(e);
-      throw e;
+      if (e.error) { // if server error
+        this.showError(e);
+        throw e;
+      } // else, ldpframework error, we continue
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {
@@ -190,16 +200,16 @@ export const SibForm = {
     }
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
-    const fragment = document.createDocumentFragment();
-    const fields = await this.getFields();
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
-      await this.appendWidget(field, fragment);
+    const promises: Promise<Element>[] = [];
+    for (const field of await this.getFields()) {
+      promises.push(this.createWidget(field));
     }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
     }
-    form.appendChild(fragment);
+    await Promise.all(promises).then(elements =>
+      elements.forEach(element => form.appendChild(element)),
+    );
 
     if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');

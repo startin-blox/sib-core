@@ -11,10 +11,12 @@
     <my-custom-element
       data-title="test"
       data-content="test"
+      data-more="more content"
     ></my-custom-element>
 
     <my-custom-element
       data-content="test 2"
+      data-more="more content"
     ></my-custom-element>
 
     <script type="module">
@@ -29,11 +31,12 @@
           content: 'data-content',
         };
         }
-        template({ title, content }) {
+        template({ title, content, dataMore }) {
           return `
             <div>
               <h1>${title}</h1>
               <p>${content}</p>
+              <b>${dataMore}</b>
             </div>
           `;
         }

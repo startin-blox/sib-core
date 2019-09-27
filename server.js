@@ -9,6 +9,7 @@ const app = express();
 (async () => {
   const server = app
     .use(express.static(distPath))
+    .get('/favicon.ico', (req, rep) => rep.send())
     .post('/upload', (req, rep) => {
       const originalUrl = url.format({
         protocol: req.protocol,
@@ -21,8 +22,10 @@ const app = express();
     .get(/^\/upload\/.+/, (req, rep) => {
       rep.sendFile(resolve('./fake-image.svg'));
     })
-    .listen((await port)[0]);
-  console.log(address(server.address()));
+    .listen((await port)[0], '0.0.0.0');
+  server.on('listening', () => {
+    console.log(address(server.address()));
+  });
 })();
 
 function address(address) {

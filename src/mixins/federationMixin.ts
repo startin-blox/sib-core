@@ -17,7 +17,7 @@ const FederationMixin = {
   async fetchSources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     const resourcesCopy = await asyncToArray(resources); // create an array
     for await (let res of resources) { // TODO : test with different response timings
-      let type = await res['type'];
+      let type = await res['@type'];
       if (type && type.toString() == "http://www.w3.org/ns/ldp#Container") {
         const containerId = res['@id'];
         resources = asyncChain(resources, await this.fetchSource(containerId)); // Add content of sources to array...

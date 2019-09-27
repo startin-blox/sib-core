@@ -6,7 +6,7 @@ export class BaseWidget extends HTMLElement {
   private multiple: string | undefined;
   private editable: string | undefined;
   private resourceId: string | undefined;
-  private _value: any | undefined;
+  public _value: any | undefined;
   private _range: any | undefined;
   private _context: object | undefined;
 
@@ -27,6 +27,7 @@ export class BaseWidget extends HTMLElement {
     });
 
     this.addEditButtons();
+    this.initChangeEvents();
   }
   get label(): string | null {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
@@ -130,7 +131,7 @@ export class BaseWidget extends HTMLElement {
     (async () => {
       await store.initGraph(range, this.context);
       this._range = store.get(range);
-      if (this._value && !(this.value.isContainer && await this.value.isContainer())) { // if value set and not a container
+      if (this._value && !(this._value.isContainer && await this._value.isContainer())) { // if value set and not a container
         this.value = `{"@id": "${this._value['@id']}"}`;
       }
       await this.render();
@@ -145,9 +146,9 @@ export class BaseWidget extends HTMLElement {
         element = store.get(element['@id']);
 
         let selected: boolean;
-        if (this.value && this.value.isContainer && this.value.isContainer()) { // selected options for multiple select
+        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
           selected = false;
-          for await (let value of this.value["ldp:contains"]) {
+          for await (let value of this._value["ldp:contains"]) {
             if (value['@id'] == element['@id']) {
               selected = true;
               break;
@@ -189,6 +190,21 @@ export class BaseWidget extends HTMLElement {
     editableField.focus();
     editButton.setAttribute("disabled", "disabled");
   }
+  /**
+   * Dispatch change events of data holders from the current widget
+   */
+  initChangeEvents(): void {
+    if (this.dataHolder) {
+      const event = new Event('change', { bubbles: true });
+      this.dataHolder.forEach(element => {
+        element.addEventListener('change', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.dispatchEvent(event);
+        });
+      });
+    }
+  }
   save(editableField: HTMLElement, editButton: HTMLButtonElement): void {
     editableField.setAttribute('contenteditable', 'false');
     editButton.removeAttribute("disabled");
@@ -198,7 +214,7 @@ export class BaseWidget extends HTMLElement {
     resource[this.name] = editableField.innerText;
     resource['@context'] = this.context;
 
-    if(this.resourceId && resource) store.patch(this.resourceId, resource)
+    if(this.resourceId && resource) store.patch(resource, this.resourceId)
   }
 }
 

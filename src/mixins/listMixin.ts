@@ -4,15 +4,15 @@ const ListMixin = {
   attributes: {
     emptyWidget: {
       type: String,
-      default: null
+      default: null,
     },
     emptyValue: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   initialState: {
-    listPostProcessors: []
+    listPostProcessors: [],
   },
   created() {
     this.listPostProcessors = [];
@@ -35,10 +35,20 @@ const ListMixin = {
 
     // Execute the first post-processor of the list
     const nextProcessor = listPostProcessors.shift();
-    await nextProcessor(this.resource['ldp:contains'], listPostProcessors, div, this.dataSrc);
+    await nextProcessor(
+      this.resource['ldp:contains'],
+      listPostProcessors,
+      div,
+      this.dataSrc,
+    );
   },
 
-  async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async renderDOM(
+    resources: object[],
+    listPostProcessors: Function[],
+    div: HTMLElement,
+    context: string,
+  ) {
     // Create child components
     let childrenAdded = 0;
     for await (let resource of resources) {
@@ -54,10 +64,14 @@ const ListMixin = {
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
-  }
-}
+    if (nextProcessor)
+      await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context
+      );
+  },
+};
 
-export {
-  ListMixin
-}
+export { ListMixin };

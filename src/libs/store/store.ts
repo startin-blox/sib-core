@@ -4,10 +4,10 @@ import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
 import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
 import { loadScript } from '../helpers.js';
 
-const scriptsLoading = Promise.all([
-  loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js'),
-  loadScript('./solid-query-ldflex.bundle.js')
-]);
+const scriptsLoading = (async () => {
+  await loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js');
+  await loadScript('./solid-query-ldflex.bundle.js');
+})();
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -22,7 +22,10 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
-  email: 'http://happy-dev.fr/owl/#email',
+  email: 'http://happy-dev.fr/owl/#email', // TODO : workaround for https://github.com/solid/query-ldflex/issues/36
+  firstName: 'http://happy-dev.fr/owl/#first_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
+  lastName: 'http://happy-dev.fr/owl/#last_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
+  type: 'http://happy-dev.fr/owl/#type',  // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
 };
 
 export class Store {
@@ -72,7 +75,7 @@ export class Store {
     });
   }
 
-  patch(id: string, resource: object) {
+  patch(resource: object, id: string) {
     return fetch(id, {
       method: 'PATCH',
       headers: this.headers,
@@ -125,7 +128,7 @@ class LDFlexGetter {
     let value: any;
     while (true) {
       try {
-        value = await this.resource.resolve(path1.join('.'));
+        value = await this.resource.resolve(`["${path1.join('.')}"]`); // TODO: remove when https://github.com/solid/query-ldflex/issues/40 fixed
       } catch (e) { break }
 
       if (value !== undefined) break;
@@ -147,7 +150,7 @@ class LDFlexGetter {
   }
 
   async isContainer() {
-    const type = await this.resource.type;
+    const type = await this.resource['rdf:type'];
     if (!type) return false;
     return this.getCompactedIri(type.toString()) == "ldp:Container"; // TODO : ldflex should return compacted field
   }
@@ -163,6 +166,14 @@ class LDFlexGetter {
     );
   }
 
+  // TODO : remove when https://github.com/solid/query-ldflex/issues/39 fixed
+  getProperties() {
+    return asyncMap(
+      (prop: string) => ContextParser.compactIri(prop, this.context, true),
+      this.resource.properties
+    );
+  }
+
   // Returns a Proxy which handles the different get requests
   async getProxy() {
     if (!this.proxy) {
@@ -174,11 +185,17 @@ class LDFlexGetter {
           switch (property) {
             case '@id':
               return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
+            case '@type':
+              return this.resource['rdf:type']; // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
             case 'properties':
+              return this.getProperties();
             case 'permissions':
+            case 'termType':
               return this.resource[property]
             case 'ldp:contains':
               return this.getAsyncIterable(property);
+            case 'then':
+              return;
             default:
               return resource.get(property);
           }

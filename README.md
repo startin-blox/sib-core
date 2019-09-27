@@ -48,12 +48,17 @@ Filters and searching capabilities can be easily added to interact with the list
   If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
 - **`value-xyz`**: To display a string not contained within the data.
 - **`fields`**: The ordered list of fields to be displayed, separated by commas.
+
   By default, all the fields of the resource are displayed.
+
   To not show any fields, put an empty fields (eg. `<sib-display fields />)`
-  To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`, enclose some fields in parenthesis. For example: `fields="xyz(first_name, last_name), email"`
+
+  To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`, enclose some fields in parenthesis. For example: `fields="xyz(first_name, last_name), email"`. You can customize the group widget, see the **[sets widgets](#set-widgets)** section below for more info.
+
   By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
-- **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **Widgets** section below for more info.
-- **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used.
+- **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **[Display widgets](#display-widgets)** section below for more info.
+- **`default-widget`**: The widget to use for all the fields, except if a specific one is defined for a field.
+- **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used. Cf the **[Multiple widgets](#multiple-widgets)** section below for more info.
   - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
   - **`each-class-xyz`**: Used with `multiple-xyz`, class of each child of multiple widget
   - **`each-range-xyz`**: Used with `multiple-xyz`, range value of each child of multiple widget
@@ -115,6 +120,7 @@ If given the URL of a container of ressources, and displays a creation form to a
 - **`submit-button`**: Text of the submit button of the form.
 - **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
   It's particularly useful with a dropdown field.
+- **`partial`**: Add this attribute when the form does not include all the fields of the resource to update.
 
 ### `sib-ac-checker`
 
@@ -130,11 +136,14 @@ Hides an element from the page if the current user doesn't have the required per
 
 **Attributes :**
 
-- **`permission`**: Can take the following values :
-  - [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
-  - [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
-  - [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
-  - [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
+- **`permission`**: Displays the element if the user has the specified right
+- **`no-permission`**: Displays the element if the user has not the specified right
+
+Possible values:
+- [acl:Read](https://github.com/solid/web-access-control-spec#aclread)
+- [acl:Write](https://github.com/solid/web-access-control-spec#aclwrite)
+- [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
+- [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
 
 ### `sib-calendar`
 
@@ -207,7 +216,7 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 
 The following widgets are available:
 
-### Display
+### Display widgets
 
 - **`sib-display-value`** (default): Displays the value.
 - **`sib-display-div`**: Displays the `value` inside a `<div>` HTML tag.
@@ -215,11 +224,11 @@ The following widgets are available:
 - **`sib-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
 - **`sib-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
 - **`sib-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
-- **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path
+- **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path. If a label is defined for this field, it's displayed as the content of the link.
 - **`sib-display-tel`**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
 - **`sib-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
 
-### Form
+### Form widgets
 
 - **`sib-form-label-text`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag.
 - **`sib-form-checkbox`**: Inserts an `<input/>` HTML tag of type "checkbox", in a `<label>` HTML tag.
@@ -236,13 +245,19 @@ The following widgets are available:
 - **`sib-form-file`**: Inserts an `<input/>` and an `<input type="file"/>`. when a file is selected it's uploaded, URL of file is returned by request and set as the `<input/>` value. The upload URL is provided via the `upload-url` attribute.
 - **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
-### Set
+### Multiple widgets
+
+- **`sib-multiple`** (default for display): Inserts all the widgets in a `<sib-multiple>` tag.
+- **`sib-multiple-form`** (default for forms): Inserts all the widgets in a `<sib-multiple-form>` tag, with a "remove" button for each widget, and an "add" button.
+- **`sib-multiple-select`**: Inserts all the values as `<option>` in a `<select>` tag with a `multiple` attribute.
+
+### Set widgets
 - **`sib-set-default`** (default): Inserts content directly in the set tag.
 - **`sib-set-div`**: Inserts content in a `<div/>` HTML tag
 - **`sib-set-ul`**: Inserts content in a `<ul/>` HTML tag
 - **`sib-set-fieldset`**: Inserts content in a `<fieldset/>` HTML tag
 
-### Actions
+### Actions widgets
 
 - **`sib-action`**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
 
@@ -270,3 +285,4 @@ If you want to contribute to `sib-core`, you may be interested by the [developer
 ## License
 
 Licence MIT
+

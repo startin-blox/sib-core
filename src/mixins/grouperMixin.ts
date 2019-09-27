@@ -34,15 +34,19 @@ const GrouperMixin = {
     }
   },
   renderGroup(groupName: string, div: HTMLElement) {
-    const groupDiv = document.createElement(this.groupByWidget);
-    div.appendChild(groupDiv);
+    // TODO: make it work with widgets
+    const groupElement = document.createElement("div");
+    const titleElement = document.createElement("span");
+    const contentElement = document.createElement("div");
+    titleElement.toggleAttribute('data-title');
+    contentElement.toggleAttribute('data-content');
 
-    if (!groupDiv.querySelector('[data-content]') || !groupDiv.querySelector('[data-title]')) {
-      throw new Error(`The group widgets must have one element with a data-title attribute, and one element with a data-content attribute to display datas.`);
-    }
+    groupElement.appendChild(titleElement);
+    groupElement.appendChild(contentElement);
+    div.appendChild(groupElement);
 
-    groupDiv.querySelector('[data-title]').textContent = groupName;
-    return groupDiv.querySelector('[data-content]');
+    titleElement.textContent = groupName;
+    return contentElement;
   }
 }
 

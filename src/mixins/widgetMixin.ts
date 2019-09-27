@@ -48,7 +48,7 @@ const WidgetMixin = {
 
     let fields: string[] = [];
     for await (const prop of resource.properties) {
-      if(!prop.startsWith('@')) fields.push(prop)
+      if (!prop.startsWith('@')) fields.push(prop);
     }
     return fields;
   },
@@ -79,8 +79,9 @@ const WidgetMixin = {
     return this.resource && !(await this.resource.isContainer()) ? await resource[field] : undefined;
   },
   async getValue(field: string) {
-    if (this.getAction(field)) {
-      return this.getAction(field);
+    const escapedField = this.getEscapedField(field);
+    if (this.getAction(escapedField)) {
+      return this.getAction(escapedField);
     }
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
@@ -115,49 +116,52 @@ const WidgetMixin = {
     const attrs = {
       name: field,
     };
+    const escapedField = this.getEscapedField(field);
     for (let attr of ['range', 'label', 'class']) {
-      const value = this.element.getAttribute(`each-${attr}-${field}`);
+      const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
     for (let attr of ['range', 'label', 'class', 'widget', 'editable', 'upload-url']) {
-      const value = this.element.getAttribute(`${attr}-${field}`);
+      const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
+      if(attr === 'upload-url') attr = 'uploadURL';
       attrs[attr] = value;
     }
     for (let attr of ['add-label', 'remove-label']) {
-      const value = this.element.getAttribute(`multiple-${field}-${attr}`);
+      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
       if (value == null) continue;
       attrs[attr] = value;
     }
-    if (this.getAction(field) && this.resource) attrs['src'] = this.resource['@id'];
+    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['value'] = await this.getValue(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
     attrs['context'] = this.context;
 
     return attrs;
   },
-  async appendWidget(field: string, parent: HTMLElement): Promise<void> {
+  async createWidget(field: string): Promise<void> {
     if (!parent) parent = this.div;
     if (this.isSet(field)) {
-      await this.appendSet(field, parent);
-      return;
+      return this.createSet(field);
     }
 
     const attributes = await this.widgetAttributes(field);
 
-    const tagName = this.multiple(field) || this.getWidget(field);
+    const escapedField = this.getEscapedField(field);
+    const tagName = this.multiple(escapedField) || this.getWidget(escapedField);
     const widget = document.createElement(tagName);
-    if (this.multiple(field)) {
-      widget.setAttribute('widget', this.getWidget(field));
+    if (this.multiple(escapedField)) {
+      widget.setAttribute('widget', this.getWidget(escapedField));
     }
 
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
 
-    this.widgets.push(parent.appendChild(widget));
+    this.widgets.push(widget);
+    return widget;
   },
   multiple(field: string): string | null {
     const attribute = 'multiple-' + field;
@@ -165,16 +169,29 @@ const WidgetMixin = {
     return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
   },
 
-  async appendSet(field: string, parent: Element): Promise<void> {
-    const widget = document.createElement(this.element.getAttribute('widget-' + field) || this.defaultSetWidget);
+  async createSet(field: string): Promise<Element> {
+    const widget = document.createElement(
+      this.element.getAttribute('widget-' + field) || this.defaultSetWidget,
+    );
     widget.setAttribute('name', field);
-    parent.appendChild(widget);
     setTimeout(async () => {
-      const parentNode = widget.querySelector('[data-content]') || widget;
+      const promises: Promise<Element>[] = [];
       for (let item of this.getSet(field)) {
-        await this.appendWidget(item, parentNode);
+        promises.push(this.createWidget(item));
       }
-    })
+      Promise.all(promises).then(elements => {
+        const parentNode = widget.querySelector('[data-content]') || widget;
+        elements.forEach(element => parentNode.appendChild(element))
+      });
+    });
+    return widget;
+  },
+  /**
+   * Returns field name without starting "@"
+   * @param field
+   */
+  getEscapedField(field: string): string {
+    return field.startsWith('@') ? field.slice(1, field.length) : field;
   }
 }
 

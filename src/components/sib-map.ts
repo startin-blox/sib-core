@@ -37,9 +37,12 @@ export const SibMap = {
     }
   },
   reset() {
+    this.map.invalidateSize();
+
     if (this.markers.length) {
-      this.map.invalidateSize();
-      this.map.fitBounds(L.featureGroup(this.markers).getBounds());
+      this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
+    } else {
+      this.map.fitWorld(); // ... or on the world if not
     }
   },
   dispatchSelect(event: CustomEvent): void {
@@ -80,8 +83,12 @@ export const SibMap = {
     return false;
   },
   async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
-    for await (let resource of resources) await this.appendChildElt(resource['@id']);
+    if (!this.filtersAdded && this.searchFields) {
+      this.appendFilters();
+      return;
+    }
 
+    for await (let resource of resources) await this.appendChildElt(resource['@id']);
     this.reset();
 
     const nextProcessor = listPostProcessors.shift();

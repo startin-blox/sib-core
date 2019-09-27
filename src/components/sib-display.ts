@@ -13,6 +13,12 @@ import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 export const SibDisplay = {
   name: 'sib-display',
   use: [ WidgetMixin, ListMixin, StoreMixin, PaginateMixin, GrouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
+  attributes: {
+    defaultWidget: {
+      type: String,
+      default: 'sib-display-value'
+    },
+  },
   created(): void {
     window.addEventListener('navigate', ((event: CustomEvent) => {
       if (this.resource == null) return;
@@ -27,9 +33,6 @@ export const SibDisplay = {
   },
   get childTag(): string {
     return this.element.dataset.child || this.element.tagName;
-  },
-  get defaultWidget(): string {
-    return 'sib-display-value';
   },
   get defaultMultipleWidget(): string {
     return 'sib-multiple';
@@ -58,7 +61,7 @@ export const SibDisplay = {
   appendChildElt(resourceId: string, parent: Element): void {
     const child = document.createElement(this.childTag);
     child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.fields) child.setAttribute('fields', this.fields);
+    if (this.fields != null) child.setAttribute('fields', this.fields);
 
     for (let attr of this.element.attributes) {
       //copy widget and value attributes
@@ -82,9 +85,13 @@ export const SibDisplay = {
     parent.appendChild(child);
   },
   async appendSingleElt(parent: HTMLElement): Promise<void> {
-    for (let field of await this.getFields()) {
-      await this.appendWidget(field, parent);
+    const promises: Promise<Element>[] = [];
+    for (const field of await this.getFields()) {
+      promises.push(this.createWidget(field));
     }
+    Promise.all(promises).then(elements =>
+      elements.forEach(element => parent.appendChild(element))
+    );
   }
 };
 

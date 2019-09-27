@@ -1,4 +1,5 @@
 import { widgetFactory } from './widget-factory.js';
+import "https://unpkg.com/autolinker/dist/Autolinker.min.js";
 
 const SIBDisplayValue = widgetFactory(
   'sib-display-value',
@@ -38,7 +39,7 @@ const SIBDisplayImg = widgetFactory(
 
 const SIBDisplayMailTo = widgetFactory(
   'sib-display-mailto',
-  `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${value}</a>
+  `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${label != name ? label : value}</a>
 `,
 );
 
@@ -76,6 +77,14 @@ const SIBAction = widgetFactory(
   >\${label}</sib-link>`,
 );
 
+const SIBDisplayAutolink = widgetFactory(
+  'sib-display-autolink',
+  `\${value}`,
+  '',
+  content => {
+    content.innerHTML = Autolinker.link(content.textContent);
+  },
+);
 
 export {
   SIBDisplayValue,
@@ -89,4 +98,5 @@ export {
   SIBDisplayLink,
   SIBDisplayBlankLink,
   SIBAction,
+  SIBDisplayAutolink
 };

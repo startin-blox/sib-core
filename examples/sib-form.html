@@ -15,7 +15,7 @@
       <summary>Some fields:</summary>
       <sib-form
         data-src="data/list/user-1.jsonld"
-        fields="username, first_name, last_name, email"
+        fields="username, firstName, lastName, email"
         submit-button="Enregistrer l'utilisateur"
       ></sib-form>
     </details>
@@ -32,6 +32,15 @@
         fields="skills"
         multiple-skills
         range-skills="data/list/skills.jsonld"
+      ></sib-form>
+    </details>
+
+    <details>
+      <summary>Default widget:</summary>
+      <sib-form
+        data-src="data/project.jsonld"
+        fields="businessProvider, businessProviderFee, jabberID"
+        default-widget="sib-form-placeholder-text"
       ></sib-form>
     </details>
 

@@ -46,7 +46,6 @@
   },
   "@type": "doap:project",
   "permissions": [
-    { "mode": { "@type": "view" } },
     { "mode": { "@type": "change" } },
     { "mode": { "@type": "control" } },
     { "mode": { "@type": "delete" } }

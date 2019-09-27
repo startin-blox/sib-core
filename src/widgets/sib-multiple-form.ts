@@ -14,21 +14,30 @@ export default class SIBMultipleForm extends BaseWidget {
   get removeLabel(): string | null {
     return this.hasAttribute('remove-label') ? this.getAttribute('remove-label') : '×';
   }
+  get value() {
+    if (!this.dataHolder) return [];
+    return this.dataHolder.map(element => element['value']);
+  }
+  set value(value) {
+    this._value = value;
+  }
   async render(){
     const fragment = document.createDocumentFragment();
+    const childContainer = document.createElement('div');
     const label = document.createElement('label');
     label.textContent = this.label;
     fragment.appendChild(label);
+    fragment.appendChild(childContainer);
     const addButton = document.createElement('button');
     addButton.textContent = this.addLabel;
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-      this.insertWidget(this.childAttributes, this);
+      this.insertWidget(this.childAttributes, childContainer);
     });
     fragment.appendChild(addButton);
-    if (this.value) {
-      for await (const resource of this.value['ldp:contains']) {
-        const elm = this.insertWidget(this.childAttributes, fragment);
+    if (this._value) {
+      for await (const resource of this._value['ldp:contains']) {
+        const elm = this.insertWidget(this.childAttributes, childContainer);
         if (elm) {
           elm['value'] = resource;
           elm.toggleAttribute('data-holder', true);
@@ -50,7 +59,7 @@ export default class SIBMultipleForm extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes: object, parent): HTMLElement | undefined {
+  insertWidget(attributes: object, parent: HTMLElement): HTMLElement | undefined {
     const childWrapper = document.createElement('div');
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
@@ -59,6 +68,7 @@ export default class SIBMultipleForm extends BaseWidget {
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
+    widget.toggleAttribute("data-holder");
     childWrapper.appendChild(widget);
 
     const removeButton = document.createElement('button');
@@ -68,7 +78,7 @@ export default class SIBMultipleForm extends BaseWidget {
       childWrapper.remove();
     });
     childWrapper.appendChild(removeButton);
-    parent.insertBefore(childWrapper, parent.lastChild);
+    parent.appendChild(childWrapper);
     return widget;
   }
 }

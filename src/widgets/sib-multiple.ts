@@ -10,14 +10,16 @@ export default class SIBMultiple extends BaseWidget {
     fragment.appendChild(label);
 
     let i = 0;
+    const parent = document.createElement('div');
     for await (const resource of this.value['ldp:contains']) {
-      const elm = this.insertWidget(this.childAttributes, fragment);
+      const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
         elm['value'] = resource;
         elm.toggleAttribute('data-holder', true);
       }
       i++;
     }
+    fragment.appendChild(parent);
 
     if (i == 0) fragment.removeChild(label); // if nothing added, remove the label
     while(this.firstChild) this.firstChild.remove()
@@ -38,7 +40,16 @@ export default class SIBMultiple extends BaseWidget {
     return attrs;
   }
 
-  insertWidget(attributes: object, parent): HTMLElement | undefined {
+  get label(): string | null {
+    return this.hasAttribute('label') ? this.getAttribute('label') : null;
+  }
+
+  set label(label: string | null) {
+    if(label != null) this.setAttribute('label', label);
+    this.render();
+  }
+
+  insertWidget(attributes: object, parent: HTMLElement): HTMLElement | undefined {
     const widgetTag = this.getAttribute('widget');
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;
