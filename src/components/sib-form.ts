@@ -207,7 +207,7 @@ export const SibForm = {
     while (form.firstChild) {
       form.removeChild(form.firstChild);
     }
-    Promise.all(promises).then(elements =>
+    await Promise.all(promises).then(elements =>
       elements.forEach(element => form.appendChild(element)),
     );
 
