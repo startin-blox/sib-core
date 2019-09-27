@@ -285,3 +285,4 @@ If you want to contribute to `sib-core`, you may be interested by the [developer
 ## License
 
 Licence MIT
+
