@@ -44,9 +44,6 @@ const StoreMixin = {
   initialState: {
     resourceId: null
   },
-  /* attached(): void {
-    if (this.resource) this.populate(); // TODO : if we want to be stateless, we must remove this
-  },*/
   get context(): object {
     return { ...base_context, ...this.extra_context };
   },

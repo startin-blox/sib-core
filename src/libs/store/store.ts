@@ -58,7 +58,7 @@ export class Store {
   }
 
   post(resource: object, id: string) {
-    return fetch(id, {
+    return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(resource),
@@ -67,7 +67,7 @@ export class Store {
   }
 
   put(resource: object, id: string) {
-    return fetch(id, {
+    return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
       body: JSON.stringify(resource),
@@ -76,7 +76,7 @@ export class Store {
   }
 
   patch(resource: object, id: string) {
-    return fetch(id, {
+    return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify(resource),
@@ -84,13 +84,17 @@ export class Store {
     });
   }
 
-  async delete(id: string) {
-    const deleted = await fetch(id, {
+  async delete(id: string, context: object = {}) {
+    const deleted = await fetch(this._getExpandedId(id, context), {
       method: 'DELETE',
       headers: this.headers,
       credentials: 'include'
     });
     return deleted;
+  }
+
+  _getExpandedId(id: string, context: object) {
+    return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
 }
 
