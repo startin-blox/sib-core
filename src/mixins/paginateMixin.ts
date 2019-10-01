@@ -83,6 +83,7 @@ const PaginateMixin = {
     nav.querySelector('[data-id="count"]')!.textContent = String(pageCount);
     nav.querySelector('[data-id="prev"]')!.toggleAttribute('disabled', currentPage <= 1);
     nav.querySelector('[data-id="next"]')!.toggleAttribute('disabled', currentPage >= pageCount);
+    nav.toggleAttribute('hidden', pageCount <= 1);
   },
 }
 
