@@ -19,7 +19,7 @@ export class BaseWidget extends HTMLElement {
       name: this.name,
       label: this.label,
       value: this.value,
-      id: (this.value && this.value['@id']) || '',
+      id: (this._value && this._value['@id']) || '',
       escapedValue: this.escapedValue,
       range: await this.htmlRange,
       multiple: this.multiple,
@@ -57,10 +57,10 @@ export class BaseWidget extends HTMLElement {
   }
   set value(value) {
     this._value = value; // ... store `value` in the widget
-    if (!this.dataHolder) {
-      // if no dataHolder in the widget...
-      this.render();
-    } else if (this.dataHolder.length === 1) {
+
+    if (!this._value) return;
+
+    if (this.dataHolder && this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
       const element = this.getValueHolder(this.dataHolder[0]);
       if (element.type == "checkbox") {
@@ -68,8 +68,9 @@ export class BaseWidget extends HTMLElement {
       } else {
         element.value = value || ''; // ... set `value` to the dataHolder element
       }
-      element.dispatchEvent(new Event('change')); // trigger change manually
-    } else {
+      // remove when https://git.happy-dev.fr/startinblox/framework/sib-core/issues/426 fixed
+      if (element.dispatchEvent) element.dispatchEvent(new Event('change')); // trigger change manually
+    } else if (this.dataHolder && this.dataHolder.length > 1) {
       // if multiple dataHolder in the widget ...
       this.dataHolder.forEach(
         (el, index) => {
@@ -83,6 +84,8 @@ export class BaseWidget extends HTMLElement {
         },
       ); // ... set each `value` to each dataHolder element
     }
+
+    this.render();
   }
   get ['each-label'](): string{
     return this.getAttribute('each-label') || '';
@@ -131,9 +134,6 @@ export class BaseWidget extends HTMLElement {
     (async () => {
       await store.initGraph(range, this.context);
       this._range = store.get(range);
-      if (this._value && !(this._value.isContainer && await this._value.isContainer())) { // if value set and not a container
-        this.value = `{"@id": "${this._value['@id']}"}`;
-      }
       await this.render();
     })();
   }
@@ -142,11 +142,11 @@ export class BaseWidget extends HTMLElement {
       let htmlRange = '';
       if (!this.range) return;
       for await (let element of this.range) {
-        await store.initGraph(element['@id'], this.context); // fetch the resource
+        await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
         element = store.get(element['@id']);
 
         let selected: boolean;
-        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
+        if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select
           selected = false;
           for await (let value of this._value["ldp:contains"]) {
             if (value['@id'] == element['@id']) {
@@ -155,7 +155,7 @@ export class BaseWidget extends HTMLElement {
             }
           }
         } else { // selected options for simple dropdowns
-          selected = this._value == `{"@id": "${element['@id']}"}`;
+          selected = this._value ? this._value['@id'] == element['@id'] : false;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
           name: (await element.name).toString(),

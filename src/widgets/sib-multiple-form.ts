@@ -20,6 +20,7 @@ export default class SIBMultipleForm extends BaseWidget {
   }
   set value(value) {
     this._value = value;
+    this.render();
   }
   async render(){
     const fragment = document.createDocumentFragment();

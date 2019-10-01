@@ -200,17 +200,12 @@ export const SibForm = {
     }
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
 
-    const promises: Promise<Element>[] = [];
-    for (const field of await this.getFields()) {
-      promises.push(this.createWidget(field));
-    }
     while (form.firstChild) {
       form.removeChild(form.firstChild);
     }
-    await Promise.all(promises).then(elements =>
-      elements.forEach(element => form.appendChild(element)),
-    );
-
+    for (const field of await this.getFields()) {
+      form.appendChild(this.createWidget(field));
+    }
     if (this.isNaked) return;
     const submitButtonElement = this.createInput('submit');
     if (this.submitButton) submitButtonElement.value = this.submitButton;

@@ -112,7 +112,7 @@ const WidgetMixin = {
     if (this.getAction(field)) return 'sib-action';
     return this.defaultWidget;
   },
-  async widgetAttributes(field: string): Promise<object> {
+  widgetAttributes(field: string): object {
     const attrs = {
       name: field,
     };
@@ -135,19 +135,18 @@ const WidgetMixin = {
       attrs[attr] = value;
     }
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
-    attrs['value'] = await this.getValue(field);
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
     attrs['context'] = this.context;
 
     return attrs;
   },
-  async createWidget(field: string): Promise<void> {
+  createWidget(field: string): Element {
     if (!parent) parent = this.div;
     if (this.isSet(field)) {
       return this.createSet(field);
     }
 
-    const attributes = await this.widgetAttributes(field);
+    const attributes = this.widgetAttributes(field);
 
     const escapedField = this.getEscapedField(field);
     const tagName = this.multiple(escapedField) || this.getWidget(escapedField);
@@ -161,6 +160,7 @@ const WidgetMixin = {
     }
 
     this.widgets.push(widget);
+    this.getValue(field).then(value => widget.value = value);
     return widget;
   },
   multiple(field: string): string | null {
@@ -169,20 +169,16 @@ const WidgetMixin = {
     return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
   },
 
-  async createSet(field: string): Promise<Element> {
+  createSet(field: string): Element {
     const widget = document.createElement(
       this.element.getAttribute('widget-' + field) || this.defaultSetWidget,
     );
     widget.setAttribute('name', field);
     setTimeout(async () => {
-      const promises: Promise<Element>[] = [];
+      const parentNode = widget.querySelector('[data-content]') || widget;
       for (let item of this.getSet(field)) {
-        promises.push(this.createWidget(item));
+        parentNode.appendChild(this.createWidget(item));
       }
-      Promise.all(promises).then(elements => {
-        const parentNode = widget.querySelector('[data-content]') || widget;
-        elements.forEach(element => parentNode.appendChild(element))
-      });
     });
     return widget;
   },
