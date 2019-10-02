@@ -69,6 +69,16 @@ const SIBDisplayBlankLink = widgetFactory(
   >\${label}</a>`,
 );
 
+const SIBDisplayDate = widgetFactory(
+  'sib-display-date',
+  `\${value ? new Date(value.toString()).toLocaleDateString() : ''}`,
+);
+
+const SIBDisplayDateTime = widgetFactory(
+  'sib-display-date-time',
+  `\${value ? new Date(value.toString()).toLocaleString() : ''}`,
+);
+
 const SIBAction = widgetFactory(
   'sib-action',
   `<sib-link
@@ -98,6 +108,8 @@ export {
   SIBDisplayTel,
   SIBDisplayLink,
   SIBDisplayBlankLink,
+  SIBDisplayDate,
+  SIBDisplayDateTime,
   SIBAction,
   SIBDisplayAutolink
 };
