@@ -159,6 +159,10 @@ class LDFlexGetter {
     return this.getCompactedIri(type.toString()) == "ldp:Container"; // TODO : ldflex should return compacted field
   }
 
+  async clearCache() {
+    await solid.data.clearCache(this.resourceId);
+  }
+
   getCompactedIri(id: string) { return ContextParser.compactIri(id, this.context) }
   toString() { return this.getCompactedIri(this.resource.toString()) }
   [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource.toString()) }

@@ -100,6 +100,13 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`empty-widget`**: Widget to display when there is no element in the container
 - **`empty-value`**: To display a value in the empty widget. It can be accessed in the widget like this: `${value}`
 
+**API:**
+In Javascript, you have access to different variables and methods on a `sib-display` element:
+- `sibDisplay.resource`: returns the Proxy of the current resource
+  - `sibDisplay.resource.clearCache()` (async): clears the cache of the store for this resource
+- `sibDisplay.resourceId`: returns the id of the current resource
+
+
 ### `sib-form`
 
 Receives the URL of a ressource via its `data-src` attribute, and displays a form to edit the resource.
