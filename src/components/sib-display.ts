@@ -12,24 +12,46 @@ import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 
 export const SibDisplay = {
   name: 'sib-display',
-  use: [ WidgetMixin, ListMixin, StoreMixin, PaginateMixin, GrouperMixin, CounterMixin, HighlighterMixin, FilterMixin, SorterMixin, FederationMixin ],
+  use: [
+    WidgetMixin,
+    ListMixin,
+    StoreMixin,
+    PaginateMixin,
+    GrouperMixin,
+    CounterMixin,
+    HighlighterMixin,
+    FilterMixin,
+    SorterMixin,
+    FederationMixin,
+  ],
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'sib-display-value'
+      default: 'sib-display-value',
     },
   },
   created(): void {
-    window.addEventListener('navigate', ((event: CustomEvent) => {
+    const listener = ((event: CustomEvent) => {
       if (this.resource == null) return;
-      if (event['detail'].resource == null) return;
+      if (event.detail.resource == null) return;
       if (this.resource['@id'] == null) return;
+
       this.element.toggleAttribute(
         'active',
         this.resource['@id'] === event.detail.resource.id,
-
       );
-    }) as EventListener);
+    }) as EventListener;
+    window.addEventListener('navigate', listener);
+    const route = document.querySelector('sib-route[active]');
+    if (!route) return;
+    const event = new CustomEvent('navigate', {
+      detail: {
+        resource: {
+          id: route['resourceId'],
+        },
+      },
+    });
+    setTimeout(() => listener(event));
   },
   get childTag(): string {
     return this.element.dataset.child || this.element.tagName;
@@ -88,7 +110,7 @@ export const SibDisplay = {
     for (const field of await this.getFields()) {
       parent.appendChild(this.createWidget(field));
     }
-  }
+  },
 };
 
 Sib.register(SibDisplay);

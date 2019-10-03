@@ -40,3 +40,7 @@ sib-route {
 sib-route[active] {
   background-color: #ccc;
 }
+
+[active]{
+  outline: 2px dotted;
+}
