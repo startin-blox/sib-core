@@ -234,6 +234,8 @@ The following widgets are available:
 - **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path. If a label is defined for this field, it's displayed as the content of the link.
 - **`sib-display-tel`**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
 - **`sib-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
+- **`sib-display-date`**: Displays a date in the browser's default locale format
+- **`sib-display-date-time`**: Displays a date and a time in the browser's default locale format
 
 ### Form widgets
 
