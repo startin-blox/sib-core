@@ -10,6 +10,7 @@ const app = express();
   const server = app
     .use(express.static(distPath))
     .get('/favicon.ico', (req, rep) => rep.send())
+    .get('/examples/', (req, rep) => rep.redirect('/'))
     .post('/upload', (req, rep) => {
       const originalUrl = url.format({
         protocol: req.protocol,
