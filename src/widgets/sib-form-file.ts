@@ -1,4 +1,4 @@
-import { BaseWidget } from './widget-factory.js';
+import { BaseWidget } from './baseWidget.js';
 import { defineComponent, uniqID } from "../libs/helpers.js";
 
 export default class SIBFormFile extends BaseWidget {

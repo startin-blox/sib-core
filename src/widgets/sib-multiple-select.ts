@@ -1,4 +1,4 @@
-import { BaseWidget } from './widget-factory.js';
+import { BaseWidget } from './baseWidget.js';
 import { defineComponent } from "../libs/helpers.js";
 
 export default class SIBMultipleSelect extends BaseWidget {
