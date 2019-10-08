@@ -143,7 +143,7 @@ class LDFlexGetter {
     if (path2.length === 0) { // end of the path
       switch (value.termType) {
         case "NamedNode": // resource, return proxy
-          return await new LDFlexGetter(value.toString(), this.context).getProxy(value);
+          return await new LDFlexGetter(value.toString(), this.context).getProxy();
         case "Literal": // property, return value
           return value;
         default:
