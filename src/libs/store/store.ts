@@ -39,22 +39,22 @@ export class Store {
   }
 
   async initGraph(id: string, context = {}): Promise<void> {
-    let hash = '';
-    try {
-      hash = JSON.stringify(id);
-    } catch (e) {}
-    if (hash && !this.cache.has(hash)) {
+    if (!this.cache.has(id)) {
       const getter = await new LDFlexGetter(id, context).getProxy();
-      this.cache.set(hash, getter);
+      this.cache.set(id, getter);
+
+      if (await getter.isContainer()) { // if resource is a container, cache the children
+        for await (const resource of getter['ldp:contains']) {
+          let resourceId = resource.toString();
+          if (this.cache.has(resourceId) || resourceId.match(/^b\d+$/)) continue;
+          this.cache.set(resourceId, resource);
+        }
+      }
     }
   }
 
   get(id: string): object {
-    let hash = '';
-    try {
-      hash = JSON.stringify(id);
-    } catch (e) {}
-    return this.cache.get(hash) || null;
+    return this.cache.get(id) || null;
   }
 
   post(resource: object, id: string) {
@@ -115,14 +115,14 @@ class LDFlexGetter {
     this.context = context;
   }
 
-  async init() {
+  async init(proxy = null) {
     await scriptsLoading; // Load solid scripts
     if (Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
 
     this.context = await myParser.parse(this.context);
     let iri = ContextParser.expandTerm(this.resourceId, this.context); // expand if reduced ids
     iri = new URL(iri, document.location.href).href; // and get full URL for local files
-    this.resource = solid.data[iri]; // ... then we get the resource datas
+    this.resource = proxy || solid.data[iri]; // ... then we get the resource datas
     return this;
   }
 
@@ -143,7 +143,7 @@ class LDFlexGetter {
     if (path2.length === 0) { // end of the path
       switch (value.termType) {
         case "NamedNode": // resource, return proxy
-          return await new LDFlexGetter(value.toString(), this.context).getProxy();
+          return await new LDFlexGetter(value.toString(), this.context).getProxy(value);
         case "Literal": // property, return value
           return value;
         default:
@@ -169,7 +169,7 @@ class LDFlexGetter {
 
   getAsyncIterable(property: string) {
     return asyncMap(
-      resource => new LDFlexGetter(resource.toString(), this.context).getProxy(),
+      resource => new LDFlexGetter(resource.toString(), this.context).getProxy(resource),
       this.resource[property]
     );
   }
@@ -183,9 +183,9 @@ class LDFlexGetter {
   }
 
   // Returns a Proxy which handles the different get requests
-  async getProxy() {
+  async getProxy(proxy = null) {
     if (!this.proxy) {
-      await this.init();
+      await this.init(proxy);
       this.proxy = new Proxy(this, {
         get: (resource, property) => {
           if (typeof resource[property] === 'function') return resource[property].bind(resource)
@@ -199,6 +199,8 @@ class LDFlexGetter {
               return this.getProperties();
             case 'permissions':
             case 'termType':
+            case 'subjects':
+            case 'predicates':
               return this.resource[property]
             case 'ldp:contains':
               return this.getAsyncIterable(property);
