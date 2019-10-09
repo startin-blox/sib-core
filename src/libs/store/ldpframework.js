@@ -406,9 +406,9 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
                           return reject(error);
                       }
   
-                      if (added.toArray().length === 0) {
-                          return reject('no triples added');
-                      }
+                      // if (added.toArray().length === 0) {
+                      //     return reject('no triples added');
+                      // }
   
                       resolve();
                   });
@@ -433,9 +433,9 @@ export default (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=type
                           return reject(error);
                       }
   
-                      if (merged.toArray().length === 0) {
-                          return reject('no triples merged');
-                      }
+                      // if (merged.toArray().length === 0) {
+                      //     return reject('no triples merged');
+                      // }
   
                       resolve();
                   });
