@@ -2,6 +2,8 @@
 import asyncSome from 'https://dev.jspm.io/iter-tools/es2018/async-some';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools/es2018/async-every';
+//@ts-ignore
+import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
@@ -21,11 +23,20 @@ export const SibAcChecker = {
 
   async populate(): Promise<void> {
     let displayElement: boolean;
+    const ContextParser = JSONLDContextParser.ContextParser;
+    const myParser = new ContextParser();
+    const context = await myParser.parse(this.context);
 
     if (this.permission) { // User has permission of ...
-      displayElement = await asyncSome((permission: object) => permission.toString() === this.permission, this.resource.permissions.mode['rdf:type'])
+      displayElement = await asyncSome(
+        (permission: object) => ContextParser.compactIri(permission.toString(), context) === this.permission,
+        this.resource.permissions.mode['rdf:type']
+      )
     } else if (this.noPermission) { // User has no permission of ...
-      displayElement = await asyncEvery((permission: object) => permission.toString() !== this.permission, this.resource.permissions.mode['rdf:type'])
+      displayElement = await asyncEvery(
+        (permission: object) => ContextParser.compactIri(permission.toString(), context) !== this.noPermission,
+        this.resource.permissions.mode['rdf:type']
+      )
     } else { // No parameter provided
       console.warn('sib-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
       return;
