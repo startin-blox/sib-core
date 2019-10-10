@@ -9,17 +9,17 @@
   </head>
 
   <body>
-    <h3><tt>&lt;sib-form-file&gt;</tt> only</h3>
+    <h3><code>&lt;sib-form-file&gt;</code> only</h3>
     <sib-form-file
       label="upload (wrong url):"
       upload-url="http://127.0.0.255/upload"
     ></sib-form-file>
     <sib-form-file label="upload:" upload-url="/upload"></sib-form-file>
 
-    <h3><tt>&lt;sib-form-file&gt;</tt> in <tt>&lt;sib-form&gt;</tt></h3>
+    <h3><code>&lt;sib-form-file&gt;</code> in <code>&lt;sib-form&gt;</code></h3>
     <sib-form
-      data-src="https://api.test-paris.happy-dev.fr/accounts/9/"
-      fields="user.username, picture"
+      data-src="data/image.jsonld"
+      fields="name, description, picture"
       upload-url-picture="/upload"
     ></sib-form>
   </body>

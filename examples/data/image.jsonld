@@ -1,0 +1,7 @@
+{
+  "@id": "",
+  "name": "fruit basket",
+  "description": "basket containing apples, oranges, kiwis, bananas, pineapples…",
+  "picture": "../../upload/fruits.jpg",
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
