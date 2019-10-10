@@ -48,7 +48,7 @@ const WidgetMixin = {
 
     let fields: string[] = [];
     for await (const prop of resource.properties) {
-      if (!prop.startsWith('@')) fields.push(prop);
+      if (!prop.startsWith('@') && await resource[prop]) fields.push(prop);
     }
     return fields;
   },
