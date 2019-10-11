@@ -5,6 +5,7 @@ export default class SIBFormFile extends BaseWidget {
   input!: HTMLInputElement;
   filePicker!: HTMLInputElement;
   output!: HTMLSpanElement;
+  resetButton!: HTMLSpanElement;
   get template() {
     const id = uniqID();
     return `<div>
@@ -16,6 +17,8 @@ export default class SIBFormFile extends BaseWidget {
         value="\${value}"
       >
       <input type="file" id="${id}"/>
+      <button hidden>×</button>
+      <span></span>
     </div>`;
   }
   get uploadURL() {
@@ -34,10 +37,15 @@ export default class SIBFormFile extends BaseWidget {
     this.filePicker = this.querySelector(
       'input[type="file"]',
     ) as HTMLInputElement;
-    this.output = this.filePicker.parentElement!.appendChild(
-      document.createElement('span'),
-    );
+    this.output = this.querySelector('span')!;
+    this.resetButton = this.querySelector('button')!;
     this.filePicker.addEventListener('change', () => this.selectFile());
+    this.resetButton.addEventListener('click', () => {
+      this.input.value = '';
+      this.filePicker.value = '';
+      this.output.textContent = '';
+      this.resetButton.toggleAttribute('hidden', true)
+    })
   }
   selectFile() {
     if (this.uploadURL === null) return;
@@ -52,13 +60,14 @@ export default class SIBFormFile extends BaseWidget {
       body: formData,
     })
       .then(response => {
-        this.filePicker.value = '';
+        // this.filePicker.value = '';
         const location = response.headers.get('location');
         if (location == null) {
           this.output.textContent = 'header location not found!';
         } else {
           this.input.value = location;
           this.output.textContent = '';
+          this.resetButton.toggleAttribute('hidden', false)
         }
       })
       .catch(error => {
