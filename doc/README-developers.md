@@ -127,5 +127,5 @@ Here is a simplified schema of the organization and the responsibilities of the 
 ![core-architecture](./images/core-architecture.png)
 
 ## List post-processing
-A `sib-display` component is capable of showing a list of resources and applying different filters on this list to filter, sort, group... resources. Here is a schema of the order of these transformations:
+A `solid-display` component is capable of showing a list of resources and applying different filters on this list to filter, sort, group... resources. Here is a schema of the order of these transformations:
 ![list-post-processing](./images/list-post-processing.png)

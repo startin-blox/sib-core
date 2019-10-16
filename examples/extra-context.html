@@ -18,28 +18,28 @@
 
   <body>
 
-    <sib-router default-route="home" route-prefix="examples/extra-context.html">
-      <sib-route name="home">home</sib-route>
-      <sib-route name="detail" use-id></sib-route>
-    </sib-router>
+    <solid-router default-route="home" route-prefix="examples/extra-context.html">
+      <solid-route name="home">home</solid-route>
+      <solid-route name="detail" use-id></solid-route>
+    </solid-router>
 
     <div id="home">
       <h1>HOME</h1>
-      <sib-display
+      <solid-display
         data-src="https://api.test-paris.happy-dev.fr/users/"
         fields="@id, username, firstName, lastName, email"
         next="detail"
         extra-context="alpha"
-      ></sib-display>
+      ></solid-display>
     </div>
 
     <div id="detail">
       <h1>DETAIL</h1>
-      <sib-display
+      <solid-display
         fields="@id, username, firstName, lastName, email"
         bind-resources
         extra-context="alpha"
-      ></sib-display>
+      ></solid-display>
     </div>
   </body>
 

@@ -7,8 +7,8 @@ import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
-export const SibAcChecker = {
-  name: 'sib-ac-checker',
+export const SolidAcChecker = {
+  name: 'solid-ac-checker',
   use: [StoreMixin],
   attributes: {
     permission: {
@@ -38,7 +38,7 @@ export const SibAcChecker = {
         this.resource.permissions.mode['rdf:type']
       )
     } else { // No parameter provided
-      console.warn('sib-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
+      console.warn('solid-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
       return;
     }
 
@@ -49,4 +49,4 @@ export const SibAcChecker = {
   }
 };
 
-Sib.register(SibAcChecker);
+Sib.register(SolidAcChecker);

@@ -1,8 +1,8 @@
 import { Sib } from '../libs/Sib.js';
 import { widgetFactory } from '../widgets/widget-factory.js';
 
-export const SibWidget = {
-  name: 'sib-widget',
+export const SolidWidget = {
+  name: 'solid-widget',
   use: [],
   attributes: {
     name: {
@@ -23,4 +23,4 @@ export const SibWidget = {
   }
 };
 
-Sib.register(SibWidget);
+Sib.register(SolidWidget);

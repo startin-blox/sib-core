@@ -1,35 +1,35 @@
 import { widgetFactory } from './widget-factory.js';
 import "https://unpkg.com/autolinker/dist/Autolinker.min.js";
 
-const SIBDisplayValue = widgetFactory(
-  'sib-display-value',
+const SolidDisplayValue = widgetFactory(
+  'solid-display-value',
   `\${value}`,
 );
 
-const SIBDisplayDiv = widgetFactory(
-  'sib-display-div',
+const SolidDisplayDiv = widgetFactory(
+  'solid-display-div',
   `<div name="\${name}" \${editable?'data-editable':''}>\${value}</div>`,
 );
 
-const SIBDisplayLabelledDiv = widgetFactory(
-  'sib-display-labelled-div',
+const SolidDisplayLabelledDiv = widgetFactory(
+  'solid-display-labelled-div',
   `\${value ? "<label>" + label + "</label>" : ""}
   <div name="\${name}" \${editable?'data-editable':''}>\${value}</div>`,
 );
 
-const SIBDisplayMultiline = widgetFactory(
-  'sib-display-multiline',
+const SolidDisplayMultiline = widgetFactory(
+  'solid-display-multiline',
   `\${value ? "<label>" + label + "</label>" : ""}
   <div name="\${name}">\${value.replace(/\n/g, "<br/>")}</div>`,
 );
 
-const SIBDisplayLabelledBoolean = widgetFactory(
-  'sib-display-labelled-boolean',
+const SolidDisplayLabelledBoolean = widgetFactory(
+  'solid-display-labelled-boolean',
   `\${value == 'true' ? "<label>" + label + "</label>" : ""}`
 );
 
-const SIBDisplayImg = widgetFactory(
-  'sib-display-img',
+const SolidDisplayImg = widgetFactory(
+  'solid-display-img',
   `<img
     name="\${name}"
     src="\${value}"
@@ -37,14 +37,14 @@ const SIBDisplayImg = widgetFactory(
     />
 `);
 
-const SIBDisplayMailTo = widgetFactory(
-  'sib-display-mailto',
+const SolidDisplayMailTo = widgetFactory(
+  'solid-display-mailto',
   `<a href="mailto:\${value}" name="\${name}" \${editable?'data-editable':''}>\${label != name ? label : value}</a>
 `,
 );
 
-const SIBDisplayTel = widgetFactory(
-  'sib-display-tel',
+const SolidDisplayTel = widgetFactory(
+  'solid-display-tel',
   `<a
     href="tel:\${value}"
     name="\${name}"
@@ -52,16 +52,16 @@ const SIBDisplayTel = widgetFactory(
   >\${value}</a>`,
 );
 
-const SIBDisplayLink = widgetFactory(
-  'sib-display-link',
+const SolidDisplayLink = widgetFactory(
+  'solid-display-link',
   `<a
     href="\${value}"
     name="\${name}"
   >\${label}</a>`,
 );
 
-const SIBDisplayBlankLink = widgetFactory(
-  'sib-display-blank-link',
+const SolidDisplayBlankLink = widgetFactory(
+  'solid-display-blank-link',
   `<a
     href="\${value}"
     name="\${name}"
@@ -69,26 +69,26 @@ const SIBDisplayBlankLink = widgetFactory(
   >\${label}</a>`,
 );
 
-const SIBDisplayDate = widgetFactory(
-  'sib-display-date',
+const SolidDisplayDate = widgetFactory(
+  'solid-display-date',
   `\${value ? new Date(value.toString()).toLocaleDateString() : ''}`,
 );
 
-const SIBDisplayDateTime = widgetFactory(
-  'sib-display-date-time',
+const SolidDisplayDateTime = widgetFactory(
+  'solid-display-date-time',
   `\${value ? new Date(value.toString()).toLocaleString() : ''}`,
 );
 
-const SIBAction = widgetFactory(
-  'sib-action',
-  `<sib-link
+const SolidAction = widgetFactory(
+  'solid-action',
+  `<solid-link
     data-src="\${src}"
     next="\${value}"
-  >\${label}</sib-link>`,
+  >\${label}</solid-link>`,
 );
 
-const SIBDisplayAutolink = widgetFactory(
-  'sib-display-autolink',
+const SolidDisplayAutolink = widgetFactory(
+  'solid-display-autolink',
   `\${value}`,
   '',
   content => {
@@ -98,18 +98,18 @@ const SIBDisplayAutolink = widgetFactory(
 );
 
 export {
-  SIBDisplayValue,
-  SIBDisplayDiv,
-  SIBDisplayLabelledDiv,
-  SIBDisplayMultiline,
-  SIBDisplayLabelledBoolean,
-  SIBDisplayImg,
-  SIBDisplayMailTo,
-  SIBDisplayTel,
-  SIBDisplayLink,
-  SIBDisplayBlankLink,
-  SIBDisplayDate,
-  SIBDisplayDateTime,
-  SIBAction,
-  SIBDisplayAutolink
+  SolidDisplayValue,
+  SolidDisplayDiv,
+  SolidDisplayLabelledDiv,
+  SolidDisplayMultiline,
+  SolidDisplayLabelledBoolean,
+  SolidDisplayImg,
+  SolidDisplayMailTo,
+  SolidDisplayTel,
+  SolidDisplayLink,
+  SolidDisplayBlankLink,
+  SolidDisplayDate,
+  SolidDisplayDateTime,
+  SolidAction,
+  SolidDisplayAutolink
 };

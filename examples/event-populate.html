@@ -11,24 +11,24 @@
   </head>
 
   <body>
-    <sib-display
+    <solid-display
       id="guineapig"
       data-src="data/list/users.jsonld"
       fields="@id, username, firstName, lastName, email"
-    ></sib-display>
+    ></solid-display>
   </body>
 
   <script>
     const target = document.getElementById("guineapig");
 
-    console.log(`sib-display length asap: ${target.children.length}.`);
+    console.log(`solid-display length asap: ${target.children.length}.`);
 
     document.addEventListener("DOMContentLoaded", event => {
-      console.log(`sib-display length when "DOMContentLoaded" event detected on document: ${target.children.length}.`);
+      console.log(`solid-display length when "DOMContentLoaded" event detected on document: ${target.children.length}.`);
     });
 
     target.addEventListener("populate", event => {
-      console.log(`sib-display length when "populate" event detected on #${target.id}: ${target.children.length}.`);
+      console.log(`solid-display length when "populate" event detected on #${target.id}: ${target.children.length}.`);
     });
   </script>
 </html>

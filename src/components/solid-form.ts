@@ -4,13 +4,13 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 
-export const SibForm = {
-  name: 'sib-form',
+export const SolidForm = {
+  name: 'solid-form',
   use: [WidgetMixin, StoreMixin],
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'sib-form-label-text'
+      default: 'solid-form-label-text'
     },
     naked: {
       type: String,
@@ -28,10 +28,10 @@ export const SibForm = {
   initialState: {
   },
   get defaultMultipleWidget(): string {
-    return 'sib-multiple-form';
+    return 'solid-multiple-form';
   },
   get defaultSetWidget(): string {
-    return 'sib-set-default';
+    return 'solid-set-default';
   },
   get value(): object {
     const values = {};
@@ -69,10 +69,10 @@ export const SibForm = {
   getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('upload-url-' + field)) {
-      return 'sib-form-file';
+      return 'solid-form-file';
     } else if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('range-' + field)) {
-      return 'sib-form-dropdown';
+      return 'solid-form-dropdown';
     } else {
       const widget = this.element.getAttribute('widget-' + field); // TODO : duplicated code
       if (widget) {
@@ -216,4 +216,4 @@ export const SibForm = {
   }
 };
 
-Sib.register(SibForm);
+Sib.register(SolidForm);

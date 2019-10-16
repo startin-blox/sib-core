@@ -1,7 +1,7 @@
 import { BaseWidget } from './baseWidget.js';
 import { defineComponent } from "../libs/helpers.js";
 
-export default class SIBMultipleSelect extends BaseWidget {
+export default class SolidMultipleSelect extends BaseWidget {
   get range(): string | null {
     return this.getAttribute('range');
   }
@@ -77,4 +77,4 @@ export default class SIBMultipleSelect extends BaseWidget {
   }
 }
 
-defineComponent('sib-multiple-select', SIBMultipleSelect);
+defineComponent('solid-multiple-select', SolidMultipleSelect);

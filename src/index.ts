@@ -1,22 +1,22 @@
 import "./libs/polyfills.js";
-import { SibDisplay } from './components/sib-display.js';
-import { SibForm } from './components/sib-form.js';
-import { SibWidget } from './components/sib-widget.js';
-import { SibAcChecker } from './components/sib-ac-checker.js';
-import { SibDelete } from './components/sib-delete.js';
+import { SolidDisplay } from './components/solid-display.js';
+import { SolidForm } from './components/solid-form.js';
+import { SolidWidget } from './components/solid-widget.js';
+import { SolidAcChecker } from './components/solid-ac-checker.js';
+import { SolidDelete } from './components/solid-delete.js';
 
 import './widgets/index.js';
 import { store } from './libs/store/store.js';
 import * as Helpers from './libs/helpers.js';
-import SIBTemplateElement from './sib-template-element.js';
+import SolidTemplateElement from './solid-template-element.js';
 
 export {
-  SIBTemplateElement,
-  SibDisplay,
-  SibForm,
-  SibWidget,
-  SibAcChecker,
-  SibDelete,
+  SolidTemplateElement,
+  SolidDisplay,
+  SolidForm,
+  SolidWidget,
+  SolidAcChecker,
+  SolidDelete,
   store,
   Helpers
 }

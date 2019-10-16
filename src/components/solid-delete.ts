@@ -1,8 +1,8 @@
 import { Sib } from '../libs/Sib.js';
 import { base_context, store } from '../libs/store/store.js';
 
-export const SibDelete = {
-  name: 'sib-delete',
+export const SolidDelete = {
+  name: 'solid-delete',
   use: [],
   attributes: {
     dataSrc: {
@@ -47,4 +47,4 @@ export const SibDelete = {
   }
 };
 
-Sib.register(SibDelete);
+Sib.register(SolidDelete);

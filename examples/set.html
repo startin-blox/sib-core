@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-display</title>
+    <title>SIB test: solid-display</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -12,19 +12,19 @@
   <body>
     <details>
       <summary>Set</summary>
-      <sib-display
+      <solid-display
         data-src="data/list/users.jsonld"
         fields="@id, name(firstName, lastName, username), infos(email, profile.city)"
-      ></sib-display>
+      ></solid-display>
     </details>
 
     <details>
       <summary>Nested set</summary>
-      <sib-display
+      <solid-display
         data-src="data/list/users.jsonld"
         fields="@id, name(firstName, lastName, username, infos(email, profile.city))"
-        widget-name="sib-set-ul"
-      ></sib-display>
+        widget-name="solid-set-ul"
+      ></solid-display>
     </details>
 
     <style>

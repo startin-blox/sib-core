@@ -11,22 +11,22 @@
 </head>
 
 <body>
-    <sib-widget name="sib-form-profile">
+    <solid-widget name="solid-form-profile">
       <template>
         <h3>Nested form</h3>
-        <sib-form
+        <solid-form
         data-holder
         naked
         data-src="${id}"
-        fields="city, bio, phone"></sib-form>
+        fields="city, bio, phone"></solid-form>
       </template>
-    </sib-widget>
+    </solid-widget>
 
     <h3>Form</h3>
-    <sib-form
+    <solid-form
     data-src="data/list/user-1.jsonld"
     fields="name, profile"
-    widget-profile="sib-form-profile"></sib-form>
+    widget-profile="solid-form-profile"></solid-form>
 
     <button id="get">GET nested form value</button>
     <button id="set">SET nested form value</button>
@@ -35,11 +35,11 @@
 
     <script>
       get.onclick = () => {
-        let nestedFormValue = document.querySelector('sib-form-profile').value
+        let nestedFormValue = document.querySelector('solid-form-profile').value
         pre.textContent = JSON.stringify(nestedFormValue, null, 2);
       }
       set.onclick = () => {
-        document.querySelector('sib-form-profile').value = {city: "Rennes", phone:"06 10 10 10 10", bio: "Hello all!"}
+        document.querySelector('solid-form-profile').value = {city: "Rennes", phone:"06 10 10 10 10", bio: "Hello all!"}
       }
     </script>
 </body>

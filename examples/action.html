@@ -11,29 +11,29 @@
   </head>
 
   <body>
-    <sib-router default-route="home" use-hash>
-      <sib-route name="home">home</sib-route>
-      <sib-route
+    <solid-router default-route="home" use-hash>
+      <solid-route name="home">home</solid-route>
+      <solid-route
         hidden
         use-id
         name="circle-infos"
-      ></sib-route>
-    </sib-router>
+      ></solid-route>
+    </solid-router>
 
     <div id="home" hidden>
       <h1>Home</h1>
-      <sib-display
+      <solid-display
         data-src="./data/action/circles.jsonld"
         fields="name, description, click"
         label-click="click !"
         action-click="circle-infos"
-      ></sib-display>
+      ></solid-display>
     </div>
     <div id="circle-infos" hidden>
-      <sib-display
+      <solid-display
         bind-resources
         fields="name, description"
-      ></sib-display>
+      ></solid-display>
     </div>
   </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-form</title>
+    <title>SIB test: solid-form</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
@@ -13,104 +13,104 @@
   <body>
     <details>
       <summary>Some fields:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/user-1.jsonld"
         fields="username, firstName, lastName, email"
         submit-button="Enregistrer l'utilisateur"
-      ></sib-form>
+      ></solid-form>
     </details>
 
     <details>
       <summary>All fields:</summary>
-      <sib-form data-src="data/list/user-1.jsonld"></sib-form>
+      <solid-form data-src="data/list/user-1.jsonld"></solid-form>
     </details>
 
     <details>
       <summary>Multiple value:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
         multiple-skills
         range-skills="data/list/skills.jsonld"
-      ></sib-form>
+      ></solid-form>
     </details>
 
     <details>
       <summary>Default widget:</summary>
-      <sib-form
+      <solid-form
         data-src="data/project.jsonld"
         fields="businessProvider, businessProviderFee, jabberID"
-        default-widget="sib-form-placeholder-text"
-      ></sib-form>
+        default-widget="solid-form-placeholder-text"
+      ></solid-form>
     </details>
 
     <details>
       <summary>Form widgets:</summary>
-      <sib-form
+      <solid-form
         data-src="data/project.jsonld"
         fields="businessProvider, businessProviderFee, jabberID"
-        widget-businessProvider="sib-form-placeholder-text"
-        widget-businessProviderFee="sib-form-number"
-        widget-jabberID="sib-form-hidden"
-      ></sib-form>
+        widget-businessProvider="solid-form-placeholder-text"
+        widget-businessProviderFee="solid-form-number"
+        widget-jabberID="solid-form-hidden"
+      ></solid-form>
   </details>
 
     <details>
       <summary>Dropdown:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/event-1.jsonld"
         fields="contact"
         range-contact="data/list/users.jsonld"
-      ></sib-form>
+      ></solid-form>
     </details>
 
     <details>
       <summary>Placeholder dropdown:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/event-1.jsonld"
         fields="contact"
-        widget-contact="sib-form-placeholder-dropdown"
+        widget-contact="solid-form-placeholder-dropdown"
         label-contact='select a contact:'
         range-contact="data/list/users.jsonld"
-      ></sib-form>
+      ></solid-form>
     </details>
 
     <details>
       <summary>Multiple dropdown:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        multiple-skills="sib-multiple-select"
+        multiple-skills="solid-multiple-select"
         range-skills="data/list/skills.jsonld"
-      ></sib-form>
+      ></solid-form>
     </details>
 
     <details>
       <summary>Auto complete:</summary>
       <h2>Single skill</h2>
-      <sib-form
+      <solid-form
         data-src="data/list/event-1.jsonld"
         fields="contact"
-        widget-contact="sib-form-auto-completion"
+        widget-contact="solid-form-auto-completion"
         range-contact="data/list/users.jsonld"
-      ></sib-form>
+      ></solid-form>
       <h2>Multiple skills</h2>
-      <sib-form
+      <solid-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="sib-form-auto-completion"
+        widget-skills="solid-form-auto-completion"
         range-skills="data/list/skills.jsonld"
-        multiple-skills="sib-multiple-select"
-      ></sib-form>
+        multiple-skills="solid-multiple-select"
+      ></solid-form>
     </details>
 
     <details>
       <summary>Date widget:</summary>
-      <sib-form
+      <solid-form
         data-src="data/list/event-1.jsonld"
         fields="date"
-        widget-date='sib-form-date'
-      ></sib-form>
+        widget-date='solid-form-date'
+      ></solid-form>
     </details>
   </body>
 </html>

@@ -1,7 +1,7 @@
 import { BaseWidget } from './baseWidget.js';
 import { defineComponent, uniqID } from "../libs/helpers.js";
 
-export default class SIBFormFile extends BaseWidget {
+export default class SolidFormFile extends BaseWidget {
   input!: HTMLInputElement;
   filePicker!: HTMLInputElement;
   output!: HTMLSpanElement;
@@ -78,4 +78,4 @@ export default class SIBFormFile extends BaseWidget {
   }
 }
 
-defineComponent('sib-form-file', SIBFormFile);
+defineComponent('solid-form-file', SolidFormFile);

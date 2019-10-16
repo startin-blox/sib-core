@@ -16,28 +16,28 @@
 
     <h2>With custom HTML template:</h2>
 
-    <sib-widget name="my-custom-sib-labelled-div">
+    <solid-widget name="my-custom-solid-labelled-div">
         <template>
             ${value ? "<label>" + label + "</label>" : ""}
             <div name="${name}">${value}</div>
         </template>
-    </sib-widget>
+    </solid-widget>
 
-    <sib-display
+    <solid-display
         data-src="data/project.jsonld"
         fields="description"
         label-description="Project description:"
-        widget-description="my-custom-sib-labelled-div"
-    ></sib-display>
+        widget-description="my-custom-solid-labelled-div"
+    ></solid-display>
 
     <h2>With SiB widget:</h2>
 
-    <sib-display
+    <solid-display
         data-src="data/project.jsonld"
         fields="description"
         label-description="Project description:"
-        widget-description="sib-display-labelled-div"
-    ></sib-display>
+        widget-description="solid-display-labelled-div"
+    ></solid-display>
 
 </body>
 </html>

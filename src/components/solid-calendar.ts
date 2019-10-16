@@ -6,8 +6,8 @@ import { importCSS } from '../libs/helpers.js';
 import Calendar from 'https://dev.jspm.io/tui-calendar';
 import { store } from '../libs/store/store.js';
 
-export const SibCalendar = {
-  name: 'sib-calendar',
+export const SolidCalendar = {
+  name: 'solid-calendar',
   use: [ListMixin, StoreMixin],
   created(): void {
     importCSS('https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css');
@@ -58,4 +58,4 @@ export const SibCalendar = {
   }
 };
 
-Sib.register(SibCalendar);
+Sib.register(SolidCalendar);

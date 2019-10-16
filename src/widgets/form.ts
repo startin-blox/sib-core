@@ -2,10 +2,10 @@ import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select';
-import SIBFormFile from "./sib-form-file.js";
+import SolidFormFile from "./solid-form-file.js";
 
-const SIBFormLabelText = widgetFactory(
-  'sib-form-label-text',
+const SolidFormLabelText = widgetFactory(
+  'solid-form-label-text',
   `<label>
     <div>\${label}</div>
     <input
@@ -17,8 +17,8 @@ const SIBFormLabelText = widgetFactory(
   </label>`,
 );
 
-const SIBFormCheckbox = widgetFactory(
-  'sib-form-checkbox',
+const SolidFormCheckbox = widgetFactory(
+  'solid-form-checkbox',
   `<label>
     <input
       data-holder
@@ -30,8 +30,8 @@ const SIBFormCheckbox = widgetFactory(
   </label>`,
 );
 
-const SIBFormDate = widgetFactory(
-  'sib-form-date',
+const SolidFormDate = widgetFactory(
+  'solid-form-date',
   `<label>
     <div>\${label}</div>
     <input
@@ -43,8 +43,8 @@ const SIBFormDate = widgetFactory(
   </label>`,
 );
 
-const SIBFormRangeDate = widgetFactory(
-  'sib-form-range-date',
+const SolidFormRangeDate = widgetFactory(
+  'solid-form-range-date',
   `<label>
     <div>\${label}</div>
     <input
@@ -60,8 +60,8 @@ const SIBFormRangeDate = widgetFactory(
   </label>`,
 );
 
-const SIBFormPlaceholderDate = widgetFactory(
-  'sib-form-placeholder-date',
+const SolidFormPlaceholderDate = widgetFactory(
+  'solid-form-placeholder-date',
   `<input
      data-holder
      type="date"
@@ -71,8 +71,8 @@ const SIBFormPlaceholderDate = widgetFactory(
    />`,
 );
 
-const SIBFormJSON = widgetFactory(
-  'sib-form-json',
+const SolidFormJSON = widgetFactory(
+  'solid-form-json',
   `<label>
     <div>\${label}</div>
     <input
@@ -84,8 +84,8 @@ const SIBFormJSON = widgetFactory(
   </label>`,
 );
 
-const SIBFormPlaceholderText = widgetFactory(
-  'sib-form-placeholder-text',
+const SolidFormPlaceholderText = widgetFactory(
+  'solid-form-placeholder-text',
   `<input
     data-holder
     placeholder="\${label}"
@@ -95,8 +95,8 @@ const SIBFormPlaceholderText = widgetFactory(
   >`,
 );
 
-const SIBFormTextarea = widgetFactory(
-  'sib-form-textarea',
+const SolidFormTextarea = widgetFactory(
+  'solid-form-textarea',
   `<label>
     <div>\${label}</div>
     <textarea
@@ -106,8 +106,8 @@ const SIBFormTextarea = widgetFactory(
   </label>`,
 );
 
-const SIBFormPlaceholderTextarea = widgetFactory(
-  'sib-form-placeholder-textarea',
+const SolidFormPlaceholderTextarea = widgetFactory(
+  'solid-form-placeholder-textarea',
   `<textarea
     data-holder
     placeholder="\${label}"
@@ -115,8 +115,8 @@ const SIBFormPlaceholderTextarea = widgetFactory(
   >\${escapedValue}</textarea>`,
 );
 
-const SIBFormDropdown = widgetFactory(
-  'sib-form-dropdown',
+const SolidFormDropdown = widgetFactory(
+  'solid-form-dropdown',
   `<label>
     <div>\${label}</div>
     <select name="\${name}" \${multiple?'multiple':''} data-holder>
@@ -129,8 +129,8 @@ const SIBFormDropdown = widgetFactory(
   <option value='{"@id": "\${id}"}' \${selected ? 'selected' : '' }>\${name}</option>`,
 );
 
-const SIBFormPlaceholderDropdown = widgetFactory(
-  'sib-form-placeholder-dropdown',
+const SolidFormPlaceholderDropdown = widgetFactory(
+  'solid-form-placeholder-dropdown',
   `<select name="\${name}" \${multiple?'multiple':''} data-holder>
     <option value="" \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
@@ -140,8 +140,8 @@ const SIBFormPlaceholderDropdown = widgetFactory(
   <option value='{"@id": "\${id}"}' \${selected ? 'selected' : ''}>\${name}</option>`,
 );
 
-const SIBFormAutoCompletion = widgetFactory(
-  'sib-form-auto-completion',
+const SolidFormAutoCompletion = widgetFactory(
+  'solid-form-auto-completion',
   `<label>
     <div>\${label}</div>
     <select name="\${name}" data-holder \${multiple?'multiple':''}>
@@ -161,8 +161,8 @@ const SIBFormAutoCompletion = widgetFactory(
   },
 );
 
-const SIBFormNumber = widgetFactory(
-  'sib-form-number',
+const SolidFormNumber = widgetFactory(
+  'solid-form-number',
   `<label>
     <div>\${label}</div>
     <input
@@ -174,8 +174,8 @@ const SIBFormNumber = widgetFactory(
   </label>`,
 );
 
-const SIBFormRangeNumber = widgetFactory(
-  'sib-form-range-number',
+const SolidFormRangeNumber = widgetFactory(
+  'solid-form-range-number',
   `<label>
     <div>\${label}</div>
     <input
@@ -191,8 +191,8 @@ const SIBFormRangeNumber = widgetFactory(
   </label>`,
 );
 
-const SIBFormHidden = widgetFactory(
-  'sib-form-hidden',
+const SolidFormHidden = widgetFactory(
+  'solid-form-hidden',
   `<input
     data-holder
     type="hidden"
@@ -201,8 +201,8 @@ const SIBFormHidden = widgetFactory(
   >`,
 );
 
-const SIBFormLabelPlaceholderText = widgetFactory(
-  'sib-form-label-placeholder-text',
+const SolidFormLabelPlaceholderText = widgetFactory(
+  'solid-form-label-placeholder-text',
   `<label>
     <div>\${label}</div>
     <input
@@ -215,8 +215,8 @@ const SIBFormLabelPlaceholderText = widgetFactory(
   </label>`,
 );
 
-const SIBFormPlaceholderNumber = widgetFactory(
-  'sib-form-placeholder-number',
+const SolidFormPlaceholderNumber = widgetFactory(
+  'solid-form-placeholder-number',
   `<input
     data-holder
     placeholder="\${label}"
@@ -227,22 +227,22 @@ const SIBFormPlaceholderNumber = widgetFactory(
 );
 
 export {
-  SIBFormAutoCompletion,
-  SIBFormCheckbox,
-  SIBFormDate,
-  SIBFormRangeDate,
-  SIBFormPlaceholderDate,
-  SIBFormDropdown,
-  SIBFormPlaceholderDropdown,
-  SIBFormPlaceholderTextarea,
-  SIBFormJSON,
-  SIBFormLabelText,
-  SIBFormNumber,
-  SIBFormRangeNumber,
-  SIBFormPlaceholderText,
-  SIBFormTextarea,
-  SIBFormHidden,
-  SIBFormFile,
-  SIBFormLabelPlaceholderText,
-  SIBFormPlaceholderNumber
+  SolidFormAutoCompletion,
+  SolidFormCheckbox,
+  SolidFormDate,
+  SolidFormRangeDate,
+  SolidFormPlaceholderDate,
+  SolidFormDropdown,
+  SolidFormPlaceholderDropdown,
+  SolidFormPlaceholderTextarea,
+  SolidFormJSON,
+  SolidFormLabelText,
+  SolidFormNumber,
+  SolidFormRangeNumber,
+  SolidFormPlaceholderText,
+  SolidFormTextarea,
+  SolidFormHidden,
+  SolidFormFile,
+  SolidFormLabelPlaceholderText,
+  SolidFormPlaceholderNumber
 };

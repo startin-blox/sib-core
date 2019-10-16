@@ -8,7 +8,7 @@ const GrouperMixin = {
     },
     groupByWidget: {
       type: String,
-      default: 'sib-group-div'
+      default: 'solid-group-div'
     }
   },
   attached() {

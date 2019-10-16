@@ -1,7 +1,7 @@
 import { BaseWidget } from './baseWidget.js';
 import { defineComponent } from "../libs/helpers.js";
 
-export default class SIBMultipleForm extends BaseWidget {
+export default class SolidMultipleForm extends BaseWidget {
   get range(): string | null {
     return this.getAttribute('range');
   }
@@ -84,4 +84,4 @@ export default class SIBMultipleForm extends BaseWidget {
   }
 }
 
-defineComponent('sib-multiple-form', SIBMultipleForm);
+defineComponent('solid-multiple-form', SolidMultipleForm);

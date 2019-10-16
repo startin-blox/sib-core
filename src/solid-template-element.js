@@ -1,4 +1,4 @@
-export default class SIBTemplateElement extends HTMLElement {
+export default class SolidTemplateElement extends HTMLElement {
   constructor() {
     super();
     this.initProps();

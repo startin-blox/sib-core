@@ -109,7 +109,7 @@ const WidgetMixin = {
       }
       return widget;
     }
-    if (this.getAction(field)) return 'sib-action';
+    if (this.getAction(field)) return 'solid-action';
     return this.defaultWidget;
   },
   widgetAttributes(field: string): object {

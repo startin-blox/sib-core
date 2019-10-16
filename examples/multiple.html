@@ -9,39 +9,39 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>sib-display</h1>
-    <sib-widget name="hd-skill-name">
+    <h1>solid-display</h1>
+    <solid-widget name="hd-skill-name">
       <template>
         <small>${label}:</small>
         <pre>${await value.name}</pre>
       </template>
-    </sib-widget>
-    <sib-display
+    </solid-widget>
+    <solid-display
       data-src="data/list/user-1.jsonld"
       fields="username, skills"
       widget-skills="hd-skill-name"
       label-skills="all skills"
       each-label-skills="one skill"
       multiple-skills
-    ></sib-display>
+    ></solid-display>
 
-    <h1>sib-form</h1>
-    <sib-form
+    <h1>solid-form</h1>
+    <solid-form
       data-src="data/list/user-1.jsonld"
       fields="skills"
       range-skills="data/list/skills.jsonld"
       multiple-skills
       label-skills="Skills:"
-    ></sib-form>
+    ></solid-form>
 
     <h1>creation</h1>
-    <sib-form
+    <solid-form
       data-src="data/list/users.jsonld"
       fields="username, skills"
       range-skills="data/list/skills.jsonld"
       multiple-skills
       multiple-skills-add-label="Ajouter une compétence"
       multiple-skills-remove-label="Supprimer cette compétence"
-    ></sib-form>
+    ></solid-form>
   </body>
 </html>

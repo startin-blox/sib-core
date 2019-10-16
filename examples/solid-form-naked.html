@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-form naked</title>
+    <title>SIB test: solid-form naked</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <h3>Normal sib-form</h3>
-    <sib-form
+    <h3>Normal solid-form</h3>
+    <solid-form
       id="normal"
       data-src="data/list/user-1.jsonld"
       fields="username, profile.city"
-    ></sib-form>
-    <h3>Naked sib-form</h3>
-    <sib-form
+    ></solid-form>
+    <h3>Naked solid-form</h3>
+    <solid-form
       id="naked"
       naked
       data-src="data/list/user-1.jsonld"
       fields="username, profile.city"
-    ></sib-form>
+    ></solid-form>
     <hr>
-    <button id="f2o">sib-form.value</button>
+    <button id="f2o">solid-form.value</button>
     <pre id="pre"></pre>
     <script>
-      const sibForms = document.getElementsByTagName('sib-form');
+      const sibForms = document.getElementsByTagName('solid-form');
       f2o.onclick = () => {
         const data = {};
         for (elm of sibForms) {

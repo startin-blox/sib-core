@@ -12,32 +12,32 @@
   <body>
     <details>
       <summary>Order by:</summary>
-      <sib-display
+      <solid-display
         data-src="data/list/users.jsonld"
         fields="username, firstName, lastName, email"
         order-by="username"
-      ></sib-display>
+      ></solid-display>
     </details>
 
     <details>
       <summary>Order by + pagination:</summary>
-      <sib-display
+      <solid-display
         data-src="data/list/users.jsonld"
         fields="username, firstName, lastName, email"
         order-by="username"
         paginate-by="3"
-      ></sib-display>
+      ></solid-display>
     </details>
 
     <details>
       <summary>Order by + pagination + search:</summary>
-      <sib-display
+      <solid-display
         data-src="data/list/users.jsonld"
         fields="username, firstName, lastName, email"
         order-by="username"
         paginate-by="3"
         search-fields="username"
-      ></sib-display>
+      ></solid-display>
     </details>
   </body>
 </html>

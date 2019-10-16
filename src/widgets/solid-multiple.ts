@@ -1,6 +1,6 @@
 import { BaseWidget } from './baseWidget.js';
 import { defineComponent } from "../libs/helpers.js";
-export default class SIBMultiple extends BaseWidget {
+export default class SolidMultiple extends BaseWidget {
   async render() {
     const fragment = document.createDocumentFragment();
     if (!this.value) return;
@@ -62,4 +62,4 @@ export default class SIBMultiple extends BaseWidget {
   }
 }
 
-defineComponent('sib-multiple', SIBMultiple);
+defineComponent('solid-multiple', SolidMultiple);

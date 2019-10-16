@@ -10,8 +10,8 @@ import { GrouperMixin } from '../mixins/grouperMixin.js';
 import { FederationMixin } from '../mixins/federationMixin.js';
 import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 
-export const SibDisplay = {
-  name: 'sib-display',
+export const SolidDisplay = {
+  name: 'solid-display',
   use: [
     WidgetMixin,
     ListMixin,
@@ -27,7 +27,7 @@ export const SibDisplay = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'sib-display-value',
+      default: 'solid-display-value',
     },
   },
   created(): void {
@@ -42,7 +42,7 @@ export const SibDisplay = {
       );
     }) as EventListener;
     window.addEventListener('navigate', listener);
-    const route = document.querySelector('sib-route[active]');
+    const route = document.querySelector('solid-route[active]');
     if (!route) return;
     const event = new CustomEvent('navigate', {
       detail: {
@@ -57,12 +57,12 @@ export const SibDisplay = {
     return this.element.dataset.child || this.element.tagName;
   },
   get defaultMultipleWidget(): string {
-    return 'sib-multiple';
+    return 'solid-multiple';
   },
   get defaultSetWidget(): string {
-    return 'sib-set-default';
+    return 'solid-set-default';
   },
-  // Here "even.target" points to the content of the widgets of the children of sib-display
+  // Here "even.target" points to the content of the widgets of the children of solid-display
   dispatchSelect(event: Event): void {
     if (event.target) {
       const target = event.target as Element;
@@ -113,4 +113,4 @@ export const SibDisplay = {
   },
 };
 
-Sib.register(SibDisplay);
+Sib.register(SolidDisplay);

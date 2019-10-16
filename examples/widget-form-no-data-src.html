@@ -11,20 +11,20 @@
 </head>
 
 <body>
-    <sib-widget name="sib-form-profile">
+    <solid-widget name="solid-form-profile">
       <template>
         <h3>Nested form</h3>
-        <sib-form
+        <solid-form
         data-holder
         naked
-        fields="city, phone, bio"></sib-form>
+        fields="city, phone, bio"></solid-form>
       </template>
-    </sib-widget>
+    </solid-widget>
 
     <h3>Form (in creation only)</h3>
-    <sib-form
+    <solid-form
     data-src="data/list/users.jsonld"
     fields="username, profile"
-    widget-profile="sib-form-profile"></sib-form>
+    widget-profile="solid-form-profile"></solid-form>
 </body>
 </html>

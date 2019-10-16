@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-calendar</title>
-    <script type="module" src="../dist/components/sib-calendar.js"></script>
+    <title>SIB test: solid-calendar</title>
+    <script type="module" src="../dist/components/solid-calendar.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', event => {
         document
-          .querySelector('sib-calendar')
+          .querySelector('solid-calendar')
           .addEventListener('resourceSelect', event =>
             console.log(event.detail.resource),
           );
       });
     </script>
     <style>
-      sib-calendar {
+      solid-calendar {
         display: block;
         width: 800px;
         height: 600px;
@@ -30,6 +30,6 @@
   </head>
   <body>
     <h2>Sib Calendar</h2>
-    <sib-calendar data-src="data/calendar/events.jsonld"></sib-calendar>
+    <solid-calendar data-src="data/calendar/events.jsonld"></solid-calendar>
   </body>
 </html>

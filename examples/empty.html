@@ -10,17 +10,17 @@
   </head>
 
   <body>
-    <sib-widget name="empty-widget">
+    <solid-widget name="empty-widget">
       <template>
-        <small>No user yet in the list. <sib-link next="${value}">click here to add one</sib-link></small>
+        <small>No user yet in the list. <solid-link next="${value}">click here to add one</solid-link></small>
       </template>
-    </sib-widget>
+    </solid-widget>
 
-    <sib-display
+    <solid-display
       data-src="data/empty-container.jsonld"
       fields="@id, username, email"
       empty-widget="empty-widget"
       empty-value="add-user"
-    ></sib-display>
+    ></solid-display>
   </body>
 </html>

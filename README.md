@@ -20,43 +20,43 @@ You first need to load the webcomponents polyfill for the browsers that have not
 <script type="module" src="https://unpkg.com/@startinblox/router"></script>
 ```
 
-Then you can use the new tags in your markup, for instance : `<sib-display>`. More details on each component in the following section.
+Then you can use the new tags in your markup, for instance : `<solid-display>`. More details on each component in the following section.
 
 ## Components documentation
 
-### `sib-display`
+### `solid-display`
 
 Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays it.
 Each field of the displayed resources can be rendered by a specific widget, either custom or chosen from the default ones.
 Filters and searching capabilities can be easily added to interact with the list of data being displayed.
 
 ```html
-<sib-display
+<solid-display
   id="list"
   data-src="http://localhost:8000/todos/"
   value-created="Created by:"
   fields="image, status(state), author(created, name), info(task, date), deadline"
-  widget-image="sib-display-img"
+  widget-image="solid-display-img"
   search-fields="name, author"
   next="detail"
-></sib-display>
+></solid-display>
 ```
 
 **Attributes:**
 
 - **`data-src`**: The uri of the LDP resource you want to display.
-  If this resource is a container, `<sib-display>` will create a child `<sib-display>` for each resource it contains, and `<sib-form>` will display a blank form with appropriate fields to create a new resource.
+  If this resource is a container, `<solid-display>` will create a child `<solid-display>` for each resource it contains, and `<solid-form>` will display a blank form with appropriate fields to create a new resource.
 - **`value-xyz`**: To display a string not contained within the data.
 - **`fields`**: The ordered list of fields to be displayed, separated by commas.
 
   By default, all the fields of the resource are displayed.
 
-  To not show any fields, put an empty fields (eg. `<sib-display fields />)`
+  To not show any fields, put an empty fields (eg. `<solid-display fields />)`
 
   To group fields within a `<div>` tag that will have the `name` attribute set up to `xyz`, enclose some fields in parenthesis. For example: `fields="xyz(first_name, last_name), email"`. You can customize the group widget, see the **[sets widgets](#set-widgets)** section below for more info.
 
-  By default, all displayed fields are direct children of `<sib-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
-- **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<sib-display-div>`. Cf the **[Display widgets](#display-widgets)** section below for more info.
+  By default, all displayed fields are direct children of `<solid-display>`. Make sure you don't give your set the same name as a field as it would result in an infinite loop.
+- **`widget-xyz`**: The widget to be used to display the `xyz` field. By default, the widget used is `<solid-display-div>`. Cf the **[Display widgets](#display-widgets)** section below for more info.
 - **`default-widget`**: The widget to use for all the fields, except if a specific one is defined for a field.
 - **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used. Cf the **[Multiple widgets](#multiple-widgets)** section below for more info.
   - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
@@ -75,12 +75,12 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`order-by`**: The name of the field you want to use to order the list. For example, `order-by="username"` will order the users list alphabetically based on the username.
 - **`highlight-xyz`**: The resources to put at the top of the list. For example, `highlight-date="2019-05-20"` will display first all the resources which have a field date equal to "2019-05-20".
 - **`group by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="date"` will render one `<div>` by date, and put the corresponding resources inside.
-- **`next`**: `name` attribute of the `<sib-route>` that should be accessed when a `<sib-display>` element is clicked. See the documentation of `<sib-router>` for more details.
+- **`next`**: `name` attribute of the `<solid-route>` that should be accessed when a `<solid-display>` element is clicked. See the documentation of `<solid-router>` for more details.
 - **`action-xyz`**:
 - **`label-xyz`**: Set the label for the field `xyz`
 - **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.
-  The editable attribute works with the following widgets: `sib-display-div`, `sib-display-labelled-div`, `sib-display-mailto` and `sib-display-tel`
-- **`counter-template`**: To display the number of resources fetched by the `sib-display`.
+  The editable attribute works with the following widgets: `solid-display-div`, `solid-display-labelled-div`, `solid-display-mailto` and `solid-display-tel`
+- **`counter-template`**: To display the number of resources fetched by the `solid-display`.
   It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
   i.e. `"<strong>${counter} results</strong>"`
 - **`extra-context`**: The id of the `<script>` tag which contains the context you want to add for this component. An extra context looks like this:
@@ -101,19 +101,19 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`empty-value`**: To display a value in the empty widget. It can be accessed in the widget like this: `${value}`
 
 **API:**
-In Javascript, you have access to different variables and methods on a `sib-display` element:
+In Javascript, you have access to different variables and methods on a `solid-display` element:
 - `sibDisplay.resource`: returns the Proxy of the current resource
   - `sibDisplay.resource.clearCache()` (async): clears the cache of the store for this resource
 - `sibDisplay.resourceId`: returns the id of the current resource
 
 
-### `sib-form`
+### `solid-form`
 
 Receives the URL of a ressource via its `data-src` attribute, and displays a form to edit the resource.
 If given the URL of a container of ressources, and displays a creation form to add a resource to the container.
 
 ```html
-<sib-form data-src="http://localhost:8000/todos/"></sib-form>
+<solid-form data-src="http://localhost:8000/todos/"></solid-form>
 ```
 
 **Attributes:**
@@ -122,23 +122,23 @@ If given the URL of a container of ressources, and displays a creation form to a
   i.e. `label-username="Your name"`
 - **`naked`**: When the attribute is set, the submit button will be removed.
   It's particularly useful to prevent the nested forms to display their own submit button.
-- **`upload-url-xyz`**: URL to upload file for field `xyz`, it automatically set `widget-xyz` to `sib-form-file` if net defined. 
+- **`upload-url-xyz`**: URL to upload file for field `xyz`, it automatically set `widget-xyz` to `solid-form-file` if net defined. 
   It's particularly useful with a dropdown field.
 - **`submit-button`**: Text of the submit button of the form.
 - **`range-xyz`**: URL of a container which list the accepted values for the field `xyz`.
   It's particularly useful with a dropdown field.
 - **`partial`**: Add this attribute when the form does not include all the fields of the resource to update.
 
-### `sib-ac-checker`
+### `solid-ac-checker`
 
 Hides an element from the page if the current user doesn't have the required permissions on it.
 
 ```html
-<sib-ac-checker permission="acl:Write" bind-resources>
-  <sib-route name="member-edit">
+<solid-ac-checker permission="acl:Write" bind-resources>
+  <solid-route name="member-edit">
     <div>Edit</div>
-  </sib-route>
-</sib-ac-checker>
+  </solid-route>
+</solid-ac-checker>
 ```
 
 **Attributes :**
@@ -152,16 +152,16 @@ Possible values:
 - [acl:Append](https://github.com/solid/web-access-control-spec#aclappend)
 - [acl:Control](https://github.com/solid/web-access-control-spec#aclcontrol)
 
-### `sib-calendar`
+### `solid-calendar`
 
 Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays it in a **calendar**. Here is the list of fields needed to display the resources properly:
 
 - `name`: name of the event displayed on the calendar
 - `date`: date on which the resource will be displayed
 
-Like for sib-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
+Like for solid-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
 
-### `sib-map`
+### `solid-map`
 
 Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays it on a **map**. Here is the list of fields needed to display the resources properly:
 
@@ -169,29 +169,29 @@ Receives the URL of a resource or of a container of resources via its `data-src`
 - `lat`: latitude on which the resource will be displayed
 - `lng`: longitude on which the resource will be displayed
 
-Like for sib-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
+Like for solid-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
 
-### `sib-widget`
+### `solid-widget`
 
 Take a `name` as an attribute and a HTML template, and create an HTML custom element you can use as a widget. i.e.
 
 ```html
 <!-- Your custom widget to display a customer... -->
-<sib-widget name="my-custom-widget">
+<solid-widget name="my-custom-widget">
   <template>
     <h2>Customer name: ${value.name}</h2>
   </template>
-</sib-widget>
+</solid-widget>
 
-<!-- ... used in a sib-display -->
-<sib-display
+<!-- ... used in a solid-display -->
+<solid-display
   data-src="http://server/projects/"
   fields="name, customer"
   widget-customer="my-custom-widget"
-></sib-display>
+></solid-display>
 ```
 
-In a `sib-widget`, you have access to these values:
+In a `solid-widget`, you have access to these values:
 
 - **`id`**: id of the displayed resource
 - **`value`**: all the values of the current resources
@@ -201,12 +201,12 @@ In a `sib-widget`, you have access to these values:
 
 > NB: Do not forget to define your custom template in a `<template>` tag. Otherwise, your widget will not be declared properly.
 
-### `sib-delete`
+### `solid-delete`
 
 Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays a button to delete it when clicked.
 
 ```html
-<sib-delete data-src="http://localhost:8000/conversations/9/"></sib-delete>
+<solid-delete data-src="http://localhost:8000/conversations/9/"></solid-delete>
 ```
 
 **Attributes:**
@@ -225,50 +225,50 @@ The following widgets are available:
 
 ### Display widgets
 
-- **`sib-display-value`** (default): Displays the value.
-- **`sib-display-div`**: Displays the `value` inside a `<div>` HTML tag.
-- **`sib-display-labelled-div`**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>` HTML tag
-- **`sib-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
-- **`sib-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
-- **`sib-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
-- **`sib-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path. If a label is defined for this field, it's displayed as the content of the link.
-- **`sib-display-tel`**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
-- **`sib-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
-- **`sib-display-date`**: Displays a date in the browser's default locale format
-- **`sib-display-date-time`**: Displays a date and a time in the browser's default locale format
+- **`solid-display-value`** (default): Displays the value.
+- **`solid-display-div`**: Displays the `value` inside a `<div>` HTML tag.
+- **`solid-display-labelled-div`**: Displays the `value` inside a `<div>` HTML tag, after the `label` contained in a `<label>` HTML tag
+- **`solid-display-multiline`**:Displays the `value` inside a `<div>`, `\n` are replaced by `<br>`.
+- **`solid-display-labelled-boolean`**: Displays the `label` inside a `<label>` HTML tag if the `value` is true
+- **`solid-display-img`**: Inserts the `value` as the src attribute value of an `<img>` HTML tag.
+- **`solid-display-mailto`**: Displays a link inside a `<a>` HTML tag with a `mailto:value` as path. If a label is defined for this field, it's displayed as the content of the link.
+- **`solid-display-tel`**: Displays a link inside a `<a>` HTML tag with a `tel:value` as path
+- **`solid-display-link`**: Displays a link inside a `<a>` HTML tag with the value as path, and the label as text content
+- **`solid-display-date`**: Displays a date in the browser's default locale format
+- **`solid-display-date-time`**: Displays a date and a time in the browser's default locale format
 
 ### Form widgets
 
-- **`sib-form-label-text`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag.
-- **`sib-form-checkbox`**: Inserts an `<input/>` HTML tag of type "checkbox", in a `<label>` HTML tag.
-- **`sib-form-date`**: Inserts an `<input/>` HTML tag of type "date", in a `<label>` HTML tag.
-- **`sib-form-range-date`**:
-- **`sib-form-json`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag, and with its `value` converted from JSON to string
-- **`sib-form-placeholder-text`**: Inserts an `<input/>` HTML tag of type "text", with the `label` as placeholder.
-- **`sib-form-textarea`**: Inserts an `<textarea>` HTML tag in a `<label>` HTML tag.
-- **`sib-form-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-dropdown` widget.
-- **`sib-form-placeholder-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. It has no label but a default disabled value as a label
-- **`sib-form-auto-completion`**: Inserts a `<input />` HTML tag and load an autocomplete plugin. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `sib-form-auto-completion` widget.
-- **`sib-form-number`**: Inserts an `<input/>` HTML tag of type "number", in a `<label>` HTML tag.
-- **`sib-form-range-number`**:
-- **`sib-form-file`**: Inserts an `<input/>` and an `<input type="file"/>`. when a file is selected it's uploaded, URL of file is returned by request and set as the `<input/>` value. The upload URL is provided via the `upload-url` attribute.
-- **`sib-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
+- **`solid-form-label-text`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag.
+- **`solid-form-checkbox`**: Inserts an `<input/>` HTML tag of type "checkbox", in a `<label>` HTML tag.
+- **`solid-form-date`**: Inserts an `<input/>` HTML tag of type "date", in a `<label>` HTML tag.
+- **`solid-form-range-date`**:
+- **`solid-form-json`**: Inserts an `<input/>` HTML tag of type "text", in a `<label>` HTML tag, and with its `value` converted from JSON to string
+- **`solid-form-placeholder-text`**: Inserts an `<input/>` HTML tag of type "text", with the `label` as placeholder.
+- **`solid-form-textarea`**: Inserts an `<textarea>` HTML tag in a `<label>` HTML tag.
+- **`solid-form-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `solid-form-dropdown` widget.
+- **`solid-form-placeholder-dropdown`**: Inserts a `<select>` HTML tag to select a unique value from a list. It has no label but a default disabled value as a label
+- **`solid-form-auto-completion`**: Inserts a `<input />` HTML tag and load an autocomplete plugin. The list is provided via the `range-xyz`, which expects a container's URL. **xyz** is the name of the field using the `solid-form-auto-completion` widget.
+- **`solid-form-number`**: Inserts an `<input/>` HTML tag of type "number", in a `<label>` HTML tag.
+- **`solid-form-range-number`**:
+- **`solid-form-file`**: Inserts an `<input/>` and an `<input type="file"/>`. when a file is selected it's uploaded, URL of file is returned by request and set as the `<input/>` value. The upload URL is provided via the `upload-url` attribute.
+- **`solid-form-hidden`**: Inserts an `<input/>` HTML tag of type "hidden", in a `<label>` HTML tag.
 
 ### Multiple widgets
 
-- **`sib-multiple`** (default for display): Inserts all the widgets in a `<sib-multiple>` tag.
-- **`sib-multiple-form`** (default for forms): Inserts all the widgets in a `<sib-multiple-form>` tag, with a "remove" button for each widget, and an "add" button.
-- **`sib-multiple-select`**: Inserts all the values as `<option>` in a `<select>` tag with a `multiple` attribute.
+- **`solid-multiple`** (default for display): Inserts all the widgets in a `<solid-multiple>` tag.
+- **`solid-multiple-form`** (default for forms): Inserts all the widgets in a `<solid-multiple-form>` tag, with a "remove" button for each widget, and an "add" button.
+- **`solid-multiple-select`**: Inserts all the values as `<option>` in a `<select>` tag with a `multiple` attribute.
 
 ### Set widgets
-- **`sib-set-default`** (default): Inserts content directly in the set tag.
-- **`sib-set-div`**: Inserts content in a `<div/>` HTML tag
-- **`sib-set-ul`**: Inserts content in a `<ul/>` HTML tag
-- **`sib-set-fieldset`**: Inserts content in a `<fieldset/>` HTML tag
+- **`solid-set-default`** (default): Inserts content directly in the set tag.
+- **`solid-set-div`**: Inserts content in a `<div/>` HTML tag
+- **`solid-set-ul`**: Inserts content in a `<ul/>` HTML tag
+- **`solid-set-fieldset`**: Inserts content in a `<fieldset/>` HTML tag
 
 ### Actions widgets
 
-- **`sib-action`**: Displays a link inside a `<sib-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
+- **`solid-action`**: Displays a link inside a `<solid-link>` tag with `src` for the `data-src` attribute, `value` for the `next` attribute and `label` as text content
 
 ## Helpers fonctions
 
@@ -283,9 +283,9 @@ The following widgets are available:
 
 | Event name       | Fired by                                             | Fired when                                                                        |
 | ---------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `resourceSelect` | `sib-display`, `sib-calendar`, `sib-map`             | the user clicks an child in the list, with the resource as a detail of the event. |
-| `populate`       | `sib-display`, `sib-form`, `sib-calendar`, `sib-map` | the component got and displayed all its datas.                                    |
-| `save`           | `sib-form`                                           | the user validates the form.                                                      |
+| `resourceSelect` | `solid-display`, `solid-calendar`, `solid-map`             | the user clicks an child in the list, with the resource as a detail of the event. |
+| `populate`       | `solid-display`, `solid-form`, `solid-calendar`, `solid-map` | the component got and displayed all its datas.                                    |
+| `save`           | `solid-form`                                           | the user validates the form.                                                      |
 
 ## Contribute
 

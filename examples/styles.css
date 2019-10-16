@@ -1,19 +1,19 @@
-sib-display,
-sib-display-value,
-sib-multiple,
-sib-link {
+solid-display,
+solid-display-value,
+solid-multiple,
+solid-link {
   border: 1px solid blue;
   display: block;
   padding: 0.3em;
   margin: 0.3em;
 }
-sib-display-value {
+solid-display-value {
   border-color: orangered;
 }
-sib-multiple {
+solid-multiple {
   border-color: seagreen;
 }
-sib-link {
+solid-link {
   border-color: purple;
   cursor: pointer;
 }
@@ -31,13 +31,13 @@ form > * {
 label {
   display: block;
 }
-sib-route {
+solid-route {
   display: inline-block;
   background-color: #aaa;
   padding: 0.5em;
   cursor: pointer;
 }
-sib-route[active] {
+solid-route[active] {
   background-color: #ccc;
 }
 

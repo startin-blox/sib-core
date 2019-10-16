@@ -10,13 +10,13 @@
   </head>
 
   <body>
-    <sib-delete
+    <solid-delete
       data-src="http://127.0.0.1:8000/conversations/4/"
       data-label="Supprimer"
-    ></sib-delete>
+    ></solid-delete>
 
     <script>
-    document.querySelector('sib-delete').addEventListener('resourceDeleted', e => {
+    document.querySelector('solid-delete').addEventListener('resourceDeleted', e => {
       console.log("Resource deleted: ", e.detail.resource);
     });
     </script>

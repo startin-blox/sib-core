@@ -25,7 +25,7 @@ const FilterMixin = {
     this.listPostProcessors.push(this.filterCallback.bind(this));
   },
   get searchForm(): ComponentInterface {
-    return this.element.querySelector('sib-form');
+    return this.element.querySelector('solid-form');
   },
   get filters(): object {
     return this.searchForm ? this.searchForm.component.value : {};
@@ -114,7 +114,7 @@ const FilterMixin = {
     );
   },
   async appendFilters(context: string): Promise<void> {
-    const searchForm = document.createElement('sib-form');
+    const searchForm = document.createElement('solid-form');
     searchForm.addEventListener('formChange', () => this.filterList(context))
     searchForm.toggleAttribute('naked', true);
 

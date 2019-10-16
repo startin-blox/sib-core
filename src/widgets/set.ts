@@ -1,29 +1,29 @@
 import { widgetFactory } from './widget-factory.js';
 
-const SIBSetDefault = widgetFactory(
-  'sib-set-default',
+const SolidSetDefault = widgetFactory(
+  'solid-set-default',
   ``,
 );
 
-const SIBSetDiv = widgetFactory(
-  'sib-set-div',
+const SolidSetDiv = widgetFactory(
+  'solid-set-div',
   `<div data-content></div>`,
 );
 
-const SIBSetUl = widgetFactory(
-  'sib-set-ul',
+const SolidSetUl = widgetFactory(
+  'solid-set-ul',
   `<ul data-content></ul>`,
 );
 
-const SIBSetFieldset = widgetFactory(
-  'sib-set-fieldset',
+const SolidSetFieldset = widgetFactory(
+  'solid-set-fieldset',
   `<fieldset data-content></fieldset>`,
 );
 
 
 export {
-  SIBSetDefault,
-  SIBSetDiv,
-  SIBSetUl,
-  SIBSetFieldset
+  SolidSetDefault,
+  SolidSetDiv,
+  SolidSetUl,
+  SolidSetFieldset
 };

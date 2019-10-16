@@ -7,8 +7,8 @@ import { store } from '../libs/store/store.js';
 //@ts-ignore
 import L from 'https://dev.jspm.io/leaflet';
 
-export const SibMap = {
-  name: 'sib-map',
+export const SolidMap = {
+  name: 'solid-map',
   use: [ListMixin, StoreMixin],
   initialState: {
     markers: {
@@ -96,4 +96,4 @@ export const SibMap = {
   }
 };
 
-Sib.register(SibMap);
+Sib.register(SolidMap);

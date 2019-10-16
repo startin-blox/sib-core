@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <sib-widget name="sib-test-profile">
+  <solid-widget name="solid-test-profile">
     <template>
       <p><strong>${name}</strong></p>
       <p>
@@ -19,15 +19,15 @@
         ${await value.phone}
       </p>
     </template>
-  </sib-widget>
+  </solid-widget>
 
-  <sib-widget name="sib-test-name">
+  <solid-widget name="solid-test-name">
     <template>
       <h1>Name: ${value}</h1>
     </template>
-  </sib-widget>
+  </solid-widget>
 
-  <sib-widget name="sib-custom-dropdown">
+  <solid-widget name="solid-custom-dropdown">
       <template>
         <label>${label}</label>
         <select>
@@ -38,21 +38,21 @@
       <template data-range>
           <option value="${name}">skill: ${name}</option>
       </template>
-    </sib-widget>
+    </solid-widget>
 
 
-  <sib-display
+  <solid-display
     data-src="data/list/user-1.jsonld"
     fields="name, profile"
-    widget-name="sib-test-name"
-    widget-profile="sib-test-profile"
-    ></sib-display>
+    widget-name="solid-test-name"
+    widget-profile="solid-test-profile"
+    ></solid-display>
 
     <h2>Choose skills</h2>
-    <sib-form
+    <solid-form
     fields="skills"
     range-skills="data/list/skills.jsonld"
-    widget-skills="sib-custom-dropdown"
-    ></sib-form>
+    widget-skills="solid-custom-dropdown"
+    ></solid-form>
 </body>
 </html>

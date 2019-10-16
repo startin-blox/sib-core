@@ -12,16 +12,16 @@
   </head>
 
   <body>
-    <sib-router default-route="home" route-prefix="examples/sib-display-next.html" use-hash>
-      <sib-route name="home">home</sib-route>
-      <sib-route name="detail" use-id></sib-route>
-    </sib-router>
+    <solid-router default-route="home" route-prefix="examples/solid-display-next.html" use-hash>
+      <solid-route name="home">home</solid-route>
+      <solid-route name="detail" use-id></solid-route>
+    </solid-router>
 
-    <sib-display
+    <solid-display
       data-src="./data/list/users.jsonld"
       fields="@id"
       next="detail"
-    ></sib-display>
+    ></solid-display>
 
     <div id="home">
       <h1>HOME</h1>
@@ -29,10 +29,10 @@
 
     <div id="detail">
       <h1>DETAIL</h1>
-      <sib-display
+      <solid-display
         fields="@id, username, firstName, lastName, email"
         bind-resources
-      ></sib-display>
+      ></solid-display>
     </div>
   </body>
 

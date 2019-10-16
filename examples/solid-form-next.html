@@ -4,46 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: sib-form + next</title>
+    <title>SIB test: solid-form + next</title>
     <script type="module" src="../dist/index.js"></script>
     <script type="module" src="https://unpkg.com/@startinblox/router@0.7"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-      <sib-router default-route="all" use-hash>
-        <sib-route name="all">view all</sib-route>
-        <sib-route name="edit">edit</sib-route>
-        <sib-route name="add">add new</sib-route>
-        <sib-route name="view">view it</sib-route>
-      </sib-router>
+      <solid-router default-route="all" use-hash>
+        <solid-route name="all">view all</solid-route>
+        <solid-route name="edit">edit</solid-route>
+        <solid-route name="add">add new</solid-route>
+        <solid-route name="view">view it</solid-route>
+      </solid-router>
       <div id="all" hidden>
-        <sib-display
+        <solid-display
         data-src="https://api.test-paris.happy-dev.fr/skills/"
         fields="name"
         next="edit"
-        ></sib-display>
+        ></solid-display>
       </div>
       <div id="edit" hidden>
-        <sib-form
+        <solid-form
           bind-resources
           fields="name"
           next="view"
-        ></sib-form>
+        ></solid-form>
       </div>
       <div id="add" hidden>
-        <sib-form
+        <solid-form
         data-src="https://api.test-paris.happy-dev.fr/skills/"
         fields="name"
         next="view"
-        ></sib-form>
+        ></solid-form>
       </div>
       
       <div id="view" hidden>
-        <sib-display
+        <solid-display
           bind-resources
           fields="name"
-        ></sib-display>
+        ></solid-display>
       </div>
   </body>
 </html>
