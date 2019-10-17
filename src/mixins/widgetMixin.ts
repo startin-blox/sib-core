@@ -115,6 +115,7 @@ const WidgetMixin = {
   widgetAttributes(field: string): object {
     const attrs = {
       name: field,
+      context: this.context
     };
     const escapedField = this.getEscapedField(field);
     for (let attr of ['range', 'label', 'class']) {
@@ -136,7 +137,6 @@ const WidgetMixin = {
     }
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
-    attrs['context'] = this.context;
 
     return attrs;
   },
