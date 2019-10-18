@@ -182,6 +182,11 @@ class LDFlexGetter {
     );
   }
 
+  async getType() {
+    const type = await this.resource['rdf:type'];
+    return type ? this.getCompactedIri(type.toString()) : undefined;
+  }
+
   // Returns a Proxy which handles the different get requests
   async getProxy(proxy = null) {
     if (!this.proxy) {
@@ -194,7 +199,7 @@ class LDFlexGetter {
             case '@id':
               return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
             case '@type':
-              return this.resource['rdf:type']; // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
+              return this.getType(); // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
             case 'properties':
               return this.getProperties();
             case 'permissions':
