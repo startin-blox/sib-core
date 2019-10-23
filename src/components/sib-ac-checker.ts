@@ -1,7 +1,7 @@
 //@ts-ignore
-import asyncSome from 'https://dev.jspm.io/iter-tools/es2018/async-some';
+import asyncSome from 'https://dev.jspm.io/iter-tools/es2015/async-some';
 //@ts-ignore
-import asyncEvery from 'https://dev.jspm.io/iter-tools/es2018/async-every';
+import asyncEvery from 'https://dev.jspm.io/iter-tools/es2015/async-every';
 //@ts-ignore
 import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
 import { Sib } from '../libs/Sib.js';

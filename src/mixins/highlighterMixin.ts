@@ -1,7 +1,7 @@
 //@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
+import asyncMap from 'https://dev.jspm.io/iter-tools/es2015/async-map';
 //@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools/es2018/async-to-array';
+import asyncToArray from 'https://dev.jspm.io/iter-tools/es2015/async-to-array';
 
 const HighlighterMixin = {
   name: 'highlighter-mixin',
