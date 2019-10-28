@@ -90,6 +90,7 @@ export const SolidDisplay = {
       if (
         attr.name.startsWith('value-') ||
         attr.name.startsWith('label-') ||
+        attr.name.startsWith('placeholder-') ||
         attr.name.startsWith('widget-') ||
         attr.name.startsWith('class-') ||
         attr.name.startsWith('multiple-') ||

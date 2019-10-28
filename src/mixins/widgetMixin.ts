@@ -117,12 +117,12 @@ const WidgetMixin = {
       name: field,
     };
     const escapedField = this.getEscapedField(field);
-    for (let attr of ['range', 'label', 'class']) {
+    for (let attr of ['range', 'label', 'placeholder', 'class']) {
       const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
-    for (let attr of ['range', 'label', 'class', 'widget', 'editable', 'upload-url']) {
+    for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url']) {
       const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';

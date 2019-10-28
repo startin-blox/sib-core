@@ -65,7 +65,7 @@ const SolidFormPlaceholderDate = widgetFactory(
   `<input
      data-holder
      type="date"
-     placeholder="\${label}"
+     placeholder="\${placeholder}"
      name="\${name}"
      value="\${escapedValue}"
    />`,
@@ -88,7 +88,7 @@ const SolidFormPlaceholderText = widgetFactory(
   'solid-form-placeholder-text',
   `<input
     data-holder
-    placeholder="\${label}"
+    placeholder="\${placeholder}"
     type="text"
     name="\${name}"
     value="\${escapedValue}"
@@ -110,7 +110,7 @@ const SolidFormPlaceholderTextarea = widgetFactory(
   'solid-form-placeholder-textarea',
   `<textarea
     data-holder
-    placeholder="\${label}"
+    placeholder="\${placeholder}"
     name="\${name}"
   >\${escapedValue}</textarea>`,
 );
@@ -209,7 +209,7 @@ const SolidFormLabelPlaceholderText = widgetFactory(
       data-holder
       type="text"
       name="\${name}"
-      placeholder="\${label}"
+      placeholder="\${placeholder}"
       value="\${escapedValue}"
     >
   </label>`,
@@ -219,7 +219,7 @@ const SolidFormPlaceholderNumber = widgetFactory(
   'solid-form-placeholder-number',
   `<input
     data-holder
-    placeholder="\${label}"
+    placeholder="\${placeholder}"
     type="number"
     name="\${name}"
     value="\${value}"

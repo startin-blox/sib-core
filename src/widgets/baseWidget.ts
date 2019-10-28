@@ -18,6 +18,7 @@ export class BaseWidget extends HTMLElement {
       src: this.src,
       name: this.name,
       label: this.label,
+      placeholder: this.placeholder,
       value: this.value,
       id: (this._value && this._value['@id']) || '',
       escapedValue: this.escapedValue,
@@ -34,6 +35,13 @@ export class BaseWidget extends HTMLElement {
   }
   set label(label: string | null) {
     if(label != null) this.setAttribute('label', label);
+    this.render();
+  }
+  get placeholder(): string | null {
+    return this.hasAttribute('placeholder') ? this.getAttribute('placeholder') : this.label;
+  }
+  set placeholder(placeholder: string | null) {
+    if(placeholder != null) this.setAttribute('placeholder', placeholder);
     this.render();
   }
   get name(): string | null {
