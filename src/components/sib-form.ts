@@ -97,7 +97,7 @@ export const SibForm = {
     this.hideError();
     const resource = await this.getFormValue();
     resource['@context'] = this.context;
-    let saved: object = {};
+    let saved;
     try {
       if (this.partial == null) {
       saved = resource['@id'] ?

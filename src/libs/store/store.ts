@@ -57,31 +57,31 @@ export class Store {
     return this.cache.get(id) || null;
   }
 
-  post(resource: object, id: string) {
+  post(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
-  put(resource: object, id: string) {
+  put(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
-  patch(resource: object, id: string) {
+  patch(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
   async delete(id: string, context: object = {}) {
