@@ -9,8 +9,7 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         this.empty();
-        if (!value) return;
-
+        if (!value || value == "undefined") return;
         this.resourceId = value;
         await store.initGraph(this.resourceId, this.context);
 

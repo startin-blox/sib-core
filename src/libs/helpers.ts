@@ -89,7 +89,7 @@ function domIsReady(): Promise<any> {
   });
 }
 
-function setDeepProperty(obj: object, path: string[], value: object) {
+function setDeepProperty(obj: object, path: string[], value: any) {
   const name = path.shift();
   if (name) {
     if (!(name in obj)) obj[name] = {};
@@ -112,12 +112,6 @@ function parseFieldsString(fields: string): string[] {
     .split(',') // separate fields
     .map(a => a.trim()) // and remove spaces
   return fieldsArray;
-}
-
-function getArrayFrom(object: object, key: string): object[] {
-  if (!object || !object[key]) return [];
-  if (Array.isArray(object[key])) return object[key];
-  return [object[key]];
 }
 
 function findClosingBracketMatchIndex(str: string, pos: number) {
@@ -154,7 +148,6 @@ export {
   domIsReady,
   setDeepProperty,
   parseFieldsString,
-  getArrayFrom,
   findClosingBracketMatchIndex,
   defineComponent
 };
