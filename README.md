@@ -78,6 +78,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`next`**: `name` attribute of the `<solid-route>` that should be accessed when a `<solid-display>` element is clicked. See the documentation of `<solid-router>` for more details.
 - **`action-xyz`**:
 - **`label-xyz`**: Set the label for the field `xyz`
+- **`placeholder-xyz`**: Set the placeholder for the field `xyz`
 - **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.
   The editable attribute works with the following widgets: `solid-display-div`, `solid-display-labelled-div`, `solid-display-mailto` and `solid-display-tel`
 - **`counter-template`**: To display the number of resources fetched by the `solid-display`.
