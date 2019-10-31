@@ -4,13 +4,17 @@ const distPath = '.';
 const { resolve } = require('path');
 var url = require('url');
 const express = require('express');
+const bodyParser = require('body-parser');
 const port = require('find-free-port')(3000);
 const app = express();
 (async () => {
+  const updateURLs = /.*jsonld/;
   const server = app
     .use(express.static(distPath))
+    .use(bodyParser.json({ type: 'application/*+json' }))
     .get('/favicon.ico', (req, rep) => rep.send())
     .get('/examples/', (req, rep) => rep.redirect('/'))
+    // Handle upload
     .post('/upload', (req, rep) => {
       const originalUrl = url.format({
         protocol: req.protocol,
@@ -23,6 +27,11 @@ const app = express();
     .get(/^\/upload\/.+/, (req, rep) => {
       rep.sendFile(resolve('./fake-image.svg'));
     })
+    // Listen for write requests
+    .patch(updateURLs, handleUpdate)
+    .post(updateURLs, handleUpdate)
+    .put(updateURLs, handleUpdate)
+    .delete(updateURLs, handleUpdate)
     .listen((await port)[0], '0.0.0.0');
   server.on('listening', () => {
     console.log(address(server.address()));
@@ -36,4 +45,12 @@ function address(address) {
 
 function uniqID() {
   return crypto.randomBytes(5).toString('hex');
+}
+
+function handleUpdate(req, rep) {
+  if (req.headers["content-type"] != "application/ld+json") {
+    rep.status(500).send('Content not JSON')
+  }
+  rep.setHeader('location', req.body['@id'] || "");
+  rep.send(req.body);
 }

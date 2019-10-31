@@ -11,35 +11,34 @@
   </head>
 
   <body>
-      <solid-router default-route="all" use-hash>
-        <solid-route name="all">view all</solid-route>
-        <solid-route name="edit">edit</solid-route>
-        <solid-route name="add">add new</solid-route>
-        <solid-route name="view">view it</solid-route>
-      </solid-router>
-      <div id="all" hidden>
+      <sib-router default-route="all" use-hash>
+        <sib-route name="all">view all</sib-route>
+        <sib-route name="edit">edit</sib-route>
+        <sib-route name="add">add new</sib-route>
+        <sib-route name="view" use-id>view it</sib-route>
+      </sib-router>
+      <div id="all">
         <solid-display
-        data-src="https://api.test-paris.happy-dev.fr/skills/"
+        data-src="data/list/skills.jsonld"
         fields="name"
         next="edit"
         ></solid-display>
       </div>
-      <div id="edit" hidden>
+      <div id="edit">
         <solid-form
           bind-resources
           fields="name"
           next="view"
         ></solid-form>
       </div>
-      <div id="add" hidden>
+      <div id="add">
         <solid-form
-        data-src="https://api.test-paris.happy-dev.fr/skills/"
+        data-src="data/list/skills.jsonld"
         fields="name"
         next="view"
         ></solid-form>
       </div>
-      
-      <div id="view" hidden>
+      <div id="view">
         <solid-display
           bind-resources
           fields="name"
