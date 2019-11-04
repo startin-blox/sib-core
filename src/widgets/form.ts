@@ -2,7 +2,8 @@ import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select';
-import SolidFormFile from "./solid-form-file.js";
+import SolidFormFile from './solid-form-file.js';
+import SolidFormFileImage from './solid-form-file-image.js';
 
 const SolidFormLabelText = widgetFactory(
   'solid-form-label-text',
@@ -155,7 +156,7 @@ const SolidFormAutoCompletion = widgetFactory(
   formWidget => {
     let select = formWidget.querySelector('select');
     if (!select) return;
-    const slimSelect = new SlimSelect({select: select});
+    const slimSelect = new SlimSelect({ select });
     importCSS('https://dev.jspm.io/slim-select/dist/slimselect.min.css');
     select.addEventListener('change', () => slimSelect.render());
   },
@@ -243,6 +244,7 @@ export {
   SolidFormTextarea,
   SolidFormHidden,
   SolidFormFile,
+  SolidFormFileImage,
   SolidFormLabelPlaceholderText,
-  SolidFormPlaceholderNumber
+  SolidFormPlaceholderNumber,
 };

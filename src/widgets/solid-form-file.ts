@@ -1,5 +1,5 @@
 import { BaseWidget } from './baseWidget.js';
-import { defineComponent, uniqID } from "../libs/helpers.js";
+import { defineComponent, uniqID } from '../libs/helpers.js';
 
 export default class SolidFormFile extends BaseWidget {
   input!: HTMLInputElement;
@@ -44,15 +44,16 @@ export default class SolidFormFile extends BaseWidget {
       this.input.value = '';
       this.filePicker.value = '';
       this.output.textContent = '';
-      this.resetButton.toggleAttribute('hidden', true)
-    })
+      this.resetButton.toggleAttribute('hidden', true);
+      this.input.dispatchEvent(new Event('change'));
+    });
   }
   selectFile() {
     if (this.uploadURL === null) return;
     if (this.filePicker.files!.length < 1) return;
     const file = this.filePicker.files![0];
     this.output.textContent = '⏳';
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append('file', file);
     fetch(this.uploadURL, {
       method: 'POST',
@@ -67,7 +68,8 @@ export default class SolidFormFile extends BaseWidget {
         } else {
           this.input.value = location;
           this.output.textContent = '';
-          this.resetButton.toggleAttribute('hidden', false)
+          this.resetButton.toggleAttribute('hidden', false);
+          this.input.dispatchEvent(new Event('change'));
         }
       })
       .catch(error => {
