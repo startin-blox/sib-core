@@ -6,6 +6,11 @@ export default class SolidFormFile extends BaseWidget {
   filePicker!: HTMLInputElement;
   output!: HTMLSpanElement;
   resetButton!: HTMLSpanElement;
+  constructor(){
+    super()
+    this.selectFile = this.selectFile.bind(this);
+    this.resetFile = this.resetFile.bind(this);
+  }
   get template() {
     const id = uniqID();
     return `<div>
@@ -39,14 +44,17 @@ export default class SolidFormFile extends BaseWidget {
     ) as HTMLInputElement;
     this.output = this.querySelector('span')!;
     this.resetButton = this.querySelector('button')!;
-    this.filePicker.addEventListener('change', () => this.selectFile());
-    this.resetButton.addEventListener('click', () => {
-      this.input.value = '';
-      this.filePicker.value = '';
-      this.output.textContent = '';
-      this.resetButton.toggleAttribute('hidden', true);
-      this.input.dispatchEvent(new Event('change'));
-    });
+    this.filePicker.removeEventListener('change', this.selectFile);
+    this.filePicker.addEventListener('change', this.selectFile);
+    this.resetButton.removeEventListener('click', this.selectFile);
+    this.resetButton.addEventListener('click', this.resetFile);
+  }
+  resetFile() {
+    this.input.value = '';
+    this.filePicker.value = '';
+    this.output.textContent = '';
+    this.resetButton.toggleAttribute('hidden', true);
+    this.input.dispatchEvent(new Event('change'));
   }
   selectFile() {
     if (this.uploadURL === null) return;
