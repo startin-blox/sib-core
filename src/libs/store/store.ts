@@ -53,7 +53,7 @@ export class Store {
     }
 
     if (resource['@type'] == "ldp:Container") { // if it has children, cache them
-      for (let res of resource['ldp:contains']) {
+      for (let res of resource.getChildren()) {
         await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
       return;
@@ -268,6 +268,14 @@ class CustomGetter {
     return Object.keys(this.resource).map(prop => this.getCompactedPredicate(prop));
   }
 
+  getChildren() {
+    return this.resource[this.getExpandedPredicate("ldp:contains")];
+  }
+
+  getLdpContains() {
+    return this.resource[this.getExpandedPredicate("ldp:contains")].map(res => store.get(res['@id']))
+  }
+
   /**
    * Remove the resource from the cache
    */
@@ -301,6 +309,7 @@ class CustomGetter {
           case 'properties':
             return this.getProperties();
           case 'ldp:contains': // returns standard arrays synchronously
+            return this.getLdpContains()
           case 'permissions':
             return this.resource[this.getExpandedPredicate(property)]
           case 'then':
