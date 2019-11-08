@@ -66,6 +66,7 @@ export default class SIBMultipleForm extends BaseWidget {
     const widget = widgetTag ? document.createElement(widgetTag) : null;
     if (!widget) return;
 
+    widget['context'] = this.context;
     for (let name of Object.keys(attributes)) {
       widget[name] = attributes[name];
     }
