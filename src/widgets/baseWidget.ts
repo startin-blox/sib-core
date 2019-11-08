@@ -57,8 +57,7 @@ export class BaseWidget extends HTMLElement {
   }
   set value(value) {
     this._value = value; // ... store `value` in the widget
-
-    if (!this._value) return;
+    if (this._value == null || this._value == undefined) return;
 
     if (this.dataHolder && this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
@@ -66,7 +65,7 @@ export class BaseWidget extends HTMLElement {
       if (element.type == "checkbox") {
         element.checked = value;
       } else {
-        element.value = value || ''; // ... set `value` to the dataHolder element
+        element.value = value; // ... set `value` to the dataHolder element
       }
       // remove when https://git.happy-dev.fr/startinblox/framework/sib-core/issues/426 fixed
       if (element.dispatchEvent) element.dispatchEvent(new Event('change')); // trigger change manually
