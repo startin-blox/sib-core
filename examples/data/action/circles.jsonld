@@ -1,5 +1,5 @@
 {
-  "@id": "",
+  "@id": "circles.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {

@@ -43,17 +43,33 @@ export class Store {
   async initGraph(id: string, context = {}) {
     if (!this.cache.has(id)) {
       const getter = await new CustomGetter(id, context).getProxy();
-      this.cache.set(id, getter);
 
-      // Add children to cache
-      if (getter['@type'] == "ldp:Container") {
-        for (let resource of getter['ldp:contains']) {
-          if (this.cache.has(resource['@id']) || resource['@id'].match(/^b\d+$/)) continue;
+      await this.cacheGraph(getter, context, getter['@context'], id);
+    }
+  }
 
-          const resourceProxy = await new CustomGetter(resource['@id'], context, getter['@context']).getProxy(resource);
-          this.cache.set(resource['@id'], resourceProxy);
-        }
+  async cacheGraph(resource, context, parentContext, parentId) {
+    if (resource.properties) { // if proxy, cache it
+      this.cache.set(parentId, resource);
+    }
+
+    if (resource['@type'] == "ldp:Container") {
+      for (let res of resource['ldp:contains']) {
+        await this.cacheGraph(res, context, parentContext, parentId)
       }
+      return;
+    }
+
+    if (resource['@id'] && !resource.properties) { // object resource
+      if (
+        this.cache.has(resource['@id']) || // already in cache
+        resource['@id'].match(/^b\d+$/) // anonymous node
+      ) return;
+
+      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
+      this.cache.set(resource['@id'], resourceProxy);
+
+      // TODO : cache sub objects
     }
   }
 
@@ -110,29 +126,39 @@ class CustomGetter {
   resource: any;
   clientContext: object;
   serverContext: object;
+  parentId: string
+  iri: string;
 
-  constructor(resourceId: string, clientContext: object, serverContext: object = {}) {
+  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.resourceId = resourceId;
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.resource = null;
+    this.parentId = parentId;
+    this.iri = "";
   }
 
   /**
    * Fetch datas if needed and expand all properties
    * @param data : object - content of the resource if already loaded
    */
-  async init(data = null) {
+  async init(data: object | null = null) {
     this.clientContext = await myParser.parse(this.clientContext);
-
-    let iri = ContextParser.expandTerm(this.resourceId, this.clientContext); // expand if reduced ids
-    iri = new URL(iri, document.location.href).href; // and get full URL for local files
+    this.iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
     // Fetch datas if needed
-    let resource = data || await fetch(iri, {
-      method: 'GET',
-      credentials: 'include'
-    }).then(response => response.json());
+    if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
+    let resource;
+    try {
+      resource = data || await fetch(this.iri, {
+        method: 'GET',
+        credentials: 'include'
+      }).then(response => {
+        if (response.status !== 200) return;
+        return response.json()
+      })
+    } catch (e) { }
+    if (!resource) return
 
     this.serverContext = await myParser.parse([this.serverContext, resource['@context'] || {}]);
 
@@ -141,6 +167,23 @@ class CustomGetter {
     this.resource = resource;
 
     return this;
+  }
+
+  /**
+   * Return absolute IRI of the resource
+   * @param id
+   * @param context
+   * @param parentId
+   */
+  getAbsoluteIri(id: string, context: object, parentId: string): string {
+    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
+    if (parentId) { // and get full URL from parent caller for local files
+      let parentIri = new URL(parentId, document.location.href).href;
+      iri = new URL(iri, parentIri).href;
+    } else {
+      iri = new URL(iri, document.location.href).href;
+    }
+    return iri;
   }
 
   /**
@@ -194,9 +237,23 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await new CustomGetter(value['@id'], this.clientContext).getProxy();
+      return await this.getResource(value['@id'], this.clientContext, this.iri); // return complete resource
     }
-    return new CustomGetter(value['@id'], this.clientContext).init().then(res => res.get(path2.join('.')));
+    let resource = await this.getResource(value['@id'], this.clientContext, this.iri);
+    return resource[path2.join('.')]; // return value
+    // return new CustomGetter(value['@id'], this.clientContext, {}, this.iri).init().then(res => res ? res.get(path2.join('.')) : undefined);
+  }
+
+  /**
+   * Cache resource in the store, and return the created proxy
+   * @param id
+   * @param context
+   * @param iriParent
+   */
+  async getResource(id: string, context: object, iriParent: string) {
+    let iri = this.getAbsoluteIri(id, context, iriParent)
+    await store.initGraph(iri, context);
+    return store.get(iri);
   }
 
   /**
@@ -235,6 +292,7 @@ class CustomGetter {
     await this.init(data);
     return new Proxy(this, {
       get: (resource, property) => {
+        if (!this.resource) return undefined;
         if (typeof resource[property] === 'function') return resource[property].bind(resource)
 
         switch (property) {

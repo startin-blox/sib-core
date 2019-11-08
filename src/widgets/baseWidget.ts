@@ -158,7 +158,7 @@ export class BaseWidget extends HTMLElement {
           selected = this._value ? this._value['@id'] == element['@id'] : false;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
-          name: (await element.name).toString(),
+          name: await element.name,
           id: element['@id'],
           selected: selected
         });
