@@ -40,34 +40,33 @@ export class Store {
     this.headers.set('Content-Type', 'application/ld+json');
   }
 
-  async initGraph(id: string, context = {}) {
+  async initGraph(id: string, context = {}, idParent = "") {
     if (!this.cache.has(id)) {
-      const getter = await new CustomGetter(id, context).getProxy();
-
-      await this.cacheGraph(getter, context, getter['@context'], id);
+      const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
+      await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
     }
   }
 
-  async cacheGraph(resource, context, parentContext, parentId) {
+  async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
-      this.cache.set(parentId, resource);
+      this.cache.set(key, resource);
     }
 
-    if (resource['@type'] == "ldp:Container") {
+    if (resource['@type'] == "ldp:Container") { // if it has children, cache them
       for (let res of resource['ldp:contains']) {
-        await this.cacheGraph(res, context, parentContext, parentId)
+        await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
       return;
     }
 
-    if (resource['@id'] && !resource.properties) { // object resource
+    if (resource['@id'] && !resource.properties) { // if resource
       if (
-        this.cache.has(resource['@id']) || // already in cache
-        resource['@id'].match(/^b\d+$/) // anonymous node
+        this.cache.has(resource['@id']) || // not already in cache
+        resource['@id'].match(/^b\d+$/) // and not anonymous node
       ) return;
 
       const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
-      this.cache.set(resource['@id'], resourceProxy);
+      this.cache.set(key, resourceProxy);
 
       // TODO : cache sub objects
     }
@@ -237,9 +236,9 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await this.getResource(value['@id'], this.clientContext, this.iri); // return complete resource
+      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
     }
-    let resource = await this.getResource(value['@id'], this.clientContext, this.iri);
+    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
     return resource[path2.join('.')]; // return value
     // return new CustomGetter(value['@id'], this.clientContext, {}, this.iri).init().then(res => res ? res.get(path2.join('.')) : undefined);
   }
@@ -251,9 +250,8 @@ class CustomGetter {
    * @param iriParent
    */
   async getResource(id: string, context: object, iriParent: string) {
-    let iri = this.getAbsoluteIri(id, context, iriParent)
-    await store.initGraph(iri, context);
-    return store.get(iri);
+    await store.initGraph(id, context, iriParent);
+    return store.get(id);
   }
 
   /**
