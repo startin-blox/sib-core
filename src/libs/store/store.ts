@@ -1,15 +1,5 @@
 //@ts-ignore
 import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
-/*
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
-import { loadScript } from '../helpers.js';
-
-const scriptsLoading = (async () => {
-  await loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js');
-  await loadScript('./solid-query-ldflex.bundle.js');
-})();
-*/
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -72,11 +62,17 @@ export class Store {
     }
   }
 
-  get(id: string): object {
+  get(id: string): CustomGetter | null {
     return this.cache.get(id) || null;
   }
 
-  post(resource: object, id: string): Promise<string | null> {
+  clearCache(id: string): void {
+    if (this.cache.has(id)) {
+      this.cache.delete(id);
+    }
+  }
+
+  async post(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
@@ -85,7 +81,7 @@ export class Store {
     }).then(response => response.headers.get('Location') || null);
   }
 
-  put(resource: object, id: string): Promise<string | null> {
+  async put(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
@@ -94,7 +90,7 @@ export class Store {
     }).then(response => response.headers.get('Location') || null);
   }
 
-  patch(resource: object, id: string): Promise<string | null> {
+  async patch(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
@@ -121,12 +117,11 @@ export const store = new Store();
 
 
 class CustomGetter {
-  resourceId: string;
-  resource: any;
-  clientContext: object;
-  serverContext: object;
-  parentId: string
-  iri: string;
+  resourceId: string; // id of the requested resource
+  resource: any; // content of the requested resource
+  clientContext: object; // context given by the app
+  serverContext: object; // context given by the server
+  parentId: string; // id of the parent resource, used to get the absolute url of the current resource
 
   constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.resourceId = resourceId;
@@ -134,7 +129,6 @@ class CustomGetter {
     this.serverContext = serverContext;
     this.resource = null;
     this.parentId = parentId;
-    this.iri = "";
   }
 
   /**
@@ -143,13 +137,13 @@ class CustomGetter {
    */
   async init(data: object | null = null) {
     this.clientContext = await myParser.parse(this.clientContext);
-    this.iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
+    const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
     // Fetch datas if needed
     if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
     let resource;
     try {
-      resource = data || await fetch(this.iri, {
+      resource = data || await fetch(iri, {
         method: 'GET',
         credentials: 'include'
       }).then(response => {
@@ -161,9 +155,8 @@ class CustomGetter {
 
     this.serverContext = await myParser.parse([this.serverContext, resource['@context'] || {}]);
 
-    // Expand properties
-    resource = await this.expandProperties({ ...resource }, this.serverContext);
-    this.resource = resource;
+    // Expand properties before saving
+    this.resource = this.expandProperties({ ...resource }, this.serverContext);
 
     return this;
   }
@@ -190,8 +183,7 @@ class CustomGetter {
    * @param resource: object
    * @param context: object
    */
-  async expandProperties(resource: object, context: object | string) {
-    context = await myParser.parse(context);
+  expandProperties(resource: object, context: object | string) {
     for (let prop of Object.keys(resource)) {
       if (!prop) continue;
       this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context, true));
@@ -239,8 +231,7 @@ class CustomGetter {
       return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
     }
     let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
-    return resource[path2.join('.')]; // return value
-    // return new CustomGetter(value['@id'], this.clientContext, {}, this.iri).init().then(res => res ? res.get(path2.join('.')) : undefined);
+    return resource ? resource[path2.join('.')] : undefined; // return value
   }
 
   /**
@@ -268,19 +259,25 @@ class CustomGetter {
     return Object.keys(this.resource).map(prop => this.getCompactedPredicate(prop));
   }
 
+  /**
+   * Get children of container as objects
+   */
   getChildren() {
     return this.resource[this.getExpandedPredicate("ldp:contains")];
   }
 
-  getLdpContains() {
-    return this.resource[this.getExpandedPredicate("ldp:contains")].map(res => store.get(res['@id']))
+  /**
+   * Get children of container as Proxys
+   */
+  getLdpContains(): CustomGetter[] {
+    return this.resource[this.getExpandedPredicate("ldp:contains")].map((res: object) => store.get(res['@id']))
   }
 
   /**
    * Remove the resource from the cache
    */
-  async clearCache() {
-    // TODO
+  clearCache() {
+    store.clearCache(this.resourceId);
   }
 
   getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, this.clientContext, true) }
@@ -308,8 +305,8 @@ class CustomGetter {
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
-          case 'ldp:contains': // returns standard arrays synchronously
-            return this.getLdpContains()
+          case 'ldp:contains':
+            return this.getLdpContains(); // returns standard arrays synchronously
           case 'permissions':
             return this.resource[this.getExpandedPredicate(property)]
           case 'then':
