@@ -42,7 +42,7 @@ export class Store {
       this.cache.set(key, resource);
     }
 
-    if (resource['@type'] == "ldp:Container") { // if it has children, cache them
+    if (resource['@type'] == "ldp:Container" && resource.getChildren) { // if it has children, cache them
       for (let res of resource.getChildren()) {
         await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
@@ -54,6 +54,11 @@ export class Store {
         this.cache.has(resource['@id']) || // not already in cache
         resource['@id'].match(/^b\d+$/) // and not anonymous node
       ) return;
+
+      if (resource['@type'] === "ldp:Container") { // if source, init graph of source
+        await this.initGraph(resource['@id'], context, parentId);
+        return;
+      }
 
       const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
       this.cache.set(key, resourceProxy);

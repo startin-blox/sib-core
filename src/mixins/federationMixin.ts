@@ -18,9 +18,10 @@ const FederationMixin = {
     let sources: any[] = [];
     for (let res of resources) { // TODO : test with different response timings
       let type = await res['@type'];
-      if (type && type.toString() == "http://www.w3.org/ns/ldp#Container") {
+      if (type && type.toString() == "ldp:Container") {
         const containerId = res['@id'];
-        sources.push(await this.fetchSource(containerId)); // Add content of sources to array...
+        const resourcesFetched = this.fetchSource(containerId);
+        if (resourcesFetched) sources.push(...resourcesFetched); // Add content of sources to array...
       } else {
         sources.push(res); // Or resource directly if not a container
       }
@@ -30,10 +31,9 @@ const FederationMixin = {
     if(nextProcessor) await nextProcessor(sources, listPostProcessors, div, context);
   },
 
-  async fetchSource(containerId: string): Promise<object> {
-    await store.initGraph(containerId);
+  fetchSource(containerId: string): Promise<object> {
     const container = store.get(containerId);
-    return container['ldp:contains'];
+    return container ? container['ldp:contains'] : null;
   },
 }
 
