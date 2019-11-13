@@ -12,8 +12,8 @@
     "doc"
   ],
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage",
+    "test": "cypress run",
+    "cypress": "cypress open",
     "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
     "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
     "watch": "npm run build:dev -- --watch --verbose",
@@ -40,9 +40,6 @@
     },
     "resolver": "jest-ts-webcompat-resolver"
   },
-  "dependencies": {
-    "cypress": "^3.6.1"
-  },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
@@ -58,6 +55,7 @@
     "@types/jest": "^24.0.18",
     "babel-jest": "^24.9.0",
     "body-parser": "^1.19.0",
+    "cypress": "^3.6.1",
     "document-register-element": "^1.14.3",
     "express": "^4.17.1",
     "find-free-port": "^2.0.0",
