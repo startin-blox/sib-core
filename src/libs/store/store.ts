@@ -39,17 +39,27 @@ export class Store {
 
   async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
-      this.cache.set(key, resource);
+      this.cache.set(key, resource); // put in cache
     }
 
-    if (resource['@type'] == "ldp:Container" && resource.getChildren) { // if it has children, cache them
+    // Cache sub objects
+    if (resource.getSubOjects) {
+      for (let res of resource.getSubOjects()) {
+        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId).getProxy(res);
+        await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
+      }
+    }
+
+    // Cache children
+    if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
         await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
       return;
     }
 
-    if (resource['@id'] && !resource.properties) { // if resource
+    // Cache resource
+    if (resource['@id'] && !resource.properties) {
       if (
         this.cache.has(resource['@id']) || // not already in cache
         resource['@id'].match(/^b\d+$/) // and not anonymous node
@@ -61,9 +71,7 @@ export class Store {
       }
 
       const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
-      this.cache.set(key, resourceProxy);
-
-      // TODO : cache sub objects
+      await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
     }
   }
 
@@ -276,6 +284,31 @@ class CustomGetter {
    */
   getLdpContains(): CustomGetter[] {
     return this.resource[this.getExpandedPredicate("ldp:contains")].map((res: object) => store.get(res['@id']))
+  }
+
+  /**
+   * Get all nested resource or containers which contains datas
+   */
+  getSubOjects() {
+    let subObjects: any = [];
+    for (let p of Object.keys(this.resource)) {
+      let property = this.resource[p];
+      if (!this.isFullResource(property)) continue; // if not a resource, stop
+      if (property['@type'] == "ldp:Container" &&
+        (property['ldp:contains'] == undefined ||
+          (property['ldp:contains'].length >= 1 && !this.isFullResource(property['ldp:contains'][0])))
+      ) continue; // if not a full container
+      subObjects.push(property)
+    }
+    return subObjects;
+  }
+
+  /**
+   * return true if prop is a resource with an @id and some properties
+   * @param prop
+   */
+  isFullResource(prop: any) {
+    return typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
   }
 
   /**
