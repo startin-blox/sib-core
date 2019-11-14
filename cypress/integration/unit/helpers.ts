@@ -1,19 +1,19 @@
 import {
   uniqID,
-  stringToDom,
+  /*stringToDom,
   setDeepProperty,
   parseFieldsString,
   findClosingBracketMatchIndex,
   evalTemplateString,
   importCSS,
   importJS,
-  defineComponent
-} from '../../dist/libs/helpers.js';
+  defineComponent,*/
+} from '../../../src/libs/helpers';
 
 describe('uniqID', function() {
   it('returns an id', () => {
     let test = uniqID();
-    expect(test).to.match(/[_].{10}/g)
+    expect(test).to.match(/[_].{10}/g);
   });
 
   it('returns a different id 50 times in a row', () => {
@@ -25,4 +25,4 @@ describe('uniqID', function() {
     let noDuplicates = [...new Set(ids)];
     expect(noDuplicates.length).to.equal(arraySize);
   });
-})
+});

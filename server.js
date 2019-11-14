@@ -23,7 +23,7 @@ const app = express();
         pathname: req.originalUrl,
       });
       rep.setHeader('location', `${originalUrl}/${uniqID()}.jpg`);
-      setTimeout(() => rep.send(), 3000);
+      setTimeout(() => rep.send(), 1200);
     })
     .get(/^\/upload\/.+/, (req, rep) => {
       rep.sendFile(resolve('./fake-image.svg'));
@@ -36,18 +36,19 @@ const app = express();
     .listen((await port)[0], '0.0.0.0');
   server.on('listening', async () => {
     const addr = address(server.address());
-    if (!process.argv.includes('--test')) {
+    if (!process.argv.includes('--test') && !process.argv.includes('--test-ui')) {
       console.log(addr);
       return;
     }
     let test;
     try {
-      test = await cypress.run({
+      const opt = {
         config: {
           baseUrl: addr,
         },
-      });
-      
+      }
+      test = await (process.argv.includes('--test-ui') ?
+      cypress.open(opt) : cypress.run(opt));
     }
     catch (error) {
       console.error(error);
