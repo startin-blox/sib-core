@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const distPath = '.';
+const cypress = require('cypress');
 
 const { resolve } = require('path');
 var url = require('url');
@@ -33,8 +34,29 @@ const app = express();
     .put(updateURLs, handleUpdate)
     .delete(updateURLs, handleUpdate)
     .listen((await port)[0], '0.0.0.0');
-  server.on('listening', () => {
-    console.log(address(server.address()));
+  server.on('listening', async () => {
+    const addr = address(server.address());
+    if (!process.argv.includes('--test')) {
+      console.log(addr);
+      return;
+    }
+    let test;
+    try {
+      test = await cypress.run({
+        config: {
+          baseUrl: addr,
+        },
+      });
+      
+    }
+    catch (error) {
+      console.error(error);
+    } finally {
+      server.close();
+      // if(test.totalFailed) {
+      //   console.log('fail');
+      // }
+    }
   });
 })();
 
@@ -48,9 +70,10 @@ function uniqID() {
 }
 
 function handleUpdate(req, rep) {
-  if (req.headers["content-type"] != "application/ld+json") {
-    rep.status(500).send('Content not JSON')
+  if (req.headers['content-type'] != 'application/ld+json') {
+    rep.status(500).send('Content not JSON');
   }
-  rep.setHeader('location', req.body['@id'] || "");
+  rep.setHeader('location', req.body['@id'] || '');
   rep.send(req.body);
 }
+

@@ -12,7 +12,7 @@
     "doc"
   ],
   "scripts": {
-    "test": "cypress run",
+    "test": "node server.js --test",
     "cypress": "cypress open",
     "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
     "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
