@@ -79,7 +79,17 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`action-xyz`**: name of the route to reach when the widget for the field `xyz` is clicked. By default, a `sib-link` widget is used.
 - **`label-xyz`**: Set the label for the field `xyz`
 - **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.
-  The editable attribute works with the following widgets: `sib-display-div`, `sib-display-labelled-div`, `sib-display-mailto` and `sib-display-tel`
+  The editable attribute works with the following widgets: `sib-display-div`, `sib-display-labelled-div`, `sib-display-mailto` and `sib-display-tel`. 
+  Here an example : 
+  ```html
+  <sib-display
+    data-src="http://localhost:8000/resources/1/"
+    fields="name"
+    widget-name="sib-display-div"
+    editable-name
+  ></sib-display>
+  ```
+  
 - **`counter-template`**: To display the number of resources fetched by the `sib-display`.
   It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
   i.e. `"<strong>${counter} results</strong>"`
