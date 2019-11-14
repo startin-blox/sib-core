@@ -11,6 +11,10 @@ import {
 } from '../../../src/libs/helpers';
 
 describe('uniqID', function() {
+  it('check true === false', () => {
+    expect(true).to.equal(false);
+  });
+  
   it('returns an id', () => {
     let test = uniqID();
     expect(test).to.match(/[_].{10}/g);

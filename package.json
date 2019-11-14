@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "test": "node server.js --test",
+    "test-ci": "cypress run",
     "cypress": "node server.js --test-ui",
     "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
     "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
@@ -66,6 +67,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3",
+    "wait-on": "^3.3.0",
     "webpack": "^4.41.2"
   },
   "release": {
