@@ -308,7 +308,7 @@ class CustomGetter {
    * @param prop
    */
   isFullResource(prop: any) {
-    return typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
+    return prop && typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
   }
 
   /**
