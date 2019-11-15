@@ -57,7 +57,7 @@ const FilterMixin = {
     if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
 
     // Filter on a container
-    if (propertyValue.termType && propertyValue.termType !== "Literal" && await propertyValue.isContainer()) {
+    if (propertyValue.isContainer && await propertyValue.isContainer()) {
       return await asyncReduce(
         Promise.resolve(false),
         async (initial, value) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),

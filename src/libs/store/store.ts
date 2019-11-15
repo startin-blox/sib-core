@@ -243,8 +243,9 @@ class CustomGetter {
       if (!value || !value['@id']) return value; // no value or not a resource
       return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
     }
+    if (!value) return undefined;
     let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
-    return resource ? resource[path2.join('.')] : undefined; // return value
+    return resource ? await resource[path2.join('.')] : undefined; // return value
   }
 
   /**
