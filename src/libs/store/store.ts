@@ -51,7 +51,7 @@ export class Store {
     }
 
     // Cache children
-    if (resource['@type'] == "ldp:Container" && resource.getChildren) {
+    if (resource['@type'] == "ldp:Container" && resource.getChildren && resource.getChildren()) {
       for (let res of resource.getChildren()) {
         await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
