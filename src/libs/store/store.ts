@@ -51,7 +51,7 @@ export class Store {
     }
 
     // Cache children
-    if (resource['@type'] == "ldp:Container" && resource.getChildren && resource.getChildren()) {
+    if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
         await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
       }
@@ -254,7 +254,7 @@ class CustomGetter {
    * @param context
    * @param iriParent
    */
-  async getResource(id: string, context: object, iriParent: string) {
+  async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
     await store.initGraph(id, context, iriParent);
     return store.get(id);
   }
@@ -262,29 +262,30 @@ class CustomGetter {
   /**
    * Return true if the resource is a container
    */
-  isContainer() {
+  isContainer(): boolean {
     return this.resource["@type"] == "ldp:Container";
   }
 
   /**
    * Get all properties of a resource
    */
-  getProperties() {
+  getProperties(): string[] {
     return Object.keys(this.resource).map(prop => this.getCompactedPredicate(prop));
   }
 
   /**
    * Get children of container as objects
    */
-  getChildren() {
-    return this.resource[this.getExpandedPredicate("ldp:contains")];
+  getChildren(): object[] {
+    return this.resource[this.getExpandedPredicate("ldp:contains")] || [];
   }
 
   /**
    * Get children of container as Proxys
    */
   getLdpContains(): CustomGetter[] {
-    return this.resource[this.getExpandedPredicate("ldp:contains")].map((res: object) => store.get(res['@id']))
+    const children = this.resource[this.getExpandedPredicate("ldp:contains")];
+    return children ? children.map((res: object) => store.get(res['@id'])) : [];
   }
 
   /**
@@ -308,14 +309,19 @@ class CustomGetter {
    * return true if prop is a resource with an @id and some properties
    * @param prop
    */
-  isFullResource(prop: any) {
+  isFullResource(prop: any): boolean {
     return prop && typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
+  }
+
+  getPermissions(): string[] {
+    const permissions = this.resource[this.getExpandedPredicate("permissions")];
+    return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
   }
 
   /**
    * Remove the resource from the cache
    */
-  clearCache() {
+  clearCache(): void {
     store.clearCache(this.resourceId);
   }
 
@@ -347,7 +353,7 @@ class CustomGetter {
           case 'ldp:contains':
             return this.getLdpContains(); // returns standard arrays synchronously
           case 'permissions':
-            return this.resource[this.getExpandedPredicate(property)]
+            return this.getPermissions(); // get expanded permissions
           case 'then':
             return;
           default:
