@@ -25,7 +25,7 @@ const SIBDisplayMultiline = widgetFactory(
 
 const SIBDisplayLabelledBoolean = widgetFactory(
   'sib-display-labelled-boolean',
-  `\${value == 'true' ? "<label>" + label + "</label>" : ""}`
+  `\${value ? "<label>" + label + "</label>" : ""}`
 );
 
 const SIBDisplayImg = widgetFactory(
