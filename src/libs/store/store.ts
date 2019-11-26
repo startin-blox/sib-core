@@ -345,7 +345,7 @@ class CustomGetter {
 
         switch (property) {
           case '@id':
-            return this.getCompactedIri(this.resource['@id']); // Compact @id if possible
+            return this.getCompactedIri(this.resource['@id'] || this.resourceId); // Compact @id if possible
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':
