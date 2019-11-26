@@ -8,7 +8,7 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
-async function evalTemplateString(str: string, variables = {}) {
+async function evalTemplateString(str: string, variables: {[key:string]:any} = {}) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
@@ -22,9 +22,11 @@ async function evalTemplateString(str: string, variables = {}) {
 }
 function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
   return stylesheets.map(url => {
+    url = new URL(url, document.baseURI).href;
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
-    );
+      );
+    
     if (link) return link;
     link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -36,6 +38,9 @@ function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
 
 function importJS(...plugins: string[]): HTMLScriptElement[] {
   return plugins.map(url => {
+    url = new URL(url, document.baseURI).href;
+    console.log(url);
+    
     let script = Array.from(document.querySelectorAll('script')).find(
       script => script.src === url,
     );
@@ -47,7 +52,7 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
   });
 }
 
-function relativeSource(source) {
+function relativeSource(source: string) {
   if (source.indexOf('./') !== 0) return source
   const e = new Error();
   if(!e.stack) return source;
@@ -59,21 +64,13 @@ function relativeSource(source) {
   return source;
   
 }
-
 function loadScript(source: string) {
   source = relativeSource(source);
   return new Promise(resolve => {
-    var script = document.createElement('script');
+    var script = document.createElement('script') as HTMLScriptElement;
     var head = document.querySelector('head');
     script.async = true;
-
-    script.onload = script['onreadystatechange'] = function (_, isAbort?) {
-      if (isAbort || !script['readyState'] || /loaded|complete/.test(script['readyState'])) {
-        script.onload = script['onreadystatechange'] = null;
-        if (!isAbort) setTimeout(resolve, 0);
-      }
-    };
-
+    script.onload = () => setTimeout(resolve, 0);
     script.src = source;
     if(head) head.appendChild(script);
   });
@@ -89,7 +86,7 @@ function domIsReady(): Promise<any> {
   });
 }
 
-function setDeepProperty(obj: object, path: string[], value: any) {
+function setDeepProperty(obj: {[index:string]:any}, path: string[], value: any) {
   const name = path.shift();
   if (name) {
     if (!(name in obj)) obj[name] = {};

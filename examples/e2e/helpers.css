@@ -1,0 +1,7 @@
+html{
+  background-color: green;
+}
+
+html::before{
+  content: 'styles loaded';
+}
