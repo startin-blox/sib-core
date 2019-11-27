@@ -14,10 +14,6 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
-  email: 'http://happy-dev.fr/owl/#email', // TODO : workaround for https://github.com/solid/query-ldflex/issues/36
-  firstName: 'http://happy-dev.fr/owl/#first_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
-  lastName: 'http://happy-dev.fr/owl/#last_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
-  type: 'http://happy-dev.fr/owl/#type',  // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
 };
 
 export class Store {
