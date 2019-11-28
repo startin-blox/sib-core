@@ -61,8 +61,7 @@ export const SibMap = {
     }
   },
   async appendChildElt(resourceId: string) {
-    await store.initGraph(resourceId, this.context);
-    const resource = store.get(resourceId);
+    const resource = await store.initGraph(resourceId, this.context);
     const lat = await resource['lat'];
     const lng = await resource['lng'];
 

@@ -37,8 +37,7 @@ export const SibCalendar = {
     }
   },
   async appendChildElt(resourceId: string) {
-    await store.initGraph(resourceId, this.context);
-    const resource = store.get(resourceId);
+    const resource = await store.initGraph(resourceId, this.context);
     const date = await resource['date'];
     const name = await resource['name'];
 

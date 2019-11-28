@@ -26,11 +26,12 @@ export class Store {
     this.headers.set('Content-Type', 'application/ld+json');
   }
 
-  async initGraph(id: string, context = {}, idParent = "") {
+  async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
     if (!this.cache.has(id)) {
       const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
       await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
     }
+    return this.cache.get(id);
   }
 
   async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
@@ -251,8 +252,7 @@ class CustomGetter {
    * @param iriParent
    */
   async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
-    await store.initGraph(id, context, iriParent);
-    return store.get(id);
+    return store.initGraph(id, context, iriParent);
   }
 
   /**

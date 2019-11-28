@@ -15,10 +15,7 @@ export default class SIBMultiple extends BaseWidget {
     for await (const resource of this.value['ldp:contains']) {
       const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
-        if (!store.get(resource['@id'])) {
-          await store.initGraph(resource['@id']);
-        }
-        elm['value'] = store.get(resource['@id']);
+        elm['value'] = await store.initGraph(resource['@id']);
         elm.toggleAttribute('data-holder', true);
       }
       i++;
