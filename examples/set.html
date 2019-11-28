@@ -14,7 +14,7 @@
       <summary>Set</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="@id, name(firstName, lastName, username), infos(email, profile.city)"
+        fields="@id, name(first_name, last_name, username), infos(email, profile.city)"
       ></sib-display>
     </details>
 
@@ -22,7 +22,7 @@
       <summary>Nested set</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="@id, name(firstName, lastName, username, infos(email, profile.city))"
+        fields="@id, name(first_name, last_name, username, infos(email, profile.city))"
         widget-name="sib-set-ul"
       ></sib-display>
     </details>

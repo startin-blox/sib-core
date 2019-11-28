@@ -14,7 +14,7 @@
       <summary>One field & label:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email"
+        fields="username, first_name, last_name, email"
         search-fields="email"
         search-label-email="mail"
       ></sib-display>
@@ -24,7 +24,7 @@
       <summary>One field & value:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email"
+        fields="username, first_name, last_name, email"
         search-fields="email"
         search-value-email="happy"
       ></sib-display>
@@ -34,8 +34,8 @@
       <summary>Multiple fields:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email"
-        search-fields="firstName, lastName"
+        fields="username, first_name, last_name, email"
+        search-fields="first_name, last_name"
       ></sib-display>
     </details>
 
@@ -43,7 +43,7 @@
       <summary>Set:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, nameSet(firstName, lastName), email"
+        fields="username, nameSet(first_name, last_name), email"
         search-fields="nameSet"
       ></sib-display>
     </details>
@@ -80,7 +80,7 @@
       <summary>Widget:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email"
+        fields="username, first_name, last_name, email"
         search-fields="email"
         search-widget-email="sib-form-textarea"
       ></sib-display>
@@ -90,7 +90,7 @@
       <summary>Dotted field:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email, profile.city"
+        fields="username, first_name, last_name, email, profile.city"
         search-fields="profile.city"
       ></sib-display>
     </details>
@@ -99,7 +99,7 @@
       <summary>Set + dotted field:</summary>
       <sib-display
         data-src="data/list/users.jsonld"
-        fields="username, firstName, lastName, email, nameSet(profile.city, firstName)"
+        fields="username, first_name, last_name, email, nameSet(profile.city, first_name)"
         search-fields="nameSet"
       ></sib-display>
     </details>
