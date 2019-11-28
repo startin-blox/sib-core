@@ -127,22 +127,36 @@ export class BaseWidget extends HTMLElement {
   }
 
   get range(): any {
-    return this._range ? this._range['ldp:contains'] : null;
+    return this.fetchSources(this._range);
   }
   set range(range) {
     (async () => {
-      await store.initGraph(range, this.context);
-      this._range = store.get(range);
+      this._range = await store.initGraph(range, this.context);
       await this.render();
     })();
   }
+  async fetchSources(resource: object) {
+    if (!resource || !resource['ldp:contains']) return null;
+
+    let resources: any[] = [];
+    for (let res of resource['ldp:contains']) {
+      if (res.isContainer()) { // if nested container
+        let resourcesFromContainer = await store.initGraph(res['@id'], this.context); // fetch the datas
+        if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);
+      } else {
+        resources.push(res);
+      }
+    }
+    return resources;
+  }
+
   get htmlRange(): Promise<string|undefined> {
     return (async () => {
       let htmlRange = '';
-      if (!this.range) return;
-      for await (let element of this.range) {
-        await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
-        element = store.get(element['@id']);
+      const rangeResources = await this.range;
+      if (!rangeResources) return;
+      for await (let element of rangeResources) {
+        element = await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
 
         let selected: boolean;
         if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select
