@@ -37,7 +37,7 @@ export const SibAcChecker = {
       )*/
     } else if (this.noPermission) { // User has no permission of ...
       displayElement = this.resource.permissions.every(p => {
-        return ContextParser.compactIri(p, context) !== this.permission;
+        return ContextParser.compactIri(p, context) !== this.noPermission;
       });
       /*displayElement = await asyncEvery(
         (permission: object) => ContextParser.compactIri(permission.toString(), context) !== this.noPermission,
