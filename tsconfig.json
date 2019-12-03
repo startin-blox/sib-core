@@ -21,8 +21,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
     "paths": {},
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["cypress"]
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./cypress/**/*"],
   "exclude": ["./node_modules", "./test/**"]
 }

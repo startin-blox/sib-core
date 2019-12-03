@@ -1,4 +1,4 @@
-import { ComponentFactory } from '../libs/ComponentFactory';
+import { ComponentFactory } from '../../../src/libs/ComponentFactory.js';
 
 const MixinTestTwo = {
   name: 'mixin2',
@@ -38,7 +38,7 @@ const MixinTestOne = {
   },
   initialState: {
     a: 1,
-    accessorValue: "world"
+    accessorValue: 'world',
   },
   get accessorTest() {
     return this.accessorValue;
@@ -69,7 +69,7 @@ const Component = {
       default: 'awesome',
       callback: function() {
         this.change = true;
-      }
+      },
     },
     data: {
       type: Object,
@@ -93,7 +93,7 @@ const Component = {
     message: '',
   },
   get accessorTest() {
-    return "hello " + this.accessorValue;
+    return 'hello ' + this.accessorValue;
   },
   created() {
     this.message += '!!';
@@ -113,29 +113,29 @@ const Component = {
 };
 
 describe('Component factory', function() {
-  test('expose html element', () => {
+  it('expose html element', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect(component.element).toBeInstanceOf(HTMLElement);
+    expect(component.element).is.instanceOf(HTMLElement);
   });
 
-  test('initialize state', () => {
+  it('initialize state', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).a).toEqual(1);
-    expect((<any>component).accessorValue).toEqual("world");
-    expect((<any>component).c.test).toEqual(0);
+    expect((<any>component).a).eq(1);
+    expect((<any>component).accessorValue).eq('world');
+    expect((<any>component).c.test).eq(0);
   });
 
-  test('bind attribute default', () => {
+  it('bind attribute default', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).test).toEqual(0);
+    expect((<any>component).test).eq(0);
   });
 
-  test('list attributes on static', () => {
+  it('list attributes on static', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
-    expect((<any>ComponentConstructor).observedAttributes).toEqual([
+    expect((<any>ComponentConstructor).observedAttributes).deep.eq([
       'test',
       'my-attribute',
       'data',
@@ -144,70 +144,72 @@ describe('Component factory', function() {
     ]);
   });
 
-  test('bind attribute', () => {
+  it('bind attribute', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).myAttribute).toEqual('awesome');
+    expect((<any>component).myAttribute).eq('awesome');
     (<any>component).myAttribute = 'a';
-    expect((<any>component).myAttribute).toEqual('a');
-    expect(component.element.getAttribute('my-attribute')).toEqual('a');
+    expect((<any>component).myAttribute).eq('a');
+    expect(component.element.getAttribute('my-attribute')).eq('a');
   });
 
-  test('bind attribute with typecasting', () => {
+  it('bind attribute with typecasting', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
     (<any>component).test = '1';
-    expect((<any>component).test).toEqual(1);
+    expect((<any>component).test).eq(1);
     const data = { hello: 'world!' };
     (<any>component).data = data;
-    expect((<any>component).data).toEqual(data);
-    expect(component.element.getAttribute('data')).toEqual(JSON.stringify(data));
+    expect((<any>component).data).deep.eq(data);
+    expect(component.element.getAttribute('data')).eq(JSON.stringify(data));
   });
 
-  test('bind boolean attribute', () => {
+  it('bind boolean attribute', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
     (<any>component).works = true;
-    expect(component.element.hasAttribute('works')).toEqual(true);
+    expect(component.element.hasAttribute('works')).eq(true);
     (<any>component).works = false;
-    expect(component.element.hasAttribute('works')).toEqual(false);
+    expect(component.element.hasAttribute('works')).eq(false);
   });
 
-  test('bind throw error if required attribute missing', () => {
+  it('bind throw error if required attribute missing', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect(() => (<any>component).required).toThrowError('Attribute required is required');
+    expect(() => (<any>component).required).throw(
+      'Attribute required is required',
+    );
   });
 
-  test('bind accessors', () => {
+  it('bind accessors', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).accessorTest).toEqual("hello world");
-    (<any>component).accessorTest = "you";
-    expect((<any>component).accessorTest).toEqual('hello you');
-    expect((<any>component).accessorValue).toEqual('you');
+    expect((<any>component).accessorTest).eq('hello world');
+    (<any>component).accessorTest = 'you';
+    expect((<any>component).accessorTest).eq('hello you');
+    expect((<any>component).accessorValue).eq('you');
   });
 
-  test('bind methods', () => {
+  it('bind methods', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
-    expect((<any>component).methodA()).toEqual('A');
-    expect((<any>component).methodB()).toEqual('B');
-    expect((<any>component).methodC()).toEqual('C');
+    expect((<any>component).methodA()).eq('A');
+    expect((<any>component).methodB()).eq('B');
+    expect((<any>component).methodC()).eq('C');
     (<any>component).methodD();
-    expect((<any>component).change).toEqual(true);
+    expect((<any>component).change).eq(true);
   });
 
-  test('bind hooks', () => {
+  it('bind hooks', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));
     component.created();
-    expect((<any>component).message).toEqual('hello world !!');
+    expect((<any>component).message).eq('hello world !!');
 
     component.attached();
-    expect((<any>component).message).toEqual('hooks respect order');
+    expect((<any>component).message).eq('hooks respect order');
 
     component.detached();
-    expect((<any>component).message).toEqual('and context');
+    expect((<any>component).message).eq('and context');
   });
 });

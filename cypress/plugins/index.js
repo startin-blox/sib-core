@@ -17,18 +17,38 @@ module.exports = (on, config) => {
   const options = {
     webpackOptions: {
       resolve: {
-        extensions: [".ts", ".tsx", ".js"]
+        extensions: ['.ts', '.tsx', '.js'],
       },
       module: {
         rules: [
           {
             test: /\.tsx?$/,
-            loader: "ts-loader",
-            options: { transpileOnly: true }
-          }
-        ]
-      }
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-typescript',
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      browsers: ['>1%', 'not ie 11'],
+                    },
+                    modules: false,
+                  },
+                ],
+              ],
+              plugins: [
+                'babel-plugin-remove-import-js-extension',
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-transform-parameters',
+                '@babel/plugin-transform-spread',
+              ],
+              ignore: ['**/tests'],
+            },
+          },
+        ],
+      },
     },
-  }
-  on('file:preprocessor', wp(options))
-}
+  };
+  on('file:preprocessor', wp(options));
+};

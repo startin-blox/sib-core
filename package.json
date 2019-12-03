@@ -13,7 +13,6 @@
   ],
   "scripts": {
     "test": "node server.js --test",
-    "test-ci": "cypress run",
     "cypress": "node server.js --test-ui",
     "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
     "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
@@ -27,46 +26,27 @@
   },
   "author": "",
   "license": "MIT",
-  "jest": {
-    "verbose": true,
-    "setupFiles": [
-      "<rootDir>/node_modules/document-register-element/build/document-register-element.node.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/dist/",
-      "<rootDir>/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "resolver": "jest-ts-webcompat-resolver"
-  },
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-transform-parameters": "^7.4.4",
-    "@babel/plugin-transform-spread": "^7.6.2",
-    "@babel/plugin-transform-typescript": "^7.6.0",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/preset-typescript": "^7.6.0",
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-parameters": "^7.7.4",
+    "@babel/plugin-transform-spread": "^7.7.4",
+    "@babel/plugin-transform-typescript": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.4",
+    "@cypress/browserify-preprocessor": "^2.1.1",
     "@cypress/webpack-preprocessor": "^4.1.1",
-    "@types/autolinker": "^0.24.28",
-    "@types/chai": "^4.2.3",
-    "@types/jest": "^24.0.18",
-    "babel-jest": "^24.9.0",
+    "@types/autolinker": "^2.0.0",
+    "babel-plugin-remove-import-js-extension": "0.0.3",
     "body-parser": "^1.19.0",
-    "cypress": "^3.6.1",
+    "cypress": "^3.7.0",
     "document-register-element": "^1.14.3",
     "express": "^4.17.1",
     "find-free-port": "^2.0.0",
-    "jest": "^24.9.0",
-    "jest-environment-jsdom-fourteen": "^0.1.0",
-    "jest-ts-webcompat-resolver": "^1.0.0",
-    "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.1",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.3",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.2",
     "wait-on": "^3.3.0",
     "webpack": "^4.41.2"
   },

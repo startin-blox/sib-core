@@ -25,10 +25,8 @@ test:
   before_script:
     - npm ci
     - npm run build:prod
-    - npm run serve &
-    - npx wait-on http://localhost:3000
   script:
-    - npm run test-ci
+    - npm test
   except:
     - master
     - tags

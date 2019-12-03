@@ -5,9 +5,6 @@ import {
   parseFieldsString,
   findClosingBracketMatchIndex,
   evalTemplateString,
-  importCSS,
-  importJS,
-  defineComponent,
 } from '../../../src/libs/helpers';
 
 /**
@@ -18,7 +15,6 @@ describe('uniqID', function() {
     let test = uniqID();
     expect(test).to.match(/[_].{10}/g);
   });
-
   it('returns a different id 50 times in a row', () => {
     let ids: string[] = [];
     const arraySize = 50;

@@ -51,12 +51,11 @@ const app = express();
       cypress.open(opt) : cypress.run(opt));
     }
     catch (error) {
-      console.error(error);
     } finally {
       server.close();
-      // if(test.totalFailed) {
-      //   console.log('fail');
-      // }
+      if(test.totalFailed) {
+        process.exit(1);
+      }
     }
   });
 })();
