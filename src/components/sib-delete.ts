@@ -35,7 +35,7 @@ export const SibDelete = {
     if (!this.dataSrc) return;
     return store.delete(this.dataSrc, this.context).then(() => {
       this.element.dispatchEvent(
-        new CustomEvent('resourceDeleted', { detail: { resource: { "@id": this.dataSrc } } }),
+        new CustomEvent('resourceDeleted', { detail: { resource: { "@id": this.dataSrc } }, bubbles: true }),
       );
     });
   },
