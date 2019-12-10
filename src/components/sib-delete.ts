@@ -33,7 +33,8 @@ export const SibDelete = {
   },
   async delete(): Promise<void> {
     if (!this.dataSrc) return;
-    return store.delete(this.dataSrc, this.context).then(() => {
+    return store.delete(this.dataSrc, this.context).then(response => {
+      if (!response.ok) return;
       this.element.dispatchEvent(
         new CustomEvent('resourceDeleted', { detail: { resource: { "@id": this.dataSrc } }, bubbles: true }),
       );
