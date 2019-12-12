@@ -23,11 +23,15 @@ Don't forget to import the framework:
 ```
 You can now write HTML using `sib-core` and test it in your browser.
 
-
 ## Test
-You can test the API by running:
+Run cypress test and show result in console:
 ```shell
-npm run test
+npm test
+```
+
+Run cypress test runner in interactive mode:
+```shell
+npm run cypress
 ```
 
 # Mixin API
