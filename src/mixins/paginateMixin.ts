@@ -72,12 +72,11 @@ const PaginateMixin = {
     const currentPage = this.getCurrentPage(context);
     insertNode.insertBefore(nav, div.nextSibling);
 
-    nav.querySelector('[data-id="prev"]')!.addEventListener('click', () => {
-      this.setCurrentPage(currentPage - 1, context);
-    });
-    nav.querySelector('[data-id="next"]')!.addEventListener('click', () => {
-      this.setCurrentPage(currentPage + 1, context);
-    });
+    const prevButton = nav.querySelector('[data-id="prev"]') as HTMLElement;
+    const nextButton = nav.querySelector('[data-id="next"]') as HTMLElement;
+    // use onclick to override previous listeners
+    prevButton!.onclick = () => this.setCurrentPage(currentPage - 1, context);
+    nextButton!.onclick = () => this.setCurrentPage(currentPage + 1, context);
 
     nav.querySelector('[data-id="current"]')!.textContent = currentPage;
     nav.querySelector('[data-id="count"]')!.textContent = String(pageCount);
