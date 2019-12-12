@@ -39,10 +39,9 @@ describe('helpers', function() {
         const hrefs = links.toArray().map(link => link.getAttribute('href'));
         expect(hrefs).deep.eq(urls.map(url => new URL(url, doc.baseURI).href));
       });
-      // srcs.forEach(src => cy.get('link').should('have.attr', 'href', src));
     });
 
-    it('add one stylesheet', () => {
+    it('avoid import stylesheet twice', () => {
       const url = 'helpers.css';
       helpers.importCSS(url);
       helpers.importCSS(url);
@@ -76,7 +75,6 @@ describe('helpers', function() {
         const srcs = scripts.toArray().map(link => link.getAttribute('src'));
         expect(srcs).deep.eq(urls.map(url => new URL(url, doc.baseURI).href));
       });
-      // srcs.forEach(src => cy.get('link').should('have.attr', 'href', src));
     });
     it('add script only once', () => {
       const url = 'script';

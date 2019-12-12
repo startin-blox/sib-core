@@ -20,13 +20,13 @@ async function evalTemplateString(str: string, variables: {[key:string]:any} = {
     throw new SyntaxError('`' + str + '`');
   }
 }
+
 function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
   return stylesheets.map(url => {
     url = new URL(url, document.baseURI).href;
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
-      );
-    
+    );
     if (link) return link;
     link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -39,8 +39,6 @@ function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
 function importJS(...plugins: string[]): HTMLScriptElement[] {
   return plugins.map(url => {
     url = new URL(url, document.baseURI).href;
-    console.log(url);
-    
     let script = Array.from(document.querySelectorAll('script')).find(
       script => script.src === url,
     );
@@ -67,7 +65,7 @@ function relativeSource(source: string) {
 function loadScript(source: string) {
   source = relativeSource(source);
   return new Promise(resolve => {
-    var script = document.createElement('script') as HTMLScriptElement;
+    var script = document.createElement('script');
     var head = document.querySelector('head');
     script.async = true;
     script.onload = () => setTimeout(resolve, 0);
