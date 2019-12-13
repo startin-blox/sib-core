@@ -34,6 +34,11 @@ Run cypress test runner in interactive mode:
 npm run cypress
 ```
 
+To create test, first create html file in `examples/e2e` directory then create test file in `cypress/integration/e2e/`.
+
+You may consider the files
+[`cypress/integration/e2e/simple-startinblox-e2e-test.ts`](../cypress/integration/e2e/simple-startinblox-e2e-test.ts) and [`examples/e2e/simple-startinblox-e2e-test.html`](../examples/e2e/simple-startinblox-e2e-test.html) as example.
+
 # Mixin API
 ## How it works
 Here is a simplified schema of how the API works to create a component:
