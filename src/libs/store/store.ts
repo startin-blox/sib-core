@@ -18,21 +18,41 @@ export const base_context = {
 
 export class Store {
   cache: Map<string, any>;
+  loadingList: String[];
   headers: HeadersInit;
 
   constructor() {
     this.cache = new Map();
+    this.loadingList = [];
     this.headers = new Headers();
     this.headers.set('Content-Type', 'application/ld+json');
   }
 
   async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
-    if (!this.cache.has(id)) {
-      const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
-      await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
-    }
-    return this.cache.get(id);
+    return new Promise(async (resolve) => {
+      if (!this.cache.has(id)) {
+        document.addEventListener('resourceReady', this.resolveResource(id, resolve));
+
+        if (!this.loadingList.includes(id)) {
+          this.loadingList.push(id);
+          const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
+          await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
+          this.loadingList = this.loadingList.filter(value => value != id);
+          document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
+        }
+      } else {
+        resolve(this.cache.get(id));
+      }
+    });
   }
+
+  resolveResource = function(id: string, resolve) {
+    var handler = function(event) {
+      if (event.detail.id === id) { resolve(event.detail.resource) }
+      document.removeEventListener('click', handler);
+    };
+    return handler;
+  };
 
   async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
