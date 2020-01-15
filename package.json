@@ -14,8 +14,8 @@
   "scripts": {
     "test": "node server.js --test",
     "cypress": "node server.js --test-ui",
-    "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments",
-    "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps",
+    "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments --copy-files",
+    "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps --copy-files",
     "watch": "npm run build:dev -- --watch --verbose",
     "check-types": "tsc",
     "serve": "node server.js"
@@ -27,7 +27,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
+    "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.5",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-parameters": "^7.7.4",

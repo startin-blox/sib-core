@@ -74,7 +74,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`paginate-by`**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
 - **`order-by`**: The name of the field you want to use to order the list. For example, `order-by="username"` will order the users list alphabetically based on the username.
 - **`highlight-xyz`**: The resources to put at the top of the list. For example, `highlight-date="2019-05-20"` will display first all the resources which have a field date equal to "2019-05-20".
-- **`group by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="date"` will render one `<div>` by date, and put the corresponding resources inside.
+- **`group-by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="date"` will render one `<div>` by date, and put the corresponding resources inside.
 - **`next`**: `name` attribute of the `<solid-route>` that should be accessed when a `<solid-display>` element is clicked. See the documentation of `<solid-router>` for more details.
 - **`action-xyz`**: name of the route to reach when the widget for the field `xyz` is clicked. By default, a `solid-link` widget is used.
 - **`label-xyz`**: Set the label for the field `xyz`
@@ -164,13 +164,73 @@ Like for solid-display, filters and searching capabilities can be easily added t
 
 ### `solid-map`
 
-Receives the URL of a resource or of a container of resources via its `data-src` attribute, and displays it on a **map**. Here is the list of fields needed to display the resources properly:
+Receives the URL of a container of resources via its `data-src` attribute, and displays it on a map.
 
-- `name`: name of the event displayed on the calendar
+To use `solid-map`, you must import the map component individually, along with its style file:
+
+```html
+<script type="module" src="https://unpkg.com/@startinblox/core@0.9/components/solid-map.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@startinblox/core@0.9/style/default-theme.css" />
+```
+
+Here is the list of fields needed to display the resources properly:
+
 - `lat`: latitude on which the resource will be displayed
 - `lng`: longitude on which the resource will be displayed
 
-Like for solid-display, filters and searching capabilities can be easily added to interact with the list of data being displayed.
+
+**Attributes**:
+You can use the same attributes than for a `solid-display` .
+
+Display fields:
+- **`data-src`**: The uri of the LDP container you want to display.
+- **`fields`**: The ordered list of fields to be displayed in each marker popup, separated by commas.
+
+  By default, none are displayed and marker won't show up on click.
+
+  You can also group fields, see the **[sets widgets](#set-widgets)** section below for more info.
+
+- **`value-xyz`**: To display a string not contained within the data.
+- **`widget-xyz`**: The widget to be used to display the `xyz` field.
+- **`default-widget`**: The widget to use for all the fields, except if a specific one is defined for a field.
+- **`label-xyz`**: Set the label for the field `xyz`
+- **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.
+  The editable attribute works with the following widgets: `solid-display-div`, `solid-display-labelled-div`, `solid-display-mailto` and `solid-display-tel`
+- **`multiple-xyz`**: Show field `xyz` as multiple field containing one widget for each child. Multiple widget can be specified, example: `multiple-skills="my-custom-multiple-widget"`. If argument is used without value, default multiple widget is used. Cf the **[Multiple widgets](#multiple-widgets)** section below for more info.
+  - **`each-label-xyz`**: Used with `multiple-xyz`, label of each child of multiple widget
+  - **`each-class-xyz`**: Used with `multiple-xyz`, class of each child of multiple widget
+  - **`each-range-xyz`**: Used with `multiple-xyz`, range value of each child of multiple widget
+  - **`multiple-xyz-add-label`**: Used with `multiple-xyz`, text of the "+" button
+  - **`multiple-xyz-remove-label`**: Used with `multiple-xyz`, text of the "×" button
+
+Filter content:
+- **`search-fields`**: It is possible to search/filter your list by choosing the fields you want to filter it with.
+  - **`search-value-xyz`**: The default value of the search field `xyz`
+  - **`search-label-xyz`**: Set the label for the search field `xyz`
+  - **`search-widget-xyz`**: The form widget of the search field `xyz`
+  - **`search-range-xyz`**: The range of values of the search field `xyz`
+- **`group-by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="category"` will add a class `group-mycategory` to each marker with the `category` value is `My Category`.
+
+You can then color these markers with a simple CSS rule:
+  ```css
+  .group-mycategory {
+    border-color: #FFCCEE;
+  }
+  ```
+
+- **`counter-template`**: To display the number of resources fetched by the `solid-display`.
+  It takes a string in which you can use HTML tags, and the `counter` variable to add the number.
+  i.e. `"<strong>${counter} results</strong>"`
+
+Navigate:
+- **`action-xyz`**: name of the route to reach when the widget for the field `xyz` is clicked. By default, a `solid-link` widget is used.
+
+Style:
+- **`class-xyz`**: Class attribute added to the fields `xyz`.
+- **`child-xyz`**: add attribute `xyz` to all children.
+- **`default-xyz`**: Value displayed for field `xyz` when it's empty or not defined
+- **`empty-widget`**: Widget to display when there is no element in the container
+- **`empty-value`**: To display a value in the empty widget. It can be accessed in the widget like this: `${value}`
 
 ### `solid-widget`
 

@@ -23,7 +23,7 @@ async function evalTemplateString(str: string, variables: {[key:string]:any} = {
 
 function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
   return stylesheets.map(url => {
-    url = new URL(url, document.baseURI).href;
+    url = relativeSource(url);
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
     );

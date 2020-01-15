@@ -1,6 +1,7 @@
 {
   "@id": "event-2.jsonld",
   "name": "Test",
+  "category": "meetup",
   "lat": "48.864716",
   "lng": "2.349014",
   "permissions": [],
