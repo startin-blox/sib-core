@@ -1,5 +1,5 @@
 {
-  "@id": "",
+  "@id": "circles-1.jsonld",
   "name": "circle",
   "description": "A circle just for testing purpose",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"

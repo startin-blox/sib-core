@@ -76,7 +76,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`highlight-xyz`**: The resources to put at the top of the list. For example, `highlight-date="2019-05-20"` will display first all the resources which have a field date equal to "2019-05-20".
 - **`group by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="date"` will render one `<div>` by date, and put the corresponding resources inside.
 - **`next`**: `name` attribute of the `<solid-route>` that should be accessed when a `<solid-display>` element is clicked. See the documentation of `<solid-router>` for more details.
-- **`action-xyz`**:
+- **`action-xyz`**: name of the route to reach when the widget for the field `xyz` is clicked. By default, a `solid-link` widget is used.
 - **`label-xyz`**: Set the label for the field `xyz`
 - **`placeholder-xyz`**: Set the placeholder for the field `xyz`
 - **`editable-xyz`**: Add an "edit" button next to the `xyz` field to let the user edit it. The changes are saved as soon as the field loses focus.

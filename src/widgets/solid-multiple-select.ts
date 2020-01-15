@@ -7,7 +7,10 @@ export default class SolidMultipleSelect extends BaseWidget {
   }
   set range(range: string | null) {
     if (range) this.setAttribute('range', range);
-    if (this.firstChild) this.firstChild['range'] = range;
+    if (this.firstChild) {
+      this.firstChild['context'] = this.context;
+      this.firstChild['range'] = range;
+    };
   }
 
   async render() {

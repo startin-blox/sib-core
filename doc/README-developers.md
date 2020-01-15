@@ -138,3 +138,8 @@ Here is a simplified schema of the organization and the responsibilities of the 
 ## List post-processing
 A `solid-display` component is capable of showing a list of resources and applying different filters on this list to filter, sort, group... resources. Here is a schema of the order of these transformations:
 ![list-post-processing](./images/list-post-processing.png)
+
+## Not clear enough ?
+Help us to improve the documentation! Feel free to ask for clarification or ask questions. This helps us to improve our documentation.
+
+Thanks you!

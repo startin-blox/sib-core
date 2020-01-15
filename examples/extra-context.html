@@ -27,7 +27,7 @@
       <h1>HOME</h1>
       <solid-display
         data-src="https://api.test-paris.happy-dev.fr/users/"
-        fields="@id, username, firstName, lastName, email"
+        fields="@id, username, first_name, last_name, email"
         next="detail"
         extra-context="alpha"
       ></solid-display>
@@ -36,7 +36,7 @@
     <div id="detail">
       <h1>DETAIL</h1>
       <solid-display
-        fields="@id, username, firstName, lastName, email"
+        fields="@id, username, first_name, last_name, email"
         bind-resources
         extra-context="alpha"
       ></solid-display>

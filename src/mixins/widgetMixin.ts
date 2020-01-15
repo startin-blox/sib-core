@@ -87,7 +87,7 @@ const WidgetMixin = {
       return this.element.getAttribute('value-' + field);
     }
     let resourceValue = await this.fetchValue(this.resource, field);
-    if (resourceValue == undefined || resourceValue == "") // If null or empty, return field default value
+    if (resourceValue === undefined || resourceValue === "") // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
         this.element.getAttribute('default-' + field) : undefined;
     return resourceValue;
@@ -115,6 +115,7 @@ const WidgetMixin = {
   widgetAttributes(field: string): object {
     const attrs = {
       name: field,
+      context: this.context
     };
     const escapedField = this.getEscapedField(field);
     for (let attr of ['range', 'label', 'placeholder', 'class']) {
@@ -136,7 +137,6 @@ const WidgetMixin = {
     }
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
     attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
-    attrs['context'] = this.context;
 
     return attrs;
   },

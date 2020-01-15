@@ -18,7 +18,7 @@ const SorterMixin = {
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.orderBy) {
       resources = await asyncMap(async (resource) => ({
-        sortingKey: (await resource[this.orderBy]).toString(), // fetch sorting value
+        sortingKey: await resource[this.orderBy], // fetch sorting value
         proxy: resource // and keep proxy
       }), resources);
       resources = await asyncToArray(resources); // tranform in array

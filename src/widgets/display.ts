@@ -25,7 +25,7 @@ const SolidDisplayMultiline = widgetFactory(
 
 const SolidDisplayLabelledBoolean = widgetFactory(
   'solid-display-labelled-boolean',
-  `\${value == 'true' ? "<label>" + label + "</label>" : ""}`
+  `\${value ? "<label>" + label + "</label>" : ""}`
 );
 
 const SolidDisplayImg = widgetFactory(

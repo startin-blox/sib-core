@@ -1,5 +1,7 @@
 import { BaseWidget } from './baseWidget.js';
 import { defineComponent } from "../libs/helpers.js";
+import { store } from "../libs/store/store.js";
+
 export default class SolidMultiple extends BaseWidget {
   async render() {
     const fragment = document.createDocumentFragment();
@@ -14,7 +16,7 @@ export default class SolidMultiple extends BaseWidget {
     for await (const resource of this.value['ldp:contains']) {
       const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
-        elm['value'] = resource;
+        elm['value'] = await store.initGraph(resource['@id']);
         elm.toggleAttribute('data-holder', true);
       }
       i++;

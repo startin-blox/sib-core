@@ -65,8 +65,7 @@ export class BaseWidget extends HTMLElement {
   }
   set value(value) {
     this._value = value; // ... store `value` in the widget
-
-    if (!this._value) return;
+    if (this._value == null || this._value == undefined) return;
 
     if (this.dataHolder && this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
@@ -74,7 +73,7 @@ export class BaseWidget extends HTMLElement {
       if (element.type == "checkbox") {
         element.checked = value;
       } else {
-        element.value = value || ''; // ... set `value` to the dataHolder element
+        element.value = value; // ... set `value` to the dataHolder element
       }
       // remove when https://git.happy-dev.fr/startinblox/framework/sib-core/issues/426 fixed
       if (element.dispatchEvent) element.dispatchEvent(new Event('change')); // trigger change manually
@@ -136,22 +135,36 @@ export class BaseWidget extends HTMLElement {
   }
 
   get range(): any {
-    return this._range ? this._range['ldp:contains'] : null;
+    return this.fetchSources(this._range);
   }
   set range(range) {
     (async () => {
-      await store.initGraph(range, this.context);
-      this._range = store.get(range);
+      this._range = await store.initGraph(range, this.context);
       await this.render();
     })();
   }
+  async fetchSources(resource: object) {
+    if (!resource || !resource['ldp:contains']) return null;
+
+    let resources: any[] = [];
+    for (let res of resource['ldp:contains']) {
+      if (res.isContainer()) { // if nested container
+        let resourcesFromContainer = await store.initGraph(res['@id'], this.context); // fetch the datas
+        if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);
+      } else {
+        resources.push(res);
+      }
+    }
+    return resources;
+  }
+
   get htmlRange(): Promise<string|undefined> {
     return (async () => {
       let htmlRange = '';
-      if (!this.range) return;
-      for await (let element of this.range) {
-        await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
-        element = store.get(element['@id']);
+      const rangeResources = await this.range;
+      if (!rangeResources) return;
+      for await (let element of rangeResources) {
+        element = await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
 
         let selected: boolean;
         if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select
@@ -166,7 +179,7 @@ export class BaseWidget extends HTMLElement {
           selected = this._value ? this._value['@id'] == element['@id'] : false;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
-          name: (await element.name).toString(),
+          name: await element.name,
           id: element['@id'],
           selected: selected
         });

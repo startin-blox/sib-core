@@ -1,13 +1,5 @@
 //@ts-ignore
 import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools/es2015/async-map';
-import { loadScript } from '../helpers.js';
-
-const scriptsLoading = (async () => {
-  await loadScript('https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js');
-  await loadScript('./solid-query-ldflex.bundle.js');
-})();
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -22,10 +14,6 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
-  email: 'http://happy-dev.fr/owl/#email', // TODO : workaround for https://github.com/solid/query-ldflex/issues/36
-  firstName: 'http://happy-dev.fr/owl/#first_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
-  lastName: 'http://happy-dev.fr/owl/#last_name', // TODO : workaround for https://github.com/solid/query-ldflex/issues/38
-  type: 'http://happy-dev.fr/owl/#type',  // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
 };
 
 export class Store {
@@ -38,50 +26,87 @@ export class Store {
     this.headers.set('Content-Type', 'application/ld+json');
   }
 
-  async initGraph(id: string, context = {}): Promise<void> {
+  async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
     if (!this.cache.has(id)) {
-      const getter = await new LDFlexGetter(id, context).getProxy();
-      this.cache.set(id, getter);
+      const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
+      await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
+    }
+    return this.cache.get(id);
+  }
 
-      if (await getter.isContainer()) { // if resource is a container, cache the children
-        for await (const resource of getter['ldp:contains']) {
-          let resourceId = resource.toString();
-          if (this.cache.has(resourceId) || resourceId.match(/^b\d+$/)) continue;
-          this.cache.set(resourceId, resource);
-        }
+  async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
+    if (resource.properties) { // if proxy, cache it
+      this.cache.set(key, resource); // put in cache
+    }
+
+    // Cache sub objects
+    if (resource.getSubOjects) {
+      for (let res of resource.getSubOjects()) {
+        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId).getProxy(res);
+        await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
       }
+    }
+
+    // Cache children
+    if (resource['@type'] == "ldp:Container" && resource.getChildren) {
+      for (let res of resource.getChildren()) {
+        await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
+      }
+      return;
+    }
+
+    // Cache resource
+    if (resource['@id'] && !resource.properties) {
+      if (
+        this.cache.has(resource['@id']) || // not already in cache
+        resource['@id'].match(/^b\d+$/) // and not anonymous node
+      ) return;
+
+      if (resource['@type'] === "ldp:Container") { // if source, init graph of source
+        await this.initGraph(resource['@id'], context, parentId);
+        return;
+      }
+
+      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
+      await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
     }
   }
 
-  get(id: string): object {
+  get(id: string): CustomGetter | null {
     return this.cache.get(id) || null;
   }
 
-  post(resource: object, id: string) {
+  clearCache(id: string): void {
+    if (this.cache.has(id)) {
+      this.cache.delete(id);
+    }
+  }
+
+  async post(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
-  put(resource: object, id: string) {
+  async put(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
-  patch(resource: object, id: string) {
+  async patch(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
-    });
+    }).then(response => response.headers.get('Location') || null);
   }
 
   async delete(id: string, context: object = {}) {
@@ -100,118 +125,237 @@ export class Store {
 
 export const store = new Store();
 
-/**
- * LDFLEX WRAPPER
- * ultimately, we need to get rid of this
-*/
-class LDFlexGetter {
-  resourceId: string;
-  resource: any;
-  context: object;
-  proxy: any;
 
-  constructor(resourceId: string, context: object) {
+class CustomGetter {
+  resourceId: string; // id of the requested resource
+  resource: any; // content of the requested resource
+  clientContext: object; // context given by the app
+  serverContext: object; // context given by the server
+  parentId: string; // id of the parent resource, used to get the absolute url of the current resource
+
+  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.resourceId = resourceId;
-    this.context = context;
+    this.clientContext = clientContext;
+    this.serverContext = serverContext;
+    this.resource = null;
+    this.parentId = parentId;
   }
 
-  async init(proxy = null) {
-    await scriptsLoading; // Load solid scripts
-    if (Object.keys(this.context)) await solid.data.context.extend(this.context); // We extend the context with our own...
+  /**
+   * Fetch datas if needed and expand all properties
+   * @param data : object - content of the resource if already loaded
+   */
+  async init(data: object | null = null) {
+    this.clientContext = await myParser.parse(this.clientContext);
+    const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
-    this.context = await myParser.parse(this.context);
-    let iri = ContextParser.expandTerm(this.resourceId, this.context); // expand if reduced ids
-    iri = new URL(iri, document.location.href).href; // and get full URL for local files
-    this.resource = proxy || solid.data[iri]; // ... then we get the resource datas
+    // Fetch datas if needed
+    if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
+    let resource;
+    try {
+      resource = data || await fetch(iri, {
+        method: 'GET',
+        credentials: 'include'
+      }).then(response => {
+        if (response.status !== 200) return;
+        return response.json()
+      })
+    } catch (e) { }
+    if (!resource) return
+
+    this.serverContext = await myParser.parse([this.serverContext, resource['@context'] || {}]);
+
+    // Expand properties before saving
+    this.resource = this.expandProperties({ ...resource }, this.serverContext);
+
     return this;
   }
 
+  /**
+   * Return absolute IRI of the resource
+   * @param id
+   * @param context
+   * @param parentId
+   */
+  getAbsoluteIri(id: string, context: object, parentId: string): string {
+    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
+    if (parentId) { // and get full URL from parent caller for local files
+      let parentIri = new URL(parentId, document.location.href).href;
+      iri = new URL(iri, parentIri).href;
+    } else {
+      iri = new URL(iri, document.location.href).href;
+    }
+    return iri;
+  }
+
+  /**
+   * Expand all predicates of a resource with a given context
+   * @param resource: object
+   * @param context: object
+   */
+  expandProperties(resource: object, context: object | string) {
+    for (let prop of Object.keys(resource)) {
+      if (!prop) continue;
+      this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context, true));
+    }
+    return resource
+  }
+
+  /**
+   * Change the key of an object
+   * @param object: object
+   * @param oldProp: string - current key
+   * @param newProp: string - new key to set
+   */
+  objectReplaceProperty(object: object, oldProp: string, newProp: string) {
+    if (newProp !== oldProp) {
+      Object.defineProperty(
+        object,
+        newProp,
+        Object.getOwnPropertyDescriptor(object, oldProp) || ''
+      );
+      delete object[oldProp];
+    }
+  }
+
+  /**
+   * Get the property of a resource for a given path
+   * @param path: string
+   */
   async get(path: any) {
+    if (!path) return;
     const path1: string[] = path.split('.');
     const path2: string[] = [];
     let value: any;
     while (true) {
       try {
-        value = await this.resource.resolve(`["${path1.join('.')}"]`); // TODO: remove when https://github.com/solid/query-ldflex/issues/40 fixed
+        value = this.resource[this.getExpandedPredicate(path1[0])];
       } catch (e) { break }
 
-      if (value !== undefined) break;
-      if (path1.length <= 1) return undefined;
+      if (path1.length <= 1) break; // no dot path
       const lastPath1El = path1.pop();
       if(lastPath1El) path2.unshift(lastPath1El);
     }
     if (path2.length === 0) { // end of the path
-      switch (value.termType) {
-        case "NamedNode": // resource, return proxy
-          return await new LDFlexGetter(value.toString(), this.context).getProxy();
-        case "Literal": // property, return value
-          return value;
-        default:
-          return undefined
-      }
+      if (!value || !value['@id']) return value; // no value or not a resource
+      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
     }
-    return new LDFlexGetter(value.toString(), this.context).init().then(res => res.get(path2.join('.')));
+    if (!value) return undefined;
+    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
+    return resource ? await resource[path2.join('.')] : undefined; // return value
   }
 
-  async isContainer() {
-    const type = await this.resource['rdf:type'];
-    if (!type) return false;
-    return this.getCompactedIri(type.toString()) == "ldp:Container"; // TODO : ldflex should return compacted field
+  /**
+   * Cache resource in the store, and return the created proxy
+   * @param id
+   * @param context
+   * @param iriParent
+   */
+  async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
+    return store.initGraph(id, context, iriParent);
   }
 
-  async clearCache() {
-    await solid.data.clearCache(this.resourceId);
+  /**
+   * Return true if the resource is a container
+   */
+  isContainer(): boolean {
+    return this.resource["@type"] == "ldp:Container";
   }
 
-  getCompactedIri(id: string) { return ContextParser.compactIri(id, this.context) }
-  toString() { return this.getCompactedIri(this.resource.toString()) }
-  [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource.toString()) }
-
-  getAsyncIterable(property: string) {
-    return asyncMap(
-      resource => new LDFlexGetter(resource.toString(), this.context).getProxy(resource),
-      this.resource[property]
-    );
+  /**
+   * Get all properties of a resource
+   */
+  getProperties(): string[] {
+    return Object.keys(this.resource).map(prop => this.getCompactedPredicate(prop));
   }
 
-  // TODO : remove when https://github.com/solid/query-ldflex/issues/39 fixed
-  getProperties() {
-    return asyncMap(
-      (prop: string) => ContextParser.compactIri(prop, this.context, true),
-      this.resource.properties
-    );
+  /**
+   * Get children of container as objects
+   */
+  getChildren(): object[] {
+    return this.resource[this.getExpandedPredicate("ldp:contains")] || [];
   }
 
-  // Returns a Proxy which handles the different get requests
-  async getProxy(proxy = null) {
-    if (!this.proxy) {
-      await this.init(proxy);
-      this.proxy = new Proxy(this, {
-        get: (resource, property) => {
-          if (typeof resource[property] === 'function') return resource[property].bind(resource)
+  /**
+   * Get children of container as Proxys
+   */
+  getLdpContains(): CustomGetter[] {
+    const children = this.resource[this.getExpandedPredicate("ldp:contains")];
+    return children ? children.map((res: object) => store.get(res['@id'])) : [];
+  }
 
-          switch (property) {
-            case '@id':
-              return this.getCompactedIri(this.resource.toString()); // Compact @id if possible
-            case '@type':
-              return this.resource['rdf:type']; // TODO : remove when https://github.com/solid/query-ldflex/issues/41 fixed
-            case 'properties':
-              return this.getProperties();
-            case 'permissions':
-            case 'termType':
-            case 'subjects':
-            case 'predicates':
-              return this.resource[property]
-            case 'ldp:contains':
-              return this.getAsyncIterable(property);
-            case 'then':
-              return;
-            default:
-              return resource.get(property);
-          }
+  /**
+   * Get all nested resource or containers which contains datas
+   */
+  getSubOjects() {
+    let subObjects: any = [];
+    for (let p of Object.keys(this.resource)) {
+      let property = this.resource[p];
+      if (!this.isFullResource(property)) continue; // if not a resource, stop
+      if (property['@type'] == "ldp:Container" &&
+        (property['ldp:contains'] == undefined ||
+          (property['ldp:contains'].length >= 1 && !this.isFullResource(property['ldp:contains'][0])))
+      ) continue; // if not a full container
+      subObjects.push(property)
+    }
+    return subObjects;
+  }
+
+  /**
+   * return true if prop is a resource with an @id and some properties
+   * @param prop
+   */
+  isFullResource(prop: any): boolean {
+    return prop && typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
+  }
+
+  getPermissions(): string[] {
+    const permissions = this.resource[this.getExpandedPredicate("permissions")];
+    return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
+  }
+
+  /**
+   * Remove the resource from the cache
+   */
+  clearCache(): void {
+    store.clearCache(this.resourceId);
+  }
+
+  getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, this.clientContext, true) }
+  getCompactedPredicate(property: string) { return ContextParser.compactIri(property, this.clientContext, true) }
+  getCompactedIri(id: string) { return ContextParser.compactIri(id, this.clientContext) }
+  toString() { return this.getCompactedIri(this.resource['@id']) }
+  [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource['@id']) }
+
+
+  /**
+   * Returns a Proxy which handles the different get requests
+   * @param data: object - content of the resource if already loaded
+   */
+  async getProxy(data = null) {
+    await this.init(data);
+    return new Proxy(this, {
+      get: (resource, property) => {
+        if (!this.resource) return undefined;
+        if (typeof resource[property] === 'function') return resource[property].bind(resource)
+
+        switch (property) {
+          case '@id':
+            return this.getCompactedIri(this.resource['@id'] || this.resourceId); // Compact @id if possible
+          case '@type':
+            return this.resource['@type']; // return synchronously
+          case 'properties':
+            return this.getProperties();
+          case 'ldp:contains':
+            return this.getLdpContains(); // returns standard arrays synchronously
+          case 'permissions':
+            return this.getPermissions(); // get expanded permissions
+          case 'then':
+            return;
+          default:
+            return resource.get(property);
         }
-      })
-    }
-    return this.proxy;
+      }
+    })
   }
 }

@@ -28,15 +28,21 @@ export const SolidAcChecker = {
     const context = await myParser.parse(this.context);
 
     if (this.permission) { // User has permission of ...
-      displayElement = await asyncSome(
+      displayElement = this.resource.permissions.some(p => {
+        return ContextParser.compactIri(p, context) === this.permission;
+      });
+      /* displayElement = await asyncSome(
         (permission: object) => ContextParser.compactIri(permission.toString(), context) === this.permission,
-        this.resource.permissions.mode['rdf:type']
-      )
+        this.resource.permissions.mode['@type']
+      )*/
     } else if (this.noPermission) { // User has no permission of ...
-      displayElement = await asyncEvery(
+      displayElement = this.resource.permissions.every(p => {
+        return ContextParser.compactIri(p, context) !== this.noPermission;
+      });
+      /*displayElement = await asyncEvery(
         (permission: object) => ContextParser.compactIri(permission.toString(), context) !== this.noPermission,
-        this.resource.permissions.mode['rdf:type']
-      )
+        this.resource.permissions.mode['@type']
+      )*/
     } else { // No parameter provided
       console.warn('solid-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
       return;

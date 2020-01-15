@@ -17,7 +17,7 @@
     <h2>With fields and sets</h2>
     <solid-display
       data-src="data/list/users.jsonld"
-      fields="@id, username, name(firstName, lastName), email, profile.city"
+      fields="@id, username, name(first_name, last_name), email, profile.city"
       default-email="no email yet"
       default-profile.city="no city yet"
       class-id="id"
@@ -26,7 +26,7 @@
     <h2>Default widget</h2>
     <solid-display
       data-src="data/list/users.jsonld"
-      fields="@id, name(firstName, lastName)"
+      fields="@id, name(first_name, last_name)"
       default-widget="solid-display-div"
     ></solid-display>
     <style>
