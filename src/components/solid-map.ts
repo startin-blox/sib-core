@@ -97,8 +97,40 @@ export const SolidMap = {
       }).addTo(this.map)
         .on('click', this.dispatchSelect.bind(this));
 
+      if (this.fields !== null) { // show popups only if fields attribute
+        marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup sib-display
+      }
+
       this.markers.push(marker);
     }
+  },
+  /**
+   * Generate the sib-display of the popup
+   * @param resourceId: id of the popup clicked
+   */
+  getPopupContent(resourceId: string) {
+    const child = document.createElement('solid-display');
+    if (this.fields != null) child.setAttribute('fields', this.fields);
+
+    for (let attr of this.element.attributes) {
+      //copy widget and value attributes
+      if (
+        attr.name.startsWith('value-') ||
+        attr.name.startsWith('label-') ||
+        attr.name.startsWith('widget-') ||
+        attr.name.startsWith('class-') ||
+        attr.name.startsWith('multiple-') ||
+        attr.name.startsWith('editable-') ||
+        attr.name.startsWith('action-') ||
+        attr.name.startsWith('default-') ||
+        attr.name == 'extra-context'
+      )
+        child.setAttribute(attr.name, attr.value);
+      if (attr.name.startsWith('child-'))
+        child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
+    }
+    child.dataset.src = resourceId; // set id after the extra-context is
+    return child
   },
   /**
    * Override widgetMixin method: empty the map

@@ -166,11 +166,10 @@ Like for solid-display, filters and searching capabilities can be easily added t
 
 Receives the URL of a container of resources via its `data-src` attribute, and displays it on a map.
 
-To use `solid-map`, you must import the map component individually, along with its style file:
+To use `solid-map`, you must import the map component individually:
 
 ```html
 <script type="module" src="https://unpkg.com/@startinblox/core@0.9/components/solid-map.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/@startinblox/core@0.9/style/default-theme.css" />
 ```
 
 Here is the list of fields needed to display the resources properly:

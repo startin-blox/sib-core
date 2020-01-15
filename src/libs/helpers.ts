@@ -51,7 +51,7 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
 }
 
 function relativeSource(source: string) {
-  if (source.indexOf('./') !== 0) return source
+  if (source.indexOf('./') !== 0) return new URL(source, document.baseURI).href;
   const e = new Error();
   if(!e.stack) return source;
   const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
