@@ -47,9 +47,11 @@ export class Store {
   }
 
   resolveResource = function(id: string, resolve) {
-    var handler = function(event) {
-      if (event.detail.id === id) { resolve(event.detail.resource) }
-      document.removeEventListener('click', handler);
+    const handler = function(event) {
+      if (event.detail.id === id) {
+        resolve(event.detail.resource);
+        document.removeEventListener('resourceReady', handler);
+      }
     };
     return handler;
   };
