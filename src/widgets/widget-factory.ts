@@ -24,7 +24,17 @@ export const widgetFactory = (
   if (tagName.startsWith('solid-')) {
     const sibTagName = tagName.replace(/^solid-/, 'sib-');
 
-    customElements.define(sibTagName, class extends cls {});
+    customElements.define(
+      sibTagName,
+      class extends cls {
+        constructor() {
+          console.warn(
+            `${sibTagName} is deprecated, please use ${tagName} insteed`,
+          );
+          super();
+        }
+      },
+    );
   }
   return cls;
 };

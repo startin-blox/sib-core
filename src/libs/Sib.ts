@@ -14,7 +14,15 @@ export class Sib {
         
         if (component.name.startsWith('solid-')) {
             const sibTagName = component.name.replace(/^solid-/, 'sib-');
-            customElements.define(sibTagName, class extends cls {});
+            customElements.define(
+                sibTagName, 
+                class extends cls {
+                    constructor() {
+                        console.warn(`${sibTagName} is deprecated, please use ${component.name} insteed`)
+                        super()
+                    }
+                }
+            );
         }
     }
 
