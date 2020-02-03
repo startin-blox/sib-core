@@ -3,7 +3,7 @@ import { BaseWidget } from './baseWidget.js';
 export const widgetFactory = (
   tagName: string,
   customTemplate: string,
-  childTemplate: string = "",
+  childTemplate: string = '',
   callback?: (x: any) => void,
 ) => {
   const registered = customElements.get(tagName);
@@ -21,5 +21,10 @@ export const widgetFactory = (
     }
   };
   customElements.define(tagName, cls);
+  if (tagName.startsWith('solid-')) {
+    const sibTagName = tagName.replace(/^solid-/, 'sib-');
+
+    customElements.define(sibTagName, class extends cls {});
+  }
   return cls;
 };

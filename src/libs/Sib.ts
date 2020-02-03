@@ -9,10 +9,16 @@ import {
 export class Sib {
     public static register(componentDefinition: MixinStaticInterface):void {
         const component = ComponentFactory.build(componentDefinition);
-        defineComponent(component.name, this.toElement(component));
+        const cls = this.toElement(component);
+        defineComponent(component.name, cls);
+        
+        if (component.name.startsWith('solid-')) {
+            const sibTagName = component.name.replace(/^solid-/, 'sib-');
+            customElements.define(sibTagName, class extends cls {});
+        }
     }
 
-    protected static toElement(component: ComponentConstructorInterface): Function {
+    protected static toElement(component: ComponentConstructorInterface) {
         return class extends HTMLElement {
             private _component: ComponentInterface | null = null;
 
