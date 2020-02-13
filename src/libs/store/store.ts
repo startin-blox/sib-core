@@ -14,6 +14,9 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
+  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+  lat: "geo:lat",
+  lng: "geo:long"
 };
 
 export class Store {
