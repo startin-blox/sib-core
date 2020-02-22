@@ -12,7 +12,7 @@ export class Sib {
         defineComponent(component.name, this.toElement(component));
     }
 
-    protected static toElement(component: ComponentConstructorInterface): Function {
+    protected static toElement(component: ComponentConstructorInterface): typeof HTMLElement {
         return class extends HTMLElement {
             private _component: ComponentInterface | null = null;
 

@@ -136,7 +136,7 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   return -1;
 }
 
-function defineComponent(tagName: string, componentClass = class{}) {
+function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   if (!customElements.get(tagName)) {
     customElements.define(tagName, componentClass);
   } else {
@@ -150,7 +150,7 @@ function defineComponent(tagName: string, componentClass = class{}) {
       class extends componentClass {
         constructor() {
           console.warn(
-            `${sibTagName} is deprecated, please use ${tagName} insteed`,
+            `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
           );
           super();
         }
