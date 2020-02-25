@@ -1,4 +1,5 @@
 import { BaseWidget } from './baseWidget.js';
+import { defineComponent } from '../libs/helpers.js';
 
 export const widgetFactory = (
   tagName: string,
@@ -20,21 +21,6 @@ export const widgetFactory = (
       return childTemplate;
     }
   };
-  customElements.define(tagName, cls);
-  if (tagName.startsWith('solid-')) {
-    const sibTagName = tagName.replace(/^solid-/, 'sib-');
-
-    customElements.define(
-      sibTagName,
-      class extends cls {
-        constructor() {
-          console.warn(
-            `${sibTagName} is deprecated, please use ${tagName} insteed`,
-          );
-          super();
-        }
-      },
-    );
-  }
+  defineComponent(tagName, cls);
   return cls;
 };
