@@ -1,7 +1,7 @@
 import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
-import SlimSelect from 'https://dev.jspm.io/slim-select';
+import SlimSelect from 'https://dev.jspm.io/slim-select@1.23';
 import SolidFormFile from './solid-form-file.js';
 import SolidFormFileImage from './solid-form-file-image.js';
 

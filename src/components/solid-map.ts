@@ -41,13 +41,6 @@ export const SolidMap = {
     ).addTo(this.map);
     this.element.appendChild(div);
   },
-  get extra_context(): object {
-    return {
-      geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
-      lat: "geo:lat",
-      lng: "geo:long"
-    }
-  },
   reset() {
     this.map.invalidateSize();
 

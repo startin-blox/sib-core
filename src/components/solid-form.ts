@@ -116,7 +116,10 @@ export const SolidForm = {
     this.element.dispatchEvent(
       new CustomEvent('save', {
         bubbles: true,
-        detail: { resource },
+        detail: {
+          resource: resource,
+          id: saved || null
+        },
       }),
     );
     this.toggleLoaderHidden(true);

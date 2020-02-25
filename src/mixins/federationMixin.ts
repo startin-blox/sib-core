@@ -17,6 +17,7 @@ const FederationMixin = {
   async fetchSources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     let sources: any[] = [];
     for (let res of resources) { // TODO : test with different response timings
+      if (!res) continue;
       let type = await res['@type'];
       if (type && type.toString() == "ldp:Container") {
         const containerId = res['@id'];

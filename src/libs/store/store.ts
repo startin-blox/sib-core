@@ -14,6 +14,9 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   permissions: 'acl:accessControl',
   mode: 'acl:mode',
+  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+  lat: "geo:lat",
+  lng: "geo:long"
 };
 
 export class Store {
@@ -58,7 +61,11 @@ export class Store {
 
   async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
-      this.cache.set(key, resource); // put in cache
+      if (this.cache.get(key)) { // if already cached, merge data
+        this.cache.get(key).merge(resource);
+      } else {  // else, put in cache
+        this.cache.set(key, resource);
+      }
     }
 
     // Cache sub objects
@@ -79,11 +86,7 @@ export class Store {
 
     // Cache resource
     if (resource['@id'] && !resource.properties) {
-      if (
-        this.cache.has(resource['@id']) || // not already in cache
-        resource['@id'].match(/^b\d+$/) // and not anonymous node
-      ) return;
-
+      if (resource['@id'].match(/^b\d+$/)) return; // and not anonymous node
       if (resource['@type'] === "ldp:Container") { // if source, init graph of source
         await this.initGraph(resource['@id'], context, parentId);
         return;
@@ -322,6 +325,12 @@ class CustomGetter {
     }
     return subObjects;
   }
+
+  merge(resource: CustomGetter) {
+    this.resource = {...this.getResourceData(), ...resource.getResourceData()}
+  }
+
+  getResourceData(): object { return this.resource }
 
   /**
    * return true if prop is a resource with an @id and some properties

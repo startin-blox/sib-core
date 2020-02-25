@@ -125,11 +125,26 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   return -1;
 }
 
-function defineComponent(name: string, componentClass: Function) {
-  if (!customElements.get(name)) {
-    customElements.define(name, componentClass);
+function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
+  if (!customElements.get(tagName)) {
+    customElements.define(tagName, componentClass);
   } else {
-    console.warn(`Warning: the component "${name}" has already been loaded in another version of sib-core.`)
+    console.warn(`Warning: the component "${tagName}" has already been loaded in another version of sib-core.`)
+  }
+  if (tagName.startsWith('solid-')) {
+    const sibTagName = tagName.replace(/^solid-/, 'sib-');
+
+    customElements.define(
+      sibTagName,
+      class extends componentClass {
+        constructor() {
+          console.warn(
+            `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
+          );
+          super();
+        }
+      },
+    );
   }
 }
 

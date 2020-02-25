@@ -26,7 +26,7 @@ export class Sib {
         }
     }
 
-    protected static toElement(component: ComponentConstructorInterface) {
+    protected static toElement(component: ComponentConstructorInterface): typeof HTMLElement {
         return class extends HTMLElement {
             private _component: ComponentInterface | null = null;
 
