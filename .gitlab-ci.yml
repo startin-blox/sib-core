@@ -2,7 +2,20 @@
 image: node
 
 stages:
+  - test
   - release
+
+test:
+  stage: test
+  before_script:
+    - npm install -D
+  script:
+    - npm run test
+  except:
+    - master
+    - tags
+  tags:
+    - test
 
 publish:
   stage: release
