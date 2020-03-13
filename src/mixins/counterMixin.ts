@@ -1,7 +1,7 @@
 //@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools/es2018/async-map';
+import asyncMap from 'https://dev.jspm.io/iter-tools@6/es2018/async-map';
 //@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools/es2018/async-to-array';
+import asyncToArray from 'https://dev.jspm.io/iter-tools@6/es2018/async-to-array';
 import { stringToDom, evalTemplateString } from '../libs/helpers.js';
 
 const CounterMixin = {
