@@ -1,9 +1,9 @@
 //@ts-ignore
-import asyncFilter from 'https://dev.jspm.io/iter-tools/es2015/async-filter';
+import asyncFilter from 'https://dev.jspm.io/iter-tools@6/es2015/async-filter';
 //@ts-ignore
-import asyncReduce from 'https://dev.jspm.io/iter-tools/es2015/async-reduce';
+import asyncReduce from 'https://dev.jspm.io/iter-tools@6/es2015/async-reduce';
 //@ts-ignore
-import asyncEvery from 'https://dev.jspm.io/iter-tools/es2015/async-every';
+import asyncEvery from 'https://dev.jspm.io/iter-tools@6/es2015/async-every';
 import { ComponentInterface } from "../libs/interfaces.js";
 
 const FilterMixin = {

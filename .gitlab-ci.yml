@@ -1,5 +1,5 @@
 ---
-image: node
+image: node:12
 
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
@@ -31,7 +31,7 @@ test:
     - master
     - tags
   tags:
-    - sib
+    - test
   artifacts:
     paths:
       - cypress/videos
@@ -41,9 +41,8 @@ test:
 publish:
   stage: release
   before_script:
-    - npm install -g semantic-release@v16.0.0-beta.18 @semantic-release/gitlab
+    - npm install -g semantic-release@v17 @semantic-release/gitlab
     - npm install
-    - git checkout $CI_COMMIT_REF_NAME
   script:
     - npm run build:prod
     - semantic-release
@@ -51,4 +50,4 @@ publish:
     - master
     - beta
   tags:
-    - sib
+    - deploy
