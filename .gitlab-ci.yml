@@ -1,5 +1,5 @@
 ---
-image: node
+image: node:12
 
 stages:
   - test
