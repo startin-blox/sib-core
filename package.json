@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.startinblox.com/framework/sib-core.git"
+    "url": "git@git.startinblox.com:framework/sib-core.git"
   },
   "author": "",
   "license": "MIT",
