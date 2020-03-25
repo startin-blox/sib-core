@@ -22,12 +22,11 @@ export const base_context = {
 export class Store {
   cache: Map<string, any>;
   loadingList: String[];
-  headers: HeadersInit;
+  headers= new Headers();
 
   constructor() {
     this.cache = new Map();
     this.loadingList = [];
-    this.headers = new Headers();
     this.headers.set('Content-Type', 'application/ld+json');
   }
 
@@ -126,6 +125,9 @@ export class Store {
   }
 
   async patch(resource: object, id: string): Promise<string | null> {
+    const sibAuth = document.querySelector('sib-auth');
+    this.headers.set('Authorization', 'Bearer: ' + await sibAuth.getUserIdToken());
+
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
@@ -157,6 +159,7 @@ class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
+  headers = new Headers();
 
   constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.resourceId = resourceId;
@@ -171,15 +174,23 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
+    const sibAuth = document.querySelector('sib-auth');
+    const id_token = await sibAuth.getUserIdToken();
+    console.log('id_token', id_token);
+    this.headers.set('Authorization', 'Bearer: ' + id_token);
+    console.log('HEADERS', this.headers.get('Authorization'));
+
     this.clientContext = await myParser.parse(this.clientContext);
     const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
     // Fetch datas if needed
     if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
     let resource;
+    console.log(Array.from(this.headers.entries()));
     try {
       resource = data || await fetch(iri, {
         method: 'GET',
+        headers: this.headers,
         credentials: 'include'
       }).then(response => {
         if (response.status !== 200) return;
