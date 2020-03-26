@@ -30,13 +30,13 @@ test:
   except:
     - master
     - tags
-  tags:
-    - test
   artifacts:
     paths:
       - cypress/videos
       - cypress/screenshots
     expire_in: 1 day
+  tags:
+    - test
 
 publish:
   stage: release
