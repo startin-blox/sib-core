@@ -20,7 +20,7 @@ const GrouperMixin = {
       let groups = {};
       for await (let resource of resources) {
         const valueGroup = await resource[this.groupBy];
-        if (!valueGroup) continue;
+        if (valueGroup == null) continue;
         if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...
         groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
       }
