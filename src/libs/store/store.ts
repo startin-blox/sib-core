@@ -22,11 +22,13 @@ export const base_context = {
 
 export class Store {
   cache: Map<string, any>;
+  subscriptionIndex: Map<string, any>; // index of all the containers per resource
   loadingList: String[];
   headers: Promise<Headers>;
 
   constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
+    this.subscriptionIndex = new Map();
     this.loadingList = [];
     this.headers = (async () => {
       const headers = new Headers();
@@ -99,6 +101,7 @@ export class Store {
     // Cache children
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
+        this._subscribeResourceTo(resource['@id'], res['@id']);
         await this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId)
       }
       return;
@@ -129,7 +132,7 @@ export class Store {
     }).then(response => {
       if (response.ok) {
         this.clearCache(expandedId);
-        this.getData(expandedId, resource['@context']).then(() => PubSub.publish(expandedId));
+        this.getData(expandedId, base_context).then(() => PubSub.publish(expandedId));
       }
       return response.headers.get('Location') || null;
     });
@@ -158,6 +161,14 @@ export class Store {
       headers: await this.headers,
       credentials: 'include'
     });
+
+    // Notify related containers
+    const toNotify = this.subscriptionIndex.get(expandedId);
+    if (toNotify) toNotify.forEach((containerId: string) => {
+      this.clearCache(containerId);
+      this.getData(containerId, base_context).then(() => PubSub.publish(containerId));
+    });
+
     return deleted;
   }
 
@@ -169,6 +180,10 @@ export class Store {
 
   _getExpandedId(id: string, context: object) {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
+  }
+
+  _subscribeResourceTo(containerId: string, resourceId: string) {
+    this.subscriptionIndex.set(resourceId, [...(this.subscriptionIndex.get(resourceId) || []), containerId])
   }
 
   /**
