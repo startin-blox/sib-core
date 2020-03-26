@@ -160,7 +160,13 @@ const WidgetMixin = {
     }
 
     this.widgets.push(widget);
-    this.getValue(field).then(value => widget.value = value);
+    this.getValue(field).then(value => {
+      widget.value = value;
+      if (value && value['@id']) {
+        PubSub.subscribe(value['@id'], () => this.updateDOM())
+        // TODO : remove subscriptions
+      }
+    });
     return widget;
   },
   multiple(field: string): string | null {

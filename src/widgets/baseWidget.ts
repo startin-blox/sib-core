@@ -139,7 +139,7 @@ export class BaseWidget extends HTMLElement {
   }
   set range(range) {
     (async () => {
-      this._range = await store.initGraph(range, this.context);
+      this._range = await store.getData(range, this.context);
       await this.render();
     })();
   }
@@ -149,7 +149,7 @@ export class BaseWidget extends HTMLElement {
     let resources: any[] = [];
     for (let res of resource['ldp:contains']) {
       if (res.isContainer()) { // if nested container
-        let resourcesFromContainer = await store.initGraph(res['@id'], this.context); // fetch the datas
+        let resourcesFromContainer = await store.getData(res['@id'], this.context); // fetch the datas
         if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);
       } else {
         resources.push(res);
@@ -164,7 +164,7 @@ export class BaseWidget extends HTMLElement {
       const rangeResources = await this.range;
       if (!rangeResources) return;
       for await (let element of rangeResources) {
-        element = await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
+        element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
 
         let selected: boolean;
         if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select

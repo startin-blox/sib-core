@@ -12,16 +12,18 @@ const StoreMixin = {
         if (!value || value == "undefined") return;
 
         this.resourceId = value;
-        await store.initGraph(this.resourceId, this.context);
+        await store.getData(this.resourceId, this.context);
 
         // Init graph for nested fields
         if (this.nestedField) {
           this.resourceId = (await this.resource[this.nestedField])['@id']
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
-          await store.initGraph(this.resourceId, this.context);
+          await store.getData(this.resourceId, this.context);
         }
 
-        await this.updateDOM();
+        if (this.subscription) PubSub.unsubscribe(this.subscription);
+        this.subscription = PubSub.subscribe(this.resourceId, () => this.updateDOM())
+        this.updateDOM();
       },
     },
     extraContext: {
@@ -42,7 +44,8 @@ const StoreMixin = {
     },
   },
   initialState: {
-    resourceId: null
+    resourceId: null,
+    subscription: null
   },
   get context(): object {
     return { ...base_context, ...this.extra_context };

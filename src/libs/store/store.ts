@@ -1,5 +1,6 @@
 //@ts-ignore
 import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser@1';
+import 'https://unpkg.com/pubsub-js';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -27,27 +28,35 @@ export class Store {
   constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
     this.loadingList = [];
-    this.headers = (async() => {
+    this.headers = (async () => {
       const headers = new Headers();
       headers.set('Content-Type', 'application/ld+json');
       try {
         const idToken = await this.idTokenPromise;
-        if(idToken != null)
+        if (idToken != null)
           headers.set('Authorization', `Bearer ${idToken}`);
-      } catch {}
+      } catch { }
       return headers;
     })();
   }
 
-  async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
+  async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
     return new Promise(async (resolve) => {
       if (!this.cache.has(id)) {
         document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
         if (!this.loadingList.includes(id)) {
           this.loadingList.push(id);
-          const getter = await new CustomGetter(id, context, {}, idParent, await this.headers).getProxy();
-          await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
+
+          // Generate proxy
+          const clientContext = await myParser.parse(context);
+          const resource = await this.fetchData(id, clientContext, idParent);
+          if (!resource) return;
+          const serverContext = await myParser.parse([resource['@context'] || {}]);
+          const resourceProxy = new CustomGetter(resource, clientContext, serverContext, idParent).getProxy();
+
+          // Cache proxy
+          await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
           this.loadingList = this.loadingList.filter(value => value != id);
           document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
         }
@@ -57,17 +66,20 @@ export class Store {
     });
   }
 
-  resolveResource = function(id: string, resolve) {
-    const handler = function(event) {
-      if (event.detail.id === id) {
-        resolve(event.detail.resource);
-        document.removeEventListener('resourceReady', handler);
-      }
-    };
-    return handler;
-  };
 
-  async cacheGraph(key: string, resource: any, context: object, parentContext: object, parentId: string) {
+  async fetchData(id: string, context = {}, idParent = "") {
+    const iri = this._getAbsoluteIri(id, context, idParent);
+
+    return fetch(iri, {
+      method: 'GET',
+      credentials: 'include'
+    }).then(response => {
+      if (!response.ok) throw new Error(response.status + response.statusText);
+      return response.json()
+    })
+  }
+
+  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
       if (this.cache.get(key)) { // if already cached, merge data
         this.cache.get(key).merge(resource);
@@ -79,34 +91,74 @@ export class Store {
     // Cache sub objects
     if (resource.getSubOjects) {
       for (let res of resource.getSubOjects()) {
-        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId, await this.headers).getProxy(res);
-        await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
+        const resourceProxy = new CustomGetter(res, clientContext, parentContext, parentId).getProxy();
+        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
       }
     }
 
     // Cache children
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
-        await this.cacheGraph(res['@id'], res, context, parentContext, parentId)
+        await this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId)
       }
       return;
     }
 
     // Cache resource
     if (resource['@id'] && !resource.properties) {
-      if (resource['@id'].match(/^b\d+$/)) return; // and not anonymous node
+      if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
       if (resource['@type'] === "ldp:Container") { // if source, init graph of source
-        await this.initGraph(resource['@id'], context, parentId);
+        await this.getData(resource['@id'], clientContext, parentId);
         return;
       }
 
-      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId, await this.headers).getProxy(resource);
-      await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
+      const resourceProxy = new CustomGetter(resource, clientContext, parentContext, parentId).getProxy();
+      await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId);
     }
+  }
+
+  async _updateResource(method: string, resource: object, id: string) {
+    if (!['POST', 'PUT', 'PATCH'].includes(method)) throw new Error('Error: method not allowed');
+
+    const expandedId = this._getExpandedId(id, resource['@context']);
+    return fetch(expandedId, {
+      method: method,
+      headers: await this.headers,
+      body: JSON.stringify(resource),
+      credentials: 'include'
+    }).then(response => {
+      if (response.ok) {
+        this.clearCache(expandedId);
+        this.getData(expandedId, resource['@context']).then(() => PubSub.publish(expandedId));
+      }
+      return response.headers.get('Location') || null;
+    });
   }
 
   get(id: string): CustomGetter | null {
     return this.cache.get(id) || null;
+  }
+
+  async post(resource: object, id: string): Promise<string | null> {
+    return this._updateResource('POST', resource, id);
+  }
+
+  async put(resource: object, id: string): Promise<string | null> {
+    return this._updateResource('PUT', resource, id);
+  }
+
+  async patch(resource: object, id: string): Promise<string | null> {
+    return this._updateResource('PATCH', resource, id);
+  }
+
+  async delete(id: string, context: object = {}) {
+    const expandedId = this._getExpandedId(id, context);
+    const deleted = await fetch(expandedId, {
+      method: 'DELETE',
+      headers: await this.headers,
+      credentials: 'include'
+    });
+    return deleted;
   }
 
   clearCache(id: string): void {
@@ -115,45 +167,36 @@ export class Store {
     }
   }
 
-  async post(resource: object, id: string): Promise<string | null> {
-    return fetch(this._getExpandedId(id, resource['@context']), {
-      method: 'POST',
-      headers: await this.headers,
-      body: JSON.stringify(resource),
-      credentials: 'include'
-    }).then(response => response.headers.get('Location') || null);
-  }
-
-  async put(resource: object, id: string): Promise<string | null> {
-    return fetch(this._getExpandedId(id, resource['@context']), {
-      method: 'PUT',
-      headers: await this.headers,
-      body: JSON.stringify(resource),
-      credentials: 'include'
-    }).then(response => response.headers.get('Location') || null);
-  }
-
-  async patch(resource: object, id: string): Promise<string | null> {
-    return fetch(this._getExpandedId(id, resource['@context']), {
-      method: 'PATCH',
-      headers: await this.headers,
-      body: JSON.stringify(resource),
-      credentials: 'include'
-    }).then(response => response.headers.get('Location') || null);
-  }
-
-  async delete(id: string, context: object = {}) {
-    const deleted = await fetch(this._getExpandedId(id, context), {
-      method: 'DELETE',
-      headers: await this.headers,
-      credentials: 'include'
-    });
-    return deleted;
-  }
-
   _getExpandedId(id: string, context: object) {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
+
+  /**
+   * Return absolute IRI of the resource
+   * @param id
+   * @param context
+   * @param parentId
+   */
+  _getAbsoluteIri(id: string, context: object, parentId: string): string {
+    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
+    if (parentId) { // and get full URL from parent caller for local files
+      let parentIri = new URL(parentId, document.location.href).href;
+      iri = new URL(iri, parentIri).href;
+    } else {
+      iri = new URL(iri, document.location.href).href;
+    }
+    return iri;
+  }
+
+  resolveResource = function(id: string, resolve) {
+    const handler = function(event) {
+      if (event.detail.id === id) {
+        resolve(event.detail.resource);
+        document.removeEventListener('resourceReady', handler);
+      }
+    };
+    return handler;
+  };
 }
 
 const sibAuth = document.querySelector('sib-auth');
@@ -163,70 +206,19 @@ const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).t
 
 export const store = new Store(idTokenPromise);
 
+
+
 class CustomGetter {
-  resourceId: string; // id of the requested resource
   resource: any; // content of the requested resource
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
-  headers = new Headers();
 
-  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "", headers: Headers) {
-    this.resourceId = resourceId;
+  constructor(resource: object, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
-    this.resource = null;
     this.parentId = parentId;
-    this.headers = headers;
-  }
-
-  /**
-   * Fetch datas if needed and expand all properties
-   * @param data : object - content of the resource if already loaded
-   */
-  async init(data: object | null = null) {
-
-    this.clientContext = await myParser.parse(this.clientContext);
-    const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
-
-    // Fetch datas if needed
-    if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
-    let resource;
-    try {
-      resource = data || await fetch(iri, {
-        method: 'GET',
-        headers: this.headers,
-        credentials: 'include'
-      }).then(response => {
-        if (response.status !== 200) return;
-        return response.json()
-      })
-    } catch (e) { }
-    if (!resource) return
-
-    this.serverContext = await myParser.parse([this.serverContext, resource['@context'] || {}]);
-
-    // Expand properties before saving
-    this.resource = this.expandProperties({ ...resource }, this.serverContext);
-
-    return this;
-  }
-
-  /**
-   * Return absolute IRI of the resource
-   * @param id
-   * @param context
-   * @param parentId
-   */
-  getAbsoluteIri(id: string, context: object, parentId: string): string {
-    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
-    if (parentId) { // and get full URL from parent caller for local files
-      let parentIri = new URL(parentId, document.location.href).href;
-      iri = new URL(iri, parentIri).href;
-    } else {
-      iri = new URL(iri, document.location.href).href;
-    }
-    return iri;
+    this.resource = this.expandProperties({ ...resource }, serverContext);
   }
 
   /**
@@ -279,10 +271,10 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
+      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resource['@id']); // return complete resource
     }
     if (!value) return undefined;
-    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
+    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resource['@id']);
     return resource ? await resource[path2.join('.')] : undefined; // return value
   }
 
@@ -293,7 +285,7 @@ class CustomGetter {
    * @param iriParent
    */
   async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
-    return store.initGraph(id, context, iriParent);
+    return store.getData(id, context, iriParent);
   }
 
   /**
@@ -365,7 +357,7 @@ class CustomGetter {
    * Remove the resource from the cache
    */
   clearCache(): void {
-    store.clearCache(this.resourceId);
+    store.clearCache(this.resource['@id']);
   }
 
   getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, this.clientContext, true) }
@@ -377,10 +369,8 @@ class CustomGetter {
 
   /**
    * Returns a Proxy which handles the different get requests
-   * @param data: object - content of the resource if already loaded
    */
-  async getProxy(data = null) {
-    await this.init(data);
+  getProxy() {
     return new Proxy(this, {
       get: (resource, property) => {
         if (!this.resource) return undefined;
@@ -388,7 +378,7 @@ class CustomGetter {
 
         switch (property) {
           case '@id':
-            return this.getCompactedIri(this.resource['@id'] || this.resourceId); // Compact @id if possible
+            return this.getCompactedIri(this.resource['@id']); // Compact @id if possible
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':
