@@ -24,7 +24,7 @@ export class Store {
   loadingList: String[];
   headers= new Headers();
 
-  constructor() {
+  constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
     this.loadingList = [];
     this.headers.set('Content-Type', 'application/ld+json');
@@ -107,6 +107,7 @@ export class Store {
   }
 
   async post(resource: object, id: string): Promise<string | null> {
+    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
@@ -116,6 +117,7 @@ export class Store {
   }
 
   async put(resource: object, id: string): Promise<string | null> {
+    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
@@ -125,9 +127,7 @@ export class Store {
   }
 
   async patch(resource: object, id: string): Promise<string | null> {
-    const sibAuth = document.querySelector('sib-auth');
-    this.headers.set('Authorization', 'Bearer: ' + await sibAuth.getUserIdToken());
-
+    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
@@ -137,6 +137,7 @@ export class Store {
   }
 
   async delete(id: string, context: object = {}) {
+    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     const deleted = await fetch(this._getExpandedId(id, context), {
       method: 'DELETE',
       headers: this.headers,
@@ -150,8 +151,12 @@ export class Store {
   }
 }
 
-export const store = new Store();
+const sibAuth = document.querySelector('sib-auth');
+const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
+  () =>  sibAuth.getUserIdToken()
+) : null;
 
+export const store = new Store(idTokenPromise);
 
 class CustomGetter {
   resourceId: string; // id of the requested resource
@@ -174,19 +179,12 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
-    const sibAuth = document.querySelector('sib-auth');
-    const id_token = await sibAuth.getUserIdToken();
-    console.log('id_token', id_token);
-    this.headers.set('Authorization', 'Bearer: ' + id_token);
-    console.log('HEADERS', this.headers.get('Authorization'));
-
     this.clientContext = await myParser.parse(this.clientContext);
     const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
     // Fetch datas if needed
     if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
     let resource;
-    console.log(Array.from(this.headers.entries()));
     try {
       resource = data || await fetch(iri, {
         method: 'GET',
