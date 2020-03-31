@@ -182,12 +182,19 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
+    const sibAuth = document.querySelector('sib-auth');
+    const id_token = await sibAuth.getUserIdToken();
+    console.log('id_token', id_token);
+    this.headers.set('Authorization', 'Bearer: ' + id_token);
+    console.log('HEADERS', this.headers.get('Authorization'));
+
     this.clientContext = await myParser.parse(this.clientContext);
     const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
     // Fetch datas if needed
     if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
     let resource;
+    console.log(Array.from(this.headers.entries()));
     try {
       resource = data || await fetch(iri, {
         method: 'GET',
