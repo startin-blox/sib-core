@@ -40,7 +40,7 @@ export class Store {
 
         if (!this.loadingList.includes(id)) {
           this.loadingList.push(id);
-          const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
+          const getter = await new CustomGetter(id, context, {}, idParent, this.headers).getProxy();
           await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
           this.loadingList = this.loadingList.filter(value => value != id);
           document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
@@ -73,7 +73,7 @@ export class Store {
     // Cache sub objects
     if (resource.getSubOjects) {
       for (let res of resource.getSubOjects()) {
-        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId).getProxy(res);
+        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId, this.headers).getProxy(res);
         await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
       }
     }
@@ -94,7 +94,7 @@ export class Store {
         return;
       }
 
-      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
+      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId, this.headers).getProxy(resource);
       await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
     }
   }
@@ -169,12 +169,13 @@ class CustomGetter {
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
   headers = new Headers();
 
-  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
+  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "", headers: Headers) {
     this.resourceId = resourceId;
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.resource = null;
     this.parentId = parentId;
+    this.headers = headers;
   }
 
   /**
@@ -182,10 +183,6 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
-    const sibAuth = document.querySelector('sib-auth');
-    const id_token = await sibAuth.getUserIdToken();
-    console.log('id_token', id_token);
-    this.headers.set('Authorization', 'Bearer: ' + id_token);
     console.log('HEADERS', this.headers.get('Authorization'));
 
     this.clientContext = await myParser.parse(this.clientContext);
