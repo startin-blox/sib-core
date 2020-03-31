@@ -28,6 +28,9 @@ export class Store {
     this.cache = new Map();
     this.loadingList = [];
     this.headers.set('Content-Type', 'application/ld+json');
+    (async() => {
+      this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    })();
   }
 
   async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
@@ -107,7 +110,7 @@ export class Store {
   }
 
   async post(resource: object, id: string): Promise<string | null> {
-    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
@@ -117,7 +120,7 @@ export class Store {
   }
 
   async put(resource: object, id: string): Promise<string | null> {
-    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
@@ -127,7 +130,7 @@ export class Store {
   }
 
   async patch(resource: object, id: string): Promise<string | null> {
-    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
@@ -137,7 +140,7 @@ export class Store {
   }
 
   async delete(id: string, context: object = {}) {
-    this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     const deleted = await fetch(this._getExpandedId(id, context), {
       method: 'DELETE',
       headers: this.headers,
