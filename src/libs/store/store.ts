@@ -183,7 +183,6 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
-    console.log('HEADERS', this.headers.get('Authorization'));
 
     this.clientContext = await myParser.parse(this.clientContext);
     const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
