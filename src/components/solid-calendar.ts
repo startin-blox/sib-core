@@ -44,7 +44,7 @@ export const SolidCalendar = {
     const resource = await store.getData(resourceId, this.context);
     if (!this.subscriptions.get(resourceId)) {
       this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
-    }
+    } // TODO : mixin gestion des enfants
     const date = await resource['date'];
     const name = await resource['name'];
 

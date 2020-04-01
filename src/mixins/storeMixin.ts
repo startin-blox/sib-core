@@ -9,20 +9,19 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         this.empty();
+        if (this.subscription) PubSub.unsubscribe(this.subscription);
         if (!value || value == "undefined") return;
 
-        this.resourceId = value;
-        await store.getData(this.resourceId, this.context);
-
-        // Init graph for nested fields
-        if (this.nestedField) {
-          this.resourceId = (await this.resource[this.nestedField])['@id']
+        if (!this.nestedField) {
+          this.resourceId = value;
+        } else {
+          await store.getData(value, this.context);
+          this.resourceId = (await this.resource[this.nestedField])['@id'];
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
-          await store.getData(this.resourceId, this.context);
         }
 
-        if (this.subscription) PubSub.unsubscribe(this.subscription);
-        this.subscription = PubSub.subscribe(this.resourceId, () => this.updateDOM())
+        this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+        await store.getData(this.resourceId, this.context);
         this.updateDOM();
       },
     },

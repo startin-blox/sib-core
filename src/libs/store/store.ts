@@ -207,6 +207,7 @@ export class Store {
     const handler = function(event) {
       if (event.detail.id === id) {
         resolve(event.detail.resource);
+        // TODO : callback
         document.removeEventListener('resourceReady', handler);
       }
     };
