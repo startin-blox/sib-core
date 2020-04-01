@@ -55,7 +55,7 @@ export class Store {
           const resource = await this.fetchData(id, clientContext, idParent);
           if (!resource) return;
           const serverContext = await myParser.parse([resource['@context'] || {}]);
-          const resourceProxy = new CustomGetter(resource, clientContext, serverContext, idParent).getProxy();
+          const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent).getProxy();
 
           // Cache proxy
           await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
@@ -93,7 +93,8 @@ export class Store {
     // Cache sub objects
     if (resource.getSubOjects) {
       for (let res of resource.getSubOjects()) {
-        const resourceProxy = new CustomGetter(res, clientContext, parentContext, parentId).getProxy();
+        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId).getProxy();
+        // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
         await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
       }
     }
@@ -101,7 +102,7 @@ export class Store {
     // Cache children
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
-        this._subscribeResourceTo(resource['@id'], res['@id']);
+        this.subscribeResourceTo(resource['@id'], res['@id']);
         await this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId)
       }
       return;
@@ -114,8 +115,7 @@ export class Store {
         await this.getData(resource['@id'], clientContext, parentId);
         return;
       }
-
-      const resourceProxy = new CustomGetter(resource, clientContext, parentContext, parentId).getProxy();
+      const resourceProxy = new CustomGetter(resource['@id'], resource, clientContext, parentContext, parentId).getProxy();
       await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId);
     }
   }
@@ -131,8 +131,13 @@ export class Store {
       credentials: 'include'
     }).then(response => {
       if (response.ok) {
+        // Notify resource
         this.clearCache(expandedId);
         this.getData(expandedId, base_context).then(() => PubSub.publish(expandedId));
+
+        // Notify related resources
+        const toNotify = this.subscriptionIndex.get(expandedId);
+        if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
       }
       return response.headers.get('Location') || null;
     });
@@ -182,8 +187,9 @@ export class Store {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
 
-  _subscribeResourceTo(containerId: string, resourceId: string) {
-    this.subscriptionIndex.set(resourceId, [...(this.subscriptionIndex.get(resourceId) || []), containerId])
+  subscribeResourceTo(resourceId: string, nestedResourceId: string) {
+    const existingSubscriptions = this.subscriptionIndex.get(nestedResourceId) || [];
+    this.subscriptionIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, resourceId])])
   }
 
   /**
@@ -221,20 +227,22 @@ const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).t
 ) : Promise.reject();
 
 export const store = new Store(idTokenPromise);
-
+window.store = store;
 
 
 class CustomGetter {
   resource: any; // content of the requested resource
+  resourceId: string;
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
 
-  constructor(resource: object, clientContext: object, serverContext: object = {}, parentId: string = "") {
+  constructor(resourceId: string, resource: object, clientContext: object, serverContext: object = {}, parentId: string = "") {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
     this.resource = this.expandProperties({ ...resource }, serverContext);
+    this.resourceId = resourceId;
   }
 
   /**
@@ -287,11 +295,13 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resource['@id']); // return complete resource
+      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
     }
     if (!value) return undefined;
-    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resource['@id']);
-    return resource ? await resource[path2.join('.')] : undefined; // return value
+    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
+
+    store.subscribeResourceTo(this.resourceId, value['@id']);
+    return resource ? await resource[path2.join('.')] : undefined; // return value
   }
 
   /**
@@ -300,7 +310,7 @@ class CustomGetter {
    * @param context
    * @param iriParent
    */
-  async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
+  async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
     return store.getData(id, context, iriParent);
   }
 
@@ -373,7 +383,7 @@ class CustomGetter {
    * Remove the resource from the cache
    */
   clearCache(): void {
-    store.clearCache(this.resource['@id']);
+    store.clearCache(this.resourceId);
   }
 
   getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, this.clientContext, true) }

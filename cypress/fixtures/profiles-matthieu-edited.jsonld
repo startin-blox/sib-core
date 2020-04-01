@@ -1,0 +1,20 @@
+{
+  "@id": "https://api.test-paris.happy-dev.fr/profiles/matthieu/",
+  "slug": "matthieu",
+  "available": null,
+  "bio": "",
+  "city": "Paris",
+  "phone": "",
+  "website": "",
+  "user": {
+    "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/"
+  },
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

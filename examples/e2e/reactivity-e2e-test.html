@@ -9,12 +9,27 @@
 </head>
 <body>
   <solid-display
-    data-src="../data/list/user-1.jsonld"
-    fields="first_name, last_name, username"
+    id="user"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    fields="first_name, last_name, username, profile.city"
+  ></solid-display>
+  <solid-display
+    id="circle"
+    data-src="https://api.test-paris.happy-dev.fr/circles/16/"
+    fields="owner.profile.city"
   ></solid-display>
   <solid-form
-    data-src="../data/list/user-1.jsonld"
+    id="user"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
     fields="first_name, last_name, username"
+    partial
+  ></solid-form>
+
+  <solid-form
+    id="profile"
+    data-src="https://api.test-paris.happy-dev.fr/profiles/matthieu/"
+    fields="city"
+    partial
   ></solid-form>
 </body>
 </html>
