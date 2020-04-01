@@ -191,7 +191,6 @@ class CustomGetter {
     // Fetch datas if needed
     if (data && Object.keys(data).length == 1) { data = null } // if only @id in resource, fetch it
     let resource;
-    console.log(Array.from(this.headers.entries()));
     try {
       resource = data || await fetch(iri, {
         method: 'GET',
