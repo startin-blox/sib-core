@@ -12,10 +12,10 @@ const StoreMixin = {
         if (this.subscription) PubSub.unsubscribe(this.subscription);
         if (!value || value == "undefined") return;
 
-        if (!this.nestedField) {
-          this.resourceId = value;
-        } else {
-          await store.getData(value, this.context);
+        this.resourceId = value;
+
+        if (this.nestedField) {
+          await store.getData(value, this.context); // TODO : this.resource is not defined then
           this.resourceId = (await this.resource[this.nestedField])['@id'];
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
         }

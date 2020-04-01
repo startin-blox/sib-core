@@ -13,6 +13,7 @@ describe('simple Startin’blox e2e test', function () {
     cy.get('solid-display#user > div > solid-display-value:nth-child(2)').should('have.attr', 'name', 'last_name').should('have.text', 'Fesselier');
     cy.get('solid-display#user > div > solid-display-value:nth-child(3)').should('have.attr', 'name', 'username').should('have.text', 'matthieu');
     cy.get('solid-display#user > div > solid-display-value:nth-child(4)').should('have.attr', 'name', 'profile.city').should('have.text', 'Rennes');
+    cy.get('solid-display#profile > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'city').should('have.text', 'Rennes');
     cy.get('solid-display#circle > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'owner.profile.city').should('have.text', 'Rennes');
   });
 
@@ -30,6 +31,7 @@ describe('simple Startin’blox e2e test', function () {
     cy.get('solid-form#profile input[name="city"]').clear().type('Paris');
     cy.get('solid-form#profile input[type=submit]').click();
     cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('have.text', 'Paris');
+    cy.get('solid-display#profile > div > solid-display-value[name="city"]').should('have.text', 'Paris');
     // cy.get('solid-display#circle > div > solid-display-value[name="owner.profile.city"]').should('have.text', 'Paris'); DOES NOT WORK YET
     cy.server({ enable: false });
   });

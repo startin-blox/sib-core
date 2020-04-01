@@ -8,6 +8,7 @@
   <script type="module" src="../../dist/index.js"></script>
 </head>
 <body>
+  <!-- DISPLAYS -->
   <solid-display
     id="user"
     data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
@@ -18,6 +19,14 @@
     data-src="https://api.test-paris.happy-dev.fr/circles/16/"
     fields="owner.profile.city"
   ></solid-display>
+  <solid-display
+    id="profile"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    nested-field="profile"
+    fields="city"
+  ></solid-display>
+
+  <!-- FORMS -->
   <solid-form
     id="user"
     data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
