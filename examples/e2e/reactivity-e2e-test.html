@@ -26,19 +26,56 @@
     fields="city"
   ></solid-display>
 
+  <solid-display
+    id="profile-widget"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    fields="profile"
+    widget-profile="custom-widget"
+  ></solid-display>
+
+  <solid-widget name="custom-widget">
+    <template>
+      <div>${await value.city}</div>
+    </template>
+  </solid-widget>
+
+  <solid-display
+    id="users"
+    data-src="https://api.test-paris.happy-dev.fr/users/"
+    fields="first_name, last_name, username, profile.city"
+  ></solid-display>
+
+  <solid-form
+    id="range"
+    fields="users"
+    range-users="https://api.test-paris.happy-dev.fr/users/"
+  ></solid-form>
+
   <!-- FORMS -->
   <solid-form
-    id="user"
+    id="user-form"
     data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
     fields="first_name, last_name, username"
     partial
   ></solid-form>
 
   <solid-form
-    id="profile"
+    id="profile-form"
     data-src="https://api.test-paris.happy-dev.fr/profiles/matthieu/"
     fields="city"
     partial
   ></solid-form>
+
+  <solid-form
+    id="users-form"
+    data-src="https://api.test-paris.happy-dev.fr/users/"
+    fields="first_name, last_name, username"
+  ></solid-form>
+
+  <solid-delete
+    id="delete-user"
+    data-src="https://api.test-paris.happy-dev.fr/users/alex/"
+  ></solid-delete>
+
 </body>
 </html>

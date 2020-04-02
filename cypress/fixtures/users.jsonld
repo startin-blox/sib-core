@@ -1,0 +1,306 @@
+{
+  "@id": "https://api.test-paris.happy-dev.fr/users/",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/",
+      "first_name": "Matthieu",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "Fesselier",
+      "username": "matthieu",
+      "email": "matthieu.fesselier@gmail.com",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/matthieu/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/matthieu/"
+      },
+      "name": "Matthieu Fesselier",
+      "projects": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/projects/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/project-members/16/"
+          },
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/project-members/11/"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "circles": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/circles/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/circle-members/61/"
+          },
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/circle-members/87/"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/notifications/116/"
+          },
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/notifications/1/"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/skills/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "https://api.test-paris.happy-dev.fr/profiles/matthieu/"
+      },
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      },
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        },
+        {
+          "mode": {
+            "@type": "change"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/",
+      "first_name": "Jean-Baptiste",
+      "groups": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/groups/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "last_name": "Pasquier",
+      "username": "jbpasquier",
+      "email": "contact@jbpasquier.eu",
+      "account": {
+        "@id": "https://api.test-paris.happy-dev.fr/accounts/jbpasquier/"
+      },
+      "chatProfile": {
+        "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/jbpasquier/"
+      },
+      "name": "Jean-Baptiste Pasquier",
+      "projects": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/projects/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/project-members/8/"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "circles": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/circles/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/circle-members/88/"
+          },
+          {
+            "@id": "https://api.test-paris.happy-dev.fr/circle-members/6/"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "inbox": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/inbox/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          }
+        ]
+      },
+      "skills": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/skills/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "jobOffers": {
+        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/jobOffers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "add"
+            }
+          },
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "https://api.test-paris.happy-dev.fr/profiles/jbpasquier/"
+      },
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      },
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "add"
+      }
+    },
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
