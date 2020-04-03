@@ -42,7 +42,7 @@ export class Store {
     })();
   }
 
-  async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
+  async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
     return new Promise(async (resolve) => {
       if (!this.cache.has(id)) {
         document.addEventListener('resourceReady', this.resolveResource(id, resolve));
@@ -60,10 +60,10 @@ export class Store {
           // Cache proxy
           await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
           this.loadingList = this.loadingList.filter(value => value != id);
-          document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
+          document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id) } }));
         }
       } else {
-        resolve(this.cache.get(id));
+        resolve(this.get(id));
       }
     });
   }
@@ -83,7 +83,7 @@ export class Store {
 
   async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string) {
     if (resource.properties) { // if proxy, cache it
-      if (this.cache.get(key)) { // if already cached, merge data
+      if (this.get(key)) { // if already cached, merge data
         this.cache.get(key).merge(resource);
       } else {  // else, put in cache
         this.cache.set(key, resource);

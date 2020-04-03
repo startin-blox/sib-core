@@ -15,7 +15,7 @@ const StoreMixin = {
         this.resourceId = value;
 
         if (this.nestedField) {
-          await store.getData(value, this.context); // TODO : this.resource is not defined then
+          await store.getData(value, this.context);
           this.resourceId = this.resource ? (await this.resource[this.nestedField])['@id'] : null;
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
         }
