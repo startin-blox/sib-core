@@ -1,5 +1,5 @@
 //@ts-ignore
-import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
+import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser@1';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
