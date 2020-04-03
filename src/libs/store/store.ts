@@ -29,7 +29,9 @@ export class Store {
     this.loadingList = [];
     this.headers.set('Content-Type', 'application/ld+json');
     (async() => {
-      this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+      try {
+        this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+      } catch {}
     })();
   }
 
@@ -156,8 +158,8 @@ export class Store {
 
 const sibAuth = document.querySelector('sib-auth');
 const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
-  () =>  sibAuth.getUserIdToken()
-) : null;
+  () =>  sibAuth['getUserIdToken']()
+) : Promise.reject();
 
 export const store = new Store(idTokenPromise);
 
