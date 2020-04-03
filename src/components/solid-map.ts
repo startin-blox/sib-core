@@ -9,7 +9,7 @@ import { importCSS } from '../libs/helpers.js';
 import { store } from '../libs/store/store.js';
 
 //@ts-ignore
-import L from 'https://dev.jspm.io/leaflet';
+import L from 'https://dev.jspm.io/leaflet@1';
 
 export const SolidMap = {
   name: 'solid-map',

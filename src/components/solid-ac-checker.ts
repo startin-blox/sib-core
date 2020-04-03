@@ -3,7 +3,7 @@ import asyncSome from 'https://dev.jspm.io/iter-tools@6/es2015/async-some';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6/es2015/async-every';
 //@ts-ignore
-import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser';
+import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser@1';
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 
