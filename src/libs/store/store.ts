@@ -133,11 +133,14 @@ export class Store {
       if (response.ok) {
         // Notify resource
         this.clearCache(expandedId);
-        this.getData(expandedId, base_context).then(() => PubSub.publish(expandedId));
+        this.getData(expandedId, base_context).then(() => {
+          PubSub.publish(expandedId)
 
-        // Notify related resources
-        const toNotify = this.subscriptionIndex.get(expandedId);
-        if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
+          // Notify related resources
+          const toNotify = this.subscriptionIndex.get(expandedId);
+          if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
+        });
+
       }
       return response.headers.get('Location') || null;
     });
