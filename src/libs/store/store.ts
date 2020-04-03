@@ -22,13 +22,15 @@ export const base_context = {
 export class Store {
   cache: Map<string, any>;
   loadingList: String[];
-  headers: HeadersInit;
+  headers= new Headers();
 
-  constructor() {
+  constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
     this.loadingList = [];
-    this.headers = new Headers();
     this.headers.set('Content-Type', 'application/ld+json');
+    (async() => {
+      this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
+    })();
   }
 
   async initGraph(id: string, context = {}, idParent = ""): Promise<CustomGetter> {
@@ -38,7 +40,7 @@ export class Store {
 
         if (!this.loadingList.includes(id)) {
           this.loadingList.push(id);
-          const getter = await new CustomGetter(id, context, {}, idParent).getProxy();
+          const getter = await new CustomGetter(id, context, {}, idParent, this.headers).getProxy();
           await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
           this.loadingList = this.loadingList.filter(value => value != id);
           document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
@@ -71,7 +73,7 @@ export class Store {
     // Cache sub objects
     if (resource.getSubOjects) {
       for (let res of resource.getSubOjects()) {
-        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId).getProxy(res);
+        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId, this.headers).getProxy(res);
         await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
       }
     }
@@ -92,7 +94,7 @@ export class Store {
         return;
       }
 
-      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId).getProxy(resource);
+      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId, this.headers).getProxy(resource);
       await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
     }
   }
@@ -108,6 +110,7 @@ export class Store {
   }
 
   async post(resource: object, id: string): Promise<string | null> {
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
       headers: this.headers,
@@ -117,6 +120,7 @@ export class Store {
   }
 
   async put(resource: object, id: string): Promise<string | null> {
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
       headers: this.headers,
@@ -126,6 +130,7 @@ export class Store {
   }
 
   async patch(resource: object, id: string): Promise<string | null> {
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
       headers: this.headers,
@@ -135,6 +140,7 @@ export class Store {
   }
 
   async delete(id: string, context: object = {}) {
+    // this.headers.set('Authorization', 'Bearer: ' + await this.idTokenPromise);
     const deleted = await fetch(this._getExpandedId(id, context), {
       method: 'DELETE',
       headers: this.headers,
@@ -148,8 +154,12 @@ export class Store {
   }
 }
 
-export const store = new Store();
+const sibAuth = document.querySelector('sib-auth');
+const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
+  () =>  sibAuth.getUserIdToken()
+) : null;
 
+export const store = new Store(idTokenPromise);
 
 class CustomGetter {
   resourceId: string; // id of the requested resource
@@ -157,13 +167,15 @@ class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
+  headers = new Headers();
 
-  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "") {
+  constructor(resourceId: string, clientContext: object, serverContext: object = {}, parentId: string = "", headers: Headers) {
     this.resourceId = resourceId;
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.resource = null;
     this.parentId = parentId;
+    this.headers = headers;
   }
 
   /**
@@ -171,6 +183,7 @@ class CustomGetter {
    * @param data : object - content of the resource if already loaded
    */
   async init(data: object | null = null) {
+
     this.clientContext = await myParser.parse(this.clientContext);
     const iri = this.getAbsoluteIri(this.resourceId, this.clientContext, this.parentId);
 
@@ -180,6 +193,7 @@ class CustomGetter {
     try {
       resource = data || await fetch(iri, {
         method: 'GET',
+        headers: this.headers,
         credentials: 'include'
       }).then(response => {
         if (response.status !== 200) return;
