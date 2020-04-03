@@ -3,7 +3,7 @@ import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
-import Calendar from 'https://dev.jspm.io/tui-calendar';
+import Calendar from 'https://dev.jspm.io/tui-calendar@1';
 import { store } from '../libs/store/store.js';
 
 export const SolidCalendar = {
