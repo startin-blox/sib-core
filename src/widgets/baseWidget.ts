@@ -161,7 +161,7 @@ export class BaseWidget extends HTMLElement {
     return resources;
   }
 
-  get htmlRange(): Promise<string|undefined> {
+  get htmlRange(): Promise<string | undefined> {
     return (async () => {
       let htmlRange = '';
       const rangeResources = await this.range;

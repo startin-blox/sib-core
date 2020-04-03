@@ -27,7 +27,7 @@
   "chatProfile": {
     "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/matthieu/"
   },
-  "name": "Matthieu Fesselier",
+  "name": "Test User",
   "projects": {
     "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/projects/",
     "@type": "ldp:Container",

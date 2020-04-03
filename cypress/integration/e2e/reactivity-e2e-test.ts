@@ -92,7 +92,7 @@ describe('simple Startin’blox e2e test', function () {
     cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('have.text', 'Test');
     cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('have.text', 'User');
     cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="username"]`).should('have.text', 'admin');
-    // cy.get(`solid-form#range option[value='{"@id": "${src}"}']`).should('have.text', 'Test User');
+    cy.get(`solid-form#range option[value='{"@id": "${src}"}']`).should('have.text', 'Test User');
 
     // Fill new user form
     cy.get('solid-form#users-form input[name="first_name"]').clear().type('Alex');
