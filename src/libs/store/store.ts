@@ -22,16 +22,18 @@ export const base_context = {
 export class Store {
   cache: Map<string, any>;
   loadingList: String[];
-  headers = new Headers();
+  headers: Promise<Headers>;
 
   constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
     this.loadingList = [];
-    this.headers.set('Content-Type', 'application/ld+json');
-    (async() => {
+    this.headers = (async() => {
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/ld+json');
       try {
-        this.headers.set('Authorization', `Bearer ${await this.idTokenPromise}`);
+        headers.set('Authorization', `Bearer ${await this.idTokenPromise}`);
       } catch {}
+      return headers;
     })();
   }
 
@@ -42,7 +44,7 @@ export class Store {
 
         if (!this.loadingList.includes(id)) {
           this.loadingList.push(id);
-          const getter = await new CustomGetter(id, context, {}, idParent, this.headers).getProxy();
+          const getter = await new CustomGetter(id, context, {}, idParent, await this.headers).getProxy();
           await this.cacheGraph(id, getter, context, getter['@context'], idParent || id);
           this.loadingList = this.loadingList.filter(value => value != id);
           document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.cache.get(id) } }));
@@ -75,7 +77,7 @@ export class Store {
     // Cache sub objects
     if (resource.getSubOjects) {
       for (let res of resource.getSubOjects()) {
-        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId, this.headers).getProxy(res);
+        const resourceProxy = await new CustomGetter(res['@id'], context, parentContext, parentId, await this.headers).getProxy(res);
         await this.cacheGraph(res['@id'], resourceProxy, context, parentContext, parentId);
       }
     }
@@ -96,7 +98,7 @@ export class Store {
         return;
       }
 
-      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId, this.headers).getProxy(resource);
+      const resourceProxy = await new CustomGetter(resource['@id'], context, parentContext, parentId, await this.headers).getProxy(resource);
       await this.cacheGraph(key, resourceProxy, context, parentContext, parentId);
     }
   }
@@ -114,7 +116,7 @@ export class Store {
   async post(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'POST',
-      headers: this.headers,
+      headers: await this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
     }).then(response => response.headers.get('Location') || null);
@@ -123,7 +125,7 @@ export class Store {
   async put(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PUT',
-      headers: this.headers,
+      headers: await this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
     }).then(response => response.headers.get('Location') || null);
@@ -132,7 +134,7 @@ export class Store {
   async patch(resource: object, id: string): Promise<string | null> {
     return fetch(this._getExpandedId(id, resource['@context']), {
       method: 'PATCH',
-      headers: this.headers,
+      headers: await this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
     }).then(response => response.headers.get('Location') || null);
@@ -141,7 +143,7 @@ export class Store {
   async delete(id: string, context: object = {}) {
     const deleted = await fetch(this._getExpandedId(id, context), {
       method: 'DELETE',
-      headers: this.headers,
+      headers: await this.headers,
       credentials: 'include'
     });
     return deleted;
