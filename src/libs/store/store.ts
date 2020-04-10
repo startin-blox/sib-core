@@ -31,7 +31,9 @@ export class Store {
       const headers = new Headers();
       headers.set('Content-Type', 'application/ld+json');
       try {
-        headers.set('Authorization', `Bearer ${await this.idTokenPromise}`);
+        const idToken = await this.idTokenPromise;
+        if(idToken != null)
+          headers.set('Authorization', `Bearer ${idToken}`);
       } catch {}
       return headers;
     })();
@@ -156,7 +158,7 @@ export class Store {
 
 const sibAuth = document.querySelector('sib-auth');
 const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
-  () =>  sibAuth['getUserIdToken']()
+  () => sibAuth['getUserIdToken']()
 ) : Promise.reject();
 
 export const store = new Store(idTokenPromise);
