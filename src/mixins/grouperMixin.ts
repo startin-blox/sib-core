@@ -9,6 +9,10 @@ const GrouperMixin = {
     groupByWidget: {
       type: String,
       default: 'solid-group-div'
+    },
+    groupClass: {
+      type: String,
+      default: ''
     }
   },
   attached() {
@@ -41,6 +45,7 @@ const GrouperMixin = {
     const contentElement = document.createElement("div");
     titleElement.toggleAttribute('data-title');
     contentElement.toggleAttribute('data-content');
+    if (this.groupClass) groupElement.classList.add(this.groupClass);
 
     groupElement.appendChild(titleElement);
     groupElement.appendChild(contentElement);
