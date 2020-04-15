@@ -1,21 +1,27 @@
-describe('solid-map', function() {
+describe('group-by', function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/group-by.html')
   })
+  /**
+  * Groups resource at loading time
+  */
   it('groups resources', () => {
     cy.get('#list-1 > div > div') // get groups
-      .should('have.length', 3) // check number
-      .and('have.class', 'custom-group-class'); // and class
+    .should('have.length', 3) // check number
+    .and('have.class', 'custom-group-class'); // and class
     cy.get('#list-1 > div > div:first-child > span') // check title span
-      .should('have.length', 1)
-      .contains('2019-07-09')
-      .and('have.attr', 'data-title');
+    .should('have.length', 1)
+    .contains('2019-07-09')
+    .and('have.attr', 'data-title');
     cy.get('#list-1 > div > div:first-child > div') // check content div
-      .should('have.length', 1)
-      .and('have.attr', 'data-content');
+    .should('have.length', 1)
+    .and('have.attr', 'data-content');
     cy.get('#list-1 > div > div:first-child > div > solid-display') // check solid-display
-      .should('have.length', 1);
+    .should('have.length', 1);
   })
+  /**
+  * Group and pagination work together
+  */
   it('groups resources and paginate', () => {
     cy.get('#list-2 > div').within(() => { // in list-2
       cy.get('> div').eq(1).as('groupRow'); // get second group
