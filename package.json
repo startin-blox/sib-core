@@ -40,7 +40,7 @@
     "@types/autolinker": "^2.0.0",
     "babel-plugin-remove-import-js-extension": "0.0.3",
     "body-parser": "^1.19.0",
-    "cypress": "^3.7.0",
+    "cypress": "^4.3.0",
     "document-register-element": "^1.14.3",
     "express": "^4.17.1",
     "find-free-port": "^2.0.0",

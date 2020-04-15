@@ -114,7 +114,7 @@ describe('findClosingBracketMatchIndex', function() {
     function findBracket() {
       findClosingBracketMatchIndex(fields, 2);
     }
-    expect(findBracket).to.throw(new Error("No '(' at index 2"));
+    expect(findBracket).to.throw("No '(' at index 2");
   });
 
   it('find first (', () => {

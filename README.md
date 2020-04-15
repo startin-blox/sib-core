@@ -74,6 +74,7 @@ Filters and searching capabilities can be easily added to interact with the list
 - **`paginate-by`**: The list can also be split in pages, for example set `paginate-by="5"` to display pages of 5 elements, the prev/next buttons and the counter will be added automatically
 - **`paginate-loop`**: When present, this will prevent the prev/next buttons to be disabled. When on the 1rst page, a click on "prev" button brings to the last one. When on the last page, a click on "next" button brings to the first one.
 - **`order-by`**: The name of the field you want to use to order the list. For example, `order-by="username"` will order the users list alphabetically based on the username.
+- **`order-by-random`**: Set this attribute to shuffle your resource list before displaying it.
 - **`highlight-xyz`**: The resources to put at the top of the list. For example, `highlight-date="2019-05-20"` will display first all the resources which have a field date equal to "2019-05-20".
 - **`group-by`**: The resources will be grouped by the field you give as a parameter. For example, `group-by="date"` will render one `<div>` by date, and put the corresponding resources inside.
 - **`group-class`**: The class to set on the group elements.
