@@ -27,7 +27,7 @@ If needed, you can be inspired by those models to report a bug or to propose you
 
 #### For Specification change proposal
 
-Before making any change to a software that requires a specification updcate, please open an issue explaining why there is a need to do so. If possible, provide an example use case. If you think of a solution, you can provide it with a code example.
+Before making any change to a software that requires a specification update, please open an issue explaining why there is a need to do so. If possible, provide an example use case. If you think of a solution, you can provide it with a code example.
 
 This issue *should* be shared with all the other contributors so that every one can discuss it, until a decision is made. Then new issues should be created to describe the technical details of implementation.
 
