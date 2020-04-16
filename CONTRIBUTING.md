@@ -79,7 +79,7 @@ Assign it to someone which will review, test and approve the merge request.
 
 ## Documentation is everything 
 
-We all know how document our work is important. If you find that you can add an improvement, the community is grateful to you!
+We all know how much documenting our work is important. If you find that you can add an improvement, the community is grateful to you!
 
 #### Document your component
 
