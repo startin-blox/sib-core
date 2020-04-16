@@ -4,7 +4,7 @@ Nice to see you here!
 
 There are several ways to contribute to the Startin'blox project. The best way is the one that inspires you :)
 
-If you have any question, come to meet us on [community.startinblox.com](community.startinblox.com)
+If you have any question, come to meet us on [community.startinblox.com](https://community.startinblox.com)
 
 
 ## Feel welcome to open issue
