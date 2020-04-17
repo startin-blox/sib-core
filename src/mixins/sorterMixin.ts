@@ -28,7 +28,7 @@ const SorterMixin = {
       resources = await asyncToArray(resources); // tranform in array
       resources = resources.sort(this.sortValuesByKey("sortingKey")); // sort this array
       resources = await asyncMap(resource => resource.proxy, resources); // and re-transform in async iterator
-    } else if (this.isRandomSorted) {
+    } else if (this.isRandomSorted()) {
       resources = await asyncToArray(resources); // tranform in array
       resources = this.shuffleResources(resources); // shuffle resources
       resources = await asyncMap(resource => resource, resources); // and re-transform in async iterator
