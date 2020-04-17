@@ -74,6 +74,7 @@ export class Store {
 
     return fetch(iri, {
       method: 'GET',
+      headers: await this.headers,
       credentials: 'include'
     }).then(response => {
       if (!response.ok) return;
