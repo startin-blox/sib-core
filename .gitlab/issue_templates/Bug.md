@@ -1,5 +1,9 @@
 /label ~BUG
 
+### Expected behavior
+
+*Describe in a few words what should happen*
+
 ### What's happening?
 
 *Describe in a few words what's happening*
