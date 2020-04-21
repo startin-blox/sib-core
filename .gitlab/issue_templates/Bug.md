@@ -22,10 +22,13 @@
 
 (Include relevant details about the environment you experienced the bug in)
 
-* Library version
+* Library version:
+
 * Browser name and version:
+
 * Operating System and version (desktop or mobile):
-* Targeted application
+
+* Targeted application:
 
 
 
