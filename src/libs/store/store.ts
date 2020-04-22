@@ -25,6 +25,7 @@ export class Store {
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   loadingList: String[];
   headers: Promise<Headers>;
+  initGraph: Function;
 
   constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
@@ -40,6 +41,8 @@ export class Store {
       } catch { }
       return headers;
     })();
+
+    this.initGraph = this.getData; // retro-compatibility with 0.9
   }
 
   async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
