@@ -1,6 +1,6 @@
 /label ~BUG
 
-### Expected behavior
+### Expected behavior
 
 *Describe in a few words what should happen*
 
