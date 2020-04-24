@@ -6,6 +6,11 @@ There are several ways to contribute to the Startin'blox project. The best way i
 
 If you have any question, come to meet us on [community.startinblox.com](https://community.startinblox.com)
 
+## Connect with the ecosystem
+If you have a problem or a question, don't hesitate to share it with the communities sharing our topics.
+*  [Forum ActivityPub](https://socialhub.activitypub.rocks)
+*  [Forum SOLID](https://forum.solidproject.org)
+*  Any additional links are welcome
 
 ## Feel welcome to open issue
 
