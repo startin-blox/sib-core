@@ -35,7 +35,7 @@
     "@babel/plugin-transform-typescript": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-typescript": "^7.7.4",
-    "@cypress/browserify-preprocessor": "^2.1.1",
+    "@cypress/browserify-preprocessor": "^2.2.1",
     "@cypress/webpack-preprocessor": "^4.1.1",
     "@rckeller/cypress-unfetch": "^1.0.1",
     "@types/autolinker": "^2.0.0",
