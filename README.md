@@ -4,7 +4,7 @@
 
 This documentation is for developers who would like to contribute to the core of the framework.
 
-** If you just want to use the framework, please refer to [the general documentation](https://git.startinblox.com/documentation/doc). **
+**If you just want to use the framework, please refer to [the general documentation](https://docs.startinblox.com).**
 
 ## Installation
 To start developing in `sib-core`, you need:
