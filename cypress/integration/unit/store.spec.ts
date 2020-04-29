@@ -33,6 +33,8 @@ describe('store', function () {
       expect(win.store.put).to.be.a('function');
       expect(win.store.patch).to.be.a('function');
       expect(win.store.delete).to.be.a('function');
+      // PubSub
+      expect(win.PubSub).to.exist;
     })
   });
 
@@ -70,53 +72,81 @@ describe('store', function () {
 
   it('send xhr requests', () => {
     cy.server()
-    cy.route({ method: 'PATCH', url: 'user-1.jsonld' }).as('patch');
-    cy.route({ method: 'PUT', url: 'user-1.jsonld' }).as('put');
-    cy.route({ method: 'POST', url: 'users.jsonld' }).as('post');
-    cy.route({ method: 'DELETE', url: 'user-1.jsonld' }).as('delete');
-    cy.route({ method: 'GET', url: 'user-1.jsonld' }).as('get');
+    cy.route({
+      method: 'PATCH',
+      url: '/examples/data/list/user-1.jsonld',
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    }).as('patch');
+    cy.route({
+      method: 'PUT',
+      url: '/examples/data/list/user-1.jsonld',
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    }).as('put');
+    cy.route({
+      method: 'POST',
+      url: '/examples/data/list/users.jsonld',
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    }).as('post');
+    cy.route({
+      method: 'DELETE',
+      url: '/examples/data/list/user-1.jsonld',
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    }).as('delete');
+    cy.route({
+      method: 'GET',
+      url: '/examples/data/list/user-1.jsonld',
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    }).as('get');
+
+    cy.window().then((win: any) => {
+      cy.spy(win.store, 'clearCache');
+      cy.spy(win.PubSub, 'publish');
+    });
 
     cy.window()
       .its('store')
-      .invoke('fetchData', 'user-1.jsonld');
+      .invoke('fetchData', '/examples/data/list/user-1.jsonld');
     cy.get('@get').then((xhr: any) => {
       expect(xhr.method).to.equal('GET');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/e2e/user-1.jsonld');
+      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
     });
 
     cy.window()
       .its('store')
-      .invoke('patch', { first_name: 'Monsieur' }, 'user-1.jsonld');
+      .invoke('patch', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@patch').then((xhr: any) => {
       expect(xhr.method).to.equal('PATCH');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/e2e/user-1.jsonld');
+      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
     });
 
     cy.window()
       .its('store')
-      .invoke('put', { first_name: 'Monsieur' }, 'user-1.jsonld');
+      .invoke('put', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@put').then((xhr: any) => {
       expect(xhr.method).to.equal('PUT');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/e2e/user-1.jsonld');
+      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
     });
 
     cy.window()
       .its('store')
-      .invoke('post', { first_name: 'Monsieur' }, 'users.jsonld');
+      .invoke('post', { first_name: 'Monsieur' }, '/examples/data/list/users.jsonld');
     cy.get('@post').then((xhr: any) => {
       expect(xhr.method).to.equal('POST');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/e2e/users.jsonld');
+      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/users.jsonld');
     });
 
     cy.window()
       .its('store')
-      .invoke('delete', 'user-1.jsonld');
+      .invoke('delete', '/examples/data/list/user-1.jsonld');
     cy.get('@delete').then((xhr: any) => {
       expect(xhr.method).to.equal('DELETE');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/e2e/user-1.jsonld');
+      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
     });
 
-    // TODO : check data updated (cache and subscribe)
+    cy.window().then((win: any) => {
+      expect(win.store.clearCache).to.be.called;
+      expect(win.PubSub.publish).to.be.called;
+    });
   });
 
   it('expands id', () => {
@@ -138,18 +168,31 @@ describe('store', function () {
 
   it('clears cache', () => {
     cy.window()
-      .its('store')
-      .invoke('clearCache', 'user-1.jsonld');
+      .its('store.cache').should('have.length', 20);
 
     cy.window()
-      .its('store.cache').should('have.length', 17);
+      .its('store')
+      .invoke('get', '/examples/data/list/user-1.jsonld')
+      .should('exist');
+
+    cy.window()
+      .its('store')
+      .invoke('clearCache', '/examples/data/list/user-1.jsonld');
+
+    cy.window()
+      .its('store.cache').should('have.length', 19);
+
+    cy.window()
+      .its('store')
+      .invoke('get', '/examples/data/list/user-1.jsonld')
+      .should('not.exist');
 
     cy.window()
       .its('store')
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('store.cache').should('have.length', 17);
+      .its('store.cache').should('have.length', 19);
   });
 
   it('subscribes resource', () => {
@@ -191,9 +234,5 @@ describe('store', function () {
       .its('store')
       .invoke('_getAbsoluteIri', 'https://api.alpha.happy-dev.fr/circles/', base_context, '')
       .should('equal', 'https://api.alpha.happy-dev.fr/circles/');
-  });
-
-  it('caches graph', () => {
-    // TODO 
   });
 });
