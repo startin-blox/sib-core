@@ -66,7 +66,14 @@ export const SolidForm = {
     if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
     return value
   },
-  getWidget(field: string): string {
+
+  getWidget(field:string):string {
+    const widget = this._getWidget(field)
+    if(!this.element.localName.startsWith('sib-')) 
+      return widget;
+    return widget.replace(/^solid-/, 'sib-');
+  },
+  _getWidget(field: string): string {
     if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('upload-url-' + field)) {
       return 'solid-form-file';
