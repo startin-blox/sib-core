@@ -345,7 +345,7 @@ The following widgets are available:
 
 ## Store
 The store is responsible for the communication between the framework and the servers. You may need to use some of its functions.
-
+To use the store in your application, make sure to import it from the root of sib-core (ie: `import { store } from 'https://unpkg.com/@startinblox/core';`).
 
 ### `getData` (`async`)
 
