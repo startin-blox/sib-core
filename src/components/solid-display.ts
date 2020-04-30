@@ -42,7 +42,7 @@ export const SolidDisplay = {
       );
     }) as EventListener;
     window.addEventListener('navigate', listener);
-    const route = document.querySelector('solid-route[active]');
+    const route = document.querySelector('solid-route[active] sib-route[active]');
     if (!route) return;
     const event = new CustomEvent('navigate', {
       detail: {

@@ -107,7 +107,8 @@ export const SolidMap = {
    * @param resourceId: id of the popup clicked
    */
   getPopupContent(resourceId: string) {
-    const child = document.createElement('solid-display');
+    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
+    const child = document.createElement(`${prefix}-display`);
     if (this.fields != null) child.setAttribute('fields', this.fields);
 
     for (let attr of this.element.attributes) {

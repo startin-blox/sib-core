@@ -10,19 +10,19 @@
   </head>
 
   <body>
-    <h2>Simple display</h2>
-    <solid-display
-      data-src="../data/calendar/events.jsonld"
-    ></solid-display>
-    <sib-display
-      data-src="../data/calendar/events.jsonld"
-    ></sib-display>
-
     <solid-form
       data-src="../data/calendar/events.jsonld"
     ></solid-form>
     <sib-form
       data-src="../data/calendar/events.jsonld"
     ></sib-form>
+    <solid-display
+      data-src="../data/calendar/events.jsonld"
+      search-fields="name"
+    ></solid-display>
+    <sib-display
+      data-src="../data/calendar/events.jsonld"
+      search-fields="name"
+    ></sib-display>
   </body>
 </html>
