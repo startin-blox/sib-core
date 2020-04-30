@@ -342,6 +342,99 @@ The following widgets are available:
 | `evalTemplateString` | `str, variables = {}` | eval a string as an es6 template string. example: `evalTemplateString('name: ${first} ${last}', {first: 'John', last: 'Doe'})` |
 | `importCSS`          | `[...stylesheets]`    | add style in document if not present                                                                                           |
 
+
+## Store
+The store is responsible for the communication between the framework and the servers. You may need to use some of its functions.
+
+
+### `getData` (`async`)
+
+Fetch and cache the data for a resource
+
+**parameters**
+- `id: string`: uri of the resource
+- `context: object` (optional):  used to expand the `id` and to access the resource predicates from a compact form
+
+**returns**
+- `resource: Proxy`
+
+
+### `get`
+
+Synchronously returns a resource from the cache.
+
+**parameters**
+- `id: string`: uri of the resource
+
+**returns**
+- `resource: Proxy`: or `null` if the resource is not in cache
+
+
+### `post` (`async`)
+
+Send a POST request to create a resource in a container. When the request succeed, the resource is cleared from the cache, and the components showing it are notified.
+
+**parameters**
+- `resource: object`: values of the resource to create
+- `id: string`: uri of the container
+
+**returns**
+- `resourceId: string`: id of the created resource
+
+
+### `put` (`async`)
+
+Send a PUT request to edit a resource. When the request succeed, the resource is cleared from the cache, and the components showing it are notified.
+
+**parameters**
+- `resource: object`: new values of the resource to edit
+- `id: string`: uri of the resource
+
+**returns**
+- `resourceId: string`: id of the edited resource
+
+
+### `patch` (`async`)
+
+Send a PATCH request to edit a resource. When the request succeed, the resource is cleared from the cache, and the components showing it are notified.
+
+**parameters**
+- `resource: object`: new values of the resource to edit
+- `id: string`: uri of the resource
+
+**returns**
+- `resourceId: string`: id of the edited resource
+
+
+### `delete` (`async`)
+
+Send a DELETE request to delete a resource. When the request succeed, the resource is cleared from the cache, and the components showing it are notified.
+
+**parameters**
+- `id: string`: uri of the resource to delete
+- `context: object` (optional): used to expand the id if needed
+
+**returns**
+- `resourceId: string`: id of the deleted resource
+
+
+### `subscribeTo`
+
+Make a resource listen another one. When a change is detected on a resource, all the resources which are listening are removed from the cache, and the component showing them are notified to re-render their content.
+
+**parameters**
+- `resourceToUpdate`: resource which needs to be updated when another one change
+- `resourceToListen`: resource on which listen for changes
+
+
+### `clearCache`
+
+Manually remove a resource from the cache
+
+**parameters**
+- `id`: uri of the resource to remove from the cache
+
+
 ## Events
 
 | Event name       | Fired by                                             | Fired when                                                                        |

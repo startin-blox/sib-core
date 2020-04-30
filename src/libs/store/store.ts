@@ -45,6 +45,16 @@ export class Store {
     this.initGraph = this.getData; // retro-compatibility with 0.9
   }
 
+  /**
+   * Fetch data and cache it
+   * @param id - uri of the resource to fetch
+   * @param context - context used to expand id and predicates when accessing the resource
+   * @param idParent - uri of the parent caller used to expand uri for local files
+   *
+   * @returns The fetched resource
+   *
+   * @async
+   */
   async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
     return new Promise(async (resolve) => {
       if (!this.cache.has(id)) {
@@ -150,22 +160,56 @@ export class Store {
     });
   }
 
+  /**
+   * Returns the resource with id from the cache
+   * @param id - id of the resource to retrieve
+   *
+   * @returns Resource (Proxy) if in the cache, null otherwise
+   */
   get(id: string): CustomGetter | null {
     return this.cache.get(id) || null;
   }
 
+  /**
+   * Send a POST request to create a resource in a container
+   * @param resource - resource to create
+   * @param id - uri of the container to add resource
+   *
+   * @returns id of the posted resource
+   */
   async post(resource: object, id: string): Promise<string | null> {
     return this._updateResource('POST', resource, id);
   }
 
+  /**
+   * Send a PUT request to edit a resource
+   * @param resource - resource data to send
+   * @param id - uri of the resource to edit
+   *
+   * @returns id of the edited resource
+   */
   async put(resource: object, id: string): Promise<string | null> {
     return this._updateResource('PUT', resource, id);
   }
 
+  /**
+   * Send a PATCH request to edit a resource
+   * @param resource - resource data to send
+   * @param id - uri of the resource to patch
+   *
+   * @returns id of the edited resource
+   */
   async patch(resource: object, id: string): Promise<string | null> {
     return this._updateResource('PATCH', resource, id);
   }
 
+  /**
+   * Send a DELETE request to delete a resource
+   * @param id - uri of the resource to delete
+   * @param context - can be used to expand id
+   *
+   * @returns id of the deleted resource
+   */
   async delete(id: string, context: object = {}) {
     const expandedId = this._getExpandedId(id, context);
     const deleted = await fetch(expandedId, {
@@ -184,6 +228,10 @@ export class Store {
     return deleted;
   }
 
+  /**
+   * Removes a resource from the cache
+   * @param id - id of the resource to remove from the cache
+   */
   clearCache(id: string): void {
     if (this.cache.has(id)) {
       this.cache.delete(id);
@@ -194,6 +242,11 @@ export class Store {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
 
+  /**
+   * Make a resource listen changes of another one
+   * @param resourceId - id of the resource which needs to be updated
+   * @param nestedResourceId - id of the resource which will change
+   */
   subscribeResourceTo(resourceId: string, nestedResourceId: string) {
     const existingSubscriptions = this.subscriptionIndex.get(nestedResourceId) || [];
     this.subscriptionIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, resourceId])])
