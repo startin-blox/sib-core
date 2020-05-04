@@ -1,3 +1,5 @@
+const baseUrl = Cypress.config().baseUrl;
+
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
   rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -108,7 +110,7 @@ describe('store', function () {
       .invoke('fetchData', '/examples/data/list/user-1.jsonld');
     cy.get('@get').then((xhr: any) => {
       expect(xhr.method).to.equal('GET');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
+      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
     });
 
     cy.window()
@@ -116,7 +118,7 @@ describe('store', function () {
       .invoke('patch', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@patch').then((xhr: any) => {
       expect(xhr.method).to.equal('PATCH');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
+      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
     });
 
     cy.window()
@@ -124,7 +126,7 @@ describe('store', function () {
       .invoke('put', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@put').then((xhr: any) => {
       expect(xhr.method).to.equal('PUT');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
+      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
     });
 
     cy.window()
@@ -132,7 +134,7 @@ describe('store', function () {
       .invoke('post', { first_name: 'Monsieur' }, '/examples/data/list/users.jsonld');
     cy.get('@post').then((xhr: any) => {
       expect(xhr.method).to.equal('POST');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/users.jsonld');
+      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/users.jsonld`);
     });
 
     cy.window()
@@ -140,7 +142,7 @@ describe('store', function () {
       .invoke('delete', '/examples/data/list/user-1.jsonld');
     cy.get('@delete').then((xhr: any) => {
       expect(xhr.method).to.equal('DELETE');
-      expect(xhr.url).to.equal('http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
+      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
     });
 
     cy.window().then((win: any) => {
@@ -223,12 +225,12 @@ describe('store', function () {
     cy.window()
       .its('store')
       .invoke('_getAbsoluteIri', '../data/list/users.jsonld', base_context, '')
-      .should('equal', 'http://0.0.0.0:3000/examples/data/list/users.jsonld');
+      .should('equal', `${baseUrl}/examples/data/list/users.jsonld`);
 
     cy.window()
       .its('store')
       .invoke('_getAbsoluteIri', 'user-1.jsonld', base_context, '../data/list/users.jsonld')
-      .should('equal', 'http://0.0.0.0:3000/examples/data/list/user-1.jsonld');
+      .should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window()
       .its('store')
