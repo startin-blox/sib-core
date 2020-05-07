@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: navigate</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <solid-route active>Route</solid-route>
+    <solid-display
+      data-src="../data/list/users.jsonld"
+      fields="@id, username, first_name, last_name, email"
+    ></solid-display>
+
+    <button id="enter-route">EnterRoute</button>
+    <button id="leave-route">LeaveRoute</button>
+
+    <script>
+      document.querySelector('solid-route').resourceId = 'user-2.jsonld';
+
+      document.getElementById('enter-route').onclick = () => {
+        PubSub.publish('enterRoute.user-1.jsonld');
+      }
+      document.getElementById('leave-route').onclick = () => {
+        PubSub.publish('leaveRoute');
+      }
+    </script>
+  </body>
+</html>
