@@ -138,9 +138,13 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
       sibTagName,
       class extends componentClass {
         constructor() {
-          console.warn(
-            `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
-          );
+          window.warnings = window.warnings || [];
+          if (!window.warnings.includes(tagName)) {
+            window.warnings.push(tagName);
+            console.warn(
+              `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
+            );
+          }
           super();
         }
       },
