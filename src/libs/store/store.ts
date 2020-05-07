@@ -111,6 +111,14 @@ export class Store {
 
   clearCache(id: string): void {
     if (this.cache.has(id)) {
+      // For federation, clear each source
+      const resource = this.cache.get(id);
+      if (resource['@type'] === 'ldp:Container') {
+        resource['ldp:contains'].forEach((child: object) => {
+          if (child['@type'] === 'ldp:Container') this.cache.delete(child['@id'])
+        })
+      }
+
       this.cache.delete(id);
     }
   }
