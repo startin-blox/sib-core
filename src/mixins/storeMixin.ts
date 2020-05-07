@@ -19,6 +19,7 @@ const StoreMixin = {
           this.resourceId = this.resource ? (await this.resource[this.nestedField])['@id'] : null;
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
         }
+        this.updateNavigateSubscription();
 
         this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
         await store.getData(this.resourceId, this.context);
@@ -66,6 +67,7 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
+  updateNavigateSubscription() { },
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();

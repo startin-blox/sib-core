@@ -30,28 +30,39 @@ export const SolidDisplay = {
       default: 'solid-display-value',
     },
   },
+  initialState: {
+    navigateSubscription: null,
+    removeActiveSubscription: null,
+  },
   created(): void {
-    const listener = ((event: CustomEvent) => {
-      if (this.resource == null) return;
-      if (event.detail.resource == null) return;
-      if (this.resource['@id'] == null) return;
-
-      this.element.toggleAttribute(
-        'active',
-        this.resource['@id'] === event.detail.resource.id,
-      );
-    }) as EventListener;
-    window.addEventListener('navigate', listener);
+    // Set route active at initialization
     const route = document.querySelector('solid-route[active]');
     if (!route) return;
-    const event = new CustomEvent('navigate', {
-      detail: {
-        resource: {
-          id: route['resourceId'],
-        },
-      },
+    setTimeout(() => {
+      if (route['resourceId'] === this.resourceId) this.addActiveCallback();
     });
-    setTimeout(() => listener(event));
+  },
+  // Update subscription when id changes
+  updateNavigateSubscription() {
+    if (this.navigateSubscription) PubSub.unsubscribe(this.navigateSubscription);
+
+    if (this.resourceId) {
+      this.navigateSubscription = PubSub.subscribe(
+        'enterRoute.' + this.resourceId,
+        this.addActiveCallback.bind(this)
+      );
+    }
+  },
+  addActiveCallback() {
+    this.element.setAttribute('active', '');
+    this.removeActiveSubscription = PubSub.subscribe(
+      'leaveRoute',
+      this.removeActiveCallback.bind(this)
+    );
+  },
+  removeActiveCallback() {
+    this.element.removeAttribute('active');
+    PubSub.unsubscribe(this.removeActiveSubscription);
   },
   get childTag(): string {
     return this.element.dataset.child || this.element.tagName;
