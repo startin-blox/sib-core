@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: sib backward compatibility</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body>
+    <solid-form
+      data-src="../data/calendar/events.jsonld"
+    ></solid-form>
+    <sib-form
+      data-src="../data/calendar/events.jsonld"
+    ></sib-form>
+    <solid-display
+      data-src="../data/calendar/events.jsonld"
+      search-fields="name"
+    ></solid-display>
+    <sib-display
+      data-src="../data/calendar/events.jsonld"
+      search-fields="name"
+    ></sib-display>
+  </body>
+</html>
