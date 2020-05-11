@@ -170,6 +170,25 @@ export class Store {
     return this.cache.get(id) || null;
   }
 
+
+  /**
+   * Removes a resource from the cache
+   * @param id - id of the resource to remove from the cache
+   */
+  clearCache(id: string): void {
+    if (this.cache.has(id)) {
+      // For federation, clear each source
+      const resource = this.cache.get(id);
+      if (resource['@type'] === 'ldp:Container') {
+        resource['ldp:contains'].forEach((child: object) => {
+          if (child && child['@type'] === 'ldp:Container') this.cache.delete(child['@id'])
+        })
+      }
+
+      this.cache.delete(id);
+    }
+  }
+
   /**
    * Send a POST request to create a resource in a container
    * @param resource - resource to create
@@ -226,16 +245,6 @@ export class Store {
     });
 
     return deleted;
-  }
-
-  /**
-   * Removes a resource from the cache
-   * @param id - id of the resource to remove from the cache
-   */
-  clearCache(id: string): void {
-    if (this.cache.has(id)) {
-      this.cache.delete(id);
-    }
   }
 
   _getExpandedId(id: string, context: object) {
