@@ -1,4 +1,4 @@
-describe('simple Startin’blox e2e test', function () {
+describe('Backward Compatibility of sib elements test', function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/sib-backward-compatibility.html');
   });

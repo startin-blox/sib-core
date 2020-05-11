@@ -1,5 +1,5 @@
 
-describe('simple Startin’blox e2e test', function () {
+describe('Reactivity e2e test', function () {
   this.beforeAll('visit', () => {
     cy.server();
     cy.route('GET', 'https://api.test-nantes.happy-dev.fr/users/', 'fixture:users-nantes.jsonld');
