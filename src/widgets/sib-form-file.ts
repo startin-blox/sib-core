@@ -45,6 +45,8 @@ export default class SIBFormFile extends BaseWidget {
       this.filePicker.value = '';
       this.output.textContent = '';
       this.resetButton.toggleAttribute('hidden', true)
+      const event = new CustomEvent('removed', { bubbles: true });
+      this.dispatchEvent(event);
     })
   }
   selectFile() {
@@ -68,6 +70,11 @@ export default class SIBFormFile extends BaseWidget {
           this.input.value = location;
           this.output.textContent = '';
           this.resetButton.toggleAttribute('hidden', false)
+          const event = new CustomEvent('uploaded', {
+            bubbles: true,
+            detail: { location }
+          });
+          this.dispatchEvent(event);
         }
       })
       .catch(error => {
