@@ -8,3 +8,7 @@ declare namespace Cypress {
    uploadFile(fileName: string): Chainable<Element>
   }
 }
+
+interface Window {
+  store: any
+}

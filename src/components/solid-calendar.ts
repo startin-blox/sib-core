@@ -9,6 +9,9 @@ import { store } from '../libs/store/store.js';
 export const SolidCalendar = {
   name: 'solid-calendar',
   use: [ListMixin, StoreMixin],
+  initialState: {
+    subscriptions: null
+  },
   created(): void {
     importCSS('https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css');
     const div = document.createElement('div');
@@ -18,6 +21,7 @@ export const SolidCalendar = {
     this.element.appendChild(div);
     this.calendar = new Calendar(div, { defaultView: 'month' });
     this.calendar.on('clickSchedule', this.dispatchSelect.bind(this));
+    this.subscriptions = new Map();
   },
   get extra_context(): object {
     return { date: "http://www.w3.org/2001/XMLSchema#dateTime" }
@@ -37,7 +41,10 @@ export const SolidCalendar = {
     }
   },
   async appendChildElt(resourceId: string) {
-    const resource = await store.initGraph(resourceId, this.context);
+    const resource = await store.getData(resourceId, this.context);
+    if (!this.subscriptions.get(resourceId)) {
+      this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
+    } // TODO : mixin gestion des enfants
     const date = await resource['date'];
     const name = await resource['name'];
 

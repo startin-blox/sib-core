@@ -10,6 +10,10 @@ const SorterMixin = {
     orderBy: {
       type: String,
       default: null
+    },
+    orderByRandom: {
+      type: String,
+      default: null
     }
   },
   attached(): void {
@@ -24,10 +28,17 @@ const SorterMixin = {
       resources = await asyncToArray(resources); // tranform in array
       resources = resources.sort(this.sortValuesByKey("sortingKey")); // sort this array
       resources = await asyncMap(resource => resource.proxy, resources); // and re-transform in async iterator
+    } else if (this.isRandomSorted()) {
+      resources = await asyncToArray(resources); // tranform in array
+      resources = this.shuffleResources(resources); // shuffle resources
+      resources = await asyncMap(resource => resource, resources); // and re-transform in async iterator
     }
 
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+  },
+  isRandomSorted(): boolean {
+    return this.orderByRandom !== null;
   },
   sortValuesByKey(key: string): Function {
     return function (a: object, b: object): number {
@@ -43,6 +54,19 @@ const SorterMixin = {
       return comparison;
     }
   },
+  shuffleResources(array: object[]): object[] {
+    let currentIndex = array.length;
+    let temporaryValue: object;
+    let randomIndex: number;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
 }
 
 export {

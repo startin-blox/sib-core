@@ -24,12 +24,14 @@ export const SolidMap = {
   initialState: {
     markers: {
       default: null
-    }
+    },
+    subscriptions: null
   },
   created(): void {
     importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
     importCSS('./../style/default-theme.css');
     this.markers = [];
+    this.subscriptions = new Map();
   },
   attached(): void {
     const div = document.createElement('div');
@@ -72,7 +74,10 @@ export const SolidMap = {
    * @param groupClass: class of the group of markers
    */
   async appendChildElt(resourceId: string, groupClass: string) {
-    const resource = await store.initGraph(resourceId, this.context);
+    const resource = await store.getData(resourceId, this.context);
+    if (!this.subscriptions.get(resourceId)) {
+      this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
+    }
     const lat = await resource['lat'];
     const lng = await resource['lng'];
 
@@ -102,7 +107,8 @@ export const SolidMap = {
    * @param resourceId: id of the popup clicked
    */
   getPopupContent(resourceId: string) {
-    const child = document.createElement('solid-display');
+    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
+    const child = document.createElement(`${prefix}-display`);
     if (this.fields != null) child.setAttribute('fields', this.fields);
 
     for (let attr of this.element.attributes) {

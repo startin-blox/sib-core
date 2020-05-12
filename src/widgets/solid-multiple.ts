@@ -16,7 +16,7 @@ export default class SolidMultiple extends BaseWidget {
     for await (const resource of this.value['ldp:contains']) {
       const elm = this.insertWidget(this.childAttributes, parent);
       if (elm) {
-        elm['value'] = await store.initGraph(resource['@id']);
+        elm['value'] = await store.getData(resource['@id']);
         elm.toggleAttribute('data-holder', true);
       }
       i++;

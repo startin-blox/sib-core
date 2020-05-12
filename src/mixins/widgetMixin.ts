@@ -101,7 +101,13 @@ const WidgetMixin = {
       this.div = newDiv
     }
   },
-  getWidget(field: string): string {
+  getWidget(field:string):string {
+    const widget = this._getWidget(field)
+    if(!this.element.localName.startsWith('sib-')) 
+      return widget;
+    return widget.replace(/^solid-/, 'sib-');
+  },
+  _getWidget(field: string): string {
     const widget = this.element.getAttribute('widget-' + field);
     if (widget) {
       if (!customElements.get(widget)) {
@@ -160,7 +166,13 @@ const WidgetMixin = {
     }
 
     this.widgets.push(widget);
-    this.getValue(field).then(value => widget.value = value);
+    this.getValue(field).then(value => {
+      widget.value = value;
+      if (value && value['@id']) {
+        PubSub.subscribe(value['@id'], () => this.updateDOM())
+        // TODO : remove subscriptions
+      }
+    });
     return widget;
   },
   multiple(field: string): string | null {

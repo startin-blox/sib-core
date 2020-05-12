@@ -13,6 +13,10 @@ const PaginateMixin = {
       type: Number,
       default: 0
     },
+    paginateLoop: {
+      type: String,
+      default: null
+    }
   },
   initialState: {
     currentPage: []
@@ -45,15 +49,18 @@ const PaginateMixin = {
   getCurrentPage(context: string) {
     return this.currentPage[context];
   },
-  setCurrentPage(page: number, context: string): void {
-    if (page < 1) page = 1;
-    // if (page > this.pageCount) page = this.pageCount; // TODO : handle this
+  setCurrentPage(page: number, context: string, pageCount: number): void {
+    if (page < 1) page = !this.shouldLoop() ? 1 : pageCount;
+    if (page > pageCount) page = !this.shouldLoop() ? pageCount : 1;
     this.currentPage[context] = page;
     this.empty();
     this.populate();
   },
   getPageCount(size: number): number {
     return Math.max(1, Math.ceil(size / this.paginateBy));
+  },
+  shouldLoop(): boolean {
+    return this.paginateLoop !== null;
   },
   renderPaginationNav(div: Element, pageCount: number, context: string): void {
     let insertNode = div.parentNode || div;
@@ -75,13 +82,15 @@ const PaginateMixin = {
     const prevButton = nav.querySelector('[data-id="prev"]') as HTMLElement;
     const nextButton = nav.querySelector('[data-id="next"]') as HTMLElement;
     // use onclick to override previous listeners
-    prevButton.onclick = () => this.setCurrentPage(currentPage - 1, context);
-    nextButton.onclick = () => this.setCurrentPage(currentPage + 1, context);
+    prevButton.onclick = () => this.setCurrentPage(currentPage - 1, context, pageCount);
+    nextButton.onclick = () => this.setCurrentPage(currentPage + 1, context, pageCount);
 
     nav.querySelector('[data-id="current"]')!.textContent = currentPage;
     nav.querySelector('[data-id="count"]')!.textContent = String(pageCount);
-    nav.querySelector('[data-id="prev"]')!.toggleAttribute('disabled', currentPage <= 1);
-    nav.querySelector('[data-id="next"]')!.toggleAttribute('disabled', currentPage >= pageCount);
+    if (!this.shouldLoop()) {
+      nav.querySelector('[data-id="prev"]')!.toggleAttribute('disabled', currentPage <= 1);
+      nav.querySelector('[data-id="next"]')!.toggleAttribute('disabled', currentPage >= pageCount);
+    }
     nav.toggleAttribute('hidden', pageCount <= 1);
   },
 }

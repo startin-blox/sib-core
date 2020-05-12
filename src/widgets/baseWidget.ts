@@ -9,6 +9,7 @@ export class BaseWidget extends HTMLElement {
   public _value: any | undefined;
   private _range: any | undefined;
   private _context: object | undefined;
+  private _subscriptions = new Map();
 
   connectedCallback(): void {
     this.render();
@@ -139,8 +140,9 @@ export class BaseWidget extends HTMLElement {
   }
   set range(range) {
     (async () => {
-      this._range = await store.initGraph(range, this.context);
-      await this.render();
+      this._listen(range, async () => this._range = await store.getData(range, this.context));
+      this._range = await store.getData(range, this.context);
+      this.render();
     })();
   }
   async fetchSources(resource: object) {
@@ -149,7 +151,8 @@ export class BaseWidget extends HTMLElement {
     let resources: any[] = [];
     for (let res of resource['ldp:contains']) {
       if (res.isContainer()) { // if nested container
-        let resourcesFromContainer = await store.initGraph(res['@id'], this.context); // fetch the datas
+        let resourcesFromContainer = await store.getData(res['@id'], this.context); // fetch the datas
+        this._listen(res['@id']);
         if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);
       } else {
         resources.push(res);
@@ -158,13 +161,14 @@ export class BaseWidget extends HTMLElement {
     return resources;
   }
 
-  get htmlRange(): Promise<string|undefined> {
+  get htmlRange(): Promise<string | undefined> {
     return (async () => {
       let htmlRange = '';
       const rangeResources = await this.range;
       if (!rangeResources) return;
       for await (let element of rangeResources) {
-        element = await store.initGraph(element['@id'], this.context); // fetch the resource to display the name
+        element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
+        this._listen(element['@id']);
 
         let selected: boolean;
         if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select
@@ -189,6 +193,15 @@ export class BaseWidget extends HTMLElement {
   }
   getValueHolder(element) {
     return element.component ? element.component : element;
+  }
+
+  _listen(id: string, callback: Function = () => {}) {
+    if (!this._subscriptions.get(id)) {
+      this._subscriptions.set(id, PubSub.subscribe(id, async () => {
+        await callback();
+        this.render();
+      }))
+    }
   }
 
   // Editable widgets

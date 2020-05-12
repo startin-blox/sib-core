@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Reactivity of the Startin’blox store test</title>
+  <script type="module" src="../../dist/index.js"></script>
+</head>
+<body>
+  <!-- DISPLAYS -->
+  <h2>user</h2>
+  <solid-display
+    id="user"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    fields="first_name, last_name, username, profile.city"
+  ></solid-display>
+  <h2>circle</h2>
+  <solid-display
+    id="circle"
+    data-src="https://api.test-paris.happy-dev.fr/circles/16/"
+    fields="owner.profile.city"
+  ></solid-display>
+  <h2>profile</h2>
+  <solid-display
+    id="profile"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    nested-field="profile"
+    fields="city"
+  ></solid-display>
+  <h2>profile widget</h2>
+  <solid-display
+    id="profile-widget"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    fields="profile"
+    widget-profile="custom-widget"
+  ></solid-display>
+
+  <solid-widget name="custom-widget">
+    <template>
+      <div>${await value.city}</div>
+    </template>
+  </solid-widget>
+
+  <h2>user list</h2>
+  <solid-display
+    id="users"
+    data-src="https://api.test-paris.happy-dev.fr/users/"
+    fields="first_name, last_name, username, profile.city"
+  ></solid-display>
+
+  <h2>federation</h2>
+  <solid-display
+    id="federation"
+    data-src="https://api.test-paris.happy-dev.fr/sources/users/"
+    fields="first_name, last_name, username"
+  ></solid-display>
+
+  <h2>range</h2>
+  <solid-form
+    id="range"
+    fields="users"
+    range-users="https://api.test-paris.happy-dev.fr/users/"
+  ></solid-form>
+
+  <!-- FORMS -->
+  <h1>forms</h1>
+  <solid-form
+    id="user-form"
+    data-src="https://api.test-paris.happy-dev.fr/users/matthieu/"
+    fields="first_name, last_name, username"
+    partial
+  ></solid-form>
+
+  <solid-form
+    id="profile-form"
+    data-src="https://api.test-paris.happy-dev.fr/profiles/matthieu/"
+    fields="city"
+    partial
+  ></solid-form>
+
+  <solid-form
+    id="users-form"
+    data-src="https://api.test-paris.happy-dev.fr/users/"
+    fields="first_name, last_name, username"
+  ></solid-form>
+
+  <solid-delete
+    id="delete-user"
+    data-src="https://api.test-paris.happy-dev.fr/users/alex/"
+  ></solid-delete>
+
+</body>
+</html>

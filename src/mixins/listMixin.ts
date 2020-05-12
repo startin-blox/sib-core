@@ -52,6 +52,7 @@ const ListMixin = {
     // Create child components
     let childrenAdded = 0;
     for await (let resource of resources) {
+      if (!resource) continue;
       this.appendChildElt(resource['@id'], div);
       childrenAdded++;
     }

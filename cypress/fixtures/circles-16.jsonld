@@ -1,0 +1,79 @@
+{
+  "@id": "https://api.test-paris.happy-dev.fr/circles/16/",
+  "name": "New Matthieu's Circle",
+  "description": "test reactivity",
+  "creationDate": "2020-03-26",
+  "status": "Public",
+  "jabberID": "du6xjznw3mfp@conference.test-paris.happy-dev.fr",
+  "jabberRoom": true,
+  "owner": {
+    "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/"
+  },
+  "team": {
+    "@id": "https://api.test-paris.happy-dev.fr/circles/16/team/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/"
+      },
+      {
+        "@id": "https://api.test-paris.happy-dev.fr/users/balessan/"
+      }
+    ],
+    "permissions": [
+      {
+        "mode": {
+          "@type": "add"
+        }
+      },
+      {
+        "mode": {
+          "@type": "view"
+        }
+      }
+    ]
+  },
+  "members": {
+    "@id": "https://api.test-paris.happy-dev.fr/circles/16/members/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.test-paris.happy-dev.fr/circle-members/87/"
+      },
+      {
+        "@id": "https://api.test-paris.happy-dev.fr/circle-members/95/"
+      }
+    ],
+    "permissions": [
+      {
+        "mode": {
+          "@type": "add"
+        }
+      },
+      {
+        "mode": {
+          "@type": "view"
+        }
+      }
+    ]
+  },
+  "@type": "hd:circle",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    },
+    {
+      "mode": {
+        "@type": "change"
+      }
+    },
+    {
+      "mode": {
+        "@type": "delete"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

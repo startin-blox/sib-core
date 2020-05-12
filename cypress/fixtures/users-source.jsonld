@@ -1,0 +1,38 @@
+{
+  "@id": "https://api.test-paris.happy-dev.fr/sources/users/",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "federation": "users",
+      "@id": "https://api.test-paris.happy-dev.fr/users/",
+      "@type": "ldp:Container",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "federation": "users",
+      "@id": "https://api.test-nantes.happy-dev.fr/users/",
+      "@type": "ldp:Container",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

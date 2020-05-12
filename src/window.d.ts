@@ -1,0 +1,1 @@
+declare var PubSub: any;

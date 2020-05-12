@@ -9,19 +9,21 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         this.empty();
+        if (this.subscription) PubSub.unsubscribe(this.subscription);
         if (!value || value == "undefined") return;
 
         this.resourceId = value;
-        await store.initGraph(this.resourceId, this.context);
 
-        // Init graph for nested fields
         if (this.nestedField) {
-          this.resourceId = (await this.resource[this.nestedField])['@id']
+          await store.getData(value, this.context);
+          this.resourceId = this.resource ? (await this.resource[this.nestedField])['@id'] : null;
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
-          await store.initGraph(this.resourceId, this.context);
         }
+        this.updateNavigateSubscription();
 
-        await this.updateDOM();
+        this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+        await store.getData(this.resourceId, this.context);
+        this.updateDOM();
       },
     },
     extraContext: {
@@ -42,7 +44,8 @@ const StoreMixin = {
     },
   },
   initialState: {
-    resourceId: null
+    resourceId: null,
+    subscription: null
   },
   get context(): object {
     return { ...base_context, ...this.extra_context };
@@ -64,6 +67,7 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
+  updateNavigateSubscription() { },
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();

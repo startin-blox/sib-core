@@ -125,6 +125,8 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   return -1;
 }
 
+const deprecatedWarnings: string[] = [];
+
 function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   if (!customElements.get(tagName)) {
     customElements.define(tagName, componentClass);
@@ -138,9 +140,12 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
       sibTagName,
       class extends componentClass {
         constructor() {
-          console.warn(
-            `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
-          );
+          if (!deprecatedWarnings.includes(tagName)) {
+            deprecatedWarnings.push(tagName);
+            console.warn(
+              `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
+            );
+          }
           super();
         }
       },
