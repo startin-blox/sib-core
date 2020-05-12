@@ -31,7 +31,7 @@ export const SolidDisplay = {
     },
   },
   initialState: {
-    navigateSubscription: null,
+    activeSubscription: null,
     removeActiveSubscription: null,
   },
   created(): void {
@@ -44,10 +44,10 @@ export const SolidDisplay = {
   },
   // Update subscription when id changes
   updateNavigateSubscription() {
-    if (this.navigateSubscription) PubSub.unsubscribe(this.navigateSubscription);
+    if (this.activeSubscription) PubSub.unsubscribe(this.activeSubscription);
 
     if (this.resourceId) {
-      this.navigateSubscription = PubSub.subscribe(
+      this.activeSubscription = PubSub.subscribe(
         'enterRoute.' + this.resourceId,
         this.addActiveCallback.bind(this)
       );
