@@ -25,7 +25,8 @@ export const SolidMap = {
     markers: {
       default: null
     },
-    subscriptions: null
+    subscriptions: null,
+    resetPlanned: false
   },
   created(): void {
     importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
@@ -50,6 +51,18 @@ export const SolidMap = {
       this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
     } else {
       this.map.fitWorld(); // ... or on the world if not
+    }
+  },
+  /**
+   * Execute a reset only if none is planned already
+   */
+  planReset() {
+    if (!this.resetPlanned) {
+      this.resetPlanned = true;
+      setTimeout(() => {
+        this.reset();
+        this.resetPlanned = false;
+      })
     }
   },
   dispatchSelect(event: CustomEvent): void {
@@ -164,7 +177,7 @@ export const SolidMap = {
   async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     const groupClass = div.dataset.groupClass || ''; // get the group class from the useless div element
     for await (let resource of resources) await this.appendChildElt(resource['@id'], groupClass);
-    this.reset();
+    this.planReset();
 
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
