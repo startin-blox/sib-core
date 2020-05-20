@@ -1,4 +1,5 @@
-import { evalTemplateString } from '../libs/helpers.js';
+//@ts-ignore
+import {render} from 'https://unpkg.com/lit-html?module';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -37,10 +38,7 @@ const WidgetMixin = {
     nextProcessor(this.value, listValueTransformations);
   },
   templateToDOM(value) {
-    return evalTemplateString(this.template, {
-      value,
-      name: this.name
-    }).then(res => this.element.innerHTML = res);
+    render(this.template(value, this.name), this.element);
   }
 }
 

@@ -170,7 +170,7 @@ const WidgetMixin = {
       });
     } else {
       for (let name of Object.keys(attributes)) {
-        widget[name] = attributes[name];
+        widget.setAttribute(name, attributes[name]);
       }
 
       this.getValue(field).then(value => {

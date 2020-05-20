@@ -1,6 +1,8 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from './widgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
+//@ts-ignore
+import {html} from 'https://unpkg.com/lit-html?module';
 
 export const newWidgetFactory = (tagName: string) => {
 
@@ -29,7 +31,7 @@ export const newWidgetFactory = (tagName: string) => {
       WidgetMixin,
       ...valueTransformations,
     ],
-    get template(): string {
+    get template(): Function {
       return templateToDOM || templateToDOMTags.text;
     },
   };
@@ -44,9 +46,15 @@ const valueTransformationsTags = {
 
 // Template to DOM
 const templateToDOMTags = {
-  text: `\${value}`,
-  div: `<div name="\${name}">\${value}</div>`,
-  input: `<input value="\${value}" data-holder>`
+  text: (value: string) => html`
+    ${value}
+  `,
+  div: (value: string, name: string) => html`
+    <div name="${name}">${value}</div>
+  `,
+  input: (value: string) => html`
+    <input value="${value}" data-holder>
+  `
 }
 
 newWidgetFactory('solid-text');
