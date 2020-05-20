@@ -1,4 +1,5 @@
 import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers.js';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -107,16 +108,18 @@ const WidgetMixin = {
       return widget;
     return widget.replace(/^solid-/, 'sib-');
   },
-  _getWidget(field: string): string {
+  _getWidget(field: string): object {
     const widget = this.element.getAttribute('widget-' + field);
     if (widget) {
-      if (!customElements.get(widget)) {
-        console.warn(`The widget ${widget} is not defined`);
+      let type = 'custom';
+      if (!customElements.get(widget)) { // component does not exist
+        if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
+        else type = 'native'; // or use a native tag
       }
-      return widget;
+      return { tagName: widget, type }; // return tagName
     }
-    if (this.getAction(field)) return 'solid-action';
-    return this.defaultWidget;
+    if (this.getAction(field)) return {tagName: 'solid-action', type: 'custom'};
+    return {tagName: this.defaultWidget, type: 'custom'};
   },
   widgetAttributes(field: string): object {
     const attrs = {
@@ -155,24 +158,31 @@ const WidgetMixin = {
     const attributes = this.widgetAttributes(field);
 
     const escapedField = this.getEscapedField(field);
-    const tagName = this.multiple(escapedField) || this.getWidget(escapedField);
-    const widget = document.createElement(tagName);
+    const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
+    const widget = document.createElement(widgetMeta.tagName);
     if (this.multiple(escapedField)) {
-      widget.setAttribute('widget', this.getWidget(escapedField));
+      widget.setAttribute('widget', this.getWidget(escapedField).tagName);
     }
 
-    for (let name of Object.keys(attributes)) {
-      widget[name] = attributes[name];
+    if (widgetMeta.type == 'native') {
+      this.getValue(field).then(value => {
+        widget.innerHTML = value;
+      });
+    } else {
+      for (let name of Object.keys(attributes)) {
+        widget[name] = attributes[name];
+      }
+
+      this.getValue(field).then(value => {
+        widget.setAttribute('value',value);
+        if (value && value['@id']) {
+          PubSub.subscribe(value['@id'], () => this.updateDOM())
+          // TODO : remove subscriptions
+        }
+      });
     }
 
     this.widgets.push(widget);
-    this.getValue(field).then(value => {
-      widget.value = value;
-      if (value && value['@id']) {
-        PubSub.subscribe(value['@id'], () => this.updateDOM())
-        // TODO : remove subscriptions
-      }
-    });
     return widget;
   },
   multiple(field: string): string | null {
