@@ -108,7 +108,7 @@ const WidgetMixin = {
       return widget;
     return widget.replace(/^solid-/, 'sib-');
   },
-  _getWidget(field: string): object {
+  _getWidget(field: string, isSet: boolean = false): object {
     const widget = this.element.getAttribute('widget-' + field);
     if (widget) {
       let type = 'custom';
@@ -119,7 +119,10 @@ const WidgetMixin = {
       return { tagName: widget, type }; // return tagName
     }
     if (this.getAction(field)) return {tagName: 'solid-action', type: 'custom'};
-    return {tagName: this.defaultWidget, type: 'custom'};
+    return {
+      tagName: !isSet ? this.defaultWidget : this.defaultSetWidget,
+      type: 'custom'
+    };
   },
   widgetAttributes(field: string): object {
     const attrs = {
@@ -193,10 +196,7 @@ const WidgetMixin = {
   },
 
   createSet(field: string): Element {
-    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const widget = document.createElement(
-      this.element.getAttribute('widget-' + field) || this.defaultSetWidget.replace(/^solid/, prefix),
-    );
+    const widget = document.createElement(this._getWidget(field, true).tagName);
     widget.setAttribute('name', field);
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;

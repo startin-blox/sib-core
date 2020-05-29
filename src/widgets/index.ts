@@ -41,11 +41,6 @@ import {
   SolidGroupDiv,
 } from './group.js';
 
-import{
-  SolidSetUl,
-  SolidSetDiv,
-  SolidSetFieldset
-} from './set.js';
 
 export {
   SolidMultiple,
@@ -80,8 +75,5 @@ export {
   SolidFormHidden,
   SolidFormLabelPlaceholderText,
   SolidFormPlaceholderNumber,
-  SolidGroupDiv,
-  SolidSetUl,
-  SolidSetDiv,
-  SolidSetFieldset
+  SolidGroupDiv
 };
