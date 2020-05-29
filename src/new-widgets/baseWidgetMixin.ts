@@ -22,6 +22,7 @@ const BaseWidgetMixin = {
   },
   initialState: {
     listValueTransformations: [],
+    listDomAdditions: [],
     renderPlanned: false,
   },
   get template() {
@@ -29,6 +30,7 @@ const BaseWidgetMixin = {
   },
   created() {
     this.listValueTransformations = [];
+    this.listDomAdditions = [];
   },
   planRender() {
     if (!this.renderPlanned) {
@@ -41,14 +43,21 @@ const BaseWidgetMixin = {
   },
   render() {
     const listValueTransformations = [...this.listValueTransformations];
-    listValueTransformations.push(this.templateToDOM.bind(this));
+    listValueTransformations.push(this.domAdditions.bind(this));
 
-    // Execute the first post-processor of the list
     const nextProcessor = listValueTransformations.shift();
     nextProcessor(this.value, listValueTransformations);
   },
-  templateToDOM(value) {
-    render(this.template(value, this.name), this.element);
+  domAdditions(value) {
+    const template = this.template(value, this.name);
+    const listDomAdditions = [...this.listDomAdditions];
+    listDomAdditions.push(this.templateToDOM.bind(this));
+
+    const nextProcessor = listDomAdditions.shift();
+    nextProcessor(template, listDomAdditions);
+  },
+  templateToDOM(template) {
+    render(template, this.element);
   }
 }
 
