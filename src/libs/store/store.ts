@@ -65,8 +65,14 @@ export class Store {
 
           // Generate proxy
           const clientContext = await myParser.parse(context);
-          const resource = await this.fetchData(id, clientContext, idParent);
-          if (!resource) return;
+          let resource = null;
+          try {
+            resource = await this.fetchData(id, clientContext, idParent);
+          } catch (error) { console.error(error) }
+          if (!resource) {
+            this.loadingList = this.loadingList.filter(value => value != id);
+            return;
+          }
           const serverContext = await myParser.parse([resource['@context'] || {}]);
           const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent).getProxy();
 
