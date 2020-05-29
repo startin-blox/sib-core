@@ -166,7 +166,7 @@ const WidgetMixin = {
 
     if (widgetMeta.type == 'native') {
       this.getValue(field).then(value => {
-        widget.innerHTML = value;
+        widget.textContent = value;
       });
     } else {
       for (let name of Object.keys(attributes)) {

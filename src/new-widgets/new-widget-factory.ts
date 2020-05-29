@@ -1,5 +1,5 @@
 import { Sib } from '../libs/Sib.js';
-import { WidgetMixin } from './widgetMixin.js';
+import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
 //@ts-ignore
 import {html} from 'https://unpkg.com/lit-html?module';
@@ -28,7 +28,7 @@ export const newWidgetFactory = (tagName: string) => {
   const newWidget = {
     name: tagName,
     use: [
-      WidgetMixin,
+      BaseWidgetMixin,
       ...valueTransformations,
     ],
     get template(): Function {

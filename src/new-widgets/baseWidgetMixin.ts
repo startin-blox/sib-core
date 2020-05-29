@@ -1,7 +1,7 @@
 //@ts-ignore
 import {render} from 'https://unpkg.com/lit-html?module';
 
-const WidgetMixin = {
+const BaseWidgetMixin = {
   name: 'widget-mixin',
   use: [],
   attributes: {
@@ -9,25 +9,35 @@ const WidgetMixin = {
       type: String,
       default: null,
       callback: function () {
-        this.render();
+        this.planRender();
       }
     },
     name: {
       type: String,
       default: "",
       callback: function () {
-        this.render();
+        this.planRender();
       }
     }
   },
   initialState: {
     listValueTransformations: [],
+    renderPlanned: false,
   },
   get template() {
     return null
   },
   created() {
     this.listValueTransformations = [];
+  },
+  planRender() {
+    if (!this.renderPlanned) {
+      this.renderPlanned = true;
+      setTimeout(() => {
+        this.render();
+        this.renderPlanned = false;
+      });
+    }
   },
   render() {
     const listValueTransformations = [...this.listValueTransformations];
@@ -43,5 +53,5 @@ const WidgetMixin = {
 }
 
 export {
-  WidgetMixin
+  BaseWidgetMixin
 }
