@@ -137,7 +137,7 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   if (tagName.startsWith('solid-')) {
     const sibTagName = tagName.replace(/^solid-/, 'sib-');
 
-    if (!customElements.get(tagName)) {
+    if (!customElements.get(sibTagName)) {
       customElements.define(
         sibTagName,
         class extends componentClass {
