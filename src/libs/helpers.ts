@@ -133,24 +133,26 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   } else {
     console.warn(`Warning: the component "${tagName}" has already been loaded in another version of sib-core.`)
   }
+
   if (tagName.startsWith('solid-')) {
     const sibTagName = tagName.replace(/^solid-/, 'sib-');
 
-    customElements.define(
-      sibTagName,
-      class extends componentClass {
-        constructor() {
-          if (!deprecatedWarnings.includes(tagName)) {
-            deprecatedWarnings.push(tagName);
-            console.warn(
-              `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
-            );
+    if (!customElements.get(tagName)) {
+      customElements.define(
+        sibTagName,
+        class extends componentClass {
+          constructor() {
+            if (!deprecatedWarnings.includes(tagName)) {
+              deprecatedWarnings.push(tagName);
+              console.warn(
+                `<${sibTagName}> is deprecated, please use <${tagName}> insteed`,
+              );
+            }
+            super();
           }
-          super();
-        }
-      },
-    );
-  }
+      });
+    }
+  };
 }
 
 export {
