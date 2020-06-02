@@ -183,7 +183,6 @@ const WidgetMixin = {
 
   createSet(field: string): Element {
     const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    console.log(prefix);
     const widget = document.createElement(
       this.element.getAttribute('widget-' + field) || this.defaultSetWidget.replace(/^solid/, prefix),
     );
