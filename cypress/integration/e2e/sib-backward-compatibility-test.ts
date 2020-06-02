@@ -13,17 +13,23 @@ describe('Backward Compatibility of sib elements test', function () {
   });
   it('check solid-display children type', () => {
     cy.get('solid-display').should('have.descendants', 'solid-display');
+    cy.get('solid-display').should('have.descendants', 'solid-set-default');
     cy.get('solid-display').should('have.descendants', 'solid-display-value');
     cy.get('solid-display').should('have.descendants', 'solid-form');
     cy.get('solid-display').should('not.have.descendants', 'sib-display');
+    cy.get('solid-display').should('not.have.descendants', 'sib-set-default');
+    cy.get('solid-display').should('not.have.descendants', 'sib-display-value');
     cy.get('solid-display').should('not.have.descendants', 'sib-form');
   });
 
   it('check sib-display children type', () => {
     cy.get('sib-display').should('have.descendants', 'sib-display');
+    cy.get('sib-display').should('have.descendants', 'sib-set-default');
     cy.get('sib-display').should('have.descendants', 'sib-display-value');
     cy.get('sib-display').should('have.descendants', 'sib-form');
     cy.get('sib-display').should('not.have.descendants', 'solid-display');
+    cy.get('sib-display').should('not.have.descendants', 'solid-set-default');
+    cy.get('sib-display').should('not.have.descendants', 'solid-display-value');
     cy.get('sib-display').should('not.have.descendants', 'solid-form');
   });
 });
