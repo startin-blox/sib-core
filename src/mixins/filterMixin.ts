@@ -25,7 +25,10 @@ const FilterMixin = {
     this.listPostProcessors.push(this.filterCallback.bind(this));
   },
   get searchForm(): ComponentInterface {
-    return this.element.querySelector('solid-form, sib-form');
+    const filteredBy = this.element.getAttribute('filtered-by');
+    return filteredBy != null
+      ? document.getElementById(filteredBy)
+      : this.element.querySelector('solid-form, sib-form');
   },
   get filters(): object {
     return this.searchForm ? this.searchForm.component.value : {};
@@ -115,9 +118,18 @@ const FilterMixin = {
   },
   async appendFilters(context: string): Promise<void> {
     const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const searchForm = document.createElement(`${prefix}-form`);
-    searchForm.addEventListener('formChange', () => this.filterList(context))
+    const filteredBy = this.element.getAttribute('filtered-by');
+    const searchForm = filteredBy != null
+      ? document.getElementById(filteredBy)
+      : document.createElement(`${prefix}-form`);
+    if(!searchForm) throw `#${filteredBy} is not in DOM`;
+    searchForm.addEventListener('formChange', (...e) => {
+      console.log(e);
+      
+      this.filterList(context)
+    });
     searchForm.toggleAttribute('naked', true);
+
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
