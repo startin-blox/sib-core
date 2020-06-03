@@ -3,10 +3,10 @@ describe('Backward Compatibility of sib elements test', function () {
     cy.visit('/examples/e2e/sib-backward-compatibility.html');
   });
   it('check sub tags', () => {
-    cy.get('#solid-form, #sib-form, #solid-display, #sib-display, #solid-display-multiple, #sib-display-multiple').then(elms => {
+    cy.get('#solid-form, #sib-form, #solid-display, #sib-display, #solid-display-multiple, #sib-display-multiple, #solid-action, #sib-action').then(elms => {
       elms.each((_, elm) => {
         const isSib = elm.localName.startsWith('sib-');
-        elm.addEventListener('populate',() => {
+        elm.addEventListener('populate', () => {
           const childrenTags = [...new Set(elm.querySelectorAll("*"))]
             .map((elm) => elm.localName)
             .filter((tag) => tag.includes('-'));
@@ -20,8 +20,8 @@ describe('Backward Compatibility of sib elements test', function () {
             expect(solidChildren, elm.id).is.not.empty;
             expect(sibChildren, elm.id).is.empty;
           }
-        })
+        });
       });
-    })
+    });
   });
 });

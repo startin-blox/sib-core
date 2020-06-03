@@ -36,5 +36,18 @@
       fields="username, skills"
       multiple-skills
     ></sib-display>
+    
+    <solid-display id="solid-action"
+      data-src="../data/action/circles.jsonld"
+      fields="name, description, click"
+      label-click="click !"
+      action-click="solid-display"
+    ></solid-display>
+    <sib-display id="sib-action"
+      data-src="../data/action/circles.jsonld"
+      fields="name, description, click"
+      label-click="click !"
+      action-click="solid-display"
+    ></sib-display>
   </body>
 </html>

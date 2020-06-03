@@ -85,15 +85,28 @@ const SolidAction = widgetFactory(
     data-src="\${src}"
     next="\${value}"
   >\${label}</solid-link>`,
+  undefined,
+  element => {
+    if(element.localName !== 'sib-action') return;
+    // element.innerHTML = element.innerHTML.replace(/(<\/?)solid-link/g, "$1sib-link")
+    const solidLink = element.querySelector('solid-link');
+    if(!solidLink) return;
+    const sibLink = document.createElement('sib-link');
+    Array.from(solidLink.attributes).map(a => {
+      sibLink.setAttribute(a.name, a.value);
+    });
+    element.insertBefore(sibLink, solidLink);
+    solidLink.remove();
+  },
 );
 
 const SolidDisplayAutolink = widgetFactory(
   'solid-display-autolink',
   `\${value}`,
   '',
-  content => {
+  element => {
     //@ts-ignore
-    content.innerHTML = Autolinker.link(content.textContent);
+    element.innerHTML = Autolinker.link(element.textContent);
   },
 );
 

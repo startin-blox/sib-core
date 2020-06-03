@@ -5,7 +5,7 @@ export const widgetFactory = (
   tagName: string,
   customTemplate: string,
   childTemplate: string = '',
-  callback?: (x: any) => void,
+  callback?: (element: Element) => void,
 ) => {
   const registered = customElements.get(tagName);
   if (registered) return registered;
