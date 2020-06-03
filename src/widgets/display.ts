@@ -88,7 +88,7 @@ const SolidAction = widgetFactory(
   undefined,
   element => {
     if(element.localName !== 'sib-action') return;
-    // element.innerHTML = element.innerHTML.replace(/(<\/?)solid-link/g, "$1sib-link")
+
     const solidLink = element.querySelector('solid-link');
     if(!solidLink) return;
     const sibLink = document.createElement('sib-link');
