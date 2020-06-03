@@ -176,9 +176,10 @@ const WidgetMixin = {
     return widget;
   },
   multiple(field: string): string | null {
+    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
     const attribute = 'multiple-' + field;
     if (!this.element.hasAttribute(attribute)) return null;
-    return this.element.getAttribute(attribute) || this.defaultMultipleWidget;
+    return this.element.getAttribute(attribute) || this.defaultMultipleWidget.replace(/^solid/, prefix);
   },
 
   createSet(field: string): Element {

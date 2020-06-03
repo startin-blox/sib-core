@@ -3,7 +3,7 @@ describe('Backward Compatibility of sib elements test', function () {
     cy.visit('/examples/e2e/sib-backward-compatibility.html');
   });
   it('check sub tags', () => {
-    cy.get('#solid-form, #sib-form, #solid-display, #sib-display').then(elms => {
+    cy.get('#solid-form, #sib-form, #solid-display, #sib-display, #solid-display-multiple, #sib-display-multiple').then(elms => {
       elms.each((_, elm) => {
         const isSib = elm.localName.startsWith('sib-');
         elm.addEventListener('populate',() => {
@@ -14,11 +14,11 @@ describe('Backward Compatibility of sib elements test', function () {
           const sibChildren = childrenTags.filter(tag => tag.startsWith('sib-'));
 
           if (isSib) {
-            expect(sibChildren).is.not.empty;
-            expect(solidChildren).is.empty;
+            expect(sibChildren, elm.id).is.not.empty;
+            expect(solidChildren, elm.id).is.empty;
           } else {
-            expect(solidChildren).is.not.empty;
-            expect(sibChildren).is.empty;
+            expect(solidChildren, elm.id).is.not.empty;
+            expect(sibChildren, elm.id).is.empty;
           }
         })
       });
