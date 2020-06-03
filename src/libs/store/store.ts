@@ -153,7 +153,7 @@ export class Store {
       if (response.ok) {
         // Notify resource
         this.clearCache(expandedId);
-        this.getData(expandedId, base_context).then(() => {
+        this.getData(expandedId, resource['@context']).then(() => {
           PubSub.publish(expandedId)
 
           // Notify related resources
