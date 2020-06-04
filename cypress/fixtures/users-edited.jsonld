@@ -1,140 +1,16 @@
 {
-  "@id": "https://api.test-paris.happy-dev.fr/users/",
+  "@id": "https://ldp-server.test/users/",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/",
+      "@id": "https://ldp-server.test/users/matthieu/",
       "first_name": "Matthieu",
-      "groups": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/groups/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "last_name": "Fesselier",
       "username": "matthieu",
       "email": "matthieu.fesselier@gmail.com",
-      "account": {
-        "@id": "https://api.test-paris.happy-dev.fr/accounts/matthieu/"
-      },
-      "chatProfile": {
-        "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/matthieu/"
-      },
       "name": "Matthieu Fesselier",
-      "projects": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/projects/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/project-members/16/"
-          },
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/project-members/11/"
-          }
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "circles": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/circles/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/circle-members/61/"
-          },
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/circle-members/87/"
-          }
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "inbox": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/inbox/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/notifications/116/"
-          },
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/notifications/1/"
-          }
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          }
-        ]
-      },
-      "skills": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/skills/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "jobOffers": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/jobOffers/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "profile": {
-        "@id": "https://api.test-paris.happy-dev.fr/profiles/matthieu/"
+        "@id": "https://ldp-server.test/profiles/matthieu/"
       },
       "@type": "foaf:user",
       "@context": {
@@ -154,128 +30,14 @@
       ]
     },
     {
-      "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/",
+      "@id": "https://ldp-server.test/users/jbpasquier/",
       "first_name": "Jean-Baptiste",
-      "groups": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/groups/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "last_name": "Pasquier",
       "username": "jbpasquier",
       "email": "contact@jbpasquier.eu",
-      "account": {
-        "@id": "https://api.test-paris.happy-dev.fr/accounts/jbpasquier/"
-      },
-      "chatProfile": {
-        "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/jbpasquier/"
-      },
       "name": "Jean-Baptiste Pasquier",
-      "projects": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/projects/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/project-members/8/"
-          }
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "circles": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/circles/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/circle-members/88/"
-          },
-          {
-            "@id": "https://api.test-paris.happy-dev.fr/circle-members/6/"
-          }
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "inbox": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/inbox/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          }
-        ]
-      },
-      "skills": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/skills/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "jobOffers": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/jbpasquier/jobOffers/",
-        "@type": "ldp:Container",
-        "ldp:contains": [],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "profile": {
-        "@id": "https://api.test-paris.happy-dev.fr/profiles/jbpasquier/"
+        "@id": "https://ldp-server.test/profiles/jbpasquier/"
       },
       "@type": "foaf:user",
       "@context": {
@@ -290,129 +52,14 @@
       ]
     },
     {
-      "@id": "https://api.test-paris.happy-dev.fr/users/alex/",
+      "@id": "https://ldp-server.test/users/alex/",
       "first_name": "Alex",
-      "groups": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/groups/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "last_name": "Bourlier",
       "username": "alex",
       "email": "alex@startinblox.com",
-      "account": {
-        "@id": "https://api.test-paris.happy-dev.fr/accounts/alex/"
-      },
-      "chatProfile": {
-        "@id": "https://api.test-paris.happy-dev.fr/chatprofiles/alex/"
-      },
       "name": "Alex Bourlier",
-      "projects": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/projects/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "circles": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/circles/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "inbox": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/inbox/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          }
-        ]
-      },
-      "skills": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/skills/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "jobOffers": {
-        "@id": "https://api.test-paris.happy-dev.fr/users/alex/jobOffers/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-          
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          },
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "profile": {
-        "@id": "https://api.test-paris.happy-dev.fr/profiles/alex/"
+        "@id": "https://ldp-server.test/profiles/alex/"
       },
       "@type": "foaf:user",
       "@context": {

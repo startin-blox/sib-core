@@ -1,5 +1,5 @@
 {
-  "@id": "https://api.test-paris.happy-dev.fr/profiles/matthieu/",
+  "@id": "https://ldp-server.test/profiles/matthieu/",
   "slug": "matthieu",
   "available": null,
   "bio": "",
@@ -7,7 +7,7 @@
   "phone": "",
   "website": "",
   "user": {
-    "@id": "https://api.test-paris.happy-dev.fr/users/matthieu/"
+    "@id": "https://ldp-server.test/users/matthieu/"
   },
   "permissions": [
     {

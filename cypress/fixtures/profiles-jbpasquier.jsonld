@@ -1,13 +1,13 @@
 {
-  "@id": "https://ldp-server.test/profiles/matthieu/",
-  "slug": "matthieu",
+  "@id": "https://ldp-server.test/profiles/jbpasquier/",
+  "slug": "jbpasquier",
   "available": null,
   "bio": "",
-  "city": "Paris",
+  "city": "Nantes",
   "phone": "",
   "website": "",
   "user": {
-    "@id": "https://ldp-server.test/users/matthieu/"
+    "@id": "https://ldp-server.test/users/jbpasquier/"
   },
   "permissions": [
     {

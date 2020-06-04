@@ -154,8 +154,8 @@ describe('store', function () {
   it('expands id', () => {
     cy.window()
       .its('store')
-      .invoke('_getExpandedId', 'user:1/', { 'user': "https://api.test-paris.happy-dev.fr/users/" })
-      .should('equal', 'https://api.test-paris.happy-dev.fr/users/1/');
+      .invoke('_getExpandedId', 'user:1/', { 'user': "https://ldp-server.test/users/" })
+      .should('equal', 'https://ldp-server.test/users/1/');
 
     cy.window()
       .its('store')

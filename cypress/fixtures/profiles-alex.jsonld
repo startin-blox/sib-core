@@ -1,13 +1,13 @@
 {
-  "@id": "https://ldp-server.test/profiles/matthieu/",
-  "slug": "matthieu",
+  "@id": "https://ldp-server.test/profiles/alex/",
+  "slug": "alex",
   "available": null,
   "bio": "",
   "city": "Paris",
   "phone": "",
   "website": "",
   "user": {
-    "@id": "https://ldp-server.test/users/matthieu/"
+    "@id": "https://ldp-server.test/users/alex/"
   },
   "permissions": [
     {

@@ -1,10 +1,10 @@
 {
-  "@id": "https://api.test-paris.happy-dev.fr/sources/users/",
+  "@id": "https://ldp-server.test/sources/users/",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
       "federation": "users",
-      "@id": "https://api.test-paris.happy-dev.fr/users/",
+      "@id": "https://ldp-server.test/users/",
       "@type": "ldp:Container",
       "permissions": [
         {
@@ -16,7 +16,7 @@
     },
     {
       "federation": "users",
-      "@id": "https://api.test-nantes.happy-dev.fr/users/",
+      "@id": "https://ldp-server2.test/users/",
       "@type": "ldp:Container",
       "permissions": [
         {

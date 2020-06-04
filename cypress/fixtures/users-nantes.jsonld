@@ -1,98 +1,16 @@
 {
-  "@id": "https://api.test-nantes.happy-dev.fr/users/",
+  "@id": "https://ldp-server2.test/users/",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "https://api.test-nantes.happy-dev.fr/users/admin/",
+      "@id": "https://ldp-server2.test/users/admin/",
       "first_name": "Admin",
-      "groups": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/groups/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "last_name": "Admin",
       "username": "admin",
       "email": "admin@admin.in",
-      "account": {
-        "@id": "https://api.test-nantes.happy-dev.fr/accounts/admin/"
-      },
-      "chatProfile": {
-        "@id": "https://api.test-nantes.happy-dev.fr/chatprofiles/admin/"
-      },
       "name": "Admin Admin",
-      "projects": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/projects/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-
-        ]
-      },
-      "circles": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/circles/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-
-        ]
-      },
-      "inbox": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/inbox/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "add"
-            }
-          }
-        ]
-      },
-      "skills": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/skills/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
-      "jobOffers": {
-        "@id": "https://api.test-nantes.happy-dev.fr/users/admin/jobOffers/",
-        "@type": "ldp:Container",
-        "ldp:contains": [
-
-        ],
-        "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
-        ]
-      },
       "profile": {
-        "@id": "http://api.test-nantes.happy-dev.fr/profiles/admin/"
+        "@id": "http://ldp-server2.test/profiles/admin/"
       },
       "@type": "foaf:user",
       "@context": {
