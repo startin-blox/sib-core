@@ -1,0 +1,12 @@
+{
+  "@id": "skill-8.jsonld",
+  "name": "Node",
+  "@type": "hd:skill",
+  "permissions": [
+    { "mode": { "@type": "view" }},
+    { "mode": { "@type": "change" }},
+    { "mode": { "@type": "control" }},
+    { "mode": { "@type": "delete" }}
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

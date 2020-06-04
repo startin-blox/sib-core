@@ -45,6 +45,50 @@
         { "mode": { "@type": "control" }},
         { "mode": { "@type": "delete" }}
       ]
+    },
+    {
+      "@id": "skill-5.jsonld",
+      "name": "PHP",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-6.jsonld",
+      "name": "Git",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-7.jsonld",
+      "name": "Python",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
+    },
+    {
+      "@id": "skill-8.jsonld",
+      "name": "Node",
+      "@type": "hd:skill",
+      "permissions": [
+        { "mode": { "@type": "view" }},
+        { "mode": { "@type": "change" }},
+        { "mode": { "@type": "control" }},
+        { "mode": { "@type": "delete" }}
+      ]
     }
   ],
   "permissions": [

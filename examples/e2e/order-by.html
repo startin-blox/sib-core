@@ -11,13 +11,13 @@
   <body>
     <solid-display
       id="list-1"
-      data-src="../data/list/users.jsonld"
-      fields="@id, username"
-      order-by="username"
+      data-src="../data/list/skills.jsonld"
+      fields="@id, name"
+      order-by="name"
     ></solid-display>
     <solid-display
       id="list-2"
-      data-src="../data/list/users.jsonld"
+      data-src="../data/list/skills.jsonld"
       fields="@id"
       order-by-random
     ></solid-display>
@@ -27,10 +27,6 @@
       reloadList.onclick = () => {
         const list2 = document.querySelector('#list-2');
         list2.dataset.src = list2.dataset.src;
-
-        setInterval(() => { // refresh list every sec if random is identical to previous one
-          list2.dataset.src = list2.dataset.src;
-        }, 1000);
       }
     </script>
   </body>
