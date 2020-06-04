@@ -1,44 +1,10 @@
 {
   "@id": "user-4.jsonld",
   "first_name": "Pierre",
-  "groups": {
-    "@id": "https://api.test-paris.happy-dev.fr/users/4/groups/",
-    "@type": "ldp:Container",
-    "ldp:contains": [
-
-    ],
-    "permissions": [
-      {
-        "mode": {
-          "@type": "view"
-        }
-      }
-    ]
-  },
   "last_name": "DLC",
   "username": "pierre",
   "email": "pierredelacroix@happy-dev.fr",
-  "account": {
-    "@id": "https://api.test-paris.happy-dev.fr/accounts/4/"
-  },
-  "chatProfile": {
-    "@id": "https://api.test-paris.happy-dev.fr/chat-profile/4/"
-  },
   "name": "Pierre DLC",
-  "inbox": {
-    "@id": "https://api.test-paris.happy-dev.fr/users/4/inbox/",
-    "@type": "ldp:Container",
-    "ldp:contains": [
-
-    ],
-    "permissions": [
-      {
-        "mode": {
-          "@type": "add"
-        }
-      }
-    ]
-  },
   "skills": {
     "@id": "user-4-skills.jsonld",
     "@type": "ldp:Container",
@@ -52,20 +18,6 @@
       {
         "@id": "skill-4.jsonld"
       }
-    ],
-    "permissions": [
-      {
-        "mode": {
-          "@type": "view"
-        }
-      }
-    ]
-  },
-  "jobOffers": {
-    "@id": "https://api.test-paris.happy-dev.fr/users/4/jobOffers/",
-    "@type": "ldp:Container",
-    "ldp:contains": [
-
     ],
     "permissions": [
       {

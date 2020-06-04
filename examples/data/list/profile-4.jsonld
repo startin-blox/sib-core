@@ -1,6 +1,6 @@
 {
   "@id": "profile-4.jsonld",
-  "jabberID": "pierre@test-paris.happy-dev.fr",
+  "jabberID": "pierre@example.com",
   "user": {
     "@id": "user-4.jsonld"
   },

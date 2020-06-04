@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="styles.css" />
     <script id="alpha" type="application/ld+json">
       {
-        "user":"https://api.test-paris.happy-dev.fr/users/"
+        "user":"http://localhost:3000/examples/data/extra-context/"
       }
     </script>
   </head>
@@ -26,7 +26,7 @@
     <div id="home">
       <h1>HOME</h1>
       <solid-display
-        data-src="https://api.test-paris.happy-dev.fr/users/"
+        data-src="http://localhost:3000/examples/data/extra-context/users.jsonld"
         fields="@id, username, first_name, last_name, email"
         next="detail"
         extra-context="alpha"

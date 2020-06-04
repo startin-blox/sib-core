@@ -1,0 +1,17 @@
+{
+  "@id": "http://localhost:3000/examples/data/extra-context/user-2.jsonld",
+  "first_name": "Paris",
+  "last_name": "Hilton",
+  "username": "paris",
+  "email": "paris@hilton.hi",
+  "name": "Paris Hilton",
+  "@type": "foaf:user",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

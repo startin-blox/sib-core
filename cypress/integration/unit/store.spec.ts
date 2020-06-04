@@ -60,7 +60,7 @@ describe('store', function () {
     cy.get('@users').should('have.property', 'status', 200)
 
     cy.window()
-      .its('store.cache').should('have.length', 18); // cache
+      .its('store.cache').should('have.length', 6); // cache
     cy.window()
       .its('store.loadingList').should('have.length', 0); // loading list
     cy.window()
@@ -170,7 +170,7 @@ describe('store', function () {
 
   it('clears cache', () => {
     cy.window()
-      .its('store.cache').should('have.length', 20);
+      .its('store.cache').should('have.length', 8);
 
     cy.window()
       .its('store')
@@ -182,7 +182,7 @@ describe('store', function () {
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
     cy.window()
-      .its('store.cache').should('have.length', 19);
+      .its('store.cache').should('have.length', 7);
 
     cy.window()
       .its('store')
@@ -194,7 +194,7 @@ describe('store', function () {
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('store.cache').should('have.length', 19);
+      .its('store.cache').should('have.length', 7);
   });
 
   it('subscribes resource', () => {

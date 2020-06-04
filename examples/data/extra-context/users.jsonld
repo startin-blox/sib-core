@@ -1,0 +1,46 @@
+{
+  "@id": "http://localhost:3000/examples/data/extra-context/users.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "http://localhost:3000/examples/data/extra-context/user-1.jsonld",
+      "first_name": "Test",
+      "last_name": "User",
+      "username": "admin",
+      "email": "test-user@example.com",
+      "name": "Test User",
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:3000/examples/data/extra-context/user-2.jsonld",
+      "first_name": "Paris",
+      "last_name": "Hilton",
+      "username": "paris",
+      "email": "paris@hilton.hi",
+      "name": "Paris Hilton",
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
