@@ -200,24 +200,59 @@ describe('store', function () {
   it('subscribes resource', () => {
     cy.window()
       .its('store')
-      .invoke('subscribeResourceTo', 'api.alpha.happy-dev.fr/circles/', 'api.alpha.happy-dev.fr/circles/1/');
+      .invoke('subscribeResourceTo', 'ldp-server.test/circles/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
       expect(win.store.subscriptionIndex).to.have.length(5);
-      expect(win.store.subscriptionIndex.get('api.alpha.happy-dev.fr/circles/1/'))
+      expect(win.store.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(1)
-        .and.to.have.members(['api.alpha.happy-dev.fr/circles/']);
+        .and.to.have.members(['ldp-server.test/circles/']);
     });
 
     cy.window()
       .its('store')
-      .invoke('subscribeResourceTo', 'api.alpha.happy-dev.fr/users/matthieu/', 'api.alpha.happy-dev.fr/circles/1/');
+      .invoke('subscribeResourceTo', 'ldp-server.test/users/matthieu/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
       expect(win.store.subscriptionIndex).to.have.length(5);
-      expect(win.store.subscriptionIndex.get('api.alpha.happy-dev.fr/circles/1/'))
+      expect(win.store.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(2)
-        .and.to.have.members(['api.alpha.happy-dev.fr/circles/', 'api.alpha.happy-dev.fr/users/matthieu/']);
+        .and.to.have.members(['ldp-server.test/circles/', 'ldp-server.test/users/matthieu/']);
+    });
+  });
+
+  it('subscribes virtual container', () => {
+    cy.window()
+      .its('store')
+      .invoke('subscribeVirtualContainerTo', 'ldp-server.test/circles/joinable', 'ldp-server.test/circles/1/members');
+
+    cy.window().then((win: any) => {
+      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+        .to.have.length(1)
+        .and.to.have.members(['ldp-server.test/circles/joinable']);
+    });
+
+   cy.window()
+      .its('store')
+      .invoke('subscribeVirtualContainerTo', 'ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/1/members');
+
+    cy.window().then((win: any) => {
+      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+        .to.have.length(2)
+        .and.to.have.members(['ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/joinable']);
+    });
+
+    cy.window()
+    .its('store')
+    .invoke('subscribeVirtualContainerTo', 'ldp-server.test/circles/joinable', 'ldp-server.test/circles/1/members');
+
+    cy.window().then((win: any) => {
+      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+        .to.have.length(2)
+        .and.to.have.members(['ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/joinable']);
     });
   });
 
@@ -234,7 +269,7 @@ describe('store', function () {
 
     cy.window()
       .its('store')
-      .invoke('_getAbsoluteIri', 'https://api.alpha.happy-dev.fr/circles/', base_context, '')
-      .should('equal', 'https://api.alpha.happy-dev.fr/circles/');
+      .invoke('_getAbsoluteIri', 'https://ldp-server.test/circles/', base_context, '')
+      .should('equal', 'https://ldp-server.test/circles/');
   });
 });

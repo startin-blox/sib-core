@@ -1,0 +1,42 @@
+{
+  "@id": "https://ldp-server.test/users/matthieu/circles/",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "https://ldp-server.test/circle-members/126/",
+      "is_backlink": false,
+      "allow_create_backlink": true,
+      "is_admin": false,
+      "circle": {
+        "@id": "https://ldp-server.test/circles/17/",
+        "name": "circle one"
+      },
+      "@type": "hd:circlemember",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        },
+        {
+          "mode": {
+            "@type": "delete"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "add"
+      }
+    },
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
