@@ -1,0 +1,20 @@
+{
+  "@id": "https://ldp-server.test/profiles/matthieu/",
+  "slug": "matthieu",
+  "available": null,
+  "bio": "",
+  "city": "Briouze",
+  "phone": "",
+  "website": "",
+  "user": {
+    "@id": "https://ldp-server.test/users/matthieu/"
+  },
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

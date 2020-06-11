@@ -39,6 +39,14 @@ describe('Reactivity e2e test', function () {
       response: {},
       onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
     });
+    cy.route({
+      method: 'PATCH',
+      url: '**/users/matthieu/',
+      status: 200,
+      response: {},
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+    cy.route('GET', '**/users/matthieu/', 'fixture:users-matthieu.jsonld');
     cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu-edited.jsonld');
     cy.route('GET', '**/sources/users/', 'fixture:users-source.jsonld');
     cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
@@ -55,6 +63,15 @@ describe('Reactivity e2e test', function () {
 
     // Nested resource in custom widget
     cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('have.text', 'Paris');
+
+    // Nested field in form
+    cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu-edited-2.jsonld');
+    cy.get('solid-form#user-form-city input[name="profile.city"]').clear().type('Briouze');
+    cy.get('solid-form#user-form-city input[type=submit]').click();
+
+    cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('have.text', 'Briouze');
+    cy.get('solid-display#profile > div > solid-display-value[name="city"]').should('have.text', 'Briouze');
+    cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('have.text', 'Briouze');
 
     // Nested resource in multi dot field
     // cy.get('solid-display#circle > div > solid-display-value[name="owner.profile.city"]').should('have.text', 'Paris'); DOES NOT WORK YET

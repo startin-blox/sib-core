@@ -111,8 +111,8 @@ export class Store {
     }
 
     // Cache sub objects
-    if (resource.getSubOjects) {
-      for (let res of resource.getSubOjects()) {
+    if (resource.getSubObjects) {
+      for (let res of resource.getSubObjects()) {
         const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
         await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
@@ -154,16 +154,43 @@ export class Store {
         // Notify resource
         this.clearCache(expandedId);
         this.getData(expandedId, resource['@context']).then(() => {
-          PubSub.publish(expandedId)
+          PubSub.publish(expandedId);
+
+          // Notify nested resources
+          this.getNestedResources(resource, id).then((resources) => {
+            resources.forEach((resourceId) => {
+              this.clearCache(resourceId);
+              this.getData(resourceId, resource['@context']).then(() => {
+                PubSub.publish(resourceId)
+              });
+            });
+          });
 
           // Notify related resources
           const toNotify = this.subscriptionIndex.get(expandedId);
           if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
         });
-
       }
       return response.headers.get('Location') || null;
     });
+  }
+
+  /**
+   * Return id of nested properties of a resource
+   * @param resource - object
+   * @param id - string
+   */
+  async getNestedResources(resource: object, id: string) {
+    const cachedResource = store.get(id);
+    if (!cachedResource) return [];
+    let nestedProperties:any[] = [];
+    const excludeKeys = ['@context'];
+    for (let p of Object.keys(resource)) {
+      if (typeof resource[p] === 'object' && !excludeKeys.includes(p)) {
+        nestedProperties.push((await cachedResource[p])['@id']);
+      }
+    }
+    return nestedProperties;
   }
 
   /**
@@ -421,7 +448,7 @@ class CustomGetter {
   /**
    * Get all nested resource or containers which contains datas
    */
-  getSubOjects() {
+  getSubObjects() {
     let subObjects: any = [];
     for (let p of Object.keys(this.resource)) {
       let property = this.resource[p];
