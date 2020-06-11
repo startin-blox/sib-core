@@ -35,6 +35,12 @@
     fields="profile"
     widget-profile="custom-widget"
   ></solid-display>
+  <h2>circles of user</h2>
+  <solid-display
+    id="circles-user"
+    data-src="https://ldp-server.test/users/matthieu/circles/"
+    fields="circle.name"
+  ></solid-display>
 
   <solid-widget name="custom-widget">
     <template>
@@ -96,6 +102,21 @@
     id="delete-user"
     data-src="https://ldp-server.test/users/alex/"
   ></solid-delete>
+
+  <solid-form
+    id="circles-user-form"
+    data-src="https://ldp-server.test/circles/17/members/"
+    fields="name"
+  ></solid-form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      store.subscribeVirtualContainerTo(
+        "https://ldp-server.test/users/matthieu/circles/",
+        "https://ldp-server.test/circles/17/members/"
+      )
+    })
+  </script>
 
 </body>
 </html>

@@ -23,6 +23,7 @@ export const base_context = {
 export class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
+  subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: String[];
   headers: Promise<Headers>;
   initGraph: Function;
@@ -30,6 +31,7 @@ export class Store {
   constructor(private idTokenPromise: Promise<string>) {
     this.cache = new Map();
     this.subscriptionIndex = new Map();
+    this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = [];
     this.headers = (async () => {
       const headers = new Headers();
@@ -169,6 +171,10 @@ export class Store {
           // Notify related resources
           const toNotify = this.subscriptionIndex.get(expandedId);
           if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
+
+          // Notify virtual containers
+          const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
+          if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
         });
       }
       return response.headers.get('Location') || null;
@@ -277,6 +283,10 @@ export class Store {
       this.getData(containerId, base_context).then(() => PubSub.publish(containerId));
     });
 
+    // Notify virtual containers
+    const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
+    if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
+
     return deleted;
   }
 
@@ -292,6 +302,30 @@ export class Store {
   subscribeResourceTo(resourceId: string, nestedResourceId: string) {
     const existingSubscriptions = this.subscriptionIndex.get(nestedResourceId) || [];
     this.subscriptionIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, resourceId])])
+  }
+
+  /**
+   * Make a virtual container listen for changes of a resource
+   * @param virtualContainerId - id of the container which needs to be updated
+   * @param nestedResourceId - id of the resource which will change
+   */
+  subscribeVirtualContainerTo(virtualContainerId: string, nestedResourceId: string) {
+    const existingSubscriptions = this.subscriptionVirtualContainersIndex.get(nestedResourceId) || [];
+    this.subscriptionVirtualContainersIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, virtualContainerId])])
+  }
+
+  /**
+   * Clears cache, and update a virtual container after a change
+   * @param containerId - id of the container to refresh
+   */
+  async _updateVirtualContainer(containerId: string) {
+    const container = store.get(containerId);
+    if (container) {
+      const context = container.clientContext;
+      this.clearCache(containerId);
+      await this.getData(containerId, context);
+    }
+    PubSub.publish(containerId);
   }
 
   /**
@@ -515,6 +549,8 @@ class CustomGetter {
             return this.getLdpContains(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
+          case 'clientContext':
+            return this.clientContext; // get saved client context to re-fetch easily a resource
           case 'then':
             return;
           default:

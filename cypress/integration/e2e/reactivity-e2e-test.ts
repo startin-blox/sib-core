@@ -6,10 +6,12 @@ describe('Reactivity e2e test', function () {
     cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
     cy.route('GET', '**/sources/users/', 'fixture:users-source.jsonld');
     cy.route('GET', '**/users/matthieu/', 'fixture:users-matthieu.jsonld');
+    cy.route('GET', '**/users/matthieu/circles/', 'fixture:users-matthieu-circles.jsonld');
     cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu.jsonld');
     cy.route('GET', '**/profiles/jbpasquier/', 'fixture:profiles-jbpasquier.jsonld');
     cy.route('GET', '**/profiles/alex/', 'fixture:profiles-alex.jsonld');
     cy.route('GET', '**/circles/16/', 'fixture:circles-16.jsonld');
+    cy.route('GET', '**/circles/17/members/', 'fixture:circles-17-members.jsonld');
     cy.visit('/examples/e2e/reactivity-e2e-test.html');
     cy.server({ enable: false });
   })
@@ -27,6 +29,7 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-display#profile-widget > div > custom-widget').should('have.attr', 'name', 'profile');
     cy.get('solid-display#profile-widget > div > custom-widget > div').should('have.text', 'Rennes');
     cy.get('solid-display#federation solid-display').should('have.length', 3);
+    cy.get('solid-display#circles-user solid-display').should('have.length', 1);
     cy.server({ enable: false });
   });
 
@@ -159,6 +162,24 @@ describe('Reactivity e2e test', function () {
     // cy.get(`solid-display#federation solid-display`).should('have.length', 3); NOT WORKING: should we loop on subscription index?
 
     cy.server({ enable: false });
+  });
+
+  it('makes virtual containers reactive', () => {
+    cy.server();
+    cy.route('GET', '**/users/matthieu/circles/', 'fixture:users-matthieu-circles-edited.jsonld');
+    cy.route('GET', '**/circles/17/members/', 'fixture:circles-17-members.jsonld');
+
+    cy.route({
+      method: 'POST',
+      url: 'https://ldp-server.test/circles/17/members/',
+      status: 200,
+      response: {},
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+
+    cy.get('solid-form#circles-user-form input[name="name"]').clear().type('New circle');
+    cy.get('solid-form#circles-user-form input[type=submit]').click();
+    cy.get('solid-display#circles-user solid-display').should('have.length', 2);
   });
 
 })
