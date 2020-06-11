@@ -14,7 +14,7 @@ If you have a problem or a question, don't hesitate to share it with the communi
 
 ## Feel welcome to open issue
 
-If needed, you can be inspired by those models to report a bug or to propose your suggestions efficiently.
+If needed, you can be inspired by those models to report a bug or to propose your suggestions efficiently. Templates are available to save your time and to forgot nothing.
 
 #### How to report a bug
 
