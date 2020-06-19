@@ -16,6 +16,10 @@ const FilterMixin = {
     searchFields: {
       type: String,
       default: null
+    },
+    filteredBy: {
+      type: String,
+      default: null
     }
   },
   created() {
@@ -27,8 +31,8 @@ const FilterMixin = {
   get searchForm(): ComponentInterface {
     const filteredBy = this.element.getAttribute('filtered-by');
     return filteredBy != null
-      ? document.getElementById(filteredBy)
-      : this.element.querySelector('solid-form, sib-form');
+    ? document.getElementById(filteredBy)
+    : this.element.querySelector('solid-form, sib-form');
   },
   get filters(): object {
     return this.searchForm ? this.searchForm.component.value : {};
@@ -38,6 +42,7 @@ const FilterMixin = {
     this.filterList();
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+    console.log(this.searchForm?.localName);
     if (this.searchFields) {
       if (!this.searchCount[context]) this.searchCount[context] = 1;
       if (!this.searchForm) await this.appendFilters(context);
@@ -118,15 +123,16 @@ const FilterMixin = {
   },
   async appendFilters(context: string): Promise<void> {
     const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
+    
     const filteredBy = this.element.getAttribute('filtered-by');
+    
     const searchForm = filteredBy != null
       ? document.getElementById(filteredBy)
       : document.createElement(`${prefix}-form`);
     if(!searchForm) throw `#${filteredBy} is not in DOM`;
-    searchForm.addEventListener('formChange', (...e) => {
-      console.log(e);
-      
-      this.filterList(context)
+    
+    searchForm.addEventListener('formChange', () => {
+      this.filterList(context);
     });
     searchForm.toggleAttribute('naked', true);
 

@@ -7,15 +7,21 @@
     <title>SIB test: filtered</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      solid-display {
+        display: block;
+        border: 1px solid blue;
+      }
+    </style>
   </head>
 
   <body>
     <details>
       <summary>One field & label:</summary>
-      <solid-form id="filter1"
+      <solid-form-search id="filter1"
         fields="email"
         label-email="mail"
-      ></solid-form>
+      ></solid-form-search>
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, first_name, last_name, email"
