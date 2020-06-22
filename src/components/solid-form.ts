@@ -3,6 +3,8 @@ import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
+import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
 
 export const SolidForm = {
   name: 'solid-form',
@@ -10,7 +12,7 @@ export const SolidForm = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-label-text'
+      default: 'solid-form-input'
     },
     naked: {
       type: String,
@@ -35,11 +37,12 @@ export const SolidForm = {
   },
   get value(): object {
     const values = {};
-    this.widgets.forEach(({name, value}) => {
+    this.widgets.forEach((widget) => {
+      let value = widget.component.getValue(); // TODO : possible to do .value instead?
       try {
         value = JSON.parse(value);
       } catch (e) {}
-      setDeepProperty(values, name.split('.'), value);
+      setDeepProperty(values, widget.component.name.split('.'), value);
     });
 
     return values;
@@ -73,22 +76,34 @@ export const SolidForm = {
       return widget;
     return widget.replace(/^solid-/, 'sib-');
   },
-  _getWidget(field: string): string {
+  _getWidget(field: string): WidgetInterface {
     if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('upload-url-' + field)) {
-      return 'solid-form-file';
+      return {
+        tagName: 'solid-form-file',
+        type: WidgetType.CUSTOM
+      };
     } else if (!this.element.hasAttribute('widget-' + field)
       && this.element.hasAttribute('range-' + field)) {
-      return 'solid-form-dropdown';
+      return {
+        tagName: 'solid-form-dropdown',
+        type: WidgetType.CUSTOM
+      };
     } else {
       const widget = this.element.getAttribute('widget-' + field); // TODO : duplicated code
       if (widget) {
-        if (!customElements.get(widget)) {
-          console.warn(`The widget ${widget} is not defined`);
+        let type = WidgetType.CUSTOM;
+        if (!customElements.get(widget)) { // component does not exist
+          if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
+          else type = WidgetType.NATIVE; // or use a native tag
         }
-        return widget;
+        return { tagName: widget, type }; // return tagName
       }
-      return this.defaultWidget;
+
+      return {
+        tagName: this.defaultWidget,
+        type: WidgetType.CUSTOM
+      };
     }
   },
   change(resource: object): void {

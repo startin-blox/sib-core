@@ -30,7 +30,6 @@ import {
   SolidFormNumber,
   SolidFormRangeNumber,
   SolidFormPlaceholderText,
-  SolidFormTextarea,
   SolidFormHidden,
   SolidFormLabelPlaceholderText,
   SolidFormPlaceholderNumber
@@ -69,7 +68,6 @@ export {
   SolidFormNumber,
   SolidFormRangeNumber,
   SolidFormPlaceholderText,
-  SolidFormTextarea,
   SolidFormHidden,
   SolidFormLabelPlaceholderText,
   SolidFormPlaceholderNumber,

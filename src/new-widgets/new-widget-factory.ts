@@ -3,6 +3,7 @@ import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
 import { LabelMixin } from './domAdditionsMixins/labelMixin.js';
 import { LabelLastMixin } from './domAdditionsMixins/labelLastMixin.js';
+import { FormMixin } from './formMixin.js';
 import { MultipleMixin } from './attributeAdditions/multipleMixin.js';
 import { BlankMixin } from './attributeAdditions/blankMixin.js';
 import { MailtoMixin } from './attributeAdditions/mailtoMixin.js';
@@ -84,6 +85,7 @@ const attributeAdditionsTags = {
  */
 // Display - default
 const templateToDOMTags = {
+  // Display
   text: (value: string) => html`
     ${value}
   `,
@@ -101,9 +103,22 @@ const templateToDOMTags = {
       ${attributes.label || value || ''}
     </a>
   `,
-  input: (value: string) => html`
-    <input value="${value}" data-holder>
+  // Form
+  input: (value: string, attributes: any) => html`
+    <input
+      type="text"
+      name=${ifDefined(attributes.name)}
+      value="${value}"
+      data-holder
+    />
   `,
+  textarea: (value: string, attributes: any) => html`
+    <textarea
+      name=${ifDefined(attributes.name)}
+      data-holder
+    >${value}</textarea>
+  `,
+  // Multiple
   multiple: (value: string, attributes: any) => html`
     <solid-display
       data-src=${value || ''}
@@ -130,6 +145,8 @@ const templateToDOMTagsSet = {
 const domAdditionsTags = {
   label: LabelMixin,
   labellast: LabelLastMixin,
+  form: FormMixin,
 }
 
 newWidgetFactory('solid-text');
+newWidgetFactory('solid-form-input');

@@ -96,17 +96,6 @@ const SolidFormPlaceholderText = widgetFactory(
   >`,
 );
 
-const SolidFormTextarea = widgetFactory(
-  'solid-form-textarea',
-  `<label>
-    <div>\${label}</div>
-    <textarea
-      data-holder
-      name="\${name}"
-    >\${escapedValue}</textarea>
-  </label>`,
-);
-
 const SolidFormPlaceholderTextarea = widgetFactory(
   'solid-form-placeholder-textarea',
   `<textarea
@@ -241,7 +230,6 @@ export {
   SolidFormNumber,
   SolidFormRangeNumber,
   SolidFormPlaceholderText,
-  SolidFormTextarea,
   SolidFormHidden,
   SolidFormFile,
   SolidFormFileImage,
