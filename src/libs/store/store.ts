@@ -73,6 +73,7 @@ export class Store {
           } catch (error) { console.error(error) }
           if (!resource) {
             this.loadingList = this.loadingList.filter(value => value != id);
+            resolve(null);
             return;
           }
           const serverContext = await myParser.parse([resource['@context'] || {}]);
