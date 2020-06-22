@@ -1,6 +1,7 @@
 //@ts-ignore
 import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser@1';
 import 'https://unpkg.com/pubsub-js';
+import { Resource } from '../../mixins/interfaces.js';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -57,9 +58,9 @@ export class Store {
    *
    * @async
    */
-  async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
+  async getData(id: string, context = {}, idParent = ""): Promise<Resource|null> {
     if (this.cache.has(id) && !this.loadingList.has(id)) return this.get(id);
-    
+
     return new Promise(async (resolve) => {
       document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
@@ -205,7 +206,7 @@ export class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string): CustomGetter | null {
+  get(id: string): Resource | null {
     return this.cache.get(id) || null;
   }
 
@@ -446,7 +447,7 @@ class CustomGetter {
    * @param context
    * @param iriParent
    */
-  async getResource(id: string, context: object, iriParent: string): Promise<CustomGetter | null> {
+  async getResource(id: string, context: object, iriParent: string): Promise<Resource | null> {
     return store.getData(id, context, iriParent);
   }
 

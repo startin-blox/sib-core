@@ -1,5 +1,6 @@
 import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
+import { WidgetInterface, WidgetType, Resource } from './interfaces.js';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -34,9 +35,9 @@ const WidgetMixin = {
     if (attr === '') return [];
     if (attr) return parseFieldsString(attr);
 
-    let resource = this.resource;
-    if (resource && await resource.isContainer()) { // If container, keep the 1rst resource
-      for await (let res of resource['ldp:contains']) {
+    let resource = this.resource as Resource;
+    if (resource && resource.isContainer()) { // If container, keep the 1rst resource
+      for (let res of resource['ldp:contains']) {
         resource = res;
         break;
       }
@@ -48,7 +49,7 @@ const WidgetMixin = {
     }
 
     let fields: string[] = [];
-    for await (const prop of resource.properties) {
+    for (const prop of resource.properties) {
       if (!prop.startsWith('@') && await resource[prop]) fields.push(prop);
     }
     return fields;
@@ -76,8 +77,8 @@ const WidgetMixin = {
   isMultiple(field:string): boolean {
     return this.element.hasAttribute('multiple-' + field);
   },
-  async fetchValue(resource, field: string) {
-    return this.resource && !(await this.resource.isContainer()) ? await resource[field] : undefined;
+  async fetchValue(resource: Resource, field: string) {
+    return this.resource && !this.resource.isContainer() ? await resource[field] : undefined;
   },
   async getValue(field: string) {
     const escapedField = this.getEscapedField(field);
@@ -88,9 +89,12 @@ const WidgetMixin = {
       return this.element.getAttribute('value-' + field);
     }
     let resourceValue = await this.fetchValue(this.resource, field);
+
+    // Empty value
     if (resourceValue === undefined || resourceValue === "") // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
         this.element.getAttribute('default-' + field) : undefined;
+
     return resourceValue;
   },
   empty(): void {
@@ -104,24 +108,24 @@ const WidgetMixin = {
   },
   getWidget(field:string):string {
     const widget = this._getWidget(field)
-    if(!this.element.localName.startsWith('sib-')) 
-      return widget;
+    if(!this.element.localName.startsWith('sib-')) return widget;
     return widget.replace(/^solid-/, 'sib-');
   },
-  _getWidget(field: string, isSet: boolean = false): object {
-    const widget = this.element.getAttribute('widget-' + field);
+  _getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    const widget = this.multiple(field) || this.element.getAttribute('widget-' + field);
+
     if (widget) {
-      let type = 'custom';
+      let type = WidgetType.CUSTOM;
       if (!customElements.get(widget)) { // component does not exist
         if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
-        else type = 'native'; // or use a native tag
+        else type = WidgetType.NATIVE; // or use a native tag
       }
       return { tagName: widget, type }; // return tagName
     }
-    if (this.getAction(field)) return {tagName: 'solid-action', type: 'custom'};
+    if (this.getAction(field)) return {tagName: 'solid-action', type: WidgetType.CUSTOM};
     return {
       tagName: !isSet ? this.defaultWidget : this.defaultSetWidget,
-      type: 'custom'
+      type: WidgetType.CUSTOM
     };
   },
   widgetAttributes(field: string): object {
@@ -134,6 +138,12 @@ const WidgetMixin = {
       const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
+    }
+    // Multiple attributes
+    for (let attr of ['fields', 'label', 'widget']) {
+      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
+      if (value == null) continue;
+      attrs[`${attr}`] = value;
     }
     for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url']) {
       const value = this.element.getAttribute(`${attr}-${escapedField}`);
@@ -161,17 +171,13 @@ const WidgetMixin = {
     const attributes = this.widgetAttributes(field);
 
     const escapedField = this.getEscapedField(field);
-    const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
+    const widgetMeta = this.getWidget(escapedField);
     const widget = document.createElement(widgetMeta.tagName);
-    if (this.multiple(escapedField)) {
-      widget.setAttribute('widget', this.getWidget(escapedField).tagName);
-    }
 
-    if (widgetMeta.type == 'native') {
-      this.getValue(field).then(value => {
-        widget.textContent = value;
-      });
-    } else {
+    // Set attributes
+    if (widgetMeta.type == WidgetType.NATIVE) { // native widget (ie: h1)
+      this.getValue(field).then(value => widget.textContent = value);
+    } else { // custom widget (ie: solid-text)
       for (let name of Object.keys(attributes)) {
         widget.setAttribute(name, attributes[name]);
       }

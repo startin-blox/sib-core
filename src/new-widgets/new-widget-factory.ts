@@ -3,13 +3,19 @@ import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
 import { LabelMixin } from './domAdditionsMixins/labelMixin.js';
 import { LabelLastMixin } from './domAdditionsMixins/labelLastMixin.js';
+import { MultipleMixin } from './attributeAdditions/multipleMixin.js';
+import { BlankMixin } from './attributeAdditions/blankMixin.js';
+import { MailtoMixin } from './attributeAdditions/mailtoMixin.js';
 //@ts-ignore
-import {html} from 'https://unpkg.com/lit-html?module';
+import { html } from 'https://unpkg.com/lit-html?module';
+//@ts-ignore
+import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
 
 export const newWidgetFactory = (tagName: string) => {
 
   // Use mixin
   const valueTransformations: any[] = [];
+  const attributeAdditions: any[] = [];
   const domAdditions: any[] = [];
   let templateToDOM = null;
 
@@ -23,20 +29,21 @@ export const newWidgetFactory = (tagName: string) => {
   // build mixins array
   mixins.forEach(mixin => {
     const valueTransformationsKeys = Object.keys(valueTransformationsTags);
+    const attributeAdditionsKeys = Object.keys(attributeAdditionsTags);
     const templateToDOMKeys = Object.keys(widgetType);
     const domAdditionsTagsKeys = Object.keys(domAdditionsTags);
 
     if (valueTransformationsKeys.includes(mixin)) {
       valueTransformations.push(valueTransformationsTags[mixin]);
-      return;
+    }
+    if (attributeAdditionsKeys.includes(mixin)) {
+      attributeAdditions.push(attributeAdditionsTags[mixin]);
     }
     if (templateToDOMKeys.includes(mixin)) {
       templateToDOM = widgetType[mixin];
-      return;
     }
     if (domAdditionsTagsKeys.includes(mixin)) {
       domAdditions.push(domAdditionsTags[mixin]);
-      return;
     }
   });
 
@@ -45,6 +52,7 @@ export const newWidgetFactory = (tagName: string) => {
     use: [
       BaseWidgetMixin,
       ...valueTransformations,
+      ...attributeAdditions,
       ...domAdditions,
     ],
     get template(): Function {
@@ -63,6 +71,15 @@ const valueTransformationsTags = {
 }
 
 /**
+ * Attribute additions
+ */
+const attributeAdditionsTags = {
+  multiple: MultipleMixin,
+  blank: BlankMixin,
+  mailto: MailtoMixin,
+}
+
+/**
  * Template to DOM
  */
 // Display - default
@@ -70,11 +87,28 @@ const templateToDOMTags = {
   text: (value: string) => html`
     ${value}
   `,
-  div: (value: string, name: string) => html`
-    <div name="${name}">${value}</div>
+  div: (value: string, attributes: any) => html`
+    <div name="${ifDefined(attributes.name)}">
+      ${value}
+    </div>
+  `,
+  link: (value: string, attributes: any) => html`
+    <a
+      name=${ifDefined(attributes.name)}
+      href=${(attributes.mailto || '')+(value || '#')}
+      target=${ifDefined(attributes.target)}
+    >
+      ${attributes.label || value || ''}
+    </a>
   `,
   input: (value: string) => html`
     <input value="${value}" data-holder>
+  `,
+  multiple: (value: string, attributes: any) => html`
+    <solid-display
+      data-src=${value || ''}
+      fields="${ifDefined(attributes.fields)}"
+    ></solid-display>
   `
 }
 

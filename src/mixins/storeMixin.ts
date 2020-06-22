@@ -1,4 +1,5 @@
 import { base_context, store } from '../libs/store/store.js';
+import { Resource } from './interfaces.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -58,7 +59,7 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resource(): object|null{
+  get resource(): Resource|null{
     return this.resourceId ? store.get(this.resourceId) : null;
   },
   get loader(): HTMLElement | null {

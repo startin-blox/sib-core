@@ -1,4 +1,3 @@
-import SolidMultiple from './solid-multiple.js';
 import SolidMultipleForm from './solid-multiple-form.js';
 import SolidMultipleSelect from './solid-multiple-select.js';
 
@@ -43,7 +42,6 @@ import {
 
 
 export {
-  SolidMultiple,
   SolidMultipleForm,
   SolidMultipleSelect,
   SolidDisplayValue,

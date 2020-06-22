@@ -18,11 +18,12 @@ const BaseWidgetMixin = {
       callback: function () {
         this.planRender();
       }
-    }
+    },
   },
   initialState: {
     listValueTransformations: [],
     listDomAdditions: [],
+    listAttributes: {},
     renderPlanned: false,
   },
   get template() {
@@ -30,6 +31,7 @@ const BaseWidgetMixin = {
   },
   created() {
     this.listValueTransformations = [];
+    this.listAttributes = {};
     this.listDomAdditions = [];
   },
   planRender() {
@@ -49,7 +51,10 @@ const BaseWidgetMixin = {
     nextProcessor(this.value, listValueTransformations);
   },
   domAdditions(value) {
-    const template = this.template(value, this.name);
+    const template = this.template(value, {
+      ...this.listAttributes,
+      name: this.name
+    });
     const listDomAdditions = [...this.listDomAdditions];
     listDomAdditions.push(this.templateToDOM.bind(this));
 
