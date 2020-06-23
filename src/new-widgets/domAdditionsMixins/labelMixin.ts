@@ -16,13 +16,10 @@ const LabelMixin = {
     this.listDomAdditions.push(this.addToWidget.bind(this));
   },
   addToWidget(template, domAdditions: Function[]) {
-    console.time('temp');
     const newTemplate = html`
       <label>${this.label}</label>
       ${template}
     `;
-    console.timeEnd('temp');
-
 
     const nextProcessor = domAdditions.shift();
     if(nextProcessor) nextProcessor(newTemplate, domAdditions);

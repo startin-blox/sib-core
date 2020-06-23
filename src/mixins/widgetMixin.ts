@@ -131,7 +131,6 @@ const WidgetMixin = {
   widgetAttributes(field: string): object {
     const attrs = {
       name: field,
-      context: this.context
     };
     const escapedField = this.getEscapedField(field);
     for (let attr of ['range', 'label', 'placeholder', 'class']) {
@@ -145,11 +144,12 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[`${attr}`] = value;
     }
+    // Widget attribute
     for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url']) {
       const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';
-      if(attr === 'upload-url') attr = 'uploadURL';
+      if (attr === 'upload-url') attr = 'uploadURL';
       attrs[attr] = value;
     }
     for (let attr of ['add-label', 'remove-label']) {

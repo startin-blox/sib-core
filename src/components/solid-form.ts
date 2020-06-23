@@ -12,7 +12,7 @@ export const SolidForm = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-input'
+      default: 'solid-input'
     },
     naked: {
       type: String,
@@ -72,39 +72,31 @@ export const SolidForm = {
 
   getWidget(field:string):string {
     const widget = this._getWidget(field)
-    if(!this.element.localName.startsWith('sib-')) 
+    if(!this.element.localName.startsWith('sib-'))
       return widget;
     return widget.replace(/^solid-/, 'sib-');
   },
   _getWidget(field: string): WidgetInterface {
-    if (!this.element.hasAttribute('widget-' + field)
-      && this.element.hasAttribute('upload-url-' + field)) {
-      return {
-        tagName: 'solid-form-file',
-        type: WidgetType.CUSTOM
-      };
-    } else if (!this.element.hasAttribute('widget-' + field)
-      && this.element.hasAttribute('range-' + field)) {
-      return {
-        tagName: 'solid-form-dropdown',
-        type: WidgetType.CUSTOM
-      };
-    } else {
-      const widget = this.element.getAttribute('widget-' + field); // TODO : duplicated code
-      if (widget) {
-        let type = WidgetType.CUSTOM;
-        if (!customElements.get(widget)) { // component does not exist
-          if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
-          else type = WidgetType.NATIVE; // or use a native tag
-        }
-        return { tagName: widget, type }; // return tagName
-      }
+    let tagName = '';
+    let type = WidgetType.CUSTOM;
+    const widgetAttribute = this.element.getAttribute('widget-' + field);
 
-      return {
-        tagName: this.defaultWidget,
-        type: WidgetType.CUSTOM
-      };
+    // Choose widget
+    if (!widgetAttribute && this.element.hasAttribute('upload-url-' + field)) {
+      tagName = 'solid-form-file'
+    } else if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
+      tagName = 'solid-dropdown'
+    } else {
+      tagName = widgetAttribute || this.defaultWidget;
     }
+
+    // Create widget
+    if (!customElements.get(tagName)) { // component does not exist
+      if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
+      else type = WidgetType.NATIVE; // or use a native tag
+    }
+
+    return { tagName, type };
   },
   change(resource: object): void {
     this.element.dispatchEvent(

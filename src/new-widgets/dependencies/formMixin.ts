@@ -1,4 +1,3 @@
-// TODO : make it a dependency?
 const FormMixin = {
   name: 'form-mixin',
   getValue() {

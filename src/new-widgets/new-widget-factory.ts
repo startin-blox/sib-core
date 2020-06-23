@@ -3,22 +3,19 @@ import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
 import { LabelMixin } from './domAdditionsMixins/labelMixin.js';
 import { LabelLastMixin } from './domAdditionsMixins/labelLastMixin.js';
-import { FormMixin } from './formMixin.js';
 import { MultipleMixin } from './attributeAdditions/multipleMixin.js';
 import { BlankMixin } from './attributeAdditions/blankMixin.js';
 import { MailtoMixin } from './attributeAdditions/mailtoMixin.js';
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+import { TemplateToDOMInterface } from './interfaces.js';
+import { templateToDOMTags, templateToDOMTagsSet } from './templateToDom/templateToDomTags.js';
 
 export const newWidgetFactory = (tagName: string) => {
 
   // Use mixin
   const valueTransformations: any[] = [];
   const attributeAdditions: any[] = [];
+  let templateToDOM: TemplateToDOMInterface|null = null;
   const domAdditions: any[] = [];
-  let templateToDOM = null;
 
   const mixins = tagName.split('-').filter(t => t !== 'solid');
 
@@ -48,6 +45,11 @@ export const newWidgetFactory = (tagName: string) => {
     }
   });
 
+  if (!templateToDOM) {
+    console.error('No widget found');
+    return;
+  }
+
   const newWidget = {
     name: tagName,
     use: [
@@ -55,9 +57,10 @@ export const newWidgetFactory = (tagName: string) => {
       ...valueTransformations,
       ...attributeAdditions,
       ...domAdditions,
+      ...templateToDOM!.dependencies,
     ],
     get template(): Function {
-      return templateToDOM || templateToDOMTags.text;
+      return templateToDOM!.template || templateToDOMTags.text.template;
     },
   };
 
@@ -81,72 +84,12 @@ const attributeAdditionsTags = {
 }
 
 /**
- * Template to DOM
- */
-// Display - default
-const templateToDOMTags = {
-  // Display
-  text: (value: string) => html`
-    ${value}
-  `,
-  div: (value: string, attributes: any) => html`
-    <div name="${ifDefined(attributes.name)}">
-      ${value}
-    </div>
-  `,
-  link: (value: string, attributes: any) => html`
-    <a
-      name=${ifDefined(attributes.name)}
-      href=${(attributes.mailto || '')+(value || '#')}
-      target=${ifDefined(attributes.target)}
-    >
-      ${attributes.label || value || ''}
-    </a>
-  `,
-  // Form
-  input: (value: string, attributes: any) => html`
-    <input
-      type="text"
-      name=${ifDefined(attributes.name)}
-      value="${value}"
-      data-holder
-    />
-  `,
-  textarea: (value: string, attributes: any) => html`
-    <textarea
-      name=${ifDefined(attributes.name)}
-      data-holder
-    >${value}</textarea>
-  `,
-  // Multiple
-  multiple: (value: string, attributes: any) => html`
-    <solid-display
-      data-src=${value || ''}
-      fields="${ifDefined(attributes.fields)}"
-    ></solid-display>
-  `
-}
-
-// Sets
-const templateToDOMTagsSet = {
-  default: () => html`
-  `,
-  div: () => html`
-    <div data-content></div>
-  `,
-  ul: () => html`
-    <ul data-content></ul>
-  `
-}
-
-/**
  * DOM Additions
  */
 const domAdditionsTags = {
   label: LabelMixin,
   labellast: LabelLastMixin,
-  form: FormMixin,
 }
 
 newWidgetFactory('solid-text');
-newWidgetFactory('solid-form-input');
+newWidgetFactory('solid-input');
