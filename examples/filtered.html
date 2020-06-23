@@ -16,118 +16,14 @@
   </head>
 
   <body>
-    <details>
-      <summary>One field & label:</summary>
-      <solid-form-search id="filter1"
-        fields="email"
-        label-email="mail"
-      ></solid-form-search>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email"
-        filtered-by="filter1"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>One field & value:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email"
-        search-fields="email"
-        search-value-email="happy"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Multiple fields:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email"
-        search-fields="first_name, last_name"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Set:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, nameSet(first_name, last_name), email"
-        search-fields="nameSet"
-      ></solid-display>
-    </details>
-
-    <solid-widget name="solid-skill">
-      <template><div>${await value.name}</div></template>
-    </solid-widget>
-
-    <details>
-      <summary>Dropdown:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, skills"
-        multiple-skills
-        widget-skills="solid-skill"
-        search-fields="skills"
-        search-range-skills="data/list/skills.jsonld"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Dropdown + One field: :</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, skills"
-        multiple-skills
-        widget-skills="solid-skill"
-        search-fields="skills, username"
-        search-range-skills="data/list/skills.jsonld"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Widget:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email"
-        search-fields="email"
-        search-widget-email="solid-form-textarea"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Dotted field:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email, profile.city"
-        search-fields="profile.city"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Set + dotted field:</summary>
-      <solid-display
-        data-src="data/list/users.jsonld"
-        fields="username, first_name, last_name, email, nameSet(profile.city, first_name)"
-        search-fields="nameSet"
-      ></solid-display>
-    </details>
-
-    <details>
-      <summary>Range number + date:</summary>
-      <solid-display
-        data-src="data/list/events.jsonld"
-        fields="name, date"
-        widget-date="solid-display-date-time"
-        search-fields="date"
-        search-widget-date="solid-form-range-date"
-      ></solid-display>
-      <solid-display
-        data-src="data/list/events.jsonld"
-        fields="name, seats"
-        search-fields="seats"
-        search-widget-seats="solid-form-range-number"
-      ></solid-display>
-    </details>
+    <solid-form-search id="filter1"
+      fields="email"
+      label-email="mail"
+    ></solid-form-search>
+    <solid-display
+      data-src="data/list/users.jsonld"
+      fields="username, first_name, last_name, email"
+      filtered-by="filter1"
+    ></solid-display>
   </body>
 </html>
