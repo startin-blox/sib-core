@@ -1,11 +1,13 @@
 import { Sib } from '../libs/Sib.js';
 import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
+import { MultilineMixin } from './valueTransformationsMixins/multilineMixin.js';
 import { LabelMixin } from './domAdditionsMixins/labelMixin.js';
 import { LabelLastMixin } from './domAdditionsMixins/labelLastMixin.js';
 import { MultipleMixin } from './attributeAdditions/multipleMixin.js';
 import { BlankMixin } from './attributeAdditions/blankMixin.js';
 import { MailtoMixin } from './attributeAdditions/mailtoMixin.js';
+import { TelMixin } from './attributeAdditions/telMixin.js';
 import { TemplateToDOMInterface } from './interfaces.js';
 import { templateToDOMTags, templateToDOMTagsSet } from './templateToDom/templateToDomTags.js';
 
@@ -72,6 +74,7 @@ export const newWidgetFactory = (tagName: string) => {
  */
 const valueTransformationsTags = {
   date: DateMixin,
+  multiline: MultilineMixin,
 }
 
 /**
@@ -81,6 +84,7 @@ const attributeAdditionsTags = {
   multiple: MultipleMixin,
   blank: BlankMixin,
   mailto: MailtoMixin,
+  tel: TelMixin,
 }
 
 /**

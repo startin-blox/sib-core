@@ -30,11 +30,21 @@ export const templateToDOMTags = {
     template: (value: string, attributes: any) => html`
       <a
         name=${ifDefined(attributes.name)}
-        href=${(attributes.mailto || '')+(value || '#')}
+        href=${(attributes.mailto || attributes.tel || '')+(value || '#')}
         target=${ifDefined(attributes.target)}
       >
         ${attributes.label || value || ''}
       </a>
+    `,
+    dependencies: []
+  },
+  img: {
+    template: (value: string, attributes: any) => html`
+      <img
+        name=${ifDefined(attributes.name)}
+        src=${ifDefined(value)}
+        style="max-width: 100%; max-height: 100%;"
+      />
     `,
     dependencies: []
   },
