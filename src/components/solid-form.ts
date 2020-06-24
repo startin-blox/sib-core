@@ -30,7 +30,7 @@ export const SolidForm = {
   initialState: {
   },
   get defaultMultipleWidget(): string {
-    return 'solid-multiple-form';
+    return 'solid-multipleform';
   },
   get defaultSetWidget(): string {
     return 'solid-set-default';
@@ -69,14 +69,7 @@ export const SolidForm = {
     if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
     return value
   },
-
-  getWidget(field:string):string {
-    const widget = this._getWidget(field)
-    if(!this.element.localName.startsWith('sib-'))
-      return widget;
-    return widget.replace(/^solid-/, 'sib-');
-  },
-  _getWidget(field: string): WidgetInterface {
+  getWidget(field: string): WidgetInterface {
     let tagName = '';
     let type = WidgetType.CUSTOM;
     const widgetAttribute = this.element.getAttribute('widget-' + field);
@@ -89,7 +82,6 @@ export const SolidForm = {
     } else {
       tagName = widgetAttribute || this.defaultWidget;
     }
-
     // Create widget
     if (!customElements.get(tagName)) { // component does not exist
       if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it

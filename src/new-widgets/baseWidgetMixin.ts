@@ -24,6 +24,7 @@ const BaseWidgetMixin = {
     listValueTransformations: [],
     listDomAdditions: [],
     listAttributes: {},
+    listCallbacks: [],
     renderPlanned: false,
   },
   get template() {
@@ -33,6 +34,7 @@ const BaseWidgetMixin = {
     this.listValueTransformations = [];
     this.listAttributes = {};
     this.listDomAdditions = [];
+    this.listCallbacks = [];
   },
   planRender() {
     if (!this.renderPlanned) {
@@ -45,18 +47,25 @@ const BaseWidgetMixin = {
   },
   render() {
     const listValueTransformations = [...this.listValueTransformations];
-    listValueTransformations.push(this.domAdditions.bind(this));
+    listValueTransformations.push(this.renderTemplate.bind(this));
 
     const nextProcessor = listValueTransformations.shift();
     nextProcessor(this.value, listValueTransformations);
+
+    // Callbacks
+    const listCallbacks = [...this.listCallbacks];
+    if (listCallbacks.length) {
+      const nextCallback = listCallbacks.shift();
+      nextCallback(this.value, listCallbacks);
+    }
   },
-  domAdditions(value) {
+  renderTemplate(value) {
     const template = this.template(value, {
       ...this.listAttributes,
       name: this.name
     });
     const listDomAdditions = [...this.listDomAdditions];
-    listDomAdditions.push(this.templateToDOM.bind(this));
+    listDomAdditions.push(() => this.templateToDOM(template));
 
     const nextProcessor = listDomAdditions.shift();
     nextProcessor(template, listDomAdditions);

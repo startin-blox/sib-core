@@ -1,4 +1,5 @@
 import { FormMixin } from '../dependencies/formMixin.js';
+import { MultipleFormMixin } from '../dependencies/multipleFormMixin.js';
 import { RangeMixin } from '../dependencies/rangeMixin.js';
 
 //@ts-ignore
@@ -57,7 +58,7 @@ export const templateToDOMTags = {
       <input
         type="text"
         name=${ifDefined(attributes.name)}
-        value="${value}"
+        value=${value}
         data-holder
       />
     `,
@@ -103,6 +104,33 @@ export const templateToDOMTags = {
       ></solid-display>
     `,
     dependencies: []
+  },
+  multipleform: {
+    template: (value: string, attributes: any) => html`
+      ${(attributes.children || []).map((child, index) => html`
+        <div data-index=${attributes.name + index}>
+          ${child}
+          <button type="button" @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
+        </div>
+      `)}
+      <button type="button" @click=${attributes.addItem}>${attributes.addLabel}</button>
+    `,
+    dependencies: [ MultipleFormMixin, FormMixin ]
+  },
+  multipleselect: {
+    template: (value: string, attributes: any) => html`
+      <select
+        data-holder
+        multiple
+      >
+        ${(attributes.values || []).map(el => html`
+          <option
+            value=${el['@id'] || ''}
+          >${until(el.name)}</option>
+        `)}
+      </select>
+    `,
+    dependencies: [ MultipleFormMixin, FormMixin ]
   }
 }
 

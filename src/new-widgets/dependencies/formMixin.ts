@@ -1,11 +1,20 @@
 const FormMixin = {
   name: 'form-mixin',
   getValue() {
-    const dataHolder = this.element.querySelector('[data-holder]');
-    if (!dataHolder) return this.value;
-    if (dataHolder instanceof HTMLInputElement && dataHolder.type == "checkbox") return dataHolder.checked;
-    return dataHolder.value;
+    if (!this.dataHolder) return this.value;
+    if (this.dataHolder instanceof HTMLInputElement && this.dataHolder.type == "checkbox") return this.dataHolder.checked;
+    return this.dataHolder.value;
   },
+  get dataHolder(): Element[] | null {
+    const dataHolders = Array.from((this.element as Element).querySelectorAll('[data-holder]'));
+    const widgetDataHolders = dataHolders.filter(element => {
+      const dataHolderAncestor = element.parentElement ? element.parentElement.closest('[data-holder]') : null;
+      // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
+      return dataHolderAncestor === this.element || !dataHolderAncestor || !this.element.contains(dataHolderAncestor)
+    });
+
+    return widgetDataHolders.length ? widgetDataHolders : null;
+  }
 }
 
 export {

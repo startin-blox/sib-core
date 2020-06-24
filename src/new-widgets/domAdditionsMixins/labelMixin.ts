@@ -17,7 +17,7 @@ const LabelMixin = {
   },
   addToWidget(template, domAdditions: Function[]) {
     const newTemplate = html`
-      <label>${this.label}</label>
+      <label>${this.label || this.name}</label>
       ${template}
     `;
 

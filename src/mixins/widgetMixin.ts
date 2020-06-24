@@ -91,9 +91,9 @@ const WidgetMixin = {
     let resourceValue = await this.fetchValue(this.resource, field);
 
     // Empty value
-    if (resourceValue === undefined || resourceValue === "") // If null or empty, return field default value
+    if (resourceValue === undefined || resourceValue === '') // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
-        this.element.getAttribute('default-' + field) : undefined;
+        this.element.getAttribute('default-' + field) : '';
 
     return resourceValue;
   },
@@ -106,13 +106,8 @@ const WidgetMixin = {
       this.div = newDiv
     }
   },
-  getWidget(field:string):string {
-    const widget = this._getWidget(field)
-    if(!this.element.localName.startsWith('sib-')) return widget;
-    return widget.replace(/^solid-/, 'sib-');
-  },
-  _getWidget(field: string, isSet: boolean = false): WidgetInterface {
-    const widget = this.multiple(field) || this.element.getAttribute('widget-' + field);
+  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    const widget = this.element.getAttribute('widget-' + field);
 
     if (widget) {
       let type = WidgetType.CUSTOM;
@@ -122,9 +117,21 @@ const WidgetMixin = {
       }
       return { tagName: widget, type }; // return tagName
     }
-    if (this.getAction(field)) return {tagName: 'solid-action', type: WidgetType.CUSTOM};
+    if (this.getAction(field)) return { tagName: 'solid-action', type: WidgetType.CUSTOM };
     return {
       tagName: !isSet ? this.defaultWidget : this.defaultSetWidget,
+      type: WidgetType.CUSTOM
+    };
+  },
+  multiple(field: string): WidgetInterface|null {
+    const attribute = 'multiple-' + field;
+    if (!this.element.hasAttribute(attribute)) return null;
+    const widget = this.element.getAttribute(attribute) || this.defaultMultipleWidget;
+    if (!customElements.get(widget)) { // component does not exist
+      if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
+    }
+    return {
+      tagName: widget,
       type: WidgetType.CUSTOM
     };
   },
@@ -138,13 +145,20 @@ const WidgetMixin = {
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
-    // Multiple attributes
+    // Multiple
+    if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     for (let attr of ['fields', 'label', 'widget']) {
       const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
       if (value == null) continue;
       attrs[`${attr}`] = value;
     }
-    // Widget attribute
+    // Multiple form
+    for (let attr of ['add-label', 'remove-label']) {
+      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
+      if (value == null) continue;
+      attrs[attr] = value;
+    }
+    // Default attributes
     for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url']) {
       const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
@@ -152,13 +166,10 @@ const WidgetMixin = {
       if (attr === 'upload-url') attr = 'uploadURL';
       attrs[attr] = value;
     }
-    for (let attr of ['add-label', 'remove-label']) {
-      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
-      if (value == null) continue;
-      attrs[attr] = value;
-    }
+    // Action
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
-    attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
+
+    // attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
 
     return attrs;
   },
@@ -171,11 +182,11 @@ const WidgetMixin = {
     const attributes = this.widgetAttributes(field);
 
     const escapedField = this.getEscapedField(field);
-    const widgetMeta = this.getWidget(escapedField);
+    const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     const widget = document.createElement(widgetMeta.tagName);
 
     // Set attributes
-    if (widgetMeta.type == WidgetType.NATIVE) { // native widget (ie: h1)
+    if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
       this.getValue(field).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-text)
       for (let name of Object.keys(attributes)) {
@@ -194,13 +205,6 @@ const WidgetMixin = {
     this.widgets.push(widget);
     return widget;
   },
-  multiple(field: string): string | null {
-    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const attribute = 'multiple-' + field;
-    if (!this.element.hasAttribute(attribute)) return null;
-    return this.element.getAttribute(attribute) || this.defaultMultipleWidget.replace(/^solid/, prefix);
-  },
-
   createSet(field: string): Element {
     const widget = document.createElement(this._getWidget(field, true).tagName);
     widget.setAttribute('name', field);

@@ -28,9 +28,9 @@ export const newWidgetFactory = (tagName: string) => {
 
   // build mixins array
   mixins.forEach(mixin => {
+    // Features
     const valueTransformationsKeys = Object.keys(valueTransformationsTags);
     const attributeAdditionsKeys = Object.keys(attributeAdditionsTags);
-    const templateToDOMKeys = Object.keys(widgetType);
     const domAdditionsTagsKeys = Object.keys(domAdditionsTags);
 
     if (valueTransformationsKeys.includes(mixin)) {
@@ -39,11 +39,14 @@ export const newWidgetFactory = (tagName: string) => {
     if (attributeAdditionsKeys.includes(mixin)) {
       attributeAdditions.push(attributeAdditionsTags[mixin]);
     }
-    if (templateToDOMKeys.includes(mixin)) {
-      templateToDOM = widgetType[mixin];
-    }
     if (domAdditionsTagsKeys.includes(mixin)) {
       domAdditions.push(domAdditionsTags[mixin]);
+    }
+
+    // Template
+    const templateToDOMKeys = Object.keys(widgetType);
+    if (templateToDOMKeys.includes(mixin)) {
+      templateToDOM = widgetType[mixin];
     }
   });
 
@@ -59,7 +62,7 @@ export const newWidgetFactory = (tagName: string) => {
       ...valueTransformations,
       ...attributeAdditions,
       ...domAdditions,
-      ...templateToDOM!.dependencies,
+      ...(templateToDOM!.dependencies || []),
     ],
     get template(): Function {
       return templateToDOM!.template || templateToDOMTags.text.template;

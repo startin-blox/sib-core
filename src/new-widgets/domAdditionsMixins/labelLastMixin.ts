@@ -18,7 +18,7 @@ const LabelLastMixin = {
   addToWidget(template, domAdditions: Function[]) {
     const newTemplate = html`
       ${template}
-      <label>${this.label}</label>
+      <label>${this.label || this.name}</label>
     `;
 
     const nextProcessor = domAdditions.shift();
