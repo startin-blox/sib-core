@@ -1,6 +1,6 @@
-import { FormMixin } from '../dependencies/formMixin.js';
-import { MultipleFormMixin } from '../dependencies/multipleFormMixin.js';
-import { RangeMixin } from '../dependencies/rangeMixin.js';
+import { FormMixin } from '../templatesDependencies/formMixin.js';
+import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
+import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 
 //@ts-ignore
 import { html } from 'https://unpkg.com/lit-html?module';
@@ -9,7 +9,7 @@ import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?modu
 //@ts-ignore
 import { until } from 'https://unpkg.com/lit-html/directives/until?module';
 
-export const templateToDOMTags = {
+export const defaultTemplates = {
   /**
    * DISPLAY
    */
@@ -131,27 +131,5 @@ export const templateToDOMTags = {
       </select>
     `,
     dependencies: [ MultipleFormMixin, FormMixin ]
-  }
-}
-
-/**
- * SETS
- */
-export const templateToDOMTagsSet = {
-  default: {
-    template: () => html``,
-    dependencies: []
-  },
-  div: {
-    template: () => html`
-      <div data-content></div>
-    `,
-    dependencies: []
-  },
-  ul: {
-    template: () => html`
-      <ul data-content></ul>
-    `,
-    dependencies: []
   }
 }

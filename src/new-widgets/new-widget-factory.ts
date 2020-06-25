@@ -1,102 +1,74 @@
 import { Sib } from '../libs/Sib.js';
 import { BaseWidgetMixin } from './baseWidgetMixin.js';
-import { DateMixin } from './valueTransformationsMixins/dateMixin.js';
-import { MultilineMixin } from './valueTransformationsMixins/multilineMixin.js';
-import { LabelMixin } from './domAdditionsMixins/labelMixin.js';
-import { LabelLastMixin } from './domAdditionsMixins/labelLastMixin.js';
-import { MultipleMixin } from './attributeAdditions/multipleMixin.js';
-import { BlankMixin } from './attributeAdditions/blankMixin.js';
-import { MailtoMixin } from './attributeAdditions/mailtoMixin.js';
-import { TelMixin } from './attributeAdditions/telMixin.js';
-import { TemplateToDOMInterface } from './interfaces.js';
-import { templateToDOMTags, templateToDOMTagsSet } from './templateToDom/templateToDomTags.js';
+import { Template } from './interfaces.js';
+import { MixinStaticInterface } from '../libs/interfaces.js';
+
+import { defaultTemplates, setTemplates } from './templates/index.js';
+import { valueTransformationDirectory } from './valueTransformationMixins/index.js';
+import { templateAdditionDirectory } from './templateAdditionMixins/index.js';
+import { attributeDirectory } from './attributeMixins/index.js';
+
+const valueTransformationKeys = Object.keys(valueTransformationDirectory);
+const attributeKeys = Object.keys(attributeDirectory);
+const templateAdditionKeys = Object.keys(templateAdditionDirectory);
 
 export const newWidgetFactory = (tagName: string) => {
+  const valueTransformations: MixinStaticInterface[] = [];
+  const attributes: MixinStaticInterface[] = [];
+  const templateAdditions: MixinStaticInterface[] = [];
+  let template: Template | null = null;
 
-  // Use mixin
-  const valueTransformations: any[] = [];
-  const attributeAdditions: any[] = [];
-  let templateToDOM: TemplateToDOMInterface|null = null;
-  const domAdditions: any[] = [];
-
+  // decompose widget name
   const mixins = tagName.split('-').filter(t => t !== 'solid');
 
-  let widgetType: object = templateToDOMTags; // choose widget type (display, form or set)
-  if (mixins.includes('set')) {
-    widgetType = templateToDOMTagsSet;
-  }
+  // choose widget type (default or set)
+  let widgetType: object = defaultTemplates;
+  if (mixins.includes('set')) widgetType = setTemplates;
+  const templateKeys = Object.keys(widgetType);
 
   // build mixins array
-  mixins.forEach(mixin => {
+  for (const mixin of mixins) {
     // Features
-    const valueTransformationsKeys = Object.keys(valueTransformationsTags);
-    const attributeAdditionsKeys = Object.keys(attributeAdditionsTags);
-    const domAdditionsTagsKeys = Object.keys(domAdditionsTags);
-
-    if (valueTransformationsKeys.includes(mixin)) {
-      valueTransformations.push(valueTransformationsTags[mixin]);
+    if (valueTransformationKeys.includes(mixin)) {
+      valueTransformations.push(valueTransformationDirectory[mixin]);
     }
-    if (attributeAdditionsKeys.includes(mixin)) {
-      attributeAdditions.push(attributeAdditionsTags[mixin]);
+    if (attributeKeys.includes(mixin)) {
+      attributes.push(attributeDirectory[mixin]);
     }
-    if (domAdditionsTagsKeys.includes(mixin)) {
-      domAdditions.push(domAdditionsTags[mixin]);
+    if (templateAdditionKeys.includes(mixin)) {
+      templateAdditions.push(templateAdditionDirectory[mixin]);
     }
 
     // Template
-    const templateToDOMKeys = Object.keys(widgetType);
-    if (templateToDOMKeys.includes(mixin)) {
-      templateToDOM = widgetType[mixin];
+    if (templateKeys.includes(mixin)) {
+      template = widgetType[mixin];
     }
-  });
+  }
 
-  if (!templateToDOM) {
-    console.error('No widget found');
+  if (!template) {
+    console.error(`No template found for widget "${tagName}"`);
     return;
   }
 
+  // compose widget
   const newWidget = {
     name: tagName,
     use: [
       BaseWidgetMixin,
       ...valueTransformations,
-      ...attributeAdditions,
-      ...domAdditions,
-      ...(templateToDOM!.dependencies || []),
+      ...attributes,
+      ...templateAdditions,
+      ...(template!.dependencies || []),
     ],
     get template(): Function {
-      return templateToDOM!.template || templateToDOMTags.text.template;
+      return template!.template || defaultTemplates.text.template;
     },
   };
 
+  // and register component
   Sib.register(newWidget);
 };
 
-/**
- * Value transformations
- */
-const valueTransformationsTags = {
-  date: DateMixin,
-  multiline: MultilineMixin,
-}
-
-/**
- * Attribute additions
- */
-const attributeAdditionsTags = {
-  multiple: MultipleMixin,
-  blank: BlankMixin,
-  mailto: MailtoMixin,
-  tel: TelMixin,
-}
-
-/**
- * DOM Additions
- */
-const domAdditionsTags = {
-  label: LabelMixin,
-  labellast: LabelLastMixin,
-}
-
+// create default widgets
 newWidgetFactory('solid-text');
 newWidgetFactory('solid-input');

@@ -1,4 +1,4 @@
-export interface TemplateToDOMInterface {
+export interface Template {
   template: Function
   dependencies: any[]
 }
