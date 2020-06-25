@@ -10,7 +10,14 @@ const RangeMixin = {
       callback: function (value: string) {
         if (value !== this.dataSrc) this.dataSrc = value;
       }
+    },
+    optionLabel: {
+      type: String,
+      default: 'name',
     }
+  },
+  attached() {
+    this.listAttributes['optionLabel'] = this.optionLabel;
   },
   populate() {
     this.listAttributes['range'] = this.resource ? this.resource['ldp:contains'] : [];

@@ -140,12 +140,13 @@ const WidgetMixin = {
       name: field,
     };
     const escapedField = this.getEscapedField(field);
+    // Multiple
+    // TODO : add a generic function
     for (let attr of ['range', 'label', 'placeholder', 'class']) {
       const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
       if (value == null) continue;
       attrs[`each-${attr}`] = value;
     }
-    // Multiple
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     for (let attr of ['fields', 'label', 'widget']) {
       const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
@@ -159,7 +160,7 @@ const WidgetMixin = {
       attrs[attr] = value;
     }
     // Default attributes
-    for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url']) {
+    for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url', 'option-label']) {
       const value = this.element.getAttribute(`${attr}-${escapedField}`);
       if (value == null) continue;
       if (attr === 'class') attr = 'className';

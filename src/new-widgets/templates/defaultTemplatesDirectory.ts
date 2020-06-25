@@ -100,7 +100,7 @@ export const defaultTemplates = {
             value='{"@id": "${el['@id']}"}'
             ?selected=${value === el['@id']}
           >
-            ${until(el.name)}
+            ${until(el[attributes.optionLabel])}
           </option>
         `)}
       </select>
