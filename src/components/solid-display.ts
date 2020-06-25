@@ -10,6 +10,9 @@ import { GrouperMixin } from '../mixins/grouperMixin.js';
 import { FederationMixin } from '../mixins/federationMixin.js';
 import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 
+//@ts-ignore
+import { html, render } from 'https://unpkg.com/lit-html?module';
+
 export const SolidDisplay = {
   name: 'solid-display',
   use: [
@@ -119,9 +122,11 @@ export const SolidDisplay = {
     parent.appendChild(child);
   },
   async appendSingleElt(parent: HTMLElement): Promise<void> {
-    for (const field of await this.getFields()) {
-      parent.appendChild(this.createWidget(field));
-    }
+    const fields = await this.getFields();
+    const template = html`
+      ${fields.map((field: string) => this.createWidget(field))}
+    `;
+    render(template, this.element);
   },
 };
 

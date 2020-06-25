@@ -206,7 +206,7 @@ const WidgetMixin = {
     return widget;
   },
   createSet(field: string): Element {
-    const widget = document.createElement(this._getWidget(field, true).tagName);
+    const widget = document.createElement(this.getWidget(field, true).tagName);
     widget.setAttribute('name', field);
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;
