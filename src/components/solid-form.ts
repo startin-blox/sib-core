@@ -6,6 +6,11 @@ import { setDeepProperty } from '../libs/helpers.js';
 import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
 
+//@ts-ignore
+import { html, render } from 'https://unpkg.com/lit-html?module';
+//@ts-ignore
+import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+
 export const SolidForm = {
   name: 'solid-form',
   use: [WidgetMixin, StoreMixin],
@@ -20,7 +25,7 @@ export const SolidForm = {
     },
     submitButton: {
       type: String,
-      default: null
+      default: undefined
     },
     partial: {
       type: Boolean,
@@ -28,6 +33,7 @@ export const SolidForm = {
     }
   },
   initialState: {
+    error: ''
   },
   get defaultMultipleWidget(): string {
     return 'solid-multipleform';
@@ -114,7 +120,7 @@ export const SolidForm = {
       }
     } catch (e) {
       this.toggleLoaderHidden(true);
-      if (e.error) { // if server error
+      if (e) { // if server error
         this.showError(e);
         throw e;
       } // else, ldpframework error, we continue
@@ -155,73 +161,54 @@ export const SolidForm = {
     return input;
   },
   empty(): void {
-    if (!this.form) return;
-    if (this.isNaked) {
-      while (this.form.firstChild) {
-        this.form.removeChild(this.form.firstChild);
-      }
-    } else {
-      let newForm = document.createElement('form');
-      this.element.appendChild(newForm);
-      this.element.removeChild(this._form);
-      this._form = newForm;
-    }
   },
   showError(e: object) {
-    let errorContent = `
-      <p>An error has occured.</p>
-      <ul>
+    this.error = html`
+      <div data-id="error">
+        <p>${e}</p>
+      </div>
     `;
-    Object.keys(e['error']).forEach(field => (
-      errorContent += !field.startsWith('@') ? // remove @context object
-        `<li>${field}: ${e['error'][field]}</li>` : ''
-    ));
-    errorContent += '</ul>';
-
-    const error = document.createElement('div');
-    error.setAttribute('data-id', 'form-error');
-    error.innerHTML = errorContent;
-    this.element.insertBefore(error, this.form);
+    this.populate();
   },
   hideError() {
     const error = this.element.querySelector('[data-id=form-error]');
     if (error) this.element.removeChild(error);
   },
   reset() {
-    if(!this.isNaked) this.form.reset();
-    this.form.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
+    if(!this.isNaked) this.element.querySelector('form').reset();
+    this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
       const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
       options.forEach(option => option.selected = false );
       select.dispatchEvent(new Event('change'));
     })
   },
-  async populate(): Promise<void> {
-    const form = this.form;
+  onSubmit(event: Event) {
     if (!this.isNaked) {
-      form.addEventListener('submit', (event: Event) => {
-        event.preventDefault();
-        this.submitForm();
-      });
-      form.addEventListener('reset', (event: Event) =>
-        setTimeout(() => this.inputChange(event)),
-      );
-      this.element.appendChild(form);
+      event.preventDefault();
+      this.submitForm();
     }
-    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
-
-    while (form.firstChild) {
-      form.removeChild(form.firstChild);
+  },
+  onReset(event: Event) {
+    if (!this.isNaked) {
+      setTimeout(() => this.inputChange(event))
     }
-    for (const field of await this.getFields()) {
-      form.appendChild(this.createWidget(field));
-    }
-    if (this.isNaked) return;
-    const submitButtonElement = this.createInput('submit');
-    if (this.submitButton) submitButtonElement.value = this.submitButton;
-    form.appendChild(submitButtonElement);
-    if (this.element.hasAttribute('reset')) {
-      form.appendChild(this.createInput('reset'));
-    }
+  },
+  async populate(): Promise<void> {
+    const fields = await this.getFields();
+    const template = html`
+      ${this.error}
+      <form
+        @submit=${this.onSubmit.bind(this)}
+        @reset=${this.onReset.bind(this)}
+      >
+        ${fields.map(field => this.createWidget(field))}
+        ${!this.isNaked
+          ? html`<input type="submit" value=${ifDefined(this.submitButton)}>` : ''}
+        ${!this.isNaked && this.element.hasAttribute('reset')
+          ? html`<input type="reset" />` : ''}
+      </form>
+    `;
+    render(template, this.element);
   }
 };
 

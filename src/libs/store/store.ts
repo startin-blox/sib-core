@@ -177,8 +177,10 @@ export class Store {
           const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
           if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
         });
+        return response.headers.get('Location') || null;
+      } else {
+        throw new Error(`${response.status} ${response.statusText}`);
       }
-      return response.headers.get('Location') || null;
     });
   }
 
