@@ -13,16 +13,16 @@ const LabelMixin = {
     },
   },
   attached() {
-    this.listDomAdditions.push(this.addToWidget.bind(this));
+    this.listTemplateAdditions.push(this.addToWidget.bind(this));
   },
-  addToWidget(template, domAdditions: Function[]) {
+  addToWidget(template, listTemplateAdditions: Function[]) {
     const newTemplate = html`
       <label>${this.label || this.name}</label>
       ${template}
     `;
 
-    const nextProcessor = domAdditions.shift();
-    if(nextProcessor) nextProcessor(newTemplate, domAdditions);
+    const nextProcessor = listTemplateAdditions.shift();
+    if(nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);
   }
 }
 

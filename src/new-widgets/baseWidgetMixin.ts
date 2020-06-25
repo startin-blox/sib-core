@@ -1,3 +1,5 @@
+import { Template } from './interfaces.js';
+
 //@ts-ignore
 import {render} from 'https://unpkg.com/lit-html?module';
 
@@ -22,7 +24,7 @@ const BaseWidgetMixin = {
   },
   initialState: {
     listValueTransformations: [],
-    listDomAdditions: [],
+    listTemplateAdditions: [],
     listAttributes: {},
     listCallbacks: [],
     renderPlanned: false,
@@ -33,7 +35,7 @@ const BaseWidgetMixin = {
   created() {
     this.listValueTransformations = [];
     this.listAttributes = {};
-    this.listDomAdditions = [];
+    this.listTemplateAdditions = [];
     this.listCallbacks = [];
   },
   planRender() {
@@ -59,18 +61,18 @@ const BaseWidgetMixin = {
       nextCallback(this.value, listCallbacks);
     }
   },
-  renderTemplate(value) {
-    const template = this.template(value, {
+  renderTemplate(value: string) {
+    const template: Template = this.template(value, {
       ...this.listAttributes,
       name: this.name
     });
-    const listDomAdditions = [...this.listDomAdditions];
-    listDomAdditions.push(() => this.templateToDOM(template));
+    const listTemplateAdditions = [...this.listTemplateAdditions];
+    listTemplateAdditions.push(this.templateToDOM.bind(this));
 
-    const nextProcessor = listDomAdditions.shift();
-    nextProcessor(template, listDomAdditions);
+    const nextProcessor = listTemplateAdditions.shift();
+    nextProcessor(template, listTemplateAdditions);
   },
-  templateToDOM(template) {
+  templateToDOM(template: Template) {
     render(template, this.element);
   }
 }
