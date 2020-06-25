@@ -1,4 +1,11 @@
+import { MixinStaticInterface } from '../libs/interfaces.js';
+
 export interface Template {
   template: Function
-  dependencies: any[]
+  dependencies: MixinStaticInterface[]
+}
+
+export interface WidgetMixinsInterface {
+  templateMixin: Template
+  mixins: MixinStaticInterface[]
 }

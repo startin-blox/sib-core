@@ -1,6 +1,6 @@
 import { Sib } from '../libs/Sib.js';
 import { BaseWidgetMixin } from './baseWidgetMixin.js';
-import { Template } from './interfaces.js';
+import { Template, WidgetMixinsInterface } from './interfaces.js';
 import { MixinStaticInterface } from '../libs/interfaces.js';
 
 import { defaultTemplates, setTemplates } from './templates/index.js';
@@ -12,23 +12,53 @@ const valueTransformationKeys = Object.keys(valueTransformationDirectory);
 const attributeKeys = Object.keys(attributeDirectory);
 const templateAdditionKeys = Object.keys(templateAdditionDirectory);
 
+/**
+ * Create and register a widget based on its tagName
+ * @param tagName - string
+ */
 export const newWidgetFactory = (tagName: string) => {
+  let widgetMixins: WidgetMixinsInterface;
+  try { widgetMixins = getWidgetMixins(tagName) } // get mixins and template
+  catch (e) {
+    console.error(e);
+    return;
+  }
+
+  const newWidget = { // compose widget
+    name: tagName,
+    use: [
+      BaseWidgetMixin,
+      ...widgetMixins.mixins
+    ],
+    get template(): Function {
+      return widgetMixins.templateMixin.template;
+    },
+  };
+
+  Sib.register(newWidget); // and register component
+};
+
+/**
+ * Returns mixins and the template of a widget, depending of its tagName
+ * @param tagName - string
+ */
+function getWidgetMixins(tagName: string): WidgetMixinsInterface {
   const valueTransformations: MixinStaticInterface[] = [];
   const attributes: MixinStaticInterface[] = [];
   const templateAdditions: MixinStaticInterface[] = [];
   let template: Template | null = null;
 
   // decompose widget name
-  const mixins = tagName.split('-').filter(t => t !== 'solid');
+  const mixinNames = tagName.split('-').filter(t => t !== 'solid');
 
   // choose widget type (default or set)
   let widgetType: object = defaultTemplates;
-  if (mixins.includes('set')) widgetType = setTemplates;
+  if (mixinNames.includes('set')) widgetType = setTemplates;
   const templateKeys = Object.keys(widgetType);
 
   // build mixins array
-  for (const mixin of mixins) {
-    // Features
+  for (const mixin of mixinNames) {
+    // features
     if (valueTransformationKeys.includes(mixin)) {
       valueTransformations.push(valueTransformationDirectory[mixin]);
     }
@@ -39,35 +69,24 @@ export const newWidgetFactory = (tagName: string) => {
       templateAdditions.push(templateAdditionDirectory[mixin]);
     }
 
-    // Template
+    // template
     if (templateKeys.includes(mixin)) {
       template = widgetType[mixin];
     }
   }
 
-  if (!template) {
-    console.error(`No template found for widget "${tagName}"`);
-    return;
-  }
+  if (!template) throw `No template found for widget "${tagName}"`;
 
-  // compose widget
-  const newWidget = {
-    name: tagName,
-    use: [
-      BaseWidgetMixin,
+  return {
+    templateMixin: template,
+    mixins: [
       ...valueTransformations,
       ...attributes,
       ...templateAdditions,
-      ...(template!.dependencies || []),
-    ],
-    get template(): Function {
-      return template!.template || defaultTemplates.text.template;
-    },
-  };
-
-  // and register component
-  Sib.register(newWidget);
-};
+      ...(template.dependencies || []),
+    ]
+  }
+}
 
 // create default widgets
 newWidgetFactory('solid-text');
