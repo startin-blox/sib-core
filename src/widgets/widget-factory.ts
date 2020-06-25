@@ -1,5 +1,5 @@
 import { BaseWidget } from './baseWidget.js';
-import { defineComponent } from '../libs/helpers.js';
+// import { defineComponent } from '../libs/helpers.js';
 
 export const widgetFactory = (
   tagName: string,
@@ -21,6 +21,6 @@ export const widgetFactory = (
       return childTemplate;
     }
   };
-  defineComponent(tagName, cls);
+  // defineComponent(tagName, cls);
   return cls;
 };

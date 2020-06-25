@@ -30,7 +30,7 @@ export const SolidDisplay = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-text',
+      default: 'solid-display-value',
     },
   },
   initialState: {

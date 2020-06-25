@@ -189,7 +189,7 @@ const WidgetMixin = {
     // Set attributes
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
       this.getValue(field).then(value => widget.textContent = value);
-    } else { // custom widget (ie: solid-text)
+    } else { // custom widget (ie: solid-display-value)
       for (let name of Object.keys(attributes)) {
         widget.setAttribute(name, attributes[name]);
       }

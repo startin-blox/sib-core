@@ -17,7 +17,7 @@ export const SolidForm = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-input'
+      default: 'solid-form-input'
     },
     naked: {
       type: String,
@@ -36,7 +36,7 @@ export const SolidForm = {
     error: ''
   },
   get defaultMultipleWidget(): string {
-    return 'solid-multipleform';
+    return 'solid-multiple-form';
   },
   get defaultSetWidget(): string {
     return 'solid-set-default';
@@ -84,7 +84,7 @@ export const SolidForm = {
     if (!widgetAttribute && this.element.hasAttribute('upload-url-' + field)) {
       tagName = 'solid-form-file'
     } else if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
-      tagName = 'solid-dropdown'
+      tagName = 'solid-form-dropdown'
     } else {
       tagName = widgetAttribute || this.defaultWidget;
     }

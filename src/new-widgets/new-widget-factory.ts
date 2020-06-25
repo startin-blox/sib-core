@@ -3,7 +3,7 @@ import { BaseWidgetMixin } from './baseWidgetMixin.js';
 import { Template, WidgetMixinsInterface } from './interfaces.js';
 import { MixinStaticInterface } from '../libs/interfaces.js';
 
-import { defaultTemplates, setTemplates } from './templates/index.js';
+import { defaultTemplates, displayTemplates, formTemplates, setTemplates } from './templates/index.js';
 import { valueTransformationDirectory } from './valueTransformationMixins/index.js';
 import { templateAdditionDirectory } from './templateAdditionMixins/index.js';
 import { attributeDirectory } from './attributeMixins/index.js';
@@ -53,7 +53,9 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 
   // choose widget type (default or set)
   let widgetType: object = defaultTemplates;
-  if (mixinNames.includes('set')) widgetType = setTemplates;
+  if (mixinNames.includes('display')) widgetType = displayTemplates;
+  else if (mixinNames.includes('form')) widgetType = formTemplates;
+  else if (mixinNames.includes('set')) widgetType = setTemplates;
   const templateKeys = Object.keys(widgetType);
 
   // build mixins array
@@ -89,5 +91,5 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 }
 
 // create default widgets
-newWidgetFactory('solid-text');
-newWidgetFactory('solid-input');
+newWidgetFactory('solid-display-value');
+newWidgetFactory('solid-form-input');

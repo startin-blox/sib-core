@@ -85,4 +85,4 @@ export default class SolidMultipleForm extends BaseWidget {
   }
 }
 
-defineComponent('solid-multiple-form', SolidMultipleForm);
+// defineComponent('solid-multiple-form', SolidMultipleForm);
