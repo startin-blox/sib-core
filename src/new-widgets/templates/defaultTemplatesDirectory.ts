@@ -1,4 +1,5 @@
 import { FormMixin } from '../templatesDependencies/formMixin.js';
+import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 
@@ -72,6 +73,20 @@ export const defaultTemplates = {
       >${value}</textarea>
     `,
     dependencies: [ FormMixin ]
+  },
+  checkbox: {
+    template: (value: string, attributes: any) => html`
+      <label>
+        <input
+          data-holder
+          type="checkbox"
+          name=${ifDefined(attributes.name)}
+          ?checked=${value === 'true'}
+        >
+        <div>${attributes.label || attributes.name}</div>
+      </label>
+    `,
+    dependencies: [ FormCheckboxMixin, FormMixin ]
   },
   dropdown: {
     template: (value: string, attributes: any) => html`

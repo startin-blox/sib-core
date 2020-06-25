@@ -1,6 +1,3 @@
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
-
 const MultipleMixin = {
   name: 'multiple-mixin',
   attributes: {

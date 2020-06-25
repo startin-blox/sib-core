@@ -2,7 +2,6 @@ const FormMixin = {
   name: 'form-mixin',
   getValue() {
     if (!this.dataHolder) return this.value;
-    if (this.dataHolder instanceof HTMLInputElement && this.dataHolder.type == "checkbox") return this.dataHolder.checked;
     return this.dataHolder.value;
   },
   get dataHolder(): Element[] | null {
