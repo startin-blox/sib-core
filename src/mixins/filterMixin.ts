@@ -129,14 +129,13 @@ const FilterMixin = {
     
     const searchForm = filteredBy != null
       ? document.getElementById(filteredBy)
-      : document.createElement(`${prefix}-form`);
+      : this.element.insertBefore(document.createElement(`${prefix}-form`), this.element.firstChild);
     if(!searchForm) throw `#${filteredBy} is not in DOM`;
     this.searchForm = searchForm;
     searchForm.addEventListener('formChange', () => {
       this.filterList(context);
     });
     searchForm.toggleAttribute('naked', true);
-
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
@@ -150,7 +149,6 @@ const FilterMixin = {
       searchForm.setAttribute(name, value);
     });
 
-    this.element.insertBefore(searchForm, this.element.firstChild);
   }
 }
 

@@ -8,22 +8,48 @@
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <style>
+      solid-form-search {
+        display: block;
+        border: 1px solid green;
+      }
       solid-display {
         display: block;
         border: 1px solid blue;
+      }
+      #flex {
+        display: flex;
+      }
+      #flex > div {
+        margin: 0.4em;
+        padding: 0.4em;
+        border: 1px dashed palevioletred;
       }
     </style>
   </head>
 
   <body>
-    <solid-form-search id="filter1"
+    <solid-form-search
+      id="filter1"
       fields="email"
       label-email="mail"
     ></solid-form-search>
-    <solid-display
-      data-src="data/list/users.jsonld"
-      fields="username, first_name, last_name, email"
-      filtered-by="filter1"
-    ></solid-display>
+    <div id="flex">
+      <div>
+        <h3>sib-display 1</h3>
+        <solid-display
+          data-src="data/list/users.jsonld"
+          fields="username, last_name, email"
+          filtered-by="filter1"
+        ></solid-display>
+      </div>
+      <div>
+        <h3>sib-display 2</h3>
+        <solid-display
+          data-src="data/list/users.jsonld"
+          fields="username, first_name, last_name"
+          filtered-by="filter1"
+        ></solid-display>
+      </div>
+    </div>
   </body>
 </html>
