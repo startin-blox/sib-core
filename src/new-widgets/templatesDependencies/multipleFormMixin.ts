@@ -32,6 +32,7 @@ const MultipleFormMixin = {
   attached() {
     this.listValueTransformations.push(this.setDataSrc.bind(this));
 
+    this.listAttributes['children'] = [];
     this.listAttributes['addLabel'] = this.addLabel;
     this.listAttributes['removeLabel'] = this.removeLabel;
     this.listAttributes['addItem'] = () => {
@@ -51,6 +52,7 @@ const MultipleFormMixin = {
     if (!this.resource || !this.resource['ldp:contains']) return;
 
     this.listAttributes['children'] = []; // reset list
+
     // set value in form
     for (let resource of this.resource['ldp:contains']) { // for each resource
       this.insertWidget(resource['@id']); // create a widget
@@ -67,7 +69,8 @@ const MultipleFormMixin = {
       'range': this.range
     };
     for (let name of Object.keys(attributes)) {
-      widget.setAttribute(name, attributes[name]);
+      if (typeof attributes[name] === "boolean") widget.toggleAttribute(name, attributes[name]);
+      else widget.setAttribute(name, attributes[name]);
     }
     this.listAttributes['children'].push(widget);
   },
@@ -77,7 +80,7 @@ const MultipleFormMixin = {
   },
   getValue() {
     if (!this.dataHolder) return [];
-    return Array.from(this.dataHolder).map((element: any) => element.getAttribute('value'));
+    return Array.from(this.dataHolder).map((element: any) => element.component.getValue());
   }
 }
 

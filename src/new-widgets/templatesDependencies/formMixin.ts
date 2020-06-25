@@ -2,7 +2,8 @@ const FormMixin = {
   name: 'form-mixin',
   getValue() {
     if (!this.dataHolder) return this.value;
-    return this.dataHolder.value;
+    if (this.dataHolder.length >= 1) return this.dataHolder[0].value;
+    return undefined;
   },
   get dataHolder(): Element[] | null {
     const dataHolders = Array.from((this.element as Element).querySelectorAll('[data-holder]'));
