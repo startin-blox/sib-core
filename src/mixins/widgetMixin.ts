@@ -135,42 +135,23 @@ const WidgetMixin = {
       type: WidgetType.CUSTOM
     };
   },
+  addToAttributes(lookForAttr: string, setAttrKey: string, attributes: object) {
+    const attribute = this.element.getAttribute(lookForAttr);
+    if (attribute == null) return
+    attributes[setAttrKey] = attribute;
+  },
   widgetAttributes(field: string): object {
-    const attrs = {
-      name: field,
-    };
+    const attrs = { name: field };
     const escapedField = this.getEscapedField(field);
-    // Multiple
-    // TODO : add a generic function
-    for (let attr of ['range', 'label', 'placeholder', 'class']) {
-      const value = this.element.getAttribute(`each-${attr}-${escapedField}`);
-      if (value == null) continue;
-      attrs[`each-${attr}`] = value;
-    }
-    if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
-    for (let attr of ['fields', 'label', 'widget']) {
-      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
-      if (value == null) continue;
-      attrs[`${attr}`] = value;
-    }
-    // Multiple form
-    for (let attr of ['add-label', 'remove-label']) {
-      const value = this.element.getAttribute(`multiple-${escapedField}-${attr}`);
-      if (value == null) continue;
-      attrs[attr] = value;
-    }
-    // Default attributes
-    for (let attr of ['range', 'label','placeholder', 'class', 'widget', 'editable', 'upload-url', 'option-label']) {
-      const value = this.element.getAttribute(`${attr}-${escapedField}`);
-      if (value == null) continue;
-      if (attr === 'class') attr = 'className';
-      if (attr === 'upload-url') attr = 'uploadURL';
-      attrs[attr] = value;
-    }
-    // Action
-    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
 
-    // attrs['resourceId'] = this.resource ? this.resource['@id'] : null;
+    const eachAttributes = ['each-range', 'each-label', 'each-placeholder', 'each-class'];
+    const multipleAttributes = ['fields', 'label', 'widget', 'add-label', 'remove-label'];
+    const defaultAttributes = ['range', 'label', 'placeholder', 'class', /* 'widget', */ 'editable', 'upload-url', 'option-label'];
+
+    for (let attr of multipleAttributes) this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs)
+    for (let attr of [...eachAttributes, ...defaultAttributes]) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
+    if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
+    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
 
     return attrs;
   },
