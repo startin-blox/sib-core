@@ -59,7 +59,7 @@ export class Store {
    */
   async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
     return new Promise(async (resolve) => {
-      if (!this.cache.has(id)) {
+      if (!this.cache.has(id) || this.loadingList.includes(id)) {
         document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
         if (!this.loadingList.includes(id)) {
