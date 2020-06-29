@@ -111,18 +111,4 @@ const SolidDisplayAutolink = widgetFactory(
 );
 
 export {
-  SolidDisplayValue,
-  SolidDisplayDiv,
-  SolidDisplayLabelledDiv,
-  SolidDisplayMultiline,
-  SolidDisplayLabelledBoolean,
-  SolidDisplayImg,
-  SolidDisplayMailTo,
-  SolidDisplayTel,
-  SolidDisplayLink,
-  SolidDisplayBlankLink,
-  SolidDisplayDate,
-  SolidDisplayDateTime,
-  SolidAction,
-  SolidDisplayAutolink
 };

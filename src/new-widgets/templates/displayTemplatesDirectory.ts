@@ -39,5 +39,11 @@ export const displayTemplates = {
       />
     `,
     dependencies: []
-  }
+  },
+  boolean: {
+    template: (value: string, attributes: any) => html`
+      ${value === 'true' ? html`<label>${attributes.label || attributes.name || ''}</label>` : ''}
+    `,
+    dependencies: []
+  },
 }

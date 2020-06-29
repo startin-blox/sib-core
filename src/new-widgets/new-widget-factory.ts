@@ -7,10 +7,12 @@ import { defaultTemplates, displayTemplates, formTemplates, setTemplates } from 
 import { valueTransformationDirectory } from './valueTransformationMixins/index.js';
 import { templateAdditionDirectory } from './templateAdditionMixins/index.js';
 import { attributeDirectory } from './attributeMixins/index.js';
+import { callbackDirectory } from './callbackMixins/index.js';
 
 const valueTransformationKeys = Object.keys(valueTransformationDirectory);
 const attributeKeys = Object.keys(attributeDirectory);
 const templateAdditionKeys = Object.keys(templateAdditionDirectory);
+const callbackKeys = Object.keys(callbackDirectory);
 
 /**
  * Create and register a widget based on its tagName
@@ -46,6 +48,7 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
   const valueTransformations: MixinStaticInterface[] = [];
   const attributes: MixinStaticInterface[] = [];
   const templateAdditions: MixinStaticInterface[] = [];
+  const callbacks: MixinStaticInterface[] = [];
   let template: Template | null = null;
 
   // decompose widget name
@@ -70,6 +73,9 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
     if (templateAdditionKeys.includes(mixin)) {
       templateAdditions.push(templateAdditionDirectory[mixin]);
     }
+    if (callbackKeys.includes(mixin)) {
+      callbacks.push(callbackDirectory[mixin]);
+    }
 
     // template
     if (templateKeys.includes(mixin)) {
@@ -86,6 +92,7 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
       ...attributes,
       ...templateAdditions,
       ...(template.dependencies || []),
+      ...callbacks,
     ]
   }
 }
@@ -93,3 +100,4 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 // create default widgets
 newWidgetFactory('solid-display-value');
 newWidgetFactory('solid-form-input');
+newWidgetFactory('solid-action');

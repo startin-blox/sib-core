@@ -2,19 +2,6 @@ import SolidMultipleForm from './solid-multiple-form.js';
 import SolidMultipleSelect from './solid-multiple-select.js';
 
 import {
-  SolidDisplayValue,
-  SolidDisplayDiv,
-  SolidDisplayLabelledDiv,
-  SolidDisplayLabelledBoolean,
-  SolidDisplayImg,
-  SolidDisplayMailTo,
-  SolidDisplayTel,
-  SolidDisplayDate,
-  SolidDisplayDateTime,
-  SolidAction,
-  SolidDisplayLink,
-  SolidDisplayBlankLink,
-  SolidDisplayAutolink
 } from './display.js';
 
 import {
@@ -43,19 +30,6 @@ import {
 export {
   SolidMultipleForm,
   SolidMultipleSelect,
-  SolidDisplayValue,
-  SolidDisplayDiv,
-  SolidDisplayLabelledDiv,
-  SolidDisplayLabelledBoolean,
-  SolidDisplayImg,
-  SolidDisplayMailTo,
-  SolidDisplayTel,
-  SolidDisplayDate,
-  SolidDisplayDateTime,
-  SolidAction,
-  SolidDisplayLink,
-  SolidDisplayBlankLink,
-  SolidDisplayAutolink,
   SolidFormAutoCompletion,
   SolidFormCheckbox,
   SolidFormDate,
