@@ -25,7 +25,7 @@ describe('store', function () {
       // properties
       expect(win.store.cache).to.exist;
       expect(win.store.subscriptionIndex).to.exist;
-      expect(win.store.loadingList).to.be.a('array').and.have.length(0);
+      expect(win.store.loadingList).to.be.a('Set').and.have.property('size', 0);
       expect(win.store.headers).to.exist;
       // public methods
       expect(win.store.getData).to.be.a('function');
@@ -62,7 +62,7 @@ describe('store', function () {
     cy.window()
       .its('store.cache').should('have.length', 6); // cache
     cy.window()
-      .its('store.loadingList').should('have.length', 0); // loading list
+      .its('store.loadingList').should('have.property', 'size', 0); // loading list
     cy.window()
       .its('store.subscriptionIndex').should('have.length', 4); // loading list
 

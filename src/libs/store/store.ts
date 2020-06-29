@@ -24,7 +24,7 @@ export class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
-  loadingList: String[];
+  loadingList: Set<String>;
   headers: Promise<Headers>;
   initGraph: Function;
 
@@ -32,7 +32,7 @@ export class Store {
     this.cache = new Map();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
-    this.loadingList = [];
+    this.loadingList = new Set();
     this.headers = (async () => {
       const headers = new Headers();
       headers.set('Content-Type', 'application/ld+json');
@@ -58,35 +58,32 @@ export class Store {
    * @async
    */
   async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
+    if (this.cache.has(id) && !this.loadingList.has(id)) return this.get(id);
+    
     return new Promise(async (resolve) => {
-      if (!this.cache.has(id) || this.loadingList.includes(id)) {
-        document.addEventListener('resourceReady', this.resolveResource(id, resolve));
+      document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
-        if (!this.loadingList.includes(id)) {
-          this.loadingList.push(id);
+      if (this.loadingList.has(id)) return;
+      this.loadingList.add(id);
 
-          // Generate proxy
-          const clientContext = await myParser.parse(context);
-          let resource = null;
-          try {
-            resource = await this.fetchData(id, clientContext, idParent);
-          } catch (error) { console.error(error) }
-          if (!resource) {
-            this.loadingList = this.loadingList.filter(value => value != id);
-            resolve(null);
-            return;
-          }
-          const serverContext = await myParser.parse([resource['@context'] || {}]);
-          const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent).getProxy();
-
-          // Cache proxy
-          await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
-          this.loadingList = this.loadingList.filter(value => value != id);
-          document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id) } }));
-        }
-      } else {
-        resolve(this.get(id));
+      // Generate proxy
+      const clientContext = await myParser.parse(context);
+      let resource = null;
+      try {
+        resource = await this.fetchData(id, clientContext, idParent);
+      } catch (error) { console.error(error) }
+      if (!resource) {
+        this.loadingList.delete(id);
+        resolve(null);
+        return;
       }
+      const serverContext = await myParser.parse([resource['@context'] || {}]);
+      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent).getProxy();
+
+      // Cache proxy
+      await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
+      this.loadingList.delete(id);
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id) } }));
     });
   }
 
