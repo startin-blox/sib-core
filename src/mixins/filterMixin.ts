@@ -4,7 +4,6 @@ import asyncFilter from 'https://dev.jspm.io/iter-tools@6/es2015/async-filter';
 import asyncReduce from 'https://dev.jspm.io/iter-tools@6/es2015/async-reduce';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6/es2015/async-every';
-import { ComponentInterface } from "../libs/interfaces.js";
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -28,12 +27,6 @@ const FilterMixin = {
   attached(): void {
     this.listPostProcessors.push(this.filterCallback.bind(this));
   },
-  get searchForm(): ComponentInterface {
-    return this._searchForm;
-  },
-  set searchForm(form: ComponentInterface) {
-    this._searchForm = form;
-  },
   get filters(): object {
     return this.searchForm ? this.searchForm.component.value : {};
   },
@@ -44,8 +37,7 @@ const FilterMixin = {
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount[context]) this.searchCount[context] = 1;
-      console.log(this.searchForm);      
-      if (!this.searchForm) await this.appendFilters(context);
+      if (!this.searchForm) await this.applyFilter(context);
       resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
     }
 
@@ -121,22 +113,21 @@ const FilterMixin = {
       Promise.resolve(true)
     );
   },
-  async appendFilters(context: string): Promise<void> {
-    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-
+  async applyFilter(context: string): Promise<void> {
     const filteredBy = this.filteredBy;
-    console.trace(filteredBy);
-    
-    const searchForm = filteredBy != null
-      ? document.getElementById(filteredBy)
-      : this.element.insertBefore(document.createElement(`${prefix}-form`), this.element.firstChild);
-    if(!searchForm) throw `#${filteredBy} is not in DOM`;
-    this.searchForm = searchForm;
-    searchForm.addEventListener('formChange', () => {
+    if (filteredBy != null) {
+      this.searchForm = document.getElementById(filteredBy)
+      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
+    } else {
+      const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
+      this.searchForm = document.createElement(`${prefix}-form`);
+    }
+    this.searchForm.addEventListener('formChange', () => {
       this.filterList(context);
     });
-    searchForm.toggleAttribute('naked', true);
-
+    this.searchForm.toggleAttribute('naked', true);
+    
+    if (filteredBy) return
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
     .filter(attr => attr['name'].startsWith('search-'))
@@ -144,11 +135,12 @@ const FilterMixin = {
       name: attr['name'].replace('search-', ''),
       value: attr['value'],
     }));
-
+    
     searchAttributes.forEach(({name, value}) => {
-      searchForm.setAttribute(name, value);
+      this.searchForm.setAttribute(name, value);
     });
-
+    
+    this.element.insertBefore(this.searchForm, this.element.firstChild);
   }
 }
 
