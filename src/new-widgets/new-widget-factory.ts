@@ -99,5 +99,6 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 
 // create default widgets
 newWidgetFactory('solid-display-value');
-newWidgetFactory('solid-form-input');
+newWidgetFactory('solid-form-text');
+newWidgetFactory('solid-form-dropdown');
 newWidgetFactory('solid-action');

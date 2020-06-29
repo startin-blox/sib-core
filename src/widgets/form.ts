@@ -217,22 +217,6 @@ const SolidFormPlaceholderNumber = widgetFactory(
 );
 
 export {
-  SolidFormAutoCompletion,
-  SolidFormCheckbox,
-  SolidFormDate,
-  SolidFormRangeDate,
-  SolidFormPlaceholderDate,
-  SolidFormDropdown,
-  SolidFormPlaceholderDropdown,
-  SolidFormPlaceholderTextarea,
-  SolidFormJSON,
-  SolidFormLabelText,
-  SolidFormNumber,
-  SolidFormRangeNumber,
-  SolidFormPlaceholderText,
-  SolidFormHidden,
   SolidFormFile,
   SolidFormFileImage,
-  SolidFormLabelPlaceholderText,
-  SolidFormPlaceholderNumber,
 };

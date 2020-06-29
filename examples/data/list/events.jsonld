@@ -5,24 +5,28 @@
 			"@id": "event-1.jsonld",
 			"name": "Coliving",
 			"date": "2019-07-09",
+			"seats": 12,
 			"permissions": []
 		},
 		{
 			"@id": "event-2.jsonld",
 			"name": "Workshop",
 			"date": "2019-05-10",
+			"seats": 2,
 			"permissions": []
 		},
 		{
 			"@id": "event-3.jsonld",
 			"name": "Réunion d'information",
 			"date": "2019-07-10",
+			"seats": 36,
 			"permissions": []
 		},
 		{
 			"@id": "event-4.jsonld",
 			"name": "Assemblée générale",
 			"date": "2019-05-10",
+			"seats": 5,
 			"permissions": []
 		}
 	],

@@ -17,7 +17,7 @@ export const SolidForm = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-input'
+      default: 'solid-form-text'
     },
     naked: {
       type: String,

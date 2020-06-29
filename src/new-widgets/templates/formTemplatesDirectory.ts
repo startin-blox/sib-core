@@ -1,6 +1,8 @@
 import { FormMixin } from '../templatesDependencies/formMixin.js';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
+import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
+import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 
 //@ts-ignore
@@ -11,10 +13,11 @@ import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?modu
 import { until } from 'https://unpkg.com/lit-html/directives/until?module';
 
 export const formTemplates = {
-  input: {
+  text: {
     template: (value: string, attributes: any) => html`
       <input
         type="text"
+        placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         value=${value}
         data-holder
@@ -26,6 +29,7 @@ export const formTemplates = {
     template: (value: string, attributes: any) => html`
       <textarea
         name=${ifDefined(attributes.name)}
+        placeholder=${ifDefined(attributes.placeholder)}
         data-holder
       >${value}</textarea>
     `,
@@ -45,24 +49,94 @@ export const formTemplates = {
     `,
     dependencies: [ FormCheckboxMixin, FormMixin ]
   },
+  date: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="date"
+        placeholder=${ifDefined(attributes.placeholder)}
+        name=${ifDefined(attributes.name)}
+        value=${value ? new Date(value).toISOString().split('T')[0] : ''}
+        data-holder
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
+  rangedate: {
+    template: (value: string, attributes: any) => html`
+      <input
+        data-holder
+        type="date"
+        name="${attributes.name || ''}-start"
+      />
+      <input
+        data-holder
+        type="date"
+        name="${attributes.name || ''}-end"
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
+  number: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="number"
+        placeholder=${ifDefined(attributes.placeholder)}
+        name=${ifDefined(attributes.name)}
+        value=${value}
+        data-holder
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
+  rangenumber: {
+    template: (value: string, attributes: any) => html`
+      <input
+        data-holder
+        type="number"
+        name="${attributes.name || ''}-start"
+      />
+      <input
+        data-holder
+        type="number"
+        name="${attributes.name || ''}-end"
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
+  hidden: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="hidden"
+        name=${ifDefined(attributes.name)}
+        value=${value}
+        data-holder
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
   dropdown: {
     template: (value: string, attributes: any) => html`
       <select
         name=${ifDefined(attributes.name)}
         data-holder
+        ?multiple=${attributes.multiple}
       >
-        <option value="" ?selected=${value === ""}>―</option>
+        ${!attributes.multiple ? html`
+        <option value="" ?selected=${value === ""}>
+          ${attributes.placeholder || '-'}
+        </option>
+        ` : ''}
         ${(attributes.range || []).map(el => html`
           <option
             value='{"@id": "${el['@id']}"}'
-            ?selected=${value === el['@id']}
+            ?selected=${!attributes.multiple ? value === el['@id'] : attributes.values.includes(el['@id'])}
           >
             ${until(el[attributes.optionLabel])}
           </option>
         `)}
       </select>
     `,
-    dependencies: [ FormMixin, RangeMixin ]
+    dependencies: [ FormDropdownMixin, FormMixin, RangeMixin ]
   },
   multiple: {
     template: (value: string, attributes: any) => html`
@@ -78,17 +152,14 @@ export const formTemplates = {
   },
   multipleselect: {
     template: (value: string, attributes: any) => html`
-      <select
+      <solid-form-dropdown
         data-holder
+        name=${ifDefined(attributes.name)}
+        range=${ifDefined(attributes.range)}
+        values=${ifDefined(attributes.values)}
         multiple
-      >
-        ${(attributes.values || []).map(el => html`
-          <option
-            value=${el['@id'] || ''}
-          >${until(el.name)}</option>
-        `)}
-      </select>
+      ></solid-form-dropdown>
     `,
-    dependencies: [ MultipleFormMixin, FormMixin ]
+    dependencies: [ MultipleselectFormMixin, FormMixin ]
   }
 }
