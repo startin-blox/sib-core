@@ -14,6 +14,7 @@ const SolidFormLabelText = widgetFactory(
       type="text"
       name="\${name}"
       value="\${escapedValue}"
+      \${required ? 'required' : ''}
     >
   </label>`,
 );
@@ -26,6 +27,7 @@ const SolidFormCheckbox = widgetFactory(
       type="checkbox"
       name="\${name}"
       \${value ? 'checked' : ''}
+      \${required ? 'required' : ''}
     >
     <div>\${label}</div>
   </label>`,
@@ -40,6 +42,7 @@ const SolidFormDate = widgetFactory(
       type="date"
       name="\${name}"
       value="\${escapedValue}"
+      \${required ? 'required' : ''}
     >
   </label>`,
 );
@@ -69,6 +72,7 @@ const SolidFormPlaceholderDate = widgetFactory(
      placeholder="\${placeholder}"
      name="\${name}"
      value="\${escapedValue}"
+     \${required ? 'required' : ''}
    />`,
 );
 
@@ -81,6 +85,7 @@ const SolidFormJSON = widgetFactory(
       type="text"
       name="\${name}"
       value='\${JSON.stringify(value)}'
+      \${required ? 'required' : ''}
     >
   </label>`,
 );
@@ -93,6 +98,7 @@ const SolidFormPlaceholderText = widgetFactory(
     type="text"
     name="\${name}"
     value="\${escapedValue}"
+    \${required ? 'required' : ''}
   >`,
 );
 
@@ -103,6 +109,7 @@ const SolidFormTextarea = widgetFactory(
     <textarea
       data-holder
       name="\${name}"
+      \${required ? 'required' : ''}
     >\${escapedValue}</textarea>
   </label>`,
 );
@@ -113,6 +120,7 @@ const SolidFormPlaceholderTextarea = widgetFactory(
     data-holder
     placeholder="\${placeholder}"
     name="\${name}"
+    \${required ? 'required' : ''}
   >\${escapedValue}</textarea>`,
 );
 
@@ -120,7 +128,7 @@ const SolidFormDropdown = widgetFactory(
   'solid-form-dropdown',
   `<label>
     <div>\${label}</div>
-    <select name="\${name}" \${multiple?'multiple':''} data-holder>
+    <select name="\${name}" \${multiple?'multiple':''} \${required ? 'required' : ''} data-holder>
       \${multiple ? "" : \`<option value="" \${value == "" ? "selected" : ""}>―</option>\`}
       \${range}
     </select>
@@ -132,7 +140,7 @@ const SolidFormDropdown = widgetFactory(
 
 const SolidFormPlaceholderDropdown = widgetFactory(
   'solid-form-placeholder-dropdown',
-  `<select name="\${name}" \${multiple?'multiple':''} data-holder>
+  `<select name="\${name}" \${multiple?'multiple':''} \${required ? 'required' : ''} data-holder>
     <option value="" \${value == "" ? 'selected' : ''}>\${label}</option>
     \${range}
   </select>
@@ -145,7 +153,7 @@ const SolidFormAutoCompletion = widgetFactory(
   'solid-form-auto-completion',
   `<label>
     <div>\${label}</div>
-    <select name="\${name}" data-holder \${multiple?'multiple':''}>
+    <select name="\${name}" \${required ? 'required' : ''} data-holder \${multiple?'multiple':''}>
       \${range}
     </select>
   </label>
@@ -171,6 +179,7 @@ const SolidFormNumber = widgetFactory(
       type="number"
       name="\${name}"
       value="\${value}"
+      \${required ? 'required' : ''}
     >
   </label>`,
 );
@@ -212,6 +221,7 @@ const SolidFormLabelPlaceholderText = widgetFactory(
       name="\${name}"
       placeholder="\${placeholder}"
       value="\${escapedValue}"
+      \${required ? 'required' : ''}
     >
   </label>`,
 );
@@ -224,6 +234,7 @@ const SolidFormPlaceholderNumber = widgetFactory(
     type="number"
     name="\${name}"
     value="\${value}"
+    \${required ? 'required' : ''}
   >`,
 );
 

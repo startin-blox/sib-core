@@ -5,6 +5,7 @@ export class BaseWidget extends HTMLElement {
   private src: string | undefined;
   private multiple: string | undefined;
   private editable: string | undefined;
+  private required: string | undefined;
   private resourceId: string | undefined;
   public _value: any | undefined;
   private _range: any | undefined;
@@ -26,6 +27,7 @@ export class BaseWidget extends HTMLElement {
       range: await this.htmlRange,
       multiple: this.multiple,
       editable: this.editable === '' ? true : false,
+      required: this.required === '' ? true : false
     });
 
     this.addEditButtons();

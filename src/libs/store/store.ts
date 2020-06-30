@@ -180,7 +180,7 @@ export class Store {
           if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
         });
       }
-      return response.headers.get('Location') || null;
+      return response.headers.get('Location') || response.json();
     });
   }
 

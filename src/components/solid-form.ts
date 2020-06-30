@@ -107,11 +107,19 @@ export const SolidForm = {
     let saved;
     try {
       if (this.partial == null) {
-      saved = resource['@id'] ?
-        await store.put(resource, this.resourceId) :
-        await store.post(resource, this.resourceId);
+        if (resource['@id']) {
+          saved = await store.put(resource, this.resourceId);
+        } else {
+          saved = await store.post(resource, this.resourceId);
+        }  
       } else {
         saved = await store.patch(resource, this.resourceId);
+      }
+      
+      if (typeof saved === 'object' && saved !== null) {
+        this.showError(saved);
+      } else if (this.partial == null && !resource['@id']) {
+        this.reset();
       }
     } catch (e) {
       this.toggleLoaderHidden(true);
@@ -133,19 +141,21 @@ export const SolidForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    const isCreation = !('@id' in (await this.getFormValue()));
+    // const isCreation = !('@id' in (await this.getFormValue()));
     let id;
     try {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return }
-    if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
+    // if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
-    this.element.dispatchEvent(
-      new CustomEvent('requestNavigation', {
-        bubbles: true,
-        detail: { route: this.next, resource: {'@id': id} },
-      }),
-    );
+
+    if (typeof id === 'string')
+      this.element.dispatchEvent(
+        new CustomEvent('requestNavigation', {
+          bubbles: true,
+          detail: { route: this.next, resource: {'@id': id} },
+        }),
+      );
   },
   async inputChange(): Promise<void> {
     this.change(await this.getFormValue());
@@ -173,10 +183,18 @@ export const SolidForm = {
       <p>An error has occured.</p>
       <ul>
     `;
-    Object.keys(e['error']).forEach(field => (
-      errorContent += !field.startsWith('@') ? // remove @context object
-        `<li>${field}: ${e['error'][field]}</li>` : ''
-    ));
+
+    if (e['error'] && Object.keys(e['error'])) {
+      Object.keys(e['error']).forEach(field => (
+        errorContent += !field.startsWith('@') ? // remove @context object
+          `<li>${field}: ${e['error'][field]}</li>` : ''
+      ));
+    } else {
+      Object.keys(e).forEach(field => (
+        errorContent += !field.startsWith('@') ? // remove @context object
+          `<li>${field}: ${e[field]}</li>` : ''
+      ));
+    }
     errorContent += '</ul>';
 
     const error = document.createElement('div');
