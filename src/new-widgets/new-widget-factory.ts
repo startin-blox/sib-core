@@ -101,4 +101,5 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 newWidgetFactory('solid-display-value');
 newWidgetFactory('solid-form-text');
 newWidgetFactory('solid-form-dropdown');
+newWidgetFactory('solid-form-file-label');
 newWidgetFactory('solid-action');

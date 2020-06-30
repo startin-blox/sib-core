@@ -1,6 +1,7 @@
 import { FormMixin } from '../templatesDependencies/formMixin.js';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
 import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.js';
+import { FormFileMixin } from '../templatesDependencies/formFileMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
@@ -161,5 +162,58 @@ export const formTemplates = {
       ></solid-form-dropdown>
     `,
     dependencies: [ MultipleselectFormMixin, FormMixin ]
+  },
+  file: {
+    template: (value: string, attributes: any) => html`
+      <div>
+        <input
+          data-holder
+          type="text"
+          name=${ifDefined(name)}
+          value=${value || ''}
+        >
+        <input
+          type="file"
+          id=${ifDefined(attributes.id)}
+          value=${ifDefined(attributes.fileValue)}
+          @change=${attributes.selectFile}
+        />
+        <button
+          ?hidden=${attributes.resetButtonHidden}
+          @click=${attributes.resetFile}
+        >×</button>
+        <span>${attributes.output}</span>
+      </div>
+    `,
+    dependencies: [ FormFileMixin, FormMixin ]
+  },
+  image: {
+    template: (value: string, attributes: any) => html`
+      <div>
+        <input
+          data-holder
+          type="text"
+          name=${ifDefined(name)}
+          value=${value || ''}
+        >
+        <input
+          type="file"
+          accept="image/*"
+          id=${ifDefined(attributes.id)}
+          value=${ifDefined(attributes.fileValue)}
+          @change=${attributes.selectFile}
+        />
+        <img
+          src=${value || ''}
+          ?hidden=${value === ''}
+        />
+        <button
+          ?hidden=${attributes.resetButtonHidden}
+          @click=${attributes.resetFile}
+        >×</button>
+        <span>${attributes.output}</span>
+      </div>
+    `,
+    dependencies: [ FormFileMixin, FormMixin ]
   }
 }

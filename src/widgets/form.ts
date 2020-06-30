@@ -2,8 +2,7 @@ import { widgetFactory } from './widget-factory.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select@1.23';
-import SolidFormFile from './solid-form-file.js';
-import SolidFormFileImage from './solid-form-file-image.js';
+
 
 const SolidFormLabelText = widgetFactory(
   'solid-form-label-text',
@@ -217,6 +216,4 @@ const SolidFormPlaceholderNumber = widgetFactory(
 );
 
 export {
-  SolidFormFile,
-  SolidFormFileImage,
 };
