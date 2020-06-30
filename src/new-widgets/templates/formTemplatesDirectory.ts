@@ -169,7 +169,7 @@ export const formTemplates = {
         <input
           data-holder
           type="text"
-          name=${ifDefined(name)}
+          name=${ifDefined(attributes.name)}
           value=${value || ''}
         >
         <input
@@ -193,7 +193,7 @@ export const formTemplates = {
         <input
           data-holder
           type="text"
-          name=${ifDefined(name)}
+          name=${ifDefined(attributes.name)}
           value=${value || ''}
         >
         <input

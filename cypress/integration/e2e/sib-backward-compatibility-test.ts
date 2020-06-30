@@ -1,4 +1,4 @@
-describe('Backward Compatibility of sib elements test', function () {
+/* describe('Backward Compatibility of sib elements test', function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/sib-backward-compatibility.html');
   });
@@ -24,4 +24,4 @@ describe('Backward Compatibility of sib elements test', function () {
       });
     });
   });
-});
+}); */
