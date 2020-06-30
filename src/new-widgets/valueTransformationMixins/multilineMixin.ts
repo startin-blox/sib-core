@@ -3,7 +3,7 @@ import { unsafeHTML } from 'https://unpkg.com/lit-html/directives/unsafe-html?mo
 
 const MultilineMixin = {
   name: 'multiline-mixin',
-  attached() {
+  created() {
     this.listValueTransformations.push(this.transformValue.bind(this));
   },
   transformValue(value: string, listValueTransformations: Function[]) {

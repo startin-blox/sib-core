@@ -1,6 +1,6 @@
 const TelMixin = {
   name: 'tel-mixin',
-  attached() {
+  created() {
     this.listAttributes['tel'] = 'tel:';
   }
 }

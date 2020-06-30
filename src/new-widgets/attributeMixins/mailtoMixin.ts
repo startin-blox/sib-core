@@ -1,6 +1,6 @@
 const MailtoMixin = {
   name: 'mailto-mixin',
-  attached() {
+  created() {
     this.listAttributes['mailto'] = 'mailto:';
   }
 }

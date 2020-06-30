@@ -29,8 +29,8 @@ export const newWidgetFactory = (tagName: string) => {
   const newWidget = { // compose widget
     name: tagName,
     use: [
-      BaseWidgetMixin,
-      ...widgetMixins.mixins
+      ...widgetMixins.mixins,
+      BaseWidgetMixin, // at the end so created() is called first
     ],
     get template(): Function {
       return widgetMixins.templateMixin.template;
@@ -99,7 +99,7 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 
 // create default widgets
 newWidgetFactory('solid-display-value');
-newWidgetFactory('solid-form-text');
+newWidgetFactory('solid-form-label-text');
 newWidgetFactory('solid-form-dropdown');
 newWidgetFactory('solid-form-file-label');
 newWidgetFactory('solid-action');

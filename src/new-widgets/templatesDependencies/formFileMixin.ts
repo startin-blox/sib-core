@@ -6,7 +6,7 @@ const FormFileMixin = {
       default: ''
     }
   },
-  attached() {
+  created() {
     this.listAttributes['output'] = '';
     this.listAttributes['resetButtonHidden'] = true;
     this.listAttributes['selectFile'] = this.selectFile.bind(this);

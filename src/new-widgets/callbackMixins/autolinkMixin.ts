@@ -2,7 +2,7 @@ import "https://unpkg.com/autolinker/dist/Autolinker.min.js";
 
 const AutolinkMixin = {
   name: 'autolink-mixin',
-  attached() {
+  created() {
     this.listCallbacks.push(this.addCallback.bind(this));
   },
   addCallback(value: string, listCallbacks: Function[]) {

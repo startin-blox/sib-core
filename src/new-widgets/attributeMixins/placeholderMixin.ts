@@ -5,10 +5,7 @@ const PlaceholderMixin = {
       type: String,
       default: '',
       callback: function (newValue: string) {
-        if (newValue && newValue !== this.listAttributes['placeholder']) {
-          this.listAttributes['placeholder'] = newValue;
-          this.planRender();
-        }
+        this.addToAttributes(newValue, 'placeholder');
       }
     },
     label: {
@@ -17,7 +14,8 @@ const PlaceholderMixin = {
     }
   },
   attached() {
-    this.listAttributes['placeholder'] = this.placeholder || this.label || this.name || '';
+    this.listAttributes['placeholder'] = this.placeholder || this.label || this.name || '';
+    console.log(this.listAttributes['placeholder']);
   }
 }
 

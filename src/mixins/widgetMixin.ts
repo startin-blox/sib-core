@@ -30,6 +30,9 @@ const WidgetMixin = {
   set div(value) {
     this._div = value
   },
+  /**
+   * Return field list of the component
+   */
   async getFields(): Promise<string[]>{ // TODO : improve code
     const attr = this.fields;
     if (attr === '') return [];
@@ -54,13 +57,25 @@ const WidgetMixin = {
     }
     return fields;
   },
+  /**
+   * return attribute if "field" is an action
+   * @param field - string
+   */
   getAction(field: string): string {
     const action = this.element.getAttribute('action-' + field);
     return action;
   },
+  /**
+   * Return regexp to check if "field" is a set
+   * @param field - string
+   */
   getSetRegexp(field: string) {
     return new RegExp(`(^|\\,|\\(|\\s)\\s*${field}\\s*\\(`, 'g')
   },
+  /**
+   * Return fields contained in set "field"
+   * @param field - string
+   */
   getSet(field: string): string[] {
     const setString = this.fields.match(this.getSetRegexp(field));
     if (!setString) return [];
@@ -69,17 +84,27 @@ const WidgetMixin = {
     const set = this.fields.substring(firstSetBracket + 1, lastSetBracket);
     return parseFieldsString(set);
   },
+  /**
+   * Return true if "field" is a set
+   * @param field - string
+   */
   isSet(field: string): boolean {
     if (!this.fields) return false;
     let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
-  isMultiple(field:string): boolean {
-    return this.element.hasAttribute('multiple-' + field);
-  },
+  /**
+   * Return the value of "resource" for predicate "field"
+   * @param resource - Resource
+   * @param field - string
+   */
   async fetchValue(resource: Resource, field: string) {
     return this.resource && !this.resource.isContainer() ? await resource[field] : undefined;
   },
+  /**
+   * Return the value of the field
+   * @param field - field
+   */
   async getValue(field: string) {
     const escapedField = this.getEscapedField(field);
     if (this.getAction(escapedField)) {
@@ -97,6 +122,9 @@ const WidgetMixin = {
 
     return resourceValue;
   },
+  /**
+   * Clear the component
+   */
   empty(): void {
     // create a new empty div next to the old one
     if (this._div) {
@@ -106,40 +134,59 @@ const WidgetMixin = {
       this.div = newDiv
     }
   },
+  /**
+   * Return a widget from a tagName, and create it if necessary
+   * @param tagName - string
+   */
+  widgetFromTagName(tagName: string) {
+    let type = WidgetType.CUSTOM;
+    if (!customElements.get(tagName)) { // component does not exist
+      if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
+      else type = WidgetType.NATIVE; // or use a native tag
+    }
+    return { tagName, type }; // return tagName
+  },
+  /**
+   * Return widget for field "field"
+   * @param field - string
+   * @param isSet - boolean
+   */
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     const widget = this.element.getAttribute('widget-' + field);
 
-    if (widget) {
-      let type = WidgetType.CUSTOM;
-      if (!customElements.get(widget)) { // component does not exist
-        if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
-        else type = WidgetType.NATIVE; // or use a native tag
-      }
-      return { tagName: widget, type }; // return tagName
-    }
-    if (this.getAction(field)) return { tagName: 'solid-action', type: WidgetType.CUSTOM };
+    if (widget) return this.widgetFromTagName(widget);
+    if (this.getAction(field)) return this.widgetFromTagName('solid-action');
+
     return {
       tagName: !isSet ? this.defaultWidget : this.defaultSetWidget,
       type: WidgetType.CUSTOM
     };
   },
+  /**
+   * Return multiple widget if "field" is a multiple, false if it's not
+   * @param field - string
+   */
   multiple(field: string): WidgetInterface|null {
     const attribute = 'multiple-' + field;
     if (!this.element.hasAttribute(attribute)) return null;
     const widget = this.element.getAttribute(attribute) || this.defaultMultipleWidget;
-    if (!customElements.get(widget)) { // component does not exist
-      if (widget.startsWith('solid')) newWidgetFactory(widget); // solid- -> create it
-    }
-    return {
-      tagName: widget,
-      type: WidgetType.CUSTOM
-    };
+    return this.widgetFromTagName(widget);
   },
+  /**
+   * If attribute "lookForAttr" is set on element, add "attrKey" to the "attributes" list
+   * @param lookForAttr - string
+   * @param setAttrKey - string
+   * @param attributes - object
+   */
   addToAttributes(lookForAttr: string, setAttrKey: string, attributes: object) {
     const attribute = this.element.getAttribute(lookForAttr);
-    if (attribute == null) return
+    if (attribute == null) return;
     attributes[setAttrKey] = attribute;
   },
+  /**
+   * Return all the attributes of widget "field"
+   * @param field - string
+   */
   widgetAttributes(field: string): object {
     const attrs = { name: field };
     const escapedField = this.getEscapedField(field);
@@ -155,14 +202,15 @@ const WidgetMixin = {
 
     return attrs;
   },
+  /**
+   * Creates and return a widget for field + add it to the widget list
+   * @param field - string
+   */
   createWidget(field: string): Element {
     if (!parent) parent = this.div;
-    if (this.isSet(field)) {
-      return this.createSet(field);
-    }
+    if (this.isSet(field)) return this.createSet(field);
 
     const attributes = this.widgetAttributes(field);
-
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     const widget = document.createElement(widgetMeta.tagName);
@@ -174,9 +222,12 @@ const WidgetMixin = {
       for (let name of Object.keys(attributes)) {
         widget.setAttribute(name, attributes[name]);
       }
+      this.getValue(field).then((value: any) => {
+        // setAttribute set a string. Make sure null values are empty
+        if (value === null || value === undefined) value = '';
+        widget.setAttribute('value', value);
 
-      this.getValue(field).then(value => {
-        widget.setAttribute('value',value);
+        // Subscribe widgets if they show a resource
         if (value && value['@id']) {
           PubSub.subscribe(value['@id'], () => this.updateDOM())
           // TODO : remove subscriptions
@@ -187,6 +238,10 @@ const WidgetMixin = {
     this.widgets.push(widget);
     return widget;
   },
+  /**
+   * Create a set and add fields to it
+   * @param field - string
+   */
   createSet(field: string): Element {
     const widget = document.createElement(this.getWidget(field, true).tagName);
     widget.setAttribute('name', field);

@@ -1,6 +1,6 @@
 const DateMixin = {
   name: 'date-mixin',
-  attached() {
+  created() {
     this.listValueTransformations.push(this.transformValue.bind(this));
   },
   transformValue(value: string, listValueTransformations: Function[]) {

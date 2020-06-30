@@ -2,7 +2,7 @@ const FormMixin = {
   name: 'form-mixin',
   getValue() {
     if (!this.dataHolder) return this.value;
-    if (this.dataHolder.length >= 1) return this.dataHolder[0].value; // TODO : getValueHolder
+    if (this.dataHolder.length >= 1) return this.getValueFromElement(this.dataHolder[0]);
     return undefined;
   },
   get dataHolder(): Element[] | null {
@@ -14,6 +14,9 @@ const FormMixin = {
     });
 
     return widgetDataHolders.length ? widgetDataHolders : null;
+  },
+  getValueFromElement(element: any) {
+    return element.component ? element.component.getValue() : element.value;
   }
 }
 

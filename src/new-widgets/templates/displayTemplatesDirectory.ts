@@ -5,14 +5,12 @@ import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?modu
 
 export const displayTemplates = {
   value: {
-    template: (value: string) => html`
-      ${value}
-    `,
+    template: (value: string) => html`${value}`,
     dependencies: []
   },
   div: {
     template: (value: string, attributes: any) => html`
-      <div name="${ifDefined(attributes.name)}">
+      <div name=${ifDefined(attributes.name)}>
         ${value}
       </div>
     `,

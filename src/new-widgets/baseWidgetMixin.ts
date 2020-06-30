@@ -9,7 +9,7 @@ const BaseWidgetMixin = {
   attributes: {
     value: {
       type: String,
-      default: null,
+      default: '',
       callback: function () {
         this.planRender();
       }
@@ -74,6 +74,12 @@ const BaseWidgetMixin = {
   },
   templateToDOM(template: Template) {
     render(template, this.element);
+  },
+  addToAttributes(value: string, attrKey: string) {
+    if (value && value !== this.listAttributes[attrKey]) {
+      this.listAttributes[attrKey] = value;
+      this.planRender();
+    }
   }
 }
 

@@ -7,15 +7,11 @@ export const setTemplates = {
     dependencies: []
   },
   div: {
-    template: () => html`
-      <div data-content></div>
-    `,
+    template: () => html`<div data-content></div>`,
     dependencies: []
   },
   ul: {
-    template: () => html`
-      <ul data-content></ul>
-    `,
+    template: () => html`<ul data-content></ul>`,
     dependencies: []
   }
 }

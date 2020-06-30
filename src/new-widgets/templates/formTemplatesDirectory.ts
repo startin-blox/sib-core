@@ -20,7 +20,7 @@ export const formTemplates = {
         type="text"
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
-        value=${value}
+        value=${value || ''}
         data-holder
       />
     `,

@@ -29,7 +29,7 @@ const MultipleFormMixin = {
       default: '',
     }
   },
-  attached() {
+  created() {
     this.listValueTransformations.push(this.setDataSrc.bind(this));
 
     this.listAttributes['children'] = [];
@@ -80,7 +80,7 @@ const MultipleFormMixin = {
   },
   getValue() {
     if (!this.dataHolder) return [];
-    return Array.from(this.dataHolder).map((element: any) => element.component.getValue());
+    return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
   }
 }
 

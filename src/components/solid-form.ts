@@ -3,8 +3,7 @@ import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
-import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
+import { WidgetInterface } from '../mixins/interfaces.js';
 
 //@ts-ignore
 import { html, render } from 'https://unpkg.com/lit-html?module';
@@ -17,7 +16,7 @@ export const SolidForm = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-text'
+      default: 'solid-form-label-text'
     },
     naked: {
       type: String,
@@ -44,40 +43,33 @@ export const SolidForm = {
   get value(): object {
     const values = {};
     this.widgets.forEach((widget) => {
-      let value = widget.component.getValue(); // TODO : possible to do .value instead?
+      let value = widget.component.getValue();
       try {
         value = JSON.parse(value);
       } catch (e) {}
       setDeepProperty(values, widget.component.name.split('.'), value);
     });
-
     return values;
   },
-  set value(value) {
+  set value(value) { // TODO : does not work anymore
     this.widgets.forEach(el => {
       try {
         if(value[el.name]) el.value = value[el.name]
       } catch (e) {}
     });
   },
-  get form(): Element {
-    if (this._form) return this._form;
-    if (this.isNaked) return this.element;
-    this._form = document.createElement('form');
-    this.element.appendChild(this._form);
-    return this._form;
-  },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
   },
   async getFormValue() {
     let value = this.value;
-    if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
-    return value
+    if (this.resource && !(await this.resource.isContainer())) { // add @id if edition
+      value['@id'] = this.resourceId;
+    }
+    return value;
   },
   getWidget(field: string): WidgetInterface {
     let tagName = '';
-    let type = WidgetType.CUSTOM;
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
     // Choose widget
@@ -89,12 +81,7 @@ export const SolidForm = {
       tagName = widgetAttribute || this.defaultWidget;
     }
     // Create widget
-    if (!customElements.get(tagName)) { // component does not exist
-      if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
-      else type = WidgetType.NATIVE; // or use a native tag
-    }
-
-    return { tagName, type };
+    return this.widgetFromTagName(tagName);
   },
   change(resource: object): void {
     this.element.dispatchEvent(
@@ -143,7 +130,7 @@ export const SolidForm = {
     try {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return }
-    if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
+    if (isCreation) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
     this.element.dispatchEvent(
       new CustomEvent('requestNavigation', {
@@ -154,11 +141,6 @@ export const SolidForm = {
   },
   async inputChange(): Promise<void> {
     this.change(await this.getFormValue());
-  },
-  createInput(type: string): HTMLInputElement {
-    const input = document.createElement('input');
-    input.type = type;
-    return input;
   },
   empty(): void {
   },
@@ -175,7 +157,7 @@ export const SolidForm = {
     if (error) this.element.removeChild(error);
   },
   reset() {
-    if(!this.isNaked) this.element.querySelector('form').reset();
+    if (!this.isNaked) this.element.querySelector('form').reset();
     this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
       const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
       options.forEach(option => option.selected = false );
@@ -201,7 +183,7 @@ export const SolidForm = {
         @submit=${this.onSubmit.bind(this)}
         @reset=${this.onReset.bind(this)}
       >
-        ${fields.map(field => this.createWidget(field))}
+        ${fields.map((field: string) => this.createWidget(field))}
         ${!this.isNaked
           ? html`<input type="submit" value=${ifDefined(this.submitButton)}>` : ''}
         ${!this.isNaked && this.element.hasAttribute('reset')

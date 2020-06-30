@@ -14,9 +14,12 @@ const RangeMixin = {
     optionLabel: {
       type: String,
       default: 'name',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'optionLabel');
+      }
     }
   },
-  attached() {
+  created() {
     this.listAttributes['optionLabel'] = this.optionLabel;
   },
   populate() {

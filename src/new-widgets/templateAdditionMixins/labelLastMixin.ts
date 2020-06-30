@@ -12,7 +12,7 @@ const LabelLastMixin = {
       }
     },
   },
-  attached() {
+  created() {
     this.listTemplateAdditions.push(this.addToWidget.bind(this));
   },
   addToWidget(template, listTemplateAdditions: Function[]) {

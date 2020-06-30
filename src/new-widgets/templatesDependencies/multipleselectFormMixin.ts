@@ -13,7 +13,7 @@ const MultipleselectFormMixin = {
       }
     },
   },
-  attached() {
+  created() {
     this.listValueTransformations.push(this.setDataSrc.bind(this));
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {

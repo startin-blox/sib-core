@@ -27,20 +27,4 @@ export const defaultTemplates = {
     `,
     dependencies: []
   },
-
-  multipleselect: {
-    template: (value: string, attributes: any) => html`
-      <select
-        data-holder
-        multiple
-      >
-        ${(attributes.values || []).map(el => html`
-          <option
-            value=${el['@id'] || ''}
-          >${until(el.name)}</option>
-        `)}
-      </select>
-    `,
-    dependencies: [ MultipleFormMixin, FormMixin ]
-  }
 }

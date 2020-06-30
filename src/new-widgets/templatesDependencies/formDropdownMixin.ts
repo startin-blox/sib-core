@@ -17,13 +17,13 @@ const FormDropdownMixin = {
       }
     },
   },
-  attached() {
+  created() {
     this.listAttributes['values'] = [];
     if (this.multiple) this.listAttributes['multiple'] = true;
   },
   getValue() {
-    if (!this.dataHolder) return undefined; // no value
-    if (!this.multiple) return this.dataHolder[0].value; // simple select
+    if (!this.dataHolder) return ''; // no value
+    if (!this.multiple) return this.getValueFromElement(this.dataHolder[0]); // simple select
 
     // multiple select
     const options = Array.from(this.element.querySelectorAll('option')) as HTMLOptionElement[];
