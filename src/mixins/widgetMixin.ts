@@ -127,11 +127,11 @@ const WidgetMixin = {
    */
   empty(): void {
     // create a new empty div next to the old one
-    if (this._div) {
-      let newDiv = document.createElement('div')
-      this.element.insertBefore(newDiv, this._div)
-      this.element.removeChild(this._div)
-      this.div = newDiv
+    if (this._div && document.contains(this._div)) { // execute only if _div is used (for lists)
+      let newDiv = document.createElement('div');
+      this.element.insertBefore(newDiv, this._div);
+      this.element.removeChild(this._div);
+      this.div = newDiv;
     }
   },
   /**

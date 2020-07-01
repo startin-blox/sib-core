@@ -77,7 +77,8 @@ const StoreMixin = {
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
-  }
+  },
+  empty() { }
 };
 
 export {
