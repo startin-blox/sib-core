@@ -66,6 +66,13 @@ const WidgetMixin = {
     return action;
   },
   /**
+   * return true if "field" is editable
+   * @param field - string
+   */
+  editable(field: string): string {
+    return this.element.hasAttribute('editable-' + field);
+  },
+  /**
    * Return regexp to check if "field" is a set
    * @param field - string
    */
@@ -199,6 +206,7 @@ const WidgetMixin = {
     for (let attr of [...eachAttributes, ...defaultAttributes]) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
+    if (this.editable(escapedField) && this.resource) attrs['value-id'] = this.resource['@id'];
 
     return attrs;
   },

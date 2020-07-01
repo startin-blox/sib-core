@@ -1,3 +1,5 @@
+import { EditableMixin } from '../templatesDependencies/editableMixin.js';
+
 //@ts-ignore
 import { html } from 'https://unpkg.com/lit-html?module';
 //@ts-ignore
@@ -10,11 +12,14 @@ export const displayTemplates = {
   },
   div: {
     template: (value: string, attributes: any) => html`
-      <div name=${ifDefined(attributes.name)}>
+      <div
+        name=${ifDefined(attributes.name)}
+        ?data-editable=${attributes.editable}
+      >
         ${value}
       </div>
     `,
-    dependencies: []
+    dependencies: [ EditableMixin ]
   },
   link: {
     template: (value: string, attributes: any) => html`
@@ -22,11 +27,12 @@ export const displayTemplates = {
         name=${ifDefined(attributes.name)}
         href=${(attributes.mailto || attributes.tel || '')+(value || '#')}
         target=${ifDefined(attributes.target)}
+        ?data-editable=${attributes.editable}
       >
         ${attributes.label || value || ''}
       </a>
     `,
-    dependencies: []
+    dependencies: [ EditableMixin ]
   },
   img: {
     template: (value: string, attributes: any) => html`
