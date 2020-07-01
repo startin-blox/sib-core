@@ -176,6 +176,7 @@ export const SolidForm = {
     }
   },
   async populate(): Promise<void> {
+    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
     const fields = await this.getFields();
     const template = html`
       ${this.error}

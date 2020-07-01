@@ -22,6 +22,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         value=${value || ''}
         data-holder
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -32,6 +33,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         placeholder=${ifDefined(attributes.placeholder)}
         data-holder
+        @change=${attributes.onChange}
       >${value}</textarea>
     `,
     dependencies: [ FormMixin ]
@@ -44,6 +46,7 @@ export const formTemplates = {
           type="checkbox"
           name=${ifDefined(attributes.name)}
           ?checked=${value === 'true'}
+          @change=${attributes.onChange}
         >
         <div>${attributes.label || attributes.name}</div>
       </label>
@@ -58,6 +61,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         value=${value ? new Date(value).toISOString().split('T')[0] : ''}
         data-holder
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -68,11 +72,13 @@ export const formTemplates = {
         data-holder
         type="date"
         name="${attributes.name || ''}-start"
+        @change=${attributes.onChange}
       />
       <input
         data-holder
         type="date"
         name="${attributes.name || ''}-end"
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -85,6 +91,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         value=${value}
         data-holder
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -95,11 +102,13 @@ export const formTemplates = {
         data-holder
         type="number"
         name="${attributes.name || ''}-start"
+        @change=${attributes.onChange}
       />
       <input
         data-holder
         type="number"
         name="${attributes.name || ''}-end"
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -111,6 +120,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         value=${value}
         data-holder
+        @change=${attributes.onChange}
       />
     `,
     dependencies: [ FormMixin ]
@@ -121,6 +131,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         data-holder
         ?multiple=${attributes.multiple}
+        @change=${attributes.onChange}
       >
         ${!attributes.multiple ? html`
         <option value="" ?selected=${value === ""}>

@@ -1,5 +1,13 @@
 const FormMixin = {
   name: 'form-mixin',
+  attached() {
+    this.listAttributes['onChange'] = this.onChange.bind(this);
+  },
+  onChange(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.element.dispatchEvent(new Event('change', { bubbles: true }));
+  },
   getValue() {
     if (!this.dataHolder) return this.value;
     if (this.dataHolder.length >= 1) return this.getValueFromElement(this.dataHolder[0]);
