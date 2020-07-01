@@ -69,7 +69,7 @@ const BaseWidgetMixin = {
     }
   },
   renderTemplate(value: string) {
-    const template: Template = this.template(value, {...this.listAttributes});
+    const template: Template = this.template(value, { ...this.listAttributes });
     const listTemplateAdditions = [...this.listTemplateAdditions];
     listTemplateAdditions.push(this.templateToDOM.bind(this));
 

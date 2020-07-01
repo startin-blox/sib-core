@@ -4,9 +4,9 @@ import { html } from 'https://unpkg.com/lit-html?module';
 const LabelLastMixin = {
   name: 'label-last-mixin',
   created() {
-    this.listTemplateAdditions.push(this.addToWidget.bind(this));
+    this.listTemplateAdditions.push(this.addLabelLast.bind(this));
   },
-  addToWidget(template, listTemplateAdditions: Function[]) {
+  addLabelLast(template, listTemplateAdditions: Function[]) {
     const newTemplate = html`
       ${template}
       <label>${this.label || this.name}</label>

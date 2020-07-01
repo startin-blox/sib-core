@@ -20,9 +20,9 @@ const EditableMixin = {
     }
   },
   created() {
-    this.listTemplateAdditions.push(this.addToWidget.bind(this));
+    this.listTemplateAdditions.push(this.addEditButton.bind(this));
   },
-  addToWidget(template, listTemplateAdditions: Function[]) {
+  addEditButton(template, listTemplateAdditions: Function[]) {
     let newTemplate = null;
     if (this.editable !== null) {
       newTemplate = html`
