@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+
+      newWidgetFactory('solid-display-div');
+      newWidgetFactory('solid-display-link');
+      newWidgetFactory('solid-display-link-mailto');
+      newWidgetFactory('solid-display-link-tel');
+      newWidgetFactory('solid-display-link-blank');
+      newWidgetFactory('solid-display-img');
+      newWidgetFactory('solid-display-boolean');
+      newWidgetFactory('solid-display-label-div');
+      newWidgetFactory('solid-display-date-div');
+      newWidgetFactory('solid-display-datetime-div');
+      newWidgetFactory('solid-display-multiline-div');
+    </script>
+    <solid-display-value
+      name="test1"
+      value="test value 1"
+    ></solid-display-value>
+    <solid-display-div
+      name="test1"
+      value="test value 1"
+    ></solid-display-div>
+    <solid-display-link
+      name="test1"
+      value="http://example.com"
+    ></solid-display-link>
+    <solid-display-link-mailto
+      name="test1"
+      value="http://example.com"
+    ></solid-display-link-mailto>
+    <solid-display-link-tel
+      name="test1"
+      value="http://example.com"
+    ></solid-display-link-tel>
+    <solid-display-link-blank
+      name="test1"
+      value="http://example.com"
+      label="link text"
+    ></solid-display-link-blank>
+    <solid-display-img
+      name="test1"
+      value="test-img.png"
+    ></solid-display-img>
+    <solid-display-boolean
+      name="test1"
+      value="true"
+      label="Is displayed ?"
+    ></solid-display-boolean>
+    <solid-display-boolean
+      name="test2"
+      value="false"
+      label="Is displayed ?"
+    ></solid-display-boolean>
+    <solid-display-label-div
+      name="test1"
+      value="test value 1"
+    ></solid-display-label-div>
+    <solid-display-label-div
+      name="test2"
+      value="test value 1"
+      label="Test field"
+    ></solid-display-label-div>
+    <solid-display-date-div
+      name="test1"
+      value="2020-05-28"
+    ></solid-display-date-div>
+    <solid-display-datetime-div
+      name="test2"
+      value="2020-05-28"
+    ></solid-display-datetime-div>
+    <solid-display-multiline-div
+      name="test2"
+      value="test line 1
+      and line 2"
+    ></solid-display-multiline-div>
+  </body>
+</html>

@@ -3,7 +3,6 @@ import { ActionMixin } from './actionMixin.js';
 import { BlankMixin } from './blankMixin.js';
 import { MailtoMixin } from './mailtoMixin.js';
 import { TelMixin } from './telMixin.js';
-import { CheckboxMixin } from './checkboxMixin.js';
 import { PlaceholderMixin } from './placeholderMixin.js';
 
 const attributeDirectory = {
@@ -12,7 +11,6 @@ const attributeDirectory = {
   blank: BlankMixin,
   mailto: MailtoMixin,
   tel: TelMixin,
-  checkbox: CheckboxMixin,
   placeholder: PlaceholderMixin,
 }
 
@@ -23,6 +21,5 @@ export {
   BlankMixin,
   MailtoMixin,
   TelMixin,
-  CheckboxMixin,
   PlaceholderMixin,
 }

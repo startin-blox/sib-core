@@ -3,15 +3,6 @@ import { html } from 'https://unpkg.com/lit-html?module';
 
 const LabelMixin = {
   name: 'label-mixin',
-  attributes: {
-    label: {
-      type: String,
-      default: null,
-      callback: function () {
-        this.planRender();
-      }
-    },
-  },
   created() {
     this.listTemplateAdditions.push(this.addToWidget.bind(this));
   },

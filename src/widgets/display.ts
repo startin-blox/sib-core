@@ -1,6 +1,6 @@
 import { widgetFactory } from './widget-factory.js';
 import "https://unpkg.com/autolinker/dist/Autolinker.min.js";
-
+/*
 const SolidDisplayValue = widgetFactory(
   'solid-display-value',
   `\${value}`,
@@ -109,6 +109,6 @@ const SolidDisplayAutolink = widgetFactory(
     element.innerHTML = Autolinker.link(element.textContent);
   },
 );
-
+*/
 export {
 };

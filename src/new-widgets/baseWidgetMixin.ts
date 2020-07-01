@@ -16,9 +16,16 @@ const BaseWidgetMixin = {
     },
     name: {
       type: String,
-      default: "",
-      callback: function () {
-        this.planRender();
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'name');
+      }
+    },
+    label: {
+      type: String,
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'label');
       }
     },
   },
@@ -62,10 +69,7 @@ const BaseWidgetMixin = {
     }
   },
   renderTemplate(value: string) {
-    const template: Template = this.template(value, {
-      ...this.listAttributes,
-      name: this.name
-    });
+    const template: Template = this.template(value, {...this.listAttributes});
     const listTemplateAdditions = [...this.listTemplateAdditions];
     listTemplateAdditions.push(this.templateToDOM.bind(this));
 

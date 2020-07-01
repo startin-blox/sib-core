@@ -8,13 +8,6 @@ const ActionMixin = {
         this.addToAttributes(newValue, 'src');
       }
     },
-    label: {
-      type: String,
-      default: '',
-      callback: function (newValue: string) {
-        this.addToAttributes(newValue, 'label');
-      }
-    },
   },
 }
 

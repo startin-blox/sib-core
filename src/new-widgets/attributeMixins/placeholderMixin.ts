@@ -8,10 +8,6 @@ const PlaceholderMixin = {
         this.addToAttributes(newValue, 'placeholder');
       }
     },
-    label: {
-      type: String,
-      default: '',
-    }
   },
   attached() {
     this.listAttributes['placeholder'] = this.placeholder || this.label || this.name || '';
