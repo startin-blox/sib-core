@@ -139,7 +139,7 @@ const WidgetMixin = {
    * @param tagName - string
    */
   widgetFromTagName(tagName: string) {
-    let type = WidgetType.CUSTOM;
+    let type = tagName.startsWith('solid') ? WidgetType.CUSTOM : WidgetType.USER;
     if (!customElements.get(tagName)) { // component does not exist
       if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
       else type = WidgetType.NATIVE; // or use a native tag
@@ -219,13 +219,14 @@ const WidgetMixin = {
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
       this.getValue(field).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
+      if (widgetMeta.type === WidgetType.USER) this.defineAttribute(widget, 'context', this.context, widgetMeta.type);
       for (let name of Object.keys(attributes)) {
-        widget.setAttribute(name, attributes[name]);
+        this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
       this.getValue(field).then((value: any) => {
         // setAttribute set a string. Make sure null values are empty
         if (value === null || value === undefined) value = '';
-        widget.setAttribute('value', value);
+        this.defineAttribute(widget, 'value', value, widgetMeta.type);
 
         // Subscribe widgets if they show a resource
         if (value && value['@id']) {
@@ -237,6 +238,13 @@ const WidgetMixin = {
 
     this.widgets.push(widget);
     return widget;
+  },
+  defineAttribute(widget: HTMLElement, attribute: string, value: any, widgetType: WidgetType) {
+    if (widgetType === WidgetType.USER) {
+      widget[attribute] = value; // for solid-widget, set property "value"
+    } else {
+      widget.setAttribute(attribute, value); // else, set attribute "value"
+    }
   },
   /**
    * Create a set and add fields to it

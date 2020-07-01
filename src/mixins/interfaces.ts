@@ -1,5 +1,6 @@
 export enum WidgetType {
   CUSTOM = "custom",
+  USER = "user",
   NATIVE = "native",
 }
 

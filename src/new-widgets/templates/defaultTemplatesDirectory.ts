@@ -1,6 +1,3 @@
-import { FormMixin } from '../templatesDependencies/formMixin.js';
-import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
-
 //@ts-ignore
 import { html } from 'https://unpkg.com/lit-html?module';
 //@ts-ignore
