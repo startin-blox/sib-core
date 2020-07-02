@@ -170,6 +170,7 @@ describe('group-by', function() {
   it('solid-form-dropdown', () => {
     // With no initial value
     cy.get('solid-form-dropdown#test1')
+      .should('have.attr', 'data-src', '../data/list/skills.jsonld')
       .children().should('have.length', 1);
 
     cy.get('solid-form-dropdown#test1') // check attributes
@@ -194,6 +195,8 @@ describe('group-by', function() {
     cy.get('solid-form-dropdown#test1').then($el => { // Check API
       expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-2.jsonld"}'); // form value
+      expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
+      expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
     });
 
     // With initial value

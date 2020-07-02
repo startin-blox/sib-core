@@ -27,4 +27,4 @@ export default class SolidFormFileImage extends SolidFormFile {
   }
 }
 
-defineComponent('solid-form-file-image', SolidFormFileImage);
+// defineComponent('solid-form-file-image', SolidFormFileImage);

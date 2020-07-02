@@ -6,7 +6,7 @@ const MultipleFormMixin = {
   attributes: {
     widget: {
       type: String,
-      default: ''
+      default: 'solid-form-text'
     },
     addLabel: {
       type: String,

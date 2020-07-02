@@ -80,4 +80,4 @@ export default class SolidMultipleSelect extends BaseWidget {
   }
 }
 
-defineComponent('solid-multiple-select', SolidMultipleSelect);
+// defineComponent('solid-multiple-select', SolidMultipleSelect);

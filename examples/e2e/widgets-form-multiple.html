@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+
+      newWidgetFactory('solid-form-text');
+      newWidgetFactory('solid-form-multiple');
+      newWidgetFactory('solid-form-multipleselect');
+    </script>
+    <solid-form-multiple
+      id="test1"
+      name="test"
+    ></solid-form-multiple>
+    <solid-form-multiple
+      id="test2"
+      name="test"
+      range="../data/list/skills.jsonld"
+      widget="solid-form-dropdown"
+    ></solid-form-multiple>
+    <solid-form-multiple
+      id="test3"
+      name="test"
+      range="../data/list/skills.jsonld"
+      widget="solid-form-dropdown"
+      value="../data/list/user-1-skills.jsonld"
+      add-label="add"
+      remove-label="remove"
+    ></solid-form-multiple>
+    <solid-form-multipleselect
+      name="test"
+      range="../data/list/skills.jsonld"
+      value="../data/list/user-1-skills.jsonld"
+    ></solid-form-multipleselect>
+  </body>
+</html>

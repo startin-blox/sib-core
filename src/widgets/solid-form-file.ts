@@ -88,4 +88,4 @@ export default class SolidFormFile extends BaseWidget {
   }
 }
 
-defineComponent('solid-form-file', SolidFormFile);
+// defineComponent('solid-form-file', SolidFormFile);
