@@ -87,13 +87,21 @@ describe('group-by', function() {
     cy.get('solid-display-date-div')
       .find('> div')
       .should('have.length', 1)
-      .and('contain', '28/05/2020')
+      .and('not.contain', '2020-05-28')
+      .and('contain', '28')
+      .and('contain', '5')
+      .and('contain', '2020');
   })
   it('solid-display-datetime-div', () => {
     cy.get('solid-display-datetime-div')
       .find('> div')
       .should('have.length', 1)
-      .and('contain', '28/05/2020 à 02:00:00')
+      .and('not.contain', '2020-05-28')
+      .and('contain', '28')
+      .and('contain', '5')
+      .and('contain', '2020')
+      .and('contain', '00')
+      .and('contain', ':');
   })
   it('solid-display-multiline-div', () => {
     cy.get('solid-display-multiline-div')
