@@ -11,7 +11,6 @@ const PlaceholderMixin = {
   },
   attached() {
     this.listAttributes['placeholder'] = this.placeholder || this.label || this.name || '';
-    console.log(this.listAttributes['placeholder']);
   }
 }
 
