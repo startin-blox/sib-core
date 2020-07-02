@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+
+      newWidgetFactory('solid-form-text');
+      newWidgetFactory('solid-form-textarea');
+      newWidgetFactory('solid-form-checkbox');
+      newWidgetFactory('solid-form-date');
+      newWidgetFactory('solid-form-number');
+      newWidgetFactory('solid-form-hidden');
+    </script>
+    <solid-form-text
+      name="test1"
+      value="test value 1"
+    ></solid-form-text>
+    <solid-form-textarea
+      name="test1"
+      value="test value 1"
+    ></solid-form-textarea>
+    <solid-form-checkbox
+      name="test1"
+      value="true"
+    ></solid-form-checkbox>
+<!--     <solid-form-date
+      name="test1"
+      value="2020-05-21"
+    ></solid-form-date> -->
+    <solid-form-number
+      name="test1"
+      value="5"
+    ></solid-form-number>
+    <solid-form-hidden
+      name="test1"
+      value="test value 1"
+    ></solid-form-hidden>
+    <solid-form-dropdown
+      id="test1"
+      name="test1"
+      range="../data/list/skills.jsonld"
+    ></solid-form-dropdown>
+    <solid-form-dropdown
+      id="test2"
+      name="test2"
+      value='skill-2.jsonld'
+      range="../data/list/skills.jsonld"
+    ></solid-form-dropdown>
+    <solid-form-dropdown
+      id="test3"
+      name="test3"
+      range="../data/list/skills.jsonld"
+      option-label="@id"
+    ></solid-form-dropdown>
+    <solid-form-dropdown
+      id="test4"
+      name="test4"
+      range="../data/list/skills.jsonld"
+      values='["skill-1.jsonld", "skill-3.jsonld"]'
+      multiple
+    ></solid-form-dropdown>
+  </body>
+</html>

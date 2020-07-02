@@ -3,7 +3,7 @@ import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import SlimSelect from 'https://dev.jspm.io/slim-select@1.23';
 
-
+/*
 const SolidFormLabelText = widgetFactory(
   'solid-form-label-text',
   `<label>
@@ -214,6 +214,6 @@ const SolidFormPlaceholderNumber = widgetFactory(
     value="\${value}"
   >`,
 );
-
+ */
 export {
 };

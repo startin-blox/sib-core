@@ -1,5 +1,6 @@
 import { FormMixin } from '../templatesDependencies/formMixin.js';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
+import { FormNumberMixin } from '../templatesDependencies/formNumberMixin.js';
 import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.js';
 import { FormFileMixin } from '../templatesDependencies/formFileMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
@@ -94,7 +95,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FormNumberMixin, FormMixin ]
   },
   rangenumber: {
     template: (value: string, attributes: any) => html`
