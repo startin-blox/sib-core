@@ -6,6 +6,7 @@ import { FormFileMixin } from '../templatesDependencies/formFileMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
+import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.js';
 
 //@ts-ignore
 import { html } from 'https://unpkg.com/lit-html?module';
@@ -82,7 +83,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FilterRangeFormMixin, FormMixin ]
   },
   number: {
     template: (value: string, attributes: any) => html`
@@ -112,7 +113,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]
   },
   hidden: {
     template: (value: string, attributes: any) => html`

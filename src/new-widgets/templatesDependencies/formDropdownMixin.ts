@@ -23,7 +23,10 @@ const FormDropdownMixin = {
   },
   getValue() {
     if (!this.dataHolder) return ''; // no value
-    if (!this.multiple) return this.getValueFromElement(this.dataHolder[0]); // simple select
+    if (!this.multiple) { // simple select
+      if (this.dataHolder.length > 1) this.showDataHolderError(1, this.dataHolder.length);
+      return this.getValueFromElement(this.dataHolder[0]);
+    }
 
     // multiple select
     const options = Array.from(this.element.querySelectorAll('option')) as HTMLOptionElement[];

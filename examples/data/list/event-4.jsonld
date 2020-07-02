@@ -1,7 +1,7 @@
 {
 	"@id": "event-4.jsonld",
 	"name": "Assemblée générale",
-	"date": "2019-05-10",
+	"date": "2020-05-10",
 	"seats": 55,
 	"contact": {
 		"@id": "user-4.jsonld"

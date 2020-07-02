@@ -1,7 +1,7 @@
 const FormNumberMixin = {
   name: 'form-number-mixin',
   getValueFromElement(element: any) {
-    return Number(element.value);
+    return element.value ? Number(element.value) : '';
   }
 }
 
