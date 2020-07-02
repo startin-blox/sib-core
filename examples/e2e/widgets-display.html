@@ -22,6 +22,7 @@
       newWidgetFactory('solid-display-date-div');
       newWidgetFactory('solid-display-datetime-div');
       newWidgetFactory('solid-display-multiline-div');
+      newWidgetFactory('solid-multiple');
     </script>
     <solid-display-value
       name="test1"
@@ -84,5 +85,14 @@
       value="test line 1
       and line 2"
     ></solid-display-multiline-div>
+    <solid-multiple
+      value="../data/list/user-1-skills.jsonld"
+      fields="name"
+    ></solid-multiple>
+    <solid-action
+      name="test1"
+      value="next-page"
+      src="resource-1.jsonld"
+    ></solid-action>
   </body>
 </html>

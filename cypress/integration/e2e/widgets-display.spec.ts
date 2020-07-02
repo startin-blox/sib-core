@@ -109,4 +109,25 @@ describe('group-by', function() {
       .should('have.length', 1)
       .and('contain.html', '<br>')
   })
+  it('solid-multiple', () => {
+    cy.get('solid-multiple')
+      .find('> solid-display')
+      .should('have.length', 1)
+      .and('have.attr', 'data-src', '../data/list/user-1-skills.jsonld')
+      .and('have.attr', 'fields', 'name');
+
+    cy.get('solid-multiple > solid-display > div > solid-display')
+      .should('have.length', 2)
+      .and('contain', 'CSS')
+      .and('contain', 'Javascript')
+      .and('not.contain', 'DevOps')
+      .and('not.contain', 'HTML')
+  })
+  it('solid-action', () => {
+    cy.get('solid-action')
+      .find('solid-link')
+      .should('have.attr', 'data-src', 'resource-1.jsonld')
+      .and('have.attr', 'next', 'next-page')
+      .and('contain', 'test1');
+  })
 })
