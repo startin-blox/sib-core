@@ -106,7 +106,6 @@ export const SolidDisplay = {
         attr.name.startsWith('class-')       ||
         attr.name.startsWith('multiple-')    ||
         attr.name.startsWith('editable-')    ||
-        attr.name == 'required'              ||
         attr.name.startsWith('action-')      ||
         attr.name.startsWith('default-')     ||
         attr.name == 'extra-context'
