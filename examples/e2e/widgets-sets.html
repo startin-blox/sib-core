@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+
+      newWidgetFactory('solid-set-default');
+      newWidgetFactory('solid-set-div');
+      newWidgetFactory('solid-set-ul');
+    </script>
+    <solid-set-default
+      name="test"
+    ></solid-set-default>
+    <solid-set-div
+      name="test"
+    ></solid-set-div>
+    <solid-set-ul
+      name="test"
+    ></solid-set-ul>
+  </body>
+</html>
