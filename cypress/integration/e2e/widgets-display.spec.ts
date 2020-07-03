@@ -1,4 +1,4 @@
-describe('group-by', function() {
+describe('display widgets', function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/widgets-display.html')
   })

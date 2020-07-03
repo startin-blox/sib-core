@@ -1,4 +1,4 @@
-describe('widget sets', function() {
+describe('set widget', function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/widgets-sets.html')
   })
