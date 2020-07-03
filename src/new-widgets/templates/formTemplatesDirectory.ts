@@ -2,6 +2,7 @@ import { FormMixin } from '../templatesDependencies/formMixin.js';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
 import { FormNumberMixin } from '../templatesDependencies/formNumberMixin.js';
 import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.js';
+import { FormRadioMixin } from '../templatesDependencies/formRadioMixin.js';
 import { FormFileMixin } from '../templatesDependencies/formFileMixin.js';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
@@ -151,6 +152,25 @@ export const formTemplates = {
       </select>
     `,
     dependencies: [ FormDropdownMixin, FormMixin, RangeMixin ]
+  },
+  radio: {
+    template: (value: string, attributes: any) => html`
+      <div
+        name=${ifDefined(attributes.name)}
+      >
+        ${(attributes.range || []).map(el => html`
+          <label>
+            <input
+              type="radio"
+              name=${ifDefined(attributes.id)}
+              value='{"@id": "${el['@id']}"}'
+              ?checked=${value === el['@id']}
+            > ${until(el[attributes.optionLabel])}
+          </label>
+        `)}
+      </select>
+    `,
+    dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
   },
   multiple: {
     template: (value: string, attributes: any) => html`

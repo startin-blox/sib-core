@@ -224,4 +224,42 @@ describe('group-by', function() {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': 'skill-2.jsonld'}, {'@id': 'skill-3.jsonld'}]); // form value
     });
   })
+
+  it('solid-form-radio', () => {
+    // With no initial value
+    cy.get('solid-form-radio#test1')
+      .should('have.attr', 'data-src', '../data/list/skills.jsonld')
+      .children().should('have.length', 1);
+
+    cy.get('solid-form-radio#test1') // check attributes
+      .find('> div')
+      .and('have.attr', 'name', 'test1')
+      .children().and('have.length', 4);
+
+    cy.get('solid-form-radio#test1 > div > label').eq(0) // check options
+      .contains('HTML')
+      .find('input')
+      .should('have.attr', 'type', 'radio')
+      .should('have.attr', 'value', '{"@id": "skill-1.jsonld"}');
+
+    cy.get('solid-form-radio#test1').then($el => { // Check API value
+      expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
+    });
+
+    cy.get('solid-form-radio#test1 > div > label').eq(1).click(); // test change value
+
+    cy.get('solid-form-radio#test1').then($el => { // Check API
+      expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-2.jsonld"}'); // form value
+      expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
+      expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
+    });
+
+    // With initial value
+    cy.get('solid-form-radio#test2 label').eq(2).find('input').should('have.attr', 'checked', 'checked');
+    cy.get('solid-form-radio#test2').then($el => {
+      expect((<any>$el[0]).component['value']).to.equal('skill-3.jsonld'); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-3.jsonld"}'); // form value
+    });
+  })
 })

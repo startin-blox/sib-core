@@ -17,6 +17,7 @@
       newWidgetFactory('solid-form-date');
       newWidgetFactory('solid-form-number');
       newWidgetFactory('solid-form-hidden');
+      newWidgetFactory('solid-form-radio');
     </script>
     <solid-form-text
       name="test1"
@@ -66,5 +67,16 @@
       values='["skill-1.jsonld", "skill-3.jsonld"]'
       multiple
     ></solid-form-dropdown>
+    <solid-form-radio
+      id="test1"
+      name="test1"
+      range="../data/list/skills.jsonld"
+    ></solid-form-radio>
+    <solid-form-radio
+      id="test2"
+      name="test2"
+      range="../data/list/skills.jsonld"
+      value="skill-3.jsonld"
+    ></solid-form-radio>
   </body>
 </html>
