@@ -196,7 +196,7 @@ describe('form widgets', function() {
       .find('select')
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'data-holder', '')
-      .children().and('have.length', 5);
+      .children().and('have.length', 9);
 
     cy.get('solid-form-dropdown#test1 > select > option').eq(0) // check options
       .should('have.attr', 'value', '')
@@ -233,7 +233,7 @@ describe('form widgets', function() {
     // With multiple
     cy.get('solid-form-dropdown#test4 > select')
       .should('have.attr', 'multiple', 'multiple')
-      .children().should('have.length', 4);
+      .children().should('have.length', 8);
     cy.get('solid-form-dropdown#test4').then($el => {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': 'skill-1.jsonld'}, {'@id': 'skill-3.jsonld'}]); // form value
     });
@@ -253,7 +253,7 @@ describe('form widgets', function() {
     cy.get('solid-form-radio#test1') // check attributes
       .find('> div')
       .and('have.attr', 'name', 'test1')
-      .children().and('have.length', 4);
+      .children().and('have.length', 8);
 
     cy.get('solid-form-radio#test1 > div > label').eq(0) // check options
       .contains('HTML')

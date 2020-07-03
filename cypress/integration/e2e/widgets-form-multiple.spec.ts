@@ -59,7 +59,7 @@ describe('multiple widgets', function() {
 
     cy.get('solid-form-multiple#test2 > div[data-index="test0"] solid-form-dropdown')
       .find('select > option') // check options
-      .should('have.length', 5)
+      .should('have.length', 9)
       .eq(4).should('contain', 'DevOps');
 
     // add 2 new lines
@@ -72,7 +72,7 @@ describe('multiple widgets', function() {
       .children().should('have.length', 4);
 
     cy.get('solid-form-multiple#test2 > div[data-index="test1"] solid-form-dropdown')
-      .find('select > option').should('have.length', 5); // check options of children
+      .find('select > option').should('have.length', 9); // check options of children
 
     // Select values
     cy.get('solid-form-multiple#test2 > div[data-index="test0"] solid-form-dropdown > select')

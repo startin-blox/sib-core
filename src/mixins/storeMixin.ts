@@ -16,8 +16,9 @@ const StoreMixin = {
         this.resourceId = value;
 
         if (this.nestedField) {
-          await store.getData(value, this.context);
-          this.resourceId = this.resource ? (await this.resource[this.nestedField])['@id'] : null;
+          const resource = await store.getData(value, this.context);
+          const nestedResource = resource ? await resource[this.nestedField] : null;
+          this.resourceId = nestedResource ? nestedResource['@id'] : null;
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
         }
         this.updateNavigateSubscription();

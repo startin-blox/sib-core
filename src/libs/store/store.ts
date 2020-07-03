@@ -324,7 +324,7 @@ export class Store {
   async _updateVirtualContainer(containerId: string) {
     const container = store.get(containerId);
     if (container) {
-      const context = container.clientContext;
+      const context = container['clientContext'];
       this.clearCache(containerId);
       await this.getData(containerId, context);
     }

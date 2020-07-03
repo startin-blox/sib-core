@@ -72,9 +72,9 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-form#user-form-city input[name="profile.city"]').clear().type('Briouze');
     cy.get('solid-form#user-form-city input[type=submit]').click();
 
-    cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('have.text', 'Briouze');
-    cy.get('solid-display#profile > div > solid-display-value[name="city"]').should('have.text', 'Briouze');
-    cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('have.text', 'Briouze');
+    cy.get('solid-display#user > solid-display-value[name="profile.city"]').should('have.text', 'Briouze');
+    cy.get('solid-display#profile > solid-display-value[name="city"]').should('have.text', 'Briouze');
+    cy.get('solid-display#profile-widget > custom-widget[name="profile"] > div').should('have.text', 'Briouze');
 
     // Nested resource in multi dot field
     // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); DOES NOT WORK YET

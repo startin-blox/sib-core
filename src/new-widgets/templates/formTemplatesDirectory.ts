@@ -141,7 +141,7 @@ export const formTemplates = {
           ${attributes.placeholder || '-'}
         </option>
         ` : ''}
-        ${(attributes.range || []).map(el => html`
+        ${(attributes.range || []).filter(el => el !== null).map(el => html`
           <option
             value='{"@id": "${el['@id']}"}'
             ?selected=${!attributes.multiple ? value === el['@id'] : attributes.values.includes(el['@id'])}
