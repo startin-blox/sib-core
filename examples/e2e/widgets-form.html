@@ -12,17 +12,36 @@
       import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
 
       newWidgetFactory('solid-form-text');
+      newWidgetFactory('solid-form-text-label');
+      newWidgetFactory('solid-form-text-placeholder');
+      newWidgetFactory('solid-form-text-label-placeholder');
       newWidgetFactory('solid-form-textarea');
       newWidgetFactory('solid-form-checkbox');
       newWidgetFactory('solid-form-date');
       newWidgetFactory('solid-form-number');
       newWidgetFactory('solid-form-hidden');
       newWidgetFactory('solid-form-radio');
+      newWidgetFactory('solid-form-rangenumber');
+      newWidgetFactory('solid-form-rangedate');
     </script>
     <solid-form-text
       name="test1"
       value="test value 1"
     ></solid-form-text>
+    <solid-form-text-label
+      name="test1"
+      value="test value 1"
+      label="My label"
+    ></solid-form-text-label>
+    <solid-form-text-placeholder
+      name="test1"
+      value="test value 1"
+      placeholder="My placeholder"
+    ></solid-form-text-placeholder>
+    <solid-form-text-label-placeholder
+      name="test1"
+      value="test value 1"
+    ></solid-form-text-label-placeholder>
     <solid-form-textarea
       name="test1"
       value="test value 1"
@@ -78,5 +97,11 @@
       range="../data/list/skills.jsonld"
       value="skill-3.jsonld"
     ></solid-form-radio>
+    <solid-form-rangenumber
+      name="test1"
+    ></solid-form-rangenumber>
+    <solid-form-rangedate
+      name="test1"
+    ></solid-form-rangedate>
   </body>
 </html>

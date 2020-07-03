@@ -33,7 +33,26 @@ describe('form widgets', function() {
     cy.get('solid-form-text').then($el => { // Check API
       expect((<any>$el[0]).component.getValue()).to.equal(''); // value attribute
     });
-  })
+  });
+
+  it('solid-form-text + label and placeholders', () => {
+    cy.get('solid-form-text-label')
+      .children().should('have.length', 2);
+    cy.get('solid-form-text-label')
+      .find('> label').should('contain', 'My label');
+
+    cy.get('solid-form-text-placeholder')
+      .children().should('have.length', 1);
+    cy.get('solid-form-text-placeholder')
+      .find('> input').should('have.attr', 'placeholder', 'My placeholder');
+
+    cy.get('solid-form-text-label-placeholder')
+      .children().should('have.length', 2);
+    cy.get('solid-form-text-label-placeholder')
+      .find('> label').should('contain', 'test1');
+    cy.get('solid-form-text-label-placeholder')
+      .find('> input').should('have.attr', 'placeholder', 'test1');
+  });
 
   it('solid-form-textarea', () => {
     cy.get('solid-form-textarea')
@@ -262,4 +281,58 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-3.jsonld"}'); // form value
     });
   })
+
+  it('solid-form-rangenumber', () => {
+    cy.get('solid-form-rangenumber')
+      .children().should('have.length', 2);
+
+    cy.get('solid-form-rangenumber > input').eq(0)
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'type', 'number')
+      .and('have.attr', 'name', 'test1-start');
+    cy.get('solid-form-rangenumber > input').eq(1)
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'type', 'number')
+      .and('have.attr', 'name', 'test1-end');
+
+    cy.get('solid-form-rangenumber').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['', '']); // form value
+    });
+
+    cy.get('solid-form-rangenumber > input').eq(0).type('8');
+    cy.get('solid-form-rangenumber').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([8, '']); // form value
+    });
+    cy.get('solid-form-rangenumber > input').eq(1).type('23');
+    cy.get('solid-form-rangenumber').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([8, 23]); // form value
+    });
+  });
+
+  it('solid-form-rangedate', () => {
+    cy.get('solid-form-rangedate')
+      .children().should('have.length', 2);
+
+    cy.get('solid-form-rangedate > input').eq(0)
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'type', 'date')
+      .and('have.attr', 'name', 'test1-start');
+    cy.get('solid-form-rangedate > input').eq(1)
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'type', 'date')
+      .and('have.attr', 'name', 'test1-end');
+
+    cy.get('solid-form-rangedate').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['', '']); // form value
+    });
+
+    cy.get('solid-form-rangedate > input').eq(0).type('2020-02-12');
+    cy.get('solid-form-rangedate').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['2020-02-12', '']); // form value
+    });
+    cy.get('solid-form-rangedate > input').eq(1).type('2020-05-24');
+    cy.get('solid-form-rangedate').then($el => {
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['2020-02-12', '2020-05-24']); // form value
+    });
+  });
 })
