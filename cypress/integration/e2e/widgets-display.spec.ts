@@ -8,12 +8,42 @@ describe('display widgets', function() {
       .children().should('have.length', 0);
   })
   it('solid-display-div', () => {
-    cy.get('solid-display-div')
+    cy.get('solid-display-div#test1')
       .should('contain', 'test value 1')
       .find('> div')
       .should('have.length', 1)
       .should('have.attr', 'name', 'test1')
   })
+  it('solid-display-div editable', () => {
+    cy.server();
+    cy.route({
+      method: 'PATCH',
+      url: '**/resource-1.jsonld',
+      status: 200,
+      response: {},
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+    cy.route({
+      method: 'GET',
+      url: '**/resource-1.jsonld',
+      status: 200,
+      response: {},
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+    cy.get('solid-display-div#test2')
+      .children().should('have.length', 2);
+    cy.get('solid-display-div#test2')
+      .find('> div')
+      .should('have.attr', 'data-editable', '');
+    cy.get('solid-display-div#test2')
+      .find('> button')
+      .should('contain', 'Modifier')
+      .click()
+      .should('have.attr', 'disabled', 'disabled');
+    cy.get('solid-display-div#test2')
+      .find('> div')
+      .should('have.attr', 'contenteditable', '');
+  });
   it('solid-display-link', () => {
     cy.get('solid-display-link')
       .find('a')
