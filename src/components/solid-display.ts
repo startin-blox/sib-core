@@ -126,7 +126,7 @@ export const SolidDisplay = {
     const template = html`
       ${fields.map((field: string) => this.createWidget(field))}
     `;
-    render(template, this.element);
+    render(template, parent);
   },
 };
 

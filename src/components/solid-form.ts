@@ -47,7 +47,7 @@ export const SolidForm = {
       try {
         value = JSON.parse(value);
       } catch (e) {}
-      setDeepProperty(values, widget.component.name.split('.'), value);
+      setDeepProperty(values, (widget.component || widget).name.split('.'), value);
     });
     return values;
   },
@@ -68,7 +68,7 @@ export const SolidForm = {
     }
     return value;
   },
-  getWidget(field: string): WidgetInterface {
+  getWidget(field: string, isSet: boolean): WidgetInterface {
     let tagName = '';
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
@@ -78,7 +78,7 @@ export const SolidForm = {
     } else if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
       tagName = 'solid-form-dropdown'
     } else {
-      tagName = widgetAttribute || this.defaultWidget;
+      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
     return this.widgetFromTagName(tagName);
