@@ -178,18 +178,25 @@ export const SolidForm = {
   async populate(): Promise<void> {
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
     const fields = await this.getFields();
+    const fieldsTemplate = html`
+      ${fields.map((field: string) => this.createWidget(field))}
+    `;
     const template = html`
       ${this.error}
-      <form
-        @submit=${this.onSubmit.bind(this)}
-        @reset=${this.onReset.bind(this)}
-      >
-        ${fields.map((field: string) => this.createWidget(field))}
-        ${!this.isNaked
-          ? html`<input type="submit" value=${ifDefined(this.submitButton)}>` : ''}
-        ${!this.isNaked && this.element.hasAttribute('reset')
-          ? html`<input type="reset" />` : ''}
-      </form>
+      ${!this.isNaked ? html`
+        <form
+          @submit=${this.onSubmit.bind(this)}
+          @reset=${this.onReset.bind(this)}
+        >
+          ${fieldsTemplate}
+          <input type="submit" value=${ifDefined(this.submitButton)}>
+          ${this.element.hasAttribute('reset')
+            ? html`<input type="reset" />` : ''}
+        </form>
+      ` : html`
+        ${fieldsTemplate}
+      `
+      }
     `;
     render(template, this.element);
   }
