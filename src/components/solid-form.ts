@@ -68,7 +68,7 @@ export const SolidForm = {
     }
     return value;
   },
-  getWidget(field: string, isSet: boolean): WidgetInterface {
+  getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
