@@ -25,17 +25,52 @@
         border: 1px dashed palevioletred;
       }
     </style>
+    <script>
+      function change(input) {
+        if (!(input instanceof HTMLInputElement)) return;
+        const value = input.value;
+        const elm = input.closest('form').nextElementSibling;
+        elm.component.filteredBy = value;
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('change', ({ target }) =>
+          change(target),
+        );
+        [...document.querySelectorAll('input[type=radio]')]
+          .filter((elm) => elm.checked)
+          .forEach(change);
+      });
+    </script>
   </head>
 
   <body>
+    <h3>filter 1</h3>
     <solid-form-search
       id="filter1"
       fields="email"
       label-email="mail"
     ></solid-form-search>
+
+    <h3>filter 2</h3>
+    <solid-form-search
+      id="filter2"
+      fields="username"
+      label-email="mail"
+    ></solid-form-search>
     <div id="flex">
       <div>
         <h3>sib-display 1</h3>
+        <form>
+          filteredBy: 
+          <label
+            ><input type="radio" name="filterBy" value="filter1" checked />
+            filter1</label
+          >
+          <label
+            ><input type="radio" name="filterBy" value="filter2" />
+            filter2</label
+          >
+        </form>
         <solid-display
           data-src="data/list/users.jsonld"
           fields="username, last_name, email"
@@ -44,6 +79,17 @@
       </div>
       <div>
         <h3>sib-display 2</h3>
+        <form>
+          filteredBy: 
+          <label
+            ><input type="radio" name="filterBy" value="filter1" checked />
+            filter1</label
+          >
+          <label
+            ><input type="radio" name="filterBy" value="filter2" />
+            filter2</label
+          >
+        </form>
         <solid-display
           data-src="data/list/users.jsonld"
           fields="username, first_name, last_name"
