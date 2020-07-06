@@ -160,4 +160,38 @@ describe('multiple widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "skill-2.jsonld"}, {"@id": "skill-3.jsonld"}, {"@id": "skill-4.jsonld"}]); // form value
     });
   });
+
+  it('solid-form-multipleselect-autocompletion', () => {
+    cy.get('solid-form-multipleselect-autocompletion')
+      .children().should('have.length', 1);
+    cy.get('solid-form-multipleselect-autocompletion')
+      .find('solid-form-dropdown')
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'multiple', 'multiple')
+      .and('have.attr', 'name', 'test1')
+      .and('have.attr', 'range', '../data/list/skills.jsonld')
+      .and('have.attr', 'data-src', '../data/list/skills.jsonld');
+    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
+      .children().should('have.length', 2);
+    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
+      .find('select')
+      .should('have.attr', 'data-holder', '')
+      .and('have.attr', 'multiple', 'multiple')
+      .and('have.attr', 'name', 'test1')
+      .and('have.attr', 'style', 'display: none;')
+      .and('have.attr', 'data-ssid');
+    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
+      .find('> div')
+      .children().should('have.length', 2);
+    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown .ss-option').eq(0)
+      .should('contain', 'HTML');
+    // select values
+    cy.get('solid-form-multipleselect-autocompletion .ss-main').click();
+    cy.get('solid-form-multipleselect-autocompletion .ss-content.ss-open .ss-option').eq(1).click();
+    cy.get('solid-form-multipleselect-autocompletion .ss-option').eq(1)
+    .should('have.class', 'ss-option-selected');
+    cy.get('solid-form-multipleselect-autocompletion .ss-values')
+      .children().should('have.length', 1)
+      .should('contain', 'CSS');
+  });
 })

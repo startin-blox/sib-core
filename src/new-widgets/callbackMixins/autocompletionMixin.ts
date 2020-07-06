@@ -8,17 +8,26 @@ const AutocompletionMixin = {
     this.listCallbacks.push(this.addCallback.bind(this));
   },
   addCallback(value: string, listCallbacks: Function[]) {
-    // TODO : until make values appear too late
     setTimeout(() => {
       let select = this.element.querySelector('select');
       if (select) {
-        const slimSelect = new SlimSelect({ select });
+        let slimSelect = new SlimSelect({ select });
         importCSS('https://dev.jspm.io/slim-select/dist/slimselect.min.css');
         select.addEventListener('change', () => slimSelect.render());
+
+        // when data changes, re-build slimSelect
+        new MutationObserver(() => {
+          slimSelect.destroy();
+          slimSelect = new SlimSelect({ select });
+        }).observe(select, {
+          childList: true,
+          characterData: true,
+          subtree: true,
+        });
       }
 
       const nextProcessor = listCallbacks.shift();
-      if(nextProcessor) nextProcessor(value, listCallbacks);
+      if (nextProcessor) nextProcessor(value, listCallbacks);
     })
   }
 }
