@@ -248,7 +248,7 @@ const WidgetMixin = {
     return widget;
   },
   defineAttribute(widget: HTMLElement, attribute: string, value: any, widgetType: WidgetType) {
-    if (widgetType === WidgetType.USER) {
+    if (widgetType === WidgetType.USER && attribute !== "class") { // specific case, for class attr, use SetAttribute
       widget[attribute] = value; // for solid-widget, set property "value"
     } else {
       widget.setAttribute(attribute, value); // else, set attribute "value"

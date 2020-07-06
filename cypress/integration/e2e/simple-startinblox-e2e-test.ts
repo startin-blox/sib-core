@@ -6,7 +6,7 @@ describe('simple Startin’blox e2e test', function() {
     cy.get('body > solid-display > div').children().should('have.length', 4)
   })
   it('check first children content', () => {
-    cy.get('body > solid-display > div > solid-display:first-child > solid-display-value:first-child')
+    cy.get('body > solid-display > div > solid-display:first-child > div > solid-display-value:first-child')
       .should('have.attr', 'name', 'first_name')
       .should('contain', 'Test')
   })
