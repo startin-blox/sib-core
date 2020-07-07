@@ -110,7 +110,7 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.equal(false); // form value
     });
   })
-/*   it('solid-form-date', () => {
+  it('solid-form-date', () => {
     cy.get('solid-form-date')
       .children().should('have.length', 1);
     // check attributes
@@ -118,21 +118,21 @@ describe('form widgets', function() {
       .find('input')
       .should('have.attr', 'type', 'date')
       .and('have.attr', 'name', 'test1')
-      .and('have.attr', 'value', '')
+      .and('have.attr', 'value', '2020-05-21')
       .and('have.attr', 'data-holder');
     // type value
     cy.get('solid-form-date > input')
       .clear()
-      .type('new value');
+      .type('2020-12-31');
     cy.get('solid-form-date > input')
-      .and('have.attr', 'value', ''); // attr does not change
+      .and('have.attr', 'value', '2020-05-21'); // attr does not change
 
     // Check API
     cy.get('solid-form-date').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal('test value 1'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal('new value'); // form value
+      expect((<any>$el[0]).component['value']).to.equal('2020-05-21'); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('2020-12-31'); // form value
     });
-  }) */
+  })
 
   it('solid-form-number', () => {
     cy.get('solid-form-number')

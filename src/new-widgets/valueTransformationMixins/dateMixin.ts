@@ -5,6 +5,7 @@ const DateMixin = {
   },
   transformValue(value: string, listValueTransformations: Function[]) {
     if (!value) return;
+    this.listAttributes['originalValue'] = value; // workaround for giving a non-formatted value to the form widget
     const newValue = new Date(value).toLocaleDateString();
 
     const nextProcessor = listValueTransformations.shift();
