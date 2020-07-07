@@ -191,7 +191,7 @@ export class Store {
    */
   async getNestedResources(resource: object, id: string) {
     const cachedResource = store.get(id);
-    if (!cachedResource) return [];
+    if (!cachedResource || cachedResource.isContainer()) return [];
     let nestedProperties:any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
