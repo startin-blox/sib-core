@@ -59,7 +59,7 @@ export class Store {
    */
   async getData(id: string, context = {}, idParent = ""): Promise<CustomGetter|null> {
     return new Promise(async (resolve) => {
-      if (!this.cache.has(id)) {
+      if (!this.cache.has(id) || this.loadingList.includes(id)) {
         document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
         if (!this.loadingList.includes(id)) {
@@ -73,6 +73,7 @@ export class Store {
           } catch (error) { console.error(error) }
           if (!resource) {
             this.loadingList = this.loadingList.filter(value => value != id);
+            resolve(null);
             return;
           }
           const serverContext = await myParser.parse([resource['@context'] || {}]);
@@ -112,7 +113,7 @@ export class Store {
       }
     }
 
-    // Cache sub objects
+    // Cache nested resources
     if (resource.getSubObjects) {
       for (let res of resource.getSubObjects()) {
         const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId).getProxy();
@@ -121,7 +122,7 @@ export class Store {
       }
     }
 
-    // Cache children
+    // Cache children of container
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       for (let res of resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
@@ -133,8 +134,10 @@ export class Store {
     // Cache resource
     if (resource['@id'] && !resource.properties) {
       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
-      if (resource['@type'] === "ldp:Container") { // if source, init graph of source
-        await this.getData(resource['@id'], clientContext, parentId);
+      if (resource['@type'] === "ldp:Container" // if object is container (=source)
+        || (Object.keys(resource).length === 1 && resource['@id']) // or has only one prop @id
+      ) {
+        await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }
       const resourceProxy = new CustomGetter(resource['@id'], resource, clientContext, parentContext, parentId).getProxy();
@@ -188,7 +191,7 @@ export class Store {
    */
   async getNestedResources(resource: object, id: string) {
     const cachedResource = store.get(id);
-    if (!cachedResource) return [];
+    if (!cachedResource || cachedResource.isContainer()) return [];
     let nestedProperties:any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {

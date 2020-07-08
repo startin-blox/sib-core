@@ -145,11 +145,17 @@ export class BaseWidget extends HTMLElement {
       this.render();
     })();
   }
-  async fetchSources(resource: object) {
+  async fetchSources(resource: any) {
     if (!resource || !resource['ldp:contains']) return null;
-
     let resources: any[] = [];
+    let index = 0;
     for (let res of resource['ldp:contains']) {
+      if (!res) { // child not in cache yet
+        try {
+          const resourceId = resource.getChildren()[index]['@id'];
+          res = await store.getData(resourceId, this.context)
+        } catch (e) { continue; }
+      }
       if (res.isContainer()) { // if nested container
         let resourcesFromContainer = await store.getData(res['@id'], this.context); // fetch the datas
         this._listen(res['@id']);
@@ -157,6 +163,7 @@ export class BaseWidget extends HTMLElement {
       } else {
         resources.push(res);
       }
+      index++;
     }
     return resources;
   }
