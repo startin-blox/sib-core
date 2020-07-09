@@ -179,7 +179,7 @@ export class Store {
         });
         return response.headers.get('Location') || null;
       } else {
-        throw new Error(`${response.status} ${response.statusText}`);
+        return response.json().then(e => { throw e })
       }
     });
   }

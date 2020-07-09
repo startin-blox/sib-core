@@ -147,7 +147,12 @@ export const SolidForm = {
   showError(e: object) {
     this.error = html`
       <div data-id="error">
-        <p>${e}</p>
+        <p>An error has occured.</p>
+        <ul>
+          ${Object.keys(e).filter(field => !field.startsWith('@')).map(field => html`
+            <li>${field}: ${e[field]}</li>
+          `)}
+        </ul>
       </div>
     `;
     this.populate();
