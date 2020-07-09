@@ -51,13 +51,6 @@ export const SolidForm = {
     });
     return values;
   },
-  set value(value) { // TODO : does not work anymore
-    this.widgets.forEach(el => {
-      try {
-        if(value[el.name]) el.value = value[el.name]
-      } catch (e) {}
-    });
-  },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
   },
