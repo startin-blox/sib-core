@@ -29,7 +29,6 @@
     widget-profile="solid-form-profile"></solid-form>
 
     <button id="get">GET nested form value</button>
-    <button id="set">SET nested form value</button>
 
     <pre id="pre"></pre>
 
@@ -37,9 +36,6 @@
       get.onclick = () => {
         let nestedFormValue = document.querySelector('solid-form-profile').value
         pre.textContent = JSON.stringify(nestedFormValue, null, 2);
-      }
-      set.onclick = () => {
-        document.querySelector('solid-form-profile').value = {city: "Rennes", phone:"06 10 10 10 10", bio: "Hello all!"}
       }
     </script>
 </body>

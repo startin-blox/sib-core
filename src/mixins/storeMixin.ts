@@ -1,4 +1,5 @@
 import { base_context, store } from '../libs/store/store.js';
+import { Resource } from './interfaces.js';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -15,8 +16,9 @@ const StoreMixin = {
         this.resourceId = value;
 
         if (this.nestedField) {
-          await store.getData(value, this.context);
-          this.resourceId = this.resource ? (await this.resource[this.nestedField])['@id'] : null;
+          const resource = await store.getData(value, this.context);
+          const nestedResource = resource ? await resource[this.nestedField] : null;
+          this.resourceId = nestedResource ? nestedResource['@id'] : null;
           if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
         }
         this.updateNavigateSubscription();
@@ -58,7 +60,7 @@ const StoreMixin = {
     if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
     return {}
   },
-  get resource(): object|null{
+  get resource(): Resource|null{
     return this.resourceId ? store.get(this.resourceId) : null;
   },
   get loader(): HTMLElement | null {
@@ -76,7 +78,8 @@ const StoreMixin = {
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
-  }
+  },
+  empty() { }
 };
 
 export {

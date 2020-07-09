@@ -5,7 +5,7 @@
     "@id": "user-1.jsonld"
   },
   "available": null,
-  "bio": "",
+  "bio": "Long description\non two lines",
   "city": "Paris",
   "phone": "06-03-23-98-23",
   "website": "www.startinblox.com",

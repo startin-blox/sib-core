@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <solid-widget name="custom-widget">
+      <template>
+        <h1>${value}</h1>
+      </template>
+    </solid-widget>
+    <solid-display
+      id="test1"
+      data-src="../data/project.jsonld"
+      fields="name"
+      widget-name="custom-widget"
+    ></solid-display>
+    <solid-display
+      id="test2"
+      data-src="../data/project.jsonld"
+      fields="name"
+      widget-name="custom-widget"
+      class-name="test-class"
+    ></solid-display>
+  </body>
+</html>

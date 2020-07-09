@@ -40,8 +40,6 @@ module.exports = (on, config) => {
               plugins: [
                 'babel-plugin-remove-import-js-extension',
                 '@babel/plugin-proposal-class-properties',
-                '@babel/plugin-transform-parameters',
-                '@babel/plugin-transform-spread',
               ],
               ignore: ['**/tests'],
             },

@@ -92,7 +92,7 @@
       <solid-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        multiple-skills="solid-multiple-select"
+        multiple-skills="solid-form-multipleselect"
         range-skills="data/list/skills.jsonld"
       ></solid-form>
     </details>
@@ -103,16 +103,15 @@
       <solid-form
         data-src="data/list/event-1.jsonld"
         fields="contact"
-        widget-contact="solid-form-auto-completion"
+        widget-contact="solid-form-dropdown-autocompletion"
         range-contact="data/list/users.jsonld"
       ></solid-form>
       <h2>Multiple skills</h2>
       <solid-form
         data-src="data/list/user-1.jsonld"
         fields="skills"
-        widget-skills="solid-form-auto-completion"
         range-skills="data/list/skills.jsonld"
-        multiple-skills="solid-multiple-select"
+        multiple-skills="solid-form-multipleselect-autocompletion"
       ></solid-form>
     </details>
 

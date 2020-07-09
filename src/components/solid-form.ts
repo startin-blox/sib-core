@@ -3,6 +3,12 @@ import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
+import { WidgetInterface } from '../mixins/interfaces.js';
+
+//@ts-ignore
+import { html, render } from 'https://unpkg.com/lit-html?module';
+//@ts-ignore
+import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
 
 export const SolidForm = {
   name: 'solid-form',
@@ -18,7 +24,7 @@ export const SolidForm = {
     },
     submitButton: {
       type: String,
-      default: null
+      default: undefined
     },
     partial: {
       type: Boolean,
@@ -26,6 +32,7 @@ export const SolidForm = {
     }
   },
   initialState: {
+    error: ''
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';
@@ -35,61 +42,39 @@ export const SolidForm = {
   },
   get value(): object {
     const values = {};
-    this.widgets.forEach(({name, value}) => {
+    this.widgets.forEach((widget) => {
+      let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
       } catch (e) {}
-      setDeepProperty(values, name.split('.'), value);
+      setDeepProperty(values, (widget.component || widget).name.split('.'), value);
     });
-
     return values;
-  },
-  set value(value) {
-    this.widgets.forEach(el => {
-      try {
-        if(value[el.name]) el.value = value[el.name]
-      } catch (e) {}
-    });
-  },
-  get form(): Element {
-    if (this._form) return this._form;
-    if (this.isNaked) return this.element;
-    this._form = document.createElement('form');
-    this.element.appendChild(this._form);
-    return this._form;
   },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
   },
   async getFormValue() {
     let value = this.value;
-    if (this.resource && !(await this.resource.isContainer())) value['@id'] = this.resourceId;
-    return value
-  },
-
-  getWidget(field:string):string {
-    const widget = this._getWidget(field)
-    if(!this.element.localName.startsWith('sib-')) 
-      return widget;
-    return widget.replace(/^solid-/, 'sib-');
-  },
-  _getWidget(field: string): string {
-    if (!this.element.hasAttribute('widget-' + field)
-      && this.element.hasAttribute('upload-url-' + field)) {
-      return 'solid-form-file';
-    } else if (!this.element.hasAttribute('widget-' + field)
-      && this.element.hasAttribute('range-' + field)) {
-      return 'solid-form-dropdown';
-    } else {
-      const widget = this.element.getAttribute('widget-' + field); // TODO : duplicated code
-      if (widget) {
-        if (!customElements.get(widget)) {
-          console.warn(`The widget ${widget} is not defined`);
-        }
-        return widget;
-      }
-      return this.defaultWidget;
+    if (this.resource && !(await this.resource.isContainer())) { // add @id if edition
+      value['@id'] = this.resourceId;
     }
+    return value;
+  },
+  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    let tagName = '';
+    const widgetAttribute = this.element.getAttribute('widget-' + field);
+
+    // Choose widget
+    if (!widgetAttribute && this.element.hasAttribute('upload-url-' + field)) {
+      tagName = 'solid-form-file'
+    } else if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
+      tagName = 'solid-form-dropdown'
+    } else {
+      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
+    }
+    // Create widget
+    return this.widgetFromTagName(tagName);
   },
   change(resource: object): void {
     this.element.dispatchEvent(
@@ -123,7 +108,7 @@ export const SolidForm = {
       }
     } catch (e) {
       this.toggleLoaderHidden(true);
-      if (e.error) { // if server error
+      if (e) { // if server error
         this.showError(e);
         throw e;
       } // else, ldpframework error, we continue
@@ -160,87 +145,86 @@ export const SolidForm = {
   async inputChange(): Promise<void> {
     this.change(await this.getFormValue());
   },
-  createInput(type: string): HTMLInputElement {
-    const input = document.createElement('input');
-    input.type = type;
-    return input;
-  },
   empty(): void {
-    if (!this.form) return;
-    if (this.isNaked) {
-      while (this.form.firstChild) {
-        this.form.removeChild(this.form.firstChild);
-      }
-    } else {
-      let newForm = document.createElement('form');
-      this.element.appendChild(newForm);
-      this.element.removeChild(this._form);
-      this._form = newForm;
-    }
   },
   showError(e: object) {
-    let errorContent = `
-      <p>An error has occured.</p>
-      <ul>
+    this.error = html`
+      <div data-id="error">
+        <p>An error has occured.</p>
+        <ul>
+          ${Object.keys(e).filter(field => !field.startsWith('@')).map(field => html`
+            <li>${field}: ${e[field]}</li>
+          `)}
+        </ul>
+      </div>
     `;
 
-    if (e['error'] && Object.keys(e['error'])) {
-      Object.keys(e['error']).forEach(field => (
-        errorContent += !field.startsWith('@') ? // remove @context object
-          `<li>${field}: ${e['error'][field]}</li>` : ''
-      ));
-    } else {
-      Object.keys(e).forEach(field => (
-        errorContent += !field.startsWith('@') ? // remove @context object
-          `<li>${field}: ${e[field]}</li>` : ''
-      ));
-    }
-    errorContent += '</ul>';
+    // if (e['error'] && Object.keys(e['error'])) {
+    //   Object.keys(e['error']).forEach(field => (
+    //     errorContent += !field.startsWith('@') ? // remove @context object
+    //       `<li>${field}: ${e['error'][field]}</li>` : ''
+    //   ));
+    // } else {
+    //   Object.keys(e).forEach(field => (
+    //     errorContent += !field.startsWith('@') ? // remove @context object
+    //       `<li>${field}: ${e[field]}</li>` : ''
+    //   ));
+    // }
+    // errorContent += '</ul>';
 
-    const error = document.createElement('div');
-    error.setAttribute('data-id', 'form-error');
-    error.innerHTML = errorContent;
-    this.element.insertBefore(error, this.form);
+    // const error = document.createElement('div');
+    // error.setAttribute('data-id', 'form-error');
+    // error.innerHTML = errorContent;
+    // this.element.insertBefore(error, this.form);
+    this.populate();
   },
   hideError() {
     const error = this.element.querySelector('[data-id=form-error]');
     if (error) this.element.removeChild(error);
   },
   reset() {
-    if(!this.isNaked) this.form.reset();
-    this.form.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
+    if (!this.isNaked) this.element.querySelector('form').reset();
+    this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
       const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
       options.forEach(option => option.selected = false );
       select.dispatchEvent(new Event('change'));
     })
   },
-  async populate(): Promise<void> {
-    const form = this.form;
+  onSubmit(event: Event) {
     if (!this.isNaked) {
-      form.addEventListener('submit', (event: Event) => {
-        event.preventDefault();
-        this.submitForm();
-      });
-      form.addEventListener('reset', (event: Event) =>
-        setTimeout(() => this.inputChange(event)),
-      );
-      this.element.appendChild(form);
+      event.preventDefault();
+      this.submitForm();
     }
+  },
+  onReset(event: Event) {
+    if (!this.isNaked) {
+      setTimeout(() => this.inputChange(event))
+    }
+  },
+  async populate(): Promise<void> {
     this.element.addEventListener('input', (event: Event) => this.inputChange(event));
-
-    while (form.firstChild) {
-      form.removeChild(form.firstChild);
-    }
-    for (const field of await this.getFields()) {
-      form.appendChild(this.createWidget(field));
-    }
-    if (this.isNaked) return;
-    const submitButtonElement = this.createInput('submit');
-    if (this.submitButton) submitButtonElement.value = this.submitButton;
-    form.appendChild(submitButtonElement);
-    if (this.element.hasAttribute('reset')) {
-      form.appendChild(this.createInput('reset'));
-    }
+    const fields = await this.getFields();
+    const fieldsTemplate = html`
+      ${fields.map((field: string) => this.createWidget(field))}
+    `;
+    const template = html`
+      ${this.error}
+      ${!this.isNaked ? html`
+        <form
+          @submit=${this.onSubmit.bind(this)}
+          @reset=${this.onReset.bind(this)}
+        >
+          ${fieldsTemplate}
+          <input type="submit" value=${ifDefined(this.submitButton)}>
+          ${this.element.hasAttribute('reset')
+            ? html`<input type="reset" />` : ''}
+        </form>
+      ` : html`
+        ${fieldsTemplate}
+      `
+      }
+    `;
+    render(template, this.element);
   }
 };
 

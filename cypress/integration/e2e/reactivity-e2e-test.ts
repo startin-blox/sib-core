@@ -20,14 +20,14 @@ describe('Reactivity e2e test', function () {
     cy.route('GET', 'https://ldp-server2.test/users/', 'fixture:users-nantes.jsonld');
     cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld'); // add fixture in case everything is not loaded yet
 
-    cy.get('solid-display#user > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'first_name').should('have.text', 'Matthieu');
-    cy.get('solid-display#user > div > solid-display-value:nth-child(2)').should('have.attr', 'name', 'last_name').should('have.text', 'Fesselier');
-    cy.get('solid-display#user > div > solid-display-value:nth-child(3)').should('have.attr', 'name', 'username').should('have.text', 'matthieu');
-    cy.get('solid-display#user > div > solid-display-value:nth-child(4)').should('have.attr', 'name', 'profile.city').should('have.text', 'Rennes');
-    cy.get('solid-display#profile > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'city').should('have.text', 'Rennes');
-    cy.get('solid-display#circle > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'owner.profile.city').should('have.text', 'Rennes');
+    cy.get('solid-display#user > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'first_name').should('contain', 'Matthieu');
+    cy.get('solid-display#user > div > solid-display-value:nth-child(2)').should('have.attr', 'name', 'last_name').should('contain', 'Fesselier');
+    cy.get('solid-display#user > div > solid-display-value:nth-child(3)').should('have.attr', 'name', 'username').should('contain', 'matthieu');
+    cy.get('solid-display#user > div > solid-display-value:nth-child(4)').should('have.attr', 'name', 'profile.city').should('contain', 'Rennes');
+    cy.get('solid-display#profile > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'city').should('contain', 'Rennes');
+    cy.get('solid-display#circle > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'owner.profile.city').should('contain', 'Rennes');
     cy.get('solid-display#profile-widget > div > custom-widget').should('have.attr', 'name', 'profile');
-    cy.get('solid-display#profile-widget > div > custom-widget > div').should('have.text', 'Rennes');
+    cy.get('solid-display#profile-widget > div > custom-widget > div').should('contain', 'Rennes');
     cy.get('solid-display#federation solid-display').should('have.length', 3);
     cy.get('solid-display#circles-user solid-display').should('have.length', 1);
     cy.server({ enable: false });
@@ -59,13 +59,13 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-form#profile-form input[type=submit]').click();
 
     // Nested resource in dot field
-    cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('have.text', 'Paris');
+    cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('contain', 'Paris');
 
     // Nested resource in nested field
-    cy.get('solid-display#profile > div > solid-display-value[name="city"]').should('have.text', 'Paris');
+    cy.get('solid-display#profile > div > solid-display-value[name="city"]').should('contain', 'Paris');
 
     // Nested resource in custom widget
-    cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('have.text', 'Paris');
+    cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('contain', 'Paris');
 
     // Nested field in form
     cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu-edited-2.jsonld');
@@ -77,7 +77,7 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('have.text', 'Briouze');
 
     // Nested resource in multi dot field
-    // cy.get('solid-display#circle > div > solid-display-value[name="owner.profile.city"]').should('have.text', 'Paris'); DOES NOT WORK YET
+    // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); DOES NOT WORK YET
     cy.server({ enable: false });
   });
 
@@ -118,21 +118,21 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-form#user-form input[type=submit]').click();
 
     // Single sib-display
-    cy.get('solid-display#user > div > solid-display-value[name="first_name"]').should('have.text', 'Test');
-    cy.get('solid-display#user > div > solid-display-value[name="last_name"]').should('have.text', 'User');
-    cy.get('solid-display#user > div > solid-display-value[name="username"]').should('have.text', 'admin');
+    cy.get('solid-display#user > div > solid-display-value[name="first_name"]').should('contain', 'Test');
+    cy.get('solid-display#user > div > solid-display-value[name="last_name"]').should('contain', 'User');
+    cy.get('solid-display#user > div > solid-display-value[name="username"]').should('contain', 'admin');
 
     // List sib-display & range
     const src = "https://ldp-server.test/users/matthieu/";
-    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('have.text', 'Test');
-    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('have.text', 'User');
-    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="username"]`).should('have.text', 'admin');
-    cy.get(`solid-form#range option[value='{"@id": "${src}"}']`).should('have.text', 'Test User');
+    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Test');
+    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('contain', 'User');
+    cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="username"]`).should('contain', 'admin');
+    cy.get(`solid-form#range option[value='{"@id": "${src}"}']`).should('contain', 'Test User');
 
     // Federation
-    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('have.text', 'Test');
-    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('have.text', 'User');
-    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="username"]`).should('have.text', 'admin');
+    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Test');
+    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('contain', 'User');
+    cy.get(`solid-display#federation solid-display[data-src="${src}"] > div > solid-display-value[name="username"]`).should('contain', 'admin');
 
     // Fill new user form
     cy.get('solid-form#users-form input[name="first_name"]').clear().type('Alex');
@@ -144,15 +144,15 @@ describe('Reactivity e2e test', function () {
     // List sib-display & range
     const newSrc = "https://ldp-server.test/users/alex/";
     cy.get(`solid-display#users solid-display`).should('have.length', 3);
-    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`).should('have.text', 'Alex');
-    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="last_name"]`).should('have.text', 'Bourlier');
-    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`).should('have.text', 'alex');
+    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Alex');
+    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="last_name"]`).should('contain', 'Bourlier');
+    cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`).should('contain', 'alex');
     cy.get(`solid-form#range option`).should('have.length', 4);
 
     // Federation
-    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`).should('have.text', 'Alex');
-    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="last_name"]`).should('have.text', 'Bourlier');
-    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`).should('have.text', 'alex');
+    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Alex');
+    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="last_name"]`).should('contain', 'Bourlier');
+    cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`).should('contain', 'alex');
 
     // delete user & range
     cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');

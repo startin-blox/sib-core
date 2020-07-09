@@ -11,7 +11,7 @@ describe('group-by', function() {
     .and('have.class', 'custom-group-class'); // and class
     cy.get('#list-1 > div > div:first-child > span') // check title span
     .should('have.length', 1)
-    .contains('2019-07-09')
+    .contains('2020-07-09')
     .and('have.attr', 'data-title');
     cy.get('#list-1 > div > div:first-child > div') // check content div
     .should('have.length', 1)
