@@ -51,8 +51,6 @@ const FilterMixin = {
     this.filterList();
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
-    console.log('filterCallback');
-    
     if (this.filteredBy || this.searchFields) {
       const searchCount: Map<string, number> = this.searchCount;
       if (!searchCount.has(context)) searchCount.set(context, 1);
