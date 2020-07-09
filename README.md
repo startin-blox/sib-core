@@ -137,6 +137,45 @@ Here is a simplified schema of the organization and the responsibilities of the 
 A `solid-display` component is capable of showing a list of resources and applying different filters on this list to filter, sort, group... resources. Here is a schema of the order of these transformations:
 ![list-post-processing](./images-documentation/list-post-processing.png)
 
+# Widgets API
+A widget is a small component responsible for a value. The widget is composed and built on demand when the developer ask for it.
+To do that, the name of the widget is splitted and analyzed to add the right mixins. Here is a schema of how it works:
+
+![widget-api](./images-documentation/widget-api.png)
+
+## Values
+Values are given to a widget through its `value` attribute. For the widgets defined by sib-core, it can have different types:
+- `string`: most common and encouraged use case
+- `boolean` (checkbox): is converted to string (`'true'` or `'false'`)
+- `number` (input number): is converted to string
+- `container` (multiple, multiple form): is converted to `@id` and resolved by the widget
+
+As custom widgets still use the old API, you can give them these types:
+- `string`
+- `resource` Proxy
+- `container` Proxy
+
+### Get the values
+With the display widgets, you can get the value through its HTML attribute:
+```js
+const value = widgetElement.getAttribute('value');
+// or thanks to the core API
+const value = widgetElement.component.value;
+```
+
+In the form widgets, the value can be changed by the user. If you need to retrieve it, proceed like this:
+```js
+const value = widgetElement.component.getValue();
+```
+
+Under the hood, the core finds elements which have a `data-holder` attribute, and get the value from their properties, instead of their attribute (where you would have the initial value of the widget).
+
+A widget can have:
+- 1 `data-holder` element (simple inputs)
+- 2 `data-holder` elements (range filter inputs)
+- multiple `data-holder` elements (multiple-form)
+
+
 ## Not clear enough ?
 Help us to improve the documentation! Feel free to ask for clarification or ask questions. This helps us to improve our documentation.
 
