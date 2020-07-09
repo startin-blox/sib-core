@@ -98,8 +98,6 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 }
 
 // create default widgets
-newWidgetFactory('solid-display-value');
-newWidgetFactory('solid-form-label-text');
 newWidgetFactory('solid-form-dropdown');
 newWidgetFactory('solid-form-file-label');
 newWidgetFactory('solid-action');

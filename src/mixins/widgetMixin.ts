@@ -164,10 +164,7 @@ const WidgetMixin = {
     if (widget) return this.widgetFromTagName(widget);
     if (this.getAction(field)) return this.widgetFromTagName('solid-action');
 
-    return {
-      tagName: !isSet ? this.defaultWidget : this.defaultSetWidget,
-      type: WidgetType.CUSTOM
-    };
+    return !isSet ? this.widgetFromTagName(this.defaultWidget) : this.widgetFromTagName(this.defaultSetWidget);
   },
   /**
    * Return multiple widget if "field" is a multiple, false if it's not
