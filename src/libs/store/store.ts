@@ -91,10 +91,12 @@ export class Store {
 
   async fetchData(id: string, context = {}, idParent = "") {
     const iri = this._getAbsoluteIri(id, context, idParent);
+    const headers = await this.headers;
+    headers.set('accept-language', this._getLanguage());
 
     return fetch(iri, {
       method: 'GET',
-      headers: await this.headers,
+      headers: headers,
       credentials: 'include'
     }).then(response => {
       if (!response.ok) return;
@@ -346,6 +348,21 @@ export class Store {
       iri = new URL(iri, document.location.href).href;
     }
     return iri;
+  }
+
+  /**
+   * Return language of the users
+   */
+  _getLanguage() {
+    return localStorage.getItem('language') || window.navigator.language.slice(0,2);
+  }
+
+  /**
+   * Save the preferred language of the user
+   * @param selectedLanguageCode
+   */
+  selectLanguage(selectedLanguageCode: string) {
+    localStorage.setItem('language', selectedLanguageCode);
   }
 
   resolveResource = function(id: string, resolve) {
