@@ -35,6 +35,7 @@ describe('store', function () {
       expect(win.store.put).to.be.a('function');
       expect(win.store.patch).to.be.a('function');
       expect(win.store.delete).to.be.a('function');
+      expect(win.store.selectLanguage).to.be.a('function');
       // PubSub
       expect(win.PubSub).to.exist;
     })
