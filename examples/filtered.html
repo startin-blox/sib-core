@@ -16,10 +16,10 @@
         display: block;
         border: 1px solid blue;
       }
-      #flex {
+      main {
         display: flex;
       }
-      #flex > div {
+      main > div {
         margin: 0.4em;
         padding: 0.4em;
         border: 1px dashed palevioletred;
@@ -33,7 +33,7 @@
         elm.component.filteredBy = value;
       }
       document.addEventListener('DOMContentLoaded', () => {
-        document.body.addEventListener('change', ({ target }) =>
+        document.querySelector('main').addEventListener('change', ({ target }) =>
           change(target),
         );
         [...document.querySelectorAll('input[type=radio]')]
@@ -57,7 +57,7 @@
       fields="username"
       label-email="mail"
     ></solid-form-search>
-    <div id="flex">
+    <main>
       <div>
         <h3>sib-display 1</h3>
         <form>
@@ -96,6 +96,6 @@
           filtered-by="filter1"
         ></solid-display>
       </div>
-    </div>
+    </main>
   </body>
 </html>

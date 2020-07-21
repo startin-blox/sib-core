@@ -28,14 +28,14 @@ const FilterMixin = {
       }
     }
   },
-  setSearchForm (elm: Element, context: string) {
+  async setSearchForm (elm: Element, context: string) {
     this.searchForm = elm;
     this.searchFormCallback = () => {
       this.filterList(context);
     };
+    await this.filterList();
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
     this.searchForm.toggleAttribute('naked', true);
-    this.filterList();
   },
   created() {
     this.searchCount = new Map();
@@ -69,6 +69,7 @@ const FilterMixin = {
   },
   async matchValue(propertyValue, filterValue): Promise<boolean> {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
+    
     if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
     if (propertyValue == null) return false; // property does not exist on resource
     if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
