@@ -61,7 +61,8 @@ export const SolidFormSearch = {
       else type = WidgetType.NATIVE; // or use a native tag
     }
 
-    return { tagName, type };
+    return this.widgetFromTagName(tagName);
+    
   },
   change(resource: object): void {
     this.element.dispatchEvent(
