@@ -1,7 +1,6 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
-import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
@@ -17,7 +16,7 @@ export const SolidFormSearch = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-text'
+      default: 'solid-form-label-text'
     },
     partial: {
       type: Boolean,
