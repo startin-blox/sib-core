@@ -35,7 +35,6 @@ const FilterMixin = {
     };
     await this.filterList();
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
-    this.searchForm.toggleAttribute('naked', true);
   },
   created() {
     this.searchCount = new Map();
@@ -133,7 +132,9 @@ const FilterMixin = {
   },
   async createFilter(context: string): Promise<void> {
     const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    this.setSearchForm(document.createElement(`${prefix}-form`), context);
+    const searchForm = document.createElement(`${prefix}-form`)
+    searchForm.toggleAttribute('naked', true);
+    this.setSearchForm(searchForm, context);
     this.searchFormCallback = () => {
       this.filterList(context);
     };

@@ -18,10 +18,6 @@ export const SolidFormSearch = {
       type: String,
       default: 'solid-form-label-text'
     },
-    partial: {
-      type: Boolean,
-      default: null
-    }
   },
   initialState: {
     error: ''
