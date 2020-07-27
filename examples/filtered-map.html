@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-map</title>
+    <title>SIB test: filtered solid-map</title>
     <script type="module" src="../dist/index.js"></script>
     <script type="module" src="../dist/components/solid-map.js"></script>
     <script>
@@ -17,11 +17,17 @@
   </head>
 
   <body>
-    <h2>Solid Map</h2>
+    <h2>Filtered Solid Map</h2>
+    <solid-form-search
+      id="filter"
+      fields="name"
+      label-name='Filter places (try "Europe")'
+    ></solid-form-search>
     <solid-map
       data-src="data/map/events.jsonld"
       fields="infos(name, category)"
       group-by="category"
+      filtered-by="filter"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
 

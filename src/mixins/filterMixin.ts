@@ -4,7 +4,6 @@ import asyncFilter from 'https://dev.jspm.io/iter-tools@6/es2015/async-filter';
 import asyncReduce from 'https://dev.jspm.io/iter-tools@6/es2015/async-reduce';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6/es2015/async-every';
-import { ComponentInterface } from "../libs/interfaces.js";
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -16,28 +15,45 @@ const FilterMixin = {
     searchFields: {
       type: String,
       default: null
+    },
+    filteredBy: {
+      type: String,
+      default: null,
+      callback(newValue: string) {
+        if(this.searchForm && this.searchFormCallback) {
+          this.searchForm.removeEventListener('formChange', this.searchFormCallback);
+        }
+        this.setSearchForm(document.getElementById(newValue));
+        if (!this.searchForm) throw `#${newValue} is not in DOM`;
+      }
     }
   },
+  async setSearchForm (elm: Element, context: string) {
+    this.searchForm = elm;
+    this.searchFormCallback = () => {
+      this.filterList(context);
+    };
+    await this.filterList();
+    this.searchForm.addEventListener('formChange', this.searchFormCallback);
+  },
   created() {
-    this.searchCount = [];
+    this.searchCount = new Map();
   },
   attached(): void {
     this.listPostProcessors.push(this.filterCallback.bind(this));
   },
-  get searchForm(): ComponentInterface {
-    return this.element.querySelector('solid-form, sib-form');
-  },
   get filters(): object {
-    return this.searchForm ? this.searchForm.component.value : {};
+    return this.searchForm?.component.value ?? {};
   },
   set filters(filters) {
     this.searchForm.component.value = filters;
     this.filterList();
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
-    if (this.searchFields) {
-      if (!this.searchCount[context]) this.searchCount[context] = 1;
-      if (!this.searchForm) await this.appendFilters(context);
+    if (this.filteredBy || this.searchFields) {
+      const searchCount: Map<string, number> = this.searchCount;
+      if (!searchCount.has(context)) searchCount.set(context, 1);
+      if (!this.searchForm) await this.createFilter(context);
       resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
     }
 
@@ -45,13 +61,14 @@ const FilterMixin = {
     if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount[context] || ''));
   },
   async filterList(context: string): Promise<void> {
-    this.searchCount[context] ++;
+    this.searchCount.set(context, this.searchCount.get(context) + 1);
     if (!this.resource) return;
     this.empty();
     await this.populate();
   },
   async matchValue(propertyValue, filterValue): Promise<boolean> {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
+    
     if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
     if (propertyValue == null) return false; // property does not exist on resource
     if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
@@ -113,11 +130,16 @@ const FilterMixin = {
       Promise.resolve(true)
     );
   },
-  async appendFilters(context: string): Promise<void> {
+  async createFilter(context: string): Promise<void> {
     const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const searchForm = document.createElement(`${prefix}-form`);
-    searchForm.addEventListener('formChange', () => this.filterList(context))
+    const searchForm = document.createElement(`${prefix}-form`)
     searchForm.toggleAttribute('naked', true);
+    this.setSearchForm(searchForm, context);
+    this.searchFormCallback = () => {
+      this.filterList(context);
+    };
+    this.searchForm.addEventListener('formChange', this.searchFormCallback);
+    this.searchForm.toggleAttribute('naked', true);
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
@@ -126,12 +148,12 @@ const FilterMixin = {
       name: attr['name'].replace('search-', ''),
       value: attr['value'],
     }));
-
+    
     searchAttributes.forEach(({name, value}) => {
-      searchForm.setAttribute(name, value);
+      this.searchForm.setAttribute(name, value);
     });
-
-    this.element.insertBefore(searchForm, this.element.firstChild);
+    
+    this.element.insertBefore(this.searchForm, this.element.firstChild);
   }
 }
 
