@@ -8,6 +8,13 @@ const MultipleMixin = {
         this.addToAttributes(newValue, 'fields');
       }
     },
+    next: {
+      type: String,
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'next');
+      }
+    },
   },
 }
 

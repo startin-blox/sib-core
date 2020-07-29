@@ -20,6 +20,7 @@ export const defaultTemplates = {
       <solid-display
         data-src=${value || ''}
         fields=${ifDefined(attributes.fields)}
+        next=${ifDefined(attributes.next)}
       ></solid-display>
     `,
     dependencies: []
