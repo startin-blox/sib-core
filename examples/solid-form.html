@@ -7,121 +7,136 @@
     <title>SIB test: solid-form</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
     <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="https://unpkg.com/@startinblox/router"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <details>
-      <summary>Some fields:</summary>
-      <solid-form
-        data-src="data/list/user-1.jsonld"
-        fields="username, first_name, last_name, email"
-        submit-button="Enregistrer l'utilisateur"
-      ></solid-form>
+    <solid-router default-route="home" use-hash>
+      <solid-route name="home">home</solid-route>
+      <solid-route
+        hidden
+        name="toto"
+      ></solid-route>
+    </solid-router>
+
+    <div id="toto" hidden>
+      Tototototot
+    </div>
+    <div id="home" hidden>
+      <details>
+        <summary>Some fields:</summary>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="username, first_name, last_name, email"
+          submit-button="Enregistrer l'utilisateur"
+        ></solid-form>
+      </details>
+
+      <details>
+        <summary>Some fields required:</summary>
+        <solid-form
+          data-src="http://localhost:8000/resources/"
+          fields="title, country, description"
+          required-title
+          required-description
+          submit-button="Soumettre la ressource"
+          next="toto"
+        ></solid-form>
+      </details>
+
+      <details>
+        <summary>All fields:</summary>
+        <solid-form data-src="data/list/user-1.jsonld"></solid-form>
+      </details>
+
+      <details>
+        <summary>Multiple value:</summary>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="skills"
+          multiple-skills
+          range-skills="data/list/skills.jsonld"
+        ></solid-form>
+      </details>
+
+      <details>
+        <summary>Default widget:</summary>
+        <solid-form
+          data-src="data/project.jsonld"
+          fields="businessProvider, businessProviderFee, jabberID"
+          default-widget="solid-form-placeholder-text"
+          placeholder-businessProvider='insert your value here'
+        ></solid-form>
+      </details>
+
+      <details>
+        <summary>Form widgets:</summary>
+        <solid-form
+          data-src="data/project.jsonld"
+          fields="businessProvider, businessProviderFee, jabberID"
+          widget-businessProvider="solid-form-placeholder-text"
+          widget-businessProviderFee="solid-form-number"
+          widget-jabberID="solid-form-hidden"
+        ></solid-form>
     </details>
 
-    <details>
-      <summary>Some fields required:</summary>
-      <solid-form
-        data-src="data/list/user-1.jsonld"
-        fields="username, first_name, last_name, email"
-        required-username
-        required-email
-        submit-button="Enregistrer l'utilisateur"
-      ></solid-form>
-    </details>
+      <details>
+        <summary>Dropdown:</summary>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="contact"
+          range-contact="data/list/users.jsonld"
+        ></solid-form>
+      </details>
 
-    <details>
-      <summary>All fields:</summary>
-      <solid-form data-src="data/list/user-1.jsonld"></solid-form>
-    </details>
+      <details>
+        <summary>Placeholder dropdown:</summary>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="contact"
+          widget-contact="solid-form-placeholder-dropdown"
+          label-contact='select a contact:'
+          range-contact="data/list/users.jsonld"
+        ></solid-form>
+      </details>
 
-    <details>
-      <summary>Multiple value:</summary>
-      <solid-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        multiple-skills
-        range-skills="data/list/skills.jsonld"
-      ></solid-form>
-    </details>
+      <details>
+        <summary>Multiple dropdown:</summary>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="skills"
+          multiple-skills="solid-form-multipleselect"
+          range-skills="data/list/skills.jsonld"
+        ></solid-form>
+      </details>
 
-    <details>
-      <summary>Default widget:</summary>
-      <solid-form
-        data-src="data/project.jsonld"
-        fields="businessProvider, businessProviderFee, jabberID"
-        default-widget="solid-form-placeholder-text"
-        placeholder-businessProvider='insert your value here'
-      ></solid-form>
-    </details>
+      <details>
+        <summary>Auto complete:</summary>
+        <h2>Single skill</h2>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="contact"
+          widget-contact="solid-form-dropdown-autocompletion"
+          range-contact="data/list/users.jsonld"
+        ></solid-form>
+        <h2>Multiple skills</h2>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="skills"
+          range-skills="data/list/skills.jsonld"
+          multiple-skills="solid-form-multipleselect-autocompletion"
+        ></solid-form>
+      </details>
 
-    <details>
-      <summary>Form widgets:</summary>
-      <solid-form
-        data-src="data/project.jsonld"
-        fields="businessProvider, businessProviderFee, jabberID"
-        widget-businessProvider="solid-form-placeholder-text"
-        widget-businessProviderFee="solid-form-number"
-        widget-jabberID="solid-form-hidden"
-      ></solid-form>
-  </details>
-
-    <details>
-      <summary>Dropdown:</summary>
-      <solid-form
-        data-src="data/list/event-1.jsonld"
-        fields="contact"
-        range-contact="data/list/users.jsonld"
-      ></solid-form>
-    </details>
-
-    <details>
-      <summary>Placeholder dropdown:</summary>
-      <solid-form
-        data-src="data/list/event-1.jsonld"
-        fields="contact"
-        widget-contact="solid-form-placeholder-dropdown"
-        label-contact='select a contact:'
-        range-contact="data/list/users.jsonld"
-      ></solid-form>
-    </details>
-
-    <details>
-      <summary>Multiple dropdown:</summary>
-      <solid-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        multiple-skills="solid-form-multipleselect"
-        range-skills="data/list/skills.jsonld"
-      ></solid-form>
-    </details>
-
-    <details>
-      <summary>Auto complete:</summary>
-      <h2>Single skill</h2>
-      <solid-form
-        data-src="data/list/event-1.jsonld"
-        fields="contact"
-        widget-contact="solid-form-dropdown-autocompletion"
-        range-contact="data/list/users.jsonld"
-      ></solid-form>
-      <h2>Multiple skills</h2>
-      <solid-form
-        data-src="data/list/user-1.jsonld"
-        fields="skills"
-        range-skills="data/list/skills.jsonld"
-        multiple-skills="solid-form-multipleselect-autocompletion"
-      ></solid-form>
-    </details>
-
-    <details>
-      <summary>Date widget:</summary>
-      <solid-form
-        data-src="data/list/event-1.jsonld"
-        fields="date"
-        widget-date='solid-form-date'
-      ></solid-form>
-    </details>
+      <details>
+        <summary>Date widget:</summary>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="date"
+          widget-date='solid-form-date'
+        ></solid-form>
+      </details>
+    </div>
   </body>
 </html>

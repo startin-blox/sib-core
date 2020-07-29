@@ -1,5 +1,14 @@
 const FormMixin = {
   name: 'form-mixin',
+  attributes: {
+    required: {
+      type: Boolean,
+      default: false,
+      callback: function () {
+        this.listAttributes['required'] = true;
+      }
+    },
+  },
   attached() {
     this.listAttributes['onChange'] = this.onChange.bind(this);
   },

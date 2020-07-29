@@ -24,6 +24,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         value=${value || ''}
+        ?required=${attributes.required}
         data-holder
         @change=${attributes.onChange}
       />
@@ -36,6 +37,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         placeholder=${ifDefined(attributes.placeholder)}
         data-holder
+        ?required=${attributes.required}
         @change=${attributes.onChange}
       >${value}</textarea>
     `,
@@ -48,6 +50,7 @@ export const formTemplates = {
           data-holder
           type="checkbox"
           name=${ifDefined(attributes.name)}
+          ?required=${attributes.required}
           ?checked=${value === 'true'}
           @change=${attributes.onChange}
         >
@@ -62,6 +65,7 @@ export const formTemplates = {
         type="date"
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
+        ?required=${attributes.required}
         value=${attributes.originalValue ? new Date(attributes.originalValue).toISOString().split('T')[0] : ''}
         data-holder
         @change=${attributes.onChange}
@@ -93,6 +97,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         value=${value}
+        ?required=${attributes.required}
         data-holder
         @change=${attributes.onChange}
       />
@@ -133,6 +138,7 @@ export const formTemplates = {
       <select
         name=${ifDefined(attributes.name)}
         data-holder
+        ?required=${attributes.required}
         ?multiple=${attributes.multiple}
         @change=${attributes.onChange}
       >
@@ -164,6 +170,7 @@ export const formTemplates = {
               type="radio"
               name=${ifDefined(attributes.id)}
               value='{"@id": "${el['@id']}"}'
+              ?required=${attributes.required}
               ?checked=${value === el['@id']}
             > ${until(el[attributes.optionLabel])}
           </label>
@@ -191,6 +198,7 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         range=${ifDefined(attributes.range)}
         values=${ifDefined(attributes.values)}
+        ?required=${attributes.required}
         multiple
       ></solid-form-dropdown>
     `,
@@ -202,6 +210,7 @@ export const formTemplates = {
         <input
           data-holder
           type="text"
+          ?required=${attributes.required}
           name=${ifDefined(attributes.name)}
           value=${value || ''}
         >
@@ -209,6 +218,7 @@ export const formTemplates = {
           type="file"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
+          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <button
@@ -234,6 +244,7 @@ export const formTemplates = {
           accept="image/*"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
+          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <img

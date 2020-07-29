@@ -181,7 +181,7 @@ export class Store {
         });
         return response.headers.get('Location') || null;
       } else {
-        return response.json().then(e => { throw e })
+        throw response;
       }
     });
   }

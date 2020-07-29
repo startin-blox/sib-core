@@ -100,16 +100,10 @@ export const SolidForm = {
       } else {
         saved = await store.patch(resource, this.resourceId);
       }
-      
-      if (typeof saved === 'object' && saved !== null) {
-        this.showError(saved);
-      } else if (this.partial == null && !resource['@id']) {
-        this.reset();
-      }
     } catch (e) {
       this.toggleLoaderHidden(true);
       if (e) { // if server error
-        this.showError(e);
+        e.json().then( error => this.showError(error) );
         throw e;
       } // else, ldpframework error, we continue
     }
@@ -130,7 +124,7 @@ export const SolidForm = {
     let id;
     try {
       id = await this.save() || this.getFormValue()['@id'];
-    } catch (e) { return }
+    } catch (e) { return; }
     // if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
 
@@ -150,7 +144,7 @@ export const SolidForm = {
   showError(e: object) {
     this.error = html`
       <div data-id="error">
-        <p>An error has occured.</p>
+        <p>A validation error occured.</p>
         <ul>
           ${Object.keys(e).filter(field => !field.startsWith('@')).map(field => html`
             <li>${field}: ${e[field]}</li>
@@ -158,24 +152,11 @@ export const SolidForm = {
         </ul>
       </div>
     `;
+    // If field exists pick its label (unsure if that's easily possible)
+    // In this.getFields() map with each field and get label
+    // If it does not just add a notice as we do that it's missing that field
 
-    // if (e['error'] && Object.keys(e['error'])) {
-    //   Object.keys(e['error']).forEach(field => (
-    //     errorContent += !field.startsWith('@') ? // remove @context object
-    //       `<li>${field}: ${e['error'][field]}</li>` : ''
-    //   ));
-    // } else {
-    //   Object.keys(e).forEach(field => (
-    //     errorContent += !field.startsWith('@') ? // remove @context object
-    //       `<li>${field}: ${e[field]}</li>` : ''
-    //   ));
-    // }
-    // errorContent += '</ul>';
-
-    // const error = document.createElement('div');
-    // error.setAttribute('data-id', 'form-error');
-    // error.innerHTML = errorContent;
-    // this.element.insertBefore(error, this.form);
+    // Validation message in english ?
     this.populate();
   },
   hideError() {
