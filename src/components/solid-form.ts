@@ -92,11 +92,9 @@ export const SolidForm = {
     let saved;
     try {
       if (this.partial == null) {
-        if (resource['@id']) {
-          saved = await store.put(resource, this.resourceId);
-        } else {
-          saved = await store.post(resource, this.resourceId);
-        }  
+        saved = resource['@id'] ?
+          await store.put(resource, this.resourceId) :
+          await store.post(resource, this.resourceId);
       } else {
         saved = await store.patch(resource, this.resourceId);
       }
@@ -120,21 +118,20 @@ export const SolidForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    // const isCreation = !('@id' in (await this.getFormValue()));
+    const isCreation = !('@id' in (await this.getFormValue()));
     let id;
     try {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return; }
-    // if (isCreation && this.form !== this) this.reset(); // we reset the form only in creation mode
+    if (isCreation) this.reset(); // we reset the form only in creation mode
     if (!this.next) return;
 
-    if (typeof id === 'string')
-      this.element.dispatchEvent(
-        new CustomEvent('requestNavigation', {
-          bubbles: true,
-          detail: { route: this.next, resource: {'@id': id} },
-        }),
-      );
+    this.element.dispatchEvent(
+      new CustomEvent('requestNavigation', {
+        bubbles: true,
+        detail: { route: this.next, resource: {'@id': id} },
+      }),
+    );
   },
   async inputChange(): Promise<void> {
     this.change(await this.getFormValue());

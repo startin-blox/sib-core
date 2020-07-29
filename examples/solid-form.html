@@ -16,11 +16,11 @@
       <solid-route name="home">home</solid-route>
       <solid-route
         hidden
-        name="toto"
+        name="next-test"
       ></solid-route>
     </solid-router>
 
-    <div id="toto" hidden>
+    <div id="next-test" hidden>
       Tototototot
     </div>
     <div id="home" hidden>
@@ -30,18 +30,6 @@
           data-src="data/list/user-1.jsonld"
           fields="username, first_name, last_name, email"
           submit-button="Enregistrer l'utilisateur"
-        ></solid-form>
-      </details>
-
-      <details>
-        <summary>Some fields required:</summary>
-        <solid-form
-          data-src="http://localhost:8000/resources/"
-          fields="title, country, description"
-          required-title
-          required-description
-          submit-button="Soumettre la ressource"
-          next="toto"
         ></solid-form>
       </details>
 
@@ -135,6 +123,21 @@
           data-src="data/list/event-1.jsonld"
           fields="date"
           widget-date='solid-form-date'
+        ></solid-form>
+      </details>
+
+      <details>
+        <summary>Required fields management:</summary>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="username, first_name, last_name, email, skills"
+          required-username
+          required-email
+          required-skills
+          range-skills="data/list/skills.jsonld"
+          widget-skills="solid-form-dropdown-autocompletion"
+          submit-button="Enregistrer l'utilisateur"
+          next="next-test"
         ></solid-form>
       </details>
     </div>
