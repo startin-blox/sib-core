@@ -12,7 +12,8 @@ const FormDropdownMixin = {
             console.error(e);
             this.listAttributes['values'] = [];
           }
-          this.planRender();
+          this.render(); // use render to make sure the dispatch always happen after
+          this.dispatchChange();
         }
       }
     },
@@ -20,6 +21,10 @@ const FormDropdownMixin = {
   created() {
     this.listAttributes['values'] = [];
     if (this.multiple) this.listAttributes['multiple'] = true;
+  },
+  dispatchChange() {
+    if (!this.element.querySelector('select')) return;
+    this.element.querySelector('select').dispatchEvent(new Event('change'));
   },
   getValue() {
     if (!this.dataHolder) return ''; // no value

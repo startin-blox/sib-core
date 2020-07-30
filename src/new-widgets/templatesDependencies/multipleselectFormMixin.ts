@@ -9,7 +9,6 @@ const MultipleselectFormMixin = {
       default: '',
       callback: function(value) {
         if (value && value !== this.listAttributes['range']) this.listAttributes['range'] = value;
-        this.planRender();
       }
     },
   },
