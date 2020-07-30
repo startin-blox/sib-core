@@ -1,6 +1,5 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
-import { StoreMixin } from '../mixins/storeMixin.js';
 import { setDeepProperty } from '../libs/helpers.js';
 import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
@@ -12,7 +11,7 @@ import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?modu
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
-  use: [WidgetMixin, StoreMixin],
+  use: [WidgetMixin],
   attributes: {
     defaultWidget: {
       type: String,
