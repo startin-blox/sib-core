@@ -3,7 +3,7 @@ import asyncReduce from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-reduc
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-every';
 //@ts-ignore
-import stringSimilarity from  ' https://cdn.pika.dev/string-similarity@^4';
+import Fuse from 'https://cdn.skypack.dev/fuse.js';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -97,8 +97,10 @@ const FilterMixin = {
     // Filter on a value
     const value = propertyValue.toString();
     if(value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1) return true;
-
-    return stringSimilarity.compareTwoStrings(value, filterValue) >= 0.5;
+    const search = new Fuse([value]).search(filterValue);
+    
+    if(search.length) return true
+    //return stringSimilarity.compareTwoStrings(value, filterValue) >= 0.5;
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;
