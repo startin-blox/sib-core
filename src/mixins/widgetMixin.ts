@@ -100,6 +100,9 @@ const WidgetMixin = {
     let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
+  isString(field: string): boolean {
+    return field.startsWith('\'') || field.startsWith('\"');
+  },
   /**
    * Return the value of "resource" for predicate "field"
    * @param resource - Resource
@@ -239,6 +242,7 @@ const WidgetMixin = {
    */
   createWidget(field: string): Element {
     if (!parent) parent = this.div;
+    if (this.isString(field)) return this.createString(field); // field is a static string
     if (this.isSet(field)) return this.createSet(field);
 
     const attributes = this.widgetAttributes(field);
@@ -291,6 +295,11 @@ const WidgetMixin = {
       }
     });
     return widget;
+  },
+  createString(value: string) {
+    const span = document.createElement("span");
+    span.textContent = value.substring(1, value.length - 1); // remove quotes
+    return span;
   },
   /**
    * Returns field name without starting "@"
