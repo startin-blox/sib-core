@@ -13,13 +13,12 @@ const HighlighterMixin = {
     for (let attr of this.element.attributes) {
       if (attr.name.startsWith('highlight-')) {
         const field = attr.name.split('highlight-')[1];
-        resources = await asyncMap(async (resource) => ({
-          sortingKey: (await resource[field]).toString(), // fetch sorting value
+        resources = await Promise.all(resources.map(async (resource) => ({
+          sortingKey: await resource[field], // fetch sorting value
           proxy: resource // and keep proxy
-        }), resources);
-        resources = await asyncToArray(resources); // tranform in array
+        })));
         resources = this.sortHighlighted(resources, "sortingKey", attr.value); // highlight element
-        resources = await asyncMap(resource => resource.proxy, resources); // and re-transform in async iterator
+        resources = resources.map(resource => (<any>resource).proxy); // and re-transform in arra of resources
       }
     }
 

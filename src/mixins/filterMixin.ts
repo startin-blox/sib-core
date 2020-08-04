@@ -1,6 +1,4 @@
 //@ts-ignore
-import asyncFilter from 'https://dev.jspm.io/iter-tools@6/es2015/async-filter';
-//@ts-ignore
 import asyncReduce from 'https://dev.jspm.io/iter-tools@6/es2015/async-reduce';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6/es2015/async-every';
@@ -54,7 +52,8 @@ const FilterMixin = {
       const searchCount: Map<string, number> = this.searchCount;
       if (!searchCount.has(context)) searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
-      resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
+      const filteredResources = await Promise.all(resources.map(this.matchFilters.bind(this)));
+      resources =	resources.filter((_v, index) => filteredResources[index]);
     }
 
     const nextProcessor = listPostProcessors.shift();
@@ -68,7 +67,7 @@ const FilterMixin = {
   },
   async matchValue(propertyValue, filterValue): Promise<boolean> {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
-    
+
     if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
     if (propertyValue == null) return false; // property does not exist on resource
     if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
@@ -148,11 +147,11 @@ const FilterMixin = {
       name: attr['name'].replace('search-', ''),
       value: attr['value'],
     }));
-    
+
     searchAttributes.forEach(({name, value}) => {
       this.searchForm.setAttribute(name, value);
     });
-    
+
     this.element.insertBefore(this.searchForm, this.element.firstChild);
   }
 }

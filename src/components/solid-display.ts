@@ -9,6 +9,7 @@ import { SorterMixin } from '../mixins/sorterMixin.js';
 import { GrouperMixin } from '../mixins/grouperMixin.js';
 import { FederationMixin } from '../mixins/federationMixin.js';
 import { HighlighterMixin } from '../mixins/highlighterMixin.js';
+import { spread } from '../libs/lit-helpers.js';
 
 //@ts-ignore
 import { html, render } from 'https://unpkg.com/lit-html?module';
@@ -94,11 +95,72 @@ export const SolidDisplay = {
       }
     }
   },
-  appendChildElt(resourceId: string, parent: Element): void {
-    const child = document.createElement(this.childTag);
-    child.addEventListener('click', this.dispatchSelect.bind(this));
-    if (this.fields != null) child.setAttribute('fields', this.fields);
 
+  /**
+   * Returns template of a child element (resource)
+   * @param resourceId
+   * @param attributes
+   */
+  getChildTemplate(resourceId: string, attributes: object): void {
+    let template = html`
+      <solid-display
+        data-src=${resourceId}
+        @click=${this.dispatchSelect.bind(this)}
+        fields=${this.fields}
+        ...=${spread(attributes)}
+      ></solid-display>
+    `
+    return template;
+  },
+
+  /**
+   * Creates the content of a single element (resource)
+   * @param parent
+   */
+  async appendSingleElt(parent: HTMLElement): Promise<void> {
+    const fields = await this.getFields();
+    const template = html`
+      ${fields.map((field: string) => this.createWidget(field))}
+    `;
+    render(template, parent);
+  },
+
+  /**
+   * @override listMixin method to use litHtml
+   *
+   * Render resources from a container
+   * @param resources
+   * @param listPostProcessors
+   * @param div
+   * @param context
+   */
+  async renderDOM(
+    resources: object[],
+    listPostProcessors: Function[],
+    div: HTMLElement,
+    context: string,
+  ) {
+    const attributes = this.getChildAttributes();
+    const template = html`
+      ${resources.map(r => r ? this.getChildTemplate(r['@id'], attributes) : null)}
+    `
+    render(template, div);
+
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor)
+      await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context
+      );
+  },
+
+  /**
+   * Get attributes to dispatch to children from current element
+   */
+  getChildAttributes() {
+    const attributes = {};
     for (let attr of this.element.attributes) {
       //copy widget and value attributes
       if (
@@ -113,21 +175,12 @@ export const SolidDisplay = {
         attr.name.startsWith('default-')     ||
         attr.name == 'extra-context'
       )
-        child.setAttribute(attr.name, attr.value);
+        attributes[attr.name] = attr.value;
       if (attr.name.startsWith('child-'))
-        child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
+        attributes[attr.name.replace(/^child-/, '')] = attr.value;
     }
-    child.dataset.src = resourceId; // set id after the extra-context is
-
-    parent.appendChild(child);
-  },
-  async appendSingleElt(parent: HTMLElement): Promise<void> {
-    const fields = await this.getFields();
-    const template = html`
-      ${fields.map((field: string) => this.createWidget(field))}
-    `;
-    render(template, parent);
-  },
+    return attributes;
+  }
 };
 
 Sib.register(SolidDisplay);

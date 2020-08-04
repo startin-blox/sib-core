@@ -22,7 +22,7 @@ const GrouperMixin = {
     const nextProcessor = listPostProcessors.shift();
     if (this.groupBy) {
       let groups = {};
-      for await (let resource of resources) {
+      for (let resource of resources) {
         const valueGroup = await resource[this.groupBy];
         if (valueGroup == null) continue;
         if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...

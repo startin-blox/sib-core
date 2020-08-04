@@ -32,6 +32,7 @@ const ListMixin = {
 
     const listPostProcessors = [...this.listPostProcessors];
     listPostProcessors.push(this.renderDOM.bind(this));
+    listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
     // Execute the first post-processor of the list
     const nextProcessor = listPostProcessors.shift();
@@ -50,15 +51,28 @@ const ListMixin = {
     context: string,
   ) {
     // Create child components
-    let childrenAdded = 0;
-    for await (let resource of resources) {
+    for (let resource of resources) {
       if (!resource) continue;
       this.appendChildElt(resource['@id'], div);
-      childrenAdded++;
     }
 
-    // Nothing in list
-    if (!childrenAdded && this.emptyWidget) {
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor)
+      await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context
+      );
+  },
+
+  async handleEmptyWidget(
+    resources: object[],
+    listPostProcessors: Function[],
+    div: HTMLElement,
+    context: string,
+  ) {
+    if (resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
       emptyWidgetElement.value = this.emptyValue;
       div.appendChild(emptyWidgetElement);

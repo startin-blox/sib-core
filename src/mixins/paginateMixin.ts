@@ -1,10 +1,3 @@
-//@ts-ignore
-import asyncSlice from 'https://dev.jspm.io/iter-tools@6/es2015/async-slice';
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools@6/es2015/async-map';
-//@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools@6/es2015/async-to-array';
-
 const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
@@ -30,17 +23,10 @@ const PaginateMixin = {
   async paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.paginateBy > 0) {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
-
       // Get paginate size to count pages
-      const resourcesToCount = await asyncToArray(resources); // create an array and consume iterator
-      this.renderPaginationNav(div, this.getPageCount(resourcesToCount.length), context);
-      resources = await asyncMap(resource => resource, resourcesToCount); // re-create an iterator
-
+      this.renderPaginationNav(div, this.getPageCount(resources.length), context);
       const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
-      resources = asyncSlice({
-        start: firstElementIndex,
-        end: firstElementIndex + this.paginateBy
-      }, resources);
+      resources = resources.slice(firstElementIndex, firstElementIndex + this.paginateBy);
     }
 
     const nextProcessor = listPostProcessors.shift();
