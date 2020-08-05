@@ -44,6 +44,13 @@ const ListMixin = {
     );
   },
 
+  /**
+   * Render resources in the DOM
+   * @param resources
+   * @param listPostProcessors
+   * @param div
+   * @param context
+   */
   async renderDOM(
     resources: object[],
     listPostProcessors: Function[],
@@ -66,6 +73,13 @@ const ListMixin = {
       );
   },
 
+  /**
+   * Show empty widget if no resources in the list
+   * @param resources
+   * @param listPostProcessors
+   * @param div
+   * @param context
+   */
   async handleEmptyWidget(
     resources: object[],
     listPostProcessors: Function[],

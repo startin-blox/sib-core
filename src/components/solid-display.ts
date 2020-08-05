@@ -114,7 +114,7 @@ export const SolidDisplay = {
   },
 
   /**
-   * Creates the content of a single element (resource)
+   * Creates and render the content of a single element (resource)
    * @param parent
    */
   async appendSingleElt(parent: HTMLElement): Promise<void> {
@@ -140,10 +140,10 @@ export const SolidDisplay = {
     div: HTMLElement,
     context: string,
   ) {
-    const attributes = this.getChildAttributes();
+    const attributes = this.getChildAttributes(); // get attributes of children only once
     const template = html`
       ${resources.map(r => r ? this.getChildTemplate(r['@id'], attributes) : null)}
-    `
+    `; // and create a child template for each resource
     render(template, div);
 
     const nextProcessor = listPostProcessors.shift();
