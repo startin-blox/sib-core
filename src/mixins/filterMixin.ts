@@ -22,6 +22,7 @@ const FilterMixin = {
           this.searchForm.removeEventListener('formChange', this.searchFormCallback);
         }
         this.setSearchForm(document.getElementById(newValue));
+        this.filterList();
         if (!this.searchForm) throw `#${newValue} is not in DOM`;
       }
     }
@@ -31,7 +32,6 @@ const FilterMixin = {
     this.searchFormCallback = () => {
       this.filterList(context);
     };
-    await this.filterList();
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
   },
   created() {
@@ -134,9 +134,6 @@ const FilterMixin = {
     const searchForm = document.createElement(`${prefix}-form`)
     searchForm.toggleAttribute('naked', true);
     this.setSearchForm(searchForm, context);
-    this.searchFormCallback = () => {
-      this.filterList(context);
-    };
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
     this.searchForm.toggleAttribute('naked', true);
 
