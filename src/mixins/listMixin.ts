@@ -25,7 +25,7 @@ const ListMixin = {
     if (!this.resource) return;
 
     // Not a container but a single resource
-    if (!(await this.resource.isContainer())) {
+    if (!this.resource.isContainer()) {
       this.appendSingleElt(div);
       return;
     }

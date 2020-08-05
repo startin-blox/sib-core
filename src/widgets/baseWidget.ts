@@ -180,7 +180,7 @@ export class BaseWidget extends HTMLElement {
         this._listen(element['@id']);
 
         let selected: boolean;
-        if (this._value && this._value.isContainer && await this._value.isContainer()) { // selected options for multiple select
+        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
           selected = false;
           for await (let value of this._value["ldp:contains"]) {
             if (value['@id'] == element['@id']) {

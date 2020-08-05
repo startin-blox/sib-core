@@ -91,6 +91,7 @@ export const SolidMap = {
     if (!this.subscriptions.get(resourceId)) {
       this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
     }
+    if (!resource) return;
     const lat = await resource['lat'];
     const lng = await resource['lng'];
 
@@ -176,7 +177,7 @@ export const SolidMap = {
    */
   async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     const groupClass = div.dataset.groupClass || ''; // get the group class from the useless div element
-    for await (let resource of resources) await this.appendChildElt(resource['@id'], groupClass);
+    await Promise.all(resources.map(resource => this.appendChildElt(resource['@id'], groupClass)))
     this.planReset();
 
     const nextProcessor = listPostProcessors.shift();

@@ -56,7 +56,7 @@ export const SolidForm = {
   },
   async getFormValue() {
     let value = this.value;
-    if (this.resource && !(await this.resource.isContainer())) { // add @id if edition
+    if (this.resource && !this.resource.isContainer()) { // add @id if edition
       value['@id'] = this.resourceId;
     }
     return value;

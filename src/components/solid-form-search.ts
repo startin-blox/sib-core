@@ -78,7 +78,7 @@ export const SolidFormSearch = {
     const fields = await this.getFields();
     const template = html`
       <form>
-        ${fields.map(field => this.createWidget(field))}
+        ${fields.map((field: string) => this.createWidget(field))}
       </form>
     `;
     render(template, this.element);
