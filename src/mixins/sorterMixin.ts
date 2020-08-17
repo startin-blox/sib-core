@@ -1,8 +1,3 @@
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-map';
-//@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-to-array';
-
 const SorterMixin = {
   name: 'sorter-mixin',
   use: [],
@@ -21,17 +16,14 @@ const SorterMixin = {
   },
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.orderBy) {
-      resources = await asyncMap(async (resource) => ({
-        sortingKey: await resource[this.orderBy], // fetch sorting value
-        proxy: resource // and keep proxy
-      }), resources);
-      resources = await asyncToArray(resources); // tranform in array
-      resources = resources.sort(this.sortValuesByKey("sortingKey")); // sort this array
-      resources = await asyncMap(resource => resource.proxy, resources); // and re-transform in async iterator
+      resources = (await Promise.all(resources.map(async (resource) => ({
+          sortingKey: await resource[this.orderBy], // fetch sorting value
+          proxy: resource // and keep proxy
+        }))))
+        .sort(this.sortValuesByKey("sortingKey")) // sort this array
+        .map(r => r.proxy) // re-create array
     } else if (this.isRandomSorted()) {
-      resources = await asyncToArray(resources); // tranform in array
       resources = this.shuffleResources(resources); // shuffle resources
-      resources = await asyncMap(resource => resource, resources); // and re-transform in async iterator
     }
 
     const nextProcessor = listPostProcessors.shift();

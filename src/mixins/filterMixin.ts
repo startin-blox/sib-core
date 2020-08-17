@@ -1,8 +1,6 @@
 //@ts-ignore
 import asyncReduce from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-reduce';
 //@ts-ignore
-import asyncFilter from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-filter';
-//@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-every';
 
 const FilterMixin = {
@@ -24,6 +22,7 @@ const FilterMixin = {
           this.searchForm.removeEventListener('formChange', this.searchFormCallback);
         }
         this.setSearchForm(document.getElementById(newValue));
+        this.filterList();
         if (!this.searchForm) throw `#${newValue} is not in DOM`;
       }
     }
@@ -33,7 +32,6 @@ const FilterMixin = {
     this.searchFormCallback = () => {
       this.filterList(context);
     };
-    await this.filterList();
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
   },
   created() {
@@ -54,7 +52,8 @@ const FilterMixin = {
       const searchCount: Map<string, number> = this.searchCount;
       if (!searchCount.has(context)) searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
-      resources = await asyncFilter(2, this.matchFilters.bind(this), resources);
+      const filteredResources = await Promise.all(resources.map(this.matchFilters.bind(this)));
+      resources =	resources.filter((_v, index) => filteredResources[index]);
     }
 
     const nextProcessor = listPostProcessors.shift();
@@ -68,13 +67,13 @@ const FilterMixin = {
   },
   async matchValue(propertyValue, filterValue): Promise<boolean> {
     if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
-    
+
     if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
     if (propertyValue == null) return false; // property does not exist on resource
     if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
 
     // Filter on a container
-    if (propertyValue.isContainer && await propertyValue.isContainer()) {
+    if (propertyValue.isContainer && propertyValue.isContainer()) {
       return await asyncReduce(
         Promise.resolve(false),
         async (initial, value) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),
@@ -135,9 +134,6 @@ const FilterMixin = {
     const searchForm = document.createElement(`${prefix}-form`)
     searchForm.toggleAttribute('naked', true);
     this.setSearchForm(searchForm, context);
-    this.searchFormCallback = () => {
-      this.filterList(context);
-    };
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
     this.searchForm.toggleAttribute('naked', true);
 
@@ -148,11 +144,11 @@ const FilterMixin = {
       name: attr['name'].replace('search-', ''),
       value: attr['value'],
     }));
-    
+
     searchAttributes.forEach(({name, value}) => {
       this.searchForm.setAttribute(name, value);
     });
-    
+
     this.element.insertBefore(this.searchForm, this.element.firstChild);
   }
 }

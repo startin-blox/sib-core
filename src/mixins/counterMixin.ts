@@ -1,7 +1,3 @@
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-map';
-//@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-to-array';
 import { stringToDom, evalTemplateString } from '../libs/helpers.js';
 
 const CounterMixin = {
@@ -21,9 +17,7 @@ const CounterMixin = {
   },
   async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.counterTemplate) {
-      const resourcesToCount = await asyncToArray(resources); // create an array and consume iterator
-      await this.renderCounter(div, resourcesToCount.length); // count resources
-      resources = await asyncMap(resource => resource, resourcesToCount); // re-create an iterator
+      await this.renderCounter(div, resources.length); // count resources
     }
 
     const nextProcessor = listPostProcessors.shift();

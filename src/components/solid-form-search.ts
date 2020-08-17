@@ -39,7 +39,7 @@ export const SolidFormSearch = {
 
     return values;
   },
-  getWidget(field: string): WidgetInterface {
+  getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
     let type = WidgetType.CUSTOM;
     const widgetAttribute = this.element.getAttribute('widget-' + field);
@@ -48,7 +48,7 @@ export const SolidFormSearch = {
     if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
       tagName = 'solid-form-dropdown'
     } else {
-      tagName = widgetAttribute || this.defaultWidget;
+      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
     if (!customElements.get(tagName)) { // component does not exist
@@ -78,7 +78,7 @@ export const SolidFormSearch = {
     const fields = await this.getFields();
     const template = html`
       <form>
-        ${fields.map(field => this.createWidget(field))}
+        ${fields.map((field: string) => this.createWidget(field))}
       </form>
     `;
     render(template, this.element);
