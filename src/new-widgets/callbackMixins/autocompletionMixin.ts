@@ -1,6 +1,6 @@
 import { importCSS } from '../../libs/helpers.js';
 //@ts-ignore
-import SlimSelect from 'https://dev.jspm.io/slim-select@1.23';
+import SlimSelect from 'https://jspm.dev/slim-select@1.23';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',
@@ -8,7 +8,7 @@ const AutocompletionMixin = {
     slimSelect: null,
   },
   created() {
-    importCSS('https://dev.jspm.io/slim-select/dist/slimselect.min.css');
+    importCSS('https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.23.0/slimselect.min.css');
     this.slimSelect = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
