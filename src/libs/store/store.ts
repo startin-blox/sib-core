@@ -1,5 +1,5 @@
 //@ts-ignore
-import JSONLDContextParser from 'https://dev.jspm.io/jsonld-context-parser@1';
+import JSONLDContextParser from 'https://jspm.dev/jsonld-context-parser@1';
 import 'https://unpkg.com/pubsub-js';
 
 const ContextParser = JSONLDContextParser.ContextParser;
