@@ -4,6 +4,7 @@ export default class SolidTemplateElement extends HTMLElement {
     this.renderPlanned = false;
     this.strings = {};
     this.translationsPath = null;
+    this.translationsFetched = false;
     this.initProps();
   }
 
@@ -55,20 +56,38 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   /**
-   * Fetch a translation file and render component
+   * Fetch all localized strings
    */
   async fetchLocaleStrings() {
-    if (!this.translationsPath) return;
+    if (this.translationsFetched) return;
+    const filesToFetch = [];
+    if (this.translationsPath) // fetch component translations
+      filesToFetch.push(this.fetchTranslationFile(this.translationsPath));
+
+    const extraTranslationsPath = this.getAttribute('extra-translations-path');
+    if (extraTranslationsPath) // fetch developer translations
+      filesToFetch.push(this.fetchTranslationFile(extraTranslationsPath));
+
+    // merge all translations
+    return Promise.all(filesToFetch).then(res => {
+      this.translationsFetched = true;
+      this.strings = Object.assign({}, ...res);
+    })
+  }
+
+  /**
+   * Fetch the translation file from [path]
+   */
+  async fetchTranslationFile(path) {
     const ln = this.getLocale();
-    return fetch(`${this.translationsPath}/${ln}.json`)
+    const fullPath = `${path}/${ln}.json`;
+    return fetch(fullPath)
       .then((result) => {
         if (result.ok) {
           return result.json() // parse content
-            .then(strings => this.strings = strings) // and store strings in variable
-            .catch(e => console.error('Error while parsing the translation file.'));
+            .catch(e => console.error(`Error while parsing the translation file: ${fullPath}`));
         }
-        else console.error('Error while retrieving the translation file.');
-      });
+      }).catch(e => console.error(`Error while retrieving the translation file: ${fullPath}`));
   }
 
   /**
