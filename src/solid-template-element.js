@@ -1,6 +1,8 @@
 export default class SolidTemplateElement extends HTMLElement {
   constructor() {
     super();
+    this.renderPlanned = false;
+    this.strings = {};
     this.initProps();
   }
 
@@ -43,15 +45,63 @@ export default class SolidTemplateElement extends HTMLElement {
     }
   }
 
+  /**
+   * Fetch a translation file and render component
+   * @param path: path of the locales folder
+   */
+  fetchLocaleStrings(path) {
+    const ln = this.getLocale();
+    fetch(`${path}/${ln}.json`)
+      .then((result) => {
+        if (result.ok) return result.json();
+        else console.error('Error while retrieving the translation file.');
+      })
+      .then((strings) => {
+        this.strings = strings;
+        this.planRender();
+      }, () => {
+        console.error('Error while parsing the translation file.');
+        this.strings = {};
+      });
+  }
+
+  /**
+   * Returns current locale of app
+   */
+  getLocale() {
+    return localStorage.getItem('language') || window.navigator.language.slice(0, 2);
+  }
+
+  /**
+   * Return localized string for [key]
+   * @param key
+   */
+  localize(key) {
+    return this.strings[key] || key;
+  }
+
   attributeChangedCallback()
   {
     this.updateProps();
-    this.render();
+    this.planRender();
   }
 
   connectedCallback() {
     this.updateProps();
-    this.render();
+    this.planRender();
+  }
+
+  /**
+   * Plan a render if none is waiting
+   */
+  planRender() {
+    if (!this.renderPlanned) {
+      this.renderPlanned = true;
+      setTimeout(() => {
+        this.render();
+        this.renderPlanned = false;
+      });
+    }
   }
 
   render() {
