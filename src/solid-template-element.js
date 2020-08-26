@@ -3,6 +3,7 @@ export default class SolidTemplateElement extends HTMLElement {
     super();
     this.renderPlanned = false;
     this.strings = {};
+    this.translationsPath = null;
     this.initProps();
   }
 
@@ -46,22 +47,27 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   /**
-   * Fetch a translation file and render component
-   * @param path: path of the locales folder
+   * Define the path folder of translations files
+   * @param path
    */
-  fetchLocaleStrings(path) {
+  setTranslationsPath(path) {
+    this.translationsPath = path;
+  }
+
+  /**
+   * Fetch a translation file and render component
+   */
+  async fetchLocaleStrings() {
+    if (!this.translationsPath) return;
     const ln = this.getLocale();
-    fetch(`${path}/${ln}.json`)
+    return fetch(`${this.translationsPath}/${ln}.json`)
       .then((result) => {
-        if (result.ok) return result.json();
+        if (result.ok) {
+          return result.json() // parse content
+            .then(strings => this.strings = strings) // and store strings in variable
+            .catch(e => console.error('Error while parsing the translation file.'));
+        }
         else console.error('Error while retrieving the translation file.');
-      })
-      .then((strings) => {
-        this.strings = strings;
-        this.planRender();
-      }, () => {
-        console.error('Error while parsing the translation file.');
-        this.strings = {};
       });
   }
 
@@ -92,7 +98,7 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   /**
-   * Plan a render if none is waiting
+   * Plan a render if none is already waiting to prevent multi re-renders
    */
   planRender() {
     if (!this.renderPlanned) {
@@ -105,7 +111,9 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   render() {
-    this.innerHTML = this.template(this.props);
+    this.fetchLocaleStrings().finally(() => { // render even if some errors occured
+      this.innerHTML = this.template(this.props);
+    });
   }
 
   template() {
