@@ -257,6 +257,7 @@ describe('form widgets', function() {
 
     cy.get('solid-form-radio#test1 > div > label').eq(0) // check options
       .contains('HTML')
+      .parent()
       .find('input')
       .should('have.attr', 'type', 'radio')
       .should('have.attr', 'value', '{"@id": "skill-1.jsonld"}');
