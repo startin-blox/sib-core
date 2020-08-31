@@ -103,8 +103,10 @@ function parseFieldsString(fields: string): string[] {
     fields = fields.replace(noset, '')
   }
 
+  const re = /\,(?=([^'"]*("|')[^'"]*("|'))*[^"']*$)/gm; // match , not inside quotes
   fieldsArray = fields
-    .split(',') // separate fields
+    .split(re) // separate fields
+    .filter(a => a) // remove undefined
     .map(a => a.trim()) // and remove spaces
   return fieldsArray;
 }
