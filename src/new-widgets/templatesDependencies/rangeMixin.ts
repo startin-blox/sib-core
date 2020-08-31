@@ -1,8 +1,9 @@
 import { StoreMixin } from '../../mixins/storeMixin.js';
+import { SorterMixin } from '../../mixins/sorterMixin.js';
 
 const RangeMixin = {
   name: 'range-mixin',
-  use: [ StoreMixin ],
+  use: [ StoreMixin, SorterMixin ],
   attributes: {
     range: {
       type: String,
@@ -19,11 +20,30 @@ const RangeMixin = {
       }
     }
   },
+  initialState: {
+    listPostProcessors: [],
+  },
   created() {
+    this.listPostProcessors = [];
     this.listAttributes['optionLabel'] = this.optionLabel;
   },
-  populate() {
-    this.listAttributes['range'] = this.resource ? this.resource['ldp:contains'] : [];
+  async populate() {
+    const resources = this.resource ? this.resource['ldp:contains'] : [];
+    const listPostProcessors = [...this.listPostProcessors];
+    listPostProcessors.push(this.setRangeAttribute.bind(this));
+
+    const nextProcessor = listPostProcessors.shift();
+    await nextProcessor(
+      resources,
+      listPostProcessors,
+      null,
+      this.dataSrc,
+    );
+  },
+  setRangeAttribute(
+    resources: object[]
+  ) {
+    this.listAttributes['range'] = resources;
     this.planRender();
   },
   empty() {

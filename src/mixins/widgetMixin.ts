@@ -197,7 +197,7 @@ const WidgetMixin = {
 
     const eachAttributes = ['each-range', 'each-label', 'each-placeholder', 'each-class'];
     const multipleAttributes = ['fields', 'label', 'widget', 'add-label', 'remove-label', 'next'];
-    const defaultAttributes = ['range', 'label', 'placeholder', 'class', /* 'widget', */, 'required', 'editable', 'upload-url', 'option-label'];
+    const defaultAttributes = ['range', 'label', 'placeholder', 'class', /* 'widget', */, 'required', 'editable', 'upload-url', 'option-label', 'order-by'];
 
     for (let attr of multipleAttributes) this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs)
     for (let attr of [...eachAttributes, ...defaultAttributes]) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
