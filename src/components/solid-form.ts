@@ -58,6 +58,11 @@ export const SolidForm = {
     let value = this.value;
     if (this.resource && !this.resource.isContainer()) { // add @id if edition
       value['@id'] = this.resourceId;
+
+      for (let predicate of Object.keys(this.value)) { // add @id for nested resources
+        const object = await this.resource[predicate];
+        if (object && object['@id']) value[predicate]['@id'] = object['@id'];
+      }
     }
     return value;
   },
