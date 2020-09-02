@@ -36,7 +36,7 @@ export const SolidDelete = {
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
       this.element.dispatchEvent(
-        new CustomEvent('resourceDeleted', { detail: { resource: { "@id": this.dataSrc } }, bubbles: true }),
+        new CustomEvent('save', { detail: { resource: { "@id": this.dataSrc } }, bubbles: true }),
       );
     });
   },
