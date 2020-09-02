@@ -130,8 +130,7 @@ const FilterMixin = {
     );
   },
   async createFilter(context: string): Promise<void> {
-    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const searchForm = document.createElement(`${prefix}-form`)
+    const searchForm = document.createElement('solid-form')
     searchForm.toggleAttribute('naked', true);
     this.setSearchForm(searchForm, context);
     this.searchForm.addEventListener('formChange', this.searchFormCallback);
