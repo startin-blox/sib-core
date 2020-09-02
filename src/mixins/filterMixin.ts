@@ -97,10 +97,11 @@ const FilterMixin = {
     // Filter on a value
     const value = propertyValue.toString();
     if(value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1) return true;
-    const search = new Fuse([value]).search(filterValue);
-    
-    if(search.length) return true
-    //return stringSimilarity.compareTwoStrings(value, filterValue) >= 0.5;
+    const search = new Fuse([value], {
+      shouldSort: false,
+      threshold: 0.37,
+    }).search(filterValue);
+    return search.length > 0;
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;
