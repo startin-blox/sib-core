@@ -27,10 +27,10 @@
     <button id="f2o">solid-form.value</button>
     <pre id="pre"></pre>
     <script>
-      const sibForms = document.getElementsByTagName('solid-form');
+      const solidForms = document.getElementsByTagName('solid-form');
       f2o.onclick = () => {
         const data = {};
-        for (elm of sibForms) {
+        for (elm of solidForms) {
           try {
             data[elm.id] = elm.component.value;
           } catch (e) {console.error(e)}

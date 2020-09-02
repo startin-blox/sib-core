@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-map</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h2>Solid Form</h2>
+
+    <solid-form
+      id="form-1"
+      data-src="../data/list/events.jsonld"
+      fields="name, contact.email"
+    ></solid-form>
+
+    <solid-form
+      id="form-2"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, contact.email"
+    ></solid-form>
+  </body>
+</html>

@@ -110,19 +110,18 @@ export const SolidMap = {
         .on('click', this.dispatchSelect.bind(this));
 
       if (this.fields !== null) { // show popups only if fields attribute
-        marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup sib-display
+        marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup solid-display
       }
 
       this.markers.push(marker);
     }
   },
   /**
-   * Generate the sib-display of the popup
+   * Generate the solid-display of the popup
    * @param resourceId: id of the popup clicked
    */
   getPopupContent(resourceId: string) {
-    const prefix = this.element.localName.split('-').shift() === 'sib' ? 'sib': 'solid';
-    const child = document.createElement(`${prefix}-display`);
+    const child = document.createElement('solid-display');
     if (this.fields != null) child.setAttribute('fields', this.fields);
 
     for (let attr of this.element.attributes) {

@@ -117,12 +117,12 @@ describe('Reactivity e2e test', function () {
 
     cy.get('solid-form#user-form input[type=submit]').click();
 
-    // Single sib-display
+    // Single solid-display
     cy.get('solid-display#user > div > solid-display-value[name="first_name"]').should('contain', 'Test');
     cy.get('solid-display#user > div > solid-display-value[name="last_name"]').should('contain', 'User');
     cy.get('solid-display#user > div > solid-display-value[name="username"]').should('contain', 'admin');
 
-    // List sib-display & range
+    // List solid-display & range
     const src = "https://ldp-server.test/users/matthieu/";
     cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Test');
     cy.get(`solid-display#users solid-display[data-src="${src}"] > div > solid-display-value[name="last_name"]`).should('contain', 'User');
@@ -141,7 +141,7 @@ describe('Reactivity e2e test', function () {
 
     cy.get('solid-form#users-form input[type=submit]').click();
 
-    // List sib-display & range
+    // List solid-display & range
     const newSrc = "https://ldp-server.test/users/alex/";
     cy.get(`solid-display#users solid-display`).should('have.length', 3);
     cy.get(`solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`).should('contain', 'Alex');

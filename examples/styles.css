@@ -31,13 +31,13 @@ form > * {
 label {
   display: block;
 }
-sib-route {
+solid-route {
   display: inline-block;
   background-color: #aaa;
   padding: 0.5em;
   cursor: pointer;
 }
-sib-route[active] {
+solid-route[active] {
   background-color: #ccc;
 }
 
