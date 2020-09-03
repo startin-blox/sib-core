@@ -1,9 +1,10 @@
 import { Sib } from '../libs/Sib.js';
 import { base_context, store } from '../libs/store/store.js';
+import { NextMixin } from '../mixins/nextMixin.js';
 
 export const SolidDelete = {
   name: 'solid-delete',
-  use: [],
+  use: [NextMixin],
   attributes: {
     dataSrc: {
       type: String,
@@ -35,6 +36,7 @@ export const SolidDelete = {
     if (!this.dataSrc) return;
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
+      this.goToNext(null);
       this.element.dispatchEvent(
         new CustomEvent('save', { detail: { resource: { "@id": this.dataSrc } }, bubbles: true }),
       );

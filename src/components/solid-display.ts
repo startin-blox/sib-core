@@ -9,6 +9,7 @@ import { SorterMixin } from '../mixins/sorterMixin.js';
 import { GrouperMixin } from '../mixins/grouperMixin.js';
 import { FederationMixin } from '../mixins/federationMixin.js';
 import { HighlighterMixin } from '../mixins/highlighterMixin.js';
+import { NextMixin } from '../mixins/nextMixin.js';
 import { spread } from '../libs/lit-helpers.js';
 
 //@ts-ignore
@@ -27,6 +28,7 @@ export const SolidDisplay = {
     FilterMixin,
     SorterMixin,
     FederationMixin,
+    NextMixin,
   ],
   attributes: {
     defaultWidget: {
@@ -85,14 +87,7 @@ export const SolidDisplay = {
       this.element.dispatchEvent(
         new CustomEvent('resourceSelect', { detail: { resource: resource } }),
       );
-      if (this.next) {
-        this.element.dispatchEvent(
-          new CustomEvent('requestNavigation', {
-            bubbles: true,
-            detail: { route: this.next, resource: resource },
-          }),
-        );
-      }
+      this.goToNext(resource);
     }
   },
 

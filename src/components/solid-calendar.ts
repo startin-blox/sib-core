@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { ListMixin } from '../mixins/listMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
+import {NextMixin } from '../mixins/nextMixin.js';
 import { importCSS } from '../libs/helpers.js';
 //@ts-ignore
 import Calendar from 'https://jspm.dev/tui-calendar@1';
@@ -8,7 +9,7 @@ import { store } from '../libs/store/store.js';
 
 export const SolidCalendar = {
   name: 'solid-calendar',
-  use: [ListMixin, StoreMixin],
+  use: [ListMixin, StoreMixin, NextMixin],
   initialState: {
     subscriptions: null
   },
@@ -31,14 +32,7 @@ export const SolidCalendar = {
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
-    if (this.next) {
-      this.element.dispatchEvent(
-        new CustomEvent('requestNavigation', {
-          bubbles: true,
-          detail: { route: this.next, resource: resource },
-        }),
-      );
-    }
+    this.goToNext(resource);
   },
   async appendChildElt(resourceId: string) {
     const resource = await store.getData(resourceId, this.context);

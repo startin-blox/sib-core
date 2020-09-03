@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
+import { NextMixin } from '../mixins/nextMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 import { WidgetInterface } from '../mixins/interfaces.js';
@@ -12,7 +13,7 @@ import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?modu
 
 export const SolidForm = {
   name: 'solid-form',
-  use: [WidgetMixin, StoreMixin],
+  use: [WidgetMixin, StoreMixin, NextMixin],
   attributes: {
     defaultWidget: {
       type: String,
@@ -129,14 +130,8 @@ export const SolidForm = {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return; }
     if (isCreation) this.reset(); // we reset the form only in creation mode
-    if (!this.next) return;
 
-    this.element.dispatchEvent(
-      new CustomEvent('requestNavigation', {
-        bubbles: true,
-        detail: { route: this.next, resource: {'@id': id} },
-      }),
-    );
+    this.goToNext({'@id': id})
   },
   async inputChange(): Promise<void> {
     this.change(await this.getFormValue());

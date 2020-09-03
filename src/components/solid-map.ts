@@ -5,6 +5,7 @@ import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { CounterMixin } from '../mixins/counterMixin.js';
 import { FilterMixin } from '../mixins/filterMixin.js';
 import { GrouperMixin } from '../mixins/grouperMixin.js';
+import { NextMixin } from '../mixins/nextMixin.js';
 import { importCSS } from '../libs/helpers.js';
 import { store } from '../libs/store/store.js';
 
@@ -20,6 +21,7 @@ export const SolidMap = {
     GrouperMixin,
     CounterMixin,
     FilterMixin,
+    NextMixin,
   ],
   initialState: {
     markers: {
@@ -71,14 +73,7 @@ export const SolidMap = {
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } })
     );
-    if (this.next) {
-      this.element.dispatchEvent(
-        new CustomEvent('requestNavigation', {
-          bubbles: true,
-          detail: { route: this.next, resource: resource }
-        })
-      );
-    }
+    this.goToNext(resource);
   },
 
   /**

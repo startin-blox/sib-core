@@ -32,10 +32,6 @@ const StoreMixin = {
       type: String,
       default: null
     },
-    next: {
-      type: String,
-      default: ''
-    },
     loaderId: {
       type: String,
       default: ''
