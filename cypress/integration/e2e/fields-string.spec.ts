@@ -17,9 +17,9 @@ describe('fields-string', function() {
     .should('have.text', 'Name: ')
 
     cy.get('@list1').find('>span').eq(1)
-    .should('have.text', ' - description: ')
+    .should('have.text', ', description: ')
     cy.get('@list2').find('>span').eq(1)
-    .should('have.text', ' - description: ')
+    .should('have.text', ', description: ')
 
   });
 })
