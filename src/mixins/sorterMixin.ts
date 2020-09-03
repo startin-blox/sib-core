@@ -6,6 +6,14 @@ const SorterMixin = {
       type: String,
       default: null
     },
+    orderAsc: {
+      type: String,
+      default: null
+    },
+    orderDesc: {
+      type: String,
+      default: null
+    },
     orderByRandom: {
       type: String,
       default: null
@@ -15,12 +23,14 @@ const SorterMixin = {
     this.listPostProcessors.push(this.orderCallback.bind(this));
   },
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
-    if (this.orderBy) {
+    if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
+    const sortingKey = this.orderAsc || this.orderDesc;
+    if (sortingKey) {
       resources = (await Promise.all(resources.map(async (resource) => ({
-          sortingKey: await resource[this.orderBy], // fetch sorting value
+          sortingKey: await resource[sortingKey], // fetch sorting value
           proxy: resource // and keep proxy
         }))))
-        .sort(this.sortValuesByKey("sortingKey")) // sort this array
+        .sort(this.sortValuesByKey("sortingKey", !!this.orderAsc)) // sort this array
         .map(r => r.proxy) // re-create array
     } else if (this.isRandomSorted()) {
       resources = this.shuffleResources(resources); // shuffle resources
@@ -32,7 +42,7 @@ const SorterMixin = {
   isRandomSorted(): boolean {
     return this.orderByRandom !== null;
   },
-  sortValuesByKey(key: string): Function {
+  sortValuesByKey(key: string, asc: boolean): Function {
     return function (a: object, b: object): number {
       if (!a[key] || !b[key]) {
         return 0; // property doesn't exist on either object
@@ -40,8 +50,8 @@ const SorterMixin = {
       const varA = a[key].toUpperCase();
       const varB = b[key].toUpperCase();
       let comparison = 0;
-      if (varA > varB) comparison = 1;
-      else if (varA < varB) comparison = -1;
+      if (varA > varB) comparison = asc ? 1 : -1;
+      else if (varA < varB) comparison = asc ? -1 : 1;
 
       return comparison;
     }
