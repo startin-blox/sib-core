@@ -103,11 +103,10 @@ function parseFieldsString(fields: string): string[] {
     fields = fields.replace(noset, '')
   }
 
-  const re = /(?<!\\),/gm; // match , not escaped
-  fieldsArray = fields
-    .split(re) // separate fields
-    .map(a => a.trim().replace('\\,', ',')) // and remove spaces
-  return fieldsArray;
+  const re = /((^\s*|,)\s*)(("(\\"|[^"])*")|('(\\'|[^'])*')|[^,]*)/gm; // match , not inside quotes
+  fieldsArray = fields.match(re) || []; // separate fields
+  if (!fieldsArray) return [];
+  return fieldsArray.map(a => a.replace(/^[\s,]+/, '')) // remove commas and spaces
 }
 
 function findClosingBracketMatchIndex(str: string, pos: number) {
