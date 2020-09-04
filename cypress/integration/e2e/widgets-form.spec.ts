@@ -243,23 +243,23 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': 'skill-2.jsonld'}, {'@id': 'skill-3.jsonld'}]); // form value
     });
 
-    // With order-by
+    // With order-desc
     cy.get('solid-form-dropdown#test5 > select > option').eq(1)
-      .should('contain', 'CSS');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(2)
-      .should('contain', 'DevOps');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(3)
-      .should('contain', 'Git');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(4)
-      .should('contain', 'HTML');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(5)
-      .should('contain', 'Javascript');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(6)
-      .should('contain', 'Node');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(7)
-      .should('contain', 'PHP');
-    cy.get('solid-form-dropdown#test5 > select > option').eq(8)
       .should('contain', 'Python');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(2)
+      .should('contain', 'PHP');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(3)
+      .should('contain', 'Node');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(4)
+      .should('contain', 'Javascript');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(5)
+      .should('contain', 'HTML');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(6)
+      .should('contain', 'Git');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(7)
+      .should('contain', 'DevOps');
+    cy.get('solid-form-dropdown#test5 > select > option').eq(8)
+      .should('contain', 'CSS');
   })
 
   it('solid-form-radio', () => {

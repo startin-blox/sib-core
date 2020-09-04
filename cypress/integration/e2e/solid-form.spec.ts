@@ -1,7 +1,7 @@
 describe('solid-form', function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-form.html')
-  })
+  });
   it('creation form', () => {
     cy.get('#form-1 input[type=text]').should('have.length', 2)
     cy.get('#form-1 input[type=text][name=name]').should('have.value', '');
@@ -33,5 +33,18 @@ describe('solid-form', function() {
         });
       });
     });
+  });
+  it('widget creation', () => {
+    cy.get('#form-3 solid-form-dropdown')
+    .should('have.attr', 'range', '../data/list/skills.jsonld')
+    .should('have.attr', 'data-src', '../data/list/skills.jsonld')
+    .should('have.attr', 'order-desc', 'name')
+    .should('have.attr', 'name', 'skills')
+
+    cy.get('#form-3 solid-form-label-text')
+    .should('have.attr', 'label', 'Test label')
+    .should('have.attr', 'placeholder', 'test placeholder')
+    .should('have.attr', 'class', 'test-class')
+    .should('have.attr', 'required')
   });
 })

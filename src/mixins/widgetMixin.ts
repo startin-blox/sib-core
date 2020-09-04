@@ -195,12 +195,38 @@ const WidgetMixin = {
     const attrs = { name: field };
     const escapedField = this.getEscapedField(field);
 
-    const eachAttributes = ['each-range', 'each-label', 'each-placeholder', 'each-class'];
-    const multipleAttributes = ['fields', 'label', 'widget', 'add-label', 'remove-label', 'next'];
-    const defaultAttributes = ['range', 'label', 'placeholder', 'class', /* 'widget', */, 'required', 'editable', 'upload-url', 'option-label', 'order-by'];
-
+    // transfer all multiple-[field]-[attr] attributes as [attr] for multiple widget [field]
+    const multipleAttributes = [
+      'fields',
+      'label',
+      'widget',
+      'add-label',
+      'remove-label',
+      'next'
+    ];
     for (let attr of multipleAttributes) this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs)
-    for (let attr of [...eachAttributes, ...defaultAttributes]) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
+
+    // transfer all [attr]-[field] attributes as [attr] attribute for widget [field]
+    const defaultAttributes = [
+      'range',
+      'label',
+      'placeholder',
+      'class',
+      /* 'widget', */,
+      'required',
+      'editable',
+      'upload-url',
+      'option-label',
+      'order-by', // deprecated. Remove in 0.15
+      'each-range',
+      'each-label',
+      'each-placeholder',
+      'each-class',
+      'order-asc',
+      'order-desc',
+    ];
+    for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
+
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
     if (this.editable(escapedField) && this.resource) attrs['value-id'] = this.resource['@id'];
