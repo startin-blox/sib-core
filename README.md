@@ -1,6 +1,6 @@
 # Getting started
 
-> Please before to start, check [our contribution guidelines](https://git.startinblox.com/documentation/doc/wikis/Contribution-guidelines) :)
+> Please before to start, check [our contribution guidelines](https://git.startinblox.com/documentation/doc/wikis/Contribution-guidelines):)
 
 This documentation is for developers who would like to contribute to the core of the framework.
 
