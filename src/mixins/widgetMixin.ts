@@ -298,7 +298,7 @@ const WidgetMixin = {
   },
   createString(value: string) {
     const span = document.createElement("span");
-    span.textContent = value.substring(1, value.length - 1); // remove quotes
+    span.textContent = value.slice(1, -1).replace(/\\(['"])/g, '$1'); // remove quotes
     return span;
   },
   /**
