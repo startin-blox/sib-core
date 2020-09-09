@@ -1,5 +1,8 @@
 import { Sib } from '../libs/Sib.js';
 
+//@ts-ignore
+import { html, render } from 'https://unpkg.com/lit-html?module';
+
 export const SolidLang = {
   name: 'solid-lang',
   use: [],
@@ -22,12 +25,17 @@ export const SolidLang = {
     store.selectLanguage(this.lang);
     location.reload();
   },
-  
-  render(): void {
-    const button = document.createElement('button');
-    button.textContent = this.dataLabel;
-    this.element.appendChild(button);
-    button.addEventListener('click', this.languageLoader.bind(this));
+
+  render() {
+    let template = html`
+    <button
+      @click=${this.languageLoader.bind(this)}
+    >
+      ${this.dataLabel}
+    </button>
+    `;
+
+    render(template, this.element);
   }
 };
 
