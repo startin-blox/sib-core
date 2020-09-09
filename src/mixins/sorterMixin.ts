@@ -19,8 +19,14 @@ const SorterMixin = {
       default: null
     }
   },
+  initialState: {
+    randomOrder: null
+  },
   attached(): void {
     this.listPostProcessors.push(this.orderCallback.bind(this));
+  },
+  created(): void {
+    this.randomOrder = [];
   },
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
@@ -60,14 +66,17 @@ const SorterMixin = {
     let currentIndex = array.length;
     let temporaryValue: object;
     let randomIndex: number;
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+    if (this.randomOrder.length !== array.length) { // if no random order existing
+      this.randomOrder = [ ...Array(array.length).keys() ]; // generate array of indexes
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = this.randomOrder[currentIndex];
+        this.randomOrder[currentIndex] = this.randomOrder[randomIndex];
+        this.randomOrder[randomIndex] = temporaryValue;
+      }
     }
-    return array;
+    return this.randomOrder.map((i: number) => array[i]); // rebuild array with random order
   }
 }
 
