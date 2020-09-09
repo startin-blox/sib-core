@@ -19,7 +19,6 @@ export const SolidLang = {
   },
 
   languageLoader () {
-    console.log(this.lang);
     store.selectLanguage(this.lang);
     location.reload();
   },
