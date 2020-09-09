@@ -5,6 +5,7 @@ import { SolidFormSearch } from './components/solid-form-search.js';
 import { SolidWidget } from './components/solid-widget.js';
 import { SolidAcChecker } from './components/solid-ac-checker.js';
 import { SolidDelete } from './components/solid-delete.js';
+import { SolidLang } from './components/solid-lang.js';
 
 import { store } from './libs/store/store.js';
 import * as Helpers from './libs/helpers.js';
@@ -18,6 +19,7 @@ export {
   SolidWidget,
   SolidAcChecker,
   SolidDelete,
+  SolidLang,
   store,
   Helpers
 }
