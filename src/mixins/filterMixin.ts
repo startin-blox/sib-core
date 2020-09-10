@@ -3,7 +3,7 @@ import asyncReduce from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-reduc
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-every';
 //@ts-ignore
-import Fuse from 'https://cdn.skypack.dev/fuse.js';
+import Fuse from 'https://dev.jspm.io/fuse.js@6';
 
 const FilterMixin = {
   name: 'filter-mixin',
