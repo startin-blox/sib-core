@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-display</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h2>Solid Display</h2>
+
+
+    <h3>diplay-1</h3>
+    <solid-display
+      id="display-1"
+      data-src="../data/list/event-1.jsonld"
+      fields="event, name, date"
+      value-event="Event name and date : "
+      class-event="presentationEvent"
+      class-name="nameEvent"
+      widget-date="solid-display-value-date"
+      ></solid-display>
+      
+      <h3>diplay-2</h3>
+      <solid-display
+      id="display-2"
+      data-src="../data/list/user-1.jsonld"
+      fields="completeName(introName,first_name, last_name), emailSet(introEmail, email)"
+      value-introName="My complete name is : "
+      value-introEmail="My email address is : "
+      class-completeName="completeName"
+      class-emailSet="completeEmail"
+      widget-emailSet="span"
+      widget-email="solid-display-link-mailto"
+    ></solid-display>
+
+    <style>
+      .presentationEvent {
+        color:crimson;
+      }
+      .nameEvent {
+        font-weight: bolder;
+        margin: 0.5em;
+      }
+      .completeName {
+        text-decoration: underline dotted purple;
+      }
+      .completeEmail {
+        text-shadow: 2px 5px #558ABB;
+        margin: 0.5em;
+      }
+
+    </style>
+  </body>
+</html>

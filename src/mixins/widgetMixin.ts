@@ -286,8 +286,19 @@ const WidgetMixin = {
    * @param field - string
    */
   createSet(field: string): Element {
-    const widget = document.createElement(this.getWidget(field, true).tagName);
-    widget.setAttribute('name', field);
+    const setWidget = this.getWidget(field, true);
+    const attrs = { name: field };
+    const setAttributes = [
+      'class',
+    ];
+    for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
+
+    const widget = document.createElement(setWidget.tagName);
+    
+    for (let name of Object.keys(attrs)) {
+      this.defineAttribute(widget, name, attrs[name], setWidget.type);
+    }
+
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;
       for (let item of this.getSet(field)) {
