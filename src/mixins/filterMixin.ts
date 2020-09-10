@@ -2,6 +2,8 @@
 import asyncReduce from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-reduce';
 //@ts-ignore
 import asyncEvery from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-every';
+//@ts-ignore
+import Fuse from 'https://dev.jspm.io/fuse.js@6';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -94,7 +96,12 @@ const FilterMixin = {
 
     // Filter on a value
     const value = propertyValue.toString();
-    return value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1;
+    if(value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1) return true;
+    const search = new Fuse([value], {
+      shouldSort: false,
+      threshold: 0.37,
+    }).search(filterValue);
+    return search.length > 0;
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;
