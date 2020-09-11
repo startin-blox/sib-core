@@ -47,7 +47,8 @@ const FormFileMixin = {
         console.error(error);
       });
   },
-  resetFile() {
+  resetFile(event) {
+    event.preventDefault();
     this.value = '';
     const filePicker = this.element.querySelector('input[type="file"]');
     if (filePicker) filePicker.value = '';
