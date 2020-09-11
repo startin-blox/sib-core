@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:delete</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <solid-delete
+      data-src="data/project.jsonld"
+      data-label="Supprimer"
+      next="detail"
+    ></solid-delete>
+
+    <pre id="res"></pre>
+    <script>
+      const res = document.querySelector('#res');
+      const solidDelete = document.querySelector('solid-delete');
+
+      solidDelete.addEventListener('save', (e) => {
+        const span = document.createElement('span');
+        span.innerText = 'save: ' + e.detail.resource['@id'];
+        res.appendChild(span);
+      });
+      solidDelete.addEventListener('resourceDeleted', (e) => {
+        const span = document.createElement('span');
+        span.innerText = 'resourceDeleted: ' + e.detail.resource['@id'];
+        res.appendChild(span);
+      });
+      document.addEventListener('requestNavigation', () => {
+        const span = document.createElement('span');
+        span.innerText = 'requestNavigation';
+        res.appendChild(span);
+      });
+    </script>
+  </body>
+</html>

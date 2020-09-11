@@ -1,0 +1,48 @@
+describe('solid-delete', function () {
+  let win: Window;
+
+  this.beforeAll('visit', () => {
+    cy.visit('/examples/e2e/solid-delete.html');
+    cy.window().then(w => {
+      win = w;
+    });
+  });
+
+  it('calls store.delete and send events', () => {
+    cy.spy(win.store, 'delete');
+    cy.server();
+    cy.route({
+      method: 'DELETE',
+      url: '**/project.jsonld',
+      status: 204,
+      response: {},
+    });
+    // button created
+    cy.get('solid-delete').find('button').should('have.length', 1);
+    cy.get('solid-delete button').should('have.text', 'Supprimer');
+    // on click, store.delete is called
+    cy.get('solid-delete button').click({ force: true }).then(() => {
+      expect(win.store.delete).to.be.called;
+    });
+    // events have been fired
+    cy.get('#res')
+      .should('contain', 'save: data/project.jsonld')
+      .should('contain', 'resourceDeleted: data/project.jsonld')
+      .should('contain', 'requestNavigation');
+  });
+  it('does not send events on failure', () => {
+    cy.reload();
+    cy.server();
+    cy.route({
+      method: 'DELETE',
+      url: '**/project.jsonld',
+      status: 403,
+      response: {},
+    });
+    cy.get('solid-delete button').click({ force: true })
+    // if server fails, events not fired
+    cy.get('#res').should('be.empty');
+  });
+
+})
+
