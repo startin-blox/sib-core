@@ -24,8 +24,9 @@ test:
   stage: test
   before_script:
     - npm ci
-    - npm run build:prod
   script:
+    - npm run check-types
+    - npm run build:prod
     - npm test
   except:
     - master
