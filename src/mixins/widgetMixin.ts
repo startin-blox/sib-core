@@ -227,6 +227,8 @@ const WidgetMixin = {
       'each-class',
       'order-asc',
       'order-desc',
+      'min',
+      'max',
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 
@@ -324,3 +326,9 @@ const WidgetMixin = {
 export {
   WidgetMixin
 }
+
+
+// addToAttributes(lookForAttr: string, setAttrKey: string, attributes: object) {
+//   const attribute = this.element.getAttribute(lookForAttr);
+//   if (attribute == null) return;
+//   attributes[setAttrKey] = attribute;

@@ -143,6 +143,8 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'number')
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'value', '5')
+      .and('have.attr', 'min', '2')
+      .and('have.attr', 'max', '7')
       .and('have.attr', 'data-holder');
 
     cy.get('solid-form-number').then($el => { // check API value
