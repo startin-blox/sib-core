@@ -15,6 +15,7 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": false,
     "alwaysStrict": true,
+    "importsNotUsedAsValues": "error",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
