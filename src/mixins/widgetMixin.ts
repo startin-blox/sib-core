@@ -326,9 +326,3 @@ const WidgetMixin = {
 export {
   WidgetMixin
 }
-
-
-// addToAttributes(lookForAttr: string, setAttrKey: string, attributes: object) {
-//   const attribute = this.element.getAttribute(lookForAttr);
-//   if (attribute == null) return;
-//   attributes[setAttrKey] = attribute;
