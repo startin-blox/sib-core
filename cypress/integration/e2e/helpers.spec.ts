@@ -93,7 +93,7 @@ describe('helpers', function() {
     });
     
     it('show a warning', () => {
-      const spy = cy.spy(win.console, 'warn');
+      const spy = cy.spy((win as Window & typeof globalThis).console, 'warn');
       helpers.defineComponent('my-component', class extends HTMLElement {});
       helpers.defineComponent('my-component', class extends HTMLElement {});
       expect(spy).to.have.been.called;

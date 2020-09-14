@@ -1,4 +1,4 @@
-import { ComponentInterface } from "./interfaces.js";
+import type { ComponentInterface } from "./interfaces.js";
 
 export abstract class Component implements ComponentInterface {
   public element: HTMLElement;

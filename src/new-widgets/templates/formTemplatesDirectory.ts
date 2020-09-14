@@ -60,7 +60,7 @@ export const formTemplates = {
     dependencies: [ FormCheckboxMixin, FormMixin ]
   },
   date: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       <input
         type="date"
         placeholder=${ifDefined(attributes.placeholder)}
@@ -74,7 +74,7 @@ export const formTemplates = {
     dependencies: [ FormMixin ]
   },
   rangedate: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       <input
         data-holder
         type="date"
@@ -105,7 +105,7 @@ export const formTemplates = {
     dependencies: [ FormNumberMixin, FormMixin ]
   },
   rangenumber: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       <input
         data-holder
         type="number"
@@ -180,7 +180,7 @@ export const formTemplates = {
     dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
   },
   multiple: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       ${(attributes.children || []).map((child, index) => html`
         <div data-index=${attributes.name + index}>
           ${child}
@@ -192,7 +192,7 @@ export const formTemplates = {
     dependencies: [ MultipleFormMixin, FormMixin ]
   },
   multipleselect: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       <solid-form-dropdown
         data-holder
         name=${ifDefined(attributes.name)}

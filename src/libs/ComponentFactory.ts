@@ -1,6 +1,6 @@
 import { Compositor } from './Compositor.js';
 import { Component } from './Component.js';
-import {
+import type {
   MixinStaticInterface,
   AttributesDefinitionInterface,
   ComponentConstructorInterface,

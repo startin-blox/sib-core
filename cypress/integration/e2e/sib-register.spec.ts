@@ -2,11 +2,13 @@ describe('Component factory', function() {
   let Sib: typeof import('../../../src/libs/Sib').Sib;
   let win: Window;
   let doc: Document;
+  let cnsl: Console;
   this.beforeEach('get dom', () => {
     cy.visit('examples/e2e/sib-register.html');
     cy.window().then(w => {
       win = w;
       doc = win.document;
+      cnsl = (win as Window & typeof globalThis).console;
       ///@ts-ignore
       Sib = win.Sib;
       win.document
@@ -16,7 +18,7 @@ describe('Component factory', function() {
   });
 
   it('register', () => {
-    cy.spy(win.console, 'warn');
+    cy.spy(cnsl, 'warn');
     const myComponent = { name: 'my-component' };
     Sib.register(myComponent);
     const el = doc.createElement('my-component');
@@ -25,8 +27,8 @@ describe('Component factory', function() {
     ///@ts-ignore
     expect(el).is.instanceOf(win.HTMLElement);
     expect(el).is.instanceOf(myComponentClass);
-    expect(win.console.warn).not.be.called;
+    expect(cnsl.warn).not.be.called;
     Sib.register(myComponent);
-    expect(win.console.warn).to.be.called;
+    expect(cnsl.warn).to.be.called;
   });
 });

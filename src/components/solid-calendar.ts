@@ -36,6 +36,7 @@ export const SolidCalendar = {
   },
   async appendChildElt(resourceId: string) {
     const resource = await store.getData(resourceId, this.context);
+    if(!resource) return;
     if (!this.subscriptions.get(resourceId)) {
       this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
     } // TODO : mixin gestion des enfants

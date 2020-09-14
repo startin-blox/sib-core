@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { BaseWidgetMixin } from './baseWidgetMixin.js';
-import { Template, WidgetMixinsInterface } from './interfaces.js';
-import { MixinStaticInterface } from '../libs/interfaces.js';
+import type { Template, WidgetMixinsInterface } from './interfaces.js';
+import type { MixinStaticInterface } from '../libs/interfaces.js';
 
 import { defaultTemplates, displayTemplates, formTemplates, setTemplates } from './templates/index.js';
 import { valueTransformationDirectory } from './valueTransformationMixins/index.js';

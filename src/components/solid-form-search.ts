@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.js';
 import { WidgetMixin } from '../mixins/widgetMixin.js';
 import { setDeepProperty } from '../libs/helpers.js';
-import { WidgetType, WidgetInterface } from '../mixins/interfaces.js';
+import type { WidgetInterface } from '../mixins/interfaces.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
 
 //@ts-ignore
@@ -41,7 +41,6 @@ export const SolidFormSearch = {
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
-    let type = WidgetType.CUSTOM;
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
     // Choose widget
@@ -53,7 +52,6 @@ export const SolidFormSearch = {
     // Create widget
     if (!customElements.get(tagName)) { // component does not exist
       if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
-      else type = WidgetType.NATIVE; // or use a native tag
     }
 
     return this.widgetFromTagName(tagName);

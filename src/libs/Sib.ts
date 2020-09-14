@@ -1,6 +1,6 @@
 import { ComponentFactory } from "./ComponentFactory.js";
 import { defineComponent } from "./helpers.js";
-import {
+import type {
     ComponentConstructorInterface,
     ComponentInterface,
     MixinStaticInterface

@@ -4,7 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin.js';
 import { NextMixin } from '../mixins/nextMixin.js';
 import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
-import { WidgetInterface } from '../mixins/interfaces.js';
+import type { WidgetInterface } from '../mixins/interfaces.js';
 
 //@ts-ignore
 import { html, render } from 'https://unpkg.com/lit-html?module';

@@ -39,3 +39,5 @@ if (!Element.prototype.toggleAttribute) {
     return true;
   };
 }
+
+export default {}
