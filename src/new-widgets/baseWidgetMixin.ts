@@ -23,7 +23,7 @@ const BaseWidgetMixin = {
     },
     label: {
       type: String,
-      default: '',
+      default: null,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'label');
       }
@@ -80,7 +80,7 @@ const BaseWidgetMixin = {
     render(template, this.element);
   },
   addToAttributes(value: string, attrKey: string) {
-    if (value && value !== this.listAttributes[attrKey]) {
+    if (value !== null && value !== this.listAttributes[attrKey]) {
       this.listAttributes[attrKey] = value;
       this.planRender();
     }
