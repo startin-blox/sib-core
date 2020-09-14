@@ -1,11 +1,3 @@
-//@ts-ignore
-import asyncChain from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-chain';
-//@ts-ignore
-import asyncFilter from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-filter';
-//@ts-ignore
-import asyncToArray from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-to-array';
-//@ts-ignore
-import asyncMap from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-map';
 import { store } from '../libs/store/store.js';
 
 const FederationMixin = {
