@@ -97,8 +97,8 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         value=${value}
-        min=${attributes.min}
-        max=${attributes.max}
+        min=${ifDefined(attributes.min)}
+        max=${ifDefined(attributes.max)}
         ?required=${attributes.required}
         data-holder
         @change=${attributes.onChange}
