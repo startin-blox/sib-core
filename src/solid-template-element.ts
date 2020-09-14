@@ -1,18 +1,21 @@
+///@ts-nocheck
+
 export default class SolidTemplateElement extends HTMLElement {
+  ['constructor']: typeof SolidTemplateElement
+  renderPlanned = false;
+  strings = {};
+  translationsPath = null;
+  translationsFetched = false;
+  props : {[key:string]:any} = {}
   constructor() {
     super();
-    this.renderPlanned = false;
-    this.strings = {};
-    this.translationsPath = null;
-    this.translationsFetched = false;
     this.initProps();
   }
-
   static get observedAttributes() {
     return Object.values(this.propsDefinition);
   }
 
-  static get propsDefinition() {
+  static get propsDefinition():{[key:string]:any} {
     return {
     };
   }
@@ -25,7 +28,7 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   updateProps() {
-    const declaredAttributes = [];
+    const declaredAttributes: string[] = [];
 
     // Get props values
     for(let key in this.constructor.propsDefinition) {
@@ -60,7 +63,7 @@ export default class SolidTemplateElement extends HTMLElement {
    */
   async fetchLocaleStrings() {
     if (this.translationsFetched) return;
-    const filesToFetch = [];
+    const filesToFetch:any[] = [];
     if (this.translationsPath) // fetch component translations
       filesToFetch.push(this.fetchTranslationFile(this.translationsPath));
 

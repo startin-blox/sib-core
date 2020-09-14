@@ -78,7 +78,7 @@ const FilterMixin = {
     if (propertyValue.isContainer && propertyValue.isContainer()) {
       return await asyncReduce(
         Promise.resolve(false),
-        async (initial, value) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),
+        async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),
         propertyValue['ldp:contains']
       );
     }

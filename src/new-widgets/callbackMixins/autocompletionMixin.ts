@@ -34,7 +34,7 @@ const AutocompletionMixin = {
     const nextProcessor = listCallbacks.shift();
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
-  initSlimSelect(select: Node) {
+  initSlimSelect(select: Element) {
     this.slimSelect = new SlimSelect({ select });
     select.addEventListener('change', () => this.slimSelect.render());
 

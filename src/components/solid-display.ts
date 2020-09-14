@@ -44,7 +44,7 @@ export const SolidDisplay = {
   },
   created(): void {
     // Set route active at initialization
-    const route = document.querySelector('solid-route[active]');
+    const route = document.querySelector('solid-route[active]') as any;
     if (!route) return;
     setTimeout(() => {
       if (route['resourceId'] === this.resourceId) this.addActiveCallback();
@@ -98,7 +98,7 @@ export const SolidDisplay = {
    * @param resourceId
    * @param attributes
    */
-  getChildTemplate(resourceId: string, attributes: object): void {
+  getChildTemplate(resourceId: string, attributes: object) {
     let template = html`
       <solid-display
         data-src=${resourceId}
@@ -157,7 +157,7 @@ export const SolidDisplay = {
    * Get attributes to dispatch to children from current element
    */
   getChildAttributes() {
-    const attributes = {};
+    const attributes:{[key:string]: string} = {};
     for (let attr of this.element.attributes) {
       //copy widget and value attributes
       if (

@@ -23,7 +23,7 @@ const EditableMixin = {
     this.listTemplateAdditions.push(this.addEditButton.bind(this));
   },
   addEditButton(template, listTemplateAdditions: Function[]) {
-    let newTemplate = null;
+    let newTemplate: any = null;
     if (this.editable !== null) {
       newTemplate = html`
         ${template}
@@ -57,7 +57,7 @@ const EditableMixin = {
     resource[this.name] = editableField.innerText;
     resource['@context'] = this.context;
 
-    store.patch(resource, this.valueId);
+    window.store.patch(resource, this.valueId);
   },
 }
 

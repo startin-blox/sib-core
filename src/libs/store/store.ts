@@ -406,7 +406,7 @@ class CustomGetter {
   expandProperties(resource: object, context: object | string) {
     for (let prop of Object.keys(resource)) {
       if (!prop) continue;
-      this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context, true));
+      this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
     }
     return resource
   }

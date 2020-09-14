@@ -97,11 +97,13 @@ export const SolidMap = {
         iconAnchor: [12, 34],
         popupAnchor: [0,-34]
       });
-
-      const marker = L.marker([lat.toString(), lng.toString()], { // create a marker, doc here: https://leafletjs.com/reference-1.6.0.html#marker
-        resource: resource,
-        icon: icon
-      }).addTo(this.map)
+      
+      // create a marker, doc here: https://leafletjs.com/reference-1.6.0.html#marker
+      const marker = L.marker(
+        [lat.toString(), lng.toString()], 
+        {resource, icon}
+      )
+        .addTo(this.map)
         .on('click', this.dispatchSelect.bind(this));
 
       if (this.fields !== null) { // show popups only if fields attribute

@@ -2,8 +2,6 @@
 import { html } from 'https://unpkg.com/lit-html?module';
 //@ts-ignore
 import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
-//@ts-ignore
-import { until } from 'https://unpkg.com/lit-html/directives/until?module';
 
 export const defaultTemplates = {
   action: {

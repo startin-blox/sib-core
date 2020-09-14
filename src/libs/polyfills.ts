@@ -40,4 +40,4 @@ if (!Element.prototype.toggleAttribute) {
   };
 }
 
-export default {}
+export {}

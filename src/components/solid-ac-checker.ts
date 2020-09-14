@@ -24,7 +24,7 @@ export const SolidAcChecker = {
     const context = await myParser.parse(this.context);
 
     if (this.permission) { // User has permission of ...
-      displayElement = this.resource.permissions.some(p => {
+      displayElement = this.resource.permissions.some((p:any) => {
         return ContextParser.compactIri(p, context) === this.permission;
       });
       /* displayElement = await asyncSome(
@@ -32,7 +32,7 @@ export const SolidAcChecker = {
         this.resource.permissions.mode['@type']
       )*/
     } else if (this.noPermission) { // User has no permission of ...
-      displayElement = this.resource.permissions.every(p => {
+      displayElement = this.resource.permissions.every((p:any) => {
         return ContextParser.compactIri(p, context) !== this.noPermission;
       });
       /*displayElement = await asyncEvery(
