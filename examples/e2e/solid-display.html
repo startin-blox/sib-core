@@ -21,10 +21,10 @@
       class-event="presentationEvent"
       class-name="nameEvent"
       widget-date="solid-display-value-date"
-      ></solid-display>
-      
-      <h3>diplay-2</h3>
-      <solid-display
+    ></solid-display>
+
+    <h3>diplay-2</h3>
+    <solid-display
       id="display-2"
       data-src="../data/list/user-1.jsonld"
       fields="completeName(introName,first_name, last_name), emailSet(introEmail, email)"
@@ -34,6 +34,19 @@
       class-emailSet="completeEmail"
       widget-emailSet="span"
       widget-email="solid-display-link-mailto"
+    ></solid-display>
+
+    <h3>all fields</h3>
+    <solid-display
+      id="display-3"
+      data-src="../data/list/users.jsonld"
+    ></solid-display>
+
+    <h3>no fields</h3>
+    <solid-display
+      id="display-4"
+      data-src="../data/list/users.jsonld"
+      fields
     ></solid-display>
 
     <style>

@@ -14,6 +14,8 @@ import { spread } from '../libs/lit-helpers.js';
 
 //@ts-ignore
 import { html, render } from 'https://unpkg.com/lit-html?module';
+//@ts-ignore
+import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
 
 export const SolidDisplay = {
   name: 'solid-display',
@@ -101,7 +103,7 @@ export const SolidDisplay = {
       <solid-display
         data-src=${resourceId}
         @click=${this.dispatchSelect.bind(this)}
-        fields=${this.fields}
+        fields=${ifDefined(this.fields)}
         ...=${spread(attributes)}
       ></solid-display>
     `
