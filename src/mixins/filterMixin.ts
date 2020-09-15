@@ -120,7 +120,9 @@ const FilterMixin = {
   },
   async matchFilter(resource: object, filter: string, value: any): Promise<boolean> {
     if (!this.isSet(filter)) {
-      return this.matchValue(await resource[filter],value);
+      if(value && filter === '@id')
+        return await resource[filter] === value;
+      return this.matchValue(await resource[filter], value);
     }
     // for sets, return true if it matches at least one of the fields
     return this.getSet(filter).reduce(
