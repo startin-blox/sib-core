@@ -3,6 +3,7 @@
     "src": "/"
   },
   "plugins": [
+    "@snowpack/plugin-babel",
     [
       "@snowpack/plugin-run-script",
       {
