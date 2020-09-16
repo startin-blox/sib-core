@@ -1,9 +1,7 @@
 import { EditableMixin } from '../templatesDependencies/editableMixin.js';
 
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+import { html } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const displayTemplates = {
   value: {

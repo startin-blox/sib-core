@@ -1,5 +1,4 @@
-//@ts-ignore
-import JSONLDContextParser from 'https://jspm.dev/jsonld-context-parser@1';
+import JSONLDContextParser from 'jsonld-context-parser';
 import { Sib } from '../libs/Sib.js';
 import { StoreMixin } from '../mixins/storeMixin.js';
 

@@ -1,5 +1,4 @@
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
+import { html } from 'lit-html';
 
 const LabelLastMixin = {
   name: 'label-last-mixin',

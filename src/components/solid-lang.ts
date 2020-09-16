@@ -1,7 +1,6 @@
 import { Sib } from '../libs/Sib.js';
 
-//@ts-ignore
-import { html, render } from 'https://unpkg.com/lit-html?module';
+import { html, render } from 'lit-html';
 
 export const SolidLang = {
   name: 'solid-lang',

@@ -6,10 +6,8 @@ import { store } from '../libs/store/store.js';
 import { setDeepProperty } from '../libs/helpers.js';
 import type { WidgetInterface } from '../mixins/interfaces.js';
 
-//@ts-ignore
-import { html, render } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+import { html, render } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidForm = {
   name: 'solid-form',

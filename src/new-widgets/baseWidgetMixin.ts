@@ -1,7 +1,6 @@
 import type { Template } from './interfaces.js';
 
-//@ts-ignore
-import {render} from 'https://unpkg.com/lit-html?module';
+import {render} from 'lit-html';
 
 const BaseWidgetMixin = {
   name: 'widget-mixin',

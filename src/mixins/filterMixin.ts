@@ -1,9 +1,6 @@
-//@ts-ignore
-import asyncReduce from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-reduce';
-//@ts-ignore
-import asyncEvery from 'https://dev.jspm.io/iter-tools@6.2.6/es2015/async-every';
-//@ts-ignore
-import Fuse from 'https://dev.jspm.io/fuse.js@6';
+import asyncReduce from 'iter-tools/es2015/async-reduce';
+import asyncEvery from 'iter-tools/es2015/async-every';
+import Fuse from 'fuse.js';
 
 const FilterMixin = {
   name: 'filter-mixin',

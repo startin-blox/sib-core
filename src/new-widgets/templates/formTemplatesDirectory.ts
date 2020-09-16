@@ -9,12 +9,9 @@ import { MultipleselectFormMixin } from '../templatesDependencies/multipleselect
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.js';
 
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
-//@ts-ignore
-import { until } from 'https://unpkg.com/lit-html/directives/until?module';
+import { html } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
+import { until } from 'lit-html/directives/until';
 
 export const formTemplates = {
   text: {

@@ -1,6 +1,5 @@
 import { importCSS } from '../../libs/helpers.js';
-//@ts-ignore
-import SlimSelect from 'https://jspm.dev/slim-select@1.23';
+import SlimSelect from 'slim-select';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',

@@ -12,10 +12,8 @@ import { HighlighterMixin } from '../mixins/highlighterMixin.js';
 import { NextMixin } from '../mixins/nextMixin.js';
 import { spread } from '../libs/lit-helpers.js';
 
-//@ts-ignore
-import { html, render } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+import { html, render } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidDisplay = {
   name: 'solid-display',

@@ -2,8 +2,7 @@
  * Spread function from open-wc/lit-helpers
  * More informations here: https://open-wc.org/developing/lit-helpers.html
  */
-//@ts-ignore
-import { directive, noChange } from 'https://unpkg.com/lit-html?module';
+import { directive, noChange } from 'lit-html';
 const prevCache = new WeakMap();
 export const spread = directive((spreadData) => (part) => {
   const prevData = prevCache.get(part);

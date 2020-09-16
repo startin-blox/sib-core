@@ -1,7 +1,6 @@
 import { StoreMixin } from '../../mixins/storeMixin.js';
 
-//@ts-ignore
-import { html } from 'https://unpkg.com/lit-html?module';
+import { html } from 'lit-html';
 
 const EditableMixin = {
   name: 'editable-mixin',

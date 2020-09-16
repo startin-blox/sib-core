@@ -1,6 +1,5 @@
-//@ts-ignore
-import JSONLDContextParser from 'https://jspm.dev/jsonld-context-parser@1';
-import 'https://unpkg.com/pubsub-js';
+import JSONLDContextParser from 'jsonld-context-parser';
+import 'pubsub-js';
 import type { Resource } from '../../mixins/interfaces.js';
 
 const ContextParser = JSONLDContextParser.ContextParser;

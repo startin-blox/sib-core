@@ -1,5 +1,4 @@
-//@ts-ignore
-import { unsafeHTML } from 'https://unpkg.com/lit-html/directives/unsafe-html?module';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 const MultilineMixin = {
   name: 'multiline-mixin',

@@ -9,8 +9,7 @@ import { NextMixin } from '../mixins/nextMixin.js';
 import { importCSS } from '../libs/helpers.js';
 import { store } from '../libs/store/store.js';
 
-//@ts-ignore
-import L from 'https://jspm.dev/leaflet@1';
+import L, { MarkerOptions } from 'leaflet';
 
 export const SolidMap = {
   name: 'solid-map',
@@ -101,7 +100,7 @@ export const SolidMap = {
       // create a marker, doc here: https://leafletjs.com/reference-1.6.0.html#marker
       const marker = L.marker(
         [lat.toString(), lng.toString()], 
-        {resource, icon}
+        {resource, icon} as MarkerOptions
       )
         .addTo(this.map)
         .on('click', this.dispatchSelect.bind(this));

@@ -4,10 +4,7 @@ import { setDeepProperty } from '../libs/helpers.js';
 import type { WidgetInterface } from '../mixins/interfaces.js';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
 
-//@ts-ignore
-import { html, render } from 'https://unpkg.com/lit-html?module';
-//@ts-ignore
-import { ifDefined } from 'https://unpkg.com/lit-html/directives/if-defined?module';
+import { html, render } from 'lit-html';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
