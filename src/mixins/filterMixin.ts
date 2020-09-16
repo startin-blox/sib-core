@@ -84,7 +84,7 @@ const FilterMixin = {
     }
 
     // Filter on a resource
-    if (propertyValue['@id'] && propertyValue['@id'] === filterValue) return true;
+    if (propertyValue['@id']) return propertyValue['@id'] === filterValue;
 
     // Filter on a nested field
     if (filterValue.constructor === Object) {
