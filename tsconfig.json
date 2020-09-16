@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2016",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "allowJs": true,
     "jsx": "preserve",
     "noEmit": true,
@@ -21,7 +23,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
-    "paths": {},
+    "paths": {
+      "*": ["web_modules/.types/*"]
+    },
     "skipLibCheck": true,
     "types": ["cypress"]
   },
