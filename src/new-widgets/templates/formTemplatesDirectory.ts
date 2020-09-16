@@ -261,5 +261,11 @@ export const formTemplates = {
       </div>
     `,
     dependencies: [ FormFileMixin, FormMixin ]
+  },
+  richtext: {
+    template: () => html`
+      <div data-richtext></div>
+    `,
+    dependencies: [ FormMixin ]
   }
 }
