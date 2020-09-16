@@ -12,15 +12,12 @@
     "doc"
   ],
   "scripts": {
-    "start": "snowpack dev",
+    "watch": "snowpack build --watch",
     "build": "snowpack build",
-    "test": "node server.js --test",
-    "cypress": "node server.js --test-ui",
-    "build:prod": "babel src -d dist --extensions '.ts,.js' --source-maps --no-comments --copy-files",
-    "build:dev": "babel src -d dist --extensions '.ts,.js' --source-maps --copy-files",
-    "watch": "npm run build:dev -- --watch --verbose",
+    "serve": "node server.js",
     "check-types": "tsc",
-    "serve": "node server.js"
+    "test": "node server.js --test",
+    "cypress": "node server.js --test-ui"
   },
   "repository": {
     "type": "git",

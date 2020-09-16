@@ -15,7 +15,7 @@
     "installTypes": true
   },
   "devOptions":{
-    "out": "dist_snowpack"
+    "out": "dist"
   },
   "buildOptions": {
     "minify": false,
