@@ -65,6 +65,7 @@
   "dependencies": {
     "@types/leaflet": "^1.5.17",
     "@types/pubsub-js": "^1.8.1",
+    "autolinker": "^3.14.1",
     "fuse.js": "^6.4.1",
     "iter-tools": "^6.2.6",
     "jsonld-context-parser": "^1.3.4",

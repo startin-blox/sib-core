@@ -1,6 +1,5 @@
 /node_modules
 /dist
-/dist_snowpack
 coverage
 .nyc_output
 /cypress/screenshots
