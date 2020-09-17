@@ -19,6 +19,7 @@
     "out": "dist"
   },
   "buildOptions": {
+    "sourceMaps": true,
     "minify": false,
     "clean": true
   }
