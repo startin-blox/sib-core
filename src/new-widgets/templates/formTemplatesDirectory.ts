@@ -263,8 +263,12 @@ export const formTemplates = {
     dependencies: [ FormFileMixin, FormMixin ]
   },
   richtext: {
-    template: () => html`
-      <div data-richtext></div>
+    template: (value: string, attributes: any) => html`
+      <div 
+        data-richtext
+        name=${ifDefined(attributes.name)}
+        data-holder
+      >${value}</div>
     `,
     dependencies: [ FormMixin ]
   }
