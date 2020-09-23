@@ -8,6 +8,7 @@
   "businessProviderFee": 0,
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
+  "texte": "ceci est un texte avec du <strong>HTML</strong> à l'intérieur",
   "@type": "doap:project",
   "permissions": [
     { "mode": { "@type": "change" } },
