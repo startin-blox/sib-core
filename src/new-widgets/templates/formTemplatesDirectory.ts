@@ -8,6 +8,7 @@ import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.js';
+import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin.js';
 
 //@ts-ignore
 import { html } from 'https://unpkg.com/lit-html?module';
@@ -270,6 +271,6 @@ export const formTemplates = {
         data-holder
       >${value}</div>
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ ValueRichtextMixin, FormMixin ]
   }
 }
