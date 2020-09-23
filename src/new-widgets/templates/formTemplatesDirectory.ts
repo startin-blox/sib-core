@@ -174,7 +174,7 @@ export const formTemplates = {
               value='{"@id": "${el['@id']}"}'
               ?required=${attributes.required}
               ?checked=${value === el['@id']}
-            > ${until(el[attributes.optionLabel])}
+            > <span>${until(el[attributes.optionLabel])}</span>
           </label>
         `)}
       </select>
