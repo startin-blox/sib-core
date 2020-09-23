@@ -7,7 +7,9 @@ export const defaultTemplates = {
       <solid-link
         data-src=${ifDefined(attributes.src)}
         next=${ifDefined(value)}
-      >${attributes.label || attributes.name || ''}</solid-link>
+      >
+        ${(attributes.label == null ? (attributes.name || '') : attributes.label)}
+      </solid-link>
     `,
     dependencies: []
   },
