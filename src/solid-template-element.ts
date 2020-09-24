@@ -1,7 +1,6 @@
 ///@ts-nocheck
 
 export default class SolidTemplateElement extends HTMLElement {
-  ['constructor']: typeof SolidTemplateElement
   renderPlanned = false;
   strings = {};
   translationsPath = null;
