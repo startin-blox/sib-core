@@ -33,6 +33,9 @@ export const SolidMap = {
   created(): void {
     importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
     importCSS('./../style/default-theme.css');
+    document.body.addEventListener('navigate', () =>
+      setTimeout(() => this.element.offsetParent && this.reset())
+    );
     this.markers = [];
     this.subscriptions = new Map();
   },
