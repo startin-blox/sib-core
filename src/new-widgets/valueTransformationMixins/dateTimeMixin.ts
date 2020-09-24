@@ -4,8 +4,7 @@ const DateTimeMixin = {
     this.listValueTransformations.push(this.transformValue.bind(this));
   },
   transformValue(value: string, listValueTransformations: Function[]) {
-    if (!value) return;
-    const newValue = new Date(value).toLocaleString();
+    const newValue = value ? new Date(value).toLocaleString() : value;
 
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(newValue, listValueTransformations);
