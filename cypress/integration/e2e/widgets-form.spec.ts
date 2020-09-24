@@ -262,6 +262,16 @@ describe('form widgets', function() {
       .should('contain', 'DevOps');
     cy.get('solid-form-dropdown#test5 > select > option').eq(8)
       .should('contain', 'CSS');
+
+    // With federation
+    cy.get('solid-form-dropdown#test6 > select > option').eq(1)
+      .should('contain', 'Circle from server 1');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(2)
+      .should('contain', 'Another circle from server 1');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(3)
+      .should('contain', 'Circle from server 2');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(4)
+      .should('contain', 'Another circle from server 2');
   })
 
   it('solid-form-radio', () => {
