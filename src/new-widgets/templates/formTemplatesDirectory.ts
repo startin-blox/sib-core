@@ -67,7 +67,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         ?required=${attributes.required}
-        value=${attributes.originalValue ? new Date(attributes.originalValue).toISOString().split('T')[0] : ''}
+        value=${ifDefined(attributes.originalValue)}
         data-holder
         @change=${attributes.onChange}
       />

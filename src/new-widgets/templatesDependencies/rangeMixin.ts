@@ -1,9 +1,14 @@
 import { StoreMixin } from '../../mixins/storeMixin.js';
 import { SorterMixin } from '../../mixins/sorterMixin.js';
+import { FederationMixin } from '../../mixins/federationMixin.js';
 
 const RangeMixin = {
   name: 'range-mixin',
-  use: [ StoreMixin, SorterMixin ],
+  use: [
+    StoreMixin,
+    SorterMixin,
+    FederationMixin
+  ],
   attributes: {
     range: {
       type: String,

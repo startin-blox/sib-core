@@ -113,27 +113,34 @@ describe('form widgets', function() {
     });
   })
   it('solid-form-date', () => {
-    cy.get('solid-form-date')
+    cy.get('solid-form-date#test1')
       .children().should('have.length', 1);
     // check attributes
-    cy.get('solid-form-date')
+    cy.get('solid-form-date#test1')
       .find('input')
       .should('have.attr', 'type', 'date')
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'value', '2020-05-21')
       .and('have.attr', 'data-holder');
     // type value
-    cy.get('solid-form-date > input')
+    cy.get('solid-form-date#test1 > input')
       .clear()
       .type('2020-12-31');
-    cy.get('solid-form-date > input')
+    cy.get('solid-form-date#test1 > input')
       .and('have.attr', 'value', '2020-05-21'); // attr does not change
 
     // Check API
-    cy.get('solid-form-date').then($el => {
+    cy.get('solid-form-date#test1').then($el => {
       expect((<any>$el[0]).component['value']).to.equal('2020-05-21'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('2020-12-31'); // form value
     });
+
+    cy.get('solid-form-date#test2')
+      .find('input')
+      .and('have.attr', 'value', '2020-05-21');
+    cy.get('solid-form-date#test3')
+      .find('input')
+      .and('have.attr', 'value', '');
   })
 
   it('solid-form-number', () => {
@@ -264,6 +271,16 @@ describe('form widgets', function() {
       .should('contain', 'DevOps');
     cy.get('solid-form-dropdown#test5 > select > option').eq(8)
       .should('contain', 'CSS');
+
+    // With federation
+    cy.get('solid-form-dropdown#test6 > select > option').eq(1)
+      .should('contain', 'Circle from server 1');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(2)
+      .should('contain', 'Another circle from server 1');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(3)
+      .should('contain', 'Circle from server 2');
+    cy.get('solid-form-dropdown#test6 > select > option').eq(4)
+      .should('contain', 'Another circle from server 2');
   })
 
   it('solid-form-radio', () => {
