@@ -1,13 +1,12 @@
+//@ts-ignore
+import { deltaToMarkdown } from 'https://jspm.dev/quill-delta-to-markdown';
+
 const ValueRichtextMixin = {
   name: 'valuerichtext-mixin',
-  attributes: {
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  
   getValue() {
-    return this.quill.root.innerHTML;
+    const markdown = deltaToMarkdown(this.quill.getContents().ops);
+    return markdown;
   },
 }
 
