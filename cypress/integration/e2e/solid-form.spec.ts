@@ -48,6 +48,10 @@ describe('solid-form', function() {
     .should('have.attr', 'required')
   });
   it('richtext html rendering', () => {
+    cy.get('#form-4 solid-form-richtext')
+      .children().should('have.have.length', 2)
+      .find('button')
+      .and('have.attr', 'class', 'ql-bold');
     cy.get('#form-4 solid-form-richtext').then($el => {
       expect((<any>$el[0]).component.getValue()).to.equal('**Jean-Bernard**\n');
       cy.get('#form-4 solid-form-richtext .ql-editor').type('{selectall}Jean-Claude{selectall}')

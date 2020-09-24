@@ -78,12 +78,7 @@ describe('form widgets', function() {
     });
   })
 
-  it('solid-form-richtext', () => {
-    cy.get('solid-form-richtext')
-      .children().should('have.have.length', 2)
-      .find('button')
-      .and('have.attr', 'class', 'ql-bold');
-  })
+  
 
   it('solid-form-checkbox', () => {
     cy.get('solid-form-checkbox')
