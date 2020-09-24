@@ -160,4 +160,17 @@ describe('display widgets', function() {
       .and('have.attr', 'next', 'next-page')
       .and('contain', 'test1');
   })
+  it('solid-display-div-markdown', () => {
+    cy.get('solid-display-div-markdown')
+      .find('div')
+      .should('have.attr', 'name', 'test display markdown')
+
+    cy.get('solid-display-div-markdown')
+      .find('strong')
+      .should('contain', 'bold')
+      
+    cy.get('solid-display-div-markdown')
+      .find('em')
+      .should('contain', 'italic')
+  })
 })

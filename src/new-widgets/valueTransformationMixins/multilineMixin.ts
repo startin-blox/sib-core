@@ -6,8 +6,7 @@ const MultilineMixin = {
     this.listValueTransformations.push(this.transformValue.bind(this));
   },
   transformValue(value: string, listValueTransformations: Function[]) {
-    if (!value) return;
-    const newValue = unsafeHTML(value.replace(/\n/g, "<br/>"));
+    const newValue = value ? unsafeHTML(value.replace(/\n/g, "<br/>")) : value;
 
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(newValue, listValueTransformations);

@@ -8,6 +8,7 @@ import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.js';
+import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin.js';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -63,7 +64,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         ?required=${attributes.required}
-        value=${attributes.originalValue ? new Date(attributes.originalValue).toISOString().split('T')[0] : ''}
+        value=${ifDefined(attributes.originalValue)}
         data-holder
         @change=${attributes.onChange}
       />
@@ -258,5 +259,15 @@ export const formTemplates = {
       </div>
     `,
     dependencies: [ FormFileMixin, FormMixin ]
+  },
+  richtext: {
+    template: (_value: string, attributes: any) => html`
+      <div 
+        data-richtext
+        name=${ifDefined(attributes.name)}
+        data-holder
+      ></div>
+    `,
+    dependencies: [ ValueRichtextMixin, FormMixin ]
   }
 }
