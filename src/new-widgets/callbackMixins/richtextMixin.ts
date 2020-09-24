@@ -2,6 +2,9 @@ import { importCSS } from '../../libs/helpers.js';
 //@ts-ignore
 import Quill from 'https://jspm.dev/quill';
 
+//@ts-ignore
+import deltaMd from 'https://jspm.dev/delta-markdown-for-quill';
+
 const RichtextMixin = {
   name: 'richtext-mixin',
   initialState:{
@@ -16,27 +19,23 @@ const RichtextMixin = {
   addCallback(value: string, listCallbacks: Function[]) {
     if (this.quill == null) {
       var toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
+        ['bold', 'italic'],
         
-        ['code', 'blockquote', 'code-block'],
+        ['blockquote'],
 
-        [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'header': [1, 2, 3, 4, 5, 6, false]}],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'indent': '-1'}, { 'indent': '+1' }],
-        [{'align': []}],
         
-        ['link', 'image', 'video'],
         ['clean']
       ];
       const richtext = this.element.querySelector('[data-richtext]');
       this.quill = new Quill(richtext, {
         modules: {toolbar: toolbarOptions},
-      theme: 'snow'});
-    } else {
-      this.quill.root.innerHTML=this.value;
-    }
+        theme: 'snow'});
+      }
+      const ops = deltaMd.toDelta(this.value);
+      this.quill.setContents(ops);
+
       const nextProcessor = listCallbacks.shift();
       if (nextProcessor) nextProcessor(value, listCallbacks); 
   },

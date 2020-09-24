@@ -264,12 +264,12 @@ export const formTemplates = {
     dependencies: [ FormFileMixin, FormMixin ]
   },
   richtext: {
-    template: (value: string, attributes: any) => html`
+    template: (_value: string, attributes: any) => html`
       <div 
         data-richtext
         name=${ifDefined(attributes.name)}
         data-holder
-      >${value}</div>
+      ></div>
     `,
     dependencies: [ ValueRichtextMixin, FormMixin ]
   }

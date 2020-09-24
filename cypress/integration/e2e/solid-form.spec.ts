@@ -48,20 +48,19 @@ describe('solid-form', function() {
     .should('have.attr', 'required')
   });
   it('richtext html rendering', () => {
-    cy.get('#form-4 solid-form-richtext .ql-editor').type('Jean-Bernard{selectall}')
-    cy.get('#form-4 solid-form-richtext .ql-bold')
-    .click()
-    cy.get('#form-4 solid-form-richtext .ql-editor')
-    .find('strong')
-    .should('have.text', 'Jean-Bernard')
     cy.get('#form-4 solid-form-richtext').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.equal('<p><strong>Jean-Bernard</strong></p>');
-      (<any>$el[0]).setAttribute('value', '<p><strong>Jean-Claude</strong></p>');
-      cy.wait(1000)
-      expect((<any>$el[0]).component.getValue()).to.equal('<p><strong>Jean-Claude</strong></p>');
+      expect((<any>$el[0]).component.getValue()).to.equal('**Jean-Bernard**\n');
+      cy.get('#form-4 solid-form-richtext .ql-editor').type('{selectall}Jean-Claude{selectall}')
+      cy.get('#form-4 solid-form-richtext .ql-italic')
+        .click()
+        cy.get('#form-4 solid-form-richtext .ql-bold')
+        .click()
       cy.get('#form-4 solid-form-richtext .ql-editor')
-      .find('strong')
-      .should('have.text', 'Jean-Claude')
+        .find('em')
+        .should('have.text', 'Jean-Claude')
+      cy.get('#form-4 solid-form-richtext').then($el => {
+        expect((<any>$el[0]).component.getValue()).to.equal('_Jean-Claude_\n')
+      });
     })
   });
 })
