@@ -1,5 +1,4 @@
-//@ts-ignore
-import { unsafeHTML } from  'https://unpkg.com/lit-html/directives/unsafe-html?module';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.1/markdown-it.min.js';
 
