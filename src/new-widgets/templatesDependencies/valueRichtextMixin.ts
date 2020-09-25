@@ -1,5 +1,4 @@
-//@ts-ignore
-import { deltaToMarkdown } from 'https://jspm.dev/quill-delta-to-markdown';
+import { deltaToMarkdown } from 'quill-delta-to-markdown';
 
 const ValueRichtextMixin = {
   name: 'valuerichtext-mixin',

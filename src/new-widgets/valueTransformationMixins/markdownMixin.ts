@@ -1,6 +1,6 @@
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.1/markdown-it.min.js';
+import markdownit from 'markdown-it';
 
 const MarkdownMixin = {
   name: 'markdown-mixin',
@@ -9,7 +9,7 @@ const MarkdownMixin = {
   },
   transformValue(value: string, listValueTransformations: Function[]) {
     if (!value) return;
-    const md = window.markdownit();
+    const md = markdownit();
     const html = md.render(value);
     
     const newValue = unsafeHTML(html);

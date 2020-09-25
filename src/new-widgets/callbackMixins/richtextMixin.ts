@@ -1,9 +1,8 @@
 import { importCSS } from '../../libs/helpers.js';
-//@ts-ignore
-import Quill from 'https://jspm.dev/quill';
 
-//@ts-ignore
-import deltaMd from 'https://jspm.dev/delta-markdown-for-quill';
+import Quill from 'quill';
+
+import deltaMd from 'delta-markdown-for-quill';
 
 const RichtextMixin = {
   name: 'richtext-mixin',

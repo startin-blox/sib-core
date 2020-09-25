@@ -1,5 +1,5 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-import 'pubsub-js';
+import PubSub from 'pubsub-js';
 import type { Resource } from '../../mixins/interfaces.js';
 
 const ContextParser = JSONLDContextParser.ContextParser;
