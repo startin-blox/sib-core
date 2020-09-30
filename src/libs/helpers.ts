@@ -51,17 +51,17 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
 }
 
 function relativeSource(source: string) {
-  if (source.indexOf('./') !== 0) return new URL(source, document.baseURI).href;
+  if (!source.match(/^\..?\//)) return new URL(source, document.baseURI).href;
   const e = new Error();
   if(!e.stack) return source;
-  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
+  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[3];
   let line = f2.match(/[a-z]+:.*$/);
   if (!line) return source;
   const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/,'');
   source = new URL(source, calledFile).href;
   return source;
-  
 }
+
 function loadScript(source: string) {
   source = relativeSource(source);
   return new Promise(resolve => {

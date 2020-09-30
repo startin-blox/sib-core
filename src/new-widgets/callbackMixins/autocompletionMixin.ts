@@ -7,7 +7,7 @@ const AutocompletionMixin = {
     slimSelect: null,
   },
   created() {
-    importCSS('https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.23.0/slimselect.min.css');
+    importCSS('../../web_modules/slim-select/dist/slimselect.css');
     this.slimSelect = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },

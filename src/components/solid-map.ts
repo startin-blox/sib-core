@@ -30,8 +30,8 @@ export const SolidMap = {
     resetPlanned: false
   },
   created(): void {
-    importCSS('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
-    importCSS('./../style/default-theme.css');
+    importCSS('../web_modules/leaflet/dist/leaflet.css');
+    importCSS('../style/default-theme.css');
     document.body.addEventListener('navigate', () =>
       setTimeout(() => this.element.offsetParent && this.reset())
     );

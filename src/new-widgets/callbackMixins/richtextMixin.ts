@@ -11,7 +11,8 @@ const RichtextMixin = {
   },
 
   created() {
-    importCSS('https://cdn.quilljs.com/1.3.6/quill.snow.css');
+    importCSS('bs.css');
+    importCSS('../../web_modules/quill/dist/quill.snow.css');
     this.quill = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },

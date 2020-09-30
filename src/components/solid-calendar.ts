@@ -13,7 +13,7 @@ export const SolidCalendar = {
     subscriptions: null
   },
   created(): void {
-    importCSS('https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css');
+    importCSS('../web_modules/tui-calendar/dist/tui-calendar.css');
     const div = document.createElement('div');
     div.style.width = '100%';
     div.style.height = '100%';
