@@ -17,6 +17,31 @@ const RangeMixin = {
         if (value !== this.dataSrc) this.dataSrc = value;
       }
     },
+    enum: {
+      type: String,
+      default: '',
+      callback: function (value: string) {
+        if (value !== null) {
+          const optional = value.trim().split(",");
+          let key;
+          let keyValue;
+          const list = new Object();
+          
+          optional.forEach(element => {
+            if (element.includes("=") == true ) {              
+              const option = element.trim().split("=");
+              key = option[1].trim();
+              keyValue = option[0].trim();
+              list[key] = keyValue;              
+            } else {
+              const elem = element.trim();
+              list[elem] = elem;
+            }
+          });
+          this.addToAttributes(list, 'enum');
+        };
+      }
+    },
     optionLabel: {
       type: String,
       default: 'name',

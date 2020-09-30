@@ -212,6 +212,7 @@ const WidgetMixin = {
     // transfer all [attr]-[field] attributes as [attr] attribute for widget [field]
     const defaultAttributes = [
       'range',
+      'enum',
       'label',
       'placeholder',
       'class',

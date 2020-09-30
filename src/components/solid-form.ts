@@ -72,7 +72,7 @@ export const SolidForm = {
     // Choose widget
     if (!widgetAttribute && this.element.hasAttribute('upload-url-' + field)) {
       tagName = 'solid-form-file'
-    } else if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
+    } else if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
       tagName = 'solid-form-dropdown'
     } else {
       tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);

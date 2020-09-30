@@ -70,12 +70,19 @@
     </details>
 
       <details>
-        <summary>Dropdown:</summary>
+        <summary>Dropdown (range and enum attributes):</summary>
         <solid-form
           data-src="data/list/event-1.jsonld"
           fields="contact"
           range-contact="data/list/users.jsonld"
         ></solid-form>
+
+        <solid-form
+        data-src="data/list/event-1.jsonld"
+        fields="personnes, gens"
+        enum-personnes="paulette = 1, jacqueline = 2, marlene = 3"
+        enum-gens="paulette , jacqueline , marlene"
+      ></solid-form>
       </details>
 
       <details>

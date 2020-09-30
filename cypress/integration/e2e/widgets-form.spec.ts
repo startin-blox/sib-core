@@ -281,6 +281,18 @@ describe('form widgets', function() {
       .should('contain', 'Circle from server 2');
     cy.get('solid-form-dropdown#test6 > select > option').eq(4)
       .should('contain', 'Another circle from server 2');
+
+    // With enumeration in range
+    cy.get('solid-form-dropdown#test7 > select')
+      .children().should('have.length', 5)
+      .eq(2)
+      .should('have.attr', 'value', 'option2')
+      .should('contain', 'option2');
+    cy.get('solid-form-dropdown#test8 > select')
+      .children().should('have.length', 4)
+      .eq(1)
+      .should('have.attr', 'value', '1')
+      .should('contain', 'option a');
   })
 
   it('solid-form-radio', () => {
