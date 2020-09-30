@@ -1,6 +1,6 @@
-import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers.js';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
-import { WidgetInterface, WidgetType, Resource } from './interfaces.js';
+import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { WidgetInterface, WidgetType, Resource } from './interfaces';
 
 const WidgetMixin = {
   name: 'widget-mixin',

@@ -69,8 +69,6 @@
     "@babel/plugin-transform-typescript": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
-    "@cypress/browserify-preprocessor": "^3.0.1",
-    "@cypress/webpack-preprocessor": "^5.4.6",
     "@rckeller/cypress-unfetch": "^1.0.1",
     "@snowpack/plugin-babel": "^2.1.1",
     "@types/autolinker": "^2.0.0",
@@ -102,7 +100,6 @@
     "ts-node": "^9.0.0",
     "tui-calendar": "^1.12.14",
     "typescript": "^4.0.3",
-    "wait-on": "^5.2.0",
-    "webpack": "^4.44.2"
+    "wait-on": "^5.2.0"
   }
 }

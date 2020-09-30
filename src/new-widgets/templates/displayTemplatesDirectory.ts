@@ -1,4 +1,4 @@
-import { EditableMixin } from '../templatesDependencies/editableMixin.js';
+import { EditableMixin } from '../templatesDependencies/editableMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';

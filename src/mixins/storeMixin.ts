@@ -1,5 +1,5 @@
-import { base_context, store } from '../libs/store/store.js';
-import type { Resource } from './interfaces.js';
+import { base_context, store } from '../libs/store/store';
+import type { Resource } from './interfaces';
 
 const StoreMixin = {
   name: 'store-mixin',

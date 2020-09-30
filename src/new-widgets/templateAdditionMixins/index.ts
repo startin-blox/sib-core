@@ -1,5 +1,5 @@
-import { LabelMixin } from './labelMixin.js';
-import { LabelLastMixin } from './labelLastMixin.js';
+import { LabelMixin } from './labelMixin';
+import { LabelLastMixin } from './labelLastMixin';
 
 /**
  * DOM Additions

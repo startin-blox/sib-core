@@ -11,42 +11,4 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-const wp = require('@cypress/webpack-preprocessor');
-
-module.exports = (on, config) => {
-  const options = {
-    webpackOptions: {
-      resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
-      },
-      module: {
-        rules: [
-          {
-            test: /\.tsx?$/,
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                '@babel/preset-typescript',
-                [
-                  '@babel/preset-env',
-                  {
-                    targets: {
-                      browsers: ['>1%', 'not ie 11'],
-                    },
-                    modules: false,
-                  },
-                ],
-              ],
-              plugins: [
-                'babel-plugin-remove-import-js-extension',
-                '@babel/plugin-proposal-class-properties',
-              ],
-              ignore: ['**/tests'],
-            },
-          },
-        ],
-      },
-    },
-  };
-  on('file:preprocessor', wp(options));
-};
+module.exports = (on, config) => {};

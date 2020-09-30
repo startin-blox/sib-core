@@ -1,4 +1,4 @@
-import { StoreMixin } from '../../mixins/storeMixin.js';
+import { StoreMixin } from '../../mixins/storeMixin';
 
 const MultipleFormMixin = {
   name: 'multiple-form-mixin',

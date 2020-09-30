@@ -1,13 +1,13 @@
-import { Sib } from '../libs/Sib.js';
-import { ListMixin } from '../mixins/listMixin.js';
-import { StoreMixin } from '../mixins/storeMixin.js';
-import { WidgetMixin } from '../mixins/widgetMixin.js';
-import { CounterMixin } from '../mixins/counterMixin.js';
-import { FilterMixin } from '../mixins/filterMixin.js';
-import { GrouperMixin } from '../mixins/grouperMixin.js';
-import { NextMixin } from '../mixins/nextMixin.js';
-import { importCSS } from '../libs/helpers.js';
-import { store } from '../libs/store/store.js';
+import { Sib } from '../libs/Sib';
+import { ListMixin } from '../mixins/listMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import { WidgetMixin } from '../mixins/widgetMixin';
+import { CounterMixin } from '../mixins/counterMixin';
+import { FilterMixin } from '../mixins/filterMixin';
+import { GrouperMixin } from '../mixins/grouperMixin';
+import { NextMixin } from '../mixins/nextMixin';
+import { importCSS } from '../libs/helpers';
+import { store } from '../libs/store/store';
 
 import L, { MarkerOptions } from 'leaflet';
 

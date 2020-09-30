@@ -1,4 +1,4 @@
-import type { MixinStaticInterface } from '../libs/interfaces.js';
+import type { MixinStaticInterface } from '../libs/interfaces';
 
 export interface Template {
   template: Function

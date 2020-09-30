@@ -1,7 +1,7 @@
-import { defaultTemplates } from './defaultTemplatesDirectory.js';
-import { displayTemplates } from './displayTemplatesDirectory.js';
-import { formTemplates } from './formTemplatesDirectory.js';
-import { setTemplates } from './setTemplatesDirectory.js';
+import { defaultTemplates } from './defaultTemplatesDirectory';
+import { displayTemplates } from './displayTemplatesDirectory';
+import { formTemplates } from './formTemplatesDirectory';
+import { setTemplates } from './setTemplatesDirectory';
 
 export {
   defaultTemplates,

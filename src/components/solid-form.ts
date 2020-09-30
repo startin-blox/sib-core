@@ -1,10 +1,10 @@
-import { Sib } from '../libs/Sib.js';
-import { WidgetMixin } from '../mixins/widgetMixin.js';
-import { StoreMixin } from '../mixins/storeMixin.js';
-import { NextMixin } from '../mixins/nextMixin.js';
-import { store } from '../libs/store/store.js';
-import { setDeepProperty } from '../libs/helpers.js';
-import type { WidgetInterface } from '../mixins/interfaces.js';
+import { Sib } from '../libs/Sib';
+import { WidgetMixin } from '../mixins/widgetMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import { NextMixin } from '../mixins/nextMixin';
+import { store } from '../libs/store/store';
+import { setDeepProperty } from '../libs/helpers';
+import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';

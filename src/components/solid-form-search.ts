@@ -1,8 +1,8 @@
-import { Sib } from '../libs/Sib.js';
-import { WidgetMixin } from '../mixins/widgetMixin.js';
-import { setDeepProperty } from '../libs/helpers.js';
-import type { WidgetInterface } from '../mixins/interfaces.js';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory.js';
+import { Sib } from '../libs/Sib';
+import { WidgetMixin } from '../mixins/widgetMixin';
+import { setDeepProperty } from '../libs/helpers';
+import type { WidgetInterface } from '../mixins/interfaces';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit-html';
 

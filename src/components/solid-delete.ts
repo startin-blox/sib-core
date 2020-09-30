@@ -1,6 +1,6 @@
-import { Sib } from '../libs/Sib.js';
-import { base_context, store } from '../libs/store/store.js';
-import { NextMixin } from '../mixins/nextMixin.js';
+import { Sib } from '../libs/Sib';
+import { base_context, store } from '../libs/store/store';
+import { NextMixin } from '../mixins/nextMixin';
 
 export const SolidDelete = {
   name: 'solid-delete',

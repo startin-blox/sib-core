@@ -1,9 +1,9 @@
-import { MultipleMixin } from './multipleMixin.js';
-import { ActionMixin } from './actionMixin.js';
-import { BlankMixin } from './blankMixin.js';
-import { MailtoMixin } from './mailtoMixin.js';
-import { TelMixin } from './telMixin.js';
-import { PlaceholderMixin } from './placeholderMixin.js';
+import { MultipleMixin } from './multipleMixin';
+import { ActionMixin } from './actionMixin';
+import { BlankMixin } from './blankMixin';
+import { MailtoMixin } from './mailtoMixin';
+import { TelMixin } from './telMixin';
+import { PlaceholderMixin } from './placeholderMixin';
 
 const attributeDirectory = {
   multiple: MultipleMixin,

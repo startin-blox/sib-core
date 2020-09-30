@@ -1,10 +1,10 @@
-import { Sib } from '../libs/Sib.js';
-import { ListMixin } from '../mixins/listMixin.js';
-import { StoreMixin } from '../mixins/storeMixin.js';
-import {NextMixin } from '../mixins/nextMixin.js';
-import { importCSS } from '../libs/helpers.js';
+import { Sib } from '../libs/Sib';
+import { ListMixin } from '../mixins/listMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import {NextMixin } from '../mixins/nextMixin';
+import { importCSS } from '../libs/helpers';
 import Calendar from 'tui-calendar';
-import { store } from '../libs/store/store.js';
+import { store } from '../libs/store/store';
 
 export const SolidCalendar = {
   name: 'solid-calendar',

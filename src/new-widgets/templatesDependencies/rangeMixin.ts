@@ -1,6 +1,6 @@
-import { StoreMixin } from '../../mixins/storeMixin.js';
-import { SorterMixin } from '../../mixins/sorterMixin.js';
-import { FederationMixin } from '../../mixins/federationMixin.js';
+import { StoreMixin } from '../../mixins/storeMixin';
+import { SorterMixin } from '../../mixins/sorterMixin';
+import { FederationMixin } from '../../mixins/federationMixin';
 
 const RangeMixin = {
   name: 'range-mixin',

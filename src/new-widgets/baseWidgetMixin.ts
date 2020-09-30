@@ -1,4 +1,4 @@
-import type { Template } from './interfaces.js';
+import type { Template } from './interfaces';
 
 import {render} from 'lit-html';
 

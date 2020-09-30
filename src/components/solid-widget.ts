@@ -1,5 +1,5 @@
-import { Sib } from '../libs/Sib.js';
-import { widgetFactory } from '../widgets/widget-factory.js';
+import { Sib } from '../libs/Sib';
+import { widgetFactory } from '../widgets/widget-factory';
 
 export const SolidWidget = {
   name: 'solid-widget',

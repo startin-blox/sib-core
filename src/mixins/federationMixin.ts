@@ -1,4 +1,4 @@
-import { store } from '../libs/store/store.js';
+import { store } from '../libs/store/store';
 
 const FederationMixin = {
   name: 'federation-mixin',

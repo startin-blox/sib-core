@@ -1,14 +1,14 @@
-import { FormMixin } from '../templatesDependencies/formMixin.js';
-import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.js';
-import { FormNumberMixin } from '../templatesDependencies/formNumberMixin.js';
-import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.js';
-import { FormRadioMixin } from '../templatesDependencies/formRadioMixin.js';
-import { FormFileMixin } from '../templatesDependencies/formFileMixin.js';
-import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.js';
-import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.js';
-import { RangeMixin } from '../templatesDependencies/rangeMixin.js';
-import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.js';
-import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin.js';
+import { FormMixin } from '../templatesDependencies/formMixin';
+import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin';
+import { FormNumberMixin } from '../templatesDependencies/formNumberMixin';
+import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin';
+import { FormRadioMixin } from '../templatesDependencies/formRadioMixin';
+import { FormFileMixin } from '../templatesDependencies/formFileMixin';
+import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin';
+import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin';
+import { RangeMixin } from '../templatesDependencies/rangeMixin';
+import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin';
+import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';

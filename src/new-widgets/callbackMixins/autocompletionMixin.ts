@@ -1,4 +1,4 @@
-import { importCSS } from '../../libs/helpers.js';
+import { importCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 
 const AutocompletionMixin = {

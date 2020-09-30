@@ -1,12 +1,12 @@
-import { Compositor } from './Compositor.js';
-import { Component } from './Component.js';
+import { Compositor } from './Compositor';
+import { Component } from './Component';
 import type {
   MixinStaticInterface,
   AttributesDefinitionInterface,
   ComponentConstructorInterface,
   ArrayOfHooksInterface,
   AccessorStaticInterface
-} from './interfaces.js';
+} from './interfaces';
 
 export class ComponentFactory {
   public static build(component: MixinStaticInterface): ComponentConstructorInterface {

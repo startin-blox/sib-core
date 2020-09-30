@@ -1,6 +1,6 @@
-import { DateMixin } from './dateMixin.js';
-import { DateTimeMixin } from './dateTimeMixin.js';
-import { MultilineMixin } from './multilineMixin.js';
+import { DateMixin } from './dateMixin';
+import { DateTimeMixin } from './dateTimeMixin';
+import { MultilineMixin } from './multilineMixin';
 import { MarkdownMixin } from './markdownMixin.js'
 
 const valueTransformationDirectory = {

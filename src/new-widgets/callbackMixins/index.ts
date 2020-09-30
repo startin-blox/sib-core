@@ -1,6 +1,6 @@
-import { AutolinkMixin } from './autolinkMixin.js';
-import { AutocompletionMixin } from './autocompletionMixin.js';
-import { RichtextMixin } from './richtextMixin.js';
+import { AutolinkMixin } from './autolinkMixin';
+import { AutocompletionMixin } from './autocompletionMixin';
+import { RichtextMixin } from './richtextMixin';
 
 const callbackDirectory = {
   autolink: AutolinkMixin,

@@ -1,4 +1,4 @@
-import { StoreMixin } from '../../mixins/storeMixin.js';
+import { StoreMixin } from '../../mixins/storeMixin';
 
 import { html } from 'lit-html';
 

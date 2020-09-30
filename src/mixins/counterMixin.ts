@@ -1,4 +1,4 @@
-import { stringToDom, evalTemplateString } from '../libs/helpers.js';
+import { stringToDom, evalTemplateString } from '../libs/helpers';
 
 const CounterMixin = {
   name: 'counter-mixin',

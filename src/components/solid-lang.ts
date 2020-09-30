@@ -1,4 +1,4 @@
-import { Sib } from '../libs/Sib.js';
+import { Sib } from '../libs/Sib';
 
 import { html, render } from 'lit-html';
 

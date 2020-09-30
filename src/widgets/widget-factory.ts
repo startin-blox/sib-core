@@ -1,5 +1,5 @@
-import { BaseWidget } from './baseWidget.js';
-import { defineComponent } from '../libs/helpers.js';
+import { BaseWidget } from './baseWidget';
+import { defineComponent } from '../libs/helpers';
 
 export const widgetFactory = (
   tagName: string,

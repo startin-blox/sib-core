@@ -4,7 +4,7 @@ import type {
   AttributesDefinitionInterface,
   ArrayOfHooksInterface,
   AccessorStaticInterface
-} from './interfaces.js';
+} from './interfaces';
 
 const HOOKS = ['created', 'attached', 'detached'];
 const API = [
