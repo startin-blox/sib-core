@@ -10,16 +10,16 @@
     <script type="module" src="https://unpkg.com/@startinblox/router"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-
+  
   <body>
     <solid-router default-route="home" use-hash>
       <solid-route name="home">home</solid-route>
       <solid-route
-        hidden
-        name="next-test"
+      hidden
+      name="next-test"
       ></solid-route>
     </solid-router>
-
+    
     <div id="next-test" hidden>
       Tototototot
     </div>
@@ -27,72 +27,78 @@
       <details>
         <summary>Some fields:</summary>
         <solid-form
-          data-src="data/list/user-1.jsonld"
-          fields="username, first_name, last_name, email"
-          submit-button="Enregistrer l'utilisateur"
+        data-src="data/list/user-1.jsonld"
+        fields="username, first_name, last_name, email"
+        submit-button="Enregistrer l'utilisateur"
         ></solid-form>
       </details>
-
+      
       <details>
         <summary>All fields:</summary>
         <solid-form data-src="data/list/user-1.jsonld"></solid-form>
       </details>
-
+      
       <details>
         <summary>Multiple value:</summary>
         <solid-form
-          data-src="data/list/user-1.jsonld"
-          fields="skills"
-          multiple-skills
-          range-skills="data/list/skills.jsonld"
+        data-src="data/list/user-1.jsonld"
+        fields="skills"
+        multiple-skills
+        range-skills="data/list/skills.jsonld"
         ></solid-form>
       </details>
-
+      
       <details>
         <summary>Default widget:</summary>
         <solid-form
-          data-src="data/project.jsonld"
-          fields="businessProvider, businessProviderFee, jabberID"
-          default-widget="solid-form-placeholder-text"
-          placeholder-businessProvider='insert your value here'
+        data-src="data/project.jsonld"
+        fields="businessProvider, businessProviderFee, jabberID"
+        default-widget="solid-form-placeholder-text"
+        placeholder-businessProvider='insert your value here'
         ></solid-form>
       </details>
-
+      
       <details>
         <summary>Form widgets:</summary>
         <solid-form
-          data-src="data/project.jsonld"
-          fields="businessProvider, businessProviderFee, jabberID"
-          widget-businessProvider="solid-form-placeholder-text"
-          widget-businessProviderFee="solid-form-number"
-          widget-jabberID="solid-form-hidden"
+        data-src="data/project.jsonld"
+        fields="businessProvider, businessProviderFee, jabberID"
+        widget-businessProvider="solid-form-placeholder-text"
+        widget-businessProviderFee="solid-form-number"
+        widget-jabberID="solid-form-hidden"
         ></solid-form>
-    </details>
-
+      </details>
+      
       <details>
         <summary>Dropdown (range and enum attributes):</summary>
+        <h4>Range attribute</h4>
         <solid-form
-          data-src="data/list/event-1.jsonld"
-          fields="contact"
-          range-contact="data/list/users.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        range-contact="data/list/users.jsonld"
         ></solid-form>
-
+        
+        <h4>Enum attribute</h4>
         <solid-form
         data-src="data/list/event-1.jsonld"
         fields="personnes, gens"
+        widget-personnes="solid-form-dropdown-label"
+        widget-gens="solid-form-dropdown-label"
+        label-personnes="Different keys and values in pairs :"
+        label-gens="Same keys and values in pairs :"
         enum-personnes="paulette = 1, jacqueline = 2, marlene = 3"
         enum-gens="paulette , jacqueline , marlene"
-      ></solid-form>
+        ></solid-form>
       </details>
-
+      
       <details>
         <summary>Placeholder dropdown:</summary>
         <solid-form
-          data-src="data/list/event-1.jsonld"
-          fields="contact"
-          widget-contact="solid-form-placeholder-dropdown"
-          label-contact='select a contact:'
-          range-contact="data/list/users.jsonld"
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="solid-form-placeholder-dropdown"
+        label-contact='select a contact:'
+        range-contact="data/list/users.jsonld"
         ></solid-form>
       </details>
 
@@ -146,6 +152,29 @@
           submit-button="Enregistrer l'utilisateur"
           next="next-test"
         ></solid-form>
+      </details>
+
+      <details>
+        <summary>Radio (range and enum attributes):</summary>
+        <h4>Range attribute</h4>
+        <solid-form
+        data-src="data/list/event-1.jsonld"
+        fields="contact"
+        widget-contact="solid-form-radio"
+        range-contact="data/list/users.jsonld"
+        ></solid-form>
+        
+        <h4>Enum attribute</h4>
+        <solid-form
+        data-src="data/list/event-1.jsonld"
+        fields="personnes, gens"
+        widget-gens = "solid-form-radio-label"
+        widget-personnes = "solid-form-radio-label"
+        label-personnes="Different keys and values in pairs :"
+        label-gens="Same keys and values in pairs :"
+        enum-personnes="irene = 1, sophie = 2, martha = 3"
+        enum-gens="irene , sophie , martha"
+      ></solid-form>
       </details>
     </div>
   </body>

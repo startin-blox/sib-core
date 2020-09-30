@@ -182,7 +182,16 @@ export const formTemplates = {
             > <span>${until(el[attributes.optionLabel])}</span>
           </label>
         `)}
-      </select>
+        ${Object.keys(attributes.enum || []).filter(el => el !== null).map(el => html`
+          <label>
+            <input
+              type="radio"
+              value="${el}"
+              ?required=${attributes.required}
+              ?checked=${value === el}
+            > <span>${attributes.enum[el]}</span>
+          </label>  
+        `)}
     `,
     dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
   },

@@ -332,6 +332,30 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component['value']).to.equal('skill-3.jsonld'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-3.jsonld"}'); // form value
     });
+
+    cy.get('solid-form-radio#test3')
+      .find('> div')
+      .and('have.attr', 'name', 'test3')
+      .children().and('have.length', '3');
+
+    cy.get('solid-form-radio#test3 > div > label').eq(0)
+      .contains('option1')
+      .parent()
+      .find('input')
+      .should('have.attr', 'type', 'radio')
+      .should('have.attr', 'value', 'option1');
+
+      cy.get('solid-form-radio#test4')
+      .find('> div')
+      .and('have.attr', 'name', 'test4')
+      .children().and('have.length', '4')
+
+      cy.get('solid-form-radio#test4 > div > label').eq(0)
+      .contains('option1')
+      .parent()
+      .find('input')
+      .should('have.attr', 'type', 'radio')
+      .should('have.attr', 'value', 'a');
   })
 
   it('solid-form-rangenumber', () => {
