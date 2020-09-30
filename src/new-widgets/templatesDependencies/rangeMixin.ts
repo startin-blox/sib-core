@@ -28,7 +28,7 @@ const RangeMixin = {
           const list = new Object();
           
           optional.forEach(element => {
-            if (element.includes("=") == true ) {              
+            if (element.includes("=")) {              
               const option = element.trim().split("=");
               key = option[1].trim();
               keyValue = option[0].trim();

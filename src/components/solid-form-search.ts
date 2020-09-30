@@ -41,7 +41,7 @@ export const SolidFormSearch = {
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
     // Choose widget
-    if (!widgetAttribute && this.element.hasAttribute('range-' + field)) {
+    if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
       tagName = 'solid-form-dropdown'
     } else {
       tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
