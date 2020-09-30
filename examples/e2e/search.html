@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: search</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <solid-display
+      data-src="../data/list/users.jsonld"
+      id="test1"
+      name="test1"
+      fields="options"
+      search-fields="options"
+      search-enum-options=" option1 , option2 , option3, option4"
+    ></solid-display>
+    <solid-display
+      data-src="../data/list/users.jsonld"
+      id="test2"
+      name="test2"
+      fields="options2"
+      search-fields="options2"
+      search-enum-options2="option a = 1, option b = 2, option c = 3"
+    ></solid-display>
+  </body>
+</html>
