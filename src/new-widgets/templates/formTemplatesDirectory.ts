@@ -155,6 +155,13 @@ export const formTemplates = {
             ${until(el[attributes.optionLabel])}
           </option>
         `)}
+        ${Object.keys(attributes.enum || []).filter(el => el !== null).map(el => html`
+          <option
+            value="${el}"
+          >
+            ${attributes.enum[el]}
+          </option>
+        `)}
       </select>
     `,
     dependencies: [ FormDropdownMixin, FormMixin, RangeMixin ]
