@@ -230,6 +230,8 @@ const WidgetMixin = {
       'order-desc',
       'min',
       'max',
+      'pattern',
+      'title',
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 

@@ -9,6 +9,7 @@ import { MultipleselectFormMixin } from '../templatesDependencies/multipleselect
 import { RangeMixin } from '../templatesDependencies/rangeMixin';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin';
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
+import { PatternMixin } from '../templatesDependencies/patternMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -22,12 +23,14 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         value=${value || ''}
+        pattern=${ifDefined(attributes.pattern)}
+        title=${ifDefined(attributes.title)}
         ?required=${attributes.required}
         data-holder
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FormMixin, PatternMixin ]
   },
   textarea: {
     template: (value: string, attributes: any) => html`

@@ -411,4 +411,11 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.deep.equal(['2020-02-12', '2020-05-24']); // form value
     });
   });
+
+  it('solid-form + pattern, title attributes', () => {
+    cy.get('solid-form#test1')
+    .find('input')
+    .should('have.attr', 'pattern', '[a-z]{3}')
+    .and('have.attr', 'title', '3 lowercase letters');
+  });
 })
