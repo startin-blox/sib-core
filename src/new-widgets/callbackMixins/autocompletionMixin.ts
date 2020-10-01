@@ -1,5 +1,6 @@
 import { importCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
+import Fuse from 'fuse.js';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',
@@ -40,16 +41,22 @@ const AutocompletionMixin = {
     // when data changes, re-build slimSelect
     new MutationObserver(() => {
       this.slimSelect.destroy();
-      this.slimSelect = new SlimSelect({ select });
+      this.slimSelect = new SlimSelect({
+        select,
+        searchFilter: (option, filterValue) => {
+          const search = new Fuse([option.text], {
+            shouldSort: false,
+            threshold: 0.37,
+          }).search(filterValue);
+          return search.length > 0;
+        },
+      });
     }).observe(select, {
       childList: true,
       characterData: true,
       subtree: true,
     });
+  },
+};
 
-  }
-}
-
-export {
-  AutocompletionMixin
-}
+export { AutocompletionMixin };
