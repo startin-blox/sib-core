@@ -1,6 +1,5 @@
-import { importCSS } from '../../libs/helpers';
+import { fuzzyCompare, importCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
-import Fuse from 'fuse.js';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',
@@ -43,13 +42,7 @@ const AutocompletionMixin = {
       this.slimSelect.destroy();
       this.slimSelect = new SlimSelect({
         select,
-        searchFilter: (option, filterValue) => {
-          const search = new Fuse([option.text], {
-            shouldSort: false,
-            threshold: 0.37,
-          }).search(filterValue);
-          return search.length > 0;
-        },
+        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue)
       });
     }).observe(select, {
       childList: true,

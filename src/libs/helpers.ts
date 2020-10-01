@@ -1,3 +1,5 @@
+import Fuse from "fuse.js";
+
 function uniqID(): string {
   return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
 }
@@ -133,6 +135,14 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   }
 }
 
+function fuzzyCompare(subject: string, search: string) {
+  const fuse = new Fuse([subject], {
+    shouldSort: false,
+    threshold: 0.37,
+  }).search(search);
+  return fuse.length > 0;
+}
+
 export {
   uniqID,
   stringToDom,
@@ -144,5 +154,6 @@ export {
   setDeepProperty,
   parseFieldsString,
   findClosingBracketMatchIndex,
-  defineComponent
+  defineComponent,
+  fuzzyCompare
 };

@@ -1,6 +1,6 @@
 import asyncReduce from 'iter-tools/es2015/async-reduce';
 import asyncEvery from 'iter-tools/es2015/async-every';
-import Fuse from 'fuse.js';
+import { fuzzyCompare } from '../libs/helpers';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -94,11 +94,7 @@ const FilterMixin = {
     // Filter on a value
     const value = propertyValue.toString();
     if(value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1) return true;
-    const search = new Fuse([value], {
-      shouldSort: false,
-      threshold: 0.37,
-    }).search(filterValue);
-    return search.length > 0;
+    return fuzzyCompare(value, filterValue)
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;
