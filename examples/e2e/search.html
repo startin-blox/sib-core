@@ -8,21 +8,27 @@
     <script type="module" src="../../dist/index.js"></script>
   </head>
   <body>
+
+    <solid-form-search
+      id="filter1"
+      fields="username"
+      enum-username=" admin , paris , pierre, option4, not-member-paris"
+    ></solid-form-search>
     <solid-display
       data-src="../data/list/users.jsonld"
-      id="test1"
-      name="test1"
-      fields="options"
-      search-fields="options"
-      search-enum-options=" option1 , option2 , option3, option4"
+      fields="username"
+      filtered-by="filter1"
     ></solid-display>
+    
+    <solid-form-search
+      id="filter2"
+      fields="last_name"
+      enum-last_name=" User = a , Hilton = b , DLC = c, Paris Member = d"
+    ></solid-form-search>
     <solid-display
       data-src="../data/list/users.jsonld"
-      id="test2"
-      name="test2"
-      fields="options2"
-      search-fields="options2"
-      search-enum-options2="option a = 1, option b = 2, option c = 3"
+      fields='last_name'
+      filtered-by="filter2"
     ></solid-display>
   </body>
 </html>

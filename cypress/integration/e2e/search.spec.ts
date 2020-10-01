@@ -4,35 +4,31 @@ describe('solid-form-search widget', function() {
   })
 
   it('solid-form-search', () => {
-    
-    cy.get('solid-display#test1')// check attributes
-      .find('solid-form-dropdown')
-      .and('have.attr', 'name', 'options')  
-      .find('select')
-      .and('have.attr', 'name', 'options')
-      .children().and('have.length', 5);
-    cy.get('solid-display#test1') // check options
-      .find('option').eq(0)
-      .should('have.attr', 'value', '')
-      .contains('-');
-    cy.get('solid-display#test1')
-      .find('option').eq(1)
-      .should('have.attr', 'value', 'option1')
-      .contains('option1');
 
-    cy.get('solid-display#test2')// check attributes
-      .find('solid-form-dropdown')
-      .and('have.attr', 'name', 'options2')  
+    cy.get('solid-form-search#filter1')
       .find('select')
-      .and('have.attr', 'name', 'options2')
-      .children().and('have.length', 4);
-    cy.get('solid-display#test2') // check options
+      .and('have.attr', 'name', 'username')
+      .children().and('have.length', 6)
+      cy.get('solid-form-search#filter1')
       .find('option').eq(0)
       .should('have.attr', 'value', '')
       .contains('-');
-    cy.get('solid-display#test2')
+      cy.get('solid-form-search#filter1')
       .find('option').eq(1)
-      .should('have.attr', 'value', '1')
-      .contains('option a');
+      .should('have.attr', 'value', 'admin')
+      .contains('admin');
+      
+      cy.get('solid-form-search#filter2')
+      .find('select')
+      .and('have.attr', 'name', 'last_name')
+      .children().and('have.length', 5);
+    cy.get('solid-form-search#filter2')
+      .find('option').eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#filter2')
+      .find('option').eq(1)
+      .should('have.attr', 'value', 'a')
+      .contains('User');
   });
 })
