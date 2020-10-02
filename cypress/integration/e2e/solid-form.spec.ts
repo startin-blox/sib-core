@@ -67,4 +67,11 @@ describe('solid-form', function() {
       });
     })
   });
+
+  it('solid-form + pattern, title attributes', () => {
+    cy.get('solid-form#form-5')
+    .find('input')
+    .should('have.attr', 'pattern', '[a-z]{3}')
+    .and('have.attr', 'title', '3 lowercase letters');
+  });
 })

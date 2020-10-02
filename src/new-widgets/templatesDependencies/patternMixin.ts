@@ -14,9 +14,6 @@ const PatternMixin = {
       }
     },
   },
-  getValueFromElement(element: any) {
-    return element.value ? String(element.value) : '';
-  }
 }
 
 export {
