@@ -5,27 +5,18 @@ const StoreMixin = {
   name: 'store-mixin',
   use: [],
   attributes: {
+    noRender: {
+      type: String,
+      default: null,
+      callback: function (value: boolean) {
+        if (value === null) this.fetchData(this.dataSrc);
+      }
+    },
     dataSrc: {
       type: String,
       default: null,
       callback: async function (value: string) {
-        this.empty();
-        if (this.subscription) PubSub.unsubscribe(this.subscription);
-        if (!value || value == "undefined") return;
-
-        this.resourceId = value;
-
-        if (this.nestedField) {
-          const resource = await store.getData(value, this.context);
-          const nestedResource = resource ? await resource[this.nestedField] : null;
-          this.resourceId = nestedResource ? nestedResource['@id'] : null;
-          if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
-        }
-        this.updateNavigateSubscription();
-
-        this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-        await store.getData(this.resourceId, this.context);
-        this.updateDOM();
+        if (this.noRender === null) await this.fetchData(value);
       },
     },
     extraContext: {
@@ -61,6 +52,25 @@ const StoreMixin = {
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
+  },
+  async fetchData(value: string) {
+    this.empty();
+    if (this.subscription) PubSub.unsubscribe(this.subscription);
+    if (!value || value == "undefined") return;
+
+    this.resourceId = value;
+
+    if (this.nestedField) {
+      const resource = await store.getData(value, this.context);
+      const nestedResource = resource ? await resource[this.nestedField] : null;
+      this.resourceId = nestedResource ? nestedResource['@id'] : null;
+      if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+    }
+    this.updateNavigateSubscription();
+
+    this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+    await store.getData(this.resourceId, this.context);
+    this.updateDOM();
   },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
