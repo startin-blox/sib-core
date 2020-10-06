@@ -28,6 +28,10 @@ export const SolidForm = {
     partial: {
       type: Boolean,
       default: null
+    },
+    confirmationMessage: {
+      type: String,
+      default: null
     }
   },
   initialState: {
@@ -169,7 +173,9 @@ export const SolidForm = {
   onSubmit(event: Event) {
     if (!this.isNaked) {
       event.preventDefault();
-      this.submitForm();
+      if ((!this.confirmationMessage) || (this.confirmationMessage && confirm(this.confirmationMessage))) {
+        this.submitForm()
+      };
     }
   },
   onReset(event: Event) {
@@ -189,6 +195,7 @@ export const SolidForm = {
         <form
           @submit=${this.onSubmit.bind(this)}
           @reset=${this.onReset.bind(this)}
+          confirmation-message=${this.confirmationMessage}
         >
           ${fieldsTemplate}
           <input type="submit" value=${ifDefined(this.submitButton)}>
