@@ -288,5 +288,19 @@ export const formTemplates = {
       ></div>
     `,
     dependencies: [ ValueRichtextMixin, FormMixin ]
+  },
+  color: {
+    template: (_value: string, attributes: any) => html`
+      <input
+        type="color"
+        placeholder=${ifDefined(attributes.placeholder)}
+        name=${ifDefined(attributes.name)}
+        ?required=${attributes.required}
+        value=${ifDefined(attributes.originalValue)}
+        data-holder
+        @change=${attributes.onChange}
+      />
+    `,
+    dependencies: [ FormMixin ]
   }
 }
