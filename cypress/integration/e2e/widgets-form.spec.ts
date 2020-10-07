@@ -411,4 +411,12 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.deep.equal(['2020-02-12', '2020-05-24']); // form value
     });
   });
+
+  it('solid-form-color', () => {
+    cy.get('solid-form-color')
+      .children().should('have.length', 1)
+
+    cy.get('solid-form-color > input')
+      .should('have.attr', 'type', 'color')
+  })
 })
