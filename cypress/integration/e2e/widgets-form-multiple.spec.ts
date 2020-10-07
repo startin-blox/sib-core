@@ -170,7 +170,8 @@ describe('multiple widgets', function() {
       .and('have.attr', 'multiple', 'multiple')
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'range', '../data/list/skills.jsonld')
-      .and('have.attr', 'data-src', '../data/list/skills.jsonld');
+      .and('have.attr', 'data-src', '../data/list/skills.jsonld')
+      .and('have.attr', 'order-asc', 'name');
     cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
       .children().should('have.length', 2);
     cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
@@ -184,7 +185,7 @@ describe('multiple widgets', function() {
       .find('> div')
       .children().should('have.length', 2);
     cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown .ss-option').eq(0)
-      .should('contain', 'HTML');
+      .should('contain', 'CSS');
     // select values
     cy.get('solid-form-multipleselect-autocompletion .ss-main').click();
     cy.get('solid-form-multipleselect-autocompletion .ss-content.ss-open .ss-option').eq(1).click();
@@ -192,6 +193,6 @@ describe('multiple widgets', function() {
     .should('have.class', 'ss-option-selected');
     cy.get('solid-form-multipleselect-autocompletion .ss-values')
       .children().should('have.length', 1)
-      .should('contain', 'CSS');
+      .should('contain', 'DevOps');
   });
 })
