@@ -195,7 +195,7 @@ export const SolidForm = {
         <form
           @submit=${this.onSubmit.bind(this)}
           @reset=${this.onReset.bind(this)}
-          confirmation-message=${this.confirmationMessage}
+          confirmation-message=${ifDefined(this.confirmationMessage)}
         >
           ${fieldsTemplate}
           <input type="submit" value=${ifDefined(this.submitButton)}>
