@@ -44,11 +44,13 @@ export const SolidForm = {
   get value(): object {
     const values = {};
     this.widgets.forEach((widget) => {
+      const name = (widget.component || widget).name;
+      if (name == null) return;
       let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
       } catch (e) {}
-      setDeepProperty(values, (widget.component || widget).name.split('.'), value);
+      setDeepProperty(values, name.split('.'), value);
     });
     return values;
   },
