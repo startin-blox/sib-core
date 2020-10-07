@@ -70,8 +70,21 @@ describe('solid-form', function() {
 
   it('solid-form + pattern, title attributes', () => {
     cy.get('solid-form#form-5')
-    .find('input')
-    .should('have.attr', 'pattern', '[a-z]{3}')
-    .and('have.attr', 'title', '3 lowercase letters');
+      .find('input')
+      .should('have.attr', 'pattern', '[a-z]{3}')
+      .and('have.attr', 'title', '3 lowercase letters');
+  });
+
+  it('solid-form with validation popup', () => {
+    const stub = cy.stub();
+    cy.on('window:confirm', stub)
+    cy.get('solid-form#form-6')
+      .should('have.attr', 'confirmation-message')
+    cy.get('solid-form#form-6')
+      .find('input[type=submit]')
+      .click()
+      .then(() => {
+        expect(stub.getCall(0)).to.be.calledWith('Please confirm your choice')
+      })
   });
 })
