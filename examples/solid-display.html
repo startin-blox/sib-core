@@ -29,6 +29,21 @@
       fields="@id, name(first_name, last_name)"
       default-widget="solid-display-div"
     ></solid-display>
+
+    <h2>Empty-widget for multiple in solid-display</h2>
+    <solid-widget name="empty-widget">
+      <template>
+        <p>Nothing to display here</p>
+      </template>
+    </solid-widget>
+    <solid-display
+      data-src="data/list/user-3.jsonld"
+      fields="username, skills"
+      multiple-skills
+      multiple-skills-fields="name"
+      multiple-skills-empty-widget="empty-widget"
+    ></solid-display>
+  
     <style>
       .id{
         font-family: monospace;
