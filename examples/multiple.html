@@ -10,20 +10,19 @@
   </head>
   <body>
     <h1>solid-display</h1>
-    <solid-widget name="hd-skill-name">
+    <solid-widget name="custom-multiple">
       <template>
-        <small>${label}:</small>
-        <pre>${await value.name}</pre>
+        <h2>Skills list</h2>
+        <solid-display data-src="${value}" fields="name"></solid-display>
       </template>
     </solid-widget>
+
     <solid-display
       data-src="data/list/user-1.jsonld"
       fields="username, skills"
-      widget-skills="hd-skill-name"
-      label-skills="all skills"
-      each-label-skills="one skill"
-      multiple-skills
+      multiple-skills="custom-multiple"
     ></solid-display>
+
 
     <h1>solid-form</h1>
     <solid-form
@@ -31,7 +30,6 @@
       fields="skills"
       range-skills="data/list/skills.jsonld"
       multiple-skills
-      label-skills="Skills:"
     ></solid-form>
 
     <h1>creation</h1>

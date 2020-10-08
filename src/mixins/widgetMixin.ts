@@ -223,10 +223,7 @@ const WidgetMixin = {
       'upload-url',
       'option-label',
       'order-by', // deprecated. Remove in 0.15
-      'each-range',
       'each-label',
-      'each-placeholder',
-      'each-class',
       'order-asc',
       'order-desc',
       'min',
