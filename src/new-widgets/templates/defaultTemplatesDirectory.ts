@@ -19,6 +19,7 @@ export const defaultTemplates = {
         data-src=${value || ''}
         fields=${ifDefined(attributes.fields)}
         next=${ifDefined(attributes.next)}
+        empty-widget=${ifDefined(attributes.emptyWidget)}
       ></solid-display>
     `,
     dependencies: []

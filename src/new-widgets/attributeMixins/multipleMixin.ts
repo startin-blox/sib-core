@@ -15,6 +15,13 @@ const MultipleMixin = {
         this.addToAttributes(newValue, 'next');
       }
     },
+    emptyWidget: {
+      type: String,
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'emptyWidget');
+      }
+    }
   },
 }
 

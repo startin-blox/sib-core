@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: widgets fuck</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+  <body>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+
+      newWidgetFactory('solid-multiple');
+    </script>
+
+    <h1>empty widget on multiple</h1>
+    <solid-widget name="empty-skills">
+      <template>
+        <p>This username has no skills</p>
+      </template>
+    </solid-widget>
+    <solid-multiple
+      id="noskill"
+      value="../data/list/user-3-skills.jsonld"
+      fields="name"
+      empty-widget="empty-skills"
+    ></solid-multiple>
+    <solid-multiple
+      id="skills"  
+      value="../data/list/user-1-skills.jsonld"
+      fields="name"
+      empty-widget="empty-skills"
+    ></solid-multiple>
+
+  </body>
+</html>
