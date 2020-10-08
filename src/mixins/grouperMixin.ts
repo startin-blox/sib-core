@@ -6,9 +6,9 @@ const GrouperMixin = {
       type: String,
       default: null
     },
-    groupByWidget: {
+    groupWidget: {
       type: String,
-      default: 'solid-group-div'
+      default: 'solid-group-default'
     },
     groupClass: {
       type: String,
@@ -31,28 +31,28 @@ const GrouperMixin = {
 
       // Render group parents and call next processor
       for (let group of Object.keys(groups)) {
-        const parent = this.renderGroup(group, div);
+        const parent = await this.renderGroup(group, div);
         if (nextProcessor) await nextProcessor(groups[group].resources, [...listPostProcessors], parent, context+"_"+group);
       }
     } else {
       if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
     }
   },
-  renderGroup(groupName: string, div: HTMLElement) {
-    // TODO: make it work with widgets
-    const groupElement = document.createElement("div");
-    const titleElement = document.createElement("span");
-    const contentElement = document.createElement("div");
-    titleElement.toggleAttribute('data-title');
-    contentElement.toggleAttribute('data-content');
-    if (this.groupClass) groupElement.classList.add(this.groupClass);
+  async renderGroup(groupName: string, div: HTMLElement) {
+    const groupElt = document.createElement(this.groupWidget);
+    if (this.groupWidget.startsWith('solid-')) { // core widget
+      groupElt.setAttribute('value', groupName);
+    } else { // custom widget
+      groupElt.value = groupName;
+    }
+    if (this.groupClass) groupElt.setAttribute('class', this.groupClass);
+    div.appendChild(groupElt);
 
-    groupElement.appendChild(titleElement);
-    groupElement.appendChild(contentElement);
-    div.appendChild(groupElement);
-
-    titleElement.textContent = groupName;
-    return contentElement;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(groupElt.querySelector('[data-content]'))
+      })
+    });
   }
 }
 

@@ -23,5 +23,18 @@
       group-by="date"
       paginate-by="1"
     ></solid-display>
+    <solid-display
+      id="list-3"
+      data-src="../data/list/events.jsonld"
+      fields="name, date"
+      group-by="date"
+      group-widget="custom-group"
+    ></solid-display>
+    <solid-widget name="custom-group">
+      <template>
+        <h2>${value}</h2>
+        <section data-content></section>
+      </template>
+    </solid-widget>
   </body>
 </html>

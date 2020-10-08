@@ -2,8 +2,7 @@ import { Sib } from '../libs/Sib';
 import { BaseWidgetMixin } from './baseWidgetMixin';
 import type { Template, WidgetMixinsInterface } from './interfaces';
 import type { MixinStaticInterface } from '../libs/interfaces';
-
-import { defaultTemplates, displayTemplates, formTemplates, setTemplates } from './templates/index';
+import { defaultTemplates, displayTemplates, formTemplates, setTemplates, groupTemplates } from './templates/index';
 import { valueTransformationDirectory } from './valueTransformationMixins/index';
 import { templateAdditionDirectory } from './templateAdditionMixins/index';
 import { attributeDirectory } from './attributeMixins/index';
@@ -59,6 +58,7 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
   if (mixinNames.includes('display')) widgetType = displayTemplates;
   else if (mixinNames.includes('form')) widgetType = formTemplates;
   else if (mixinNames.includes('set')) widgetType = setTemplates;
+  else if (mixinNames.includes('group')) widgetType = groupTemplates;
   const templateKeys = Object.keys(widgetType);
 
   // build mixins array
@@ -101,3 +101,4 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 newWidgetFactory('solid-form-dropdown');
 newWidgetFactory('solid-form-file-label');
 newWidgetFactory('solid-action');
+newWidgetFactory('solid-group-default');
