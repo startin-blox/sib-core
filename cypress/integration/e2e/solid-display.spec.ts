@@ -26,4 +26,10 @@ describe('solid-display', function() {
       .find('>div').children()
       .should('have.length', 0);
   });
+  it('handle native HTML tags', () => {
+    cy.get('#display-5 > div > h2')
+      .should('have.attr', 'name', 'name')
+      .and('have.class', 'custom-class')
+      .and('have.text', 'Coliving');
+  });
 })

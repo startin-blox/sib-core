@@ -217,6 +217,8 @@ export const formTemplates = {
         name=${ifDefined(attributes.name)}
         range=${ifDefined(attributes.range)}
         values=${ifDefined(attributes.values)}
+        order-asc=${ifDefined(attributes.orderAsc)}
+        order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
         multiple
       ></solid-form-dropdown>

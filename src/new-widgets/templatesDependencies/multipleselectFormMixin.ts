@@ -11,6 +11,20 @@ const MultipleselectFormMixin = {
         if (value && value !== this.listAttributes['range']) this.listAttributes['range'] = value;
       }
     },
+    orderAsc: {
+      type: String,
+      default: 'name',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'orderAsc');
+      }
+    },
+    orderDesc: {
+      type: String,
+      default: 'name',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'orderDesc');
+      }
+    }
   },
   created() {
     this.listValueTransformations.push(this.setDataSrc.bind(this));

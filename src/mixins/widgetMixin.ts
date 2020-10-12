@@ -255,6 +255,10 @@ const WidgetMixin = {
 
     // Set attributes
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
+      // set only "class" and "name" attribute
+      for (let name of Object.keys(attributes).filter(attr => ['name', 'class'].includes(attr))) {
+        this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
+      }
       this.getValue(field).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
       if (widgetMeta.type === WidgetType.USER) this.defineAttribute(widget, 'context', this.context, widgetMeta.type);

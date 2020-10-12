@@ -131,9 +131,12 @@ export default class SolidTemplateElement extends HTMLElement {
     }
   }
 
+  renderCallback() { }
+
   render() {
     this.fetchLocaleStrings().finally(() => { // render even if some errors occured
       this.innerHTML = this.template(this.props);
+      this.renderCallback();
     });
   }
 
