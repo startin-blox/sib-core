@@ -40,7 +40,7 @@ publish:
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab
     - npm install
   script:
-    - npm run build:prod
+    - npm run build
     - semantic-release
   only:
     - master
