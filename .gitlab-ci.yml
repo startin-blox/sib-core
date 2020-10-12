@@ -37,7 +37,7 @@ test:
 publish:
   stage: release
   before_script:
-    - npm install -g semantic-release@v17 @semantic-release/gitlab
+    - npm install -g semantic-release@v17.1 @semantic-release/gitlab
     - npm install
   script:
     - npm run build:prod
