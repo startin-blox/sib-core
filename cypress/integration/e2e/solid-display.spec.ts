@@ -32,4 +32,34 @@ describe('solid-display', function() {
       .and('have.class', 'custom-class')
       .and('have.text', 'Coliving');
   });
+  it('required mixin', () => {
+    cy.get('#display-6 > div')
+    .children().should('have.length', 4);
+
+    cy.get('#display-7').should('have.attr', 'required-ocean');
+    cy.get('#display-7 > div')
+    .children().should('have.length', 0);
+
+    cy.get('#display-8').should('have.attr', 'required-city');
+    cy.get('#display-8 > div')
+    .children().should('have.length', 2)
+    cy.get('#display-8 > div').children().eq(0)
+    .should('have.attr', 'data-src', 'event-3.jsonld');
+    cy.get('#display-8 > div').children().eq(1)
+    .should('have.attr', 'data-src', 'event-4.jsonld');
+
+    cy.get('#display-9').should('have.attr', 'required-place');
+    cy.get('#display-9 > div')
+    .children().should('have.length', 2);
+    cy.get('#display-9 > div').children().eq(0)
+    .should('have.attr', 'data-src', 'event-2.jsonld');
+    cy.get('#display-9 > div').children().eq(1)
+    .should('have.attr', 'data-src', 'event-3.jsonld');
+
+    cy.get('#display-10').should('have.attr', 'required-city');
+    cy.get('#display-10').should('have.attr', 'required-place');
+    cy.get('#display-10 > div').children().should('have.length', 1)
+    cy.get('#display-10 > div > solid-display')
+    .should('have.attr', 'data-src', 'event-3.jsonld');;
+  });
 })

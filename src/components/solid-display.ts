@@ -10,6 +10,7 @@ import { GrouperMixin } from '../mixins/grouperMixin';
 import { FederationMixin } from '../mixins/federationMixin';
 import { HighlighterMixin } from '../mixins/highlighterMixin';
 import { NextMixin } from '../mixins/nextMixin';
+import { RequiredMixin } from '../mixins/requiredMixin';
 import { spread } from '../libs/lit-helpers';
 
 import { html, render } from 'lit-html';
@@ -29,6 +30,7 @@ export const SolidDisplay = {
     SorterMixin,
     FederationMixin,
     NextMixin,
+    RequiredMixin,
   ],
   attributes: {
     defaultWidget: {

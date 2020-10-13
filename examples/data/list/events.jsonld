@@ -6,6 +6,8 @@
 			"name": "Coliving",
 			"date": "2020-07-09",
 			"seats": 12,
+			"place":"",
+			"city":"",
 			"permissions": []
 		},
 		{
@@ -13,6 +15,8 @@
 			"name": "Workshop",
 			"date": "2020-05-10",
 			"seats": 2,
+			"place":"Opéra",
+			"city":"",
 			"permissions": []
 		},
 		{
@@ -20,6 +24,8 @@
 			"name": "Réunion d'information",
 			"date": "2020-07-10",
 			"seats": 36,
+			"place":"Couvent des jacobins",
+			"city":"Rennes",
 			"permissions": []
 		},
 		{
@@ -27,6 +33,8 @@
 			"name": "Assemblée générale",
 			"date": "2020-05-10",
 			"seats": 5,
+			"place":"",
+			"city":"Marseille",
 			"permissions": []
 		}
 	],

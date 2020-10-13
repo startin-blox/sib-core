@@ -1,0 +1,31 @@
+const RequiredMixin = {
+  name: 'required-mixin',
+  use: [],
+  attached(): void {
+    this.listPostProcessors.push(this.requiredResources.bind(this));
+  },
+  async requiredResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+    const displays: any[] = [];
+    const requiredFields = Array.from((this.element as Element).attributes).filter(attr => attr.name.startsWith('required-'))
+      .map(attr => attr['name'].replace('required-', ''));
+
+    if (requiredFields.length) {
+      for (let resource of resources) {
+        let hasProps = true;
+        for(let field of requiredFields) {
+          if (await resource[field] == null || await resource[field] == "") {
+            hasProps = false;
+            continue
+          }
+        }
+        if (hasProps) displays.push(resource);
+      }
+    }
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor) await nextProcessor(requiredFields.length ? displays : resources, listPostProcessors, div, context);
+  }
+}
+
+export {
+  RequiredMixin
+}
