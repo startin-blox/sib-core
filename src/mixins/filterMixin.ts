@@ -19,15 +19,14 @@ const FilterMixin = {
     filteredBy: {
       type: String,
       default: null,
-      callback() { }
+      callback(newValue: string) {
+        // if we change search form, re-populate
+        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+          this.searchForm = null;
+          this.populate();
+        }
+      }
     }
-  },
-  async setSearchForm (elm: Element, context: string) {
-    this.searchForm = elm;
-    this.searchFormCallback = () => {
-      this.filterList(context);
-    };
-    this.searchForm.addEventListener('formChange', this.searchFormCallback);
   },
   created() {
     this.searchCount = new Map();
