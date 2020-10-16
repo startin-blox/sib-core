@@ -11,35 +11,21 @@
   </head>
 
   <body>
-      <solid-router use-hash>
+      <solid-router default-route="all" use-hash>
+        <solid-route name="all">view all</solid-route>
         <solid-route name="view" use-id>view it</solid-route>
-        <solid-route name="user" use-id>user</solid-route>
       </solid-router>
-      <solid-display
-      id="list-1"
-      data-src="../data/list/skills.jsonld"
-      fields="name"
-      next="view"
-      ></solid-display>
-      <solid-display
-        id="list-2"
-        data-src="../data/list/users.jsonld"
-        fields="name, skills"
-        multiple-skills
-        multiple-skills-fields="name"
-        next="user"
-      ></solid-display>
-
+      <div id="all">
+        <solid-display
+        id="list"
+        data-src="../data/list/skills.jsonld"
+        fields="name"
+        next="view"
+        ></solid-display>
+      </div>
       <div id="view">
         <solid-display
         id="detail"
-          bind-resources
-          fields="@id"
-        ></solid-display>
-      </div>
-      <div id="user">
-        <solid-display
-          id="user-detail"
           bind-resources
           fields="@id"
         ></solid-display>

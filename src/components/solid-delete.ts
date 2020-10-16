@@ -32,8 +32,7 @@ export const SolidDelete = {
 
     return { ...base_context, ...extraContext };
   },
-  async delete(e: Event): Promise<void> {
-    e.stopPropagation();
+  async delete(): Promise<void> {
     if (!this.dataSrc) return;
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
