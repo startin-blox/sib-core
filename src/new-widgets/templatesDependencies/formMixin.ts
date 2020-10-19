@@ -22,6 +22,9 @@ const FormMixin = {
     if (this.dataHolder.length > 1) this.showDataHolderError(1, this.dataHolder.length);
     return this.getValueFromElement(this.dataHolder[0]);
   },
+  get type() {
+    return 'string'
+  },
   get dataHolder(): Element[] | null {
     const dataHolders = Array.from((this.element as Element).querySelectorAll('[data-holder]'));
     const widgetDataHolders = dataHolders.filter(element => {

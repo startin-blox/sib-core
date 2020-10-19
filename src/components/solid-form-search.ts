@@ -35,9 +35,14 @@ export const SolidFormSearch = {
       let value = widget.component.getValue(); // TODO : possible to do .value instead?
       try {
         value = JSON.parse(value);
-      } catch (e) {}
+      } catch {}
+      value = {
+        type: widget.component.type,
+        value: value,
+      }
       setDeepProperty(values, widget.component.name.split('.'), value);
     });
+    console.count(JSON.stringify(values));
 
     return values;
   },
