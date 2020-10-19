@@ -47,6 +47,9 @@ const MultipleselectFormMixin = {
     this.listAttributes['values'] = [];
     this.planRender();
   },
+  get type() {
+    return 'list'
+  }
 }
 
 export {

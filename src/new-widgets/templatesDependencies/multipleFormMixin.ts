@@ -81,6 +81,9 @@ const MultipleFormMixin = {
   getValue() {
     if (!this.dataHolder) return [];
     return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
+  },
+  get type() {
+    return 'list'
   }
 }
 

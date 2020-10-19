@@ -7,7 +7,10 @@ const FilterRangeFormMixin = {
       this.getValueFromElement(this.dataHolder[0]),
       this.getValueFromElement(this.dataHolder[1])
     ]
-  }
+  },
+  get type() {
+    return 'range'
+  },
 }
 
 export {
