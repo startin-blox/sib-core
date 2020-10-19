@@ -145,6 +145,25 @@ function fuzzyCompare(subject: string, search: string) {
   return fuse.length > 0;
 }
 
+const compare: { [k: string]: (subject: any, query: any) => boolean } = {
+  string(subject: string, query: string) {
+    return fuzzyCompare(subject, query);
+  },
+  boolean(subject: boolean, query: boolean) {
+    if (!query) return true;
+    return subject;
+  },
+  number(subject: number, query: number) {
+    return subject === query;
+  },
+  list(subject: string, list: string[]) {
+    return list.includes(subject);
+  },
+  range(subject: number | Date, range: [number, number] | [Date, Date]) {
+    return subject >= range[0] && subject <= range[1];
+  },
+};
+
 export {
   uniqID,
   stringToDom,
@@ -157,5 +176,6 @@ export {
   parseFieldsString,
   findClosingBracketMatchIndex,
   defineComponent,
-  fuzzyCompare
+  fuzzyCompare,
+  compare,
 };
