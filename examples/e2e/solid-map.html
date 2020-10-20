@@ -50,15 +50,18 @@
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
 
+    <solid-form-search
+      id="filter"
+      fields="category"
+    ></solid-form-search>
     <solid-map
       id="map-5"
       data-src="../data/map/events.jsonld"
       fields="name, category"
-      search-fields="category"
+      filtered-by="filter"
       counter-template="<span id='counter'>${counter} results<span>"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
     <style>
       .group-meetup {
         border-color: coral;

@@ -35,11 +35,10 @@ describe('solid-map', function() {
       .should('have.attr', "contenteditable")
   })
   it('filters markers', () => {
-    cy.get('#map-5 solid-form').should('have.length', 1)
-    cy.get('#map-5 solid-form input[name=category]').type('showcase')
+    cy.get('#filter input[name=category]').type('showcase')
     cy.get('#map-5 .leaflet-marker-pane').children().should('have.length', 2)
     cy.get('#map-5 span#counter').contains('2 results')
-    cy.get('#map-5 solid-form input[name=category]').clear().type('mee')
+    cy.get('#filter input[name=category]').clear().type('mee')
     cy.get('#map-5 .leaflet-marker-pane').children().should('have.length', 1)
     cy.get('#map-5 span#counter').contains('1 results')
   })
