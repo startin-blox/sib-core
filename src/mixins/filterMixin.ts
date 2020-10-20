@@ -1,6 +1,6 @@
 import asyncReduce from 'iter-tools/es2015/async-reduce';
 import asyncEvery from 'iter-tools/es2015/async-every';
-import { fuzzyCompare } from '../libs/helpers';
+import { compare, fuzzyCompare } from '../libs/helpers';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -55,37 +55,36 @@ const FilterMixin = {
     this.empty();
     await this.populate();
   },
-  async matchValue(propertyValue, filterValue): Promise<boolean> {
-    if (Array.isArray(filterValue)) return this.matchRangeValues(propertyValue, filterValue); // multiple filters -> range
-
-    if (JSON.stringify(filterValue).includes('""')) return true; // filter empty, no filter set
-    if (propertyValue == null) return false; // property does not exist on resource
-    if (filterValue['@id']) filterValue = filterValue['@id']; // if filter has id (dropdown), use it to filter
+  async matchValue(subject, query): Promise<boolean> {
+    if (subject == null) return false; // property does not exist on resource
+    console.log(subject, query);
+    return compare[query.type](subject, query.value);
+    if (query['@id']) query = query['@id']; // if filter has id (dropdown), use it to filter
 
     // Filter on a container
-    if (propertyValue.isContainer && propertyValue.isContainer()) {
+    if (subject.isContainer && subject.isContainer()) {
       return await asyncReduce(
         Promise.resolve(false),
-        async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, filterValue),
-        propertyValue['ldp:contains']
+        async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, query),
+        subject['ldp:contains']
       );
     }
 
     // Filter on a resource
-    if (propertyValue['@id']) return propertyValue['@id'] === filterValue;
+    if (subject['@id']) return subject['@id'] === query;
 
     // Filter on a nested field
-    if (filterValue.constructor === Object) {
+    if (query.constructor === Object) {
       return await asyncEvery(
-        async (index) => await this.matchValue(await propertyValue[index], filterValue[index]),
-        Object.keys(filterValue)
+        async (index) => await this.matchValue(await subject[index], query[index]),
+        Object.keys(query)
       );
     }
 
     // Filter on a value
-    const value = propertyValue.toString();
-    if(value.toLowerCase().indexOf(String(filterValue).toLowerCase()) !== -1) return true;
-    return fuzzyCompare(value, filterValue)
+    const value = subject.toString();
+    if(value.toLowerCase().indexOf(String(query).toLowerCase()) !== -1) return true;
+    return fuzzyCompare(value, query)
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;

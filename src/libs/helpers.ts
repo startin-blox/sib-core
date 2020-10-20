@@ -147,6 +147,7 @@ function fuzzyCompare(subject: string, search: string) {
 
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
+    if(query === '') return true;
     return fuzzyCompare(subject, query);
   },
   boolean(subject: boolean, query: boolean) {
