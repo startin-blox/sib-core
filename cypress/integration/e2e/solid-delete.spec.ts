@@ -43,6 +43,12 @@ describe('solid-delete', function () {
     // if server fails, events not fired
     cy.get('#res').should('be.empty');
   });
+  it('re-render when label change', () => {
+    cy.get('solid-delete').then(el => {
+      el.attr('data-label', 'Supprimer la ressource');
+      cy.get('solid-delete > button').should('have.text', 'Supprimer la ressource');
+    })
+  });
 
 })
 
