@@ -127,7 +127,7 @@ const FilterMixin = {
       this.searchForm = document.getElementById(filteredBy)
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
     } else {
-      this.searchForm = document.createElement(`solid-form`);
+      this.searchForm = document.createElement(`solid-form-search`);
     }
     this.searchForm.addEventListener('formChange', () => {
       this.filterList(context);
