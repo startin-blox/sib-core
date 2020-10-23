@@ -160,8 +160,11 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   list(subject: string, list: string[]) {
     return list.includes(subject);
   },
-  range(subject: number | Date, range: [number, number] | [Date, Date]) {
-    return subject >= range[0] && subject <= range[1];
+  range(subject: number | Date, range: [any, any]) {
+    return (
+      (range[0] == null || range[0] === '' || subject >= range[0]) &&
+      (range[1] == null || range[1] === '' || subject <= range[1])
+    );
   },
 };
 
