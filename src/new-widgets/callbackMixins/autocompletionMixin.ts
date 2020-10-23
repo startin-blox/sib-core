@@ -9,6 +9,7 @@ const AutocompletionMixin = {
   created() {
     importCSS('../../web_modules/slim-select/dist/slimselect.css');
     this.slimSelect = null;
+    this.addToAttributes(true, 'autocomplete');
     this.listCallbacks.push(this.addCallback.bind(this));
   },
   addCallback(value: string, listCallbacks: Function[]) {
@@ -42,6 +43,7 @@ const AutocompletionMixin = {
       this.slimSelect.destroy();
       this.slimSelect = new SlimSelect({
         select,
+        searchPlaceholder: this.placeholder,
         searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue)
       });
     }).observe(select, {

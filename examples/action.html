@@ -20,7 +20,7 @@
       ></solid-route>
     </solid-router>
 
-    <div id="home" hidden>
+    <div data-view="home" hidden>
       <h1>Home</h1>
       <solid-display
         data-src="./data/action/circles.jsonld"
@@ -29,7 +29,7 @@
         action-click="circle-infos"
       ></solid-display>
     </div>
-    <div id="circle-infos" hidden>
+    <div data-view="circle-infos" hidden>
       <solid-display
         bind-resources
         fields="name, description"

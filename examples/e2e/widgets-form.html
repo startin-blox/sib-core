@@ -21,6 +21,7 @@
       newWidgetFactory('solid-form-number');
       newWidgetFactory('solid-form-hidden');
       newWidgetFactory('solid-form-dropdown');
+      newWidgetFactory('solid-form-dropdown-autocompletion-placeholder');
       newWidgetFactory('solid-form-radio');
       newWidgetFactory('solid-form-rangenumber');
       newWidgetFactory('solid-form-rangedate');
@@ -122,6 +123,12 @@
       name="test8"
       enum="option a = 1, option b = 2, option c = 3"
     ></solid-form-dropdown>
+    <solid-form-dropdown-autocompletion-placeholder
+      id="test9"
+      name="test9"
+      placeholder="Skills :"
+      range="../data/list/skills.jsonld"
+    ></solid-form-dropdown-autocompletion-placeholder>
     <solid-form-radio
       id="test1"
       name="test1"

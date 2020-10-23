@@ -20,10 +20,10 @@
       ></solid-route>
     </solid-router>
     
-    <div id="next-test" hidden>
+    <div data-view="next-test" hidden>
       Tototototot
     </div>
-    <div id="home" hidden>
+    <div data-view="home" hidden>
       <details>
         <summary>Some fields:</summary>
         <solid-form
@@ -120,9 +120,9 @@
           fields="contact"
           widget-contact="solid-form-dropdown-autocompletion"
           range-contact="data/list/users.jsonld"
-        ></solid-form>
-        <h2>Multiple skills</h2>
-        <solid-form
+          ></solid-form>
+          <h2>Multiple skills</h2>
+          <solid-form
           data-src="data/list/user-1.jsonld"
           fields="skills"
           range-skills="data/list/skills.jsonld"

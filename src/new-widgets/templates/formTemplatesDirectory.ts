@@ -145,7 +145,7 @@ export const formTemplates = {
         ?multiple=${attributes.multiple}
         @change=${attributes.onChange}
       >
-        ${!attributes.multiple ? html`
+        ${!(attributes.multiple || attributes.autocomplete) ? html`
         <option value="" ?selected=${value === ""}>
           ${attributes.placeholder || '-'}
         </option>
