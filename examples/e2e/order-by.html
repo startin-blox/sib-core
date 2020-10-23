@@ -28,7 +28,13 @@
       order-desc="name"
     ></solid-display>
     <solid-display
-      id="list-4"
+    id="list-4"
+    data-src="../data/list/skills.jsonld"
+    fields="@id, order, name"
+    order-asc="order"
+    ></solid-display>
+    <solid-display
+      id="list-5"
       data-src="../data/list/skills.jsonld"
       fields="@id, name"
       order-by="name"
@@ -40,5 +46,14 @@
         location.reload();
       }
     </script>
+    <style>
+      body > solid-display {
+        display: block;
+        margin: 1em 0;
+      }
+      solid-display-value{
+        margin: 0 1em;
+      }
+    </style>
   </body>
 </html>
