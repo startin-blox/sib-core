@@ -53,9 +53,8 @@ const SorterMixin = {
       if (!a[key] || !b[key]) {
         return 0; // property doesn't exist on either object
       }
-      const varA = a[key].toUpperCase();
-      const varB = b[key].toUpperCase();
-      let comparison = 0;
+      const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
+      const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];      let comparison = 0;
       if (varA > varB) comparison = asc ? 1 : -1;
       else if (varA < varB) comparison = asc ? -1 : 1;
 
