@@ -22,7 +22,23 @@
       ]
     },
     {
-      "@id": "circles-server4.jsonld"
+      "@id": "circles-1.jsonld",
+      "is_backlink": false,
+      "allow_create_backlink": true,
+      "name": "Circle from server 1",
+      "description": "",
+      "creationDate": "2020-05-27",
+      "status": "Public",
+      "jabberID": "3oa55lvwyzs6@conference.test1.startinblox.com",
+      "jabberRoom": true,
+      "@type": "hd:circle",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
     }
   ],
   "permissions": [

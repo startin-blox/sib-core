@@ -62,7 +62,7 @@ describe('federation', function() {
     });
     cy.reload();
     cy.get('#federation-2').as('federation');
-    cy.get('@federation').find('> div').children().should('have.length', 4);
+    cy.get('@federation').find('> div').children().should('have.length', 5);
     cy.get('@federation').find('> div > solid-display').eq(0)
     .should('have.attr', 'data-src', 'circles-1.jsonld')
     .and('contain.text', 'circles-1.jsonld')
@@ -79,5 +79,9 @@ describe('federation', function() {
     .should('have.attr', 'data-src', 'circles-4.jsonld')
     .and('contain.text', 'circles-4.jsonld')
     .and('contain.text', 'Another circle from server 2');
+  cy.get('@federation').find('> div > solid-display').eq(4)
+    .should('have.attr', 'data-src', 'circles-6.jsonld')
+    .and('contain.text', 'circles-6.jsonld')
+    .and('contain.text', 'Circle from server 4');
   });
 })
