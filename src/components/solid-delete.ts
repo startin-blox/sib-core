@@ -2,6 +2,9 @@ import { Sib } from '../libs/Sib.js';
 import { base_context, store } from '../libs/store/store.js';
 import { NextMixin } from '../mixins/nextMixin.js';
 
+//@ts-ignore
+import { html, render } from 'https://unpkg.com/lit-html?module';
+
 export const SolidDelete = {
   name: 'solid-delete',
   use: [NextMixin],
@@ -12,7 +15,10 @@ export const SolidDelete = {
     },
     dataLabel: {
       type: String,
-      default: "Delete"
+      default: "Delete",
+      callback: function (newValue: string, oldValue: string) {
+        if (newValue !== oldValue) this.render();
+      },
     },
     extraContext: {
       type: String,
@@ -44,10 +50,10 @@ export const SolidDelete = {
     });
   },
   render(): void {
-    const button = document.createElement('button');
-    button.textContent = this.dataLabel;
-    button.onclick = this.delete.bind(this);
-    this.element.appendChild(button);
+    const button = html`
+      <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
+    `;
+    render(button, this.element);
   }
 };
 
