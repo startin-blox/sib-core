@@ -12,11 +12,15 @@ export const SolidFormSearch = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-label-text'
+      default: 'solid-form-label-text',
     },
+    async: {
+      type: Boolean,
+      default: false,
+    }
   },
   initialState: {
-    error: ''
+    error: '',
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';
@@ -69,11 +73,18 @@ export const SolidFormSearch = {
   },
   
   async populate(): Promise<void> {
-    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
+    console.log(this.async, 'aaa');
+    
+    if(!this.async)
+      this.element.addEventListener('input', () => this.inputChange());
+    else
+      this.element.addEventListener('submit', (e: Event) => {e.preventDefault(), this.inputChange()});
     const fields = await this.getFields();
     const template = html`
       <form>
         ${fields.map((field: string) => this.createWidget(field))}
+        ${this.async
+            ? html`<input type="submit" />` : ''}
       </form>
     `;
     render(template, this.element);
