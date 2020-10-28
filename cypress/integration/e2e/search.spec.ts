@@ -32,7 +32,7 @@ describe('solid-form-search widget', function() {
       .contains('User');
   });
 
-  it('solid-form-search + submin-button', () => {
+  it('solid-form-search + submit-button', () => {
     cy.get('solid-form-search#filter3')
       .find('input[type=submit]')
       .should('have.attr', 'value', 'update result');
