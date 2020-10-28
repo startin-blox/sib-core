@@ -47,4 +47,16 @@ describe('solid-form', function() {
     .should('have.attr', 'class', 'test-class')
     .should('have.attr', 'required')
   });
+  it('re-render when label on submit-button change', () => {
+    cy.get('solid-form#form-4')
+      .find('input[type=submit]')
+      .should('have.value', 'Register');
+    cy.get('solid-form#form-4')
+      .then(el => {
+        el.attr('submit-button', 'Register the user');
+        cy.get('solid-form#form-4')
+        .find('input[type=submit]')
+        .should('have.value', 'Register the user');
+      })
+  });
 })
