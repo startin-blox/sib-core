@@ -33,8 +33,13 @@ describe('solid-form-search widget', function() {
   });
 
   it('solid-form-search + submit-button', () => {
-    cy.get('solid-form-search#filter3')
-      .find('input[type=submit]')
-      .should('have.attr', 'value', 'update result');
+    cy.get('#filter3')
+    .find('input[type=submit]').as('btn')
+    .should('have.attr', 'value', 'update result');
+    cy.get('#display3 > div > solid-display').should('have.length', 4);
+    cy.get('#filter3 select').select('User');
+    cy.get('#display3 > div > solid-display').should('have.length', 4);
+    cy.get('@btn').click()
+    cy.get('#display3 > div > solid-display').should('have.length', 1);
   });
 })
