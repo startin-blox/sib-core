@@ -7,7 +7,7 @@ describe('solid-form-search widget', function() {
 
     cy.get('solid-form-search#filter1')
       .find('select')
-      .and('have.attr', 'name', 'username')
+      .should('have.attr', 'name', 'username')
       .children().and('have.length', 6)
       cy.get('solid-form-search#filter1')
       .find('option').eq(0)
@@ -20,7 +20,7 @@ describe('solid-form-search widget', function() {
       
       cy.get('solid-form-search#filter2')
       .find('select')
-      .and('have.attr', 'name', 'last_name')
+      .should('have.attr', 'name', 'last_name')
       .children().and('have.length', 5);
     cy.get('solid-form-search#filter2')
       .find('option').eq(0)
@@ -30,5 +30,11 @@ describe('solid-form-search widget', function() {
       .find('option').eq(1)
       .should('have.attr', 'value', 'a')
       .contains('User');
+  });
+
+  it('solid-form-search + submin-button', () => {
+    cy.get('solid-form-search#filter3')
+      .find('input[type=submit]')
+      .should('have.attr', 'value', 'update result');
   });
 })

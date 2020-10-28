@@ -30,5 +30,17 @@
       fields='last_name'
       filtered-by="filter2"
     ></solid-display>
+
+    <solid-form-search
+      id="filter3"
+      submit-button="update result"
+      fields="last_name"
+      enum-last_name=" User = a , Hilton = b , DLC = c, Paris Member = d"
+    ></solid-form-search>
+    <solid-display
+      data-src="../data/list/users.jsonld"
+      fields='last_name'
+      filtered-by="filter3"
+    ></solid-display>
   </body>
 </html>
