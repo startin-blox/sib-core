@@ -6,29 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: solid-form + next</title>
     <script type="module" src="../../dist/index.js"></script>
-    <script type="module" src="https://unpkg.com/@startinblox/router@0.8"></script>
-    <link rel="stylesheet" href="../action.html" />
+    <script type="module" src="https://unpkg.com/@startinblox/router@0.10"></script>
   </head>
 
   <body>
-      <solid-router default-route="all" use-hash>
-        <solid-route name="all">view all</solid-route>
-        <solid-route name="view" use-id>view it</solid-route>
-      </solid-router>
-      <div id="all">
-        <solid-display
+    <solid-router default-route="all" use-hash>
+      <solid-route name="all">view all</solid-route>
+      <solid-route name="view" use-id>view it</solid-route>
+    </solid-router>
+
+    <div data-view="all">
+      <solid-display
         id="list"
         data-src="../data/list/skills.jsonld"
         fields="name"
         next="view"
-        ></solid-display>
-      </div>
-      <div id="view">
-        <solid-display
+      ></solid-display>
+    </div>
+    <div data-view="view">
+      <solid-display
         id="detail"
-          bind-resources
-          fields="@id"
-        ></solid-display>
-      </div>
+        bind-resources
+        fields="@id"
+      ></solid-display>
+    </div>
   </body>
 </html>
