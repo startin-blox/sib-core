@@ -37,6 +37,7 @@ test:
 publish:
   stage: release
   before_script:
+    - echo ${NPM_TOKEN}
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab
     - npm install
   script:
