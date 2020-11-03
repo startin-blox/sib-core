@@ -29,7 +29,7 @@ describe('multiple widgets', function() {
     // Remove line
     cy.get('solid-form-multiple#test1 > div[data-index="test0"]')
       .find('button')
-      .should('contain', 'x')
+      .should('contain', '×')
       .click();
 
     cy.get('solid-form-multiple#test1')
@@ -85,7 +85,7 @@ describe('multiple widgets', function() {
     // Remove line
     cy.get('solid-form-multiple#test2 > div[data-index="test0"]')
       .find('button')
-      .should('contain', 'x')
+      .should('contain', '×')
       .click();
 
     cy.get('solid-form-multiple#test2') // check children

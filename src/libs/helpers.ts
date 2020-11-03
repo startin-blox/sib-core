@@ -148,6 +148,7 @@ function fuzzyCompare(subject: string, search: string) {
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
     if(query === '') return true;
+    if(subject.toLowerCase().includes(query.toLowerCase())) return true;
     return fuzzyCompare(subject, query);
   },
   boolean(subject: boolean, query: boolean) {
@@ -166,6 +167,12 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
       (range[1] == null || range[1] === '' || subject <= range[1])
     );
   },
+  resource(subject, query) {
+    if (!query['@id']) return false;
+    const ret = subject['@id'] === query['@id'];
+    console.log('resource', ret, subject, query);
+    return ret;
+  }
 };
 
 export {

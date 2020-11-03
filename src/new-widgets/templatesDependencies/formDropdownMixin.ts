@@ -37,8 +37,8 @@ const FormDropdownMixin = {
     const options = Array.from(this.element.querySelectorAll('option')) as HTMLOptionElement[];
     return options.filter(el => el.selected).map(el => el.value ? JSON.parse(el.value) : null)
   },
-  get type () {
-    return this.multiple ? 'list' : 'string';
+  get type() {
+    return 'string';
   },
   get multiple() {
     return this.element.hasAttribute('multiple');

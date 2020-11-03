@@ -35,16 +35,26 @@ const AutocompletionMixin = {
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   initSlimSelect(select: Element) {
-    this.slimSelect = new SlimSelect({ select });
-    select.addEventListener('change', () => this.slimSelect.render());
-
+    const slimSelect = new SlimSelect({ select });
+    this.slimSelect = slimSelect;
+    select.addEventListener('change', () => {
+      this.slimSelect.render();
+      this.element.dispatchEvent(new Event('input'));
+    });
+    this.element.addEventListener('input', (e:Event) => {
+      if(e.target !== this.element) {
+        // avoid update search result when search in slimSelect suggestions
+        e.stopPropagation();
+      }
+    });
+    
     // when data changes, re-build slimSelect
     new MutationObserver(() => {
       this.slimSelect.destroy();
       this.slimSelect = new SlimSelect({
         select,
         searchPlaceholder: this.placeholder,
-        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue)
+        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
       });
     }).observe(select, {
       childList: true,

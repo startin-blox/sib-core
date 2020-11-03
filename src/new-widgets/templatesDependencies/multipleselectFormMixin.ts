@@ -48,8 +48,11 @@ const MultipleselectFormMixin = {
     this.planRender();
   },
   get type() {
-    return 'list'
-  }
+    return 'resource';
+  },
+  get multiple() {
+    return true;
+  },
 }
 
 export {

@@ -38,12 +38,14 @@ export const SolidFormSearch = {
       } catch {}
       value = {
         type: widget.component.type,
+        list: !!widget.component.multiple,
+        widget,
         value: value,
       }
-      setDeepProperty(values, widget.component.name.split('.'), value);
+      //console.log(widget.localName);
+      
+      setDeepProperty(values, widget.component.name.split('.'), value);      
     });
-    console.count(JSON.stringify(values));
-
     return values;
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
@@ -79,13 +81,15 @@ export const SolidFormSearch = {
   },
   
   async populate(): Promise<void> {
-    if(this.submitButton == null)
+    if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
-    else
+      this.element.addEventListener('change', () => this.inputChange());
+    } else {
       this.element.addEventListener('submit', (e: Event) => {
         e.preventDefault();
         this.inputChange();
       });
+    }
     const fields = await this.getFields();
     const template = html`
       <form>

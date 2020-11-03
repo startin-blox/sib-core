@@ -9,7 +9,7 @@ const FilterRangeFormMixin = {
     ]
   },
   get type() {
-    return 'range'
+    return 'range';
   },
 }
 

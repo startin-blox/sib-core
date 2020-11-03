@@ -18,7 +18,7 @@ const MultipleFormMixin = {
     },
     removeLabel: {
       type: String,
-      default: 'x',
+      default: '×',
       callback: function(value) {
         if (value !== this.listAttributes['removeLabel']) this.listAttributes['removeLabel'] = value;
         this.planRender();
@@ -83,8 +83,12 @@ const MultipleFormMixin = {
     return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
   },
   get type() {
-    return 'list'
+    return 'resource';
+  },
+  get multiple() {
+    return 'true';
   }
+
 }
 
 export {

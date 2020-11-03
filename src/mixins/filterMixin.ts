@@ -1,6 +1,6 @@
 import asyncReduce from 'iter-tools/es2015/async-reduce';
 import asyncEvery from 'iter-tools/es2015/async-every';
-import { compare, fuzzyCompare } from '../libs/helpers';
+import { compare } from '../libs/helpers';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -56,35 +56,43 @@ const FilterMixin = {
     await this.populate();
   },
   async matchValue(subject, query): Promise<boolean> {
+    query.list&&console.log(subject, query.value);
     if (subject == null) return false; // property does not exist on resource
-    console.log(subject, query);
-    return compare[query.type](subject, query.value);
-    if (query['@id']) query = query['@id']; // if filter has id (dropdown), use it to filter
 
     // Filter on a container
-    if (subject.isContainer && subject.isContainer()) {
+    console.log('q', query, subject);
+    
+    if (query.list) {
+      // if(query.value.length === 0) return true;
+      for(const v of query.value) {
+        const q = {
+          type: query.type,
+          value: v,
+        }
+        console.log(q);
+        const match = await this.matchValue(subject, q)
+        console.log('match', match);
+        
+        if(!match) return false;
+      }
+      return true;
+    }
+    if (subject.isContainer?.()) {
       return await asyncReduce(
         Promise.resolve(false),
         async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, query),
         subject['ldp:contains']
       );
     }
-
-    // Filter on a resource
-    if (subject['@id']) return subject['@id'] === query;
-
-    // Filter on a nested field
-    if (query.constructor === Object) {
+    if(!compare.hasOwnProperty(query.type)) {
+      //throw `there is no compare function for type "${query.type}"`;
+      // Filter on a nested field
       return await asyncEvery(
         async (index) => await this.matchValue(await subject[index], query[index]),
         Object.keys(query)
       );
     }
-
-    // Filter on a value
-    const value = subject.toString();
-    if(value.toLowerCase().indexOf(String(query).toLowerCase()) !== -1) return true;
-    return fuzzyCompare(value, query)
+    return compare[query.type](subject, query.value);
   },
   matchRangeValues(propertyValue, filterValues): boolean | undefined {
     const propertyValueString = propertyValue ? propertyValue.toString() : null;

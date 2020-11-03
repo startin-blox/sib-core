@@ -23,7 +23,10 @@ const FormMixin = {
     return this.getValueFromElement(this.dataHolder[0]);
   },
   get type() {
-    return 'string'
+    return 'string';
+  },
+  get multiple() {
+    return false;
   },
   get dataHolder(): Element[] | null {
     const dataHolders = Array.from((this.element as Element).querySelectorAll('[data-holder]'));

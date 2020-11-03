@@ -4,7 +4,7 @@ const FormCheckboxMixin = {
     return element.checked;
   },
   get type() {
-    return 'boolean'
+    return 'boolean';
   },
 }
 
