@@ -5,6 +5,7 @@ import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
@@ -12,11 +13,15 @@ export const SolidFormSearch = {
   attributes: {
     defaultWidget: {
       type: String,
-      default: 'solid-form-label-text'
+      default: 'solid-form-label-text',
     },
+    submitButton: {
+      type: String,
+      default: null,
+    }
   },
   initialState: {
-    error: ''
+    error: '',
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';
@@ -69,11 +74,18 @@ export const SolidFormSearch = {
   },
   
   async populate(): Promise<void> {
-    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
+    if(this.submitButton == null)
+      this.element.addEventListener('input', () => this.inputChange());
+    else
+      this.element.addEventListener('submit', (e: Event) => {
+        e.preventDefault();
+        this.inputChange();
+      });
     const fields = await this.getFields();
     const template = html`
       <form>
         ${fields.map((field: string) => this.createWidget(field))}
+        ${this.submitButton == null ? '' : html`<input type="submit" value="${ifDefined(this.submitButton || undefined)}"/>`}
       </form>
     `;
     render(template, this.element);

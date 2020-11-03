@@ -157,4 +157,27 @@ describe('paginate-by', function() {
     cy.get('@nav').find('> span [data-id=count]')
     .contains('2');
   });
+
+  /**
+  * Paginate and search
+  */
+  it('search and paginate', () => {
+    cy.get('#list-3').as('list');
+    cy.get('@list').find('button[data-id="next"]').click();
+
+    cy.get('@list').contains('user-1.jsonld').should('not.exist');
+    cy.get('@list').contains('user-2.jsonld').should('not.exist');
+    cy.get('@list').contains('user-3.jsonld');
+    cy.get('@list').contains('user-4.jsonld');
+
+    // search
+    cy.get('#username-form').find('input[name="username"]').type('admin');
+
+    cy.get('@list').contains('user-1.jsonld').should('exist');
+    cy.get('@list').contains('user-2.jsonld').should('not.exist');
+    cy.get('@list').contains('user-3.jsonld').should('not.exist');
+    cy.get('@list').contains('user-4.jsonld').should('not.exist');
+
+    cy.get('#list-3 > nav').should('be.hidden');
+  });
 })

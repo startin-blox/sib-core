@@ -23,7 +23,10 @@ export const SolidForm = {
     },
     submitButton: {
       type: String,
-      default: undefined
+      default: undefined,
+      callback: function (newValue: string, oldValue: string) {
+        if (newValue !== oldValue) this.populate();
+      },
     },
     partial: {
       type: Boolean,
@@ -197,7 +200,6 @@ export const SolidForm = {
         <form
           @submit=${this.onSubmit.bind(this)}
           @reset=${this.onReset.bind(this)}
-          confirmation-message=${ifDefined(this.confirmationMessage)}
         >
           ${fieldsTemplate}
           <input type="submit" value=${ifDefined(this.submitButton)}>

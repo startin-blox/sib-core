@@ -2,6 +2,8 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 
+import { html, render } from 'lit-html';
+
 export const SolidDelete = {
   name: 'solid-delete',
   use: [NextMixin],
@@ -12,7 +14,10 @@ export const SolidDelete = {
     },
     dataLabel: {
       type: String,
-      default: "Delete"
+      default: "Delete",
+      callback: function (newValue: string, oldValue: string) {
+        if (newValue !== oldValue) this.render();
+      },
     },
     extraContext: {
       type: String,
@@ -32,7 +37,8 @@ export const SolidDelete = {
 
     return { ...base_context, ...extraContext };
   },
-  async delete(): Promise<void> {
+  async delete(e: Event): Promise<void> {
+    e.stopPropagation();
     if (!this.dataSrc) return;
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
@@ -43,10 +49,10 @@ export const SolidDelete = {
     });
   },
   render(): void {
-    const button = document.createElement('button');
-    button.textContent = this.dataLabel;
-    button.onclick = this.delete.bind(this);
-    this.element.appendChild(button);
+    const button = html`
+      <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
+    `;
+    render(button, this.element);
   }
 };
 

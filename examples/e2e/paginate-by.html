@@ -23,5 +23,17 @@
       paginate-by="2"
       paginate-loop
     ></solid-display>
+
+    <solid-form-search
+      id="username-form"
+      fields="username"
+    ></solid-form-search>
+    <solid-display
+      id="list-3"
+      data-src="../data/list/users.jsonld"
+      fields="@id, username"
+      paginate-by="2"
+      filtered-by="username-form"
+    ></solid-display>
   </body>
 </html>

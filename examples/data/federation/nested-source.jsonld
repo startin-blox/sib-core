@@ -1,0 +1,35 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "federation": "circles",
+      "@id": "circles-server1.jsonld",
+      "@type": "ldp:Container",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "circles-server2.jsonld"
+    },
+    {
+      "@id": "circles-server3.jsonld"
+    },
+    {
+      "@id": "source2.jsonld"
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

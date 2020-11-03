@@ -82,15 +82,12 @@ export const SolidDisplay = {
     return 'solid-set-default';
   },
   // Here "even.target" points to the content of the widgets of the children of solid-display
-  dispatchSelect(event: Event): void {
-    if (event.target) {
-      const target = event.target as Element;
-      const resource = target.closest(this.childTag).component.resource;
-      this.element.dispatchEvent(
-        new CustomEvent('resourceSelect', { detail: { resource: resource } }),
-      );
-      this.goToNext(resource);
-    }
+  dispatchSelect(resourceId: string): void {
+    const resource = { "@id": resourceId };
+    this.element.dispatchEvent(
+      new CustomEvent('resourceSelect', { detail: { resource: resource } }),
+    );
+    this.goToNext(resource);
   },
 
   /**
@@ -102,7 +99,7 @@ export const SolidDisplay = {
     let template = html`
       <solid-display
         data-src=${resourceId}
-        @click=${this.dispatchSelect.bind(this)}
+        @click=${() => this.dispatchSelect(resourceId)}
         fields=${ifDefined(this.fields)}
         ...=${spread(attributes)}
       ></solid-display>

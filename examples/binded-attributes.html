@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:binded attributes</title>
+    <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="https://unpkg.com/@startinblox/router@0.10"></script>
+    <script type="module" src="https://unpkg.com/@startinblox/oidc@0.10"></script>
+    <link rel="stylesheet" href="styles.css" />
+
+    <sib-auth>
+      <sib-auth-provider
+        data-authority="https://api.community.startinblox.com"
+      ></sib-auth-provider>
+    </sib-auth>
+  </head>
+
+  <body>
+    <solid-router default-route="home" use-hash>
+      <solid-route name="home">Events</solid-route>
+      <solid-route
+        hidden
+        use-id
+        name="event-infos"
+      ></solid-route>
+    </solid-router>
+
+    <div data-view="home" hidden>
+      <h1>Events</h1>
+      <solid-display
+        data-src="./data/list/events.jsonld"
+        fields="name, user"
+        value-user="store://user.username"
+        next="event-infos"
+      ></solid-display>
+    </div>
+    <div data-view="event-infos" hidden>
+      <solid-display
+        bind-resources
+        fields="name, custom-field"
+        value-custom-field="store://resource.date"
+      ></solid-display>
+    </div>
+  </body>
+</html>
