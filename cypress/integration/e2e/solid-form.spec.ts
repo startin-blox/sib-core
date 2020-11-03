@@ -47,6 +47,7 @@ describe('solid-form', function() {
     .should('have.attr', 'class', 'test-class')
     .should('have.attr', 'required')
   });
+
   it('richtext html rendering', () => {
     cy.get('#form-4 solid-form-richtext')
       .children().should('have.have.length', 2)
@@ -85,6 +86,19 @@ describe('solid-form', function() {
       .click()
       .then(() => {
         expect(stub.getCall(0)).to.be.calledWith('Please confirm your choice')
+      });
+  });
+
+  it('re-render when label on submit-button change', () => {
+    cy.get('solid-form#form-7')
+      .find('input[type=submit]')
+      .should('have.value', 'Register');
+    cy.get('solid-form#form-7')
+      .then(el => {
+        el.attr('submit-button', 'Register the user');
+        cy.get('solid-form#form-7')
+        .find('input[type=submit]')
+        .should('have.value', 'Register the user');
       })
   });
 })

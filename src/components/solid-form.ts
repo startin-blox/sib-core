@@ -23,7 +23,10 @@ export const SolidForm = {
     },
     submitButton: {
       type: String,
-      default: undefined
+      default: undefined,
+      callback: function (newValue: string, oldValue: string) {
+        if (newValue !== oldValue) this.populate();
+      },
     },
     partial: {
       type: Boolean,

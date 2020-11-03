@@ -4,14 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-display</title>
+    <title>SIB test: federation</title>
     <script type="module" src="../../dist/index.js"></script>
   </head>
 
   <body>
     <solid-display
-      data-src="../data/federation/source.jsonld"
+      id="federation-1"
+      data-src="../data/federation/source1.jsonld"
       fields="@id, name"
+    ></solid-display>
+
+    <solid-display
+      id="federation-2"
+      data-src='../data/federation/nested-source.jsonld'
+      fields='@id, name'
     ></solid-display>
   </body>
 </html>

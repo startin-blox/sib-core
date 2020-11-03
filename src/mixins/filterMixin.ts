@@ -6,7 +6,7 @@ const FilterMixin = {
   name: 'filter-mixin',
   use: [],
   initialState: {
-    searchCount: [],
+    searchCount: null,
   },
   attributes: {
     searchFields: {
@@ -17,21 +17,13 @@ const FilterMixin = {
       type: String,
       default: null,
       callback(newValue: string) {
-        if(this.searchForm && this.searchFormCallback) {
-          this.searchForm.removeEventListener('formChange', this.searchFormCallback);
+        // if we change search form, re-populate
+        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+          this.searchForm = null;
+          this.populate();
         }
-        this.setSearchForm(document.getElementById(newValue));
-        this.filterList();
-        if (!this.searchForm) throw `#${newValue} is not in DOM`;
       }
     }
-  },
-  async setSearchForm (elm: Element, context: string) {
-    this.searchForm = elm;
-    this.searchFormCallback = () => {
-      this.filterList(context);
-    };
-    this.searchForm.addEventListener('formChange', this.searchFormCallback);
   },
   created() {
     this.searchCount = new Map();
@@ -48,15 +40,14 @@ const FilterMixin = {
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
-      const searchCount: Map<string, number> = this.searchCount;
-      if (!searchCount.has(context)) searchCount.set(context, 1);
+      if (!this.searchCount.has(context)) this.searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
       const filteredResources = await Promise.all(resources.map(this.matchFilters.bind(this)));
       resources =	resources.filter((_v, index) => filteredResources[index]);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount[context] || ''));
+    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
   },
   async filterList(context: string): Promise<void> {
     this.searchCount.set(context, this.searchCount.get(context) + 1);
@@ -132,11 +123,18 @@ const FilterMixin = {
     );
   },
   async createFilter(context: string): Promise<void> {
-    const searchForm = document.createElement('solid-form')
-    searchForm.toggleAttribute('naked', true);
-    this.setSearchForm(searchForm, context);
-    this.searchForm.addEventListener('formChange', this.searchFormCallback);
+    const filteredBy = this.filteredBy;
+    if (filteredBy != null) {
+      this.searchForm = document.getElementById(filteredBy)
+      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
+    } else {
+      this.searchForm = document.createElement(`solid-form`);
+    }
+    this.searchForm.addEventListener('formChange', () => {
+      this.filterList(context);
+    });
     this.searchForm.toggleAttribute('naked', true);
+    if (filteredBy) return;
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)

@@ -1,0 +1,38 @@
+{
+  "@id": "circles-server4.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "circles-6.jsonld",
+      "is_backlink": false,
+      "allow_create_backlink": true,
+      "name": "Circle from server 4",
+      "description": "",
+      "creationDate": "2020-05-30",
+      "status": "Public",
+      "jabberID": "3oa5aaaazee6@conference.test1.startinblox.com",
+      "jabberRoom": true,
+      "@type": "hd:circle",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "add"
+      }
+    },
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
