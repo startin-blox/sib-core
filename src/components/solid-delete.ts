@@ -23,6 +23,10 @@ export const SolidDelete = {
       type: String,
       default: null
     },
+    confirmationMessage: {
+      type: String,
+      default: null
+    },
   },
   created(): void {
     this.render();
@@ -40,13 +44,15 @@ export const SolidDelete = {
   async delete(e: Event): Promise<void> {
     e.stopPropagation();
     if (!this.dataSrc) return;
-    return store.delete(this.dataSrc, this.context).then(response => {
-      if (!response.ok) return;
-      this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
-      this.element.dispatchEvent(new CustomEvent('save', eventData));
-      this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
-    });
+    if ((!this.confirmationMessage) || (this.confirmationMessage && confirm(this.confirmationMessage))) {
+      return store.delete(this.dataSrc, this.context).then(response => {
+        if (!response.ok) return;
+        this.goToNext(null);
+        const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+        this.element.dispatchEvent(new CustomEvent('save', eventData));
+        this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
+      });
+    };
   },
   render(): void {
     const button = html`
