@@ -26,10 +26,13 @@ const ListMixin = {
 
     // Not a container but a single resource
     if (!this.resource.isContainer()) {
+      this.element.removeAttribute("solid-container");
+      this.element.setAttribute("solid-resource", "");
       this.appendSingleElt(div);
       return;
     }
-
+    this.element.removeAttribute("solid-resource");
+    this.element.setAttribute("solid-container", "")
     const listPostProcessors = [...this.listPostProcessors];
     listPostProcessors.push(this.renderDOM.bind(this));
     listPostProcessors.push(this.handleEmptyWidget.bind(this));

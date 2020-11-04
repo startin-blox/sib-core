@@ -63,31 +63,58 @@
       id="display-6"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-7"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-ocean
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-8"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-city
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-9"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-place
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-10"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-place
       required-city
+    ></solid-display>
+
+    <h3>list mixin</h3>
+    <h4>container</h4>
+    <solid-display
+      id="display-11"
+      data-src="../data/list/users.jsonld"
+      fields="username"
+    ></solid-display>
+    <h4>resource</h4>
+    <solid-display
+      id="display-12"
+      data-src="../data/list/user-2.jsonld"
+      fields="username"
+    ></solid-display>
+    <h4>empty-value</h4>
+    <solid-widget name="no-skill">
+      <template>
+        ${value}
+      </template>
+    </solid-widget>
+    <solid-display
+      id="display-13"
+      data-src="../data/list/user-3-skills.jsonld"
+      fields="name"
+      empty-value="No skill yet"
+      empty-widget="no-skill"
     ></solid-display>
 
     <style>
