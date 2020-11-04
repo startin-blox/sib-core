@@ -261,7 +261,6 @@ const WidgetMixin = {
       }
       this.getValue(field).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
-      if (widgetMeta.type === WidgetType.USER) this.defineAttribute(widget, 'context', this.context, widgetMeta.type);
       for (let name of Object.keys(attributes)) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
@@ -282,11 +281,7 @@ const WidgetMixin = {
     return widget;
   },
   defineAttribute(widget: HTMLElement, attribute: string, value: any, widgetType: WidgetType) {
-    if (widgetType === WidgetType.USER && attribute !== "class") { // specific case, for class attr, use SetAttribute
-      widget[attribute] = value; // for solid-widget, set property "value"
-    } else {
       widget.setAttribute(attribute, value); // else, set attribute "value"
-    }
   },
   /**
    * Create a set and add fields to it
