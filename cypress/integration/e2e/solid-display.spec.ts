@@ -70,7 +70,6 @@ describe('solid-display', function() {
     cy.get('#display-12 > div').children().should('have.length',1);
   });
   it("list-mixin : empty-value", () => {
-    cy.get('#display-13').should('have.attr', 'empty-value', 'No skill yet');
     cy.get('#display-13').find('no-skill');
     cy.get('#display-13 > div > no-skill').contains('No skill yet')
   });

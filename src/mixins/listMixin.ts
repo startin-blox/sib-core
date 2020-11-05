@@ -20,19 +20,29 @@ const ListMixin = {
   appendSingleElt(parent: HTMLElement): void {
     this.appendChildElt(this.resource['@id'], parent);
   },
+  setElementAttribute(attr: 'resource'|'container') {
+    const containerAttribute = "solid-container";
+    const resourceAttribute = "solid-resource";
+    if(attr === "resource") {
+      this.element.removeAttribute(containerAttribute);
+      this.element.setAttribute(resourceAttribute, "");
+    } else {
+      this.element.removeAttribute(resourceAttribute);
+      this.element.setAttribute(containerAttribute, "")
+    }
+  },
   async populate(): Promise<void> {
     const div = this.div;
     if (!this.resource) return;
 
     // Not a container but a single resource
     if (!this.resource.isContainer()) {
-      this.element.removeAttribute("solid-container");
-      this.element.setAttribute("solid-resource", "");
+      this.setElementAttribute("resource");
       this.appendSingleElt(div);
       return;
     }
-    this.element.removeAttribute("solid-resource");
-    this.element.setAttribute("solid-container", "")
+    
+    this.setElementAttribute("container");
     const listPostProcessors = [...this.listPostProcessors];
     listPostProcessors.push(this.renderDOM.bind(this));
     listPostProcessors.push(this.handleEmptyWidget.bind(this));
