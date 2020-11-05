@@ -234,7 +234,10 @@ const WidgetMixin = {
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
-    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.resource['@id'];
+    if (this.getAction(escapedField) && this.resource) {
+      if (this.element.getAttribute('src-' + escapedField) === null) attrs['src'] = this.resource['@id'];
+      else attrs['src'] = this.element.getAttribute('src-' + escapedField);
+    } ;
     if (this.editable(escapedField) && this.resource) attrs['value-id'] = this.resource['@id'];
 
     return attrs;

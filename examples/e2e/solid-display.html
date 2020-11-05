@@ -11,7 +11,6 @@
   <body>
     <h2>Solid Display</h2>
 
-
     <h3>diplay-1</h3>
     <solid-display
       id="display-1"
@@ -63,26 +62,26 @@
       id="display-6"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-7"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-ocean
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-8"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-city
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-9"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
       required-place
-      ></solid-display>
-      <solid-display
+    ></solid-display>
+    <solid-display
       id="display-10"
       data-src="../data/list/events.jsonld"
       fields="name, city, place"
@@ -90,9 +89,24 @@
       required-city
     ></solid-display>
 
+    <h3>src action</h3>
+    <solid-display
+      id="display-14"
+      data-src="../data/list/user-1.jsonld"
+      fields="name, profile-edit"
+      action-profile-edit="profile-edit-route"
+    ></solid-display>
+    <solid-display
+      id="display-15"
+      data-src="../data/list/user-1.jsonld"
+      fields="name, profile-edit"
+      action-profile-edit="profile-edit-route"
+      src-profile-edit="other-resource"
+    ></solid-display>
+
     <style>
       .presentationEvent {
-        color:crimson;
+        color: crimson;
       }
       .nameEvent {
         font-weight: bolder;
@@ -102,26 +116,25 @@
         text-decoration: underline dotted purple;
       }
       .completeEmail {
-        text-shadow: 2px 5px #558ABB;
+        text-shadow: 2px 5px #558abb;
         margin: 0.5em;
       }
-      
+
       #display-6 > div {
-        border:darkcyan 1px solid;
+        border: darkcyan 1px solid;
       }
       #display-7 > div {
-        border:darkgreen 1px solid;
+        border: darkgreen 1px solid;
       }
       #display-8 > div {
-        border:darkmagenta 1px solid;
+        border: darkmagenta 1px solid;
       }
       #display-9 > div {
-        border:darkorange 1px solid;
+        border: darkorange 1px solid;
       }
       #display-10 > div {
-        border:darkslateblue 1px solid;
+        border: darkslateblue 1px solid;
       }
-
     </style>
   </body>
 </html>

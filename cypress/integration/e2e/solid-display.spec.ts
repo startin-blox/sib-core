@@ -62,4 +62,15 @@ describe('solid-display', function() {
     cy.get('#display-10 > div > solid-display')
     .should('have.attr', 'data-src', 'event-3.jsonld');;
   });
+  it('define src attribute of solid-link by action', () => {
+    cy.get('#display-14 > div > solid-action')
+      .should('have.attr', 'src', 'user-1.jsonld');
+    cy.get('#display-14 > div > solid-action > solid-link')
+      .should('have.attr', 'data-src', 'user-1.jsonld');
+    
+    cy.get('#display-15 > div > solid-action')
+      .should('have.attr', 'src', 'other-resource');
+    cy.get('#display-15 > div > solid-action > solid-link')
+      .should('have.attr', 'data-src', 'other-resource');
+  });
 })

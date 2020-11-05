@@ -28,6 +28,14 @@
         label-click="click !"
         action-click="circle-infos"
       ></solid-display>
+
+      <h2>Attribute src defined by action</h2>
+      <solid-display
+        data-src='data/list/user-1.jsonld'
+        fields='name, profile-edit'
+        action-profile-edit='profile-edit-route'
+        src-profile-edit="store://resource.profile.@id"
+      ></solid-display>
     </div>
     <div data-view="circle-infos" hidden>
       <solid-display
