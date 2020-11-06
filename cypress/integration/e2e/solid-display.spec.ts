@@ -62,6 +62,7 @@ describe('solid-display', function() {
     cy.get('#display-10 > div > solid-display')
     .should('have.attr', 'data-src', 'event-3.jsonld');;
   });
+
   it('list-mixin : solid-container & solid-resource attributes', () => {
     cy.get('#display-11').should('have.attr', 'solid-container');
     cy.get('#display-11 > div').children().should('have.length', 4);
@@ -72,5 +73,16 @@ describe('solid-display', function() {
   it("list-mixin : empty-value", () => {
     cy.get('#display-13').find('no-skill');
     cy.get('#display-13 > div > no-skill').contains('No skill yet')
+  });
+  it('define src attribute of solid-link by action', () => {
+    cy.get('#display-14 > div > solid-action')
+      .should('have.attr', 'src', 'user-1.jsonld');
+    cy.get('#display-14 > div > solid-action > solid-link')
+      .should('have.attr', 'data-src', 'user-1.jsonld');
+
+    cy.get('#display-15 > div > solid-action')
+      .should('have.attr', 'src', 'other-resource');
+    cy.get('#display-15 > div > solid-action > solid-link')
+      .should('have.attr', 'data-src', 'other-resource');
   });
 })
