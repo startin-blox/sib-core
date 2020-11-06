@@ -23,8 +23,9 @@ async function evalTemplateString(str: string, variables: {[key:string]:any} = {
   }
 }
 
-function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
-  return stylesheets.map(url => {
+function importCSS(...stylesheets: string[]) {
+  const linksElements: HTMLLinkElement[] = []; 
+  for(let url of stylesheets) {
     url = relativeSource(url);
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
@@ -34,8 +35,9 @@ function importCSS(...stylesheets: string[]): HTMLLinkElement[] {
     link.rel = 'stylesheet';
     link.href = url;
     document.head.appendChild(link);
-    return link;
-  });
+    linksElements.push(link);
+  };
+  return linksElements;
 }
 
 function importJS(...plugins: string[]): HTMLScriptElement[] {
@@ -56,7 +58,7 @@ function relativeSource(source: string) {
   if (!source.match(/^\..?\//)) return new URL(source, document.baseURI).href;
   const e = new Error();
   if(!e.stack) return source;
-  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[3];
+  const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
   let line = f2.match(/[a-z]+:.*$/);
   if (!line) return source;
   const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/,'');
