@@ -1,5 +1,4 @@
 import asyncReduce from 'iter-tools/es2015/async-reduce';
-import asyncEvery from 'iter-tools/es2015/async-every';
 import { compare } from '../libs/helpers';
 
 const FilterMixin = {
@@ -82,14 +81,6 @@ const FilterMixin = {
         Promise.resolve(false),
         async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, query),
         subject['ldp:contains']
-      );
-    }
-    if(!compare.hasOwnProperty(query.type)) {
-      //throw `there is no compare function for type "${query.type}"`;
-      // Filter on a nested field
-      return await asyncEvery(
-        async (index) => await this.matchValue(await subject[index], query[index]),
-        Object.keys(query)
       );
     }
     return compare[query.type](subject, query.value);

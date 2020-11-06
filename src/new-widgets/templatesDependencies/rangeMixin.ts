@@ -79,6 +79,9 @@ const RangeMixin = {
   empty() {
     this.listAttributes['range'] = [];
     this.planRender();
+  },
+  get type() {
+    return  this.enum !== '' ? 'string' : 'resource';
   }
 }
 

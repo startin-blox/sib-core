@@ -1,6 +1,5 @@
 import { Sib } from '../libs/Sib';
 import { WidgetMixin } from '../mixins/widgetMixin';
-import { setDeepProperty } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
@@ -42,9 +41,7 @@ export const SolidFormSearch = {
         widget,
         value: value,
       }
-      //console.log(widget.localName);
-      
-      setDeepProperty(values, widget.component.name.split('.'), value);      
+      values[widget.component.name] = value;
     });
     return values;
   },
