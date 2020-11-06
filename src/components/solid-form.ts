@@ -144,22 +144,21 @@ export const SolidForm = {
   empty(): void {
   },
   showError(e: object) {
-    this.error = html`
-      <div data-id="error">
-        <p>A validation error occured.</p>
-        <ul>
-          ${Object.keys(e).filter(field => !field.startsWith('@')).map(field => html`
-            <li>${field}: ${e[field]}</li>
-          `)}
-        </ul>
-      </div>
+    const errorTemplate = html`
+      <p>A validation error occured.</p>
+      <ul>
+        ${Object.keys(e).filter(field => !field.startsWith('@')).map(field => html`
+          <li>${field}: ${e[field]}</li>
+        `)}
+      </ul>
     `;
     // If field exists pick its label (unsure if that's easily possible)
     // In this.getFields() map with each field and get label
     // If it does not just add a notice as we do that it's missing that field
 
     // Validation message in english ?
-    this.populate();
+    const parentElement = this.element.querySelector('[data-id=error]');
+    if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
     const error = this.element.querySelector('[data-id=form-error]');
@@ -191,7 +190,7 @@ export const SolidForm = {
       ${fields.map((field: string) => this.createWidget(field))}
     `;
     const template = html`
-      ${this.error}
+      <div data-id="error"></div>
       ${!this.isNaked ? html`
         <form
           @submit=${this.onSubmit.bind(this)}
