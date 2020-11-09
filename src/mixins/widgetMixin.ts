@@ -280,8 +280,8 @@ const WidgetMixin = {
     this.widgets.push(widget);
     return widget;
   },
-  defineAttribute(widget: HTMLElement, attribute: string, value: any, widgetType: WidgetType) {
-      widget.setAttribute(attribute, value); // else, set attribute "value"
+  defineAttribute(widget: HTMLElement, attribute: string, value: any) {
+    widget.setAttribute(attribute, value); // else, set attribute "value"
   },
   /**
    * Create a set and add fields to it

@@ -40,11 +40,7 @@ const GrouperMixin = {
   },
   async renderGroup(groupName: string, div: HTMLElement) {
     const groupElt = document.createElement(this.groupWidget);
-    if (this.groupWidget.startsWith('solid-')) { // core widget
-      groupElt.setAttribute('value', groupName);
-    } else { // custom widget
-      groupElt.value = groupName;
-    }
+    groupElt.setAttribute('value', groupName);
     if (this.groupClass) groupElt.setAttribute('class', this.groupClass);
     div.appendChild(groupElt);
 
