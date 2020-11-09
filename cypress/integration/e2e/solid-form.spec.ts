@@ -101,4 +101,34 @@ describe('solid-form', function() {
         .should('have.value', 'Register the user');
       })
   });
+
+  it('show errors without resetting', () => {
+    cy.server();
+    cy.route({
+      method: 'POST',
+      url: '**/events.jsonld',
+      status: 400,
+      response: {
+        "name": [
+          "Ensure this field has no more than 10 characters."
+        ],
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+      },
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+
+    cy.get('solid-form#form-5')
+      .find('input[name=name]')
+      .type('Mon très long titre');
+    cy.get('solid-form#form-5')
+      .find('input[type=submit]')
+      .click();
+    cy.get('solid-form#form-5')
+      .find('[data-id="error"]')
+      .should('contain', 'A validation error occured')
+      .and('contain', 'Ensure this field has no more than 10 characters.');
+    cy.get('solid-form#form-5')
+      .find('input[name=name]')
+      .should('have.value', 'Mon très long titre')
+  });
 })
