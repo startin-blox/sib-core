@@ -117,17 +117,17 @@ describe('solid-form', function() {
       onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
     });
 
-    cy.get('solid-form#form-5')
+    cy.get('solid-form#form-8')
       .find('input[name=name]')
       .type('Mon très long titre');
-    cy.get('solid-form#form-5')
+    cy.get('solid-form#form-8')
       .find('input[type=submit]')
       .click();
-    cy.get('solid-form#form-5')
+    cy.get('solid-form#form-8')
       .find('[data-id="error"]')
       .should('contain', 'A validation error occured')
       .and('contain', 'Ensure this field has no more than 10 characters.');
-    cy.get('solid-form#form-5')
+    cy.get('solid-form#form-8')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
   });
