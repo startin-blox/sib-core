@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-widget</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h2>Display widgets</h2>
+    <solid-display
+      id="display-1"
+      data-src="../data/list/user-1.jsonld"
+      fields="email"
+      widget-email="custom-widget-1"
+      label-email="email"
+    ></solid-display>
+    <solid-widget name="custom-widget-1">
+      <template>
+        <label>${label}</label>
+        <span>${value}</span>
+      </template>
+    </solid-widget>
+
+    <solid-display
+      id="display-2"
+      data-src="../data/list/user-1.jsonld"
+      fields="profile.city"
+      widget-profile.city="custom-widget-2"
+    ></solid-display>
+    <solid-widget name="custom-widget-2">
+      <template>
+        <span>${value}</span>
+      </template>
+    </solid-widget>
+
+    <solid-display
+      id="display-3"
+      data-src="../data/list/user-1.jsonld"
+      fields="profile"
+      widget-profile="custom-widget-3"
+    ></solid-display>
+    <solid-widget name="custom-widget-3">
+      <template>
+        <span>${await value.city}</span>
+      </template>
+    </solid-widget>
+
+    <solid-display
+      id="display-4"
+      data-src="../data/list/user-1.jsonld"
+      fields="profile"
+      widget-profile="custom-widget-4"
+    ></solid-display>
+    <solid-widget name="custom-widget-4">
+      <template>
+        <solid-display
+          data-src="${value}"
+          fields="city"
+        ></solid-display>
+      </template>
+    </solid-widget>
+
+    <solid-display
+      id="display-5"
+      data-src="../data/list/user-1.jsonld"
+      fields="profile"
+      action-profile="next-view"
+      widget-profile="custom-widget-5"
+    ></solid-display>
+    <solid-widget name="custom-widget-5">
+      <template>
+        <span name="src">${src}</span>
+        <span name="value">${value}</span>
+      </template>
+    </solid-widget>
+
+
+    <h2>Form widgets</h2>
+
+    <solid-form
+      id="form-1"
+      data-src="../data/list/users.jsonld"
+      fields="email"
+      widget-email="custom-form-widget-1"
+    ></solid-form>
+    <solid-widget name="custom-form-widget-1">
+      <template>
+        <input type="text" data-holder />
+      </template>
+    </solid-widget>
+
+    <solid-form
+      id="form-2"
+      data-src="../data/list/user-1.jsonld"
+      fields="email"
+      widget-email="custom-form-widget-2"
+    ></solid-form>
+    <solid-widget name="custom-form-widget-2">
+      <template>
+        <input type="text" data-holder value="${value}" />
+      </template>
+    </solid-widget>
+
+    <solid-form
+      id="form-3"
+      data-src="../data/nested-forms/customer-invoice-1.jsonld"
+      fields="batches"
+      widget-batches="custom-form-widget-3"
+      multiple-batches
+    ></solid-form>
+    <solid-widget name="custom-form-widget-3">
+      <template>
+        <solid-form
+          data-src="${value}"
+          data-holder
+          naked
+          fields="title"
+        ></solid-form>
+      </template>
+    </solid-widget>
+  </body>
+</html>

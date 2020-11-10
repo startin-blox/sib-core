@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:action</title>
+    <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="https://unpkg.com/@startinblox/router"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <solid-form
+      id="form"
+      data-src="data/nested-forms/customer-invoice-1.jsonld"
+      fields="batches"
+      widget-batches="widget-form-batches"
+      multiple-batches
+      naked
+    ></solid-form>
+
+    <solid-widget name="widget-form-batches">
+      <template>
+        <solid-form
+          data-src="${value}"
+          data-holder
+          naked
+          fields="title"
+        ></solid-form>
+      </template>
+    </solid-widget>
+
+    <button id="data-button">Get Data</button>
+
+
+    <pre id="data">
+
+    </pre>
+    <script>
+      document.getElementById('data-button').onclick = () => {
+        document.getElementById('form').component.getFormValue().then(res => {
+          document.getElementById('data').innerText = JSON.stringify(res);
+        })
+      }
+    </script>
+  </body>
+</html>
