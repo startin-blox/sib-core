@@ -32,4 +32,8 @@ describe('solid-display', function() {
       .and('have.class', 'custom-class')
       .and('have.text', 'Coliving');
   });
+  it('handle default-[field] attribute', () => {
+    cy.get('#default-field > div solid-display-value')
+      .should('have.text', 'not defined');
+  });
 })
