@@ -67,6 +67,21 @@
     </details>
 
     <details>
+      <summary>Enum:</summary>
+      <solid-form-search
+        id="filter-enum"
+        fields="username"
+        enum-username="paris, paul, pierre"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username"
+        filtered-by="filter-enum"
+        widget-skills="solid-skill"
+      ></solid-display>
+    </details>
+
+    <details>
       <summary>multipleselect:</summary>
       <solid-display
         data-src="data/list/users.jsonld"
