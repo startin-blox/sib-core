@@ -170,7 +170,6 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   resource(subject, query) {
     if (!query['@id']) return false;
     const ret = subject['@id'] === query['@id'];
-    console.log('resource', ret, subject, query);
     return ret;
   }
 };

@@ -38,7 +38,6 @@ export const SolidFormSearch = {
       value = {
         type: widget.component.type,
         list: !!widget.component.multiple,
-        widget,
         value: value,
       }
       values[widget.component.name] = value;

@@ -55,32 +55,24 @@ const FilterMixin = {
     await this.populate();
   },
   async matchValue(subject, query): Promise<boolean> {
-    query.list&&console.log(subject, query.value);
     if (subject == null) return false; // property does not exist on resource
-
     // Filter on a container
-    console.log('q', query, subject);
-    
     if (query.list) {
-      // if(query.value.length === 0) return true;
+      if(query.value.length === 0) return true;
       for(const v of query.value) {
         const q = {
           type: query.type,
           value: v,
         }
-        console.log(q);
-        const match = await this.matchValue(subject, q)
-        console.log('match', match);
-        
-        if(!match) return false;
+        if(await this.matchValue(subject, q)) return true;
       }
-      return true;
+      return false;
     }
     if (subject.isContainer?.()) {
       return await asyncReduce(
         Promise.resolve(false),
-        async (initial, value:any) => await initial || await this.matchValue({ "@id": value['@id'] }, query),
-        subject['ldp:contains']
+        async (initial, value:any) => await initial || await this.matchValue(value, query),
+        subject['ldp:contains'],
       );
     }
     return compare[query.type](subject, query.value);

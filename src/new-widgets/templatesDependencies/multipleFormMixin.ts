@@ -86,7 +86,7 @@ const MultipleFormMixin = {
     return 'resource';
   },
   get multiple() {
-    return 'true';
+    return true;
   }
 
 }
