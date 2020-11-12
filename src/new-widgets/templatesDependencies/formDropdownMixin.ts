@@ -38,7 +38,7 @@ const FormDropdownMixin = {
     return options.filter(el => el.selected).map(el => el.value ? JSON.parse(el.value) : null)
   },
   get type() {
-    return 'resource';
+    return  this.enum === ''? 'resource' : 'string';
   },
   get multiple() {
     return this.element.hasAttribute('multiple');

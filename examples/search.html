@@ -67,7 +67,20 @@
     </details>
 
     <details>
-      <summary>solid-form-multipleselect-autocompletion:</summary>
+      <summary>multipleselect:</summary>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        widget-skills="solid-skill"
+        search-fields="skills"
+        search-range-skills="data/list/skills.jsonld"
+        search-widget-skills="solid-form-multipleselect"
+      ></solid-display>
+    </details>
+
+    <details>
+      <summary>multipleselect autocompletion:</summary>
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, skills"

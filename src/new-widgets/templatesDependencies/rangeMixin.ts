@@ -81,7 +81,7 @@ const RangeMixin = {
     this.planRender();
   },
   get type() {
-    return  this.enum !== '' ? 'string' : 'resource';
+    return  this.enum === ''? 'resource' : 'string';
   }
 }
 
