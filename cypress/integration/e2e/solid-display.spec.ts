@@ -88,5 +88,9 @@ describe('solid-display', function() {
       .should('have.attr', 'src', 'other-resource');
     cy.get('#display-15 > div > solid-action > solid-link')
       .should('have.attr', 'data-src', 'other-resource');
+    });
+  it('handle default-[field] attribute', () => {
+    cy.get('#default-field > div solid-display-value')
+      .should('have.text', 'not defined');
   });
 })
