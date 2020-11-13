@@ -77,15 +77,12 @@ const FilterMixin = {
     }
     return compare[query.type](subject, query.value);
   },
-  async matchFilter(resource: object, filter: string, value: any): Promise<boolean> {
-    if (!this.isSet(filter)) {
-      if(value && filter === '@id')
-        return await resource[filter] === value;
-      return this.matchValue(await resource[filter], value);
-    }
+  async matchFilter(resource: object, filter: string, query: any): Promise<boolean> {
+    if (!this.isSet(filter))
+      return this.matchValue(await resource[filter], query);
     // for sets, return true if it matches at least one of the fields
     return this.getSet(filter).reduce(
-      async (initial, field) => await initial || await this.matchFilter(resource, field, value),
+      async (initial, field) => await initial || await this.matchFilter(resource, field, query),
       Promise.resolve(false),
     );
   },
