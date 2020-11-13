@@ -101,7 +101,7 @@ const ListMixin = {
   ) {
     if (resources.length === 0 && this.emptyWidget) {
       const emptyWidgetElement = document.createElement(this.emptyWidget);
-      emptyWidgetElement.value = this.emptyValue;
+      emptyWidgetElement.setAttribute('value', this.emptyValue);
       div.appendChild(emptyWidgetElement);
     }
 
