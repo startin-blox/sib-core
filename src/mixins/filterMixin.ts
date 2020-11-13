@@ -77,21 +77,6 @@ const FilterMixin = {
     }
     return compare[query.type](subject, query.value);
   },
-  matchRangeValues(propertyValue, filterValues): boolean | undefined {
-    const propertyValueString = propertyValue ? propertyValue.toString() : null;
-    if (!propertyValueString) return false;
-
-    // Cast to number if possible
-    const propertyValueNumber = Number(propertyValueString);
-    propertyValue = !isNaN(propertyValueNumber) ? propertyValueNumber : propertyValueString;
-
-    if (typeof propertyValue == "string" || typeof propertyValue == "number") {
-      return (filterValues[0] ? propertyValue >= filterValues[0] : true) &&
-        (filterValues[1] ? propertyValue <= filterValues[1] : true)
-    }
-    console.warn(`Impossible to filter a ${typeof propertyValue} value with a range widget`)
-    return;
-  },
   async matchFilter(resource: object, filter: string, value: any): Promise<boolean> {
     if (!this.isSet(filter)) {
       if(value && filter === '@id')
