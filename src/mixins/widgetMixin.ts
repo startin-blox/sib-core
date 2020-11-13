@@ -267,7 +267,11 @@ const WidgetMixin = {
       this.getValue(field).then((value: any) => {
         // setAttribute set a string. Make sure null values are empty
         if (value === null || value === undefined) value = '';
-        this.defineAttribute(widget, 'value', value, widgetMeta.type);
+        if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
+          this.defineAttribute(widget, 'data-src', value['@id'], widgetMeta.type);
+        } else { // otherwise, set value attribute
+          this.defineAttribute(widget, 'value', value, widgetMeta.type);
+        }
 
         // Subscribe widgets if they show a resource
         if (value && value['@id']) {

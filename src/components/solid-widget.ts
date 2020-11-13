@@ -1,4 +1,5 @@
 import { Sib } from '../libs/Sib';
+import { StoreMixin } from '../mixins/storeMixin';
 import { BaseWidgetMixin } from '../new-widgets/baseWidgetMixin';
 import { FormMixin } from '../new-widgets/templatesDependencies/formMixin';
 import { ActionMixin } from '../new-widgets/attributeMixins/actionMixin';
@@ -27,6 +28,7 @@ export const SolidWidget = {
       name: this.name,
       use: [
         BaseWidgetMixin,
+        StoreMixin,
         FormMixin,
         ActionMixin
       ],
@@ -45,7 +47,7 @@ export const SolidWidget = {
       evalTemplate(template: string) {
         const tpl =  evalTemplateString(template, {
           name: this.name,
-          value: this.value || '',
+          value: this.value || this.resource || '',
           src: this.src,
           label: this.label,
         });
@@ -60,6 +62,9 @@ export const SolidWidget = {
         else if (element.component) return element.component.getValue(); // form widget
         return element.value; // input
       },
+      updateDOM() { // override StoreMixin method to launch render when resource fetched
+        this.planRender();
+      }
     };
 
     Sib.register(newWidget); // and register component

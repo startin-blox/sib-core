@@ -16,11 +16,11 @@ describe('solid-widget', function () {
       .find('custom-widget-2 span')
       .should('contain.text', 'Paris');
   });
-  // it('resource', () => {
-  //   cy.get('#display-3')
-  //     .find('custom-widget-3 span')
-  //     .should('contain.text', 'Paris');
-  // });
+  it('resource', () => {
+    cy.get('#display-3')
+      .find('custom-widget-3 span')
+      .should('contain.text', 'Paris');
+  });
 
   it('nested component', () => {
     cy.get('#display-4')
