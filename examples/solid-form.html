@@ -178,6 +178,29 @@
       </details>
 
       <details>
+        <summary>Checkboxes (range and enum attributes):</summary>
+        <h4>Range attribute</h4>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="contact"
+          widget-contact="solid-form-checkboxes"
+          range-contact="data/list/users.jsonld"
+        ></solid-form>
+        
+        <h4>Enum attribute</h4>
+        <solid-form
+          data-src="data/list/event-1.jsonld"
+          fields="personnes, gens"
+          widget-gens = "solid-form-checkboxes-label"
+          widget-personnes = "solid-form-checkboxes-label"
+          label-personnes="Different keys and values in pairs :"
+          label-gens="Same keys and values in pairs :"
+          enum-personnes="irene = 1, sophie = 2, martha = 3"
+          enum-gens="irene , sophie , martha"
+        ></solid-form>
+      </details>
+
+      <details>
         <summary>Pattern and title attributes</summary>
         <solid-form
           data-src="data/list/event-1.jsonld"
