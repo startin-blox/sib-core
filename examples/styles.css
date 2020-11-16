@@ -31,6 +31,9 @@ form > * {
 label {
   display: block;
 }
+solid-form-checkboxes label {
+  display: inline;
+}
 solid-route {
   display: inline-block;
   background-color: #aaa;

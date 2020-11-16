@@ -26,6 +26,9 @@ const FormCheckboxesMixin = {
       .filter(el => el.checked)
       .map(el => el.value ? JSON.parse(el.value) : null)
   },
+  get type() {
+    return  this.enum === ''? 'resource' : 'string';
+  },
   get multiple() {
     return true;
   }
