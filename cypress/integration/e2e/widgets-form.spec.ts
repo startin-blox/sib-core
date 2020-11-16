@@ -359,17 +359,30 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'radio')
       .should('have.attr', 'value', 'option1');
 
-      cy.get('solid-form-radio#test4')
+    cy.get('solid-form-radio#test4')
       .find('> div')
       .and('have.attr', 'name', 'test4')
       .children().and('have.length', '4')
 
-      cy.get('solid-form-radio#test4 > div > label').eq(0)
+    cy.get('solid-form-radio#test4 > div > label').eq(0)
       .contains('option1')
       .parent()
       .find('input')
       .should('have.attr', 'type', 'radio')
       .should('have.attr', 'value', 'a');
+  })
+
+  it('solid-form-checkboxes', () => {
+    cy.get('#test-checkboxes')
+      .find('label:nth-child(-2n + 6)').click({ multiple:true })
+    cy.get('#test-checkboxes').then(async ($el: any) => {
+      const values = await $el[0].component.getValue();
+      expect(values).to.deep.equal([
+        { "@id": "skill-2.jsonld" },
+        { "@id": "skill-4.jsonld" },
+        { "@id": "skill-6.jsonld" },
+      ]);
+    });
   })
 
   it('solid-form-rangenumber', () => {

@@ -2,6 +2,7 @@ import { FormMixin } from '../templatesDependencies/formMixin';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin';
 import { FormNumberMixin } from '../templatesDependencies/formNumberMixin';
 import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin';
+import { FormCheckboxesMixin } from '../templatesDependencies/formCheckboxesMixin';
 import { FormRadioMixin } from '../templatesDependencies/formRadioMixin';
 import { FormFileMixin } from '../templatesDependencies/formFileMixin';
 import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin';
@@ -158,11 +159,11 @@ export const formTemplates = {
             ${until(el[attributes.optionLabel])}
           </option>
         `)}
-        ${Object.keys(attributes.enum || []).filter(el => el !== null).map(el => html`
+        ${Object.entries(attributes.enum || []).map(([key, value]) => html`
           <option
-            value="${el}"
+            value="${key}"
           >
-            ${attributes.enum[el]}
+            ${value}
           </option>
         `)}
       </select>
@@ -185,18 +186,48 @@ export const formTemplates = {
             > <span>${until(el[attributes.optionLabel])}</span>
           </label>
         `)}
-        ${Object.keys(attributes.enum || []).filter(el => el !== null).map(el => html`
+        ${Object.entries(attributes.enum || []).map(([key, value]) => html`
           <label>
             <input
               type="radio"
-              value="${el}"
+              value="${key}"
               ?required=${attributes.required}
-              ?checked=${value === el}
-            > <span>${attributes.enum[el]}</span>
+              ?checked=${value === key}
+            > <span>${value}</span>
           </label>  
         `)}
     `,
     dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
+  },
+  checkboxes: {
+    template: (_value: string, attributes: any) => html`
+      <div
+        name=${ifDefined(attributes.name)}
+      >
+        ${(attributes.range || []).map(el => html`
+          <label>
+            <input
+              type="checkbox"
+              value='{"@id": "${el['@id']}"}'
+              ?checked=${attributes.values.includes(el['@id'])}
+            >
+              ${until(el[attributes.optionLabel])}
+            </input>
+          </label>
+        `)}
+        ${Object.entries(attributes.enum || [])
+          .map(([key, value]) => html`
+          <label>
+            <input type="checkbox"
+              value="${key}"
+            >
+              <span>${value}</span>
+            </input>
+          </label>
+        `)}
+      </select>
+    `,
+    dependencies: [ FormCheckboxesMixin, FormMixin, RangeMixin ]
   },
   multiple: {
     template: (_value: string, attributes: any) => html`
