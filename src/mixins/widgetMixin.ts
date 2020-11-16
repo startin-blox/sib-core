@@ -261,14 +261,17 @@ const WidgetMixin = {
       }
       this.getValue(field).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
-      if (widgetMeta.type === WidgetType.USER) this.defineAttribute(widget, 'context', this.context, widgetMeta.type);
       for (let name of Object.keys(attributes)) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
       this.getValue(field).then((value: any) => {
         // setAttribute set a string. Make sure null values are empty
         if (value === null || value === undefined) value = '';
-        this.defineAttribute(widget, 'value', value, widgetMeta.type);
+        if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
+          this.defineAttribute(widget, 'data-src', value['@id'], widgetMeta.type);
+        } else { // otherwise, set value attribute
+          this.defineAttribute(widget, 'value', value, widgetMeta.type);
+        }
 
         // Subscribe widgets if they show a resource
         if (value && value['@id']) {
@@ -281,12 +284,8 @@ const WidgetMixin = {
     this.widgets.push(widget);
     return widget;
   },
-  defineAttribute(widget: HTMLElement, attribute: string, value: any, widgetType: WidgetType) {
-    if (widgetType === WidgetType.USER && attribute !== "class") { // specific case, for class attr, use SetAttribute
-      widget[attribute] = value; // for solid-widget, set property "value"
-    } else {
-      widget.setAttribute(attribute, value); // else, set attribute "value"
-    }
+  defineAttribute(widget: HTMLElement, attribute: string, value: any) {
+    widget.setAttribute(attribute, value); // else, set attribute "value"
   },
   /**
    * Create a set and add fields to it

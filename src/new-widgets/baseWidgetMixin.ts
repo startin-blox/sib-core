@@ -43,6 +43,8 @@ const BaseWidgetMixin = {
     this.listAttributes = {};
     this.listTemplateAdditions = [];
     this.listCallbacks = [];
+
+    this.planRender();
   },
   planRender() {
     if (!this.renderPlanned) {

@@ -1,0 +1,10 @@
+{
+	"@id": "customer-invoice-1-batches.jsonld",
+	"@type": "ldp:Container",
+	"ldp:contains": [
+		{ "@id": "batch-1.jsonld" },
+		{ "@id": "batch-2.jsonld" }
+	],
+	"permissions": [],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
