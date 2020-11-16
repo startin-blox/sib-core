@@ -19,7 +19,9 @@ describe('solid-widget', function () {
   it('resource', () => {
     cy.get('#display-3')
       .find('custom-widget-3 span')
-      .should('contain.text', 'Paris');
+      .should('contain.text', 'Paris')
+      .should('contain.text', '06-03-23-98-23')
+      .should('contain.text', 'www.startinblox.com');
   });
 
   it('nested component', () => {
