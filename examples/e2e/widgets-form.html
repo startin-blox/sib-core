@@ -23,6 +23,7 @@
       newWidgetFactory('solid-form-dropdown');
       newWidgetFactory('solid-form-dropdown-autocompletion-placeholder');
       newWidgetFactory('solid-form-radio');
+      newWidgetFactory('solid-form-checkboxes');
       newWidgetFactory('solid-form-rangenumber');
       newWidgetFactory('solid-form-rangedate');
       newWidgetFactory('solid-form-color');
@@ -150,6 +151,10 @@
       name="test4"
       enum="option1 = a, option2= b, option3  = c, option4 = d"
     ></solid-form-radio>
+    <solid-form-checkboxes
+      id="test-checkboxes"
+      range="../data/list/skills.jsonld"
+    ></solid-form-checkboxes>
     <solid-form-rangenumber
       name="test1"
     ></solid-form-rangenumber>
