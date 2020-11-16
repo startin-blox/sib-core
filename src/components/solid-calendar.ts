@@ -2,7 +2,6 @@ import { Sib } from '../libs/Sib';
 import { ListMixin } from '../mixins/listMixin';
 import { StoreMixin } from '../mixins/storeMixin';
 import {NextMixin } from '../mixins/nextMixin';
-import { importCSS } from '../libs/helpers';
 import Calendar from 'tui-calendar';
 import { store } from '../libs/store/store';
 
@@ -13,7 +12,9 @@ export const SolidCalendar = {
     subscriptions: null
   },
   created(): void {
-    importCSS('../web_modules/tui-calendar/dist/tui-calendar.css');
+    //@ts-ignore
+    import('tui-calendar/dist/tui-calendar.css');
+
     const div = document.createElement('div');
     div.style.width = '100%';
     div.style.height = '100%';

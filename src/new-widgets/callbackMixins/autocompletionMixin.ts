@@ -1,4 +1,4 @@
-import { fuzzyCompare, importCSS } from '../../libs/helpers';
+import { fuzzyCompare } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 
 const AutocompletionMixin = {
@@ -7,7 +7,9 @@ const AutocompletionMixin = {
     slimSelect: null,
   },
   created() {
-    importCSS('../../web_modules/slim-select/dist/slimselect.css');
+    //@ts-ignore
+    import('slim-select/dist/slimselect.css');
+
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
     this.listCallbacks.push(this.addCallback.bind(this));

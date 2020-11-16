@@ -6,7 +6,6 @@ import { CounterMixin } from '../mixins/counterMixin';
 import { FilterMixin } from '../mixins/filterMixin';
 import { GrouperMixin } from '../mixins/grouperMixin';
 import { NextMixin } from '../mixins/nextMixin';
-import { importCSS } from '../libs/helpers';
 import { store } from '../libs/store/store';
 
 import L, { MarkerOptions } from 'leaflet';
@@ -30,8 +29,11 @@ export const SolidMap = {
     resetPlanned: false
   },
   created(): void {
-    importCSS('../web_modules/leaflet/dist/leaflet.css');
-    importCSS('../style/default-theme.css');
+    //@ts-ignore
+    import('leaflet/dist/leaflet.css');
+    //@ts-ignore
+    import('../style/default-theme.css');
+
     document.body.addEventListener('navigate', () =>
       setTimeout(() => this.element.offsetParent && this.reset())
     );

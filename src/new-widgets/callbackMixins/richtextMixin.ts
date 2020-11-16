@@ -1,5 +1,3 @@
-import { importCSS } from '../../libs/helpers';
-
 import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
@@ -11,8 +9,9 @@ const RichtextMixin = {
   },
 
   created() {
-    importCSS('bs.css');
-    importCSS('../../web_modules/quill/dist/quill.snow.css');
+    //@ts-ignore
+    import('quill/dist/quill.snow.css');
+
     this.quill = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
@@ -20,12 +19,12 @@ const RichtextMixin = {
     if (this.quill == null) {
       var toolbarOptions = [
         ['bold', 'italic'],
-        
+
         ['blockquote'],
 
         [{ 'header': [1, 2, 3, 4, 5, 6, false]}],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        
+
         ['clean']
       ];
       const richtext = this.element.querySelector('[data-richtext]');
