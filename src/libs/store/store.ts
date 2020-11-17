@@ -1,5 +1,6 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-import PubSub from 'pubsub-js';
+//@ts-ignore
+import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
 
 const ContextParser = JSONLDContextParser.ContextParser;
