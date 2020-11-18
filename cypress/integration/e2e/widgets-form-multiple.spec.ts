@@ -195,4 +195,25 @@ describe('multiple widgets', function() {
       .children().should('have.length', 1)
       .should('contain', 'DevOps');
   });
+  it('solid-form-checkboxes', () => {
+    cy.get('solid-form-checkboxes')
+      .find('solid-form-multicheckbox > div[name=test1]')
+      .children().should('have.length', 8);
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(0)
+      .should('not.have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(1)
+      .should('have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(2)
+      .should('have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(3)
+      .should('not.have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(4)
+      .should('not.have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(5)
+      .should('not.have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(6)
+      .should('not.have.attr', 'checked');
+    cy.get('solid-form-checkboxes input[type=checkbox]').eq(7)
+      .should('not.have.attr', 'checked');
+  });
 })

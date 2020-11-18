@@ -13,7 +13,7 @@ const FormCheckboxesMixin = {
           this.listAttributes['values'] = [];
         }
         this.render();
-        this.dispatchEvent(new Event('change'));
+        this.element.dispatchEvent(new Event('change'));
       }
     },
   },

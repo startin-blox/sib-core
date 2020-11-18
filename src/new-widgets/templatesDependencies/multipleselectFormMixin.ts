@@ -11,6 +11,13 @@ const MultipleselectFormMixin = {
         if (value && value !== this.listAttributes['range']) this.listAttributes['range'] = value;
       }
     },
+    enum: { // enum attribute is passed to the solid-dropdown
+      type: String,
+      default: '',
+      callback: function (value) {
+        if (value && value !== this.listAttributes['enum']) this.listAttributes['enum'] = value;
+      }
+    },
     orderAsc: {
       type: String,
       default: 'name',

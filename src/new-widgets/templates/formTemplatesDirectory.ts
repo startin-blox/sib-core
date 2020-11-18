@@ -194,12 +194,12 @@ export const formTemplates = {
               ?required=${attributes.required}
               ?checked=${value === key}
             > <span>${value}</span>
-          </label>  
+          </label>
         `)}
     `,
     dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
   },
-  checkboxes: {
+  multicheckbox: {
     template: (_value: string, attributes: any) => html`
       <div
         name=${ifDefined(attributes.name)}
@@ -210,9 +210,7 @@ export const formTemplates = {
               type="checkbox"
               value='{"@id": "${el['@id']}"}'
               ?checked=${attributes.values.includes(el['@id'])}
-            >
-              ${until(el[attributes.optionLabel])}
-            </input>
+            /> ${until(el[attributes.optionLabel])}
           </label>
         `)}
         ${Object.entries(attributes.enum || [])
@@ -220,14 +218,27 @@ export const formTemplates = {
           <label>
             <input type="checkbox"
               value="${key}"
-            >
-              <span>${value}</span>
-            </input>
+            /><span>${value}</span>
           </label>
         `)}
       </select>
     `,
     dependencies: [ FormCheckboxesMixin, FormMixin, RangeMixin ]
+  },
+  checkboxes: {
+    template: (_value: string, attributes: any) => html`
+      <solid-form-multicheckbox
+        data-holder
+        name=${ifDefined(attributes.name)}
+        range=${ifDefined(attributes.range)}
+        enum=${ifDefined(attributes.enum)}
+        values=${ifDefined(attributes.values)}
+        order-asc=${ifDefined(attributes.orderAsc)}
+        order-desc=${ifDefined(attributes.orderDesc)}
+        ?required=${attributes.required}
+      ></solid-form-multicheckbox>
+    `,
+    dependencies: [ MultipleselectFormMixin, FormMixin ]
   },
   multiple: {
     template: (_value: string, attributes: any) => html`

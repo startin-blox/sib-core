@@ -99,6 +99,7 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
 
 // create default widgets
 newWidgetFactory('solid-form-dropdown');
+newWidgetFactory('solid-form-multicheckbox');
 newWidgetFactory('solid-form-file-label');
 newWidgetFactory('solid-action');
 newWidgetFactory('solid-group-default');

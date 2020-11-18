@@ -26,13 +26,13 @@ const RangeMixin = {
           let key;
           let keyValue;
           const list = {};
-          
+
           optional.forEach(element => {
-            if (element.includes("=")) {              
+            if (element.includes("=")) {
               const option = element.trim().split("=");
               key = option[1].trim();
               keyValue = option[0].trim();
-              list[key] = keyValue;              
+              list[key] = keyValue;
             } else {
               const elem = element.trim();
               list[elem] = elem;
