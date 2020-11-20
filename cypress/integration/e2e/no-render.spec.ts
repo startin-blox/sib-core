@@ -8,7 +8,7 @@ describe('no-render', function() {
     });
   });
   it('blocks rendering', () => {
-    cy.spy(win.store, 'fetchData');
+    cy.spy(win.sibStore, 'fetchData');
 
     cy.get('#list').as('list')
     cy.wait(500);
@@ -16,11 +16,11 @@ describe('no-render', function() {
       .should('have.length', 0);
 
     cy.get('@list').then($el => {
-      expect(win.store.fetchData).to.have.callCount(0);
+      expect(win.sibStore.fetchData).to.have.callCount(0);
       $el.removeAttr('no-render');
       cy.get('@list').find(' > div').children()
         .should('have.length', 8).then(() => {
-          expect(win.store.fetchData).to.be.called;
+          expect(win.sibStore.fetchData).to.be.called;
         });
     });
   });

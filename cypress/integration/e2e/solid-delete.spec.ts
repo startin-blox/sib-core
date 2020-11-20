@@ -9,7 +9,7 @@ describe('solid-delete', function () {
   });
 
   it('calls store.delete and send events', () => {
-    cy.spy(win.store, 'delete');
+    cy.spy(win.sibStore, 'delete');
     cy.server();
     cy.route({
       method: 'DELETE',
@@ -22,7 +22,7 @@ describe('solid-delete', function () {
     cy.get('solid-delete button').should('have.text', 'Supprimer');
     // on click, store.delete is called
     cy.get('solid-delete button').click({ force: true }).then(() => {
-      expect(win.store.delete).to.be.called;
+      expect(win.sibStore.delete).to.be.called;
     });
     // events have been fired
     cy.get('#res')
