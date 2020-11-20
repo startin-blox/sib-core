@@ -21,7 +21,7 @@ export const base_context = {
   lng: "geo:long"
 };
 
-export class Store {
+class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
@@ -374,13 +374,22 @@ export class Store {
   };
 }
 
-const sibAuth = document.querySelector('sib-auth');
-const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
-  () => sibAuth['getUserIdToken']()
-) : Promise.reject();
+let store: Store;
+if (window.store) {
+  store = window.store;
+} else {
+  const sibAuth = document.querySelector('sib-auth');
+  const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
+    () => sibAuth['getUserIdToken']()
+  ) : Promise.reject();
 
-export const store = new Store(idTokenPromise);
-window.store = store;
+  store = new Store(idTokenPromise);
+  window.store = store;
+}
+
+export {
+  store
+};
 
 
 class CustomGetter {
