@@ -1,4 +1,5 @@
 import { Sib } from '../libs/Sib';
+import { store } from '../libs/store/store';
 
 import { html, render } from 'lit-html';
 
