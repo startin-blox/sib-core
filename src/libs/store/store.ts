@@ -375,8 +375,8 @@ class Store {
 }
 
 let store: Store;
-if (window.store) {
-  store = window.store;
+if (window.sibStore) {
+  store = window.sibStore;
 } else {
   const sibAuth = document.querySelector('sib-auth');
   const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
@@ -384,7 +384,7 @@ if (window.store) {
   ) : Promise.reject();
 
   store = new Store(idTokenPromise);
-  window.store = store;
+  window.sibStore = store;
 }
 
 export {
