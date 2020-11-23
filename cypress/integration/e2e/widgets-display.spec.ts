@@ -172,5 +172,13 @@ describe('display widgets', function() {
     cy.get('solid-display-div-markdown')
       .find('em')
       .should('contain', 'italic')
+  });
+  it('solid-display-div-autolink', () => {
+    cy.get('solid-display-div-autolink > div').children()
+      .should('have.length', 2);
+    cy.get('solid-display-div-autolink > div').children().eq(0)
+      .should('have.attr', 'href', 'http://www.w3.org');
+    cy.get('solid-display-div-autolink > div').children().eq(1)
+      .should('have.attr', 'href', 'http://www.window-swap.com')
   })
 })

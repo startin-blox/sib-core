@@ -22,6 +22,16 @@ describe('solid-display', function() {
     cy.get('#display-3 > div ')
       .find("[name=permissions]")
       .should('not.exist');
+    
+    // child-[field] attribute
+    cy.get('#display-3 > div').children().eq(0)
+      .should('have.attr', 'attribute-child', 'child-value');
+    cy.get('#display-3 > div').children().eq(1)
+      .should('have.attr', 'attribute-child', 'child-value');
+    cy.get('#display-3 > div').children().eq(2)
+      .should('have.attr', 'attribute-chIld', 'child-value');
+    cy.get('#display-3 > div').children().eq(3)
+      .should('have.attr', 'attribute-child', 'child-value');
 
     // no fields
     cy.get('#display-4>div').children()
@@ -74,7 +84,7 @@ describe('solid-display', function() {
     cy.get('#display-12').should('have.attr', 'solid-resource');
     cy.get('#display-12 > div').children().should('have.length',1);
   });
-  it("list-mixin : empty-value", () => {
+  it('list-mixin : empty-value', () => {
     cy.get('#display-13').find('no-skill');
     cy.get('#display-13 > div > no-skill').contains('No skill yet')
   });
@@ -93,4 +103,54 @@ describe('solid-display', function() {
     cy.get('#default-field > div solid-display-value')
       .should('have.text', 'not defined');
   });
+  it('counter mixin', () => {
+    cy.get('#display-16').children().eq(0)
+      .should('contain', '8 skills displayed :');
+    cy.get('#display-16').children().eq(1)
+      .find('div').should('have.length', '8');
+  });
+  it('highlighter-mixin', () => {
+    cy.get('#display-17 > div').children().eq(0)
+      .find('solid-display-value').should('contain', 'Javascript')
+  });
+  it('nested-[field]', () => {
+    // data-src in solid-display pointed on skill-*.jsonld
+    cy.get('#display-18 > div').children().eq(0)
+      .should('have.attr', 'data-src', 'skill-2.jsonld');
+    cy.get('#display-18 > div').children().eq(1)
+      .should('have.attr','data-src', 'skill-3.jsonld');
+    // User's name not displayed
+    cy.get('#display-18 > div').children().eq(0)
+      .find('solid-display-value').should('not.contain.value', 'Test User');
+    cy.get('#display-18 > div').children().eq(1)
+      .find('solid-display-value').should('not.contain.value', 'Test User');
+    // Skills' name displayed
+    cy.get('#display-18 > div').children().eq(0)
+      .find('solid-display-value').should('have.attr', 'value', 'CSS');
+    cy.get('#display-18 > div').children().eq(1)
+      .find('solid-display-value').should('have.attr','value', 'Javascript');
+  });
+  it('default-widget', () => {
+    // default-widget applied to every child
+    cy.get('#display-19 > div')
+      .find('solid-display-link').eq(0)
+      .should('have.attr', 'name', 'name');
+    cy.get('#display-19 > div')
+      .find('solid-display-link').eq(1)
+      .should('have.attr', 'name', 'email');
+    cy.get('#display-19 > div')
+      .find('solid-display-link').eq(2)
+      .should('have.attr', 'name', 'username');
+
+    // default-widget applied to several children
+    cy.get('#display-20 > div')
+      .find('solid-display-div')
+      .should('have.attr', 'name', 'name');
+    cy.get('#display-20 > div')
+      .find('solid-display-link').eq(0)
+      .should('have.attr', 'name', 'email');
+    cy.get('#display-20 > div')
+      .find('solid-display-link').eq(1)
+      .should('have.attr', 'name', 'username');
+  })
 })

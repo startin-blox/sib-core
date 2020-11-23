@@ -11,18 +11,21 @@
   <body>
     <h2>Solid Form</h2>
 
+    <h3>creation form</h3>
     <solid-form
       id="form-1"
       data-src="../data/list/events.jsonld"
       fields="name, contact.email"
     ></solid-form>
 
+    <h3>edition form</h3>
     <solid-form
       id="form-2"
       data-src="../data/list/event-1.jsonld"
       fields="name, contact.email"
     ></solid-form>
 
+    <h3>widget creation, solid-form attributes </h3>
     <solid-form
       id="form-3"
       fields="name, skills"
@@ -32,10 +35,12 @@
 
       label-name="Test label"
       placeholder-name="test placeholder"
+      widget-name="solid-form-label-placeholder-text"
       class-name="test-class"
       required-name
     ></solid-form>
 
+    <h3>solid-form-richtext</h3>
     <solid-form
       id="form-4"
       data-src="../data/list/events.jsonld"
@@ -44,6 +49,7 @@
       widget-name="solid-form-richtext"
     ></solid-form>
 
+    <h3>pattern and title attributes</h3>
     <solid-form
       id="form-5"
       fields="test"
@@ -51,6 +57,7 @@
       title-test="3 lowercase letters"
     ></solid-form>
 
+    <h3>confirmation-message attribute</h3>
     <solid-form
       id="form-6"
       data-src="../data/list/event-1.jsonld"
@@ -58,6 +65,7 @@
       confirmation-message="Please confirm your choice"
     ></solid-form>
 
+    <h3>submit-button attribute</h3>
     <solid-form
       id="form-7"
       data-src="../data/list/events.jsonld"
@@ -65,10 +73,44 @@
       submit-button="Register"
     ></solid-form>
 
+    <h3>Reset form on errors</h3>
     <solid-form
       id="form-8"
       data-src="../data/list/events.jsonld"
       fields="name"
     ></solid-form>
+
+    <h3>Partial attribute</h3>
+    <h4>without</h4>
+    <solid-form
+      id="form-9"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, date"
+    ></solid-form>
+    <h4>with</h4>
+    <solid-form
+      id="form-10"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, date"
+      partial
+    ></solid-form>
+
+    <h3>Naked attribute</h3>   
+    <solid-form
+      id="form-11"
+      data-src="../data/list/events.jsonld"
+      naked
+    ></solid-form>
+
+    <h3>Loader-id attribute</h3>   
+    <div id="form-loader">
+      Please wait during loading :)
+    </div>
+    <solid-form
+      id="form-12"
+      data-src="../data/list/users.jsonld"
+      fields="name"
+      loader-id="form-loader"
+    ></solid-form> 
   </body>
 </html>

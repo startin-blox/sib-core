@@ -4,23 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: federation</title>
+    <title>SIB test: extra-context</title>
     <script type="module" src="../../dist/index.js"></script>
+    <script data-default-context type="application/ld+json">
+      {
+        "custom_username":"username",
+        "custom_label": "rdfs:label"
+      }
+    </script>
   </head>
-
   <body>
-    <h3>Federation 1</h3>
+    <h3>data-default-context</h3>
     <solid-display
-    id="federation-1"
-    data-src="../data/federation/source1.jsonld"
-    fields="@id, name"
-    ></solid-display>
-    
-    <h3>Federation 2</h3>
-    <solid-display
-      id="federation-2"
-      data-src='../data/federation/nested-source.jsonld'
-      fields='@id, name'
+    data-src="../data/list/user-1.jsonld"
+    fields="custom_username, custom_label"
     ></solid-display>
   </body>
 </html>

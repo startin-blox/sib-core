@@ -432,5 +432,12 @@ describe('form widgets', function() {
 
     cy.get('solid-form-color > input')
       .should('have.attr', 'type', 'color')
-  })
+  });
+
+  it('solid-form-text-labellast', () => {
+    cy.get('solid-form-text-labellast').children()
+      .should('have.length', 2);
+    cy.get('solid-form-text-labellast').find('label').last()
+      .should('contain', 'test labellast');
+  });
 })

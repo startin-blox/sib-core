@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-ac-checker</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <em>
+      Current user has no permission to view project
+    </em>
+
+    <div>
+      <h3>Permission attribute</h3>
+      <solid-ac-checker id="ac-checker-1" permission="acl:Read" data-src="../data/project.jsonld">
+        <solid-display
+          id="test1"
+          data-src="../data/project.jsonld"
+          fields="name, description"
+        ></solid-display>
+      </solid-ac-checker>
+    </div>
+    <div>
+      <h3>No-permission attribute</h3>
+      <solid-ac-checker id="ac-checker-2" no-permission="acl:Read" data-src="../data/project.jsonld">
+        <solid-display
+          id="test2"
+          data-src="../data/project.jsonld"
+          fields="name, description"
+        ></solid-display>
+      </solid-ac-checker>
+    </div>
+  </body>
+</html>
