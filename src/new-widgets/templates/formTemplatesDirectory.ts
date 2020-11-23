@@ -189,6 +189,7 @@ export const formTemplates = {
           <label>
             <input
               type="radio"
+              name=${ifDefined(attributes.id)}
               value="${el}"
               ?required=${attributes.required}
               ?checked=${value === el}
