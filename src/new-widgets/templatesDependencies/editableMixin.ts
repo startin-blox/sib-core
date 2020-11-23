@@ -1,4 +1,5 @@
 import { StoreMixin } from '../../mixins/storeMixin';
+import { store } from '../../libs/store/store';
 
 import { html } from 'lit-html';
 
@@ -56,7 +57,7 @@ const EditableMixin = {
     resource[this.name] = editableField.innerText;
     resource['@context'] = this.context;
 
-    window.store.patch(resource, this.valueId);
+    store.patch(resource, this.valueId);
   },
 }
 

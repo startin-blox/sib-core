@@ -1,6 +1,11 @@
 describe('solid-form', function() {
+  let win: Window;
   this.beforeAll('visit', () => {
-    cy.visit('/examples/e2e/solid-form.html')
+    cy.visit('/examples/e2e/solid-form.html');
+    cy.window().then(w => {
+      win = w;
+    });
+
   });
   it('creation form', () => {
     cy.get('#form-1 input[type=text]').should('have.length', 2)
@@ -36,16 +41,20 @@ describe('solid-form', function() {
   });
   it('widget creation', () => {
     cy.get('#form-3 solid-form-dropdown')
-    .should('have.attr', 'range', '../data/list/skills.jsonld')
-    .should('have.attr', 'data-src', '../data/list/skills.jsonld')
-    .should('have.attr', 'order-desc', 'name')
-    .should('have.attr', 'name', 'skills')
+      .should('have.attr', 'range', '../data/list/skills.jsonld')
+      .should('have.attr', 'data-src', '../data/list/skills.jsonld')
+      .should('have.attr', 'order-desc', 'name')
+      .should('have.attr', 'name', 'skills')
 
-    cy.get('#form-3 solid-form-label-text')
-    .should('have.attr', 'label', 'Test label')
-    .should('have.attr', 'placeholder', 'test placeholder')
-    .should('have.attr', 'class', 'test-class')
-    .should('have.attr', 'required')
+    cy.get('#form-3 solid-form-label-placeholder-text')
+      .should('have.attr', 'label', 'Test label')
+      .should('have.attr', 'placeholder', 'test placeholder')
+      .should('have.attr', 'class', 'test-class')
+      .should('have.attr', 'required')
+
+    cy.get('#form-3 solid-form-label-placeholder-text')
+      .find('input')
+      .should('have.attr', 'placeholder', 'test placeholder')
   });
 
   it('richtext html rendering', () => {
@@ -130,5 +139,35 @@ describe('solid-form', function() {
     cy.get('solid-form#form-8')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
+  });
+  it('partial attribute', () => {
+    cy.spy(win.sibStore, 'put');
+    cy.get('#form-9').find('input[type=submit]').click().then(() => {
+      expect(win.sibStore.put).to.be.called;
+    });  
+    cy.spy(win.sibStore, 'patch');
+    cy.get('#form-10').find('input[type=submit]').click().then(() => {
+      expect(win.sibStore.patch).to.be.called;
+    });
+  });
+  it('naked attribute', () => {
+    cy.get('#form-11').find('input[type=submit]').should('not.exist');
+  });
+  it('loader-id attribute', () => {
+    cy.get('#form-loader').should('have.attr', 'hidden');
+    cy.server();
+    cy.route({
+      method: 'POST',
+      url: '**/users.jsonld',
+      response: {},
+      delay: 3000
+    });
+    cy.get('#form-12')
+      .find('input[name=name]')
+      .type('Tryphon');
+    cy.get('#form-12')
+      .find('input[type=submit]')
+      .click();
+    cy.get('#form-loader').should('not.have.attr', 'hidden');
   });
 })

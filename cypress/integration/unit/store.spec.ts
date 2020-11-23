@@ -23,19 +23,19 @@ describe('store', function () {
   it('has prototype', () => {
     cy.window().then((win: any) => {
       // properties
-      expect(win.store.cache).to.exist;
-      expect(win.store.subscriptionIndex).to.exist;
-      expect(win.store.loadingList).to.be.a('Set').and.have.property('size', 0);
-      expect(win.store.headers).to.exist;
+      expect(win.sibStore.cache).to.exist;
+      expect(win.sibStore.subscriptionIndex).to.exist;
+      expect(win.sibStore.loadingList).to.be.a('Set').and.have.property('size', 0);
+      expect(win.sibStore.headers).to.exist;
       // public methods
-      expect(win.store.getData).to.be.a('function');
-      expect(win.store.get).to.be.a('function');
-      expect(win.store.clearCache).to.be.a('function');
-      expect(win.store.post).to.be.a('function');
-      expect(win.store.put).to.be.a('function');
-      expect(win.store.patch).to.be.a('function');
-      expect(win.store.delete).to.be.a('function');
-      expect(win.store.selectLanguage).to.be.a('function');
+      expect(win.sibStore.getData).to.be.a('function');
+      expect(win.sibStore.get).to.be.a('function');
+      expect(win.sibStore.clearCache).to.be.a('function');
+      expect(win.sibStore.post).to.be.a('function');
+      expect(win.sibStore.put).to.be.a('function');
+      expect(win.sibStore.patch).to.be.a('function');
+      expect(win.sibStore.delete).to.be.a('function');
+      expect(win.sibStore.selectLanguage).to.be.a('function');
       // PubSub
       expect(win.PubSub).to.exist;
     })
@@ -43,8 +43,8 @@ describe('store', function () {
 
   it('creates headers', () => {
     cy.window().then(async (win: any) => {
-      expect(win.store.headers).to.be.a('promise');
-      const headers = await win.store.headers;
+      expect(win.sibStore.headers).to.be.a('promise');
+      const headers = await win.sibStore.headers;
       expect(headers).to.exist;
       expect(headers.get('Content-Type')).to.equal('application/ld+json');
     });
@@ -55,20 +55,20 @@ describe('store', function () {
     cy.route('GET', '*/data/list/users.jsonld').as('users')
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('getData', '../data/list/users.jsonld', base_context);
 
     cy.get('@users').should('have.property', 'status', 200)
 
     cy.window()
-      .its('store.cache').should('have.length', 6); // cache
+      .its('sibStore.cache').should('have.length', 6); // cache
     cy.window()
-      .its('store.loadingList').should('have.property', 'size', 0); // loading list
+      .its('sibStore.loadingList').should('have.property', 'size', 0); // loading list
     cy.window()
-      .its('store.subscriptionIndex').should('have.length', 4); // loading list
+      .its('sibStore.subscriptionIndex').should('have.length', 4); // loading list
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('get', '../data/list/users.jsonld')
       .should('exist');
   });
@@ -102,12 +102,12 @@ describe('store', function () {
     }).as('get');
 
     cy.window().then((win: any) => {
-      cy.spy(win.store, 'clearCache');
+      cy.spy(win.sibStore, 'clearCache');
       cy.spy(win.PubSub, 'publish');
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('fetchData', '/examples/data/list/user-1.jsonld');
     cy.get('@get').then((xhr: any) => {
       expect(xhr.method).to.equal('GET');
@@ -115,7 +115,7 @@ describe('store', function () {
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('patch', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@patch').then((xhr: any) => {
       expect(xhr.method).to.equal('PATCH');
@@ -123,7 +123,7 @@ describe('store', function () {
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('put', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
     cy.get('@put').then((xhr: any) => {
       expect(xhr.method).to.equal('PUT');
@@ -131,7 +131,7 @@ describe('store', function () {
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('post', { first_name: 'Monsieur' }, '/examples/data/list/users.jsonld');
     cy.get('@post').then((xhr: any) => {
       expect(xhr.method).to.equal('POST');
@@ -139,7 +139,7 @@ describe('store', function () {
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('delete', '/examples/data/list/user-1.jsonld');
     cy.get('@delete').then((xhr: any) => {
       expect(xhr.method).to.equal('DELETE');
@@ -147,76 +147,76 @@ describe('store', function () {
     });
 
     cy.window().then((win: any) => {
-      expect(win.store.clearCache).to.be.called;
+      expect(win.sibStore.clearCache).to.be.called;
       expect(win.PubSub.publish).to.be.called;
     });
   });
 
   it('expands id', () => {
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getExpandedId', 'user:1/', { 'user': "https://ldp-server.test/users/" })
       .should('equal', 'https://ldp-server.test/users/1/');
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getExpandedId', 'user:1/', {})
       .should('equal', 'user:1/');
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getExpandedId', 'user:1/', null)
       .should('equal', 'user:1/');
   });
 
   it('clears cache', () => {
     cy.window()
-      .its('store.cache').should('have.length', 8);
+      .its('sibStore.cache').should('have.length', 8);
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('get', '/examples/data/list/user-1.jsonld')
       .should('exist');
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
     cy.window()
-      .its('store.cache').should('have.length', 7);
+      .its('sibStore.cache').should('have.length', 7);
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('get', '/examples/data/list/user-1.jsonld')
       .should('not.exist');
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('store.cache').should('have.length', 7);
+      .its('sibStore.cache').should('have.length', 7);
   });
 
   it('subscribes resource', () => {
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('subscribeResourceTo', 'ldp-server.test/circles/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
-      expect(win.store.subscriptionIndex).to.have.length(5);
-      expect(win.store.subscriptionIndex.get('ldp-server.test/circles/1/'))
+      expect(win.sibStore.subscriptionIndex).to.have.length(5);
+      expect(win.sibStore.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(1)
         .and.to.have.members(['ldp-server.test/circles/']);
     });
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('subscribeResourceTo', 'ldp-server.test/users/matthieu/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
-      expect(win.store.subscriptionIndex).to.have.length(5);
-      expect(win.store.subscriptionIndex.get('ldp-server.test/circles/1/'))
+      expect(win.sibStore.subscriptionIndex).to.have.length(5);
+      expect(win.sibStore.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(2)
         .and.to.have.members(['ldp-server.test/circles/', 'ldp-server.test/users/matthieu/']);
     });
@@ -224,34 +224,34 @@ describe('store', function () {
 
   it('subscribes virtual container', () => {
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('subscribeVirtualContainerTo', 'ldp-server.test/circles/joinable', 'ldp-server.test/circles/1/members');
 
     cy.window().then((win: any) => {
-      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
-      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+      expect(win.sibStore.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.sibStore.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
         .to.have.length(1)
         .and.to.have.members(['ldp-server.test/circles/joinable']);
     });
 
    cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('subscribeVirtualContainerTo', 'ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/1/members');
 
     cy.window().then((win: any) => {
-      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
-      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+      expect(win.sibStore.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.sibStore.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
         .to.have.length(2)
         .and.to.have.members(['ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/joinable']);
     });
 
     cy.window()
-    .its('store')
+    .its('sibStore')
     .invoke('subscribeVirtualContainerTo', 'ldp-server.test/circles/joinable', 'ldp-server.test/circles/1/members');
 
     cy.window().then((win: any) => {
-      expect(win.store.subscriptionVirtualContainersIndex).to.have.length(1);
-      expect(win.store.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
+      expect(win.sibStore.subscriptionVirtualContainersIndex).to.have.length(1);
+      expect(win.sibStore.subscriptionVirtualContainersIndex.get('ldp-server.test/circles/1/members'))
         .to.have.length(2)
         .and.to.have.members(['ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/joinable']);
     });
@@ -259,17 +259,17 @@ describe('store', function () {
 
   it('gets absolute iri', () => {
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getAbsoluteIri', '../data/list/users.jsonld', base_context, '')
       .should('equal', `${baseUrl}/examples/data/list/users.jsonld`);
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getAbsoluteIri', 'user-1.jsonld', base_context, '../data/list/users.jsonld')
       .should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window()
-      .its('store')
+      .its('sibStore')
       .invoke('_getAbsoluteIri', 'https://ldp-server.test/circles/', base_context, '')
       .should('equal', 'https://ldp-server.test/circles/');
   });

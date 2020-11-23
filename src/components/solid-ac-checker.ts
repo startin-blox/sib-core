@@ -17,6 +17,7 @@ export const SolidAcChecker = {
   },
 
   async populate(): Promise<void> {
+    if (!this.resource) return;
     let displayElement: boolean;
     const ContextParser = JSONLDContextParser.ContextParser;
     const myParser = new ContextParser();

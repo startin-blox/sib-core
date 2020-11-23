@@ -10,5 +10,5 @@ declare namespace Cypress {
 }
 
 interface Window {
-  store: any
+  sibStore: any
 }

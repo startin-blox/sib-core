@@ -14,12 +14,15 @@
       <solid-route name="view" use-id>view it</solid-route>
       <solid-route name="user" use-id>user</solid-route>
     </solid-router>
+    <h3>List-1</h3>
     <solid-display
       id="list-1"
       data-src="../data/list/skills.jsonld"
       fields="name"
       next="view"
     ></solid-display>
+
+    <h3>List-2</h3>
     <solid-display
       id="list-2"
       data-src="../data/list/users.jsonld"
@@ -29,6 +32,7 @@
       next="user"
     ></solid-display>
 
+    <h3>Next view</h3>
     <div data-view="view">
       <solid-display
         id="detail"

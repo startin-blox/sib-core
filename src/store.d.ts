@@ -1,1 +1,1 @@
-declare var store: any;
+declare var sibStore: any;
