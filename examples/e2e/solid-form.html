@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-map</title>
+    <title>SIB test: solid-form</title>
     <script type="module" src="../../dist/index.js"></script>
   </head>
 
@@ -69,6 +69,20 @@
       id="form-8"
       data-src="../data/list/events.jsonld"
       fields="name"
+    ></solid-form>
+
+    <solid-form
+    id="form-9"
+    data-src="../data/list/users.jsonld"
+    fields="skills"
+    range-skills="../data/list/skills.jsonld"
+
+    widget-skills="solid-form-dropdown-addable"
+    addable-skills-data-src="../data/list/users.jsonld"
+    addable-skills-fields="name"
+    addable-skills-widget-name="solid-form-text-placeholder-label"
+    addable-skills-placeholder-name="Enter your name"
+    addable-skills-submit-button="Send name"
     ></solid-form>
   </body>
 </html>

@@ -131,4 +131,21 @@ describe('solid-form', function() {
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
   });
+
+  it('solid-form with addable attributes', () => {
+    cy.get('solid-form#form-9 > form > solid-form-dropdown-addable')
+    .should('have.attr', 'name', 'skills')
+    .find('solid-form')
+    .should('have.attr', 'data-src', '../data/list/users.jsonld')
+    .and('have.attr', 'fields', 'name')
+    .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
+    .and('have.attr', 'placeholder-name', 'Enter your name')
+  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form > solid-form-text-placeholder-label')
+    .find('label').should('contain', 'name')
+  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form > solid-form-text-placeholder-label')
+    .find('input').should('have.attr', 'placeholder', 'Enter your name')
+  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form')
+    .find('input').last().should('have.attr', 'type', 'submit')
+    .and('have.attr', 'value', 'Send name')
+  });
 })

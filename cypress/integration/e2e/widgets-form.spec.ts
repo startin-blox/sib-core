@@ -445,5 +445,34 @@ describe('form widgets', function() {
 
     cy.get('solid-form-color > input')
       .should('have.attr', 'type', 'color')
-  })
+  });
+
+  it('solid-form-dropdown-addable', () => {
+    cy.get('solid-form-dropdown-addable#test1')
+      .children().should('have.length', 2);
+    cy.get('solid-form-dropdown-addable#test1 > solid-form')
+      .should('have.attr', 'data-src', '../data/list/skills.jsonld');
+
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form')
+      .children().should('have.length', 3)
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
+      .should('have.attr', 'name', 'name')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'order')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > input')
+      .should('have.attr', 'type', 'submit')
+
+    cy.get('solid-form-dropdown-addable#test2 > solid-form')
+      .should('have.attr', 'data-src', '../data/list/users.jsonld');
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form')
+      .children().should('have.length', 4)
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(0)
+      .should('have.attr', 'name', 'name')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'username')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(2)
+      .should('have.attr', 'name', 'age')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > input')
+      .should('have.attr', 'type', 'submit')
+    });
 })

@@ -28,6 +28,7 @@
       newWidgetFactory('solid-form-rangedate');
       newWidgetFactory('solid-form-color');
       newWidgetFactory('solid-form-checkboxes');
+      newWidgetFactory('solid-form-dropdown-addable');
     </script>
     <solid-form-text
       name="test1"
@@ -165,5 +166,15 @@
     <solid-form-color
       name="test1"
     ></solid-form-color>
+    <solid-form-dropdown-addable
+      id="test1"
+      range="../data/list/skills.jsonld"
+    ></solid-form-dropdown-addable>
+    <solid-form-dropdown-addable
+      id="test2"
+      range="../data/list/skills.jsonld"
+      addable-data-src="../data/list/users.jsonld"
+      addable-fields="name, username, age"
+    ></solid-form-dropdown-addable>
   </body>
 </html>
