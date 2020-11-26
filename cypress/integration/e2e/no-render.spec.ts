@@ -24,4 +24,22 @@ describe('no-render', function() {
         });
     });
   });
+
+  it('blocks nested rendering', () => {
+    cy.spy(win.sibStore, 'fetchData');
+
+    cy.get('#nested-list').as('list')
+    cy.wait(500);
+    cy.get('@list').children()
+      .should('have.length', 0);
+
+    cy.get('@list').then($el => {
+      expect(win.sibStore.fetchData).to.have.callCount(0);
+      $el.removeAttr('no-render');
+      cy.get('@list').find(' > div').children()
+        .should('have.length', 4).then(() => {
+          expect(win.sibStore.fetchData).to.be.called;
+        });
+    });
+  });
 })
