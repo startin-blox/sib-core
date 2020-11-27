@@ -153,12 +153,6 @@ export const SolidMap = {
     this.markers = [];
   },
   /**
-   * Override widgetMixin method
-   */
-  isSet() {
-    return false;
-  },
-  /**
    * Override groupMixin method
    * @param groupName: value of the group
    * @param div: Originally, div to insert content in. Used here to pass informations to the renderDOM method
