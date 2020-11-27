@@ -15,7 +15,6 @@ const AddableMixin = {
     return cleanAddableAttr;
   },
   addableValue(template, listTemplateAdditions: Function[], attributes: object) {
-    if (!this.range) return;
     const addables = this.getAddableAttributes(attributes);
     const newTemplate = html`
       ${template}

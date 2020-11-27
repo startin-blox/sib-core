@@ -133,19 +133,13 @@ describe('solid-form', function() {
   });
 
   it('solid-form with addable attributes', () => {
+    // Verify addable's attributes are passed in the solid-form-dropdown-addable
     cy.get('solid-form#form-9 > form > solid-form-dropdown-addable')
     .should('have.attr', 'name', 'skills')
-    .find('solid-form')
-    .should('have.attr', 'data-src', '../data/list/users.jsonld')
-    .and('have.attr', 'fields', 'name')
-    .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
-    .and('have.attr', 'placeholder-name', 'Enter your name')
-  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form > solid-form-text-placeholder-label')
-    .find('label').should('contain', 'name')
-  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form > solid-form-text-placeholder-label')
-    .find('input').should('have.attr', 'placeholder', 'Enter your name')
-  cy.get('solid-form#form-9 > form > solid-form-dropdown-addable > solid-form > form')
-    .find('input').last().should('have.attr', 'type', 'submit')
-    .and('have.attr', 'value', 'Send name')
-  });
+    .and('have.attr', 'addable-data-src', '../data/list/users.jsonld')
+    .and('have.attr', 'addable-fields', 'name')
+    .and('have.attr', 'addable-widget-name', 'solid-form-text-placeholder-label')
+    .and('have.attr', 'addable-placeholder-name', 'Enter your name')
+    .and('have.attr', 'addable-submit-button', 'Send name')
+  }); 
 })
