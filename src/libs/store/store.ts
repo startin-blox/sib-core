@@ -416,12 +416,8 @@ class CustomGetter {
    * @param context: object
    */
   expandProperties(resource: object, context: object | string) {
-    // console.log(JSON.stringify(resource), context);
     for (let prop of Object.keys(resource)) {
       if (!prop) continue;
-      if (prop == "picture") {
-        console.log(prop, context, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
-      }
       this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
     }
     return resource
