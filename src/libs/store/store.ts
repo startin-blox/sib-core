@@ -113,7 +113,10 @@ class Store {
     // Cache nested resources
     if (resource.getSubObjects) {
       for (let res of resource.getSubObjects()) {
-        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId).getProxy();
+        let newParentContext = parentContext;
+        // If additionnal context in resource, use it to expand properties
+        if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
+        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
         await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
       }
@@ -412,9 +415,13 @@ class CustomGetter {
    * @param resource: object
    * @param context: object
    */
-  expandProperties(resource: object, context: object | string) {
+  expandProperties(resource: object, context: object | string) {
+    // console.log(JSON.stringify(resource), context);
     for (let prop of Object.keys(resource)) {
       if (!prop) continue;
+      if (prop == "picture") {
+        console.log(prop, context, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
+      }
       this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
     }
     return resource
