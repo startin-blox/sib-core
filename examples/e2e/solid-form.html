@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-map</title>
+    <title>SIB test: solid-form</title>
     <script type="module" src="../../dist/index.js"></script>
   </head>
 
@@ -79,7 +79,6 @@
       data-src="../data/list/events.jsonld"
       fields="name"
     ></solid-form>
-
     <h3>Partial attribute</h3>
     <h4>without</h4>
     <solid-form
@@ -95,14 +94,14 @@
       partial
     ></solid-form>
 
-    <h3>Naked attribute</h3>   
+    <h3>Naked attribute</h3>
     <solid-form
       id="form-11"
       data-src="../data/list/events.jsonld"
       naked
     ></solid-form>
 
-    <h3>Loader-id attribute</h3>   
+    <h3>Loader-id attribute</h3>
     <div id="form-loader">
       Please wait during loading :)
     </div>
@@ -111,6 +110,19 @@
       data-src="../data/list/users.jsonld"
       fields="name"
       loader-id="form-loader"
-    ></solid-form> 
+    ></solid-form>
+    <solid-form
+    id="form-addable"
+    data-src="../data/list/users.jsonld"
+    fields="skills"
+    range-skills="../data/list/skills.jsonld"
+
+    widget-skills="solid-form-dropdown-addable"
+    addable-skills-data-src="../data/list/users.jsonld"
+    addable-skills-fields="name"
+    addable-skills-widget-name="solid-form-text-placeholder-label"
+    addable-skills-placeholder-name="Enter your name"
+    addable-skills-submit-button="Send name"
+    ></solid-form>
   </body>
 </html>

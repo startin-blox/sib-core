@@ -29,6 +29,7 @@
       newWidgetFactory('solid-form-color');
       newWidgetFactory('solid-form-checkboxes');
       newWidgetFactory('solid-form-text-labellast');
+      newWidgetFactory('solid-form-dropdown-addable');
     </script>
     <solid-form-text
       name="test1"
@@ -170,5 +171,18 @@
       name="test labellast"
       value="value labellast"
     ></solid-form-text-labellast>
+    <solid-form-dropdown-addable
+      id="test1"
+      range="../data/list/skills.jsonld"
+    ></solid-form-dropdown-addable>
+    <solid-form-dropdown-addable
+      id="test2"
+      range="../data/list/skills.jsonld"
+      addable-data-src="../data/list/users.jsonld"
+      addable-fields="name, username, age"
+      addable-widget-name="solid-form-text-placeholder-label"
+      addable-placeholder-name="Enter your name"
+      addable-submit-button="Send data"
+    ></solid-form-dropdown-addable>
   </body>
 </html>

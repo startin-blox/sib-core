@@ -144,7 +144,7 @@ describe('solid-form', function() {
     cy.spy(win.sibStore, 'put');
     cy.get('#form-9').find('input[type=submit]').click().then(() => {
       expect(win.sibStore.put).to.be.called;
-    });  
+    });
     cy.spy(win.sibStore, 'patch');
     cy.get('#form-10').find('input[type=submit]').click().then(() => {
       expect(win.sibStore.patch).to.be.called;
@@ -169,5 +169,15 @@ describe('solid-form', function() {
       .find('input[type=submit]')
       .click();
     cy.get('#form-loader').should('not.have.attr', 'hidden');
+  });
+  it('solid-form with addable attributes', () => {
+    // Verify addable's attributes are passed in the solid-form-dropdown-addable
+    cy.get('solid-form#form-addable > form > solid-form-dropdown-addable')
+    .should('have.attr', 'name', 'skills')
+    .and('have.attr', 'addable-data-src', '../data/list/users.jsonld')
+    .and('have.attr', 'addable-fields', 'name')
+    .and('have.attr', 'addable-widget-name', 'solid-form-text-placeholder-label')
+    .and('have.attr', 'addable-placeholder-name', 'Enter your name')
+    .and('have.attr', 'addable-submit-button', 'Send name')
   });
 })

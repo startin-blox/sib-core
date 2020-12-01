@@ -446,11 +446,54 @@ describe('form widgets', function() {
     cy.get('solid-form-color > input')
       .should('have.attr', 'type', 'color')
   });
-
   it('solid-form-text-labellast', () => {
     cy.get('solid-form-text-labellast').children()
       .should('have.length', 2);
     cy.get('solid-form-text-labellast').find('label').last()
       .should('contain', 'test labellast');
   });
+  it('solid-form-dropdown-addable', () => {
+    // Without addable-data-src provided
+    cy.get('solid-form-dropdown-addable#test1')
+      .children().should('have.length', 2);
+    cy.get('solid-form-dropdown-addable#test1 > solid-form')
+      .should('have.attr', 'data-src', '../data/list/skills.jsonld');
+
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form')
+      .children().should('have.length', 3)
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
+      .should('have.attr', 'name', 'name')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'order')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > input')
+      .should('have.attr', 'type', 'submit')
+
+    // With addable-data-src provided
+
+    // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
+    cy.get('solid-form-dropdown-addable#test2 > solid-form')
+      .should('have.attr', 'data-src', '../data/list/users.jsonld')
+      .and('have.attr', 'fields', 'name, username, age')
+      .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
+      .and('have.attr', 'placeholder-name', 'Enter your name')
+      .and('have.attr', 'submit-button', 'Send data')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form')
+      .children().should('have.length', 4)
+    // Verify attributes and values in tags created by widget  
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label')
+      .should('have.attr', 'name', 'name')
+      .and('have.attr', 'placeholder', 'Enter your name')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label')
+      .find('label').should('contain', 'name')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label')
+      .find('input').should('have.attr', 'placeholder', 'Enter your name')
+
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(0)
+      .should('have.attr', 'name', 'username')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'age')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > input')
+      .should('have.attr', 'type', 'submit')
+      .and('have.attr', 'value', 'Send data')
+    });
 })
