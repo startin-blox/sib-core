@@ -28,9 +28,9 @@ export const SolidDisplay = {
     HighlighterMixin,
     FilterMixin,
     SorterMixin,
+    RequiredMixin,
     FederationMixin,
     NextMixin,
-    RequiredMixin,
   ],
   attributes: {
     defaultWidget: {

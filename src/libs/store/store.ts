@@ -124,10 +124,17 @@ class Store {
 
     // Cache children of container
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
+      const cacheChildrenPromises: Promise<void>[] = [];
       for (let res of resource.getChildren()) {
-        this.subscribeResourceTo(resource['@id'], res['@id']);
-        await this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId)
+        if (
+          resource['@id'] === parentId || // If depth = 1 (resource direct child of the called container)
+          (Object.keys(res).length > 1 && res['@id']) // or resource is already complete
+        ) {
+          this.subscribeResourceTo(resource['@id'], res['@id']);
+          cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId))
+        }
       }
+      await Promise.all(cacheChildrenPromises);
       return;
     }
 
