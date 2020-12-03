@@ -135,7 +135,7 @@ class Store {
     if (resource['@id'] && !resource.properties) {
       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
       if (resource['@type'] === "ldp:Container" // if object is container (=source)
-        || (Object.keys(resource).length === 1 && resource['@id']) // or has only one prop @id
+        || (Object.keys(resource).filter(p => !p.startsWith('@')).length === 0 && resource['@id']) // Has no properties not starting by @
       ) {
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
@@ -536,7 +536,10 @@ class CustomGetter {
    * @param prop
    */
   isFullResource(prop: any): boolean {
-    return prop && typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
+    return prop &&
+      typeof prop == "object" &&
+      prop['@id'] != undefined &&
+      Object.keys(prop).filter(p => !p.startsWith('@')).length > 0;
   }
 
   getPermissions(): string[] {
