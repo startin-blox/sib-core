@@ -126,9 +126,11 @@ class Store {
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       const cacheChildrenPromises: Promise<void>[] = [];
       for (let res of resource.getChildren()) {
-        if (
-          resource['@id'] === parentId || // If depth = 1 (resource direct child of the called container)
-          (Object.keys(res).length > 1 && res['@id']) // or resource is already complete
+        // Try to cache children if
+        if (resource['@id'] === parentId  // depth = 1 (resource direct child of the called container)
+          || res['@type'] === "sib:federatedContainer" // or object is a source
+          || res['@type'] === "ldp:Container" // or object is a container (retrocompatibility)
+          || this._resourceIsComplete(res) // or resource is already complete
         ) {
           this.subscribeResourceTo(resource['@id'], res['@id']);
           cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId))
@@ -138,11 +140,12 @@ class Store {
       return;
     }
 
-    // Cache resource
+    // Create proxy, (fetch data) and cache resource
     if (resource['@id'] && !resource.properties) {
       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
-      if (resource['@type'] === "ldp:Container" // if object is container (=source)
-        || (Object.keys(resource).filter(p => !p.startsWith('@')).length === 0 && resource['@id']) // Has no properties not starting by @
+      // Fetch data if
+      if (resource['@type'] === "sib:federatedContainer" // if object is federated container
+        || !this._resourceIsComplete(resource) // or resource is not complete
       ) {
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
@@ -358,6 +361,14 @@ class Store {
   }
 
   /**
+   * Check if object is a full resource
+   * @param resource
+   */
+  _resourceIsComplete(resource: object) {
+    return !!(Object.keys(resource).filter(p => !p.startsWith('@')).length > 0 && resource['@id'])
+  }
+
+  /**
    * Return language of the users
    */
   _getLanguage() {
@@ -490,7 +501,7 @@ class CustomGetter {
    * Return true if the resource is a container
    */
   isContainer(): boolean {
-    return this.resource["@type"] == "ldp:Container";
+    return this.resource["@type"] == "ldp:Container" || this.resource["@type"] == "sib:federatedContainer";
   }
 
   /**

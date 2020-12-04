@@ -37,7 +37,7 @@ const FederationMixin = {
     return newResources;
   },
 
-  fetchSource(containerId: string): Promise<Resource[]|null> {
+  fetchSource(containerId: string): Promise<Resource[] | null> {
     const container = store.get(containerId);
     return container ? container['ldp:contains'] : null;
   },
