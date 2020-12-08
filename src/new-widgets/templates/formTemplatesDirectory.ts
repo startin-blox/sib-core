@@ -305,5 +305,19 @@ export const formTemplates = {
       />
     `,
     dependencies: [ FormMixin ]
-  }
+  },
+  email: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="email"
+        placeholder=${ifDefined(attributes.placeholder)}
+        name=${ifDefined(attributes.name)}
+        value=${value || ''}
+        ?required=${attributes.required}
+        data-holder
+        @change=${attributes.onChange}
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
 }
