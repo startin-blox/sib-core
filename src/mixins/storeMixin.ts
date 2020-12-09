@@ -41,6 +41,9 @@ const StoreMixin = {
     this.bindedAttributes = {};
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
   },
+  detached() {
+    if (this.subscription) PubSub.unsubscribe(this.subscription);
+  },
   get context(): object {
     return { ...base_context, ...this.extra_context };
   },

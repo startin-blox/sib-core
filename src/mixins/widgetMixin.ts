@@ -272,8 +272,8 @@ const WidgetMixin = {
 
         // Subscribe widgets if they show a resource
         if (value && value['@id']) {
-          PubSub.subscribe(value['@id'], () => this.updateDOM())
-          // TODO : remove subscriptions
+          if (widgetMeta.type === WidgetType.CUSTOM) widget.component.subscribe(value['@id']);
+          else widget.subscribe(value['@id']);
         }
       });
     }
