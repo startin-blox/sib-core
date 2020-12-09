@@ -50,6 +50,10 @@ export const SolidDisplay = {
       if (route['resourceId'] === this.resourceId) this.addActiveCallback();
     });
   },
+  detached(): void {
+    if (this.activeSubscription) PubSub.unsubscribe(this.activeSubscription);
+    if (this.removeActiveSubscription) PubSub.unsubscribe(this.removeActiveSubscription);
+  },
   // Update subscription when id changes
   updateNavigateSubscription() {
     if (this.activeSubscription) PubSub.unsubscribe(this.activeSubscription);
