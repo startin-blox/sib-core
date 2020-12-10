@@ -25,7 +25,7 @@ export const SolidForm = {
       type: String,
       default: undefined,
       callback: function (newValue: string, oldValue: string) {
-        if (newValue !== oldValue) this.populate();
+        if (this.noRender == null && newValue !== oldValue) this.populate();
       },
     },
     partial: {
