@@ -29,16 +29,18 @@ export const SolidFormSearch = {
   get defaultSetWidget(): string {
     return 'solid-set-default';
   },
+
   get value(): object {
     const values = {};
     this.widgets.forEach((widget) => {
-      let value = widget.component.getValue(); // TODO : possible to do .value instead?
+      const name = (widget.component || widget).name;
+      if (name == null) return;
+      let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
       } catch (e) {}
-      setDeepProperty(values, widget.component.name.split('.'), value);
+      setDeepProperty(values, name.split('.'), value);
     });
-
     return values;
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
