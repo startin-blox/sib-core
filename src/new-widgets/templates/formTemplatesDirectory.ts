@@ -191,6 +191,7 @@ export const formTemplates = {
             <input
               type="radio"
               value="${key}"
+              name=${ifDefined(attributes.id)}
               ?required=${attributes.required}
               ?checked=${value === key}
             > <span>${value}</span>
@@ -346,5 +347,19 @@ export const formTemplates = {
       />
     `,
     dependencies: [ FormMixin ]
-  }
+  },
+  email: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="email"
+        placeholder=${ifDefined(attributes.placeholder)}
+        name=${ifDefined(attributes.name)}
+        value=${value || ''}
+        ?required=${attributes.required}
+        data-holder
+        @change=${attributes.onChange}
+      />
+    `,
+    dependencies: [ FormMixin ]
+  },
 }

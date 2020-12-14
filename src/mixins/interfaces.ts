@@ -12,5 +12,6 @@ export interface WidgetInterface {
 export interface Resource {
   '@id': string
   isContainer: Function
+  isFullResource: Function
   properties: string[]
 }

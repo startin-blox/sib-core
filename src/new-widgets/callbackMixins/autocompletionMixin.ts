@@ -5,6 +5,7 @@ const AutocompletionMixin = {
   name: 'autocompletion-mixin',
   initialState: {
     slimSelect: null,
+    mutationObserver: null
   },
   created() {
     //@ts-ignore
@@ -13,6 +14,10 @@ const AutocompletionMixin = {
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
     this.listCallbacks.push(this.addCallback.bind(this));
+  },
+  detached() {
+    if (this.slimSelect) this.slimSelect.destroy();
+    if (this.mutationObserver) this.mutationObserver.disconnect();
   },
   addCallback(value: string, listCallbacks: Function[]) {
     if (this.slimSelect) return;
@@ -51,7 +56,8 @@ const AutocompletionMixin = {
     });
     
     // when data changes, re-build slimSelect
-    new MutationObserver(() => {
+    if (this.mutationObserver) this.mutationObserver.disconnect();
+    this.mutationObserver = new MutationObserver(() => {
       this.slimSelect.destroy();
       this.slimSelect = new SlimSelect({
         select,

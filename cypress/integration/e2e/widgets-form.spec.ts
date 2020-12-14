@@ -173,6 +173,34 @@ describe('form widgets', function() {
     });
   });
 
+  it('solid-form-email', () => {
+    cy.get('solid-form-email')
+      .children().should('have.length', 1);
+
+    cy.get('solid-form-email') // check attributes
+      .find('input')
+      .should('have.attr', 'type', 'email')
+      .and('have.attr', 'name', 'test1')
+      .and('have.attr', 'value', 'test@test.com')
+      .and('have.attr', 'data-holder');
+
+    cy.get('solid-form-email').then($el => { // check API value
+      expect((<any>$el[0]).component.getValue()).to.equal('test@test.com'); // form value
+    });
+
+    cy.get('solid-form-email > input') // type value
+      .clear()
+      .type('new@example.com');
+    cy.get('solid-form-email > input')
+      .and('have.attr', 'value', 'test@test.com'); // attr does not change
+
+
+    cy.get('solid-form-email').then($el => { // Check API
+      expect((<any>$el[0]).component['value']).to.equal('test@test.com'); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('new@example.com'); // form value
+    });
+  });
+
   it('solid-form-hidden', () => {
     cy.get('solid-form-hidden')
       .children().should('have.length', 1);
@@ -358,6 +386,21 @@ describe('form widgets', function() {
       .find('input')
       .should('have.attr', 'type', 'radio')
       .should('have.attr', 'value', 'option1');
+
+      // Test click on multiple radio
+    cy.get('solid-form-radio#test3 input[type=radio][value="option1"]')
+      .check().should('be.checked');
+    cy.get('solid-form-radio#test3 input[type=radio][value="option2"]')
+      .should('not.be.checked');
+    cy.get('solid-form-radio#test3 input[type=radio][value="option3"]')
+      .should('not.be.checked');
+
+    cy.get('solid-form-radio#test3 input[type=radio][value="option3"]')
+      .check().should('be.checked');
+    cy.get('solid-form-radio#test3 input[type=radio][value="option1"]')
+      .should('not.be.checked');
+    cy.get('solid-form-radio#test3 input[type=radio][value="option2"]')
+      .should('not.be.checked');
 
     cy.get('solid-form-radio#test4')
       .find('> div')

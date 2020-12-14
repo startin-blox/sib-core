@@ -29,6 +29,12 @@ import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
 import * as Helpers from './libs/helpers';
 
+// lit-html
+import { html, render } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
+import { until } from 'lit-html/directives/until';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+
 export {
   // Components
   SolidDisplay,
@@ -59,4 +65,11 @@ export {
   SolidTemplateElement,
   widgetFactory,
   Helpers,
+
+  // lit-html
+  html,
+  render,
+  ifDefined,
+  until,
+  unsafeHTML
 }

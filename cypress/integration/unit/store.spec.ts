@@ -71,6 +71,21 @@ describe('store', function () {
       .its('sibStore')
       .invoke('get', '../data/list/users.jsonld')
       .should('exist');
+
+    // properties are expanded
+    cy.window()
+      .its('sibStore')
+      .invoke('getData', '../data/extra-context/user-6.jsonld', base_context);
+    cy.window()
+      .its('sibStore')
+      .invoke('get', '../data/extra-context/user-6.jsonld')
+      .invoke('getResourceData')
+      .should('have.property', 'http://happy-dev.fr/owl/#email', "test-user@example.com"); // @vocab
+    cy.window()
+      .its('sibStore')
+      .invoke('get', 'profile-6.jsonld')
+      .invoke('getResourceData')
+      .should('have.property', 'http://xmlns.com/foaf/0.1/depiction', "my-avatar.png"); // nested additionnal context
   });
 
   it('send xhr requests', () => {
@@ -171,7 +186,7 @@ describe('store', function () {
 
   it('clears cache', () => {
     cy.window()
-      .its('sibStore.cache').should('have.length', 8);
+      .its('sibStore.cache').should('have.length', 10);
 
     cy.window()
       .its('sibStore')
@@ -183,7 +198,7 @@ describe('store', function () {
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 7);
+      .its('sibStore.cache').should('have.length', 9);
 
     cy.window()
       .its('sibStore')
@@ -195,7 +210,7 @@ describe('store', function () {
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 7);
+      .its('sibStore.cache').should('have.length', 9);
   });
 
   it('subscribes resource', () => {
