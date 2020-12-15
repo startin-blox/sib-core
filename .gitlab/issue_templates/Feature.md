@@ -1,6 +1,6 @@
 ## What needs to be done?
 
-Please describe the goal of this new feature as best as you can
+<!-- Please describe the goal of this new feature as best as you can -->
 
 /estimate Xh
 /label ~feature
@@ -8,13 +8,13 @@ Please describe the goal of this new feature as best as you can
 
 ## Technical details
 
-Are there any technical details worth mentioning?
+<!-- Are there any technical details worth mentioning? -->
 
 
 ## Links
 
-1. Link to user story in wiki
-2. other related Gitlab issues
+* Link to user story in wiki
+* other related Gitlab issues
 
 
 ## How to complete
