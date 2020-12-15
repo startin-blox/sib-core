@@ -1,5 +1,13 @@
 /label ~BUG
 
+### Steps to reproduce
+
+<!-- How one can reproduce the issue - this is very important -->
+
+1. Step 1
+2. Step 2
+3. Step 3
+
 ### Expected behavior
 
 <!-- Describe in a few words what should happen -->
@@ -8,13 +16,6 @@
 
 <!-- Describe in a few words what's happening -->
 
-### Steps to reproduce
-
-<!-- How one can reproduce the issue - this is very important -->
-
-1. Step 1
-2. Step 2
-3. Step 3
 
 ### Relevant logs and/or screenshots
 
