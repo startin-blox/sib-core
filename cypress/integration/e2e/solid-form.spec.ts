@@ -18,15 +18,15 @@ describe('solid-form', function() {
     });
   });
   it('edition form', () => {
-    cy.get('#form-2 input[type=text]').should('have.length', 2)
-    cy.get('#form-2 input[type=text][name=name]')
+    cy.get('#form-edition-1 input[type=text]').should('have.length', 2)
+    cy.get('#form-edition-1 input[type=text][name=name]')
       .should('have.value', 'Coliving')
       .type(' in BZH');
-    cy.get('#form-2 input[type=text][name="contact.email"]')
+    cy.get('#form-edition-1 input[type=text][name="contact.email"]')
       .should('have.value', 'test-user@example.com')
       .clear()
       .type('admin@example.com');
-    cy.get('#form-2').then($el => {
+    cy.get('#form-edition-1').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
           "@id": "../data/list/event-1.jsonld",
@@ -35,6 +35,18 @@ describe('solid-form', function() {
             "@id": "user-1.jsonld",
           },
           name: 'Coliving in BZH',
+        });
+      });
+    });
+
+    cy.get('#form-edition-2 select').select('Pierre DLC')
+    cy.get('#form-edition-2').then($el => {
+      return (<any>$el[0]).component.getFormValue().then(res => {
+        expect(res).to.deep.equal({
+          contact: {
+            "@id": "user-4.jsonld",
+          },
+          "@id": "../data/list/event-1.jsonld",
         });
       });
     });

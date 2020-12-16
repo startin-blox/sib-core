@@ -69,7 +69,7 @@ export const SolidForm = {
 
       for (let predicate of Object.keys(this.value)) { // add @id for nested resources
         const object = await this.resource[predicate];
-        if (object && object['@id']) value[predicate]['@id'] = object['@id'];
+        if (object && object['@id'] && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
       }
     }
     return value;
