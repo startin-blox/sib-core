@@ -230,6 +230,8 @@ const WidgetMixin = {
       'max',
       'pattern',
       'title',
+      'start-value',
+      'end-value'
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 

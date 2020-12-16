@@ -42,4 +42,21 @@ describe('solid-form-search widget', function() {
     cy.get('@btn').click()
     cy.get('#display3 > div > solid-display').should('have.length', 1);
   });
+
+  it('solid-form-search + start-value & end-value', () => {
+    cy.get('#filter4 > form')
+      .find('solid-form-rangedate')
+      .should('have.attr', 'start-value', '2020-06-01')
+      .and('have.attr', 'end-value', '2021-01-12');
+    cy.get('#display4 > div ')
+      .children().should('have.length', 2)
+
+    cy.get('#filter5 > form')
+      .find('solid-form-rangenumber')
+      .should('have.attr', 'start-value', '2')
+      .and('have.attr', 'end-value', '10');
+    cy.get('#display5 > div ')
+      .children().should('have.length', 3)
+
+  })
 })

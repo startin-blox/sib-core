@@ -43,5 +43,33 @@
       fields='last_name'
       filtered-by="filter3"
     ></solid-display>
+
+    <solid-form-search
+      id="filter4"
+      fields="date"
+      widget-date="solid-form-rangedate"
+      start-value-date="2020-06-01"
+      end-value-date="2021-01-12"
+    ></solid-form-search>
+    <solid-display
+      id="display4"
+      data-src="../data/list/events.jsonld"
+      fields="name"
+      filtered-by="filter4"
+    ></solid-display>
+
+    <solid-form-search
+      id="filter5"
+      fields="order"
+      widget-order="solid-form-rangenumber"
+      start-value-order="2"
+      end-value-order="10"
+    ></solid-form-search>
+    <solid-display
+      id="display5"
+      data-src="../data/list/skills.jsonld"
+      fields="name"
+      filtered-by="filter5"
+    ></solid-display>
   </body>
 </html>

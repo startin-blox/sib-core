@@ -82,12 +82,14 @@ export const formTemplates = {
         type="date"
         name="${attributes.name || ''}-start"
         @change=${attributes.onChange}
-      />
-      <input
+        value=${ifDefined(attributes.startValue)}
+        />
+        <input
         data-holder
         type="date"
         name="${attributes.name || ''}-end"
         @change=${attributes.onChange}
+        value=${ifDefined(attributes.endValue)}
       />
     `,
     dependencies: [ FilterRangeFormMixin, FormMixin ]
@@ -115,12 +117,14 @@ export const formTemplates = {
         type="number"
         name="${attributes.name || ''}-start"
         @change=${attributes.onChange}
+        value=${ifDefined(attributes.startValue)}
       />
       <input
         data-holder
         type="number"
         name="${attributes.name || ''}-end"
         @change=${attributes.onChange}
+        value=${ifDefined(attributes.endValue)}
       />
     `,
     dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]

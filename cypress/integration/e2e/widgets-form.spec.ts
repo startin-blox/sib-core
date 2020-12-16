@@ -1,5 +1,6 @@
 describe('form widgets', function() {
   this.beforeAll('visit', () => {
+    cy.clock(Date.UTC(2020, 11, 15), ['Date']); // Define fake date for start-value="today" test
     cy.visit('/examples/e2e/widgets-form.html')
   })
 
@@ -429,7 +430,7 @@ describe('form widgets', function() {
   })
 
   it('solid-form-rangenumber', () => {
-    cy.get('solid-form-rangenumber')
+    cy.get('solid-form-rangenumber[name=test1]')
       .children().should('have.length', 2);
 
     cy.get('solid-form-rangenumber > input').eq(0)
@@ -453,10 +454,15 @@ describe('form widgets', function() {
     cy.get('solid-form-rangenumber').then($el => {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([8, 23]); // form value
     });
-  });
 
+    // Addition start-value-[field] and end-value-[field] attributes
+    cy.get('solid-form-rangenumber[name=test2] > input').eq(0)
+      .should('have.attr', 'value', '2')
+    cy.get('solid-form-rangenumber[name=test2] > input').eq(1)
+      .should('have.attr', 'value', '10')
+  });
   it('solid-form-rangedate', () => {
-    cy.get('solid-form-rangedate')
+    cy.get('solid-form-rangedate[name=test1]')
       .children().should('have.length', 2);
 
     cy.get('solid-form-rangedate > input').eq(0)
@@ -480,6 +486,12 @@ describe('form widgets', function() {
     cy.get('solid-form-rangedate').then($el => {
       expect((<any>$el[0]).component.getValue()).to.deep.equal(['2020-02-12', '2020-05-24']); // form value
     });
+
+    // Addition start-value-[field] and end-value-[field] attributes
+    cy.get('solid-form-rangedate[name=test2] > input').eq(0)
+      .should('have.attr', 'value', '2020-12-15')
+    cy.get('solid-form-rangedate[name=test2] > input').eq(1)
+      .should('have.attr', 'value', '2222-12-22')
   });
 
   it('solid-form-color', () => {
