@@ -277,10 +277,7 @@ const WidgetMixin = {
         }
 
         // Subscribe widgets if they show a resource
-        if (value && value['@id']) {
-          if (widgetMeta.type === WidgetType.CUSTOM) widget.component.subscribe(value['@id']);
-          else widget.subscribe(value['@id']);
-        }
+        if (value && value['@id']) widget.component.subscribe(value['@id']);
       });
     }
 
