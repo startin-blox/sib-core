@@ -5,19 +5,20 @@ const FilterRangeFormMixin = {
       type: String,
       default:'',
       callback: function (value: string) {
-        if (value == "today") {
-          const today = new Date().toISOString().split("T")[0];
-          this.addToAttributes(today, "startValue");
-        } else this.addToAttributes(value, "startValue");
+        this.addToAttributes(this.getDefaultValue(value), "startValue")
       }
     },
     endValue: {
       type: String,
       default:'',
       callback: function (value: string) {
-        this.addToAttributes(value, "endValue")
+        this.addToAttributes(this.getDefaultValue(value), "endValue")
       }
     }
+  },
+  getDefaultValue(value) {
+    if (value == "today") return new Date().toISOString().split("T")[0];
+    return value;
   },
   getValue() {
     if (!this.dataHolder) return [];
