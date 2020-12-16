@@ -15,6 +15,11 @@ export class BaseWidget extends HTMLElement {
   connectedCallback(): void {
     this.render();
   }
+  disconnectedCallback(): void {
+    this._subscriptions.forEach((subscription) => {
+      PubSub.unsubscribe(subscription);
+    })
+  }
   async render() {
     this.innerHTML = await evalTemplateString(this.template, {
       src: this.src,
@@ -202,6 +207,10 @@ export class BaseWidget extends HTMLElement {
   }
   getValueHolder(element) {
     return element.component ? element.component : element;
+  }
+
+  subscribe(event: string) {
+    this._listen(event);
   }
 
   _listen(id: string, callback: Function = () => {}) {

@@ -45,6 +45,10 @@ const BaseWidgetMixin = {
     this.listCallbacks = [];
 
     this.planRender();
+    this.subscription = null;
+  },
+  detached() {
+    if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   planRender() {
     if (!this.renderPlanned) {
@@ -85,6 +89,9 @@ const BaseWidgetMixin = {
       this.listAttributes[attrKey] = value;
       this.planRender();
     }
+  },
+  subscribe(event: string) {
+    this.subscription = PubSub.subscribe(event, () => this.planRender());
   }
 }
 

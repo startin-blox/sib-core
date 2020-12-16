@@ -5,7 +5,7 @@
     {
       "federation": "users",
       "@id": "https://ldp-server.test/users/",
-      "@type": "ldp:Container",
+      "@type": "sib:federatedContainer",
       "permissions": [
         {
           "mode": {
@@ -17,7 +17,7 @@
     {
       "federation": "users",
       "@id": "https://ldp-server2.test/users/",
-      "@type": "ldp:Container",
+      "@type": "sib:federatedContainer",
       "permissions": [
         {
           "mode": {

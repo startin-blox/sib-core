@@ -56,7 +56,10 @@ class Store {
    * @async
    */
   async getData(id: string, context = {}, idParent = ""): Promise<Resource|null> {
-    if (this.cache.has(id) && !this.loadingList.has(id)) return this.get(id);
+    if (this.cache.has(id) && !this.loadingList.has(id)) {
+      const resource = this.get(id);
+      if (resource && resource.isFullResource()) return resource; // if resource is not complete, re-fetch it
+    }
 
     return new Promise(async (resolve) => {
       document.addEventListener('resourceReady', this.resolveResource(id, resolve));
@@ -113,7 +116,10 @@ class Store {
     // Cache nested resources
     if (resource.getSubObjects) {
       for (let res of resource.getSubObjects()) {
-        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId).getProxy();
+        let newParentContext = parentContext;
+        // If additionnal context in resource, use it to expand properties
+        if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
+        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
         await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
       }
@@ -121,19 +127,20 @@ class Store {
 
     // Cache children of container
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
+      const cacheChildrenPromises: Promise<void>[] = [];
       for (let res of resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        await this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId)
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId))
       }
+      await Promise.all(cacheChildrenPromises);
       return;
     }
 
-    // Cache resource
+    // Create proxy, (fetch data) and cache resource
     if (resource['@id'] && !resource.properties) {
       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
-      if (resource['@type'] === "ldp:Container" // if object is container (=source)
-        || (Object.keys(resource).length === 1 && resource['@id']) // or has only one prop @id
-      ) {
+      // Fetch data if
+      if (resource['@type'] === "sib:federatedContainer") { // if object is federated container
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }
@@ -348,6 +355,14 @@ class Store {
   }
 
   /**
+   * Check if object is a full resource
+   * @param resource
+   */
+  _resourceIsComplete(resource: object) {
+    return !!(Object.keys(resource).filter(p => !p.startsWith('@')).length > 0 && resource['@id'])
+  }
+
+  /**
    * Return language of the users
    */
   _getLanguage() {
@@ -412,7 +427,7 @@ class CustomGetter {
    * @param resource: object
    * @param context: object
    */
-  expandProperties(resource: object, context: object | string) {
+  expandProperties(resource: object, context: object | string) {
     for (let prop of Object.keys(resource)) {
       if (!prop) continue;
       this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
@@ -446,6 +461,9 @@ class CustomGetter {
     const path1: string[] = path.split('.');
     const path2: string[] = [];
     let value: any;
+    if (!this.isFullResource()) { // if resource is not complete, fetch it first
+      await this.getResource(this.resourceId, this.clientContext, this.resourceId);
+    }
     while (true) {
       try {
         value = this.resource[this.getExpandedPredicate(path1[0])];
@@ -480,7 +498,7 @@ class CustomGetter {
    * Return true if the resource is a container
    */
   isContainer(): boolean {
-    return this.resource["@type"] == "ldp:Container";
+    return this.resource["@type"] == "ldp:Container" || this.resource["@type"] == "sib:federatedContainer";
   }
 
   /**
@@ -512,10 +530,10 @@ class CustomGetter {
     let subObjects: any = [];
     for (let p of Object.keys(this.resource)) {
       let property = this.resource[p];
-      if (!this.isFullResource(property)) continue; // if not a resource, stop
+      if (!this.isFullNestedResource(property)) continue; // if not a resource, stop
       if (property['@type'] == "ldp:Container" &&
         (property['ldp:contains'] == undefined ||
-          (property['ldp:contains'].length >= 1 && !this.isFullResource(property['ldp:contains'][0])))
+          (property['ldp:contains'].length >= 1 && !this.isFullNestedResource(property['ldp:contains'][0])))
       ) continue; // if not a full container
       subObjects.push(property)
     }
@@ -532,8 +550,18 @@ class CustomGetter {
    * return true if prop is a resource with an @id and some properties
    * @param prop
    */
-  isFullResource(prop: any): boolean {
-    return prop && typeof prop == "object" && prop['@id'] != undefined && Object.keys(prop).length > 1;
+  isFullNestedResource(prop: any): boolean {
+    return prop &&
+      typeof prop == "object" &&
+      prop['@id'] != undefined &&
+      Object.keys(prop).filter(p => !p.startsWith('@')).length > 0;
+  }
+  /**
+   * return true resource seems complete
+   * @param prop
+   */
+  isFullResource(): boolean {
+    return Object.keys(this.resource).filter(p => !p.startsWith('@')).length > 0;
   }
 
   getPermissions(): string[] {

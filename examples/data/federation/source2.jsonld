@@ -5,7 +5,7 @@
     {
       "federation": "circles",
       "@id": "circles-server3.jsonld",
-      "@type": "ldp:Container",
+      "@type": "sib:federatedContainer",
       "permissions": [
         {
           "mode": {
@@ -15,7 +15,8 @@
       ]
     },
     {
-      "@id": "circles-server4.jsonld"
+      "@id": "circles-server4.jsonld",
+      "@type": "sib:federatedContainer"
     }
   ],
   "permissions": [
