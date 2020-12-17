@@ -39,10 +39,21 @@ describe('solid-form', function() {
       });
     });
 
+
+    cy.server();
+    cy.route({
+      method: 'PUT',
+      url: '**/event-1.jsonld',
+      status: 200,
+      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+    cy.get('#form-edition-2 input[type=text][name=name]')
+      .type(' in BZH');
     cy.get('#form-edition-2 select').select('Pierre DLC')
     cy.get('#form-edition-2').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
+          name: 'Coliving in BZH',
           contact: {
             "@id": "user-4.jsonld",
           },
@@ -50,6 +61,12 @@ describe('solid-form', function() {
         });
       });
     });
+    cy.get('#form-edition-2 input[type="submit"]').click();
+    // After submit, form is re-rendered properly
+    cy.get('#form-edition-2 input[type=text][name=name]')
+      .should('have.value', 'Coliving');
+    cy.get('#form-edition-2 select')
+      .should('have.value', '{"@id": "user-1.jsonld"}');
   });
   it('widget creation', () => {
     cy.get('#form-3 solid-form-dropdown')
