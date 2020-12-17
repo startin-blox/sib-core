@@ -20,9 +20,15 @@
 
     <h3>edition form</h3>
     <solid-form
-      id="form-2"
+      id="form-edition-1"
       data-src="../data/list/event-1.jsonld"
       fields="name, contact.email"
+    ></solid-form>
+    <solid-form
+      id="form-edition-2"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, contact"
+      range-contact="../data/list/users.jsonld"
     ></solid-form>
 
     <h3>widget creation, solid-form attributes </h3>

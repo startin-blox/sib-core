@@ -160,20 +160,19 @@ class Store {
       credentials: 'include'
     }).then(response => {
       if (response.ok) {
-        // Notify resource
         this.clearCache(expandedId);
         this.getData(expandedId, resource['@context']).then(() => {
-          PubSub.publish(expandedId);
 
-          // Notify nested resources
-          this.getNestedResources(resource, id).then((resources) => {
-            resources.forEach((resourceId) => {
-              this.clearCache(resourceId);
-              this.getData(resourceId, resource['@context']).then(() => {
-                PubSub.publish(resourceId)
-              });
-            });
-          });
+          // Refresh and notify nested resources
+          this.getNestedResources(resource, id) // get nested resources
+          .then((resources) => {
+            return Promise.all(resources.map(async (resourceId: string) => {
+              this.clearCache(resourceId); // remove them from cache
+              await this.getData(resourceId, resource['@context'], expandedId); // and fetch data again
+              PubSub.publish(resourceId); // notify components related to each resource
+            }));
+          })
+          .then(() => PubSub.publish(expandedId)); // then, notify components related to current resource
 
           // Notify related resources
           const toNotify = this.subscriptionIndex.get(expandedId);
