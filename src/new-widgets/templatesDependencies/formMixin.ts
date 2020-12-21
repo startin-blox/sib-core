@@ -8,6 +8,13 @@ const FormMixin = {
         this.listAttributes['required'] = true;
       }
     },
+    autocomplete: {
+      type: String,
+      default: '',
+      callback:function (value: string) {
+        this.addToAttributes(value, "autocomplete");
+      }
+    },
   },
   attached() {
     this.listAttributes['onChange'] = this.onChange.bind(this);

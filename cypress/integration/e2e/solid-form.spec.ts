@@ -209,4 +209,13 @@ describe('solid-form', function() {
     .and('have.attr', 'addable-placeholder-name', 'Enter your name')
     .and('have.attr', 'addable-submit-button', 'Send name')
   });
+  it('autocomplete attribute', () => {
+    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(0)
+      .should('have.attr', 'autocomplete', 'off')
+    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(0)
+      .find('input[type=text]')
+      .should('have.attr', 'autocomplete', 'off')
+    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(1)
+      .should('not.have.attr', 'autocomplete')
+  })
 })

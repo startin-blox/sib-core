@@ -220,6 +220,7 @@ const WidgetMixin = {
       /* 'widget', */,
       'required',
       'editable',
+      'autocomplete',
       'upload-url',
       'option-label',
       'order-by', // deprecated. Remove in 0.15

@@ -27,6 +27,7 @@ export const formTemplates = {
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
         ?required=${attributes.required}
+        autocomplete=${ifDefined(attributes.autocomplete)}
         data-holder
         @change=${attributes.onChange}
       />
@@ -40,6 +41,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         data-holder
         ?required=${attributes.required}
+        autocomplete=${ifDefined(attributes.autocomplete)}
         @change=${attributes.onChange}
       >${value}</textarea>
     `,
@@ -148,6 +150,7 @@ export const formTemplates = {
         data-holder
         ?required=${attributes.required}
         ?multiple=${attributes.multiple}
+        autocomplete=${ifDefined(attributes.autocomplete)}
         @change=${attributes.onChange}
       >
         ${!(attributes.multiple || attributes.autocomplete) ? html`
