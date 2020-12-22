@@ -19,8 +19,21 @@
         search-label-email="mail"
         counter-template="${counter} users here"
       ></solid-display>
-    </details>
 
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-label"
+        fields="email"
+        label-email="mail"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users-long.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-label"
+        counter-template="${counter} users here"
+      ></solid-display>
+    </details>
+    
     <details>
       <summary>One field & value:</summary>
       <solid-display
@@ -30,14 +43,39 @@
         search-value-email="happy"
         counter-template="${counter} users here"
       ></solid-display>
+      
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-value"
+        fields="email"
+        value-email="happy"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users-long.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-value"
+        counter-template="${counter} users here"
+      ></solid-display>
     </details>
-
+    
     <details>
       <summary>Multiple fields:</summary>
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, first_name, last_name, email"
         search-fields="first_name, last_name"
+      ></solid-display>
+      
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="multi-fields"
+        fields="first_name, last_name"
+        autocomplete-first_name="off"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="multi-fields"
       ></solid-display>
     </details>
 
@@ -47,6 +85,17 @@
         data-src="data/list/users.jsonld"
         fields="username, nameSet(first_name, last_name), email"
         search-fields="nameSet"
+      ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-set"
+        fields="nameSet"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, nameSet(first_name, last_name), email"
+        filtered-by="filter-set"
       ></solid-display>
     </details>
 
@@ -64,10 +113,36 @@
         search-fields="skills"
         search-range-skills="data/list/skills.jsonld"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-dropdown"
+        fields="skills"
+        range-skills="data/list/skills.jsonld"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        filtered-by="filter-dropdown"
+      ></solid-display>
     </details>
 
     <details>
       <summary>Enum:</summary>
+      <solid-form-search
+        id="filter-enum"
+        fields="username"
+        enum-username="paris, paul, pierre"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username"
+        filtered-by="filter-enum"
+        widget-skills="solid-skill"
+      ></solid-display>
+
+      <h4>with solid-form-search</h4>
       <solid-form-search
         id="filter-enum"
         fields="username"
@@ -92,10 +167,24 @@
         search-range-skills="data/list/skills.jsonld"
         search-widget-skills="solid-form-checkboxes"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-checkboxes"
+        fields="skills"
+        range-skills="data/list/skills.jsonld"
+        widget-skills="solid-form-checkboxes"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        filtered-by="filter-checkboxes"
+      ></solid-display>
     </details>
 
     <details>
-      <summary>multipleselect:</summary>
+      <summary>Multipleselect:</summary>
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, skills"
@@ -105,10 +194,24 @@
         search-range-skills="data/list/skills.jsonld"
         search-widget-skills="solid-form-multipleselect"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-multipleselect"
+        fields="skills"
+        range-skills="data/list/skills.jsonld"
+        widget-skills="solid-form-multipleselect"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        filtered-by="filter-multipleselect"
+      ></solid-display>
     </details>
 
     <details>
-      <summary>multipleselect autocompletion:</summary>
+      <summary>Multipleselect autocompletion:</summary>
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, skills"
@@ -117,6 +220,20 @@
         search-fields="skills"
         search-range-skills="data/list/skills.jsonld"
         search-widget-skills="solid-form-multipleselect-autocompletion"
+      ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-multiselectautocomp"
+        fields="skills"
+        range-skills="data/list/skills.jsonld"
+        widget-skills="solid-form-multipleselect-autocompletion"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        filtered-by="filter-multiselectautocomp"
       ></solid-display>
     </details>
 
@@ -130,6 +247,19 @@
         search-fields="skills, username"
         search-range-skills="data/list/skills.jsonld"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-dropdown-field"
+        fields="skills, username"
+        range-skills="data/list/skills.jsonld"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, skills"
+        multiple-skills
+        filtered-by="filter-dropdown-field"
+      ></solid-display>
     </details>
 
     <details>
@@ -140,6 +270,18 @@
         search-fields="email"
         search-widget-email="solid-form-textarea"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-widget"
+        fields="email"
+        widget-email="solid-form-textarea"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-widget"
+      ></solid-display>
     </details>
 
     <details>
@@ -148,6 +290,18 @@
         data-src="data/list/users.jsonld"
         fields="username, first_name, last_name, email, profile.city"
         search-fields="profile.city"
+      ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-dotted"
+        fields="profile.city"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email, profile.city"
+        search-fields="profile.city"
+        filtered-by="filter-dotted"
       ></solid-display>
     </details>
 
@@ -158,10 +312,21 @@
         fields="username, first_name, last_name, email, nameSet(profile.city, first_name)"
         search-fields="nameSet"
       ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-set-dotted"
+        fields="nameSet"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email, nameSet(profile.city, first_name)"
+        filtered-by="filter-set-dotted"
+      ></solid-display>
     </details>
 
     <details>
-      <summary>Range number + date:</summary>
+      <summary>Rangedate, rangenumber:</summary>
       <solid-display
         data-src="data/list/events.jsonld"
         fields="name, date"
@@ -174,6 +339,30 @@
         fields="name, seats"
         search-fields="seats"
         search-widget-seats="solid-form-rangenumber"
+      ></solid-display>
+
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="filter-rangenumber"
+        fields="date"
+        widget-date="solid-form-rangedate"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/events.jsonld"
+        fields="name, date"
+        widget-date="solid-display-value-datetime"
+        filtered-by="filter-rangenumber"
+      ></solid-display>
+
+      <solid-form-search
+        id="filter-rangedate"
+        fields="seats"
+        widget-seats="solid-form-rangenumber"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/events.jsonld"
+        fields="name, seats"
+        filtered-by="filter-rangedate"
       ></solid-display>
     </details>
   </body>

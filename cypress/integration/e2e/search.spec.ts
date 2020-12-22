@@ -9,16 +9,16 @@ describe('solid-form-search widget', function() {
       .find('select')
       .should('have.attr', 'name', 'username')
       .children().and('have.length', 6)
-      cy.get('solid-form-search#filter1')
+    cy.get('solid-form-search#filter1')
       .find('option').eq(0)
       .should('have.attr', 'value', '')
       .contains('-');
-      cy.get('solid-form-search#filter1')
+    cy.get('solid-form-search#filter1')
       .find('option').eq(1)
       .should('have.attr', 'value', 'admin')
       .contains('admin');
       
-      cy.get('solid-form-search#filter2')
+    cy.get('solid-form-search#filter2')
       .find('select')
       .should('have.attr', 'name', 'last_name')
       .children().and('have.length', 5);
@@ -34,8 +34,8 @@ describe('solid-form-search widget', function() {
 
   it('solid-form-search + submit-button', () => {
     cy.get('#filter3')
-    .find('input[type=submit]').as('btn')
-    .should('have.attr', 'value', 'update result');
+      .find('input[type=submit]').as('btn')
+      .should('have.attr', 'value', 'update result');
     cy.get('#display3 > div > solid-display').should('have.length', 4);
     cy.get('#filter3 select').select('User');
     cy.get('#display3 > div > solid-display').should('have.length', 4);
@@ -57,6 +57,5 @@ describe('solid-form-search widget', function() {
       .and('have.attr', 'end-value', '10');
     cy.get('#display5 > div ')
       .children().should('have.length', 3)
-
-  })
+  });
 })
