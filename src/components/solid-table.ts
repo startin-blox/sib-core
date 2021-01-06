@@ -13,6 +13,7 @@ import { HighlighterMixin } from '../mixins/highlighterMixin';
 import { RequiredMixin } from '../mixins/requiredMixin';
 
 import { html, render } from 'lit-html';
+import { until } from 'lit-html/directives/until';
 
 export const SolidTable = {
   name: 'solid-table',
@@ -94,8 +95,8 @@ export const SolidTable = {
    * @param resourceId
    * @param attributes
    */
-  getChildTemplate(resourceId: string, fields) {
-    const resource = store.get(resourceId);
+  async getChildTemplate(resourceId: string, fields) {
+    const resource = await store.getData(resourceId, this.context);
     let template = html`
       <tr data-resource="${resourceId}">
         ${this.selectable !== null ? html`
@@ -117,7 +118,7 @@ export const SolidTable = {
 
     const template = html`
       ${this.header !== null ? this.getHeader(fields) : ''}
-      ${this.getChildTemplate(this.resource['@id'], fields)}
+      ${until(this.getChildTemplate(this.resource['@id'], fields))}
     `;
     render(template, parent);
   },
@@ -140,7 +141,7 @@ export const SolidTable = {
     const fields = await this.getFields();
     const template = html`
       ${this.header !== null ? this.getHeader(fields) : ''}
-      ${resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)}
+      ${until(Promise.all(resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)))}
     `; // create a child template for each resource
     render(template, div);
 
