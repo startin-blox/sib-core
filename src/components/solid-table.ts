@@ -34,6 +34,10 @@ export const SolidTable = {
       type: String,
       default: 'solid-display-value',
     },
+    selectable: {
+      type: String,
+      default: null,
+    },
   },
   get div(): HTMLElement { // overrides widgetMixin to create a table element
     if (this._div) return this._div;
@@ -47,6 +51,11 @@ export const SolidTable = {
   get defaultSetWidget(): string {
     return 'solid-set-default';
   },
+  get selectedLines() {
+    if (this.selectable === null) return [];
+    return Array.from(this.element.querySelectorAll('input[data-selection]:checked'))
+      .map(e => e.closest('[data-resource]').getAttribute('data-resource'));
+  },
   /**
    * Returns template of a child element (resource)
    * @param resourceId
@@ -55,7 +64,11 @@ export const SolidTable = {
   getChildTemplate(resourceId: string, fields) {
     const resource = store.get(resourceId);
     let template = html`
-      <tr>
+      <tr data-resource="${resourceId}">
+        ${this.selectable !== null ? html`
+        <td>
+          <input type="checkbox" data-selection />
+        </td>` : ''}
         ${fields.map((field: string) => html`<td>${this.createWidget(field, resource)}</td>`)}
       </tr>
     `
