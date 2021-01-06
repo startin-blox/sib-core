@@ -7,6 +7,7 @@ import { SolidWidget } from './components/solid-widget';
 import { SolidAcChecker } from './components/solid-ac-checker';
 import { SolidDelete } from './components/solid-delete';
 import { SolidLang } from './components/solid-lang';
+import { SolidTable } from './components/solid-table';
 
 // Mixins
 import { CounterMixin } from './mixins/counterMixin';
@@ -44,6 +45,7 @@ export {
   SolidAcChecker,
   SolidDelete,
   SolidLang,
+  SolidTable,
 
   // Mixins
   CounterMixin,

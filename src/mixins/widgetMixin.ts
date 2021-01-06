@@ -105,17 +105,17 @@ const WidgetMixin = {
   },
   /**
    * Return the value of "resource" for predicate "field"
-   * @param resource - Resource
    * @param field - string
+   * @param resource - Resource
    */
-  async fetchValue(resource: Resource, field: string) {
-    return this.resource && !this.resource.isContainer() ? await resource[field] : undefined;
+  async fetchValue(field: string, resource: Resource) {
+    return resource && !resource.isContainer() ? await resource[field] : undefined;
   },
   /**
    * Return the value of the field
    * @param field - field
    */
-  async getValue(field: string) {
+  async getValue(field: string, resource: Resource) {
     const escapedField = this.getEscapedField(field);
     if (this.getAction(escapedField)) {
       return this.getAction(escapedField);
@@ -123,7 +123,7 @@ const WidgetMixin = {
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resourceValue = await this.fetchValue(this.resource, field);
+    let resourceValue = await this.fetchValue(field, resource);
 
     // Empty value
     if (resourceValue === undefined || resourceValue === '' || resourceValue === null) // If null or empty, return field default value
@@ -193,8 +193,9 @@ const WidgetMixin = {
   /**
    * Return all the attributes of widget "field"
    * @param field - string
+   * @param resource - Resource
    */
-  widgetAttributes(field: string): object {
+  widgetAttributes(field: string, resource: Resource): object {
     const attrs = { name: field };
     const escapedField = this.getEscapedField(field);
 
@@ -238,10 +239,11 @@ const WidgetMixin = {
 
     const addableAttributes: Attr[] = (Array.from(this.element.attributes) as Attr[]).filter((a: Attr) => a.name.startsWith(`addable-${escapedField}`));
     for (let attr of addableAttributes) this.addToAttributes(attr.name, attr.name.replace(`addable-${escapedField}`, 'addable'), attrs)
-    
+
+    const resourceId = resource ? resource!['@id'] : null;
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
-    if (this.getAction(escapedField) && this.resource) attrs['src'] = this.element.getAttribute('src-' + escapedField) || this.resource['@id'];
-    if (this.editable(escapedField) && this.resource) attrs['value-id'] = this.resource['@id'];
+    if (this.getAction(escapedField) && resourceId) attrs['src'] = this.element.getAttribute('src-' + escapedField) || resourceId;
+    if (this.editable(escapedField) && resourceId) attrs['value-id'] = resourceId;
 
     return attrs;
   },
@@ -249,12 +251,13 @@ const WidgetMixin = {
    * Creates and return a widget for field + add it to the widget list
    * @param field - string
    */
-  createWidget(field: string): Element {
+  createWidget(field: string, resource = null): Element {
     if (!parent) parent = this.div;
     if (this.isString(field)) return this.createString(field); // field is a static string
     if (this.isSet(field)) return this.createSet(field);
 
-    const attributes = this.widgetAttributes(field);
+    const currentResource = resource || this.resource;
+    const attributes = this.widgetAttributes(field, currentResource);
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     const widget = document.createElement(widgetMeta.tagName);
@@ -265,12 +268,12 @@ const WidgetMixin = {
       for (let name of Object.keys(attributes).filter(attr => ['name', 'class'].includes(attr))) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
-      this.getValue(field).then(value => widget.textContent = value);
+      this.getValue(field, currentResource).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
       for (let name of Object.keys(attributes)) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
-      this.getValue(field).then((value: any) => {
+      this.getValue(field, currentResource).then((value: any) => {
         // setAttribute set a string. Make sure null values are empty
         if (value === null || value === undefined) value = '';
         if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
