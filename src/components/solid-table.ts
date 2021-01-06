@@ -53,8 +53,8 @@ export const SolidTable = {
   },
   get selectedLines() {
     if (this.selectable === null) return [];
-    return Array.from(this.element.querySelectorAll('input[data-selection]:checked'))
-      .map(e => e.closest('[data-resource]').getAttribute('data-resource'));
+    return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
+      .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
   },
   /**
    * Returns template of a child element (resource)
