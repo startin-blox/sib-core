@@ -38,6 +38,10 @@ export const SolidTable = {
       type: String,
       default: null,
     },
+    header: {
+      type: String,
+      default: null,
+    },
   },
   get div(): HTMLElement { // overrides widgetMixin to create a table element
     if (this._div) return this._div;
@@ -55,6 +59,35 @@ export const SolidTable = {
     if (this.selectable === null) return [];
     return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
       .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
+  },
+  /**
+   * Select all lines
+   * @param e - event
+   */
+  selectAll(e) {
+    if (this.selectable === null) return;
+    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+      checkbox.checked = e.target.checked;
+    }
+  },
+  /**
+   * Creates a header line for the table
+   * @param fields
+   */
+  getHeader(fields: string[]) {
+    let template = html`
+      <tr>
+        ${this.selectable !== null ? html`
+        <th>
+          <input type="checkbox" @change="${this.selectAll.bind(this)}" />
+        </th>` : ''}
+        ${fields.map((field: string) => html`
+          <th>
+            ${this.element.hasAttribute('label-'+field) ? this.element.getAttribute('label-'+field) : field}
+        </th>`)}
+      </tr>
+    `
+    return template;
   },
   /**
    * Returns template of a child element (resource)
@@ -82,8 +115,10 @@ export const SolidTable = {
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     const fields = await this.getFields();
 
-    const attributes = this.getChildAttributes();
-    const template = this.getChildTemplate(this.resource['@id'], fields, attributes);
+    const template = html`
+      ${this.header !== null ? this.getHeader(fields) : ''}
+      ${this.getChildTemplate(this.resource['@id'], fields)}
+    `;
     render(template, parent);
   },
 
@@ -104,6 +139,7 @@ export const SolidTable = {
   ) {
     const fields = await this.getFields();
     const template = html`
+      ${this.header !== null ? this.getHeader(fields) : ''}
       ${resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)}
     `; // create a child template for each resource
     render(template, div);
