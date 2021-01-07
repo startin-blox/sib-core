@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-table</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h2>Solid Table</h2>
+
+    <h3>table-users</h3>
+    <solid-table
+      id="table-users"
+      data-src="../data/list/users.jsonld"
+      fields="first_name, last_name, email, username"
+      label-first_name="First Name"
+      class-last_name="sib-last-name"
+      widget-email="solid-display-link-mailto"
+      header
+      selectable
+      order-by="first_name"
+    ></solid-table>
+
+    <h3>table-user-1</h3>
+    <solid-table
+      id="table-user-1"
+      data-src="../data/list/user-1.jsonld"
+      fields="first_name, last_name, email, username"
+      label-first_name="First Name"
+    ></solid-table>
+  </body>
+</html>
