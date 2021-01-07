@@ -31,5 +31,22 @@
       fields="first_name, last_name, email, username"
       label-first_name="First Name"
     ></solid-table>
+
+    <h3>table-users-editable</h3>
+    <solid-table
+      id="table-users-editable"
+      data-src="../data/list/users.jsonld"
+      fields="first_name, last_name, email, username"
+
+      editable-first_name
+
+      editable-last_name
+      enum-last_name="Smith, Williams, Anderson"
+
+      editable-email
+      widget-email="solid-form-email-label"
+      class-email="email-input"
+      submit-button-email="Validate modifications"
+    ></solid-table>
   </body>
 </html>

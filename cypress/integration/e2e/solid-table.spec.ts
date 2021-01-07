@@ -112,7 +112,7 @@ describe('solid-table', function() {
       .eq(3).should('have.text', 'Test');
   });
 
-  it('show user-1', () => {
+  it('shows user-1', () => {
     cy.get('#table-user-1')
 
       // CHECK DATA
@@ -150,6 +150,40 @@ describe('solid-table', function() {
       .eq(3)
       .find('solid-display-value')
       .should('have.text', 'admin')
+  });
+
+  it('makes cells editable', () => {
+    cy.get('#table-users-editable')
+      .find('tr').eq(0)
+
+      // first_name
+      .find('td').eq(0)
+      .find('solid-form')
+      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .and('have.attr', 'fields', 'first_name')
+      .and('have.attr', 'partial', '')
+      .find('solid-form-label-text input[type="text"]')
+      .should('have.value', 'Test')
+
+      // last_name
+      .parents('tr').eq(0)
+      .find('td').eq(1)
+      .find('solid-form')
+      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .and('have.attr', 'fields', 'last_name')
+      .and('have.attr', 'enum-last_name', 'Smith, Williams, Anderson')
+      .and('have.attr', 'partial', '')
+
+      // email
+      .parents('tr').eq(0)
+      .find('td').eq(2)
+      .find('solid-form')
+      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .and('have.attr', 'fields', 'email')
+      .and('have.attr', 'widget-email', 'solid-form-email-label')
+      .and('have.attr', 'class', 'email-input')
+      .and('have.attr', 'submit-button', 'Validate modifications')
+      .and('have.attr', 'partial', '');
   });
 
 })
