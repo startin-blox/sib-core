@@ -1,3 +1,4 @@
+import type { Resource } from '../mixins/interfaces';
 import { Sib } from '../libs/Sib';
 import { store } from '../libs/store/store';
 import { WidgetMixin } from '../mixins/widgetMixin';
@@ -14,6 +15,7 @@ import { RequiredMixin } from '../mixins/requiredMixin';
 
 import { html, render } from 'lit-html';
 import { until } from 'lit-html/directives/until';
+import { spread } from '../libs/lit-helpers';
 
 export const SolidTable = {
   name: 'solid-table',
@@ -72,6 +74,48 @@ export const SolidTable = {
     }
   },
   /**
+   * Create a widget for the field or a form if it's editable
+   * @param field
+   * @param resource
+   */
+  createCellWidget(field: string, resource: Resource) {
+    // if regular widget
+    if (!this.element.hasAttribute('editable-' + field)) return this.createWidget(field, resource);
+
+    // if editable widget
+    const attributes = {};
+    const formWidgetAttributes = [ // attributes to give to the form widget
+      'range',
+      'enum',
+      'placeholder',
+      'required',
+      'autocomplete',
+      'option-label',
+      'min',
+      'max',
+      'pattern',
+      'title',
+      'widget'
+    ];
+    for (let attr of formWidgetAttributes) this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`,  attributes)
+
+    const formAttributes = [ // attributes to give to the form
+      'class',
+      'submit-button',
+      'next'
+    ];
+    for (let attr of formAttributes) this.addToAttributes(`${attr}-${field}`, attr,  attributes)
+
+    return html`
+      <solid-form
+        data-src="${resource['@id']}"
+        fields="${field}"
+        ...=${spread(attributes)}
+        partial
+      ></solid-form>
+    `;
+  },
+  /**
    * Creates a header line for the table
    * @param fields
    */
@@ -103,7 +147,7 @@ export const SolidTable = {
         <td>
           <input type="checkbox" data-selection />
         </td>` : ''}
-        ${fields.map((field: string) => html`<td>${this.createWidget(field, resource)}</td>`)}
+        ${fields.map((field: string) => html`<td>${this.createCellWidget(field, resource)}</td>`)}
       </tr>
     `
     return template;
