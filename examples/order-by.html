@@ -15,7 +15,7 @@
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, email"
-        order-desc="username"
+        order-asc="username"
       ></solid-display>
     </details>
     
@@ -24,7 +24,7 @@
       <solid-display
         data-src="data/list/users.jsonld"
         fields="username, email"
-        order-asc="username"
+        order-desc="username"
       ></solid-display>
     </details>
 
@@ -47,6 +47,27 @@
         paginate-by="3"
         search-fields="username"
       ></solid-display>
+    </details>
+
+    <details>
+      <summary>Sorted by (in solid-form-search):</summary>
+      <solid-form-search
+        id="sorter"
+        fields="field, order"
+        enum-field="Skill name = name, Skill number = order"
+        enum-order="A to Z / Ascending order = asc , Z to A / Descending orde = desc"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/skills.jsonld"
+        fields="name, order"
+        sorted-by="sorter"
+      ></solid-display>
+      <solid-display
+      id="list-1"
+      data-src="data/list/skills.jsonld"
+      fields="@id, name"
+      order-asc="name"
+    ></solid-display>
     </details>
   </body>
 </html>

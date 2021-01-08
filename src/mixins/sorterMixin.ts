@@ -17,6 +17,17 @@ const SorterMixin = {
     orderByRandom: {
       type: String,
       default: null
+    },
+    sortedBy: {
+      type:String,
+      default: null,
+      callback(newValue: string) {
+        // if we change search form, re-populate
+        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+          this.searchForm = null;
+          this.populate();
+        }
+      }
     }
   },
   initialState: {
@@ -28,17 +39,58 @@ const SorterMixin = {
   created(): void {
     this.randomOrder = [];
   },
-  async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async sorterList(): Promise<void> {
+    if (!this.resource) return;
+    this.empty();
+    await this.populate();
+  },
+  linkSorterForm() {
+    this.searchForm.addEventListener('formChange', () => {
+      this.sorterList();
+    });
+  },
+
+  async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {    
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
-    const sortingKey = this.orderAsc || this.orderDesc;
+    let sortingKey = '';
+    let orderValueToSort = '';
+
+    // if order-asc or order-desc attribute
+    if (this.orderAsc || this.orderDesc) {
+      sortingKey = this.orderAsc || this.orderDesc;
+    };
+    // if sorted-by attribute (solid-form-search data used)
+    if (this.sortedBy) {
+      const sortedBy = this.sortedBy;
+      if (sortedBy != null) {
+        this.searchForm = document.getElementById(sortedBy);
+        if (!this.searchForm) throw `#${sortedBy} is not in DOM`;        
+    
+        if (!this.searchForm.component.value.field) {
+          console.warn('The attribute field does not exist')
+        } else { 
+          sortingKey = this.searchForm.component.value.field['value']; // else demandé par Matthieu
+        }
+        orderValueToSort = this.searchForm.component.value.order['value'];
+        if (sortingKey == '' && orderValueToSort == '') {
+          this.linkSorterForm();
+        }
+      }
+    }
+    // sorting data according to the defined value of sortingKey
     if (sortingKey) {
+      let orderToSort = new Boolean;
+      if (sortingKey == this.orderAsc || orderValueToSort == "asc") orderToSort  = true;
+      else if (sortingKey == this.orderDesc || orderValueToSort == "desc") orderToSort = false;
       resources = (await Promise.all(resources.map(async (resource) => ({
-          sortingKey: await resource[sortingKey], // fetch sorting value
-          proxy: resource // and keep proxy
-        }))))
-        .sort(this.sortValuesByKey("sortingKey", !!this.orderAsc)) // sort this array
-        .map(r => r.proxy) // re-create array
-    } else if (this.isRandomSorted()) {
+        sortingKey: await resource[sortingKey], // fetch sorting value
+        proxy: resource // and keep proxy
+      }))))
+      .sort(this.sortValuesByKey("sortingKey", orderToSort)) // sort this array
+      .map(r => r.proxy) // re-create array
+    }
+    // if order-by-random attribute
+    if (this.isRandomSorted()) {
       resources = this.shuffleResources(resources); // shuffle resources
     }
 

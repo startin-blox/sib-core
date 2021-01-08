@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: search</title>
+    <title>SIB test: order-by, sorted-by</title>
     <script type="module" src="../../dist/index.js"></script>
   </head>
 
@@ -28,10 +28,10 @@
       order-desc="name"
     ></solid-display>
     <solid-display
-    id="list-4"
-    data-src="../data/list/skills.jsonld"
-    fields="@id, order, name"
-    order-asc="order"
+      id="list-4"
+      data-src="../data/list/skills.jsonld"
+      fields="@id, order, name"
+      order-asc="order"
     ></solid-display>
     <solid-display
       id="list-5"
@@ -40,6 +40,18 @@
       order-by="name"
     ></solid-display>
     <button id="reloadList">Reload</button>
+    <solid-form-search
+      id="sorter"
+      fields="field, order"
+      enum-field="username, last_name, email"
+      enum-order="asc, desc"
+    ></solid-form-search>
+    <solid-display
+      id="list-6"
+      data-src="../data/list/users.jsonld"
+      fields="username, last_name, email"
+      sorted-by="sorter"
+    ></solid-display>
 
     <script>
       reloadList.onclick = () => {

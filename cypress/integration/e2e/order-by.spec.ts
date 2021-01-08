@@ -283,4 +283,25 @@ describe('order-by', function() {
       cy.get('solid-display-value[name="name"]').contains('Python');
     });
   });
+
+  /**
+   * Sorted-by attribute (with solid-form-search)
+   */
+  it('sorted-by', () => {
+    cy.get('#sorter select[name="field"]').select('username');
+    cy.get('#sorter select[name="order"]').select('desc');
+    cy.get('#list-6 > div').children().should('have.length', 4);
+    cy.get('#list-6 > div').children().eq(0).should('have.attr', 'data-src', 'user-4.jsonld');
+    cy.get('#list-6 > div').children().eq(1).should('have.attr', 'data-src', 'user-2.jsonld');
+    cy.get('#list-6 > div').children().eq(2).should('have.attr', 'data-src', 'user-3.jsonld');
+    cy.get('#list-6 > div').children().eq(3).should('have.attr', 'data-src', 'user-1.jsonld');
+
+    cy.get('#sorter select[name="field"]').select('email');
+    cy.get('#sorter select[name="order"]').select('asc');
+    cy.get('#list-6 > div').children().should('have.length', 4);
+    cy.get('#list-6 > div').children().eq(0).should('have.attr', 'data-src', 'user-3.jsonld');
+    cy.get('#list-6 > div').children().eq(1).should('have.attr', 'data-src', 'user-2.jsonld');
+    cy.get('#list-6 > div').children().eq(2).should('have.attr', 'data-src', 'user-4.jsonld');
+    cy.get('#list-6 > div').children().eq(3).should('have.attr', 'data-src', 'user-1.jsonld');
+  });
 })
