@@ -53,7 +53,7 @@ const SorterMixin = {
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {    
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
     let sortingKey = '';
-    let orderValueToSort = 'asc';
+    let orderValueToSort = '';
 
     // if order-asc or order-desc attribute
     if (this.orderAsc || this.orderDesc) {
@@ -73,8 +73,10 @@ const SorterMixin = {
         } else { 
           sortingKey = this.searchForm.component.value.field['value'];
         }
-        if(this.searchForm.component.value.order && this.searchForm.component.value.order['value']) {
+        if (this.searchForm.component.value.order && this.searchForm.component.value.order['value']) {
           orderValueToSort = this.searchForm.component.value.order['value'];
+        } else { 
+          orderValueToSort = 'asc';
         }
       }
     }
