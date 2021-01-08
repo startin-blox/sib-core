@@ -18,12 +18,17 @@
         use-id
         name="circle-infos"
       ></solid-route>
+      <solid-route
+        hidden
+        use-id
+        name="profile-edit"
+      ></solid-route>
     </solid-router>
 
     <div data-view="home" hidden>
       <h1>Home</h1>
       <solid-display
-        data-src="./data/action/circles.jsonld"
+        data-src="data/action/circles.jsonld"
         fields="name, description, click"
         label-click="click !"
         action-click="circle-infos"
@@ -33,15 +38,23 @@
       <solid-display
         data-src='data/list/user-1.jsonld'
         fields='name, profile-edit'
-        action-profile-edit='profile-edit-route'
+        action-profile-edit='profile-edit'
         src-profile-edit="store://resource.profile.@id"
       ></solid-display>
     </div>
+
     <div data-view="circle-infos" hidden>
       <solid-display
         bind-resources
         fields="name, description"
       ></solid-display>
+    </div>
+
+    <div data-view="profile-edit" hidden>
+      <solid-form
+        bind-resources
+        fields="city"
+      ></solid-form>
     </div>
   </body>
 </html>

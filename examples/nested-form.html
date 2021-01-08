@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>SIB test: Widget form</title>
-  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
   <script type="module" src="../dist/index.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -15,27 +14,29 @@
       <template>
         <h3>Nested form</h3>
         <solid-form
-        data-holder
-        naked
-        data-src="${id}"
-        fields="city, bio, phone"></solid-form>
+          data-holder
+          naked
+          data-src="${value}"
+          fields="city, bio, phone"
+        ></solid-form>
       </template>
     </solid-widget>
 
     <h3>Form</h3>
     <solid-form
-    data-src="data/list/user-1.jsonld"
-    fields="name, profile"
-    widget-profile="solid-form-profile"></solid-form>
+      data-src="data/list/user-1.jsonld"
+      fields="name, profile"
+      widget-profile="solid-form-profile"
+    ></solid-form>
 
     <button id="get">GET nested form value</button>
 
     <pre id="pre"></pre>
 
     <script>
-      get.onclick = () => {
-        let nestedFormValue = document.querySelector('solid-form-profile').value
-        pre.textContent = JSON.stringify(nestedFormValue, null, 2);
+      get.onclick = async () => {
+        let nestedFormValue = document.querySelector('solid-form').component.getFormValue()
+        pre.textContent = JSON.stringify(await nestedFormValue, null, 2);
       }
     </script>
 </body>

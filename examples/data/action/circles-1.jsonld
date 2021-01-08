@@ -1,6 +1,6 @@
 {
-  "@id": "circles-1.jsonld",
-  "name": "circle",
+  "@id": "/examples/data/action/circles-1.jsonld",
+  "name": "General channel",
   "description": "A circle just for testing purpose",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

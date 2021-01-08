@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-display</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h2>Simple table</h2>
+    <solid-table
+      data-src="data/list/users.jsonld"
+      fields="first_name, last_name, email"
+    ></solid-table>
+
+    <h2>Add options</h2>
+    <solid-table
+      data-src="data/list/users.jsonld"
+      fields="first_name, last_name, email"
+      header
+      selectable
+    ></solid-table>
+
+    <h2>Editable cells</h2>
+    <solid-table
+      data-src="data/list/users.jsonld"
+      fields="first_name, last_name, email"
+      editable-first_name
+    ></solid-table>
+
+    <h2>Custom cells forms</h2>
+    <solid-table
+      data-src="data/list/users.jsonld"
+      fields="first_name, last_name, email"
+      editable-first_name
+      widget-first_name="solid-form-placeholder-text"
+      placeholder-first_name="Your First Name"
+
+      editable-last_name
+      enum-last_name="Williams, Smith, Anderson"
+    ></solid-table>
+
+    <style>
+      table {
+          border: solid 1px #DDEEEE;
+          border-collapse: collapse;
+          border-spacing: 0;
+      }
+      table th {
+          background-color: #DDEFEF;
+          border: solid 1px #DDEEEE;
+          color: #336B6B;
+          padding: 10px;
+          text-align: left;
+      }
+      table td {
+          border: solid 1px #DDEEEE;
+          color: #333;
+          padding: 10px;
+      }
+    </style>
+  </body>
+</html>

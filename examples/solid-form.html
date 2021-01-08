@@ -131,15 +131,6 @@
       </details>
 
       <details>
-        <summary>Date widget:</summary>
-        <solid-form
-          data-src="data/list/event-1.jsonld"
-          fields="date"
-          widget-date='solid-form-date'
-        ></solid-form>
-      </details>
-
-      <details>
         <summary>Required fields management:</summary>
         <solid-form
           data-src="data/list/user-1.jsonld"
@@ -163,7 +154,7 @@
           widget-contact="solid-form-radio"
           range-contact="data/list/users.jsonld"
         ></solid-form>
-        
+
         <h4>Enum attribute</h4>
         <solid-form
           data-src="data/list/event-1.jsonld"
@@ -186,7 +177,7 @@
           widget-contact="solid-form-checkboxes"
           range-contact="data/list/users.jsonld"
         ></solid-form>
-        
+
         <h4>Enum attribute</h4>
         <solid-form
           data-src="data/list/event-1.jsonld"
@@ -207,15 +198,6 @@
           fields="presentation"
           pattern-presentation="[a-zA-Z0-9]{2,10}"
           title-presentation="Must only contain 2 to 10 characters : letters in lower or upper case and numbers"
-        ></solid-form>
-      </details>
-
-      <details>
-        <summary>Color widget:</summary>
-        <solid-form
-          data-src="data/list/event-1.jsonld"
-          fields="color"
-          widget-color='solid-form-color'
         ></solid-form>
       </details>
       <details>
@@ -248,6 +230,15 @@
           data-src="data/list/users.jsonld"
           fields="username, first_name, last_name"
           autocomplete-username="off"
+        ></solid-form>
+      </details>
+      <details>
+        <summary>Autosave</summary>
+        <solid-form
+          data-src="data/list/user-1.jsonld"
+          fields="username"
+          autosave
+          partial
         ></solid-form>
       </details>
     </div>

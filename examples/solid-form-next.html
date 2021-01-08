@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: solid-form + next</title>
     <script type="module" src="../dist/index.js"></script>
-    <script type="module" src="https://unpkg.com/@startinblox/router@0.7"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router@0.11"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -17,28 +17,28 @@
         <solid-route name="add">add new</solid-route>
         <solid-route name="view" use-id>view it</solid-route>
       </solid-router>
-      <div id="all">
+      <div data-view="all">
         <solid-display
         data-src="data/list/skills.jsonld"
         fields="name"
         next="edit"
         ></solid-display>
       </div>
-      <div id="edit">
+      <div data-view="edit">
         <solid-form
           bind-resources
           fields="name"
           next="view"
         ></solid-form>
       </div>
-      <div id="add">
+      <div data-view="add">
         <solid-form
         data-src="data/list/skills.jsonld"
         fields="name"
         next="view"
         ></solid-form>
       </div>
-      <div id="view">
+      <div data-view="view">
         <solid-display
           bind-resources
           fields="name"

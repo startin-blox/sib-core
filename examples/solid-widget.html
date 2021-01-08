@@ -27,32 +27,11 @@
     </template>
   </solid-widget>
 
-  <solid-widget name="custom-dropdown">
-      <template>
-        <label>${label}</label>
-        <select>
-          ${range}
-        </select>
-      </template>
-
-      <template data-range>
-          <option value="${name}">skill: ${name}</option>
-      </template>
-    </solid-widget>
-
-
   <solid-display
     data-src="data/list/user-1.jsonld"
     fields="name, profile"
     widget-name="custom-test-name"
     widget-profile="custom-test-profile"
-    ></solid-display>
-
-    <h2>Choose skills</h2>
-    <solid-form
-    fields="skills"
-    range-skills="data/list/skills.jsonld"
-    widget-skills="custom-dropdown"
-    ></solid-form>
+  ></solid-display>
 </body>
 </html>
