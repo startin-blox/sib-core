@@ -73,18 +73,14 @@ const SorterMixin = {
         } else { 
           sortingKey = this.searchForm.component.value.field['value'];
         }
-        if (this.searchForm.component.value.order && this.searchForm.component.value.order['value']) {
-          orderValueToSort = this.searchForm.component.value.order['value'];
-        } else { 
-          orderValueToSort = 'asc';
-        }
+        const orderField = this.searchForm.component.value.order;
+        orderValueToSort = orderField && orderField.value ? orderField.value : 'asc';
       }
     }
     // sorting data according to the defined value of sortingKey
     if (sortingKey) {
-      let orderToSort = new Boolean;
-      if (sortingKey == this.orderAsc || orderValueToSort == "asc") orderToSort  = true;
-      else if (sortingKey == this.orderDesc || orderValueToSort == "desc") orderToSort = false;
+      let orderToSort = true; // set 'asc' by default
+      if (this.orderDesc || orderValueToSort == "desc") orderToSort = false;
       resources = (await Promise.all(resources.map(async (resource) => ({
         sortingKey: await resource[sortingKey], // fetch sorting value
         proxy: resource // and keep proxy
