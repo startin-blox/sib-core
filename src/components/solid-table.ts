@@ -110,8 +110,9 @@ export const SolidTable = {
       <solid-form
         data-src="${resource['@id']}"
         fields="${field}"
-        ...=${spread(attributes)}
         partial
+        autosave
+        ...=${spread(attributes)}
       ></solid-form>
     `;
   },

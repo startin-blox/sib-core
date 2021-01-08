@@ -32,6 +32,10 @@ export const SolidForm = {
       type: Boolean,
       default: null
     },
+    autosave: {
+      type: Boolean,
+      default: null
+    },
     confirmationMessage: {
       type: String,
       default: null
@@ -63,6 +67,12 @@ export const SolidForm = {
   },
   get isNaked(): boolean {
     return this.element.hasAttribute('naked');
+  },
+  get isSavingAutomatically(): boolean {
+    return this.autosave !== null;
+  },
+  isCreationForm(formValue: object): boolean {
+    return !('@id' in formValue);
   },
   async getFormValue() {
     let value = this.value;
@@ -131,8 +141,8 @@ export const SolidForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    const isCreation = !('@id' in (await this.getFormValue()));
-    let id;
+    const isCreation = this.isCreationForm(await this.getFormValue());
+    let id: string;
     try {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return; }
@@ -140,8 +150,12 @@ export const SolidForm = {
 
     this.goToNext({'@id': id})
   },
-  async inputChange(): Promise<void> {
-    this.change(await this.getFormValue());
+  async inputChange(preventSubmitting: boolean = false): Promise<void> {
+    const formValue = await this.getFormValue();
+    this.change(formValue);
+
+    if (!preventSubmitting && !this.isCreationForm(formValue) && this.isSavingAutomatically)
+      this.submitForm(); // if autosave, submitForm
   },
   empty(): void {
   },
@@ -182,13 +196,13 @@ export const SolidForm = {
       };
     }
   },
-  onReset(event: Event) {
+  onReset() {
     if (!this.isNaked) {
-      setTimeout(() => this.inputChange(event))
+      setTimeout(() => this.inputChange(true))
     }
   },
   async populate(): Promise<void> {
-    this.element.addEventListener('input', (event: Event) => this.inputChange(event));
+    this.element.oninput = () => this.inputChange(); // prevent from firing change multiple times
     const fields = await this.getFields();
     const fieldsTemplate = html`
       ${fields.map((field: string) => this.createWidget(field))}
@@ -201,7 +215,9 @@ export const SolidForm = {
           @reset=${this.onReset.bind(this)}
         >
           ${fieldsTemplate}
-          <input type="submit" value=${ifDefined(this.submitButton)}>
+          ${!this.isSavingAutomatically ? html`
+            <input type="submit" value=${ifDefined(this.submitButton)}>
+          ` : ''}
           ${this.element.hasAttribute('reset')
             ? html`<input type="reset" />` : ''}
         </form>

@@ -41,6 +41,7 @@ const MultipleFormMixin = {
     };
     this.listAttributes['removeItem'] = (index) => {
       this.element.querySelector(`[data-index="${this.name + index}"]`).remove();
+      this.element.dispatchEvent(new Event('input', {bubbles: true}));
     };
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {

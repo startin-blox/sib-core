@@ -217,5 +217,29 @@ describe('solid-form', function() {
       .should('have.attr', 'autocomplete', 'off')
     cy.get('solid-form#form-13 > form > solid-form-label-text').eq(1)
       .should('not.have.attr', 'autocomplete')
-  })
+  });
+  it('autosaves form', () => {
+    cy.spy(win.sibStore, 'patch');
+    cy.get('solid-form#form-autosave').find('input[type="submit"]')
+      .should('not.exist');
+    cy.get('solid-form#form-autosave input[name="username"]').type('a').then(() => {
+      expect(win.sibStore.patch).to.have.callCount(1);
+    });
+    cy.get('solid-form#form-autosave [data-index="skills0"] button').click().then(() => {
+      expect(win.sibStore.patch).to.have.callCount(2);
+    });
+    cy.get('solid-form#form-autosave [data-index="skills1"] select').select('{"@id": "skill-5.jsonld"}').then(() => {
+      cy.wait(200).then(() => {
+        expect(win.sibStore.patch).to.have.callCount(3);
+      })
+    });
+
+    // Without autosave, no requests
+    cy.get('solid-form#form-autosave').then(($el) => {
+      $el.removeAttr('autosave');
+      cy.get('solid-form#form-autosave input[name="username"]').type('a').then(() => {
+        expect(win.sibStore.patch).to.have.callCount(3);
+      });
+    });
+  });
 })
