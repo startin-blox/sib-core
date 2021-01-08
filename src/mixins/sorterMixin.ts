@@ -53,27 +53,28 @@ const SorterMixin = {
   async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {    
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
     let sortingKey = '';
-    let orderValueToSort = '';
+    let orderValueToSort = 'asc';
 
     // if order-asc or order-desc attribute
     if (this.orderAsc || this.orderDesc) {
       sortingKey = this.orderAsc || this.orderDesc;
-    };
+    }
     // if sorted-by attribute (solid-form-search data used)
-    if (this.sortedBy) {
+    else if (this.sortedBy) {
       const sortedBy = this.sortedBy;
       if (sortedBy != null) {
-        this.searchForm = document.getElementById(sortedBy);
-        if (!this.searchForm) throw `#${sortedBy} is not in DOM`;        
-    
+        if (!this.searchForm) {
+          this.searchForm = document.getElementById(sortedBy);
+          if (!this.searchForm) throw `#${sortedBy} is not in DOM`; 
+          this.linkSorterForm();
+        }
         if (!this.searchForm.component.value.field) {
           console.warn('The attribute field does not exist')
         } else { 
-          sortingKey = this.searchForm.component.value.field['value']; // else demandé par Matthieu
+          sortingKey = this.searchForm.component.value.field['value'];
         }
-        orderValueToSort = this.searchForm.component.value.order['value'];
-        if (sortingKey == '' && orderValueToSort == '') {
-          this.linkSorterForm();
+        if(this.searchForm.component.value.order && this.searchForm.component.value.order['value']) {
+          orderValueToSort = this.searchForm.component.value.order['value'];
         }
       }
     }
@@ -90,7 +91,7 @@ const SorterMixin = {
       .map(r => r.proxy) // re-create array
     }
     // if order-by-random attribute
-    if (this.isRandomSorted()) {
+    else if (this.isRandomSorted()) {
       resources = this.shuffleResources(resources); // shuffle resources
     }
 
