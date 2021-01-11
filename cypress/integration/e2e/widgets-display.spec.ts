@@ -83,6 +83,7 @@ describe('display widgets', function() {
       .should('have.length', 1)
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'src', 'test-img.png')
+      .and('have.attr', 'alt', 'alternative text')
   })
   it('solid-display-boolean', () => {
     cy.get('solid-display-boolean[name=test1]')

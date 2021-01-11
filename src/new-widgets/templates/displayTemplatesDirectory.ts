@@ -1,4 +1,5 @@
 import { EditableMixin } from '../templatesDependencies/editableMixin';
+import { AltMixin } from '../templatesDependencies/altMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -37,10 +38,11 @@ export const displayTemplates = {
       <img
         name=${ifDefined(attributes.name)}
         src=${ifDefined(value)}
+        alt=${ifDefined(attributes.alt)}
         style="max-width: 100%; max-height: 100%;"
       />
     `,
-    dependencies: []
+    dependencies: [AltMixin]
   },
   boolean: {
     template: (value: string, attributes: any) => html`
