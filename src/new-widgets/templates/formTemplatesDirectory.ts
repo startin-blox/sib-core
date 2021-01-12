@@ -23,6 +23,7 @@ export const formTemplates = {
         type="text"
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
+        id=${ifDefined(attributes.id)}
         value=${value || ''}
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
@@ -38,6 +39,7 @@ export const formTemplates = {
     template: (value: string, attributes: any) => html`
       <textarea
         name=${ifDefined(attributes.name)}
+        id=${ifDefined(attributes.id)}
         placeholder=${ifDefined(attributes.placeholder)}
         data-holder
         ?required=${attributes.required}
@@ -69,6 +71,7 @@ export const formTemplates = {
         type="date"
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
+        id=${ifDefined(attributes.id)}
         ?required=${attributes.required}
         value=${ifDefined(attributes.originalValue)}
         data-holder
@@ -102,6 +105,7 @@ export const formTemplates = {
         type="number"
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
+        id=${ifDefined(attributes.id)}
         value=${value}
         min=${ifDefined(attributes.min)}
         max=${ifDefined(attributes.max)}
@@ -147,6 +151,7 @@ export const formTemplates = {
     template: (value: string, attributes: any) => html`
       <select
         name=${ifDefined(attributes.name)}
+        id=${ifDefined(attributes.id)}
         data-holder
         ?required=${attributes.required}
         ?multiple=${attributes.multiple}
@@ -265,6 +270,7 @@ export const formTemplates = {
       <solid-form-dropdown
         data-holder
         name=${ifDefined(attributes.name)}
+        data-id=${ifDefined(attributes.id)}
         range=${ifDefined(attributes.range)}
         values=${ifDefined(attributes.values)}
         order-asc=${ifDefined(attributes.orderAsc)}
@@ -346,6 +352,7 @@ export const formTemplates = {
       <input
         type="color"
         placeholder=${ifDefined(attributes.placeholder)}
+        id=${ifDefined(attributes.id)}
         name=${ifDefined(attributes.name)}
         ?required=${attributes.required}
         value=${ifDefined(attributes.originalValue)}
@@ -360,6 +367,7 @@ export const formTemplates = {
       <input
         type="email"
         placeholder=${ifDefined(attributes.placeholder)}
+        id=${ifDefined(attributes.id)}
         name=${ifDefined(attributes.name)}
         value=${value || ''}
         ?required=${attributes.required}

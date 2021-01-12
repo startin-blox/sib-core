@@ -1,13 +1,15 @@
 import { html } from 'lit-html';
+import { uniqID } from '../../libs/helpers';
 
 const LabelMixin = {
   name: 'label-mixin',
   created() {
+    this.listAttributes['id'] = uniqID();    
     this.listTemplateAdditions.push(this.addLabel.bind(this));
   },
   addLabel(template, listTemplateAdditions: Function[]) {
     const newTemplate = html`
-      <label>${this.label || this.name}</label>
+      <label for="${this.listAttributes['id']}">${this.label || this.name}</label>
       ${template}
     `;
 

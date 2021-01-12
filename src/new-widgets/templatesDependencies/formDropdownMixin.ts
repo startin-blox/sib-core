@@ -17,6 +17,13 @@ const FormDropdownMixin = {
         }
       }
     },
+    dataId: {
+      type: String,
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'id');
+      }
+    },
   },
   created() {
     this.listAttributes['values'] = [];
