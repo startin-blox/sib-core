@@ -181,5 +181,18 @@ describe('display widgets', function() {
       .should('have.attr', 'href', 'http://www.w3.org');
     cy.get('solid-display-div-autolink > div').children().eq(1)
       .should('have.attr', 'href', 'http://www.window-swap.com')
-  })
+  });
+  it('solid-display-value-oembed', () => {
+    cy.server();
+    cy.route('GET', 'https://ldp-server2.test/oembed/', 'fixture:oembed.jsonld');
+    cy.get('solid-display-value-oembed').children()
+      .should('have.length', 1);
+    cy.get('solid-display-value-oembed > iframe')
+      .should('have.attr', 'src', 'https://www.youtube.com/embed/M3r2XDceM6A?feature=oembed')
+      .and('have.attr', 'width', '200')
+      .and('have.attr', 'height', '113')
+      .and('have.attr', 'frameborder', '0')
+      .and('have.attr', 'allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
+      .and('have.attr', 'allowfullscreen');
+  });
 })

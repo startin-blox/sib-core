@@ -152,5 +152,10 @@ describe('solid-display', function() {
     cy.get('#display-20 > div')
       .find('solid-display-link').eq(1)
       .should('have.attr', 'name', 'username');
+  });
+  it('oembed template', () => {
+    cy.get('#display-21 > div')
+      .find('solid-display-value-oembed')
+      .should('have.attr', 'value', 'https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json');
   })
 })
