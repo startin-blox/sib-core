@@ -63,6 +63,14 @@ export const SolidTable = {
     return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
       .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
   },
+  empty(): void { // override widgetMixin
+    if (this._div && document.contains(this._div)) {
+      let newDiv = document.createElement('table');
+      this.element.insertBefore(newDiv, this._div);
+      this.element.removeChild(this._div);
+      this.div = newDiv;
+    }
+  },
   /**
    * Select all lines
    * @param e - event
