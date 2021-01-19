@@ -46,11 +46,8 @@ export const SolidTable = {
       default: null,
     },
   },
-  get div(): HTMLElement { // overrides widgetMixin to create a table element
-    if (this._div) return this._div;
-    this._div = document.createElement('table');
-    this.element.appendChild(this._div);
-    return this._div;
+  get parentElement(): string {
+    return 'table';
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple';
@@ -62,14 +59,6 @@ export const SolidTable = {
     if (this.selectable === null) return [];
     return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
       .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
-  },
-  empty(): void { // override widgetMixin
-    if (this._div && document.contains(this._div)) {
-      let newDiv = document.createElement('table');
-      this.element.insertBefore(newDiv, this._div);
-      this.element.removeChild(this._div);
-      this.div = newDiv;
-    }
   },
   /**
    * Select all lines

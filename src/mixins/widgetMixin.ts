@@ -21,9 +21,12 @@ const WidgetMixin = {
   attached(): void {
     if (!this.dataSrc && !this.resource) this.populate();
   },
+  get parentElement(): string {
+    return 'div';
+  },
   get div(): HTMLElement {
     if (this._div) return this._div;
-    this._div = document.createElement('div');
+    this._div = document.createElement(this.parentElement);
     this.element.appendChild(this._div);
     return this._div;
   },
@@ -138,7 +141,7 @@ const WidgetMixin = {
   empty(): void {
     // create a new empty div next to the old one
     if (this._div && document.contains(this._div)) { // execute only if _div is used (for lists)
-      let newDiv = document.createElement('div');
+      let newDiv = document.createElement(this.parentElement);
       this.element.insertBefore(newDiv, this._div);
       this.element.removeChild(this._div);
       this.div = newDiv;
