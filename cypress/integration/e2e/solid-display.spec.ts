@@ -157,5 +157,20 @@ describe('solid-display', function() {
     cy.get('#display-21 > div')
       .find('solid-display-value-oembed')
       .should('have.attr', 'value', 'https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json');
-  })
+  });
+  it('default-widget-[field]', () => {
+    cy.get('#display-22 > div')
+      .children().should('have.length', 4);
+    cy.get('#display-22 > div').children().eq(1)
+      .should('contain', 'Rennes');
+    cy.get('#display-22 > div > custom-default-widget')
+      .should('contain', 'Field empty');
+    cy.get('#display-22 > div').children().eq(0)
+      .should('contain', 'Field empty');
+    cy.get('#display-22 > div').children().eq(2)
+      .should('contain', 'Field empty');
+    cy.get('#display-22 > div > custom-default-widget-website')
+      .should('contain', 'No website');
+    
+  });
 })

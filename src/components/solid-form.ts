@@ -7,6 +7,7 @@ import { setDeepProperty } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
+import { until } from 'lit-html/directives/until';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidForm = {
@@ -205,7 +206,7 @@ export const SolidForm = {
     this.element.oninput = () => this.inputChange(); // prevent from firing change multiple times
     const fields = await this.getFields();
     const fieldsTemplate = html`
-      ${fields.map((field: string) => this.createWidget(field))}
+      ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}
     `;
     const template = html`
       <div data-id="error"></div>

@@ -255,7 +255,7 @@ const WidgetMixin = {
    * Creates and return a widget for field + add it to the widget list
    * @param field - string
    */
-  createWidget(field: string, resource = null): Element {
+  async createWidget(field: string, resource = null) {
     if (!parent) parent = this.div;
     if (this.isString(field)) return this.createString(field); // field is a static string
     if (this.isSet(field)) return this.createSet(field);
@@ -264,7 +264,7 @@ const WidgetMixin = {
     const attributes = this.widgetAttributes(field, currentResource);
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
-    const widget = document.createElement(widgetMeta.tagName);
+    let widget = document.createElement(widgetMeta.tagName);
 
     // Set attributes
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
@@ -277,7 +277,8 @@ const WidgetMixin = {
       for (let name of Object.keys(attributes)) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
-      this.getValue(field, currentResource).then((value: any) => {
+        let value = await this.getValue(field, currentResource)
+        if ((value === null || value === '') && this.element.hasAttribute('default-widget-' + field)) widget = document.createElement(this.element.getAttribute('default-widget-' + field));
         // setAttribute set a string. Make sure null values are empty
         if (value === null || value === undefined) value = '';
         if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
@@ -288,9 +289,8 @@ const WidgetMixin = {
 
         // Subscribe widgets if they show a resource
         if (value && value['@id']) widget.component.subscribe(value['@id']);
-      });
-    }
-
+    };
+    
     this.widgets.push(widget);
     return widget;
   },
@@ -318,7 +318,7 @@ const WidgetMixin = {
     setTimeout(async () => {
       const parentNode = widget.querySelector('[data-content]') || widget;
       for (let item of this.getSet(field)) {
-        parentNode.appendChild(this.createWidget(item));
+        parentNode.appendChild(await this.createWidget(item));
       }
     });
     return widget;

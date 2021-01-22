@@ -232,6 +232,27 @@
       widget-oembed="solid-display-value-oembed"
     ></solid-display>
 
+    <h3>default-widget-[field]</h3>
+    <solid-widget name="custom-default-widget" >
+      <template>
+        <p>Field empty</p>
+      </template>
+    </solid-widget>
+    <solid-widget name="custom-default-widget-website" >
+      <template>
+        <p>No website</p>
+      </template>
+    </solid-widget>
+      
+    <solid-display
+      id="display-22"
+      data-src="../data/list/profile-3.jsonld"
+      fields="bio, city, phone, website"
+      default-widget-bio = "custom-default-widget"
+      default-widget-phone = "custom-default-widget"
+      default-widget-website = "custom-default-widget-website"
+    ></solid-display>
+
     <style>
       .presentationEvent {
         color: crimson;

@@ -53,6 +53,18 @@
       required-city
     ></solid-display>
 
+    <h2>Default-widget-[field]</h2>
+    <solid-widget name="custom-test" >
+      <template>
+        <p>No existing bio</p>
+      </template>
+    </solid-widget>
+    <solid-display
+      data-src="data/list/profile-3.jsonld"
+      fields="bio, city, phone, website"
+      default-widget-bio = "custom-test"
+    ></solid-display>
+
     <style>
       .id{
         font-family: monospace;
