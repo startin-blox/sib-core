@@ -274,23 +274,27 @@ const WidgetMixin = {
       }
       this.getValue(field, currentResource).then(value => widget.textContent = value);
     } else { // custom widget (ie: solid-display-value)
+      // Check if value is defined, and if the default widget is needed
+      let value = await this.getValue(field, currentResource)
+      if ((value === null || value === '') && this.element.hasAttribute('default-widget-' + field)) {
+        widget = document.createElement(this.element.getAttribute('default-widget-' + field));
+      }
+      // Set attributes to the widget
       for (let name of Object.keys(attributes)) {
         this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
       }
-        let value = await this.getValue(field, currentResource)
-        if ((value === null || value === '') && this.element.hasAttribute('default-widget-' + field)) widget = document.createElement(this.element.getAttribute('default-widget-' + field));
-        // setAttribute set a string. Make sure null values are empty
-        if (value === null || value === undefined) value = '';
-        if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
-          this.defineAttribute(widget, 'data-src', value['@id'], widgetMeta.type);
-        } else { // otherwise, set value attribute
-          this.defineAttribute(widget, 'value', value, widgetMeta.type);
-        }
+      // setAttribute set a string. Make sure null values are empty
+      if (value === null || value === undefined) value = '';
+      if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
+        this.defineAttribute(widget, 'data-src', value['@id'], widgetMeta.type);
+      } else { // otherwise, set value attribute
+        this.defineAttribute(widget, 'value', value, widgetMeta.type);
+      }
 
-        // Subscribe widgets if they show a resource
-        if (value && value['@id']) widget.component.subscribe(value['@id']);
+      // Subscribe widgets if they show a resource
+      if (value && value['@id']) widget.component.subscribe(value['@id']);
     };
-    
+
     this.widgets.push(widget);
     return widget;
   },
@@ -310,7 +314,7 @@ const WidgetMixin = {
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
     const widget = document.createElement(setWidget.tagName);
-    
+
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
