@@ -223,7 +223,7 @@ export const formTemplates = {
               type="checkbox"
               value='{"@id": "${el['@id']}"}'
               ?checked=${attributes.values.includes(el['@id'])}
-            /> ${until(el[attributes.optionLabel])}
+            /> <span>${until(el[attributes.optionLabel])}</span>
           </label>
         `)}
         ${Object.entries(attributes.enum || [])
@@ -231,7 +231,7 @@ export const formTemplates = {
           <label>
             <input type="checkbox"
               value="${key}"
-            /><span>${value}</span>
+            /> <span>${value}</span>
           </label>
         `)}
       </select>
