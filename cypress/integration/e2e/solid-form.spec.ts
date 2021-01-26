@@ -104,7 +104,32 @@ describe('solid-form', function() {
       cy.get('#form-4 solid-form-richtext').then($el => {
         expect((<any>$el[0]).component.getValue()).to.equal('_Jean-Claude_\n')
       });
-    })
+    });
+    // add link button in richtext mixin
+    cy.get('#form-4bis solid-form-richtext > div ').children().eq(4)
+      .find('button')
+      .and('have.attr', 'class', 'ql-link');
+    cy.get('#form-4bis solid-form-richtext .ql-editor').type('{selectall}test link{selectall}')
+    cy.get('#form-4bis solid-form-richtext .ql-link')
+      .click()
+    cy.get('#form-4bis solid-form-richtext > div[name=name] > div[data-mode=link] > input[type=text]')
+      .type('http://www.yesnoif.com/')
+    cy.get('#form-4bis solid-form-richtext > div[name=name] > div[data-mode=link] > a[class=ql-action]')
+      .click()
+    cy.get('#form-4bis solid-form-richtext .ql-editor')
+      .find('a').should('have.attr', 'href', 'http://www.yesnoif.com/')
+      .and('contain', 'test link');
+    // verify value format sent in the form
+    cy.get('#form-4bis input[type=submit]').click()
+    cy.get('#form-4bis').then($el => {
+      return (<any>$el[0]).component.getFormValue().then(res => {
+        expect(res.name).to.equal('[test link](http://www.yesnoif.com/)\n');
+      });
+    });
+    // value stocked in markdown well displayed in the solid-form-richtext
+    cy.get('#form-4ter solid-form-richtext > div[name=website]')
+      .find('a').should('have.attr', 'href', 'http://drawing.garden/')
+      .and('contain', 'my site')
   });
 
   it('solid-form + pattern, title attributes', () => {

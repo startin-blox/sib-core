@@ -19,12 +19,10 @@ const RichtextMixin = {
     if (this.quill == null) {
       var toolbarOptions = [
         ['bold', 'italic'],
-
         ['blockquote'],
-
         [{ 'header': [1, 2, 3, 4, 5, 6, false]}],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-
+        ['link'],
         ['clean']
       ];
       const richtext = this.element.querySelector('[data-richtext]');

@@ -164,15 +164,17 @@ describe('display widgets', function() {
   it('solid-display-div-markdown', () => {
     cy.get('solid-display-div-markdown')
       .find('div')
-      .should('have.attr', 'name', 'test display markdown')
-
+      .should('have.attr', 'name', 'test display markdown');
     cy.get('solid-display-div-markdown')
       .find('strong')
-      .should('contain', 'bold')
-      
+      .should('contain', 'bold');
     cy.get('solid-display-div-markdown')
       .find('em')
-      .should('contain', 'italic')
+      .should('contain', 'italic');
+    cy.get('solid-display-div-markdown')
+      .find('a')
+      .should('contain', 'link')
+      .and('have.attr', 'href', 'http://corndog.io/');
   });
   it('solid-display-div-autolink', () => {
     cy.get('solid-display-div-autolink > div').children()
