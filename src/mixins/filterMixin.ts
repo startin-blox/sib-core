@@ -1,5 +1,5 @@
 import asyncReduce from 'iter-tools/es2015/async-reduce';
-import { compare } from '../libs/helpers';
+import { compare, parseFieldsString } from '../libs/helpers';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -78,10 +78,16 @@ const FilterMixin = {
     return compare[query.type](subject, query.value);
   },
   async matchFilter(resource: object, filter: string, query: any): Promise<boolean> {
-    if (!this.isSet(filter))
+    let fields: string[] = [];
+    if (this.isSet(filter)) fields = this.getSet(filter);
+    else if (this.isSearchField(filter)) fields = this.getSearchField(filter);
+
+    // search on 1 field
+    if (fields.length == 0)
       return this.matchValue(await resource[filter], query);
-    // for sets, return true if it matches at least one of the fields
-    return this.getSet(filter).reduce(
+
+    // search on multiple fields
+    return fields.reduce( // return true if it matches at least one of the fields
       async (initial, field) => await initial || await this.matchFilter(resource, field, query),
       Promise.resolve(false),
     );
@@ -121,7 +127,14 @@ const FilterMixin = {
     });
 
     this.element.insertBefore(this.searchForm, this.element.firstChild);
-  }
+  },
+  // Search fields
+  isSearchField(field: string) {
+    return this.searchForm.hasAttribute('search-' + field);
+  },
+  getSearchField(field: string): string[] {
+    return parseFieldsString(this.searchForm.getAttribute('search-' + field));
+  },
 }
 
 export {
