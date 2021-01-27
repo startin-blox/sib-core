@@ -58,4 +58,18 @@ describe('solid-form-search widget', function() {
     cy.get('#display5 > div ')
       .children().should('have.length', 3)
   });
+
+  it('solid-form-search + search-[field]', () => {
+    cy.get('#filter-search-field > form')
+      .find('solid-form-label-text')
+      .should('have.attr', 'name', 'global_name')
+      .type('em')
+
+    cy.get('#display-search-field-1 > div')
+      .children().should('have.length', 1)
+      .filter('solid-display[data-src="user-3.jsonld"]');
+    cy.get('#display-search-field-2 > div')
+      .children().should('have.length', 1)
+      .filter('solid-display[data-src="event-4.jsonld"]');
+  });
 })

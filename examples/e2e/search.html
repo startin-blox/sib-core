@@ -71,5 +71,23 @@
       fields="name"
       filtered-by="filter5"
     ></solid-display>
+
+    <solid-form-search
+      id="filter-search-field"
+      fields="global_name"
+      search-global_name="first_name, last_name, name"
+    ></solid-form-search>
+    <solid-display
+      id="display-search-field-1"
+      data-src="../data/list/users.jsonld"
+      fields="username"
+      filtered-by="filter-search-field"
+    ></solid-display>
+    <solid-display
+      id="display-search-field-2"
+      data-src="../data/list/events.jsonld"
+      fields="name"
+      filtered-by="filter-search-field"
+    ></solid-display>
   </body>
 </html>
