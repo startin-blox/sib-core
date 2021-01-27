@@ -58,4 +58,16 @@ describe('solid-form-search widget', function() {
     cy.get('#display5 > div ')
       .children().should('have.length', 3)
   });
+
+  it('solid-form-search + fakeField', () => {
+    cy.get('#display-fake-field > div ')
+      .children().should('have.length', 4)
+
+    cy.get('#filter-fake-field > form')
+      .find('solid-form-label-text')
+      .type('a');
+
+    cy.get('#display-fake-field > div ')
+      .children().should('have.length', 0)
+  });
 })

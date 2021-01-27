@@ -55,6 +55,7 @@ const FilterMixin = {
     await this.populate();
   },
   async matchValue(subject, query): Promise<boolean> {
+    if (subject === undefined && query.value === '') return true; // filter not set and subject not existing -> ignore filter
     if (subject == null) return false; // property does not exist on resource
     // Filter on a container
     if (query.list) {
