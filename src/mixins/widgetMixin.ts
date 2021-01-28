@@ -19,7 +19,7 @@ const WidgetMixin = {
     this.widgets = [];
   },
   attached(): void {
-    if (!this.dataSrc && !this.resource) this.populate();
+    if (!this.dataSrc && !this.resource && this.noRender === null) this.populate();
   },
   get div(): HTMLElement {
     if (this._div) return this._div;
