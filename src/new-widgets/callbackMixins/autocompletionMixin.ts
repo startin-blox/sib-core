@@ -8,8 +8,8 @@ const AutocompletionMixin = {
     mutationObserver: null
   },
   created() {
-    //@ts-ignore
-    import('slim-select/dist/slimselect.css');
+    // //@ts-ignore
+    // import('slim-select/dist/slimselect.css');
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
