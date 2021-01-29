@@ -78,12 +78,12 @@ function loadScript(source: string) {
   });
 }
 
-function domIsReady(): Promise<any> {
+function domIsReady(): Promise<void> {
   return new Promise(function(resolve) {
     if (document.readyState === 'complete') {
       resolve();
     } else {
-      document.addEventListener('DOMContentLoaded', resolve);
+      document.addEventListener('DOMContentLoaded', () => resolve());
     }
   });
 }
