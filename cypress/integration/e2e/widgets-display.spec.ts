@@ -92,8 +92,7 @@ describe('display widgets', function() {
       .and('contain', 'Is displayed ?');
     cy.get('solid-display-boolean[name=test2]')
       .find('label')
-      .should('have.length', 0)
-      .and('not.contain', 'Is displayed ?');
+      .should('not.exist')
   })
   it('solid-display-label-div', () => {
     cy.get('solid-display-label-div[name=test1]')
