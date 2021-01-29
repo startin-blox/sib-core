@@ -1,4 +1,3 @@
-import asyncReduce from 'iter-tools/es2015/async-reduce';
 import { compare, parseFieldsString } from '../libs/helpers';
 
 const FilterMixin = {
@@ -69,11 +68,11 @@ const FilterMixin = {
       return false;
     }
     if (subject.isContainer?.()) {
-      return await asyncReduce(
-        Promise.resolve(false),
-        async (initial, value:any) => await initial || await this.matchValue(value, query),
-        subject['ldp:contains'],
-      );
+      let ret = Promise.resolve(false);
+      for(const value in subject['ldp:contains']) {
+        ret = await ret || await this.matchValue(value, query)
+      }
+      return ret;
     }
     return compare[query.type](subject, query.value);
   },
