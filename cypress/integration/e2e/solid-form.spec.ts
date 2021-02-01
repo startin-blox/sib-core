@@ -164,7 +164,17 @@ describe('solid-form', function() {
         .should('have.value', 'Register the user');
       })
   });
-
+// rep.status(400);
+  // rep.send({
+  //   "name": ["invalid value"],
+  //   "batches": {
+  //     "title": ["title too long", "title not unique"],
+  //     "tasks": {
+  //       "@id": ["task with this urlid already exists."],
+  //       "amount": ["should be > 0"]
+  //     }
+  //   }
+  // });
   it('show errors without resetting', () => {
     cy.server();
     cy.route({
@@ -175,6 +185,13 @@ describe('solid-form', function() {
         "name": [
           "Ensure this field has no more than 10 characters."
         ],
+        "batches": {
+              "title": ["Title too long", "Title not unique"],
+              "tasks": {
+                "@id": ["Task with this urlid already exists."],
+                "amount": ["Should be > 0"]
+              }
+        },
         "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
       },
       onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
@@ -189,7 +206,11 @@ describe('solid-form', function() {
     cy.get('solid-form#form-8')
       .find('[data-id="error"]')
       .should('contain', 'A validation error occured')
-      .and('contain', 'Ensure this field has no more than 10 characters.');
+      .and('contain', 'name: Ensure this field has no more than 10 characters.')
+      .and('contain', 'batches - title: Title too long, Title not unique')
+      .and('contain', 'batches - tasks - @id: Task with this urlid already exists.')
+      .and('contain', 'batches - tasks - amount: Should be > 0')
+      .and('not.contain', '@context');
     cy.get('solid-form#form-8')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
