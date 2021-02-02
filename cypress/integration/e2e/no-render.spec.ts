@@ -43,7 +43,7 @@ describe('no-render', function() {
     });
   });
 
-  it('blocks rendering is no data-src', () => {
+  it('blocks rendering if no data-src', () => {
     cy.get('#form').as('form')
     cy.wait(500);
     cy.get('@form').children()
