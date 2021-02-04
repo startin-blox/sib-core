@@ -164,17 +164,6 @@ describe('solid-form', function() {
         .should('have.value', 'Register the user');
       })
   });
-// rep.status(400);
-  // rep.send({
-  //   "name": ["invalid value"],
-  //   "batches": {
-  //     "title": ["title too long", "title not unique"],
-  //     "tasks": {
-  //       "@id": ["task with this urlid already exists."],
-  //       "amount": ["should be > 0"]
-  //     }
-  //   }
-  // });
   it('show errors without resetting', () => {
     cy.server();
     cy.route({

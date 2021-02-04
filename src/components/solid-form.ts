@@ -186,7 +186,7 @@ export const SolidForm = {
   showError(e: object) {
     console.log(e);
     
-    let errors = Object.entries(e).filter(field => !field[0].startsWith('@'));
+    let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
     let errorFullName: String = "";
     let errorsArray : Array<string> = [];
 
