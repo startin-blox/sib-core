@@ -1,26 +1,32 @@
 import { Sib } from '../libs/Sib';
 import { ListMixin } from '../mixins/listMixin';
 import { StoreMixin } from '../mixins/storeMixin';
-import {NextMixin } from '../mixins/nextMixin';
-import Calendar from 'tui-calendar';
+import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
+import { uniqID } from '../libs/helpers';
+
+import Calendar from 'tui-calendar';
+import { html, render } from 'lit-html';
 
 export const SolidCalendar = {
   name: 'solid-calendar',
-  use: [ListMixin, StoreMixin, NextMixin],
+  use: [
+    ListMixin,
+    StoreMixin,
+    NextMixin
+  ],
   initialState: {
     subscriptions: null
   },
   created(): void {
     //@ts-ignore
     import('tui-calendar/dist/tui-calendar.css');
-
-    const div = document.createElement('div');
-    div.style.width = '100%';
-    div.style.height = '100%';
-    div.style.border = '1px solid green';
-    this.element.appendChild(div);
-    this.calendar = new Calendar(div, { defaultView: 'month' });
+    const id = uniqID();
+    const template = html`
+      <div id=${id} style="width:100%;height:100%;"></div>
+    `;
+    render(template, this.element);
+    this.calendar = new Calendar(this.element.querySelector(`#${id}`), { defaultView: 'month' });
     this.calendar.on('clickSchedule', this.dispatchSelect.bind(this));
     this.subscriptions = new Map();
   },

@@ -7,9 +7,13 @@ import { FilterMixin } from '../mixins/filterMixin';
 import { GrouperMixin } from '../mixins/grouperMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
+import { uniqID } from '../libs/helpers';
+import { spread } from '../libs/lit-helpers';
 
 import L, { MarkerOptions } from 'leaflet';
 import 'leaflet.markercluster';
+import { html, render } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidMap = {
   name: 'solid-map',
@@ -52,14 +56,17 @@ export const SolidMap = {
     this.subscriptions = new Map();
   },
   attached(): void {
-    const div = document.createElement('div');
-    div.style.width = '100%';
-    div.style.height = '100%';
+    const id = uniqID();
+    const template = html`
+      <div id=${id} style="width:100%;height:100%;"></div>
+    `;
+    render(template, this.element);
+
+    const div = this.element.querySelector(`#${id}`);
     this.map = L.map(div);
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
-    this.element.appendChild(div);
     if (this.clustering !== null) {
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
@@ -138,8 +145,7 @@ export const SolidMap = {
    * @param resourceId: id of the popup clicked
    */
   getPopupContent(resourceId: string) {
-    const child = document.createElement('solid-display');
-    if (this.fields != null) child.setAttribute('fields', this.fields);
+    const attributes:{[key:string]: string} = {};
 
     for (let attr of this.element.attributes) {
       //copy widget and value attributes
@@ -154,12 +160,21 @@ export const SolidMap = {
         attr.name.startsWith('default-') ||
         attr.name == 'extra-context'
       )
-        child.setAttribute(attr.name, attr.value);
+        attributes[attr.name] = attr.value;
       if (attr.name.startsWith('child-'))
-        child.setAttribute(attr.name.replace(/^child-/, ''), attr.value);
+        attributes[attr.name.replace(/^child-/, '')] = attr.value;
     }
-    child.dataset.src = resourceId; // set id after the extra-context is
-    return child
+
+    const div = document.createElement('div');
+    const template = html`
+      <solid-display
+        fields="${ifDefined(this.fields)}"
+        data-src="${resourceId}"
+        ...=${spread(attributes)}
+      ></solid-display>
+    `;
+    render(template, div);
+    return div.querySelector('solid-display');
   },
   /**
    * Override widgetMixin method: empty the map
