@@ -9,6 +9,7 @@
       "name": "Test User",
       "username": "admin",
       "email": "test-user@example.com",
+      "available": true,
       "skills": {
         "@id": "user-1-skills.jsonld",
         "@type": "ldp:Container",
@@ -47,6 +48,7 @@
       "name": "Paris Hilton",
       "username": "paris",
       "email": "paris@hilton.hi",
+      "available": true,
       "skills": {
         "@id": "user-2-skills.jsonld",
         "@type": "ldp:Container",
@@ -82,6 +84,7 @@
       "name": "Pierre DLC",
       "username": "pierre",
       "email": "pierredelacroix@happy-dev.fr",
+      "available": false,
       "skills": {
         "@id": "user-4-skills.jsonld",
         "@type": "ldp:Container",
@@ -123,6 +126,7 @@
       "name": "Not A Paris Member",
       "username": "not-member-paris",
       "email": "not-a@paris.members",
+      "available": false,
       "skills": {
         "@id": "user-3-skills.jsonld",
         "@type": "ldp:Container",

@@ -5,6 +5,7 @@
   "username": "not-member-paris",
   "email": "not-a@paris.members",
   "name": "Not A Paris Member",
+  "available": false,
   "skills": {
     "@id": "user-3-skills.jsonld",
     "@type": "ldp:Container",
