@@ -72,4 +72,11 @@ describe('solid-form-search widget', function() {
       .children().should('have.length', 1)
       .filter('solid-display[data-src="event-4.jsonld"]');
   });
+
+  it('solid-form-search + solid-form-hidden', () => {
+    cy.get('#display-filter-hidden > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-bool > div')
+      .children().should('have.length', 2)
+  })
 })
