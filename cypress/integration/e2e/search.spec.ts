@@ -70,4 +70,11 @@ describe('solid-form-search widget', function() {
     cy.get('#display-fake-field > div ')
       .children().should('have.length', 0)
   });
+
+  it('solid-form-search + solid-form-hidden', () => {
+    cy.get('#display-filter-hidden > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-bool > div')
+      .children().should('have.length', 2)
+  })
 })
