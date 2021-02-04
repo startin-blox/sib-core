@@ -5,6 +5,7 @@
   "username": "pierre",
   "email": "pierredelacroix@happy-dev.fr",
   "name": "Pierre DLC",
+  "available": false,
   "skills": {
     "@id": "user-4-skills.jsonld",
     "@type": "ldp:Container",

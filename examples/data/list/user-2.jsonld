@@ -5,6 +5,7 @@
   "username": "paris",
   "email": "paris@hilton.hi",
   "name": "Paris Hilton",
+  "available": true,
   "skills": {
     "@id": "user-2-skills.jsonld",
     "@type": "ldp:Container",
