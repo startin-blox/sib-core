@@ -10,6 +10,7 @@
       "username": "admin",
       "email": "test-user@example.com",
       "available": true,
+      "years_experience": 3,
       "skills": {
         "@id": "user-1-skills.jsonld",
         "@type": "ldp:Container",
@@ -49,6 +50,7 @@
       "username": "paris",
       "email": "paris@hilton.hi",
       "available": true,
+      "years_experience": 5,
       "skills": {
         "@id": "user-2-skills.jsonld",
         "@type": "ldp:Container",
@@ -85,6 +87,7 @@
       "username": "pierre",
       "email": "pierredelacroix@happy-dev.fr",
       "available": false,
+      "years_experience": 5,
       "skills": {
         "@id": "user-4-skills.jsonld",
         "@type": "ldp:Container",
@@ -127,6 +130,7 @@
       "username": "not-member-paris",
       "email": "not-a@paris.members",
       "available": false,
+      "years_experience": 7,
       "skills": {
         "@id": "user-3-skills.jsonld",
         "@type": "ldp:Container",

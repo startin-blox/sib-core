@@ -63,6 +63,7 @@ describe('solid-form-search widget', function() {
     cy.get('#filter-search-field > form')
       .find('solid-form-label-text')
       .should('have.attr', 'name', 'global_name')
+      .find('input')
       .type('em')
 
     cy.get('#display-search-field-1 > div')
@@ -78,5 +79,7 @@ describe('solid-form-search widget', function() {
       .children().should('have.length', 2)
     cy.get('#display-filter-hidden-bool > div')
       .children().should('have.length', 2)
-  })
+    cy.get('#display-filter-hidden-num > div')
+      .children().should('have.length', 2)
+  });
 })

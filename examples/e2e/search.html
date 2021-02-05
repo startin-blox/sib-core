@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: search</title>
     <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css">
   </head>
   <body>
 
@@ -89,7 +90,7 @@
       fields="name"
       filtered-by="filter-search-field"
     ></solid-display>
-<hr>
+
     <solid-form-search
       id="filter-hidden"
       fields="name"
@@ -103,7 +104,7 @@
       fields="name, available"
       filtered-by="filter-hidden"
     ></solid-display>
-<hr>
+
     <solid-form-search
       id="filter-hidden-bool"
       fields="available"
@@ -116,6 +117,20 @@
       data-src="../data/list/users.jsonld"
       fields="name, available"
       filtered-by="filter-hidden-bool"
+    ></solid-display>
+    
+    <solid-form-search
+      id="filter-hidden-num"
+      fields="years_experience"
+      widget-years_experience='solid-form-hidden-num'
+      value-years_experience='5'
+    ></solid-form-search>
+
+    <solid-display
+      id="display-filter-hidden-num"
+      data-src="../data/list/users.jsonld"
+      fields="name, available, years_experience"
+      filtered-by="filter-hidden-num"
     ></solid-display>
   </body>
 </html>
