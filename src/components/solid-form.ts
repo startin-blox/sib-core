@@ -29,6 +29,10 @@ export const SolidForm = {
         if (this.noRender == null && newValue !== oldValue) this.populate();
       },
     },
+    submitWidget: {
+      type: String,
+      default: null
+    },
     partial: {
       type: Boolean,
       default: null
@@ -202,6 +206,11 @@ export const SolidForm = {
       setTimeout(() => this.inputChange(true))
     }
   },
+  getSubmitTemplate() {
+    return (this.submitWidget === 'button') ?
+      html`<button type="submit">${this.submitButton || ''}</button>` :
+      html`<input type="submit" value=${ifDefined(this.submitButton)}>`;
+  },
   async populate(): Promise<void> {
     this.element.oninput = () => this.inputChange(); // prevent from firing change multiple times
     const fields = await this.getFields();
@@ -216,9 +225,7 @@ export const SolidForm = {
           @reset=${this.onReset.bind(this)}
         >
           ${fieldsTemplate}
-          ${!this.isSavingAutomatically ? html`
-            <input type="submit" value=${ifDefined(this.submitButton)}>
-          ` : ''}
+          ${!this.isSavingAutomatically ? this.getSubmitTemplate() : ''}
           ${this.element.hasAttribute('reset')
             ? html`<input type="reset" />` : ''}
         </form>

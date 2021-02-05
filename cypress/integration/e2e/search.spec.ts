@@ -42,6 +42,13 @@ describe('solid-form-search widget', function() {
     cy.get('@btn').click()
     cy.get('#display3 > div > solid-display').should('have.length', 1);
   });
+  it('solid-form-search + submit-widget', () => {
+    cy.get('solid-form-search#filter-submit-widget').find('input[type="submit"]')
+      .should('not.exist');
+    cy.get('solid-form-search#filter-submit-widget').find('button[type="submit"]')
+      .should('exist')
+      .and('have.text', 'OK');
+  });
 
   it('solid-form-search + start-value & end-value', () => {
     cy.get('#filter4 > form')

@@ -18,7 +18,11 @@ export const SolidFormSearch = {
     submitButton: {
       type: String,
       default: null,
-    }
+    },
+    submitWidget: {
+      type: String,
+      default: undefined
+    },
   },
   initialState: {
     error: '',
@@ -64,7 +68,6 @@ export const SolidFormSearch = {
     }
 
     return this.widgetFromTagName(tagName);
-    
   },
   change(resource: object): void {
     this.element.dispatchEvent(
@@ -79,7 +82,11 @@ export const SolidFormSearch = {
   },
   empty(): void {
   },
-  
+  getSubmitTemplate() {
+    return (this.submitWidget === 'button') ?
+      html`<button type="submit">${this.submitButton || ''}</button>` :
+      html`<input type="submit" value=${ifDefined(this.submitButton || undefined)}>`;
+  },
   async populate(): Promise<void> {
     if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
@@ -94,7 +101,7 @@ export const SolidFormSearch = {
     const template = html`
       <form>
         ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}
-        ${this.submitButton == null ? '' : html`<input type="submit" value="${ifDefined(this.submitButton || undefined)}"/>`}
+        ${this.submitButton == null ? '' : this.getSubmitTemplate()}
       </form>
     `;
     render(template, this.element);
