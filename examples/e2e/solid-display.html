@@ -223,6 +223,29 @@
       default-widget="solid-display-link"
     ></solid-display>
 
+
+    <h3>widgetRendered event</h3>
+    <solid-widget name="custom-w">
+      <template>${value}</template>
+    </solid-widget>
+    <solid-display
+      id="display-event"
+      data-src="../data/list/users.jsonld"
+      fields="email, name, username"
+      widget-username="custom-w"
+    ></solid-display>
+
+    <pre id="log-event"></pre>
+
+    <script>
+      const log = document.getElementById('log-event');
+      document.getElementById('display-event').addEventListener('widgetRendered', (e) => {
+        const eventLog = document.createElement('div');
+        eventLog.innerText = 'rendered ' + e.target.getAttribute('name');
+        log.appendChild(eventLog);
+      });
+    </script>
+
     <style>
       .presentationEvent {
         color: crimson;

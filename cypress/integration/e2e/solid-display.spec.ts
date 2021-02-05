@@ -152,5 +152,8 @@ describe('solid-display', function() {
     cy.get('#display-20 > div')
       .find('solid-display-link').eq(1)
       .should('have.attr', 'name', 'username');
+  });
+  it('dispatch event when widget rendered', () => {
+    cy.get('#log-event div').should('have.length', 12);
   })
 })

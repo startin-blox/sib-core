@@ -72,6 +72,8 @@ const BaseWidgetMixin = {
       const nextCallback = listCallbacks.shift();
       nextCallback(this.value, listCallbacks);
     }
+
+    this.element.dispatchEvent(new CustomEvent('widgetRendered', { bubbles: true }));
   },
   renderTemplate(value: string) {
     const template: Template = this.template(value, { ...this.listAttributes });
