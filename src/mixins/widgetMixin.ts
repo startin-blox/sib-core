@@ -1,6 +1,9 @@
+import { spread, preHTML } from '../libs/lit-helpers';
 import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { WidgetInterface, WidgetType, Resource } from './interfaces';
+import { html, render, TemplateResult } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -12,11 +15,11 @@ const WidgetMixin = {
     }
   },
   initialState: {
-    widgets: null,
+    nameWidgets: null,
     _div: null
   },
   created(): void {
-    this.widgets = [];
+    this.nameWidgets = [];
   },
   attached(): void {
     if (!this.dataSrc && !this.resource && this.noRender === null) this.populate();
@@ -32,6 +35,9 @@ const WidgetMixin = {
   },
   set div(value) {
     this._div = value
+  },
+  get widgets() {
+    return this.nameWidgets.map((name: string) => this.element.querySelector(`[name="${name}"]`));
   },
   /**
    * Return field list of the component
@@ -135,18 +141,7 @@ const WidgetMixin = {
 
     return resourceValue;
   },
-  /**
-   * Clear the component
-   */
-  empty(): void {
-    // create a new empty div next to the old one
-    if (this._div && document.contains(this._div)) { // execute only if _div is used (for lists)
-      let newDiv = document.createElement(this.parentElement);
-      this.element.insertBefore(newDiv, this._div);
-      this.element.removeChild(this._div);
-      this.div = newDiv;
-    }
-  },
+  empty(): void {},
   /**
    * Return a widget from a tagName, and create it if necessary
    * @param tagName - string
@@ -258,82 +253,87 @@ const WidgetMixin = {
    * Creates and return a widget for field + add it to the widget list
    * @param field - string
    */
-  async createWidget(field: string, resource = null) {
-    if (!parent) parent = this.div;
+  async createWidgetTemplate(field: string, resource = null): Promise<TemplateResult> {
     if (this.isString(field)) return this.createString(field); // field is a static string
-    if (this.isSet(field)) return this.createSet(field);
+    if (this.isSet(field)) return await this.createSet(field);
 
     const currentResource = resource || this.resource;
     const attributes = this.widgetAttributes(field, currentResource);
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
-    let widget = document.createElement(widgetMeta.tagName);
+    let tagName = widgetMeta.tagName;
+    let widgetTemplate = html``;
 
     // Set attributes
+    let value = await this.getValue(field, currentResource);
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
-      // set only "class" and "name" attribute
-      for (let name of Object.keys(attributes).filter(attr => ['name', 'class'].includes(attr))) {
-        this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
-      }
-      this.getValue(field, currentResource).then(value => widget.textContent = value);
+      widgetTemplate = preHTML`
+        <${tagName}
+          name="${ifDefined(attributes.name)}"
+          class="${ifDefined(attributes.class)}"
+        >${value}</${tagName}>
+      `;
     } else { // custom widget (ie: solid-display-value)
       // Check if value is defined, and if the default widget is needed
-      let value = await this.getValue(field, currentResource)
       if ((value === null || value === '') && this.element.hasAttribute('default-widget-' + field)) {
-        widget = document.createElement(this.element.getAttribute('default-widget-' + field));
+        tagName = this.element.getAttribute('default-widget-' + field);
       }
       // Set attributes to the widget
-      for (let name of Object.keys(attributes)) {
-        this.defineAttribute(widget, name, attributes[name], widgetMeta.type);
-      }
       // setAttribute set a string. Make sure null values are empty
-      if (value === null || value === undefined) value = '';
+      if (value === null || value === undefined) attributes.value = '';
       if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
-        this.defineAttribute(widget, 'data-src', value['@id'], widgetMeta.type);
+        attributes['data-src'] = value['@id'];
       } else { // otherwise, set value attribute
-        this.defineAttribute(widget, 'value', value, widgetMeta.type);
+        attributes['value'] = value;
       }
 
       // Subscribe widgets if they show a resource
-      if (value && value['@id']) widget.component.subscribe(value['@id']);
-    };
+      // if (value && value['@id']) widget.component.subscribe(value['@id']);
+      widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
+    }
 
-    this.widgets.push(widget);
-    return widget;
+    this.nameWidgets.push(field);
+    return widgetTemplate;
   },
   defineAttribute(widget: HTMLElement, attribute: string, value: any) {
-    widget.setAttribute(attribute, value); // else, set attribute "value"
+    if (widget.getAttribute(attribute) !== value) { // if attribute is different than previous one
+      widget.setAttribute(attribute, value); // set it
+    }
   },
   /**
    * Create a set and add fields to it
    * @param field - string
    */
-  createSet(field: string): Element {
+  async createSet(field: string): Promise<TemplateResult> {
     const setWidget = this.getWidget(field, true);
+
+    // Get set attributes
     const attrs = { name: field };
     const setAttributes = [
       'class',
     ];
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
-    const widget = document.createElement(setWidget.tagName);
-
+    // Create widget if not already existing
+    let widget = this.element.querySelector(`${setWidget.tagName}[name="${field}"]`);
+    if (!widget) {
+      widget = document.createElement(setWidget.tagName);
+      if (widget.component) widget.component.render();
+    }
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
 
-    setTimeout(async () => {
-      const parentNode = widget.querySelector('[data-content]') || widget;
-      for (let item of this.getSet(field)) {
-        parentNode.appendChild(await this.createWidget(item));
-      }
-    });
+    // Render template
+    const widgetsTemplate = await Promise.all(this.getSet(field).map((field: string) => this.createWidgetTemplate(field)));
+    const template = html`${widgetsTemplate}`;
+    render(template, widget.querySelector('[data-content]') || widget);
     return widget;
   },
-  createString(value: string) {
-    const span = document.createElement("span");
-    span.textContent = value.slice(1, -1).replace(/\\(['"])/g, '$1'); // remove quotes
-    return span;
+  createString(value: string): TemplateResult {
+    return html`
+      <span>${value.slice(1, -1).replace(/\\(['"])/g, '$1')}</span>
+    `;
   },
   /**
    * Returns field name without starting "@"

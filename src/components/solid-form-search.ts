@@ -4,7 +4,6 @@ import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidFormSearch = {
@@ -90,13 +89,12 @@ export const SolidFormSearch = {
   async inputChange(): Promise<void> {
     this.change(this.value);
   },
-  empty(): void {
-  },
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
       html`<button type="submit">${this.submitButton || ''}</button>` :
       html`<input type="submit" value=${ifDefined(this.submitButton || undefined)}>`;
   },
+  empty(): void {},
   async populate(): Promise<void> {
     if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
@@ -108,9 +106,10 @@ export const SolidFormSearch = {
       });
     }
     const fields = await this.getFields();
+    const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
     const template = html`
       <form>
-        ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}
+        ${widgetTemplates}
         ${this.submitButton == null ? '' : this.getSubmitTemplate()}
       </form>
     `;

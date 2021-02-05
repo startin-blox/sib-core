@@ -136,7 +136,7 @@ const StoreMixin = {
       this.element.setAttribute(attr, this.bindedAttributes[attr]);
     }
   },
-  empty() { }
+  empty():void {}
 };
 
 export {

@@ -14,7 +14,6 @@ import { RequiredMixin } from '../mixins/requiredMixin';
 import { spread } from '../libs/lit-helpers';
 
 import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidDisplay = {
@@ -127,10 +126,10 @@ export const SolidDisplay = {
    */
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     const fields = await this.getFields();
-    const template = html`
-      ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}
-    `;
-    render(template, parent);
+    const widgetTemplates = await Promise.all( // generate all widget templates
+      fields.map((field: string) => this.createWidgetTemplate(field))
+    );
+    render(html`${widgetTemplates}`, parent);
   },
 
   /**

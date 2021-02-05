@@ -8,7 +8,6 @@ import { setDeepProperty } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidForm = {
@@ -143,13 +142,11 @@ export const SolidForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    const isCreation = this.isCreationForm(await this.getFormValue());
     let id: string;
     try {
       id = await this.save() || this.getFormValue()['@id'];
     } catch (e) { return; }
-    if (isCreation) this.reset(); // we reset the form only in creation mode
-
+    this.reset();
     this.goToNext({'@id': id})
   },
   async onInput(): Promise<void> {
@@ -160,8 +157,6 @@ export const SolidForm = {
     const formValue = await this.getFormValue();
     if (!this.isCreationForm(formValue) && this.isSavingAutomatically)
       this.submitForm(); // if autosave, submitForm
-  },
-  empty(): void {
   },
   findErrorMessage(errors: [string, any][], errorFullName: string = '') {
     let errorsArray: string[] = [];
@@ -180,6 +175,7 @@ export const SolidForm = {
     });
     return errorsArray;
   },
+  empty(): void {},
   showError(e: object) {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
 
@@ -221,9 +217,7 @@ export const SolidForm = {
     return this.submitForm();
   },
   onReset() {
-    if (!this.isNaked) {
-      setTimeout(() => this.onInput())
-    }
+    if (!this.isNaked) setTimeout(() => this.inputChange(true))
   },
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
@@ -234,9 +228,7 @@ export const SolidForm = {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
     this.element.onchange = () => this.onChange();
     const fields = await this.getFields();
-    const fieldsTemplate = html`
-      ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}
-    `;
+    const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
     const template = html`
       <div data-id="error"></div>
       ${!this.isNaked ? html`
@@ -244,13 +236,13 @@ export const SolidForm = {
           @submit=${this.onSubmit.bind(this)}
           @reset=${this.onReset.bind(this)}
         >
-          ${fieldsTemplate}
+          ${widgetTemplates}
           ${!this.isSavingAutomatically ? this.getSubmitTemplate() : ''}
           ${this.element.hasAttribute('reset')
             ? html`<input type="reset" />` : ''}
         </form>
       ` : html`
-        ${fieldsTemplate}
+        ${widgetTemplates}
       `
       }
       ${this.getModalDialog()}
