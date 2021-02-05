@@ -4,8 +4,8 @@ solid-multiple,
 solid-link {
   border: 1px solid blue;
   display: block;
-  padding: 0.3em;
-  margin: 0.3em;
+  padding: 0.1em;
+  margin: 0.1em;
 }
 solid-display-value {
   border-color: orangered;
