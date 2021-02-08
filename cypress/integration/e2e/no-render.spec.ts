@@ -42,4 +42,16 @@ describe('no-render', function() {
         });
     });
   });
+
+  it('blocks rendering if no data-src', () => {
+    cy.get('#form').as('form')
+    cy.wait(500);
+    cy.get('@form').children()
+      .should('have.length', 0);
+
+    cy.get('#form-search').as('form-search')
+      cy.wait(500);
+      cy.get('@form-search').children()
+        .should('have.length', 0);
+  });
 })

@@ -23,9 +23,19 @@ export const SolidFormSearch = {
       type: String,
       default: undefined
     },
+    noRender: {
+      type: String,
+      default: null,
+      callback: function (value: boolean) {
+        if (value === null) this.populate()
+      }
+    },
   },
   initialState: {
     error: '',
+  },
+  created() {
+    if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';

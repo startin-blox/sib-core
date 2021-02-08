@@ -171,6 +171,8 @@ describe('solid-display', function() {
       .should('contain', 'Field empty');
     cy.get('#display-22 > div > custom-default-widget-website')
       .should('contain', 'No website');
-    
   });
+  it('dispatch event when widget rendered', () => {
+    cy.get('#log-event div').should('have.length', 12);
+  })
 })
