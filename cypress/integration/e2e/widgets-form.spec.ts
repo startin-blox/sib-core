@@ -551,4 +551,13 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'submit')
       .and('have.attr', 'value', 'Send data')
     });
+  it('solid-form-password', () => {
+    cy.get('solid-form-label-password')
+      .children().should('have.length', 2);
+    cy.get('solid-form-label-password')
+      .children().eq(0).should('contain', 'password');
+    cy.get('solid-form-label-password > input')
+      .should('have.attr', 'type', 'password')
+      .and('have.value', 'password123');
+  });
 })

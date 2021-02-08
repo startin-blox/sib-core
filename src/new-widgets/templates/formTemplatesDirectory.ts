@@ -377,4 +377,21 @@ export const formTemplates = {
     `,
     dependencies: [ FormMixin ]
   },
+  password: {
+    template: (value: string, attributes: any) => html`
+      <input
+        type="password"
+        placeholder=${ifDefined(attributes.placeholder)}
+        id=${ifDefined(attributes.id)}
+        name=${ifDefined(attributes.name)}
+        value=${value || ''}
+        ?required=${attributes.required}
+        pattern=${ifDefined(attributes.pattern)}
+        title=${ifDefined(attributes.title)}
+        data-holder
+        @change=${attributes.onChange}
+      />
+    `,
+    dependencies: [ FormMixin, PatternMixin ]
+  },
 }
