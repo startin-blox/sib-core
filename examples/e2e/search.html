@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: search</title>
     <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css">
   </head>
   <body>
 
@@ -96,5 +97,47 @@
       submit-button="OK"
       submit-widget="button"
     ></solid-form-search>
+
+    <solid-form-search
+      id="filter-hidden"
+      fields="name"
+      widget-name='solid-form-hidden'
+      value-name='paris'
+    ></solid-form-search>
+
+    <solid-display
+      id="display-filter-hidden"
+      data-src="../data/list/users.jsonld"
+      fields="name, available"
+      filtered-by="filter-hidden"
+    ></solid-display>
+
+    <solid-form-search
+      id="filter-hidden-bool"
+      fields="available"
+      widget-available='solid-form-hidden-bool'
+      value-available='true'
+    ></solid-form-search>
+
+    <solid-display
+      id="display-filter-hidden-bool"
+      data-src="../data/list/users.jsonld"
+      fields="name, available"
+      filtered-by="filter-hidden-bool"
+    ></solid-display>
+
+    <solid-form-search
+      id="filter-hidden-num"
+      fields="years_experience"
+      widget-years_experience='solid-form-hidden-num'
+      value-years_experience='5'
+    ></solid-form-search>
+
+    <solid-display
+      id="display-filter-hidden-num"
+      data-src="../data/list/users.jsonld"
+      fields="name, available, years_experience"
+      filtered-by="filter-hidden-num"
+    ></solid-display>
   </body>
 </html>

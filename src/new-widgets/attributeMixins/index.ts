@@ -4,6 +4,8 @@ import { BlankMixin } from './blankMixin';
 import { MailtoMixin } from './mailtoMixin';
 import { TelMixin } from './telMixin';
 import { PlaceholderMixin } from './placeholderMixin';
+import { BooleanMixin } from './booleanMixin';
+import { NumberMixin } from './numberMixin';
 
 const attributeDirectory = {
   multiple: MultipleMixin,
@@ -12,6 +14,8 @@ const attributeDirectory = {
   mailto: MailtoMixin,
   tel: TelMixin,
   placeholder: PlaceholderMixin,
+  bool: BooleanMixin,
+  num: NumberMixin,
 }
 
 export {

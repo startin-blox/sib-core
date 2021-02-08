@@ -70,6 +70,7 @@ describe('solid-form-search widget', function() {
     cy.get('#filter-search-field > form')
       .find('solid-form-label-text')
       .should('have.attr', 'name', 'global_name')
+      .find('input')
       .type('em')
 
     cy.get('#display-search-field-1 > div')
@@ -78,5 +79,14 @@ describe('solid-form-search widget', function() {
     cy.get('#display-search-field-2 > div')
       .children().should('have.length', 1)
       .filter('solid-display[data-src="event-4.jsonld"]');
+  });
+
+  it('solid-form-search + solid-form-hidden', () => {
+    cy.get('#display-filter-hidden > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-bool > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-num > div')
+      .children().should('have.length', 2)
   });
 })

@@ -5,6 +5,7 @@
   "username": "admin",
   "email": "test-user@example.com",
   "name": "Test User",
+  "available": true,
   "skills": {
     "@id": "user-1-skills.jsonld",
     "@type": "ldp:Container",
