@@ -24,6 +24,30 @@
       "lng": "12.4922309",
       "permissions": [],
       "@id": "event-3.jsonld"
+    },
+    {
+      "name": "Test 4, France, Europe",
+      "category": "meetup",
+      "lat": "48.63976",
+      "lng": "-2.42516",
+      "permissions": [],
+      "@id": "event-4.jsonld"
+    },
+    {
+      "name": "Test 5, France, Europe",
+      "category": "meetup",
+      "lat": "48.64636",
+      "lng": "-2.41981",
+      "permissions": [],
+      "@id": "event-5.jsonld"
+    },
+    {
+      "name": "Test 6, France, Europe",
+      "category": "meetup",
+      "lat": "48.63683",
+      "lng": "-2.47765",
+      "permissions": [],
+      "@id": "event-6.jsonld"
     }
   ],
   "@id": "",

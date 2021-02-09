@@ -9,6 +9,7 @@ import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
 
 import L, { MarkerOptions } from 'leaflet';
+import 'leaflet.markercluster/dist/leaflet.markercluster-src.js';
 
 export const SolidMap = {
   name: 'solid-map',
@@ -21,6 +22,12 @@ export const SolidMap = {
     FilterMixin,
     NextMixin,
   ],
+  attributes: {
+    clustering: {
+      type: Boolean,
+      default: null
+    }
+  },
   initialState: {
     markers: {
       default: null
@@ -33,6 +40,10 @@ export const SolidMap = {
     import('leaflet/dist/leaflet.css');
     //@ts-ignore
     import('../style/default-theme.css');
+    //@ts-ignore
+    import('leaflet.markercluster/dist/MarkerCluster.css');
+    //@ts-ignore
+    import('leaflet.markercluster/dist/MarkerCluster.Default.css');
 
     document.body.addEventListener('navigate', () =>
       setTimeout(() => this.element.offsetParent && this.reset())
@@ -49,6 +60,11 @@ export const SolidMap = {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
     this.element.appendChild(div);
+    if(this.element.hasAttribute('clustering')) {
+      // @ts-ignore
+      this.markersCluster = L.markerClusterGroup();
+      this.map.addLayer(this.markersCluster);
+    }
   },
   reset() {
     this.map.invalidateSize();
@@ -106,9 +122,11 @@ export const SolidMap = {
       const marker = L.marker(
         [lat.toString(), lng.toString()], 
         {resource, icon} as MarkerOptions
-      )
-        .addTo(this.map)
-        .on('click', this.dispatchSelect.bind(this));
+      );
+      this.element.hasAttribute('clustering') ?
+        marker.on('click', this.dispatchSelect.bind(this)) :
+        marker.addTo(this.map).on('click', this.dispatchSelect.bind(this));
+      if (this.element.hasAttribute('clustering')) this.markersCluster.addLayer(marker);
 
       if (this.fields !== null) { // show popups only if fields attribute
         marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup solid-display
@@ -149,7 +167,14 @@ export const SolidMap = {
    * Override widgetMixin method: empty the map
    */
   empty(): void {
+    if (!this.map) return;
+    if (this.markersCluster) this.map.removeLayer(this.markersCluster);
     for (let marker of this.markers) this.map.removeLayer(marker);
+    if(this.element.hasAttribute('clustering')) {
+      // @ts-ignore
+      this.markersCluster = L.markerClusterGroup();
+      this.map.addLayer(this.markersCluster);
+    }
     this.markers = [];
   },
   /**

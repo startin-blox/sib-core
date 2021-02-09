@@ -3,7 +3,7 @@ describe('solid-map', function() {
     cy.visit('/examples/e2e/solid-map.html')
   })
   it('display markers', () => {
-    cy.get('#map-1 .leaflet-marker-pane').children().should('have.length', 3)
+    cy.get('#map-1 .leaflet-marker-pane').children().should('have.length', 6)
   })
   it('display content in popup markers', () => {
     cy.get('#map-2 .leaflet-marker-pane').children().first().click({force: true})
@@ -19,7 +19,7 @@ describe('solid-map', function() {
     cy.get('#map-2 .leaflet-popup-content solid-display > div > solid-set-default[name=infos] > solid-display-value[name=category]').contains('showcase event')
   })
   it('groups markers', () => {
-    cy.get('#map-3 .leaflet-marker-pane .group-meetup').should('have.length', 1)
+    cy.get('#map-3 .leaflet-marker-pane .group-meetup').should('have.length', 4)
     cy.get('#map-3 .leaflet-marker-pane .group-showcaseevent').should('have.length', 2)
   })
   it('applies attributes', () => {
@@ -39,7 +39,12 @@ describe('solid-map', function() {
     cy.get('#map-5 .leaflet-marker-pane').children().should('have.length', 2)
     cy.get('#map-5 span#counter').contains('2 results')
     cy.get('#filter input[name=category]').clear().type('mee')
-    cy.get('#map-5 .leaflet-marker-pane').children().should('have.length', 1)
-    cy.get('#map-5 span#counter').contains('1 results')
+    cy.get('#map-5 .leaflet-marker-pane').children().should('have.length', 4)
+    cy.get('#map-5 span#counter').contains('4 results')
+  })
+  it('markers clusters', () => {
+    cy.get('#map-6 .leaflet-marker-pane').children().should('have.length', 3)
+    cy.get('#map-6 .leaflet-marker-pane').children().eq(2)
+      .find('span').should('contain', '4')
   })
 })
