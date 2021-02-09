@@ -125,5 +125,18 @@
       fields="name, available, years_experience"
       filtered-by="filter-hidden-num"
     ></solid-display>
+
+    <solid-form-search
+      id="skill-search"
+      fields="skills"
+      range-skills="../data/list/skills.jsonld"
+      widget-skills="solid-form-placeholder-dropdown"
+    ></solid-form-search>
+    <solid-display
+      id="filter-container"
+      data-src="../data/list/users.jsonld"
+      fields="username"
+      filtered-by="skill-search"
+    ></solid-display>
   </body>
 </html>

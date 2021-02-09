@@ -71,7 +71,7 @@ const FilterMixin = {
     }
     if (subject.isContainer?.()) {
       return await asyncReduce(
-        Promise.resolve(false),
+        Promise.resolve(query.value === ''), // if no query, return a match
         async (initial, value:any) => await initial || await this.matchValue(value, query),
         subject['ldp:contains'],
       );

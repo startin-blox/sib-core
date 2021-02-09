@@ -81,4 +81,16 @@ describe('solid-form-search widget', function() {
     cy.get('#display-filter-hidden-num > div')
       .children().should('have.length', 2)
   });
+
+  it('solid-form-search + container', () => {
+    cy.get('#filter-container > div ')
+      .children().should('have.length', 4)
+
+    cy.get('#skill-search > form')
+      .find('select')
+      .select('HTML');
+
+    cy.get('#filter-container > div ')
+      .children().should('have.length', 2)
+  });
 })
