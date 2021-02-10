@@ -155,11 +155,13 @@ export const SolidForm = {
 
     this.goToNext({'@id': id})
   },
-  async inputChange(preventSubmitting: boolean = false): Promise<void> {
+  async onInput(): Promise<void> {
     const formValue = await this.getFormValue();
     this.change(formValue);
-
-    if (!preventSubmitting && !this.isCreationForm(formValue) && this.isSavingAutomatically)
+  },
+  async onChange(): Promise<void> {
+    const formValue = await this.getFormValue();
+    if (!this.isCreationForm(formValue) && this.isSavingAutomatically)
       this.submitForm(); // if autosave, submitForm
   },
   empty(): void {
@@ -224,7 +226,7 @@ export const SolidForm = {
   },
   onReset() {
     if (!this.isNaked) {
-      setTimeout(() => this.inputChange(true))
+      setTimeout(() => this.onInput())
     }
   },
   getSubmitTemplate() {
@@ -233,7 +235,8 @@ export const SolidForm = {
       html`<input type="submit" value=${ifDefined(this.submitButton)}>`;
   },
   async populate(): Promise<void> {
-    this.element.oninput = () => this.inputChange(); // prevent from firing change multiple times
+    this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
+    this.element.onchange = () => this.onChange();
     const fields = await this.getFields();
     const fieldsTemplate = html`
       ${until(Promise.all(fields.map((field: string) => this.createWidget(field))))}

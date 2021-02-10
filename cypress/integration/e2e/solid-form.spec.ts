@@ -258,7 +258,12 @@ describe('solid-form', function() {
     cy.get('solid-form#form-autosave').find('input[type="submit"]')
       .should('not.exist');
     cy.get('solid-form#form-autosave input[name="username"]').type('a').then(() => {
-      expect(win.sibStore.patch).to.have.callCount(1);
+      expect(win.sibStore.patch).to.have.callCount(0);
+    });
+    cy.get('solid-form#form-autosave input[name="username"]').blur().then(() => {
+      cy.wait(200).then(() => {
+        expect(win.sibStore.patch).to.have.callCount(1);
+      });
     });
     cy.get('solid-form#form-autosave [data-index="skills0"] button').click().then(() => {
       expect(win.sibStore.patch).to.have.callCount(2);
@@ -272,7 +277,7 @@ describe('solid-form', function() {
     // Without autosave, no requests
     cy.get('solid-form#form-autosave').then(($el) => {
       $el.removeAttr('autosave');
-      cy.get('solid-form#form-autosave input[name="username"]').type('a').then(() => {
+      cy.get('solid-form#form-autosave input[name="username"]').type('a').blur().then(() => {
         expect(win.sibStore.patch).to.have.callCount(3);
       });
     });
