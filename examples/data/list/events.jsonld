@@ -38,6 +38,6 @@
 			"permissions": []
 		}
 	],
-	"@id": "",
+	"@id": "events.jsonld",
 	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

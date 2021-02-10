@@ -27,7 +27,9 @@
       <solid-display
         id="events"
         data-src="../data/list/events.jsonld"
-        fields="name"
+        fields="name, custom-id, child-date"
+        value-custom-id="store://container.@id"
+        value-child-date="store://resource.date"
         next="event-infos"
       ></solid-display>
     </div>
@@ -35,8 +37,9 @@
       <solid-display
         id="infos"
         bind-resources
-        fields="name, custom-field, user"
+        fields="name, custom-field, user, wrong-field"
         value-custom-field="store://resource.date"
+        value-wrong-field="store://container.@id"
         value-user="store://user.profile.city"
       ></solid-display>
     </div>

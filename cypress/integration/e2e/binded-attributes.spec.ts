@@ -3,15 +3,26 @@ describe('binded-attributes', function() {
     cy.visit('/examples/e2e/binded-attributes.html')
   });
 
-  it('replace store://resource', () => {
+  it('replace store://resource and store://container', () => {
+    cy.get('#events')
+      .should('have.attr', 'value-custom-id', 'events.jsonld')
+      .and('have.attr', 'value-child-date', 'store://resource.date');
+
+    cy.get('#events solid-display[data-src="event-1.jsonld"]')
+      .should('have.attr', 'value-custom-id', 'events.jsonld')
+      .and('have.attr', 'value-child-date', '2020-07-09');
+
     cy.get('#events').contains('Workshop').click();
 
     // Value store://resource.date replaced
     cy.get('#infos')
       .should('have.attr', 'data-src', 'event-2.jsonld')
-      .and('have.attr', 'value-custom-field', '2020-05-10');
+      .and('have.attr', 'value-custom-field', '2020-05-10')
+      .and('have.attr', 'value-wrong-field', 'store://container.@id');
     cy.get('#infos solid-display-value[name="custom-field"]')
       .should('have.text', '2020-05-10');
+    cy.get('#infos solid-display-value[name="wrong-field"]')
+      .should('have.text', 'store://container.@id');
 
     // Reset attribute
     cy.get('solid-route').contains('Events').click();

@@ -99,6 +99,7 @@ const StoreMixin = {
    */
   async getAttributesData() {
     this.resetAttributesData();
+    const isContainer = this.resource.isContainer();
 
     for (let attr of this.element.attributes) {
       if (!attr.value.startsWith('store://')) continue;
@@ -107,8 +108,12 @@ const StoreMixin = {
       if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
 
       // Replace attribute value
-      if (attr.value.startsWith('store://resource')) { // resource
+      if (!isContainer && attr.value.startsWith('store://resource')) { // resource
         let path = attr.value.replace('store://resource.', '');
+        attr.value = this.resource ? await this.resource[path] : '';
+      } else if (isContainer && attr.value.startsWith('store://container')) { // container
+        let path = attr.value.replace('store://container.', '');
+        console.log(path, this.resource, this.resource[path]);
         attr.value = this.resource ? await this.resource[path] : '';
       } else if (attr.value.startsWith('store://user')) { // user
         const sibAuth = document.querySelector('sib-auth');
