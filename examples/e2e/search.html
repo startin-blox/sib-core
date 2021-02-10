@@ -138,5 +138,16 @@
       fields="username"
       filtered-by="skill-search"
     ></solid-display>
+
+    <solid-form-search
+      id="filter-null-subject"
+      fields="profile.available"
+    ></solid-form-search>
+    <solid-display
+      id="display-null-subject"
+      data-src="../data/list/users.jsonld"
+      fields="name, profile.available"
+      filtered-by="filter-null-subject"
+  ></solid-display>
   </body>
 </html>

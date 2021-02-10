@@ -93,4 +93,12 @@ describe('solid-form-search widget', function() {
     cy.get('#filter-container > div ')
       .children().should('have.length', 2)
   });
+
+  it('solid-form-search + subject=null', () => {
+    cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('exist')
+    
+    cy.get('#filter-null-subject input').type("foo")
+    
+    cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('not.exist')
+  });
 })
