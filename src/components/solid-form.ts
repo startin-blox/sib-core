@@ -165,35 +165,31 @@ export const SolidForm = {
   empty(): void {
   },
 
-  findErrorMessage(errors: any[], errorFullName: string, errorsArray: string[]) {
-    errors.forEach((member: any[]) => {
-      let errorNextName : string = Object.values(member)[0];
-      let errorAddName = (errorFullName == "" ? errorNextName : errorFullName.concat(' - ', errorNextName));
+  findErrorMessage(errors: [string, any][], errorFullName: string = '') {
+    let errorsArray: string[] = [];
+    errors.forEach((member: [string, any]) => {
+      let errorNextName: string = Object.values(member)[0];
+      let errorAddName = (errorFullName === "" ? errorNextName : errorFullName.concat(' - ', errorNextName));
       if (Array.isArray(Object.values(member)[1]) === true) {
-        let errorMessage : string[] = Object.values(member)[1];
+        let errorMessage: string[] = Object.values(member)[1];
         let errorGlobal = errorAddName.concat(': ', errorMessage.join(', '));
         errorsArray.push(errorGlobal);
-        return errorsArray;
       } else {
         let objectErrors = Object.values(member)[1];
         let subErrors = Object.entries(objectErrors);
-        return this.findErrorMessage(subErrors, errorAddName, errorsArray);
+        errorsArray = [...errorsArray, ...this.findErrorMessage(subErrors, errorAddName)];
       }
-    })    
+    });
     return errorsArray;
   },
 
   showError(e: object) {
-    console.log(e);
-    
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
-    let errorFullName: String = "";
-    let errorsArray : Array<string> = [];
 
     const errorTemplate = html`
       <p>A validation error occured.</p>
       <ul>
-        ${this.findErrorMessage(errors, errorFullName, errorsArray).map(field => html`
+        ${this.findErrorMessage(errors).map(field => html`
          <li>${field}</li>
         `)}
       </ul>
