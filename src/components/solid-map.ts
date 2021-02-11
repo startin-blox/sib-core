@@ -60,7 +60,7 @@ export const SolidMap = {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
     this.element.appendChild(div);
-    if(this.element.hasAttribute('clustering')) {
+    if(this.clustering !== null) {      
       // @ts-ignore
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
@@ -123,10 +123,9 @@ export const SolidMap = {
         [lat.toString(), lng.toString()], 
         {resource, icon} as MarkerOptions
       );
-      this.element.hasAttribute('clustering') ?
-        marker.on('click', this.dispatchSelect.bind(this)) :
-        marker.addTo(this.map).on('click', this.dispatchSelect.bind(this));
-      if (this.element.hasAttribute('clustering')) this.markersCluster.addLayer(marker);
+      if(this.clustering === null) marker.addTo(this.map);
+      marker.on('click', this.dispatchSelect.bind(this));
+      if (this.clustering !== null) this.markersCluster.addLayer(marker);
 
       if (this.fields !== null) { // show popups only if fields attribute
         marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup solid-display
@@ -170,7 +169,7 @@ export const SolidMap = {
     if (!this.map) return;
     if (this.markersCluster) this.map.removeLayer(this.markersCluster);
     for (let marker of this.markers) this.map.removeLayer(marker);
-    if(this.element.hasAttribute('clustering')) {
+    if(this.clustering !== null) {
       // @ts-ignore
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
