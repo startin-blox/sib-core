@@ -95,10 +95,41 @@ describe('solid-form-search widget', function() {
       .children().should('have.length', 4)
 
     cy.get('#filter-fake-field > form')
-      .find('solid-form-label-text input')
-      .type('a');
+      .find('solid-form-label-text')
+      .should('have.attr', 'name', 'fakeField')
+      .find('input')
+      .type('em');
 
     cy.get('#display-fake-field > div ')
       .children().should('have.length', 0)
+  });
+
+  it('solid-form-search + solid-form-hidden', () => {
+    cy.get('#display-filter-hidden > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-bool > div')
+      .children().should('have.length', 2)
+    cy.get('#display-filter-hidden-num > div')
+      .children().should('have.length', 2)
+  });
+
+  it('solid-form-search + container', () => {
+    cy.get('#filter-container > div ')
+      .children().should('have.length', 4)
+
+    cy.get('#skill-search > form')
+      .find('select')
+      .select('HTML');
+
+    cy.get('#filter-container > div ')
+      .children().should('have.length', 2)
+  });
+
+  it('solid-form-search + subject=null', () => {
+    cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('exist')
+    
+    cy.get('#filter-null-subject input').type("foo")
+    
+    cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('not.exist')
   });
 })

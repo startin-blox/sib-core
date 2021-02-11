@@ -54,7 +54,7 @@ const FilterMixin = {
     await this.populate();
   },
   async matchValue(subject, query): Promise<boolean> {
-    if (subject === undefined && query.value === '') return true; // filter not set and subject not existing -> ignore filter
+    if (subject == null && query.value === '') return true; // filter not set and subject not existing -> ignore filter
     if (subject == null) return false; // property does not exist on resource
     // Filter on a container
     if (query.list) {
@@ -69,8 +69,8 @@ const FilterMixin = {
       return false;
     }
     if (subject.isContainer?.()) {
-      let ret = Promise.resolve(false);
-      for(const value in subject['ldp:contains']) {
+      let ret = Promise.resolve(query.value === ''); // if no query, return a match
+      for (const value of subject['ldp:contains']) {
         ret = await ret || await this.matchValue(value, query)
       }
       return ret;

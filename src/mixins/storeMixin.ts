@@ -99,7 +99,7 @@ const StoreMixin = {
    */
   async getAttributesData() {
     this.resetAttributesData();
-    const isContainer = this.resource.isContainer();
+    const isContainer = this.resource && this.resource.isContainer();
 
     for (let attr of this.element.attributes) {
       if (!attr.value.startsWith('store://')) continue;
