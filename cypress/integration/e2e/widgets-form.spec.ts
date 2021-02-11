@@ -313,6 +313,7 @@ describe('form widgets', function() {
 
     // With enumeration in range
     cy.get('solid-form-dropdown#test7 > select')
+      .should('have.value', 'option1')
       .children().should('have.length', 5)
       .eq(2)
       .should('have.attr', 'value', 'option2')

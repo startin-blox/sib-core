@@ -171,11 +171,12 @@ export const formTemplates = {
             ${until(el[attributes.optionLabel])}
           </option>
         `)}
-        ${Object.entries(attributes.enum || []).map(([key, value]) => html`
+        ${Object.entries(attributes.enum || []).map(([key, val]) => html`
           <option
             value="${key}"
+            ?selected=${!attributes.multiple ? value === key : attributes.values.includes(key)}
           >
-            ${value}
+            ${val}
           </option>
         `)}
       </select>
@@ -198,7 +199,7 @@ export const formTemplates = {
             > <span>${until(el[attributes.optionLabel])}</span>
           </label>
         `)}
-        ${Object.entries(attributes.enum || []).map(([key, value]) => html`
+        ${Object.entries(attributes.enum || []).map(([key, val]) => html`
           <label>
             <input
               type="radio"
@@ -206,7 +207,7 @@ export const formTemplates = {
               name=${ifDefined(attributes.id)}
               ?required=${attributes.required}
               ?checked=${value === key}
-            > <span>${value}</span>
+            > <span>${val}</span>
           </label>
         `)}
     `,
@@ -227,11 +228,11 @@ export const formTemplates = {
           </label>
         `)}
         ${Object.entries(attributes.enum || [])
-          .map(([key, value]) => html`
+          .map(([key, val]) => html`
           <label>
             <input type="checkbox"
               value="${key}"
-            /> <span>${value}</span>
+            /> <span>${val}</span>
           </label>
         `)}
       </select>
