@@ -123,9 +123,8 @@ export const SolidMap = {
         [lat.toString(), lng.toString()], 
         {resource, icon} as MarkerOptions
       );
-      if(this.clustering === null) marker.addTo(this.map);
-      marker.on('click', this.dispatchSelect.bind(this));
-      if (this.clustering !== null) this.markersCluster.addLayer(marker);
+      if(this.clustering === null) marker.addTo(this.map).on('click', this.dispatchSelect.bind(this));
+      else this.markersCluster.addLayer(marker);
 
       if (this.fields !== null) { // show popups only if fields attribute
         marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup solid-display
