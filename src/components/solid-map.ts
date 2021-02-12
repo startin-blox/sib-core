@@ -9,7 +9,7 @@ import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
 
 import L, { MarkerOptions } from 'leaflet';
-import 'leaflet.markercluster/dist/leaflet.markercluster-src.js';
+import 'leaflet.markercluster';
 
 export const SolidMap = {
   name: 'solid-map',
@@ -60,8 +60,7 @@ export const SolidMap = {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
     ).addTo(this.map);
     this.element.appendChild(div);
-    if(this.clustering !== null) {      
-      // @ts-ignore
+    if (this.clustering !== null) {
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
     }
@@ -117,7 +116,7 @@ export const SolidMap = {
         iconAnchor: [12, 34],
         popupAnchor: [0,-34]
       });
-      
+
       // create a marker, doc here: https://leafletjs.com/reference-1.6.0.html#marker
       const marker = L.marker(
         [lat.toString(), lng.toString()], 
@@ -170,7 +169,6 @@ export const SolidMap = {
     if (this.markersCluster) this.map.removeLayer(this.markersCluster);
     for (let marker of this.markers) this.map.removeLayer(marker);
     if(this.clustering !== null) {
-      // @ts-ignore
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
     }
