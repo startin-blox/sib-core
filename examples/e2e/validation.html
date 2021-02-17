@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: validation mixin</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h3>confirm popup</h3>
+    <solid-delete
+      id="confirm"
+      data-src="data/project.jsonld"
+      data-label="Supprimer"
+      next="detail"
+      confirmation-type="confirm"
+      confirmation-message="Are you sure ?"
+    ></solid-delete>
+
+    <solid-form
+      id="confirm"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, contact.email"
+      confirmation-type="confirm"
+    ></solid-form>
+
+    <h3>simple dialog popup</h3>
+    <solid-form
+      id="simple-dialog"
+      data-src="../data/list/event-1.jsonld"
+      fields="name"
+      confirmation-type="dialog"
+    ></solid-form>
+
+    <solid-delete
+      id="delete-data"
+      data-src="data/project.jsonld"
+      data-label="Supprimer"
+      confirmation-message="Confirm the delete action."
+      confirmation-type="dialog"
+    ></solid-delete>
+
+    <h3>custom dialog popup</h3>
+    <solid-form
+      id="custom-dialog"
+      data-src="../data/list/events.jsonld"
+      fields="name"
+      confirmation-type="dialog"
+      confirmation-message="Custom message : Are you sure ?"
+      confirmation-submit-text="Certainly"
+      confirmation-cancel-text="Quit"
+      confirmation-submit-class="submit-button"
+      confirmation-cancel-class="cancel-button"
+    ></solid-form>
+
+    <h3>missing confirmation-type attribute</h3>
+    <solid-delete
+      id="missing-type"
+      data-src="data/project.jsonld"
+      data-label="Supprimer"
+      confirmation-message="Confirm the delete action."
+    ></solid-delete>
+  </body>
+</html>

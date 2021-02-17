@@ -49,18 +49,5 @@ describe('solid-delete', function () {
       cy.get('solid-delete > button').should('have.text', 'Supprimer la ressource');
     })
   });
-  it('solid-delete with validation popup', () => {
-    const stub = cy.stub();
-    cy.on('window:confirm', stub)
-    cy.get('solid-delete')
-      .should('have.attr', 'confirmation-message')
-    cy.get('solid-delete')
-      .find('button')
-      .click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('Are you sure ?')
-      });
-  });
-
 })
 

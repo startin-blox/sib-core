@@ -21,6 +21,7 @@ import { PaginateMixin } from './mixins/paginateMixin';
 import { RequiredMixin } from './mixins/requiredMixin';
 import { SorterMixin } from './mixins/sorterMixin';
 import { StoreMixin } from './mixins/storeMixin';
+import { ValidationMixin } from './mixins/validationMixin';
 import { WidgetMixin } from './mixins/widgetMixin';
 
 // Libs
@@ -59,6 +60,7 @@ export {
   RequiredMixin,
   SorterMixin,
   StoreMixin,
+  ValidationMixin,
   WidgetMixin,
 
   // Libs

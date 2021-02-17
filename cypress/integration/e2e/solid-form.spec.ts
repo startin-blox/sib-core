@@ -138,28 +138,14 @@ describe('solid-form', function() {
       .should('have.attr', 'pattern', '[a-z]{3}')
       .and('have.attr', 'title', '3 lowercase letters');
   });
-
-  it('solid-form with validation popup', () => {
-    const stub = cy.stub();
-    cy.on('window:confirm', stub)
-    cy.get('solid-form#form-6')
-      .should('have.attr', 'confirmation-message')
-    cy.get('solid-form#form-6')
-      .find('input[type=submit]')
-      .click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('Please confirm your choice')
-      });
-  });
-
   it('re-render when label on submit-button change', () => {
-    cy.get('solid-form#form-7')
+    cy.get('solid-form#form-6')
       .find('input[type=submit]')
       .should('have.value', 'Register');
-    cy.get('solid-form#form-7')
+    cy.get('solid-form#form-6')
       .then(el => {
         el.attr('submit-button', 'Register the user');
-        cy.get('solid-form#form-7')
+        cy.get('solid-form#form-6')
         .find('input[type=submit]')
         .should('have.value', 'Register the user');
       })
@@ -186,13 +172,13 @@ describe('solid-form', function() {
       onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
     });
 
-    cy.get('solid-form#form-8')
+    cy.get('solid-form#form-7')
       .find('input[name=name]')
       .type('Mon très long titre');
-    cy.get('solid-form#form-8')
+    cy.get('solid-form#form-7')
       .find('input[type=submit]')
       .click();
-    cy.get('solid-form#form-8')
+    cy.get('solid-form#form-7')
       .find('[data-id="error"]')
       .should('contain', 'A validation error occured')
       .and('contain', 'name: Ensure this field has no more than 10 characters.')
@@ -200,22 +186,22 @@ describe('solid-form', function() {
       .and('contain', 'batches - tasks - @id: Task with this urlid already exists.')
       .and('contain', 'batches - tasks - amount: Should be > 0')
       .and('not.contain', '@context');
-    cy.get('solid-form#form-8')
+    cy.get('solid-form#form-7')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
   });
   it('partial attribute', () => {
     cy.spy(win.sibStore, 'put');
-    cy.get('#form-9').find('input[type=submit]').click().then(() => {
+    cy.get('#form-8').find('input[type=submit]').click().then(() => {
       expect(win.sibStore.put).to.be.called;
     });
     cy.spy(win.sibStore, 'patch');
-    cy.get('#form-10').find('input[type=submit]').click().then(() => {
+    cy.get('#form-9').find('input[type=submit]').click().then(() => {
       expect(win.sibStore.patch).to.be.called;
     });
   });
   it('naked attribute', () => {
-    cy.get('#form-11').find('input[type=submit]').should('not.exist');
+    cy.get('#form-10').find('input[type=submit]').should('not.exist');
   });
   it('loader-id attribute', () => {
     cy.get('#form-loader').should('have.attr', 'hidden');
@@ -226,10 +212,10 @@ describe('solid-form', function() {
       response: {},
       delay: 3000
     });
-    cy.get('#form-12')
+    cy.get('#form-11')
       .find('input[name=name]')
       .type('Tryphon');
-    cy.get('#form-12')
+    cy.get('#form-11')
       .find('input[type=submit]')
       .click();
     cy.get('#form-loader').should('not.have.attr', 'hidden');
@@ -245,12 +231,12 @@ describe('solid-form', function() {
     .and('have.attr', 'addable-submit-button', 'Send name')
   });
   it('autocomplete attribute', () => {
-    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(0)
+    cy.get('solid-form#form-12 > form > solid-form-label-text').eq(0)
       .should('have.attr', 'autocomplete', 'off')
-    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(0)
+    cy.get('solid-form#form-12 > form > solid-form-label-text').eq(0)
       .find('input[type=text]')
       .should('have.attr', 'autocomplete', 'off')
-    cy.get('solid-form#form-13 > form > solid-form-label-text').eq(1)
+    cy.get('solid-form#form-12 > form > solid-form-label-text').eq(1)
       .should('not.have.attr', 'autocomplete')
   });
   it('autosaves form', () => {

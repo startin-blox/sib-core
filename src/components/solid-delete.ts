@@ -1,13 +1,14 @@
 import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
+import { ValidationMixin } from '../mixins/validationMixin';
 import { uniqID } from '../libs/helpers';
 
 import { html, render } from 'lit-html';
 
 export const SolidDelete = {
   name: 'solid-delete',
-  use: [NextMixin],
+  use: [NextMixin, ValidationMixin],
   attributes: {
     dataSrc: {
       type: String,
@@ -23,17 +24,10 @@ export const SolidDelete = {
     extraContext: {
       type: String,
       default: null
-    },
-    confirmationMessage: {
-      type: String,
-      default: null
-    },
-    modalDialog: {
-      type: String,
-      default: null
     }
   },
   created(): void {
+    this.dialogID = uniqID();
     this.render();
   },
   get context(): object {
@@ -49,13 +43,15 @@ export const SolidDelete = {
   async delete(e: Event): Promise<void> {
     e.stopPropagation();
     if (!this.dataSrc) return;
-    if ((!this.confirmationMessage) || (this.confirmationMessage && confirm(this.confirmationMessage))) {
-      if (this.modalDialog) {
-        var dialog : any = document.getElementById(this.dialogID);
-        dialog.showModal();
-      }
-      else this.deletion();
-    };
+    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) {
+      console.warn('confirmation-type attribute is missing.');
+      return ;
+    }
+    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.deletion();
+    if (this.confirmationType == "dialog") {
+      var dialog : any = document.getElementById(this.dialogID);
+      dialog.showModal();
+    }
   },
   deletion() {
     return store.delete(this.dataSrc, this.context).then(response => {
@@ -66,31 +62,13 @@ export const SolidDelete = {
       this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
     })
   },
-  getModalDialog() {
-    this.dialogID = uniqID();
-    const quitDialog = () => {
-      var dialog : any = document.getElementById(this.dialogID);
-      if(dialog == null) return;
-      dialog.removeAttribute('open');
-    }
-    const deletion = () =>  {
-      this.deletion();
-      quitDialog();
-    }
-    return html`
-      <dialog id="${this.dialogID}">
-        <p>${this.modalDialog}</p>
-        <div>
-          <button @click=${deletion}>Yes</button>
-          <button @click=${quitDialog}>Cancel</button>
-        </div>
-      </dialog>
-      `
+  validateModal() { //send method to validationMixin, used in the dialog modal
+    return this.deletion();
   },
   render(): void {
     const button = html`
       <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
-      ${this.modalDialog ? this.getModalDialog() : ''}
+      ${this.confirmationType == 'dialog' ? this.getModalDialog() : ''}
     `;
     render(button, this.element);
   }

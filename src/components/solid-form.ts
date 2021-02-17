@@ -2,8 +2,10 @@ import { Sib } from '../libs/Sib';
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { StoreMixin } from '../mixins/storeMixin';
 import { NextMixin } from '../mixins/nextMixin';
+import { ValidationMixin } from '../mixins/validationMixin';
 import { store } from '../libs/store/store';
 import { setDeepProperty } from '../libs/helpers';
+import { uniqID } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
@@ -12,7 +14,7 @@ import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidForm = {
   name: 'solid-form',
-  use: [WidgetMixin, StoreMixin, NextMixin],
+  use: [WidgetMixin, StoreMixin, NextMixin, ValidationMixin],
   attributes: {
     defaultWidget: {
       type: String,
@@ -41,10 +43,6 @@ export const SolidForm = {
       type: Boolean,
       default: null
     },
-    confirmationMessage: {
-      type: String,
-      default: null
-    }
   },
   initialState: {
     error: ''
@@ -75,6 +73,9 @@ export const SolidForm = {
   },
   get isSavingAutomatically(): boolean {
     return this.autosave !== null;
+  },
+  created() {
+    this.dialogID = uniqID();
   },
   isCreationForm(formValue: object): boolean {
     return !('@id' in formValue);
@@ -219,10 +220,19 @@ export const SolidForm = {
   onSubmit(event: Event) {
     if (!this.isNaked) {
       event.preventDefault();
-      if ((!this.confirmationMessage) || (this.confirmationMessage && confirm(this.confirmationMessage))) {
-        this.submitForm()
-      };
+    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) {
+      console.warn('confirmation-type attribute is missing.');
+      return;
     }
+    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.submitForm();
+    if (this.confirmationType == "dialog") {
+      var dialog : any = document.getElementById(this.dialogID);
+      dialog.showModal();
+      }
+    }
+  },
+  validateModal() { //send method to validationMixin, used in the dialog modal
+    return this.submitForm();
   },
   onReset() {
     if (!this.isNaked) {
@@ -257,6 +267,7 @@ export const SolidForm = {
         ${fieldsTemplate}
       `
       }
+      ${this.confirmationType == 'dialog' ? this.getModalDialog() : ''}
     `;
     render(template, this.element);
   }
