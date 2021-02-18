@@ -1,5 +1,6 @@
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { uniqID } from '../libs/helpers';
 
 const ValidationMixin = {
   name: 'validation-mixin',
@@ -30,35 +31,44 @@ const ValidationMixin = {
       default: undefined
     }
   },
+  created() {
+    this.dialogID = uniqID();
+  },
+  showModal() {
+    var dialog : any = document.getElementById(this.dialogID);
+    return dialog.showModal();
+  },
   getModalDialog() {
     const quitDialog = () => {
       var dialog : any = document.getElementById(this.dialogID);
       if(dialog == null) return;
       dialog.close();
     }
-    const submitForm = () =>  {
+    const confirmChoice = () =>  {
       this.validateModal();
       quitDialog();
     }
-    return html`
-      <dialog id="${this.dialogID}">
-        <p>${this.confirmationMessage}</p>
-        <div>
-          <button
-            @click=${submitForm} 
-            class=${ifDefined(this.confirmationSubmitClass)}
-          >
+    if (this.confirmationType == 'dialog') {
+      return html`
+        <dialog id="${this.dialogID}">
+          <p>${this.confirmationMessage}</p>
+          <div>
+            <button
+              @click=${confirmChoice} 
+              class=${ifDefined(this.confirmationSubmitClass)}
+            >
             ${this.confirmationSubmitText}
-          </button>
-          <button 
-            @click=${quitDialog} 
-            class=${ifDefined(this.confirmationCancelClass)}
-          >
+            </button>
+            <button
+              @click=${quitDialog}
+              class=${ifDefined(this.confirmationCancelClass)}
+            >
             ${this.confirmationCancelText}
-          </button>
-        </div>
-      </dialog>
-    `
+            </button>
+          </div>
+        </dialog>
+      `
+    } else return '';
   },
 }
 

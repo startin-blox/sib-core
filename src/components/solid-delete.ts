@@ -2,7 +2,6 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-import { uniqID } from '../libs/helpers';
 
 import { html, render } from 'lit-html';
 
@@ -27,7 +26,6 @@ export const SolidDelete = {
     }
   },
   created(): void {
-    this.dialogID = uniqID();
     this.render();
   },
   get context(): object {
@@ -43,14 +41,14 @@ export const SolidDelete = {
   async delete(e: Event): Promise<void> {
     e.stopPropagation();
     if (!this.dataSrc) return;
-    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) {
-      console.warn('confirmation-type attribute is missing.');
-      return ;
-    }
+    
+    // Console warning if conf-type attr not filled AND conf-message filled
+    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
+    // Data directly deleted OR confirm dialog modal displayed
     if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.deletion();
+    // Customisable dialog modal opened
     if (this.confirmationType == "dialog") {
-      var dialog : any = document.getElementById(this.dialogID);
-      dialog.showModal();
+      this.showModal();
     }
   },
   deletion() {
@@ -68,7 +66,7 @@ export const SolidDelete = {
   render(): void {
     const button = html`
       <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
-      ${this.confirmationType == 'dialog' ? this.getModalDialog() : ''}
+      ${this.getModalDialog()}
     `;
     render(button, this.element);
   }

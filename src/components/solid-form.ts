@@ -5,7 +5,6 @@ import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 import { store } from '../libs/store/store';
 import { setDeepProperty } from '../libs/helpers';
-import { uniqID } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
@@ -73,9 +72,6 @@ export const SolidForm = {
   },
   get isSavingAutomatically(): boolean {
     return this.autosave !== null;
-  },
-  created() {
-    this.dialogID = uniqID();
   },
   isCreationForm(formValue: object): boolean {
     return !('@id' in formValue);
@@ -167,7 +163,6 @@ export const SolidForm = {
   },
   empty(): void {
   },
-
   findErrorMessage(errors: [string, any][], errorFullName: string = '') {
     let errorsArray: string[] = [];
     errors.forEach((member: [string, any]) => {
@@ -185,7 +180,6 @@ export const SolidForm = {
     });
     return errorsArray;
   },
-
   showError(e: object) {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
 
@@ -220,14 +214,14 @@ export const SolidForm = {
   onSubmit(event: Event) {
     if (!this.isNaked) {
       event.preventDefault();
-    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) {
-      console.warn('confirmation-type attribute is missing.');
-      return;
-    }
-    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.submitForm();
-    if (this.confirmationType == "dialog") {
-      var dialog : any = document.getElementById(this.dialogID);
-      dialog.showModal();
+
+      // Console warning if conf-type attr not filled AND conf-message filled
+      if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
+      // Data directly submitted OR confirm dialog modal displayed
+      if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.submitForm();
+      // Customisable dialog modal opened
+      if (this.confirmationType == "dialog") {
+        this.showModal();
       }
     }
   },
@@ -267,7 +261,7 @@ export const SolidForm = {
         ${fieldsTemplate}
       `
       }
-      ${this.confirmationType == 'dialog' ? this.getModalDialog() : ''}
+      ${this.getModalDialog()}
     `;
     render(template, this.element);
   }
