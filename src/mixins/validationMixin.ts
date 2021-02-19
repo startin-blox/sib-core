@@ -49,16 +49,16 @@ const ValidationMixin = {
     }
   },
   getModalDialog() {
-    const quitDialog = () => {
-      var dialog: any = document.getElementById(this.dialogID);
-      if (dialog == null) return;
-      dialog.close();
-    }
-    const confirmChoice = () => {
-      this.validateModal();
-      quitDialog();
-    }
     if (this.confirmationType == 'dialog') {
+      const quitDialog = () => {
+        var dialog: any = document.getElementById(this.dialogID);
+        if (dialog == null) return;
+        dialog.close();
+      }
+      const confirmChoice = () => {
+        this.validateModal();
+        quitDialog();
+      }
       return html`
         <dialog id="${this.dialogID}">
           <p>${this.confirmationMessage}</p>
