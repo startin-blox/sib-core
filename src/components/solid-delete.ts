@@ -30,8 +30,8 @@ export const SolidDelete = {
   },
   get context(): object {
     let extraContextElement = this.extraContext ?
-    document.getElementById(this.extraContext) : // take element extra context first
-    document.querySelector('[data-default-context]'); // ... or look for a default extra context
+      document.getElementById(this.extraContext) : // take element extra context first
+      document.querySelector('[data-default-context]'); // ... or look for a default extra context
 
     let extraContext = {};
     if (extraContextElement) extraContext = JSON.parse(extraContextElement.textContent || "{}");
@@ -41,15 +41,7 @@ export const SolidDelete = {
   async delete(e: Event): Promise<void> {
     e.stopPropagation();
     if (!this.dataSrc) return;
-    
-    // Console warning if conf-type attr not filled AND conf-message filled
-    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
-    // Data directly deleted OR confirm dialog modal displayed
-    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.deletion();
-    // Customisable dialog modal opened
-    if (this.confirmationType == "dialog") {
-      this.showModal();
-    }
+    this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   deletion() {
     return store.delete(this.dataSrc, this.context).then(response => {
@@ -60,7 +52,7 @@ export const SolidDelete = {
       this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
     })
   },
-  validateModal() { //send method to validationMixin, used in the dialog modal
+  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
   render(): void {

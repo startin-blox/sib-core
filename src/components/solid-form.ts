@@ -126,7 +126,7 @@ export const SolidForm = {
     } catch (e) {
       this.toggleLoaderHidden(true);
       if (e) { // if server error
-        e.json().then( error => this.showError(error) );
+        e.json().then(error => this.showError(error));
         throw e;
       } // else, ldpframework error, we continue
     }
@@ -207,25 +207,17 @@ export const SolidForm = {
     if (!this.isNaked) this.element.querySelector('form').reset();
     this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
       const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
-      options.forEach(option => option.selected = false );
+      options.forEach(option => option.selected = false);
       select.dispatchEvent(new Event('change'));
     })
   },
   onSubmit(event: Event) {
     if (!this.isNaked) {
       event.preventDefault();
-
-      // Console warning if conf-type attr not filled AND conf-message filled
-      if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
-      // Data directly submitted OR confirm dialog modal displayed
-      if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.submitForm();
-      // Customisable dialog modal opened
-      if (this.confirmationType == "dialog") {
-        this.showModal();
-      }
+      this.performAction(); // In validationMixin, method defining what to do according to the present attributes
     }
   },
-  validateModal() { //send method to validationMixin, used in the dialog modal
+  validateModal() { //send method to validationMixin, used by the dialog modal and performAction method
     return this.submitForm();
   },
   onReset() {

@@ -35,16 +35,26 @@ const ValidationMixin = {
     this.dialogID = uniqID();
   },
   showModal() {
-    var dialog : any = document.getElementById(this.dialogID);
+    var dialog: any = document.getElementById(this.dialogID);
     return dialog.showModal();
+  },
+  performAction() {
+    // Console warning if conf-type attr not filled AND conf-message filled
+    if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
+    // Data directly submitted OR confirm dialog modal displayed
+    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.validateModal();
+    // Customisable dialog modal opened
+    if (this.confirmationType == "dialog") {
+      this.showModal();
+    }
   },
   getModalDialog() {
     const quitDialog = () => {
-      var dialog : any = document.getElementById(this.dialogID);
-      if(dialog == null) return;
+      var dialog: any = document.getElementById(this.dialogID);
+      if (dialog == null) return;
       dialog.close();
     }
-    const confirmChoice = () =>  {
+    const confirmChoice = () => {
       this.validateModal();
       quitDialog();
     }
