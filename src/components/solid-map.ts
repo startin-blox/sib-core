@@ -192,10 +192,10 @@ export const SolidMap = {
   /**
    * Override groupMixin method
    * @param groupName: value of the group
-   * @param div: Originally, div to insert content in. Used here to pass informations to the renderDOM method
    */
-  renderGroup(groupName: string, div: HTMLElement) {
-    const sanitizedGroupName = encodeURIComponent(groupName.toLowerCase()).replace(/%[0-9A-F]{2}/gi,'');
+  renderGroup(groupName: string) {
+    const sanitizedGroupName = encodeURIComponent(groupName.toLowerCase()).replace(/%[0-9A-F]{2}/gi, '');
+    const div = document.createElement('div'); // used to pass group info to renderDOM
     div.dataset.groupClass = 'group-' + sanitizedGroupName;
     return div;
   },

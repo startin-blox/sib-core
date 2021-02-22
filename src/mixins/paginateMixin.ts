@@ -1,3 +1,5 @@
+import { html, TemplateResult } from "lit-html";
+
 const PaginateMixin = {
   name: 'paginate-mixin',
   use: [],
@@ -12,7 +14,7 @@ const PaginateMixin = {
     }
   },
   initialState: {
-    currentPage: []
+    currentPage: [],
   },
   created() {
     this.currentPage = [];
@@ -23,14 +25,31 @@ const PaginateMixin = {
   async paginateCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.paginateBy > 0) {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
-      // Get paginate size to count pages
-      this.renderPaginationNav(div, this.getPageCount(resources.length), context);
+      const parentDiv = this.initParentPaginationDiv(div, context);
+      this.renderCallbacks.push({
+        template: this.renderPaginationNav(this.getPageCount(resources.length),context),
+        parent: parentDiv
+      });
+
       const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
       resources = resources.slice(firstElementIndex, firstElementIndex + this.paginateBy);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div);
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div,context);
+  },
+  getNavElement(context: string) {
+    return this.element.querySelector(`nav[data-context="${context}"]`);
+  },
+  initParentPaginationDiv(div: HTMLElement, context: string) {
+    let nav = this.getNavElement(context);
+    if (!nav) {
+      nav = document.createElement('nav');
+      nav.setAttribute('data-context', context);
+      const insertNode = div.parentNode || div;
+      insertNode.appendChild(nav);
+    }
+    return nav;
   },
   getCurrentPage(context: string) {
     return this.currentPage[context];
@@ -48,36 +67,30 @@ const PaginateMixin = {
   shouldLoop(): boolean {
     return this.paginateLoop !== null;
   },
-  renderPaginationNav(div: Element, pageCount: number, context: string): void {
-    let insertNode = div.parentNode || div;
-    let nav = insertNode.querySelector('nav');
-    if (!nav) {
-      nav = document.createElement("nav");
-      nav.dataset.id = "nav";
-      nav.innerHTML = `
-      <button data-id="prev">←</button>
-      <button data-id="next">→</button>
-      <span>
-        <span data-id="current">0</span> / <span data-id="count">0</span>
-      </span>`;
-    }
-
+  /**
+   * Create pagination template
+   * @param pageCount
+   * @param context
+   */
+  renderPaginationNav(pageCount: number, context: string): TemplateResult {
+    this.getNavElement(context).toggleAttribute('hidden', pageCount <= 1);
     const currentPage = this.getCurrentPage(context);
-    insertNode.insertBefore(nav, div.nextSibling);
 
-    const prevButton = nav.querySelector('[data-id="prev"]') as HTMLElement;
-    const nextButton = nav.querySelector('[data-id="next"]') as HTMLElement;
-    // use onclick to override previous listeners
-    prevButton.onclick = () => this.setCurrentPage(currentPage - 1, context, pageCount);
-    nextButton.onclick = () => this.setCurrentPage(currentPage + 1, context, pageCount);
-
-    nav.querySelector('[data-id="current"]')!.textContent = currentPage;
-    nav.querySelector('[data-id="count"]')!.textContent = String(pageCount);
-    if (!this.shouldLoop()) {
-      nav.querySelector('[data-id="prev"]')!.toggleAttribute('disabled', currentPage <= 1);
-      nav.querySelector('[data-id="next"]')!.toggleAttribute('disabled', currentPage >= pageCount);
-    }
-    nav.toggleAttribute('hidden', pageCount <= 1);
+    return html`
+      <button
+        data-id="prev"
+        ?disabled=${!this.shouldLoop() && currentPage <= 1}
+        @click=${() => this.setCurrentPage(currentPage - 1, context, pageCount)}
+      >←</button>
+      <button
+        data-id="next"
+        ?disabled=${!this.shouldLoop() && currentPage >= pageCount}
+        @click=${ () => this.setCurrentPage(currentPage + 1, context, pageCount)}
+      >→</button>
+      <span>
+        <span data-id="current">${currentPage}</span> / <span data-id="count">${String(pageCount)}</span>
+      </span>
+    `;
   },
 }
 

@@ -1,4 +1,5 @@
 import { html } from 'lit-html';
+import { SetMixin } from '../templatesDependencies/setMixin';
 
 export const groupTemplates = {
   default: {
@@ -6,6 +7,6 @@ export const groupTemplates = {
       <span>${value}</span>
       <div data-content></div>
     `,
-    dependencies: []
+    dependencies: [SetMixin]
   },
 }

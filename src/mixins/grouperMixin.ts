@@ -4,7 +4,7 @@ const GrouperMixin = {
   attributes: {
     groupBy: {
       type: String,
-      default: null
+      default: null,
     },
     groupWidget: {
       type: String,
@@ -29,26 +29,39 @@ const GrouperMixin = {
         groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
       }
 
-      // Render group parents and call next processor
-      for (let group of Object.keys(groups)) {
-        const parent = await this.renderGroup(group, div);
-        if (nextProcessor) await nextProcessor(groups[group].resources, [...listPostProcessors], parent, context+"_"+group);
+      // For each group, get group widget and call next processors
+      const parents = Object.keys(groups).map(g => ({ group: g, parent: this.renderGroup(g, div) }));
+      for (let { group, parent } of parents) {
+        if (nextProcessor) await nextProcessor(
+          groups[group].resources, // give only resources from group
+          [...listPostProcessors], // copy post processors
+          parent, // parent is group widget
+          context + "_" + group
+        );
       }
     } else {
-      if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+      if (nextProcessor) await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context
+      );
     }
   },
-  async renderGroup(groupName: string, div: HTMLElement) {
-    const groupElt = document.createElement(this.groupWidget);
-    groupElt.setAttribute('value', groupName);
-    if (this.groupClass) groupElt.setAttribute('class', this.groupClass);
-    div.appendChild(groupElt);
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(groupElt.querySelector('[data-content]'))
-      })
-    });
+  /**
+   * Create a group widget or find if it already exists
+   * @param groupName
+   */
+  renderGroup(groupName: string, div: HTMLElement) {
+    let groupElt = this.element.querySelector(`${this.groupWidget}[value="${groupName}"]`);
+    if (!groupElt) {
+      groupElt = document.createElement(this.groupWidget);
+      groupElt.setAttribute('value', groupName);
+      if (this.groupClass) groupElt.setAttribute('class', this.groupClass);
+      if (groupElt.component) groupElt.component.render();
+      div.appendChild(groupElt);
+    }
+    return groupElt.querySelector('[data-content]') || groupElt;
   }
 }
 

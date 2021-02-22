@@ -1,4 +1,6 @@
-import { stringToDom, evalTemplateString } from '../libs/helpers';
+import { html } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { evalTemplateString } from '../libs/helpers';
 
 const CounterMixin = {
   name: 'counter-mixin',
@@ -10,35 +12,40 @@ const CounterMixin = {
     },
   },
   initialState: {
-    counter: null
+    counter: null,
+    parentCounterDiv: null,
   },
   attached() {
     this.listPostProcessors.push(this.countResources.bind(this));
   },
   async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.counterTemplate) {
-      await this.renderCounter(div, resources.length); // count resources
+      this.initParentCounterDiv(div);
+      this.renderCallbacks.push({
+        template: await this.renderCounter(resources.length),
+        parent: this.parentCounterDiv
+      });
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
-  async renderCounter(div: HTMLElement, resourceNumber: number) {
-    let html: string;
+  initParentCounterDiv(div: HTMLElement) {
+    if (this.parentCounterDiv) return;
+    this.parentCounterDiv = document.createElement('div');
+    this.element.insertBefore(this.parentCounterDiv, div);
+  },
+  async renderCounter(resourceNumber: number) {
+    let htmlCounter: string;
     try {
-      html = await evalTemplateString(this.counterTemplate, {
+      htmlCounter = await evalTemplateString(this.counterTemplate, {
         counter: resourceNumber,
       });
     } catch (e) {
       console.error(new Error('error in counter-template'), e);
       throw e;
     }
-    if (!this.counter) {
-      this.counter = document.createElement('div');
-      this.element.insertBefore(this.counter, div);
-    }
-    this.counter.innerHTML = '';
-    this.counter.appendChild(stringToDom(html));
+    return html`${unsafeHTML(htmlCounter)}`;
   }
 }
 

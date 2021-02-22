@@ -1,3 +1,5 @@
+import { render } from 'lit-html';
+
 const ListMixin = {
   name: 'list-mixin',
   use: [],
@@ -13,17 +15,19 @@ const ListMixin = {
   },
   initialState: {
     listPostProcessors: [],
+    renderCallbacks: [],
   },
   created() {
     this.listPostProcessors = [];
+    this.renderCallbacks = [];
   },
   appendSingleElt(parent: HTMLElement): void {
     this.appendChildElt(this.resource['@id'], parent);
   },
-  setElementAttribute(attr: 'resource'|'container') {
+  setElementAttribute(attr: 'resource' | 'container') {
     const containerAttribute = "solid-container";
     const resourceAttribute = "solid-resource";
-    if(attr === "resource") {
+    if (attr === "resource") {
       this.element.removeAttribute(containerAttribute);
       this.element.setAttribute(resourceAttribute, "");
     } else {
@@ -41,9 +45,10 @@ const ListMixin = {
       this.appendSingleElt(div);
       return;
     }
-    
+
     this.setElementAttribute("container");
     const listPostProcessors = [...this.listPostProcessors];
+    this.renderCallbacks = [];
     listPostProcessors.push(this.renderDOM.bind(this));
     listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
@@ -55,6 +60,10 @@ const ListMixin = {
       div,
       this.dataSrc,
     );
+
+    for (const renderCallback of this.renderCallbacks) {
+      render(renderCallback.template, renderCallback.parent);
+    }
   },
 
   /**
