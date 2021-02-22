@@ -217,7 +217,7 @@ export const SolidForm = {
     return this.submitForm();
   },
   onReset() {
-    if (!this.isNaked) setTimeout(() => this.inputChange(true))
+    if (!this.isNaked) setTimeout(() => this.onInput())
   },
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
