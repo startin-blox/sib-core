@@ -14,7 +14,9 @@ const ListMixin = {
     },
   },
   initialState: {
+    // Processors functions to execute on the list before rendering
     listPostProcessors: [],
+    // Rendering to execute after all the processors have been executed
     renderCallbacks: [],
   },
   created() {
@@ -61,7 +63,9 @@ const ListMixin = {
       this.dataSrc,
     );
 
+    // Execute the render callbacks
     for (const renderCallback of this.renderCallbacks) {
+      // Render the template in the given parent element
       render(renderCallback.template, renderCallback.parent);
     }
   },

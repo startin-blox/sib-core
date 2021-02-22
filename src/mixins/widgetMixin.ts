@@ -288,7 +288,7 @@ const WidgetMixin = {
       }
 
       // Subscribe widgets if they show a resource
-      // if (value && value['@id']) widget.component.subscribe(value['@id']);
+      if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
       widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
     }
 

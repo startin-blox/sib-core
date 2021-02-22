@@ -148,6 +148,7 @@ export const SolidDisplay = {
     context: string,
   ) {
     const attributes = this.getChildAttributes(); // get attributes of children only once
+    // and create a child template for each resource
     const template = html`${resources.map(r => r ? this.getChildTemplate(r['@id'], attributes) : null)}`;
     render(template, div);
 

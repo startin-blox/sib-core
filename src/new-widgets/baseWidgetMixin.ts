@@ -27,6 +27,14 @@ const BaseWidgetMixin = {
         this.addToAttributes(newValue, 'label');
       }
     },
+    autoSubscribe: {
+      type: String,
+      default: null,
+      callback: function (newValue: string) {
+        if (this.subscription) PubSub.unsubscribe(this.subscription);
+        this.subscribe(newValue);
+      }
+    },
   },
   initialState: {
     listValueTransformations: [],

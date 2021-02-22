@@ -58,10 +58,10 @@ const GrouperMixin = {
       groupElt = document.createElement(this.groupWidget);
       groupElt.setAttribute('value', groupName);
       if (this.groupClass) groupElt.setAttribute('class', this.groupClass);
-      if (groupElt.component) groupElt.component.render();
-      div.appendChild(groupElt);
+      if (groupElt.component) groupElt.component.render(); // Force the rendering of the widget
+      div.appendChild(groupElt); // and append it to the parent div
     }
-    return groupElt.querySelector('[data-content]') || groupElt;
+    return groupElt.querySelector('[data-content]') || groupElt; // return the node where to insert content
   }
 }
 

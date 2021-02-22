@@ -41,6 +41,11 @@ const PaginateMixin = {
   getNavElement(context: string) {
     return this.element.querySelector(`nav[data-context="${context}"]`);
   },
+  /**
+   * Find nav element or create it if not existing
+   * @param div - insert nav next to this div
+   * @param context - use context to find nav element
+   */
   initParentPaginationDiv(div: HTMLElement, context: string) {
     let nav = this.getNavElement(context);
     if (!nav) {

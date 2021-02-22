@@ -21,7 +21,7 @@ const CounterMixin = {
   async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     if (this.counterTemplate) {
       this.initParentCounterDiv(div);
-      this.renderCallbacks.push({
+      this.renderCallbacks.push({ // add counter template to render callback
         template: await this.renderCounter(resources.length),
         parent: this.parentCounterDiv
       });
@@ -30,6 +30,10 @@ const CounterMixin = {
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
+  /**
+   * Create the parent div of the counter in the component.
+   * @param div: parent div where to insert the counter div
+   */
   initParentCounterDiv(div: HTMLElement) {
     if (this.parentCounterDiv) return;
     this.parentCounterDiv = document.createElement('div');
