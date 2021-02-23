@@ -27,4 +27,13 @@ describe('next', function() {
       expect(loc.hash).to.eq('#user/@user-1.jsonld@')
     })
   });
+
+  // Check next mixin on solid-display with keyboard
+  it('next mixin accessibility', () => {
+    cy.get('body').tab().tab().type('{enter}'); //.tab() from plugin to use tab keypress
+    cy.get('#detail > div').should('be.visible').should('contain', 'skill-2.jsonld')
+    cy.location().should((loc) => {
+      expect(loc.hash).to.eq('#view/@skill-2.jsonld@')
+    })
+  });
 })

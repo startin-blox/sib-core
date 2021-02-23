@@ -83,6 +83,7 @@
     "babel-plugin-remove-import-js-extension": "0.0.3",
     "body-parser": "^1.19.0",
     "cypress": "^6.3.0",
+    "cypress-plugin-tab": "^1.0.5",
     "delta-markdown-for-quill": "0.0.9",
     "document-register-element": "^1.14.6",
     "express": "^4.17.1",

@@ -96,7 +96,13 @@ export const SolidDisplay = {
     );
     this.goToNext(resource);
   },
-
+  
+  enterKeydownAction (event, resourceId: string): void {
+    if (event.keyCode === 13) {
+      const resource = { "@id" : resourceId };
+      this.goToNext(resource);
+    }
+  },
   /**
    * Returns template of a child element (resource)
    * @param resourceId
@@ -107,6 +113,7 @@ export const SolidDisplay = {
       <solid-display
         data-src=${resourceId}
         @click=${(event: Event) => this.dispatchSelect(event, resourceId)}
+        @keydown=${(event: Event) => this.enterKeydownAction(event, resourceId)}
         fields=${ifDefined(this.fields)}
         ...=${spread(attributes)}
       ></solid-display>
@@ -179,6 +186,10 @@ export const SolidDisplay = {
         attributes[attr.name] = attr.value;
       if (attr.name.startsWith('child-'))
         attributes[attr.name.replace(/^child-/, '')] = attr.value;
+      if (attr.name == 'next') {
+        attributes['role'] = 'button';
+        attributes['tabindex'] = '0';
+      }
     }
     return attributes;
   }
