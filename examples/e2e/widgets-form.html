@@ -32,6 +32,7 @@
       newWidgetFactory('solid-form-text-labellast');
       newWidgetFactory('solid-form-dropdown-addable');
       newWidgetFactory('solid-form-label-password');
+      newWidgetFactory('solid-form-label-time');
     </script>
     <solid-form-text
       name="test1"
@@ -206,5 +207,19 @@
       name="password"
       value="password123"
     ></solid-form-label-password>
+    <solid-form-label-time
+      id="time1"
+      data-src="../data/list/event.jsonld"
+      name="time"
+      value="15:15"
+    ></solid-form-label-time>
+    <solid-form-label-time
+      id="time2"
+      data-src="../data/list/event.jsonld"
+      label="start time"
+      min="12:00"
+      max="14:00"
+      step="3600"
+    ></solid-form-label-time>
   </body>
 </html>

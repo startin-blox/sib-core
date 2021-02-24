@@ -275,4 +275,36 @@ describe('solid-form', function() {
       .should('exist')
       .and('have.text', 'OK');
   });
+  it('solid-form-time widget with attributes', () => {
+    cy.spy(win.sibStore, 'post');
+    cy.get('solid-form#time-widget').find('input[name="name"]')
+      .type('webinar');
+    // Check min attribute consideration
+    cy.get('solid-form#time-widget').find('input[type="time"]')
+      .type('11:00');
+    cy.get('solid-form#time-widget').find('input[type="submit"]')
+      .click().then(() => {
+        expect(win.sibStore.post).not.be.called;
+      });
+    // Check max attribute consideration
+    cy.get('solid-form#time-widget').find('input[type="time"]')
+      .type('16:00');
+    cy.get('solid-form#time-widget').find('input[type="submit"]')
+      .click().then(() => {
+        expect(win.sibStore.post).not.be.called;
+      });
+    // Check step attribute consideration
+    cy.get('solid-form#time-widget').find('input[type="time"]')
+      .type('13:10');
+    cy.get('solid-form#time-widget').find('input[type="submit"]')
+      .click().then(() => {
+        expect(win.sibStore.post).not.be.called;
+      });
+    cy.get('solid-form#time-widget').find('input[type="time"]')
+      .type('13:00');
+    cy.get('solid-form#time-widget').find('input[type="submit"]')
+      .click().then(() => {
+        expect(win.sibStore.post).to.be.called;
+      });
+  });
 })

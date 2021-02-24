@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: time widget</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h3>Time widget with default value</h3>
+    <solid-form
+      fields="departure"
+      widget-departure="solid-form-time"
+      value-departure="13:30"
+    ></solid-form>
+    <h3>Time widget with no value</h3>
+    <solid-form
+      fields="departure"
+      widget-departure="solid-form-time"
+    ></solid-form>
+    <h3>Time widget with min, max and step</h3>
+    <solid-form
+      fields="departure"
+      widget-departure="solid-form-time"
+      min-departure="12:00"
+      max-departure="14:00"
+      step-departure="900"
+    ></solid-form>
+  </body>
+</html>

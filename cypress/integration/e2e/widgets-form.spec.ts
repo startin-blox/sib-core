@@ -561,4 +561,21 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'password')
       .and('have.value', 'password123');
   });
+  it('solid-form-time', () => {
+    cy.get('solid-form-label-time#time1')
+      .children().should('have.length', 2);
+    cy.get('solid-form-label-time#time1')
+      .children().eq(0).should('contain', 'time');
+    cy.get('solid-form-label-time#time1 > input')
+      .should('have.attr', 'type', 'time')
+      .and('have.value', '15:15');
+    
+    cy.get('solid-form-label-time#time2')
+      .children().eq(0).should('contain', 'start time');
+    cy.get('solid-form-label-time#time2 > input')
+      .should('have.attr', 'type', 'time')
+      .and('have.attr', 'min', "12:00")
+      .and('have.attr', 'max', "14:00")
+      .and('have.attr', 'step', "3600");
+  });
 })

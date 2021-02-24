@@ -1,5 +1,5 @@
-const FormNumberMixin = {
-  name: 'form-number-mixin',
+const FormMinMaxMixin = {
+  name: 'form-min-max-mixin',
   attributes : {
     min : {
       type: Number,
@@ -23,5 +23,5 @@ const FormNumberMixin = {
 }
 
 export {
-  FormNumberMixin
+  FormMinMaxMixin
 }

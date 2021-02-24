@@ -163,5 +163,16 @@
       submit-button="OK"
       submit-widget="button"
     ></solid-form>
+
+    <h3>solid-form-time widget</h3>
+    <solid-form
+      id="time-widget"
+      data-src="../data/list/events.jsonld"
+      fields="name, time"
+      widget-time="solid-form-time-label"
+      min-time="12:00"
+      max-time="14:00"
+      step-time="3600"
+    ></solid-form>
   </body>
 </html>
