@@ -13,6 +13,7 @@ import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMi
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
 import { PatternMixin } from '../templatesDependencies/patternMixin';
 import { FormStepMixin } from '../templatesDependencies/formStepMixin';
+import { FormMaxlengthMixin } from '../templatesDependencies/formMaxlengthMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -46,10 +47,11 @@ export const formTemplates = {
         data-holder
         ?required=${attributes.required}
         autocomplete=${ifDefined(attributes.autocomplete)}
+        maxlength=${ifDefined(attributes.maxlength)}
         @change=${attributes.onChange}
       >${value}</textarea>
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FormMixin, FormMaxlengthMixin ]
   },
   checkbox: {
     template: (value: string, attributes: any) => html`
