@@ -62,6 +62,7 @@ describe('form widgets', function() {
     cy.get('solid-form-textarea') // check attributes
       .find('textarea')
       .and('have.attr', 'name', 'test1')
+      .and('have.attr', 'maxlength', '15')
       .and('have.attr', 'data-holder');
 
     cy.get('solid-form-textarea').then($el => { // check API value
@@ -76,6 +77,13 @@ describe('form widgets', function() {
     cy.get('solid-form-textarea').then($el => { // Check API
       expect((<any>$el[0]).component['value']).to.equal('test value 1'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('new value'); // form value
+    });
+
+    cy.get('solid-form-textarea > textarea') // type value
+      .clear()
+      .type('new value with a maxlength');
+    cy.get('solid-form-textarea').then($el => { // Check API
+      expect((<any>$el[0]).component.getValue()).to.equal('new value with '); // maxlength attribute effect
     });
   })
 
