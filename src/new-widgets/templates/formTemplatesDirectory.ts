@@ -1,6 +1,7 @@
 import { FormMixin } from '../templatesDependencies/formMixin';
 import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin';
 import { FormMinMaxMixin } from '../templatesDependencies/formMinMaxMixin';
+import { FormNumberMixin } from '../templatesDependencies/formNumberMixin';
 import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin';
 import { FormCheckboxesMixin } from '../templatesDependencies/formCheckboxesMixin';
 import { FormRadioMixin } from '../templatesDependencies/formRadioMixin';
@@ -11,7 +12,7 @@ import { RangeMixin } from '../templatesDependencies/rangeMixin';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin';
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
 import { PatternMixin } from '../templatesDependencies/patternMixin';
-import { TimeMixin } from '../templatesDependencies/timeMixin';
+import { FormTimeMixin } from '../templatesDependencies/formTimeMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -115,7 +116,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMinMaxMixin, FormMixin ]
+    dependencies: [ FormNumberMixin, FormMinMaxMixin, FormMixin ]
   },
   rangenumber: {
     template: (_value: string, attributes: any) => html`
@@ -134,7 +135,7 @@ export const formTemplates = {
         value=${ifDefined(attributes.endValue)}
       />
     `,
-    dependencies: [ FilterRangeFormMixin, FormMinMaxMixin, FormMixin ]
+    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]
   },
   hidden: {
     template: (value: string, attributes: any) => html`
@@ -412,6 +413,6 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, FormMinMaxMixin, TimeMixin ]
+    dependencies: [ FormMixin, FormMinMaxMixin, FormTimeMixin ]
   },
 }

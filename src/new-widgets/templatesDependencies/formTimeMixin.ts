@@ -1,5 +1,5 @@
-const TimeMixin = {
-  name: 'time-mixin',
+const FormTimeMixin = {
+  name: 'form-time-mixin',
   attributes : {
     step : {
       type: Number,
@@ -11,5 +11,5 @@ const TimeMixin = {
 }
 
 export {
-  TimeMixin
+  FormTimeMixin
 }
