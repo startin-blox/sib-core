@@ -27,7 +27,7 @@ const PaginateMixin = {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
       const parentDiv = this.initParentPaginationDiv(div, context);
       this.renderCallbacks.push({
-        template: this.renderPaginationNav(this.getPageCount(resources.length),context),
+        template: this.renderPaginationNav(this.getPageCount(resources.length),context,div),
         parent: parentDiv
       });
 
@@ -38,19 +38,19 @@ const PaginateMixin = {
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor) await nextProcessor(resources, listPostProcessors, div,context);
   },
-  getNavElement(context: string) {
-    return this.element.querySelector(`nav[data-context="${context}"]`);
+  getNavElement(div: HTMLElement) {
+    const insertNode = div.parentNode || div;
+    return insertNode.querySelector(`nav[data-id="nav"]`);
   },
   /**
    * Find nav element or create it if not existing
    * @param div - insert nav next to this div
-   * @param context - use context to find nav element
    */
-  initParentPaginationDiv(div: HTMLElement, context: string) {
-    let nav = this.getNavElement(context);
+  initParentPaginationDiv(div: HTMLElement) {
+    let nav = this.getNavElement(div);
     if (!nav) {
       nav = document.createElement('nav');
-      nav.setAttribute('data-context', context);
+      nav.setAttribute('data-id', 'nav');
       const insertNode = div.parentNode || div;
       insertNode.appendChild(nav);
     }
@@ -77,8 +77,8 @@ const PaginateMixin = {
    * @param pageCount
    * @param context
    */
-  renderPaginationNav(pageCount: number, context: string): TemplateResult {
-    this.getNavElement(context).toggleAttribute('hidden', pageCount <= 1);
+  renderPaginationNav(pageCount: number, context: string, div: HTMLElement): TemplateResult {
+    this.getNavElement(div).toggleAttribute('hidden', pageCount <= 1);
     const currentPage = this.getCurrentPage(context);
 
     return html`
