@@ -127,9 +127,6 @@ export const formTemplates = {
         name="${attributes.name || ''}-start"
         @change=${attributes.onChange}
         value=${ifDefined(attributes.startValue)}
-        min=${ifDefined(attributes.min)}
-        max=${ifDefined(attributes.max)}
-        step=${ifDefined(attributes.step)}
       />
       <input
         data-holder
@@ -137,12 +134,9 @@ export const formTemplates = {
         name="${attributes.name || ''}-end"
         @change=${attributes.onChange}
         value=${ifDefined(attributes.endValue)}
-        min=${ifDefined(attributes.min)}
-        max=${ifDefined(attributes.max)}
-        step=${ifDefined(attributes.step)}
       />
     `,
-    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin, FormMinMaxMixin, FormStepMixin ]
+    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]
   },
   hidden: {
     template: (value: string, attributes: any) => html`
