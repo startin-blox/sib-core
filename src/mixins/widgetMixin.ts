@@ -239,7 +239,8 @@ const WidgetMixin = {
       'end-value',
       'alt',
       'step',
-      'maxlength'
+      'maxlength',
+      'minlength'
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 

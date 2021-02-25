@@ -13,7 +13,7 @@ import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMi
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
 import { PatternMixin } from '../templatesDependencies/patternMixin';
 import { FormStepMixin } from '../templatesDependencies/formStepMixin';
-import { FormMaxlengthMixin } from '../templatesDependencies/formMaxlengthMixin';
+import { FormLengthMixin } from '../templatesDependencies/formLengthMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -33,10 +33,12 @@ export const formTemplates = {
         ?required=${attributes.required}
         autocomplete=${ifDefined(attributes.autocomplete)}
         data-holder
+        maxlength=${ifDefined(attributes.maxlength)}
+        minlength=${ifDefined(attributes.minlength)}
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, PatternMixin ]
+    dependencies: [ FormMixin, PatternMixin, FormLengthMixin ]
   },
   textarea: {
     template: (value: string, attributes: any) => html`
@@ -48,10 +50,11 @@ export const formTemplates = {
         ?required=${attributes.required}
         autocomplete=${ifDefined(attributes.autocomplete)}
         maxlength=${ifDefined(attributes.maxlength)}
+        minlength=${ifDefined(attributes.minlength)}
         @change=${attributes.onChange}
       >${value}</textarea>
     `,
-    dependencies: [ FormMixin, FormMaxlengthMixin ]
+    dependencies: [ FormMixin, FormLengthMixin ]
   },
   checkbox: {
     template: (value: string, attributes: any) => html`
@@ -378,10 +381,12 @@ export const formTemplates = {
         value=${value || ''}
         ?required=${attributes.required}
         data-holder
+        maxlength=${ifDefined(attributes.maxlength)}
+        minlength=${ifDefined(attributes.minlength)}
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [ FormMixin, FormLengthMixin ]
   },
   password: {
     template: (value: string, attributes: any) => html`
@@ -395,10 +400,12 @@ export const formTemplates = {
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
         data-holder
+        maxlength=${ifDefined(attributes.maxlength)}
+        minlength=${ifDefined(attributes.minlength)}
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, PatternMixin ]
+    dependencies: [ FormMixin, PatternMixin, FormLengthMixin ]
   },
   time: {
     template: (value: string, attributes: any) => html`
