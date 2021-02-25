@@ -172,6 +172,16 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component['value']).to.equal('5'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(8); // form value
     });
+    
+    // step attribute 
+    cy.get('solid-form-number > input') // type value
+    .clear()
+    .type('{upArrow}{upArrow}{upArrow}');
+
+    cy.get('solid-form-number').then($el => { // check API value
+      expect((<any>$el[0]).component.getValue()).to.equal(6); // form value
+    });
+
   });
 
   it('solid-form-email', () => {

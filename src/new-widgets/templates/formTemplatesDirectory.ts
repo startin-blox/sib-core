@@ -12,7 +12,7 @@ import { RangeMixin } from '../templatesDependencies/rangeMixin';
 import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin';
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
 import { PatternMixin } from '../templatesDependencies/patternMixin';
-import { FormTimeMixin } from '../templatesDependencies/formTimeMixin';
+import { FormStepMixin } from '../templatesDependencies/formStepMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -111,12 +111,13 @@ export const formTemplates = {
         value=${value}
         min=${ifDefined(attributes.min)}
         max=${ifDefined(attributes.max)}
+        step=${ifDefined(attributes.step)}
         ?required=${attributes.required}
         data-holder
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormNumberMixin, FormMinMaxMixin, FormMixin ]
+    dependencies: [ FormNumberMixin, FormMinMaxMixin, FormMixin, FormStepMixin ]
   },
   rangenumber: {
     template: (_value: string, attributes: any) => html`
@@ -126,6 +127,9 @@ export const formTemplates = {
         name="${attributes.name || ''}-start"
         @change=${attributes.onChange}
         value=${ifDefined(attributes.startValue)}
+        min=${ifDefined(attributes.min)}
+        max=${ifDefined(attributes.max)}
+        step=${ifDefined(attributes.step)}
       />
       <input
         data-holder
@@ -133,9 +137,12 @@ export const formTemplates = {
         name="${attributes.name || ''}-end"
         @change=${attributes.onChange}
         value=${ifDefined(attributes.endValue)}
+        min=${ifDefined(attributes.min)}
+        max=${ifDefined(attributes.max)}
+        step=${ifDefined(attributes.step)}
       />
     `,
-    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]
+    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin, FormMinMaxMixin, FormStepMixin ]
   },
   hidden: {
     template: (value: string, attributes: any) => html`
@@ -413,6 +420,6 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, FormMinMaxMixin, FormTimeMixin ]
+    dependencies: [ FormMixin, FormMinMaxMixin, FormStepMixin ]
   },
 }
