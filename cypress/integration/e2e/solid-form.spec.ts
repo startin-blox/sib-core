@@ -307,4 +307,13 @@ describe('solid-form', function() {
         expect(win.sibStore.post).to.be.called;
       });
   });
+  it('minlength attribute', () => {
+    cy.spy(win.sibStore, 'post');
+    cy.get('solid-form#minlength').find('input[type="text"]')
+      .type('{selectall}Sacha');
+    cy.get('solid-form#minlength').find('input[type="submit"]').click()
+      .then(() => {
+        expect(win.sibStore.post).not.be.called;
+      });
+  });
 })
