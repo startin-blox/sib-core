@@ -193,9 +193,8 @@ export const formTemplates = {
   },
   radio: {
     template: (value: string, attributes: any) => html`
-      <div
-        name=${ifDefined(attributes.name)}
-      >
+    <fieldset>
+      <legend name=${ifDefined(attributes.name)}>${attributes.label}</legend>
         ${(attributes.range || []).map(el => html`
           <label>
             <input
@@ -218,14 +217,14 @@ export const formTemplates = {
             > <span>${val}</span>
           </label>
         `)}
+    </fieldset>
     `,
     dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
   },
   multicheckbox: {
     template: (_value: string, attributes: any) => html`
-      <div
-        name=${ifDefined(attributes.name)}
-      >
+      <fieldset>
+        <legend name=${ifDefined(attributes.name)}>${attributes.label}</legend>
         ${(attributes.range || []).map(el => html`
           <label>
             <input
@@ -243,7 +242,7 @@ export const formTemplates = {
             /> <span>${val}</span>
           </label>
         `)}
-      </select>
+      </fieldset>
     `,
     dependencies: [ FormCheckboxesMixin, FormMixin, RangeMixin ]
   },
@@ -258,6 +257,7 @@ export const formTemplates = {
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
+        label=${ifDefined(attributes.label)} 
       ></solid-form-multicheckbox>
     `,
     dependencies: [ MultipleselectFormMixin, FormMixin ]
