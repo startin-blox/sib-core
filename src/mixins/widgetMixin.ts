@@ -323,27 +323,28 @@ const WidgetMixin = {
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
+    let setFields = this.getSet(field);
     // Catch widget for the set if all these fields are empty
-    if (this.element.hasAttribute('empty-' + field)) { 
-      let setFields = this.getSet(field)
-      let emptyValues: Array<string> = []
+    if (this.element.hasAttribute('empty-' + field)) {
+      let hasOnlyEmpty = true;
       for(let field of setFields) {
         let value: string = await this.getValue(field, this.resource);
-        if( value !== '') emptyValues.push(value);
+        if (value !== '') { // if one not empty
+          hasOnlyEmpty = false;
+          continue; // break loop
+        }
       };
-      if(emptyValues.length == 0) {
+      if(hasOnlyEmpty) { // if only empty values, return empty-widget
         const attributes = this.widgetAttributes(field, this.resource);
-        let widgetTemplate = html``;
-        let tagName = this.element.getAttribute('empty-' + field);
-        let valueSet = this.element.getAttribute('empty-' + field + ('-value'));
-        if (valueSet) attributes.value = valueSet;       
-        widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
-        return widgetTemplate;
+        const tagName = this.element.getAttribute(`empty-${field}`);
+        const valueSet = this.element.getAttribute(`empty-${field}-value`);
+        if (valueSet) attributes.value = valueSet;
+        return preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
       };
     }
 
     // Render template
-    const widgetsTemplate = await Promise.all(this.getSet(field).map((field: string) => this.createWidgetTemplate(field)));
+    const widgetsTemplate = await Promise.all(setFields.map((field: string) => this.createWidgetTemplate(field)));
     const template = html`${widgetsTemplate}`;
     render(template, widget.querySelector('[data-content]') || widget);
     return widget;
