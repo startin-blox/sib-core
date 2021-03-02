@@ -253,6 +253,40 @@
       default-widget-website = "custom-default-widget-website"
     ></solid-display>
 
+    <h3>empty-[set]</h3>
+    <h5>set without data</h5>
+    <solid-display
+      id="widget-empty-set1"
+      data-src="../data/list/profile-4.jsonld"
+      fields="@id, contact(city, phone, website)"
+      empty-contact="widget-empty-set"
+    ></solid-display>
+    <h5>set with data</h5>
+    <solid-display
+      id="widget-empty-set2"
+      data-src="../data/list/profile-2.jsonld"
+      fields="@id, contact(city, phone, website)"
+      empty-contact="widget-empty-set"
+    ></solid-display>
+    <h5>set with widget value </h5>
+    <solid-display
+      id="widget-empty-set3"
+      data-src="../data/list/profile-4.jsonld"
+      fields="@id, contact(city, phone, website)"
+      empty-contact="empty-set-value"
+      empty-contact-value="empty set value"
+    ></solid-display>
+
+    <solid-widget name="widget-empty-set">
+      <template>
+        <p>set empty</p>
+      </template>
+    </solid-widget>
+    <solid-widget name="empty-set-value">
+      <template>
+        <p>${value}</solid-link></p>
+      </template>
+    </solid-widget>
 
     <h3>widgetRendered event</h3>
     <solid-widget name="custom-w">
@@ -292,20 +326,41 @@
         margin: 0.5em;
       }
 
-      #display-6 > div {
+      #display-6 > div, 
+      #widget-empty-set1 > div, 
+      #widget-empty-set2 > div, 
+      #widget-empty-set3 > div {
         border: darkcyan 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
       }
-      #display-7 > div {
+      #display-7 > div, #widget-empty-set3 > div > empty-set-value {
         border: darkgreen 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
       }
-      #display-8 > div {
+      #display-8 > div, 
+      #widget-empty-set1 > div > solid-display-value, 
+      #widget-empty-set2 > div > solid-display-value, 
+      #widget-empty-set3 > div > solid-display-value {
         border: darkmagenta 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
       }
-      #display-9 > div {
+      #display-9 > div, #widget-empty-set2 > div > solid-set-default {
         border: darkorange 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
       }
-      #display-10 > div {
+      #display-10 > div, #widget-empty-set1 > div > widget-empty-set {
         border: darkslateblue 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
       }
     </style>
   </body>

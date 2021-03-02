@@ -323,6 +323,24 @@ const WidgetMixin = {
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
+    // Catch widget for the set if all these fields are empty
+    if (this.element.hasAttribute('empty-' + field)) { 
+      let setFields = this.getSet(field)
+      let emptyValues: Array<string> = []
+      for(let field of setFields) {
+        let value: string = await this.getValue(field, this.resource);
+        if( value !== '') emptyValues.push(value);
+      };
+      if(emptyValues.length == 0) {
+        const attributes = this.widgetAttributes(field, this.resource);
+        let widgetTemplate = html``;
+        let tagName = this.element.getAttribute('empty-' + field);
+        let valueSet = this.element.getAttribute('empty-' + field + ('-value'));
+        if (valueSet) attributes.value = valueSet;       
+        widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
+        return widgetTemplate;
+      };
+    }
 
     // Render template
     const widgetsTemplate = await Promise.all(this.getSet(field).map((field: string) => this.createWidgetTemplate(field)));
