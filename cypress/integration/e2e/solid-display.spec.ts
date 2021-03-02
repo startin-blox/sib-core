@@ -174,5 +174,34 @@ describe('solid-display', function() {
   });
   it('dispatch event when widget rendered', () => {
     cy.get('#log-event div').should('have.length', 12);
+  });
+  it('widget for empty set', () => {
+    // empty set widget displayed
+    cy.get('#widget-empty-set1 > div')
+      .children().should('have.length', 2);
+    cy.get('#widget-empty-set1 > div')
+      .children().eq(1).children()
+      .should('have.length', 1);
+    cy.get('#widget-empty-set1 > div')
+      .children().eq(1)
+      .should('contain', 'set empty');
+    // empty set widget not displayed
+    cy.get('#widget-empty-set2 > div')
+      .children().should('have.length', 2);
+    cy.get('#widget-empty-set2 > div')
+      .children().eq(1).children()
+      .should('have.length', 3);
+    cy.get('#widget-empty-set2 > div')
+      .children().eq(1).should('contain', 'Paris')
+      .and('not.contain', 'set empty');
+    // empty set with value attribute displayed
+    cy.get('#widget-empty-set3 > div')
+      .children().should('have.length', 2);
+    cy.get('#widget-empty-set3 > div')
+      .children().eq(1)
+      .should('have.attr', 'value', 'empty set value');
+    cy.get('#widget-empty-set3 > div')
+      .children().eq(1).should('contain', 'empty set value')
+      .and('not.contain', 'set empty');
   })
 })
