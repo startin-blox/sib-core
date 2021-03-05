@@ -101,9 +101,9 @@ const SorterMixin = {
   },
   sortValuesByKey(key: string, asc: boolean): Function {
     return function (a: object, b: object): number {
-      if (!a[key] || !b[key]) {
-        return 0; // property doesn't exist on either object
-      }
+      if (!a[key]) return 1;
+      if (!b[key]) return -1;
+
       const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
       const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
       let comparison = 0;
