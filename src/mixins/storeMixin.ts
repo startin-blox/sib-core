@@ -139,7 +139,7 @@ const StoreMixin = {
   empty():void {
   },
   update() {
-    this.updateDOM();
+    if (this.noRender === null) this.updateDOM();
   }
 };
 
