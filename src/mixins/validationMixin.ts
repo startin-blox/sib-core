@@ -1,14 +1,15 @@
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
+import { TranslationMixin } from './translationMixin';
 
 const ValidationMixin = {
   name: 'validation-mixin',
-  use: [],
+  use: [TranslationMixin],
   attributes: {
     confirmationMessage: {
       type: String,
-      default: 'Please, confirm your choice.'
+      default: null
     },
     confirmationType: {
       type: String,
@@ -16,11 +17,11 @@ const ValidationMixin = {
     },
     confirmationSubmitText: {
       type: String,
-      default: 'Yes'
+      default: null
     },
     confirmationCancelText: {
       type: String,
-      default: 'Cancel'
+      default: null
     },
     confirmationSubmitClass: {
       type: String,
@@ -42,7 +43,7 @@ const ValidationMixin = {
     // Console warning if conf-type attr not filled AND conf-message filled
     if (this.element.hasAttribute('confirmation-message') && !this.confirmationType) console.warn('confirmation-type attribute is missing.');
     // Data directly submitted OR confirm dialog modal displayed
-    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage))) this.validateModal();
+    if ((!this.confirmationType) || (this.confirmationType == "confirm" && confirm(this.confirmationMessage || this.t("validation.message")))) this.validateModal();
     // Customisable dialog modal opened
     if (this.confirmationType == "dialog") {
       this.showModal();
@@ -61,19 +62,19 @@ const ValidationMixin = {
       }
       return html`
         <dialog id="${this.dialogID}">
-          <p>${this.confirmationMessage}</p>
+          <p>${this.confirmationMessage || this.t("validation.message")}</p>
           <div>
             <button
               @click=${confirmChoice} 
               class=${ifDefined(this.confirmationSubmitClass)}
             >
-            ${this.confirmationSubmitText}
+            ${this.confirmationSubmitText || this.t("validation.submit-text")}
             </button>
             <button
               @click=${quitDialog}
               class=${ifDefined(this.confirmationCancelClass)}
             >
-            ${this.confirmationCancelText}
+            ${this.confirmationCancelText || this.t("validation.cancel-text")}
             </button>
           </div>
         </dialog>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: translation mixin</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <solid-lang id='en' lang='en' data-label="English"></solid-lang>
+    <h3>submit-button, confirm popup, autocompletion</h3>
+    <solid-delete
+      id="confirm"
+      data-src="data/project.jsonld"
+      next="detail"
+      confirmation-type="confirm"
+    ></solid-delete>
+
+    <solid-form
+      id="void-submitbutton"
+      data-src="../data/list/event-1.jsonld"
+      fields="name, contact.email"
+    ></solid-form>
+
+    <solid-form-search
+      id="translation-autocomp"
+      fields="skills"
+      range-skills="../data/list/skills.jsonld"
+      widget-skills="solid-form-multipleselect-autocompletion"
+    ></solid-form-search>
+    <solid-display
+      data-src="../data/list/users.jsonld"
+      fields="username, skills"
+      multiple-skills
+      filtered-by="translation-autocomp"
+    ></solid-display>
+
+    <h3>submit button & simple dialog popup</h3>
+    <solid-delete
+      id="dialog"
+      data-src="data/project.jsonld"
+      data-label="Delete data"
+      confirmation-type="dialog"
+    ></solid-delete>
+
+    <solid-form
+      id="custom-submitbutton"
+      data-src="../data/list/event-1.jsonld"
+      fields="name"
+      submit-button="Send form"
+    ></solid-form>
+  </body>
+</html>

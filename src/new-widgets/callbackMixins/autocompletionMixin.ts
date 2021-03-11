@@ -1,8 +1,26 @@
 import { fuzzyCompare } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
+import { TranslationMixin } from '../../mixins/translationMixin';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',
+  use: [TranslationMixin],
+  attributes: {
+    searchText: {
+      type: String,
+      default: null,
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'searchText');
+      }
+    },
+    searchPlaceholder: {
+      type: String,
+      default: null,
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'searchPlaceholder');
+      }
+    },
+  },
   initialState: {
     slimSelect: null,
     mutationObserver: null
@@ -61,7 +79,9 @@ const AutocompletionMixin = {
       this.slimSelect.destroy();
       this.slimSelect = new SlimSelect({
         select,
-        searchPlaceholder: this.placeholder,
+        placeholder: this.placeholder || this.t("autocompletion.placeholder"),
+        searchText: this.searchText || this.t("autocompletion.searchText"),
+        searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
         searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
       });
     }).observe(select, {

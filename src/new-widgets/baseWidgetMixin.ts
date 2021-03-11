@@ -102,6 +102,9 @@ const BaseWidgetMixin = {
   },
   subscribe(event: string) {
     this.subscription = PubSub.subscribe(event, () => this.planRender());
+  },
+  update() {
+    this.planRender();
   }
 }
 

@@ -8,7 +8,6 @@ import { setDeepProperty } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidForm = {
   name: 'solid-form',
@@ -221,8 +220,8 @@ export const SolidForm = {
   },
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
-      html`<button type="submit">${this.submitButton || ''}</button>` :
-      html`<input type="submit" value=${ifDefined(this.submitButton)}>`;
+      html`<button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>` :
+      html`<input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>`;
   },
   async populate(): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times

@@ -2,7 +2,13 @@ describe('validation', function () {
   let win: Window;
   let cnsl: Console;
   this.beforeAll('visit', () => {
-    cy.visit('/examples/e2e/validation.html');
+    cy.visit('/examples/e2e/validation.html', {
+      onBeforeLoad(win) {
+        Object.defineProperty(win.navigator, 'language', {
+          value: 'en'
+        })
+      }
+    });
     cy.window().then(w => {
       win = w;
       cnsl = (win as Window & typeof globalThis).console;
@@ -28,13 +34,13 @@ describe('validation', function () {
       .find('input[type=submit]')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('Please, confirm your choice.') //message by default displayed
+        expect(stub.getCall(0)).to.be.calledWith('Please, confirm your choice') //message by default displayed in English translation
       });
   });
   it('dialog popup on solid-form', () => {
     // simple dialog popup
     cy.get('solid-form#simple-dialog > dialog')
-      .find('p').should('contain', 'Please, confirm your choice.')//message by default displayed
+      .find('p').should('contain', 'Please, confirm your choice')//message by default displayed in English translation
     cy.get('solid-form#simple-dialog > dialog > div').children().eq(0)
       .should('contain', 'Yes')
     cy.get('solid-form#simple-dialog > dialog > div').children().eq(1)

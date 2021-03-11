@@ -1,0 +1,10 @@
+{
+    "autocompletion.placeholder": "Sélectionner une valeur",
+    "autocompletion.searchPlaceholder": "Rechercher",
+    "autocompletion.searchText": "Aucun résultat",
+    "solid-delete.button": "Supprimer",
+    "solid-form.submit-button": "Envoyer",
+    "validation.message": "Merci de confirmer votre choix",
+    "validation.submit-text": "Oui",
+    "validation.cancel-text": "Annuler"
+}
