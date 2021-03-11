@@ -21,6 +21,7 @@ import { PaginateMixin } from './mixins/paginateMixin';
 import { RequiredMixin } from './mixins/requiredMixin';
 import { SorterMixin } from './mixins/sorterMixin';
 import { StoreMixin } from './mixins/storeMixin';
+import { TranslationMixin } from './mixins/translationMixin';
 import { ValidationMixin } from './mixins/validationMixin';
 import { WidgetMixin } from './mixins/widgetMixin';
 
@@ -60,6 +61,7 @@ export {
   RequiredMixin,
   SorterMixin,
   StoreMixin,
+  TranslationMixin,
   ValidationMixin,
   WidgetMixin,
 

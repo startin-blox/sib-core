@@ -15,7 +15,7 @@ export const SolidDelete = {
     },
     dataLabel: {
       type: String,
-      default: "Delete",
+      default: null,
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.render();
       },
@@ -55,9 +55,12 @@ export const SolidDelete = {
   validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
+  update() {
+    this.render();
+  },
   render(): void {
     const button = html`
-      <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
+      <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
       ${this.getModalDialog()}
     `;
     render(button, this.element);

@@ -15,6 +15,7 @@
       newWidgetFactory('solid-form-multiple');
       newWidgetFactory('solid-form-multipleselect');
       newWidgetFactory('solid-form-multipleselect-autocompletion');
+      newWidgetFactory('solid-form-multipleselect-autocompletion-placeholder');
       newWidgetFactory('solid-form-checkboxes');
     </script>
     <solid-form-multiple
@@ -46,6 +47,15 @@
       range="../data/list/skills.jsonld"
       order-asc="name"
     ></solid-form-multipleselect-autocompletion>
+    <solid-form-multipleselect-autocompletion-placeholder
+      id="search-attr"
+      name="test1"
+      range="../data/list/skills.jsonld"
+      order-asc="name"
+      placeholder="Sélectionne une compétence"
+      search-placeholder="Rechercher par clavier"
+      search-text="Pas de concordance"
+    ></solid-form-multipleselect-autocompletion-placeholder>
     <solid-form-checkboxes
       id="test1"
       name="test1"

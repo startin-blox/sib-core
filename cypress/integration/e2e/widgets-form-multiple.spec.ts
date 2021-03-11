@@ -194,7 +194,21 @@ describe('multiple widgets', function() {
     cy.get('solid-form-multipleselect-autocompletion .ss-values')
       .children().should('have.length', 1)
       .should('contain', 'DevOps');
+    cy.get('solid-form-multipleselect-autocompletion')
+      .find('.ss-add').click();
   });
+  it('solid-form-autocompletion-placeholder & search attributes', () => {
+    // attributes for placeholders and text displayed in SlimSelect
+    cy.get('#search-attr')
+      .find('.ss-disabled').contains('Sélectionne une compétence')
+      .click();
+    cy.get('solid-form-multipleselect-autocompletion-placeholder')
+      .find('.ss-search').children().should('have.attr','placeholder', 'Rechercher par clavier')
+      .wait(200)
+      .type('00');
+    cy.get('#search-attr')
+      .find('.ss-list').children().contains('Pas de concordance')
+  })
   it('solid-form-checkboxes', () => {
     cy.get('solid-form-checkboxes')
       .find('solid-form-multicheckbox > div[name=test1]')
