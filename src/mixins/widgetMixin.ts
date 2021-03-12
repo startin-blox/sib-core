@@ -55,10 +55,8 @@ const WidgetMixin = {
       }
     }
 
-    if (!resource) {
-      console.error(new Error('You must provide a "fields" attribute'));
-      return [];
-    }
+    if (!this.dataSrc) console.error(new Error('You must provide a "fields" attribute'));
+    if(!resource) return [];
 
     let fields: string[] = [];
     for (const prop of resource.properties) {
