@@ -1,3 +1,5 @@
+import { store } from "../../libs/store/store";
+
 const FormFileMixin = {
   name: 'form-file-mixin',
   attributes: {
@@ -24,10 +26,12 @@ const FormFileMixin = {
     const file = filePicker.files![0];
     const formData = new FormData();
     formData.append('file', file);
-    fetch(this.uploadUrl, {
-      method: 'POST',
-      // headers: {},
-      body: formData,
+    store.getAuthorizationHeaders().then(headers => {
+      return fetch(this.uploadUrl, {
+        method: 'POST',
+        headers : headers,
+        body: formData,
+      })
     })
       .then(response => {
         const location = response.headers.get('location');

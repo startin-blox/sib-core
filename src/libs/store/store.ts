@@ -34,15 +34,20 @@ class Store {
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
     this.headers = (async () => {
-      const headers = new Headers();
+      const headers = await this.getAuthorizationHeaders();
       headers.set('Content-Type', 'application/ld+json');
+      return headers;
+    })();
+  }
+
+  async getAuthorizationHeaders() {
+    const headers = new Headers();
       try {
         const idToken = await this.idTokenPromise;
         if (idToken != null)
           headers.set('Authorization', `Bearer ${idToken}`);
       } catch { }
-      return headers;
-    })();
+    return headers;
   }
 
   /**
