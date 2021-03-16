@@ -174,5 +174,17 @@
       fields="name, profile.available"
       filtered-by="filter-null-subject"
   ></solid-display>
+
+  <solid-form-search
+    id="profile-search"
+    fields="profile"
+    value-profile="profile-1.jsonld"
+  ></solid-form-search>
+  <solid-display
+    id="display-profile-search"
+    data-src="../data/list/users.jsonld"
+    fields="username"
+    filtered-by="profile-search"
+  ></solid-display>
   </body>
 </html>
