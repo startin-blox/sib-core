@@ -1,5 +1,6 @@
 import { Sib } from '../libs/Sib';
 import { WidgetMixin } from '../mixins/widgetMixin';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
@@ -8,7 +9,7 @@ import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
-  use: [WidgetMixin],
+  use: [WidgetMixin, AttributeBinderMixin],
   attributes: {
     defaultWidget: {
       type: String,
@@ -96,6 +97,7 @@ export const SolidFormSearch = {
   },
   empty(): void {},
   async populate(): Promise<void> {
+    await this.getAttributesData();
     if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
       this.element.addEventListener('change', () => this.inputChange());

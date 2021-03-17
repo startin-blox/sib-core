@@ -32,6 +32,15 @@
         value-child-date="store://resource.date"
         next="event-infos"
       ></solid-display>
+
+      <solid-delete
+        data-label="store://user.username"
+      ></solid-delete>
+
+      <solid-form-search
+        fields="firstName"
+        value-firstName="store://user.first_name"
+      ></solid-form-search>
     </div>
     <div data-view="event-infos" hidden>
       <solid-display

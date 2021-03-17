@@ -2,12 +2,13 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
 
 export const SolidDelete = {
   name: 'solid-delete',
-  use: [NextMixin, ValidationMixin],
+  use: [NextMixin, ValidationMixin, AttributeBinderMixin],
   attributes: {
     dataSrc: {
       type: String,
@@ -17,7 +18,7 @@ export const SolidDelete = {
       type: String,
       default: "Delete",
       callback: function (newValue: string, oldValue: string) {
-        if (newValue !== oldValue) this.render();
+        if (newValue !== oldValue) this.planRender();
       },
     },
     extraContext: {
@@ -25,8 +26,20 @@ export const SolidDelete = {
       default: null
     }
   },
+  initialState: {
+    renderPlanned: false,
+  },
   created(): void {
-    this.render();
+    this.planRender();
+  },
+  planRender() {
+    if (!this.renderPlanned) {
+      this.renderPlanned = true;
+      setTimeout(() => {
+        this.render();
+        this.renderPlanned = false;
+      });
+    }
   },
   get context(): object {
     let extraContextElement = this.extraContext ?
@@ -55,7 +68,8 @@ export const SolidDelete = {
   validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
-  render(): void {
+  async render(): Promise<void> {
+    await this.getAttributesData(false);
     const button = html`
       <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
       ${this.getModalDialog()}
