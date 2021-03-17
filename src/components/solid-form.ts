@@ -184,7 +184,7 @@ export const SolidForm = {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
 
     const errorTemplate = html`
-      <p>A validation error occured.</p>
+      <p>A validation error occurred.</p>
       <ul>
         ${this.findErrorMessage(errors).map(field => html`
          <li>${field}</li>

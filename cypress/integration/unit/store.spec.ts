@@ -30,6 +30,7 @@ describe('store', function () {
       // public methods
       expect(win.sibStore.fetchAuthn).to.be.a('function');
       expect(win.sibStore.getData).to.be.a('function');
+      expect(win.sibStore.setLocalData).to.be.a('function');
       expect(win.sibStore.get).to.be.a('function');
       expect(win.sibStore.clearCache).to.be.a('function');
       expect(win.sibStore.post).to.be.a('function');
@@ -40,6 +41,32 @@ describe('store', function () {
       // PubSub
       expect(win.PubSub).to.exist;
     })
+  });
+
+  it('creates headers', () => {
+    cy.window().then(async (win: any) => {
+      expect(win.sibStore.headers).to.be.a('promise');
+      const headers = await win.sibStore.headers;
+      expect(headers).to.exist;
+      expect(headers.get('Content-Type')).to.equal('application/ld+json');
+    });
+  });
+
+  it('save local data', () => {
+    cy.window().then(async (win: any) => {
+      const dataToSave1 = {};
+      const customID = "myCustomID";
+      const url1 = win.sibStore.setLocalData(dataToSave1, customID);
+      expect(url1).eq(`store://local.${customID}`);
+      const dataRead1 = await win.sibStore.getData(url1);
+      expect(dataRead1).deep.eq(dataToSave1);
+
+      const dataToSave2 = {};
+      const url2 = win.sibStore.setLocalData(dataToSave2);
+      expect(url2).match(/^store:\/\/local\..+$/);
+      const dataRead2 = await win.sibStore.getData(url2);
+      expect(dataRead2).deep.eq(dataToSave2);
+    });
   });
 
   it('fetches data and cache it', () => {
