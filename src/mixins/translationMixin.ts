@@ -12,12 +12,14 @@ const TranslationMixin = {
   getLang() {
     const languageStorage = store._getLanguage();
     if(languageStorage) {
-      fetch(`../../locales/${languageStorage}.json`)
-      .then(response => {
-        if (!response.ok) return;
-        return response.json() // catch data in translation file
-      })
-      .then(res =>{
+      if (window.fetchPromise === undefined) { // if translation data are not already fetched
+        window.fetchPromise = fetch(`../../locales/${languageStorage}.json`)
+        .then(response => {
+          if (!response.ok) return;
+          return response.json() // catch data in translation file
+        })
+      }
+      window.fetchPromise.then(res =>{
         this.translationData = res; // stock data in object passed to traduction method below
         this.update(); // update the rendering in components and widgets
       })
