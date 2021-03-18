@@ -2,9 +2,12 @@ import JSONLDContextParser from 'jsonld-context-parser';
 //@ts-ignore
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
+import { uniqID } from '../helpers';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
+
+const localData = {}
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -41,6 +44,12 @@ class Store {
     this.session = this.storeOptions.session;
   }
 
+  setLocalData(data: any, localId?:string) {
+    localId = localId ?? uniqID();
+    localData[localId] = data;
+    return `store://local.${localId}`;
+  }
+
   /**
    * Fetch data and cache it
    * @param id - uri of the resource to fetch
@@ -52,6 +61,13 @@ class Store {
    * @async
    */
   async getData(id: string, context = {}, idParent = ""): Promise<Resource|null> {
+    
+    const match = id.match(/^store:\/\/local\.(.+)$/);
+    if(match) {
+      const localId = match[1];
+      return localData[localId];
+    }
+    
     if (this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
       if (resource && resource.isFullResource()) return resource; // if resource is not complete, re-fetch it

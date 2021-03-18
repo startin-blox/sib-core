@@ -191,7 +191,7 @@ describe('solid-form', function() {
       .click();
     cy.get('solid-form#form-7')
       .find('[data-id="error"]')
-      .should('contain', 'A validation error occured')
+      .should('contain', 'A validation error occurred')
       .and('contain', 'name: Ensure this field has no more than 10 characters.')
       .and('contain', 'batches - title: Title too long, Title not unique')
       .and('contain', 'batches - tasks - @id: Task with this urlid already exists.')
