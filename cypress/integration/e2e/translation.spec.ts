@@ -1,5 +1,4 @@
 describe('translation', function () {
-  // let win: Window;
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/translation.html', {
       onBeforeLoad(win) {
@@ -66,7 +65,7 @@ describe('translation', function () {
     cy.get('solid-form#custom-submitbutton')
       .find('input[type=submit]').should('contain', 'Send form');
 
-    // englsih in autompletion multipleselect
+    // english in autompletion multipleselect
     cy.get('solid-form-search#translation-autocomp')
       .find('.ss-disabled').should('contain', 'Select a value')
       .click();
@@ -76,4 +75,11 @@ describe('translation', function () {
     cy.get('solid-form-search#translation-autocomp')
       .find('.ss-list').children().contains('No result')
   });
+  it('Missing translation file', () => {
+    cy.get('#fr').find('button').click();
+    cy.get('solid-delete#confirm').find('button').should('contain', 'Supprimer');
+    // Asking to get a missing file, English loaded by default
+    cy.get('#it').find('button').click();
+    cy.get('solid-delete#confirm').find('button').should('contain', 'Delete');
+  })
 });
