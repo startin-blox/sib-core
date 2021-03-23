@@ -18,10 +18,10 @@ describe('solid-delete', function () {
       response: {},
     });
     // button created
-    cy.get('solid-delete').find('button').should('have.length', 1);
+    cy.get('solid-delete#test1').find('button').should('have.length', 1);
     cy.get('solid-delete button').should('have.text', 'Supprimer');
     // on click, store.delete is called
-    cy.get('solid-delete button').click({ force: true }).then(() => {
+    cy.get('solid-delete#test1 button').click({ force: true }).then(() => {
       expect(win.sibStore.delete).to.be.called;
     });
     // events have been fired
@@ -39,7 +39,7 @@ describe('solid-delete', function () {
       status: 403,
       response: {},
     });
-    cy.get('solid-delete button').click({ force: true })
+    cy.get('solid-delete#test1 button').click({ force: true })
     // if server fails, events not fired
     cy.get('#res').should('be.empty');
   });
@@ -49,5 +49,12 @@ describe('solid-delete', function () {
       cy.get('solid-delete > button').should('have.text', 'Supprimer la ressource');
     })
   });
+  it('class-delete-button attribute', () => {
+    cy.get('solid-delete#class')
+      .find('div').should('have.class', 'supprimer')
+      .find('button').should('exist');
+    cy.get('solid-delete#class')
+      .should('not.have.html', '<div><button></button></div>');
+  })
 })
 

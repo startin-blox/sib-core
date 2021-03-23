@@ -49,6 +49,11 @@ describe('solid-form-search widget', function() {
       .should('exist')
       .and('have.text', 'OK');
   });
+  it('solid-form-search + class-submit-button', () => {
+    cy.get('solid-form-search#filter-class-submit-button')
+      .find('div').should('have.class', 'button-class')
+      .find('input').should('exist');
+  });
 
   it('solid-form-search + start-value & end-value', () => {
     cy.get('#filter4 > form')

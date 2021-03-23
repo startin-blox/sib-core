@@ -10,9 +10,17 @@
   </head>
 
   <body>
+    <h3>solid-delete component with data-label and next attributes</h3>
     <solid-delete
       data-src="data/project.jsonld"
       data-label="Supprimer"
+      next="detail"
+    ></solid-delete>
+
+    <h3>class-delete-button attribute</h3>
+    <solid-delete
+      data-src="data/project.jsonld"
+      class-delete-button="supprimer"
       next="detail"
     ></solid-delete>
 

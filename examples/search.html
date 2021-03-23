@@ -365,5 +365,36 @@
         filtered-by="filter-rangedate"
       ></solid-display>
     </details>
+
+    <details>
+      <summary>Submit button customisation</summary>
+      <h4>solid-form-search with input and class </h4>
+      <solid-form-search
+        id="filter-label"
+        fields="email"
+        label-email="mail"
+        class-submit-button="class-button"
+        submit-button="Rechercher"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-label"
+      ></solid-display>
+
+      <h4>solid-form-search with button </h4>
+      <solid-form-search
+        id="filter-label"
+        fields="email"
+        label-email="mail"
+        submit-button="Rechercher"
+        submit-widget="button"
+      ></solid-form-search>
+      <solid-display
+        data-src="data/list/users.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-label"
+      ></solid-display>
+    </details>
   </body>
 </html>

@@ -20,6 +20,10 @@ export const SolidDelete = {
         if (newValue !== oldValue) this.render();
       },
     },
+    classDeleteButton: {
+      type: String,
+      default: null,
+    },
     extraContext: {
       type: String,
       default: null
@@ -60,7 +64,13 @@ export const SolidDelete = {
   },
   render(): void {
     const button = html`
-      <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
+      ${this.classDeleteButton ? html`
+        <div class=${this.classDeleteButton}>
+          <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
+        </div>`
+      : html`
+        <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>`
+      }
       ${this.getModalDialog()}
     `;
     render(button, this.element);

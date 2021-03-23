@@ -10,8 +10,16 @@
 
   <body>
     <solid-delete
+      id="test1"
       data-src="data/project.jsonld"
       data-label="Supprimer"
+      next="detail"
+    ></solid-delete>
+
+    <solid-delete
+      id="class"
+      data-src="data/project.jsonld"
+      class-delete-button="supprimer"
       next="detail"
     ></solid-delete>
 
