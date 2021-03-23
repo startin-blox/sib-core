@@ -316,4 +316,12 @@ describe('solid-form', function() {
         expect(win.sibStore.post).not.be.called;
       });
   });
+  it('class-submit-button attribute', () => {
+    cy.get('solid-form#class-submit-button > form').find('div')
+      .should('have.attr', 'class', 'submitB-class')
+      .find('input[type="submit"]').should('exist');
+    cy.get('solid-form#class-submit-button2 > form').find('div')
+      .should('have.attr', 'class', 'submitB-class2')
+      .find('button').should('exist');
+  });
 })

@@ -32,6 +32,10 @@ export const SolidForm = {
       type: String,
       default: null
     },
+    classSubmitButton: {
+      type: String,
+      default: null,
+    },
     partial: {
       type: Boolean,
       default: null
@@ -220,8 +224,23 @@ export const SolidForm = {
   },
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
-      html`<button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>` :
-      html`<input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>`;
+      html`
+        ${this.classSubmitButton ? html`
+          <div class=${this.classSubmitButton}>
+            <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
+          </div>
+        ` : html `
+          <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
+        `}
+      ` : html`
+        ${this.classSubmitButton ? html`
+          <div class=${this.classSubmitButton}>
+            <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
+          </div>
+        `: html`
+          <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
+        `}
+      `;
   },
   async populate(): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
