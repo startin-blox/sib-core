@@ -19,7 +19,7 @@ describe('solid-delete', function () {
     });
     // button created
     cy.get('solid-delete#test1').find('button').should('have.length', 1);
-    cy.get('solid-delete button').should('have.text', 'Supprimer');
+    cy.get('solid-delete#test1 button').should('have.text', 'Supprimer');
     // on click, store.delete is called
     cy.get('solid-delete#test1 button').click({ force: true }).then(() => {
       expect(win.sibStore.delete).to.be.called;
@@ -44,7 +44,7 @@ describe('solid-delete', function () {
     cy.get('#res').should('be.empty');
   });
   it('re-render when label change', () => {
-    cy.get('solid-delete').then(el => {
+    cy.get('solid-delete#test1').then(el => {
       el.attr('data-label', 'Supprimer la ressource');
       cy.get('solid-delete > button').should('have.text', 'Supprimer la ressource');
     })
