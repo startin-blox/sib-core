@@ -1,3 +1,5 @@
+import type { Store } from "../../../src/libs/store/store";
+
 const baseUrl = Cypress.config().baseUrl;
 
 export const base_context = {
@@ -53,19 +55,23 @@ describe('store', function () {
   });
 
   it('save local data', () => {
-    cy.window().then(async (win: any) => {
-      const dataToSave1 = {};
+  cy.window().then(async (win: any) => {
+      const store: Store = win.sibStore
+      const dataToSave1 = {foo: 'bar'};
       const customID = "myCustomID";
-      const url1 = win.sibStore.setLocalData(dataToSave1, customID);
+      const url1 = store.setLocalData(dataToSave1, customID);
       expect(url1).eq(`store://local.${customID}`);
-      const dataRead1 = await win.sibStore.getData(url1);
-      expect(dataRead1).deep.eq(dataToSave1);
+      const dataRead1 = await store.getData(url1);
+      console.log(await dataRead1!['foo']);
+      expect(await dataRead1!['foo']).eq('bar');
 
-      const dataToSave2 = {};
-      const url2 = win.sibStore.setLocalData(dataToSave2);
+      const dataToSave2 = {bar: 'foo'};
+      const url2 = store.setLocalData(dataToSave2);
       expect(url2).match(/^store:\/\/local\..+$/);
-      const dataRead2 = await win.sibStore.getData(url2);
-      expect(dataRead2).deep.eq(dataToSave2);
+      const dataRead2 = await store.getData(url2);
+      expect(await dataRead2!['bar']).eq('foo');
+      store.clearCache(url1);
+      store.clearCache(url2);
     });
   });
 

@@ -3,11 +3,8 @@ import JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
 import { uniqID } from '../helpers';
-
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
-
-const localData = {}
 
 export const base_context = {
   '@vocab': 'http://happy-dev.fr/owl/#',
@@ -24,7 +21,7 @@ export const base_context = {
   lng: "geo:long"
 };
 
-class Store {
+export class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
@@ -46,8 +43,9 @@ class Store {
 
   setLocalData(data: any, localId?:string) {
     localId = localId ?? uniqID();
-    localData[localId] = data;
-    return `store://local.${localId}`;
+    const id = `store://local.${localId}`;
+    this.getData(id, {}, '', data);
+    return id;
   }
 
   /**
@@ -60,15 +58,13 @@ class Store {
    *
    * @async
    */
-  async getData(id: string, context = {}, idParent = ""): Promise<Resource|null> {
+
+  async getData(id: string, context:any = {}, idParent = "", localData?: object): Promise<Resource|null> {
+    const isLocalId = id.startsWith('store://local.');
     
-    const match = id.match(/^store:\/\/local\.(.+)$/);
-    if(match) {
-      const localId = match[1];
-      return localData[localId];
-    }
-    
-    if (this.cache.has(id) && !this.loadingList.has(id)) {
+    if(!isLocalId && localData != null) throw new Error('`localData` argument can only be set if `id` argument is of the form `store://local.*`');
+
+    if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
       if (resource && resource.isFullResource()) return resource; // if resource is not complete, re-fetch it
     }
@@ -81,8 +77,12 @@ class Store {
 
       // Generate proxy
       const clientContext = await myParser.parse(context);
-      let resource = null;
-      try {
+      let resource: any = null;
+      if(isLocalId) {
+        if(localData == null) localData = {};
+        localData["@id"] = id;
+        resource = localData;
+      } else try {
         resource = await this.fetchData(id, clientContext, idParent);
       } catch (error) { console.error(error) }
       if (!resource) {
