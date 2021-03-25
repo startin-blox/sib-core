@@ -86,8 +86,8 @@ export const SolidFormSearch = {
 
     return this.widgetFromTagName(tagName);
   },
-  addAutoRangeValue(field: string, valuesArray: Array<string>){
-    console.log(field, valuesArray);
+  addAutoRangeValue(fields: Array<string>, valuesArray: Array<string>){
+    console.log(fields, valuesArray);
   },
   change(resource: object): void {
     this.element.dispatchEvent(
