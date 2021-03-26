@@ -112,11 +112,16 @@ const ListMixin = {
     div: HTMLElement,
     context: string,
   ) {
-    if (resources.length === 0 && this.emptyWidget) {
-      const emptyWidgetElement = document.createElement(this.emptyWidget);
-      emptyWidgetElement.setAttribute('value', this.emptyValue);
-      div.appendChild(emptyWidgetElement);
+    if (!this.emptyWrapper) {
+      this.emptyWrapper = document.createElement('div')
+      this.element.appendChild(this.emptyWrapper)
+      if (this.emptyWidget) {
+        const emptyWidgetElement = document.createElement(this.emptyWidget);
+        emptyWidgetElement.setAttribute('value', this.emptyValue);
+        this.emptyWrapper.appendChild(emptyWidgetElement);
+      }
     }
+    this.emptyWrapper.toggleAttribute('hidden', resources.length > 0)
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)

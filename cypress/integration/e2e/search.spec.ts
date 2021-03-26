@@ -132,4 +132,24 @@ describe('solid-form-search widget', function() {
     
     cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('not.exist')
   });
+
+  it('solid-form-search + empty-widget', () => {
+    cy.get('#hide-empty-widget > div')
+      .children().should('have.length', 5);
+    cy.get('#filter-with-empty-widget')
+      .find('input').type('rrr');
+    cy.get('#hide-empty-widget > div')
+      .children().should('have.length', 2)
+      .and('contain', 'Pierre DLC');
+    cy.get('#filter-with-empty-widget')
+      .find('input').type('r');
+    cy.get('#hide-empty-widget > div')
+      .children().should('have.length', 1)
+      .and('contain', 'No name found');
+    cy.get('#filter-with-empty-widget')
+      .find('input').type('{backspace}');
+    cy.get('#hide-empty-widget > div')
+      .children().should('have.length', 2)
+      .and('contain', 'Pierre DLC');
+  })
 })
