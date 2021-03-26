@@ -116,15 +116,12 @@ const FilterMixin = {
     //check if solid-form-search has auto-range-[field] attribute
     const autoRangeAttr = Array.from((this.searchForm as Element).attributes)
     .filter(attr => attr['name'].startsWith('auto-range-'))
-    if(autoRangeAttr !== undefined) {
+    
+    if(autoRangeAttr.length !== 0) { //if yes, catch field's name field's values in each resource in the container
       let autoRangeField = autoRangeAttr.map(item => item['name'].replace('auto-range-', ''));
-      if(this.resource.isContainer() == true) {
-        let arrayOfValues = [];
-        for (let field of autoRangeField) {
-          let fieldValues = this.resource.getChildren().map(obj => obj[field]); //this.resource['ldp:contains']
-          arrayOfValues = arrayOfValues.concat(fieldValues)
-        }
-        this.searchForm.component.addAutoRangeValue(autoRangeField, arrayOfValues);
+      for (let field of autoRangeField) {
+        let arrayOfValues = this.resource.getChildren().map(obj => obj[field]); //this.resource['ldp:contains'] - What if containers are contained in the (data-src) container ?
+        this.searchForm.component.addAutoRangeValue(field, arrayOfValues);
       };
     }
 
