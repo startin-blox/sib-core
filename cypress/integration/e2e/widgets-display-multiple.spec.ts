@@ -15,8 +15,9 @@ describe('multiple widgets', function() {
       .should('have.attr', 'empty-widget', 'empty-skills')
       .find('solid-display-value')
     cy.get('solid-multiple#skills > solid-display > div')
-      .children().should('have.length', 2);
-    cy.get('solid-multiple#skills empty-skills')
-      .should('not.exist')
+      .children().should('have.length', 3);
+    cy.get('solid-multiple#skills > solid-display')
+      .find('div').last()
+      .should('have.attr', 'hidden')
   });
 })

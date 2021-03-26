@@ -174,5 +174,21 @@
       fields="name, profile.available"
       filtered-by="filter-null-subject"
   ></solid-display>
+
+  <solid-widget name="my-empty-widget">
+    <template>No name found</template>
+  </solid-widget>
+  <solid-form-search
+      id="filter-with-empty-widget"
+      fields="name"
+  ></solid-form-search>
+  <solid-display
+    id="hide-empty-widget"
+    data-src="../data/list/users.jsonld"
+    fields="name"
+    filtered-by="filter-with-empty-widget"
+    empty-widget="my-empty-widget"
+  ></solid-display>
+
   </body>
 </html>
