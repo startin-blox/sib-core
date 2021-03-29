@@ -1,4 +1,6 @@
-import { render } from 'lit-html';
+import { html, render } from 'lit-html';
+import { preHTML } from '../libs/lit-helpers';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 const ListMixin = {
   name: 'list-mixin',
@@ -113,14 +115,16 @@ const ListMixin = {
     context: string,
   ) {
     if (this.emptyWidget) {
+      const emptyWidgetTemplate = preHTML`
+        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}>${ifDefined(this.emptyValue)}</${this.emptyWidget}>
+      `
       if (!this.emptyWrapper) {
-        this.emptyWrapper = document.createElement('div')
+        this.emptyWrapper = document.createElement('span')
         this.element.appendChild(this.emptyWrapper)
-        const emptyWidgetElement = document.createElement(this.emptyWidget);
-        emptyWidgetElement.setAttribute('value', this.emptyValue);
-        this.emptyWrapper.appendChild(emptyWidgetElement);
       }
-      this.emptyWrapper.toggleAttribute('hidden', resources.length > 0)
+      
+      resources.length > 0 ?
+        render(html``, this.emptyWrapper) : render(emptyWidgetTemplate, this.emptyWrapper);
     }
 
     const nextProcessor = listPostProcessors.shift();
