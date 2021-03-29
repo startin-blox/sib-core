@@ -135,4 +135,9 @@ describe('solid-form-search widget', function() {
     cy.get('#display-profile-search > div').children().should('have.length', '1')
     cy.get('#display-profile-search > div > solid-display').should('have.attr', 'data-src', 'user-1.jsonld')
   });
+
+  it('solid-form-search + number', () => {
+    cy.get('#number-search solid-form-label-text[name=username] input').type('123');
+    cy.get('#display-number-search > div').children().should('have.length', 0)
+  });
 })
