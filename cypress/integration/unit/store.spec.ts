@@ -1,3 +1,4 @@
+import type { Resource } from "../../../src/mixins/interfaces";
 import type { Store } from "../../../src/libs/store/store";
 
 const baseUrl = Cypress.config().baseUrl;
@@ -59,14 +60,14 @@ describe('store', function () {
       const store: Store = win.sibStore
       const dataToSave1 = {foo: 'bar'};
       const customID = "myCustomID";
-      const url1 = store.setLocalData(dataToSave1, customID);
+      const {"@id": url1} = await store.setLocalData(dataToSave1, customID) as Resource;
       expect(url1).eq(`store://local.${customID}`);
       const dataRead1 = await store.getData(url1);
       console.log(await dataRead1!['foo']);
       expect(await dataRead1!['foo']).eq('bar');
 
       const dataToSave2 = {bar: 'foo'};
-      const url2 = store.setLocalData(dataToSave2);
+      const {"@id": url2} = await store.setLocalData(dataToSave2) as Resource;
       expect(url2).match(/^store:\/\/local\..+$/);
       const dataRead2 = await store.getData(url2);
       expect(await dataRead2!['bar']).eq('foo');

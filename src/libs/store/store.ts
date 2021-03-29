@@ -3,6 +3,7 @@ import JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
 import { uniqID } from '../helpers';
+
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
@@ -41,11 +42,10 @@ export class Store {
     this.session = this.storeOptions.session;
   }
 
-  setLocalData(data: any, localId?:string) {
+  async setLocalData(data: any, localId?:string) {
     localId = localId ?? uniqID();
     const id = `store://local.${localId}`;
-    this.getData(id, {}, '', data);
-    return id;
+    return await this.getData(id, {}, '', data);
   }
 
   /**
