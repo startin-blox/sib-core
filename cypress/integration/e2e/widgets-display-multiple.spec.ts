@@ -8,16 +8,15 @@ describe('multiple widgets', function() {
       .should('have.attr', 'empty-widget', 'empty-skills')
       .find('empty-skills')
       .should('contain', 'This username has no skills');
-    cy.get('solid-multiple#noskill > solid-display > div')
+    cy.get('solid-multiple#noskill > solid-display > span')
       .children().should('have.length', 1);
 
     cy.get('solid-multiple#skills')
       .should('have.attr', 'empty-widget', 'empty-skills')
       .find('solid-display-value')
     cy.get('solid-multiple#skills > solid-display > div')
-      .children().should('have.length', 3);
-    cy.get('solid-multiple#skills > solid-display')
-      .find('div').last()
-      .should('have.attr', 'hidden')
+      .children().should('have.length', 2);
+    cy.get('solid-multiple#skills > solid-display > span')
+      .children().should('not.exist')
   });
 })
