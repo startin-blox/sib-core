@@ -86,7 +86,7 @@ describe('solid-display', function() {
   });
   it('list-mixin : empty-value', () => {
     cy.get('#display-13').find('no-skill');
-    cy.get('#display-13 > div > no-skill').contains('No skill yet')
+    cy.get('#display-13 > span > no-skill').contains('No skill yet')
   });
   it('define src attribute of solid-link by action', () => {
     cy.get('#display-14 > div > solid-action')

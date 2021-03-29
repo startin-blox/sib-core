@@ -116,15 +116,14 @@ const ListMixin = {
   ) {
     if (this.emptyWidget) {
       const emptyWidgetTemplate = preHTML`
-        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}>${ifDefined(this.emptyValue)}</${this.emptyWidget}>
+        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>
       `
       if (!this.emptyWrapper) {
         this.emptyWrapper = document.createElement('span')
         this.element.appendChild(this.emptyWrapper)
       }
       
-      resources.length > 0 ?
-        render(html``, this.emptyWrapper) : render(emptyWidgetTemplate, this.emptyWrapper);
+      render(resources.length > 0 ? html`` : emptyWidgetTemplate, this.emptyWrapper);
     }
 
     const nextProcessor = listPostProcessors.shift();
