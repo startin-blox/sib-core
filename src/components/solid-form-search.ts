@@ -18,6 +18,9 @@ export const SolidFormSearch = {
     submitButton: {
       type: String,
       default: null,
+      callback: function (newValue: string, oldValue: string) {
+        if (this.noRender == null && newValue !== oldValue) this.populate();
+      },
     },
     submitWidget: {
       type: String,

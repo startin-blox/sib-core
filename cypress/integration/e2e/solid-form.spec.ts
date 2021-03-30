@@ -142,10 +142,21 @@ describe('solid-form', function() {
     cy.get('solid-form#form-6')
       .find('input[type=submit]')
       .should('have.value', 'Register');
+    cy.get('solid-form-search#form-search-6')
+      .find('input[type=submit]')
+      .should('have.value', 'Register');
+
     cy.get('solid-form#form-6')
       .then(el => {
         el.attr('submit-button', 'Register the user');
         cy.get('solid-form#form-6')
+        .find('input[type=submit]')
+        .should('have.value', 'Register the user');
+      })
+    cy.get('solid-form-search#form-search-6')
+      .then(el => {
+        el.attr('submit-button', 'Register the user');
+        cy.get('solid-form-search#form-search-6')
         .find('input[type=submit]')
         .should('have.value', 'Register the user');
       })
