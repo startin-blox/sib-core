@@ -117,12 +117,18 @@ const FilterMixin = {
     const autoRangeAttr = Array.from((this.searchForm as Element).attributes)
     .filter(attr => attr['name'].startsWith('auto-range-'))
     
-    if(autoRangeAttr.length !== 0) { //if yes, catch field's name field's values in each resource in the container
+    if (autoRangeAttr.length !== 0) { //if yes, catch field's name field's values in each resource in the container
       let autoRangeField = autoRangeAttr.map(item => item['name'].replace('auto-range-', ''));
       for (let field of autoRangeField) {
-        let arrayOfValues = this.resource.getChildren().map(obj => obj[field]); //this.resource['ldp:contains'] - What if containers are contained in the (data-src) container ?
-        this.searchForm.component.addAutoRangeValue(field, arrayOfValues);
-      };
+        let arrayOfValues = this.resource['ldp:contains'];
+        let finalValues : string[] = [];
+        for (let obj of arrayOfValues) {
+          let finalValue : string = await obj[field];
+          finalValues.push(finalValue)
+        }
+
+        this.searchForm.component.addAutoRangeValue(field, finalValues);
+      }; 
     }
 
     if (filteredBy) return;

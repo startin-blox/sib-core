@@ -6,6 +6,7 @@ import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { uniqID } from '../libs/helpers';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
@@ -43,6 +44,8 @@ export const SolidFormSearch = {
   },
   created() {
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
+    this.autoRangeValues = {};
+    this.rangeId = uniqID();
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';
@@ -71,8 +74,12 @@ export const SolidFormSearch = {
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
+    const idField = this.rangeId.concat('_', field);
+    // If auto-range-[field] exists, create range-[field] and sets its value
+    if(this.element.hasAttribute('auto-range-' + field)) this.element.setAttribute('range-' + field, 'store://local.' + idField);
+    console.log(this.element.getAttribute('range-' + field));
+    
     const widgetAttribute = this.element.getAttribute('widget-' + field);
-
     // Choose widget
     if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
       tagName = 'solid-form-dropdown'
@@ -86,8 +93,20 @@ export const SolidFormSearch = {
 
     return this.widgetFromTagName(tagName);
   },
-  addAutoRangeValue(field: string, valuesArray: Array<string>){
-    console.log(field, valuesArray);
+  async addAutoRangeValue(field: string, valuesArray: Array<string>){
+    this.autoRangeValues[field] = this.autoRangeValues[field] || new Set();
+    // Add all values from a same field's name to one Set() (this.autoRangeValues[field])
+    for (let value of valuesArray) {
+      this.autoRangeValues[field].add(value)
+    }
+    console.log(this.autoRangeValues[field]);
+    const idField = this.rangeId.concat('_', field);
+    const resourceData = sibStore.setLocalData({"ldp:container" : Array.from(this.autoRangeValues[field])}, idField)
+    // set to dropdown the new url to data-range.
+    //trouver comment passer cet id à l'element qui va gerer l'affichage (dropdown ou autocomplete)
+    const idData = await resourceData;
+    console.log(idData['@id']); // ID de la ressource ////////////////////////////////////
+    console.log(await resourceData); // PROXY //////////////////////////////////////
   },
   change(resource: object): void {
     this.element.dispatchEvent(
