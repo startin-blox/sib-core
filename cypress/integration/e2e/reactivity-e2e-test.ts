@@ -156,7 +156,7 @@ describe('Reactivity e2e test', function () {
 
     // delete user & range
     cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
-    cy.get('solid-delete#delete-user').click();
+    cy.get('solid-delete#delete-user > div > button').click();
     cy.get(`solid-display#users solid-display`).should('have.length', 2);
     cy.get(`solid-form#range option`).should('have.length', 3);
     // cy.get(`solid-display#federation solid-display`).should('have.length', 3); NOT WORKING: should we loop on subscription index?
