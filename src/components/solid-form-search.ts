@@ -101,7 +101,9 @@ export const SolidFormSearch = {
             <button type="submit">${this.submitButton || ''}</button>
           </div>
         ` : html `
-          <button type="submit">${this.submitButton || ''}</button>
+          <div class=${this.classSubmitButton}>
+            <button type="submit">${this.submitButton || ''}</button>
+          </div>
         `}
       ` : html`
         ${this.classSubmitButton ? html`
@@ -109,7 +111,9 @@ export const SolidFormSearch = {
             <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
           </div>
         `: html`
-          <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
+          <div>
+            <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
+          </div>
         `}
       `;
   },

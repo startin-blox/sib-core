@@ -36,6 +36,7 @@ describe('solid-form-search widget', function() {
     cy.get('#filter3')
       .find('input[type=submit]').as('btn')
       .should('have.attr', 'value', 'update result');
+    cy.get('#filter3 > form').find('div').children('input[type="submit"]');
     cy.get('#display3 > div > solid-display').should('have.length', 4);
     cy.get('#filter3 select').select('User');
     cy.get('#display3 > div > solid-display').should('have.length', 4);
