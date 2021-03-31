@@ -26,28 +26,19 @@ class Store {
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<String>;
-  headers: Promise<Headers>;
+  headers: Headers;
+  fetch: Promise<any> | undefined;
+  session: Promise<any> | undefined;
 
-  constructor(private idTokenPromise: Promise<string>) {
+  constructor(private storeOptions: StoreOptions) {
     this.cache = new Map();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
-    this.headers = (async () => {
-      const headers = await this.getAuthorizationHeaders();
-      headers.set('Content-Type', 'application/ld+json');
-      return headers;
-    })();
-  }
-
-  async getAuthorizationHeaders() {
-    const headers = new Headers();
-      try {
-        const idToken = await this.idTokenPromise;
-        if (idToken != null)
-          headers.set('Authorization', `Bearer ${idToken}`);
-      } catch { }
-    return headers;
+    this.headers = new Headers();
+    this.headers.set('Content-Type', 'application/ld+json');
+    this.fetch = this.storeOptions.fetchMethod;
+    this.session = this.storeOptions.session;
   }
 
   /**
@@ -93,13 +84,18 @@ class Store {
     });
   }
 
+  async fetchAuthn(iri: string, options: any) {
+    if (this.session) await this.session;
+    return this.fetch
+      ? this.fetch.then(fn => fn(iri, options))
+      : fetch(iri, options);
+  }
 
   async fetchData(id: string, context = {}, idParent = "") {
     const iri = this._getAbsoluteIri(id, context, idParent);
-    const headers = await this.headers;
+    const headers = this.headers;
     headers.set('accept-language', this._getLanguage());
-
-    return fetch(iri, {
+    return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
       credentials: 'include'
@@ -158,9 +154,9 @@ class Store {
     if (!['POST', 'PUT', 'PATCH'].includes(method)) throw new Error('Error: method not allowed');
 
     const expandedId = this._getExpandedId(id, resource['@context']);
-    return fetch(expandedId, {
+    return this.fetchAuthn(expandedId, {
       method: method,
-      headers: await this.headers,
+      headers: this.headers,
       body: JSON.stringify(resource),
       credentials: 'include'
     }).then(response => {
@@ -283,9 +279,9 @@ class Store {
    */
   async delete(id: string, context: object = {}) {
     const expandedId = this._getExpandedId(id, context);
-    const deleted = await fetch(expandedId, {
+    const deleted = await this.fetchAuthn(expandedId, {
       method: 'DELETE',
-      headers: await this.headers,
+      headers: this.headers,
       credentials: 'include'
     });
 
@@ -398,11 +394,15 @@ if (window.sibStore) {
   store = window.sibStore;
 } else {
   const sibAuth = document.querySelector('sib-auth');
-  const idTokenPromise = sibAuth ? customElements.whenDefined(sibAuth.localName).then( 
-    () => sibAuth['getUserIdToken']()
-  ) : Promise.reject();
+  const storeOptions: StoreOptions = {}
 
-  store = new Store(idTokenPromise);
+  if (sibAuth) {
+    const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
+    storeOptions.session = sibAuthDefined.then(() => (sibAuth as any).session)
+    storeOptions.fetchMethod = sibAuthDefined.then(() => (sibAuth as any).getFetch())
+  }
+
+  store = new Store(storeOptions);
   window.sibStore = store;
 }
 
