@@ -69,7 +69,9 @@ export const SolidDelete = {
           <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
         </div>`
       : html`
-        <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>`
+        <div>
+          <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
+        </div>`
       }
       ${this.getModalDialog()}
     `;

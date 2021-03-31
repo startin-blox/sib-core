@@ -229,16 +229,20 @@ export const SolidForm = {
           <div class=${this.classSubmitButton}>
             <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
           </div>
-        ` : html `
-          <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
+        ` : html`
+          <div>
+            <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
+          </div>
         `}
       ` : html`
         ${this.classSubmitButton ? html`
           <div class=${this.classSubmitButton}>
             <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
           </div>
-        `: html`
-          <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
+        ` : html`
+          <div>
+            <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
+          </div>
         `}
       `;
   },

@@ -271,7 +271,7 @@ describe('solid-form', function() {
   it('submit-widget attribute', () => {
     cy.get('solid-form#form-submit-widget').find('input[type="submit"]')
       .should('not.exist');
-    cy.get('solid-form#form-submit-widget').find('button[type="submit"]')
+    cy.get('solid-form#form-submit-widget').find('div').children('button[type="submit"]')
       .should('exist')
       .and('have.text', 'OK');
   });
