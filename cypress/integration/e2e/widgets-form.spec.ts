@@ -539,7 +539,7 @@ describe('form widgets', function() {
       .should('have.attr', 'name', 'name')
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(1)
       .should('have.attr', 'name', 'order')
-    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > input')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > div > input')
       .should('have.attr', 'type', 'submit')
 
     // With addable-data-src provided
@@ -566,7 +566,7 @@ describe('form widgets', function() {
       .should('have.attr', 'name', 'username')
     cy.get('solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text').eq(1)
       .should('have.attr', 'name', 'age')
-    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > input')
+    cy.get('solid-form-dropdown-addable#test2 > solid-form > form > div > input')
       .should('have.attr', 'type', 'submit')
       .and('have.attr', 'value', 'Send data')
     });

@@ -61,14 +61,14 @@ describe('validation', function () {
     //dialog modal correctly opened and closed with buttons
     cy.get('solid-form#custom-dialog > form > solid-form-label-text > input')
       .type('{selectall}Presentation')
-    cy.get('solid-form#custom-dialog > form > input').click()
+    cy.get('solid-form#custom-dialog > form > div > input').click()
     cy.get('solid-form#custom-dialog > dialog')
       .should('have.attr', 'open')
     
     cy.get('solid-form#custom-dialog > dialog > div').children().eq(1).click()
     cy.get('solid-form#custom-dialog > dialog')
       .should('not.have.attr', 'open')
-    cy.get('solid-form#custom-dialog > form > input').click()
+    cy.get('solid-form#custom-dialog > form > div > input').click()
     cy.get('solid-form#custom-dialog > dialog')
       .should('have.attr', 'open')
 
