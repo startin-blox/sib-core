@@ -224,16 +224,15 @@ export const SolidForm = {
     if (!this.isNaked) setTimeout(() => this.onInput())
   },
   getSubmitTemplate() {
-    return (this.submitWidget === 'button') ?
-      html`
-        <div class=${ifDefined(this.classSubmitButton)}>
+    return html`
+      <div class=${ifDefined(this.classSubmitButton)}>
+        ${this.submitWidget === 'button' ? html`
           <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
-        </div>
-      ` : html`
-        <div class=${ifDefined(this.classSubmitButton)}>
+        ` : html`
           <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
-        </div>
-      `;
+        `}
+      </div>
+    `
   },
   async populate(): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
