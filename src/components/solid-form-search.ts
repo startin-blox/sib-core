@@ -24,7 +24,7 @@ export const SolidFormSearch = {
     },
     classSubmitButton: {
       type: String,
-      default: null,
+      default: undefined,
     },
     noRender: {
       type: String,
@@ -96,25 +96,13 @@ export const SolidFormSearch = {
   getSubmitTemplate() {
     return (this.submitWidget === 'button') ?
       html`
-        ${this.classSubmitButton ? html`
-          <div class=${this.classSubmitButton}>
-            <button type="submit">${this.submitButton || ''}</button>
-          </div>
-        ` : html `
-          <div class=${this.classSubmitButton}>
-            <button type="submit">${this.submitButton || ''}</button>
-          </div>
-        `}
+        <div class=${ifDefined(this.classSubmitButton)}>
+          <button type="submit">${this.submitButton || ''}</button>
+        </div>
       ` : html`
-        ${this.classSubmitButton ? html`
-          <div class=${this.classSubmitButton}>
-            <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-          </div>
-        `: html`
-          <div>
-            <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-          </div>
-        `}
+        <div class=${ifDefined(this.classSubmitButton)}>
+          <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
+        </div>
       `;
   },
   empty(): void {},
