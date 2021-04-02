@@ -46,12 +46,12 @@ describe('solid-delete', function () {
   it('re-render when label change', () => {
     cy.get('solid-delete#test1').then(el => {
       el.attr('data-label', 'Supprimer la ressource');
-    cy.get('solid-delete#test1 > div > button').should('have.text', 'Supprimer la ressource');
+    cy.get('solid-delete#test1 > button').should('have.text', 'Supprimer la ressource');
     })
   });
   it('class-delete-button attribute', () => {
     cy.get('solid-delete#class')
-      .find('div').should('have.class', 'supprimer')
+      .should('have.class', 'supprimer')
       .find('button').should('exist');
   })
 })
