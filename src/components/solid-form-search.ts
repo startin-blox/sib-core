@@ -94,16 +94,15 @@ export const SolidFormSearch = {
     this.change(this.value);
   },
   getSubmitTemplate() {
-    return (this.submitWidget === 'button') ?
-      html`
-        <div class=${ifDefined(this.classSubmitButton)}>
+    return html`
+      <div class=${ifDefined(this.classSubmitButton)}>
+        ${this.submitWidget === 'button' ? html`
           <button type="submit">${this.submitButton || ''}</button>
-        </div>
-      ` : html`
-        <div class=${ifDefined(this.classSubmitButton)}>
+        ` : html`
           <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-        </div>
-      `;
+        `}
+      </div>
+    ` 
   },
   empty(): void {},
   async populate(): Promise<void> {
