@@ -1,10 +1,11 @@
-import { base_context, store } from '../libs/store/store';
+import { store } from '../libs/store/store';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
+import { ContextMixin } from './contextMixin';
 
 const StoreMixin = {
   name: 'store-mixin',
-  use: [AttributeBinderMixin],
+  use: [AttributeBinderMixin, ContextMixin],
   attributes: {
     noRender: {
       type: String,
@@ -19,10 +20,6 @@ const StoreMixin = {
       callback: async function (value: string) {
         if (this.noRender === null) await this.fetchData(value);
       },
-    },
-    extraContext: {
-      type: String,
-      default: null
     },
     loaderId: {
       type: String,
@@ -42,17 +39,6 @@ const StoreMixin = {
   },
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
-  },
-  get context(): object {
-    return { ...base_context, ...this.extra_context };
-  },
-  get extra_context(): object {
-    let extraContextElement = this.extraContext ?
-    document.getElementById(this.extraContext) : // take element extra context first
-    document.querySelector('[data-default-context]'); // ... or look for a default extra context
-
-    if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
-    return {}
   },
   get resource(): Resource|null{
     return this.resourceId ? store.get(this.resourceId) : null;
