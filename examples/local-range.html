@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local-range</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+      newWidgetFactory('solid-form-radio');
+      (async () => {
+        const sf = document.createElement('solid-form');
+        sf.component.fields = 'name';
+        const ctx = sf.component.context;
+        const url1 = './data/list/skills.jsonld';
+        const id = 'foo';
+        const url2 = `store://local.${id}`;
+        const data = await fetch(url1);
+        const d = await data.json();
+        console.log(d);
+        await sibStore.getData(url2, {}, '', {
+          '@type': 'ldp:Container',
+          'ldp:contains': [
+            { name: 'opt 1', '@id': '1' }, 
+            { name: 'opt 2', '@id': '2' },
+            { name: 'opt 3' },
+            { name: 'opt 4', '@id': '' },
+            { name: 'opt 5', '@id': '2' },
+          ],
+        });
+        console.log('urls:', url1, url2);
+        console.log('url1@type:', (await sibStore.getData(url1, ctx))['@type']);
+        console.log('url2@type:', (await sibStore.getData(url2, ctx))['@type']);
+        document.getElementById('d1').setAttribute('range', url1);
+        document.getElementById('d2').setAttribute('range', url2);
+      })();
+    </script>
+    <pre>&lt;solid-form-radio range="./data/list/skills.jsonld"&gt;</pre>
+    <solid-form-radio id="d1"></solid-form-radio>
+
+    <pre>&lt;solid-form-radio range="store://local.foo"&gt;</pre>
+    <solid-form-radio id="d2"></solid-form-radio>
+  </head>
+  <body></body>
+</html>
