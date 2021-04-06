@@ -28,6 +28,7 @@ describe('store', function () {
       expect(win.sibStore.loadingList).to.be.a('Set').and.have.property('size', 0);
       expect(win.sibStore.headers).to.exist;
       // public methods
+      expect(win.sibStore.fetchAuthn).to.be.a('function');
       expect(win.sibStore.getData).to.be.a('function');
       expect(win.sibStore.get).to.be.a('function');
       expect(win.sibStore.clearCache).to.be.a('function');
@@ -39,15 +40,6 @@ describe('store', function () {
       // PubSub
       expect(win.PubSub).to.exist;
     })
-  });
-
-  it('creates headers', () => {
-    cy.window().then(async (win: any) => {
-      expect(win.sibStore.headers).to.be.a('promise');
-      const headers = await win.sibStore.headers;
-      expect(headers).to.exist;
-      expect(headers.get('Content-Type')).to.equal('application/ld+json');
-    });
   });
 
   it('fetches data and cache it', () => {
