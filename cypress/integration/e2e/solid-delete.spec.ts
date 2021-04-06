@@ -49,10 +49,5 @@ describe('solid-delete', function () {
     cy.get('solid-delete#test1 > button').should('have.text', 'Supprimer la ressource');
     })
   });
-  it('class-delete-button attribute', () => {
-    cy.get('solid-delete#class')
-      .should('have.class', 'supprimer')
-      .find('button').should('exist');
-  })
 })
 

@@ -17,13 +17,6 @@
       next="detail"
     ></solid-delete>
 
-    <h3>class-delete-button attribute</h3>
-    <solid-delete
-      data-src="data/project.jsonld"
-      class-delete-button="supprimer"
-      next="detail"
-    ></solid-delete>
-
     <script>
     document.querySelector('solid-delete').addEventListener('resourceDeleted', e => {
       console.log("Resource deleted: ", e.detail.resource);
