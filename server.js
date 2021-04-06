@@ -48,9 +48,10 @@ const app = express();
         },
       }
       test = await (process.argv.includes('--test-ui') ?
-      cypress.open(opt) : cypress.run(opt));
+        cypress.open(opt) : cypress.run(opt));
     }
     catch (error) {
+      console.error(error);
     } finally {
       server.close();
       if(test.totalFailed) {
