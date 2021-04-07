@@ -1,3 +1,4 @@
+import dialogPolyfill from 'dialog-polyfill'
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
@@ -36,6 +37,7 @@ const ValidationMixin = {
   },
   showModal() {
     var dialog: any = document.getElementById(this.dialogID);
+    dialogPolyfill.registerDialog(dialog);
     return dialog.showModal();
   },
   performAction() {
