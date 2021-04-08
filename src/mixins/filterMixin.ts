@@ -115,36 +115,32 @@ const FilterMixin = {
     this.searchForm.toggleAttribute('naked', true);
 
     //check if solid-form-search has auto-range-[field] attribute
-    const autoRangeAttr = Array.from((this.searchForm as Element).attributes)
-    .filter(attr => attr['name'].startsWith('auto-range-'))
-    
-    if (autoRangeAttr.length !== 0) { //if yes, catch field's name field's IDs in each resource in the container
-      let autoRangeField = autoRangeAttr.map(item => item['name'].replace('auto-range-', ''));
-      for (let field of autoRangeField) { //for each field,catch all elements in 'ldp:contains' key
-        let arrayOfDataObjects = this.resource['ldp:contains'];        
-        let arrayOfDataIds : string[] = [];
-        for (let obj of arrayOfDataObjects) { 
-          if (typeof await obj[field] === "object") { // for each element, if it's an object, catch all elements in 'ldp:contains' key 
-            let nextArrayOfObjects = await obj[field];
-            let nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
-            
-            if (nextArrayOfIds.length > 0){ // if element(s) in 'ldp:contains', catch each element id 
-              for (let obj of nextArrayOfIds) {
-                this.idsFounded = true;
-                let finalId : string = await obj['@id'];
-                arrayOfDataIds.push(finalId);
-              }
-            }
-            if (nextArrayOfIds.length === 0 && this.idsFounded == false) { // if no element in 'ldp:contains', catch object id
-              arrayOfDataIds.push(nextArrayOfObjects['@id']);
-            }
-          } else {
-            console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
-            return;
-          }
+    for(const attr of (this.searchForm as Element).attributes) {
+      if(attr['name'].startsWith('auto-range-')) continue;
+      const field = attr['name'].replace('auto-range-', '');
+      const arrayOfDataObjects = this.resource['ldp:contains'];
+      const arrayOfDataIds: string[] = [];
+      for (const obj of arrayOfDataObjects) {
+        // for each element, if it's an object, catch all elements in 'ldp:contains' key 
+        if (typeof await obj[field] !== "object") {
+          console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
+          return;
         }
-        this.searchForm.component.addAutoRangeValue(field, arrayOfDataIds);
-      }; 
+        const nextArrayOfObjects = await obj[field];
+        const nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
+        
+        for (const obj of nextArrayOfIds) {
+          // catch each element id 
+          this.idsFounded = true;
+          const finalId: string = await obj['@id'];
+          arrayOfDataIds.push(finalId);
+        }
+        if (nextArrayOfIds.length === 0 && !this.idsFounded) {
+          // if no element in 'ldp:contains', catch object id
+          arrayOfDataIds.push(nextArrayOfObjects['@id']);
+        }
+      }
+      this.searchForm.component.addAutoRangeValue(field, arrayOfDataIds);
     }
 
     if (filteredBy) return;
