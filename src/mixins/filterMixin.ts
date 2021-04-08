@@ -5,6 +5,7 @@ const FilterMixin = {
   use: [],
   initialState: {
     searchCount: null,
+    idsFounded: false,
   },
   attributes: {
     searchFields: {
@@ -117,17 +118,32 @@ const FilterMixin = {
     const autoRangeAttr = Array.from((this.searchForm as Element).attributes)
     .filter(attr => attr['name'].startsWith('auto-range-'))
     
-    if (autoRangeAttr.length !== 0) { //if yes, catch field's name field's values in each resource in the container
+    if (autoRangeAttr.length !== 0) { //if yes, catch field's name field's IDs in each resource in the container
       let autoRangeField = autoRangeAttr.map(item => item['name'].replace('auto-range-', ''));
-      for (let field of autoRangeField) {
-        let arrayOfValues = this.resource['ldp:contains'];
-        let finalValues : string[] = [];
-        for (let obj of arrayOfValues) {
-          let finalValue : string = await obj[field];
-          finalValues.push(finalValue)
+      for (let field of autoRangeField) { //for each field,catch all elements in 'ldp:contains' key
+        let arrayOfDataObjects = this.resource['ldp:contains'];        
+        let arrayOfDataIds : string[] = [];
+        for (let obj of arrayOfDataObjects) { 
+          if (typeof await obj[field] === "object") { // for each element, if it's an object, catch all elements in 'ldp:contains' key 
+            let nextArrayOfObjects = await obj[field];
+            let nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
+            
+            if (nextArrayOfIds.length > 0){ // if element(s) in 'ldp:contains', catch each element id 
+              for (let obj of nextArrayOfIds) {
+                this.idsFounded = true;
+                let finalId : string = await obj['@id'];
+                arrayOfDataIds.push(finalId);
+              }
+            }
+            if (nextArrayOfIds.length === 0 && this.idsFounded == false) { // if no element in 'ldp:contains', catch object id
+              arrayOfDataIds.push(nextArrayOfObjects['@id']);
+            }
+          } else {
+            console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
+            return;
+          }
         }
-
-        this.searchForm.component.addAutoRangeValue(field, finalValues);
+        this.searchForm.component.addAutoRangeValue(field, arrayOfDataIds);
       }; 
     }
 
