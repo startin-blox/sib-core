@@ -5,7 +5,6 @@ const FilterMixin = {
   use: [],
   initialState: {
     searchCount: null,
-    idsFounded: false,
   },
   attributes: {
     searchFields: {
@@ -116,7 +115,7 @@ const FilterMixin = {
 
     //check if solid-form-search has auto-range-[field] attribute
     for(const attr of (this.searchForm as Element).attributes) {
-      if(attr['name'].startsWith('auto-range-')) continue;
+      if(!attr['name'].startsWith('auto-range-')) continue;
       const field = attr['name'].replace('auto-range-', '');
       const arrayOfDataObjects = this.resource['ldp:contains'];
       const arrayOfDataIds: string[] = [];
@@ -124,18 +123,16 @@ const FilterMixin = {
         // for each element, if it's an object, catch all elements in 'ldp:contains' key 
         if (typeof await obj[field] !== "object") {
           console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
-          return;
+          continue;
         }
         const nextArrayOfObjects = await obj[field];
         const nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
         
         for (const obj of nextArrayOfIds) {
           // catch each element id 
-          this.idsFounded = true;
-          const finalId: string = await obj['@id'];
-          arrayOfDataIds.push(finalId);
+          arrayOfDataIds.push(await obj['@id']);
         }
-        if (nextArrayOfIds.length === 0 && !this.idsFounded) {
+        if (nextArrayOfObjects['@type'] !== 'ldp:Container') {
           // if no element in 'ldp:contains', catch object id
           arrayOfDataIds.push(nextArrayOfObjects['@id']);
         }

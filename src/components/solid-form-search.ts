@@ -101,7 +101,7 @@ export const SolidFormSearch = {
     }
     console.log(this.autoRangeValues[field]);
     const idField = this.rangeId.concat('_', field);
-    const resourceData = sibStore.setLocalData({"ldp:container" : Array.from(this.autoRangeValues[field])}, idField)
+    const resourceData = sibStore.setLocalData({"ldp:container" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))}, idField)
     // set to dropdown the new url to data-range.
     //trouver comment passer cet id à l'element qui va gerer l'affichage (dropdown ou autocomplete)
     const idData = await resourceData;
