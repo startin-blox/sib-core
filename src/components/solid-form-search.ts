@@ -76,8 +76,10 @@ export const SolidFormSearch = {
     let tagName = '';
     const idField = this.rangeId.concat('_', field);
     // If auto-range-[field] exists, create range-[field] and sets its value
-    if(this.element.hasAttribute('auto-range-' + field)) this.element.setAttribute('range-' + field, 'store://local.' + idField);
-    console.log(this.element.getAttribute('range-' + field));
+    if(this.element.hasAttribute('auto-range-' + field) && !this.element.hasAttribute('range-' + field)) {
+      this.element.setAttribute('range-' + field, 'store://local.' + idField);
+      this.populate();
+    }
     
     const widgetAttribute = this.element.getAttribute('widget-' + field);
     // Choose widget
@@ -105,8 +107,9 @@ export const SolidFormSearch = {
     // set to dropdown the new url to data-range.
     //trouver comment passer cet id à l'element qui va gerer l'affichage (dropdown ou autocomplete)
     const idData = await resourceData;
+    console.log(idData); // PROXY //////////////////////////////////////
     console.log(idData['@id']); // ID de la ressource ////////////////////////////////////
-    console.log(await resourceData); // PROXY //////////////////////////////////////
+    console.log(idData['ldp:container']); // Contenu de la ressource ////////////////////////////////////
   },
   change(resource: object): void {
     this.element.dispatchEvent(
