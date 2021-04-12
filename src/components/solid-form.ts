@@ -201,11 +201,6 @@ export const SolidForm = {
   },
   reset() {
     if (!this.isNaked) this.element.querySelector('form').reset();
-    this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
-      const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
-      options.forEach(option => option.selected = false);
-      select.dispatchEvent(new Event('change'));
-    })
   },
   onSubmit(event: Event) {
     if (!this.isNaked) {

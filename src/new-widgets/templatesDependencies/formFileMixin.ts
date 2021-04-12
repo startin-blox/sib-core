@@ -6,11 +6,25 @@ const FormFileMixin = {
       default: ''
     }
   },
+  initialState: {
+    initialValue: ''
+  },
   created() {
     this.listAttributes['output'] = '';
     this.listAttributes['resetButtonHidden'] = true;
     this.listAttributes['selectFile'] = this.selectFile.bind(this);
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
+  },
+  attached() {
+    this.initialValue = this.value;
+
+    document.addEventListener('reset', (e) => {
+      if (e.target && (e.target as HTMLElement).contains(this.element)) {
+        this.value = this.initialValue;
+        this.listAttributes['resetButtonHidden'] = true;
+        this.planRender();
+      }
+    })
   },
   selectFile() {
     if (this.uploadUrl === null) return;
