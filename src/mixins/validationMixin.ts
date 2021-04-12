@@ -2,6 +2,7 @@ import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
 import { TranslationMixin } from './translationMixin';
+import { preHTML } from '../libs/lit-helpers';
 
 const ValidationMixin = {
   name: 'validation-mixin',
@@ -28,6 +29,10 @@ const ValidationMixin = {
       default: undefined
     },
     confirmationCancelClass: {
+      type: String,
+      default: undefined
+    },
+    confirmationWidget: {
       type: String,
       default: undefined
     }
@@ -62,7 +67,11 @@ const ValidationMixin = {
       }
       return html`
         <dialog id="${this.dialogID}">
+        ${this.confirmationWidget ? preHTML`
+          <${this.confirmationWidget} value=${this.resourceId}></${this.confirmationWidget}>
+        ` : html`
           <p>${this.confirmationMessage || this.t("validation.message")}</p>
+        `}
           <div>
             <button
               @click=${confirmChoice} 

@@ -21,7 +21,7 @@
 
     <solid-form
       id="confirm"
-      data-src="../data/list/event-1.jsonld"
+      data-src="data/list/event-1.jsonld"
       fields="name, contact.email"
       confirmation-type="confirm"
     ></solid-form>
@@ -29,7 +29,7 @@
     <h3>simple dialog popup</h3>
     <solid-form
       id="simple-dialog"
-      data-src="../data/list/event-1.jsonld"
+      data-src="data/list/event-1.jsonld"
       fields="name"
       confirmation-type="dialog"
     ></solid-form>
@@ -37,7 +37,7 @@
     <h3>custom dialog popup</h3>
     <solid-form
       id="custom-dialog"
-      data-src="../data/list/events.jsonld"
+      data-src="data/list/events.jsonld"
       fields="name"
       confirmation-type="dialog"
       confirmation-message="Custom message : Are you sure ?"
@@ -45,6 +45,21 @@
       confirmation-cancel-text="Quit"
       confirmation-submit-class="submit-button"
       confirmation-cancel-class="cancel-button"
+    ></solid-form>
+
+    <h3>confirmation widget</h3>
+    <solid-widget name="confirmation-widget">
+      <template>
+        <strong>Are you sure about this ?</strong>
+        <p>Modify "<solid-display fields='name' data-src=${value} style='display:inline-block'></solid-display>"</p>
+      </template>
+    </solid-widget>
+    <solid-form
+      id="confirmation-widget"
+      data-src="data/list/event-1.jsonld"
+      fields="name"
+      confirmation-type="dialog"
+      confirmation-widget="confirmation-widget"
     ></solid-form>
   </body>
 </html>

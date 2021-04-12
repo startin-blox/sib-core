@@ -92,4 +92,24 @@ describe('validation', function () {
       expect(cnsl.warn).to.be.called;
     });
   });
+  it('confirmation widget', () => {
+    cy.get('solid-form#confirmation-widget')
+      .find('dialog')
+      .find('my-widget-confirm').should('have.attr', 'value', '../data/project.jsonld')
+      .find('solid-display-value').should('have.attr', 'value', 'Envoyer une fusée')
+    cy.get('solid-form#confirmation-widget > form > div > input')
+      .click()
+    cy.get('solid-form#confirmation-widget')
+      .find('dialog').should('contain', 'Envoyer une fusée')
+      .find('div').children().eq(1).click();
+
+    cy.get('solid-delete#confirmation-widget')
+      .find('dialog')
+      .find('my-widget-confirm2').should('have.attr', 'value', '../data/project.jsonld')
+      .find('solid-display-value').should('have.attr', 'value', 'Envoyer une fusée')
+    cy.get('solid-delete#confirmation-widget > button')
+      .click()
+    cy.get('solid-delete#confirmation-widget')
+      .find('dialog').should('contain', 'Envoyer une fusée')
+  })
 });

@@ -26,6 +26,7 @@ export const SolidDelete = {
     }
   },
   created(): void {
+    if(this.confirmationWidget) this.resourceId = this.dataSrc;    
     this.render();
   },
   get context(): object {
