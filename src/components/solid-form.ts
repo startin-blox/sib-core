@@ -196,8 +196,8 @@ export const SolidForm = {
     if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
-    const error = this.element.querySelector('[data-id=form-error]');
-    if (error) this.element.removeChild(error);
+    const parentElement = this.element.querySelector('[data-id=error]');
+    if (parentElement) render('', parentElement);
   },
   reset() {
     if (!this.isNaked) this.element.querySelector('form').reset();
