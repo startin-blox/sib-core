@@ -15,6 +15,5 @@
     { "mode": { "@type": "control" } },
     { "mode": { "@type": "delete" } }
   ],
-  "resourceId": "Projet fusée",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

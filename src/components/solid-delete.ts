@@ -11,7 +11,10 @@ export const SolidDelete = {
   attributes: {
     dataSrc: {
       type: String,
-      default: null
+      default: null,
+      callback: function () {
+       this.resourceId = this.dataSrc;
+      },
     },
     dataLabel: {
       type: String,
@@ -26,7 +29,6 @@ export const SolidDelete = {
     }
   },
   created(): void {
-    if(this.confirmationWidget) this.resourceId = this.dataSrc;    
     this.render();
   },
   get context(): object {
