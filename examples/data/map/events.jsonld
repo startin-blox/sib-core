@@ -50,6 +50,6 @@
       "@id": "event-6.jsonld"
     }
   ],
-  "@id": "",
+  "@id": "events.jsonld",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

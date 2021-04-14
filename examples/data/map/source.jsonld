@@ -1,0 +1,30 @@
+{
+  "@id": "source.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "federation": "events",
+      "@id": "events.jsonld",
+      "@type": "sib:federatedContainer",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "other-events.jsonld",
+      "@type": "sib:federatedContainer"
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

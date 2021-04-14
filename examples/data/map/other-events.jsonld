@@ -1,0 +1,15 @@
+{
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "name": "Test 7, New York",
+      "category": "other event",
+      "lat": "40.741895",
+      "lng": "-73.989308",
+      "permissions": [],
+      "@id": "event-7.jsonld"
+    }
+  ],
+  "@id": "other-events.jsonld",
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

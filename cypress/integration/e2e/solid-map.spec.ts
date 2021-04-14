@@ -47,4 +47,7 @@ describe('solid-map', function() {
     cy.get('#map-6 .leaflet-marker-pane').children().eq(2)
       .find('span').should('contain', '4')
   })
+  it('display federated markers', () => {
+    cy.get('#map-federated .leaflet-marker-pane').children().should('have.length', 7)
+  })
 })
