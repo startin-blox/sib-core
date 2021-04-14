@@ -2,7 +2,6 @@ import JSONLDContextParser from 'jsonld-context-parser';
 //@ts-ignore
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
-import { uniqID } from '../helpers';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -40,12 +39,6 @@ export class Store {
     this.headers.set('Content-Type', 'application/ld+json');
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
-  }
-
-  async setLocalData(data: any, localId?:string) {
-    localId = localId ?? uniqID();
-    const id = `store://local.${localId}`;
-    return await this.getData(id, {}, '', data);
   }
 
   /**
@@ -134,7 +127,7 @@ export class Store {
     if (resource.getSubObjects) {
       for (let res of resource.getSubObjects()) {
         let newParentContext = parentContext;
-        // If additionnal context in resource, use it to expand properties
+        // If additional context in resource, use it to expand properties
         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
         const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
@@ -166,18 +159,29 @@ export class Store {
     }
   }
 
+  async _fetch(method: string, resource: object, id: string): Promise<any> {
+    if(method !== '_LOCAL')
+      return fetch(id, {
+        method: method,
+        headers: await this.headers,
+        body: JSON.stringify(resource),
+        credentials: 'include'
+      })
+    console.log(id);
+    
+    this.clearCache(id);
+    await this.getData(id, {}, '', resource);
+    return {ok: true}
+  }
+
   async _updateResource(method: string, resource: object, id: string) {
-    if (!['POST', 'PUT', 'PATCH'].includes(method)) throw new Error('Error: method not allowed');
+    if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method)) throw new Error('Error: method not allowed');
 
     const expandedId = this._getExpandedId(id, resource['@context']);
-    return this.fetchAuthn(expandedId, {
-      method: method,
-      headers: this.headers,
-      body: JSON.stringify(resource),
-      credentials: 'include'
-    }).then(response => {
+    return this._fetch(method, resource, id).then(response => {
       if (response.ok) {
-        this.clearCache(expandedId);
+        if(method !== '_LOCAL')
+          this.clearCache(expandedId);
         this.getData(expandedId, resource['@context']).then(() => {
 
           // Refresh and notify nested resources
@@ -199,7 +203,7 @@ export class Store {
           const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
           if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
         });
-        return response.headers.get('Location') || null;
+        return response.headers?.get('Location') || null;
       } else {
         throw response;
       }
@@ -221,7 +225,7 @@ export class Store {
         nestedProperties.push((await cachedResource[p])['@id']);
       }
     }
-    return nestedProperties;
+    return nestedProperties.filter(a=> a != null);
   }
 
   /**
@@ -251,6 +255,18 @@ export class Store {
 
       this.cache.delete(id);
     }
+  }
+
+  /**
+   * Send a POST request to create a resource in a container
+   * @param resource - resource to create
+   * @param id - uri of the container to add resource
+   *
+   * @returns id of the posted resource
+   */
+  async setLocalData(resource: object, id: string): Promise<string | null> {
+    console.log('setLocalData')
+    return this._updateResource('_LOCAL', resource, id);
   }
 
   /**

@@ -38,6 +38,7 @@ export class Sib {
             }
 
             attributeChangedCallback(name, oldValue, newValue) {
+                if(newValue === oldValue) return;
                 const attr = name.replace(/([a-z0-9])-([a-z0-9])/g, (_c, p1, p2) => `${p1}${p2.toUpperCase()}`);
                 this.component.attributesCallback(attr, newValue, oldValue);
             }
