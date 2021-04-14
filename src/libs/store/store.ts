@@ -55,7 +55,7 @@ export class Store {
   async getData(id: string, context:any = {}, idParent = "", localData?: object): Promise<Resource|null> {
     const isLocalId = id.startsWith('store://local.');
     
-    if(!isLocalId && localData != null) throw new Error('`localData` argument can only be set if `id` argument is of the form `store://local.*`');
+    if(!isLocalId && localData != null) throw new Error("`localData` cant be set on `" + id + "` id. `localData` argument can only be set if `id` argument is of the form `store://local.*`.");
 
     if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);

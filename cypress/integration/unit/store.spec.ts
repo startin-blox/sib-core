@@ -60,8 +60,7 @@ describe('store', function () {
       const dataToSave1 = {foo: 'bar'};
       const customID = "myCustomID";
       const url = `store://local.${customID}`
-      await store.setLocalData(dataToSave1, customID);
-      expect(url).eq(`store://local.${customID}`);
+      await store.setLocalData(dataToSave1, url);
       const dataRead1 = await store.getData(url);
       console.log(await dataRead1!['foo']);
       expect(await dataRead1!['foo']).eq('bar');

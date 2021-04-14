@@ -14,9 +14,7 @@
       }
       (async () => {
         const url = `store://local.foo`;
-        const data = await fetch('./data/list/skills.jsonld').then(r =>
-          r.json(),
-        );
+        const data = await fetch('data/list/skills.jsonld').then(r => r.json());
         delete data['@context'];
         data['@id'] = url;
         console.log(data);
@@ -37,17 +35,17 @@
     </script>
   </head>
   <body>
-    <h2><pre>&lt;solid-display id="d4" fields="name"&gt;</pre></h2>
+    <h2><pre>&lt;solid-display id="d4" fields="name"></pre></h2>
     <solid-display
       id="d0"
       fields="name"
       data-src="store://local.foo"
     ></solid-display>
 
-    <h2><pre>&lt;solid-form-radio range="store://local.foo"&gt;</pre></h2>
+    <h2><pre>&lt;solid-form-radio range="store://local.foo"></pre></h2>
     <solid-form-radio range="store://local.foo"></solid-form-radio>
-    
-    <h2><pre>&lt;solid-form-search fields="skills" range-skills="store://local.foo"&gt;</pre></h2>
+
+    <h2><pre>&lt;solid-form-search range-skills="store://local.foo"></pre></h2>
 
     <solid-form-search
       id="filter-dropdown"
