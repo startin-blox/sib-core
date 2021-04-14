@@ -8,16 +8,26 @@
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <style></style>
+    
     <script type="module">
       function sleep(time = 0) {
         return new Promise(ok => setTimeout(ok, time));
       }
       (async () => {
         const url = `store://local.foo`;
+        const url3 = `store://local.bar`;
         const data = await fetch('data/list/skills.jsonld').then(r => r.json());
         delete data['@context'];
         data['@id'] = url;
         console.log(data);
+        const data3 = {
+          '@type': 'ldp:Container',
+          'ldp:contains': [
+            { name: 'opt 3', '@id': '3' },
+            { name: 'opt 4', '@id': '4' },
+          ],
+        };
+        await sibStore.setLocalData(data3, url3);
 
         await sleep(1000);
         await sibStore.setLocalData(data, url);
@@ -31,6 +41,8 @@
           ],
         };
         await sibStore.setLocalData(data2, url);
+        await sleep(1000);
+        document.getElementById('d0').setAttribute('data-src', url3);
       })();
     </script>
   </head>
@@ -43,7 +55,7 @@
     ></solid-display>
 
     <h2><pre>&lt;solid-form-radio range="store://local.foo"></pre></h2>
-    <solid-form-radio range="store://local.foo"></solid-form-radio>
+    <solid-form-radio range="store://local.bar"></solid-form-radio>
 
     <h2><pre>&lt;solid-form-search range-skills="store://local.foo"></pre></h2>
 
@@ -53,5 +65,35 @@
       range-skills="store://local.foo"
       widget-skills="solid-form-radio"
     ></solid-form-search>
+
+<!-- 
+    <hr>
+    
+    <h4>with solid-form-search</h4>
+    <solid-form-search
+      id="filter-label"
+      fields="profile, skills"
+      auto-range-profile
+      auto-range-skills
+      
+    ></solid-form-search>
+    <solid-display
+      data-src="data/list/users.jsonld"
+      fields="username, first_name, last_name, email, skills"
+      filtered-by="filter-label"
+      counter-template="${counter} users here"
+    ></solid-display>
+    
+    <solid-form-search
+      id="filter-dropdown"
+      fields="skills"
+      range-skills="data/list/skills.jsonld"
+    ></solid-form-search>
+    <solid-display
+      data-src="data/list/users.jsonld"
+      fields="username, skills"
+      multiple-skills
+      filtered-by="filter-dropdown"
+    ></solid-display> -->
   </body>
 </html>

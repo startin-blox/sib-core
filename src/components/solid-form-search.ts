@@ -103,13 +103,14 @@ export const SolidFormSearch = {
     }
     console.log(this.autoRangeValues[field]);
     const idField = this.rangeId.concat('_', field);
-    const resourceData = sibStore.setLocalData({"ldp:container" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))}, idField)
-    // set to dropdown the new url to data-range.
-    //trouver comment passer cet id à l'element qui va gerer l'affichage (dropdown ou autocomplete)
-    const idData = await resourceData;
-    console.log(idData); // PROXY //////////////////////////////////////
-    console.log(idData['@id']); // ID de la ressource ////////////////////////////////////
-    console.log(idData['ldp:container']); // Contenu de la ressource ////////////////////////////////////
+    const id = `store://local.${idField}`;
+    const data = {
+      "@type": "ldp:Container",
+      "ldp:container" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))
+    }
+    console.log('data', data);
+    
+    sibStore.setLocalData(data, id);
   },
   change(resource: object): void {
     this.element.dispatchEvent(

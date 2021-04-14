@@ -87,7 +87,7 @@ const StoreMixin = {
     const isContainer = this.resource && this.resource.isContainer();
 
     for (let attr of this.element.attributes) {
-      if (!attr.value.startsWith('store://')) continue;
+      if (!attr.value.match(/^store:\/\/(resource|container|user)/)) continue;
 
       // Save attr for reset later
       if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
