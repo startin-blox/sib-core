@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: auto-range</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h4>with solid-form-search</h4>
+    <solid-form-search
+      id="filter-label"
+      fields="profile, skills"
+      auto-range-profile
+      auto-range-skills
+    ></solid-form-search>
+    <solid-display
+      data-src="data/list/users.jsonld"
+      fields="username, first_name, last_name, email, skills"
+      filtered-by="filter-label"
+      counter-template="${counter} users here"
+    ></solid-display>
+  </body>
+</html>

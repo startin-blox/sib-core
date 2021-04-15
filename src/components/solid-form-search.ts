@@ -46,6 +46,7 @@ export const SolidFormSearch = {
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
     this.autoRangeValues = {};
     this.rangeId = uniqID();
+    this.attachedElements = new Set();
   },
   get defaultMultipleWidget(): string {
     return 'solid-multiple-form';
@@ -95,21 +96,35 @@ export const SolidFormSearch = {
 
     return this.widgetFromTagName(tagName);
   },
-  async addAutoRangeValue(field: string, valuesArray: Array<string>){
-    this.autoRangeValues[field] = this.autoRangeValues[field] || new Set();
-    // Add all values from a same field's name to one Set() (this.autoRangeValues[field])
-    for (let value of valuesArray) {
-      this.autoRangeValues[field].add(value);
+  async attach(elm: any) {
+    this.attachedElements.add(elm);
+    await this.updateAutoRanges();
+  },
+  async detach(elm: any) {
+    this.attachedElements.remove(elm);
+    await this.updateAutoRanges();
+  },
+  async updateAutoRanges() {
+    for(const attr of (this.element as Element).attributes) {
+      if(!attr['name'].startsWith('auto-range-')) continue;
+      const field = attr['name'].replace('auto-range-', '');
+      const autoRangeValues = new Set();
+      for(const elm of this.attachedElements) {
+        for(const value of await elm.getValuesOfField(field)) {
+          autoRangeValues.add(value);
+        }
+      }
+      const idField = `${this.rangeId}_${field}`;
+      const id = `store://local.${idField}`;
+      const ldpContains = Array.from(autoRangeValues).map(id => ({'@id' : id}));
+      const data = {
+        "@type": "ldp:Container",
+        "ldp:contains" : ldpContains,
+      };
+      console.log(ldpContains);
+      
+      sibStore.setLocalData(data, id);
     }
-    console.log(this.autoRangeValues[field]);
-    const idField = this.rangeId.concat('_', field);
-    const id = `store://local.${idField}`;
-    const data = {
-      "@type": "ldp:Container",
-      "ldp:contains" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))
-    };
-    
-    sibStore.setLocalData(data, id);
   },
   change(resource: object): void {
     this.element.dispatchEvent(
