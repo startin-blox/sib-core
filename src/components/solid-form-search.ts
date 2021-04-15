@@ -99,16 +99,15 @@ export const SolidFormSearch = {
     this.autoRangeValues[field] = this.autoRangeValues[field] || new Set();
     // Add all values from a same field's name to one Set() (this.autoRangeValues[field])
     for (let value of valuesArray) {
-      this.autoRangeValues[field].add(value)
+      this.autoRangeValues[field].add(value);
     }
     console.log(this.autoRangeValues[field]);
     const idField = this.rangeId.concat('_', field);
     const id = `store://local.${idField}`;
     const data = {
       "@type": "ldp:Container",
-      "ldp:container" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))
-    }
-    console.log('data', data);
+      "ldp:contains" : Array.from(this.autoRangeValues[field]).map(id => ({'@id' : id}))
+    };
     
     sibStore.setLocalData(data, id);
   },

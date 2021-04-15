@@ -167,7 +167,6 @@ export class Store {
         body: JSON.stringify(resource),
         credentials: 'include'
       })
-    console.log(id);
     
     this.clearCache(id);
     await this.getData(id, {}, '', resource);
@@ -265,7 +264,6 @@ export class Store {
    * @returns id of the posted resource
    */
   async setLocalData(resource: object, id: string): Promise<string | null> {
-    console.log('setLocalData')
     return this._updateResource('_LOCAL', resource, id);
   }
 
