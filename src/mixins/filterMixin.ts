@@ -17,6 +17,7 @@ const FilterMixin = {
       callback(newValue: string) {
         // if we change search form, re-populate
         if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+          this.searchForm.component.detach(this);
           this.searchForm = null;
           this.populate();
         }

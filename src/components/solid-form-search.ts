@@ -101,7 +101,7 @@ export const SolidFormSearch = {
     await this.updateAutoRanges();
   },
   async detach(elm: any) {
-    this.attachedElements.remove(elm);
+    this.attachedElements.delete(elm);
     await this.updateAutoRanges();
   },
   async updateAutoRanges() {
