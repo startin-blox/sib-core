@@ -204,4 +204,22 @@ describe('solid-display', function() {
       .children().eq(1).should('contain', 'empty set value')
       .and('not.contain', 'set empty');
   })
+  it('class for solid-* elements', () => {
+    cy.get('solid-display#display-class')
+      .find('solid-set-ul')
+      .should('have.class', 'solid-set-ul')
+    cy.get('solid-display#display-class')
+      .find('solid-display-value-label')
+      .should('have.class', 'solid-display-value-label');
+    
+    cy.get('solid-display#display-class2')
+      .find('solid-set-ul')
+      .should('have.class', 'solid-set-ul fullnameClass')
+    cy.get('solid-display#display-class2')
+      .find('solid-display-value')
+      .should('have.class', 'solid-display-value fnameClass')
+    cy.get('solid-display#display-class2')
+      .find('solid-display-value-label')
+      .should('have.class', 'solid-display-value-label emailClass');
+  });
 })

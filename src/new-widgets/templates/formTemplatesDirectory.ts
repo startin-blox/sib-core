@@ -278,6 +278,7 @@ export const formTemplates = {
     template: (_value: string, attributes: any) => html`
       <solid-form-dropdown
         data-holder
+        class="solid-form-dropdown"
         name=${ifDefined(attributes.name)}
         data-id=${ifDefined(attributes.id)}
         range=${ifDefined(attributes.range)}

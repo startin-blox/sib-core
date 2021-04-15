@@ -263,6 +263,7 @@ const WidgetMixin = {
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     let tagName = widgetMeta.tagName;
     let widgetTemplate = html``;
+    let classAttr  = attributes['class'];
 
     // Set attributes
     let value = await this.getValue(field, currentResource);
@@ -289,8 +290,12 @@ const WidgetMixin = {
 
       // Subscribe widgets if they show a resource
       if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
-      widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
-    }
+      widgetTemplate = preHTML`
+        <${tagName} 
+          ...=${spread(attributes)}
+          class="${classAttr !== undefined ? tagName.concat(' ',classAttr) : tagName}"
+        ></${tagName}>`;
+      }
 
     this.nameWidgets.push(field);
     return widgetTemplate;
@@ -313,6 +318,10 @@ const WidgetMixin = {
       'class',
     ];
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
+    // Reset class attribute if a class is specified for the set
+    if (attrs['class'] !== undefined) {
+      attrs['class'] = setWidget.tagName.concat(' ', attrs['class']);
+    } else attrs['class'] = setWidget.tagName;    
 
     // Create widget if not already existing
     let widget = this.element.querySelector(`${setWidget.tagName}[name="${field}"]`);
@@ -339,7 +348,11 @@ const WidgetMixin = {
         const tagName = this.element.getAttribute(`empty-${field}`);
         const valueSet = this.element.getAttribute(`empty-${field}-value`);
         if (valueSet) attributes.value = valueSet;
-        return preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
+        return preHTML`
+        <${tagName} 
+          ...=${spread(attributes)}
+          class="${tagName}"
+        ></${tagName}>`;
       };
     }
 

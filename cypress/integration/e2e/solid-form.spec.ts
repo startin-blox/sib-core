@@ -78,7 +78,7 @@ describe('solid-form', function() {
     cy.get('#form-3 solid-form-label-placeholder-text')
       .should('have.attr', 'label', 'Test label')
       .should('have.attr', 'placeholder', 'test placeholder')
-      .should('have.attr', 'class', 'test-class')
+      .should('have.attr', 'class', 'solid-form-label-placeholder-text test-class')
       .should('have.attr', 'required')
 
     cy.get('#form-3 solid-form-label-placeholder-text')

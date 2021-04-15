@@ -6,6 +6,7 @@ describe('custom widgets', function() {
     cy.get('solid-display#test1')
       .find('custom-widget')
       .should('have.length', 1)
+      .and('have.attr', 'class', 'custom-widget')
       .find('h1')
       .should('contain', 'Envoyer une fusée');
   })
@@ -13,6 +14,6 @@ describe('custom widgets', function() {
     cy.get('solid-display#test2')
       .find('custom-widget')
       .should('have.length', 1)
-      .and('have.attr', 'class', 'test-class')
+      .and('have.attr', 'class', 'custom-widget test-class')
   })
 })

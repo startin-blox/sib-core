@@ -66,6 +66,7 @@ const MultipleFormMixin = {
     const attributes = {
       'data-holder': true,
       'name': this.name,
+      'class': this.widget,
       'value': value,
       'range': this.range
     };

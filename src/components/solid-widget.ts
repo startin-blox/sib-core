@@ -22,6 +22,7 @@ export const SolidWidget = {
     const template = this.template;
     const newWidget = {
       name: this.name,
+      class: this.template,
       use: [
         BaseWidgetMixin,
         StoreMixin,

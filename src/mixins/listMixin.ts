@@ -116,7 +116,10 @@ const ListMixin = {
   ) {
     if (this.emptyWidget) {
       const emptyWidgetTemplate = preHTML`
-        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>
+        <${this.emptyWidget} 
+          class=${this.emptyWidget}  
+          value=${ifDefined(this.emptyValue)}
+        ></${this.emptyWidget}>
       `
       if (!this.emptyWrapper) {
         this.emptyWrapper = document.createElement('span')
