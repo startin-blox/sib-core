@@ -222,6 +222,7 @@ const WidgetMixin = {
       'autocomplete',
       'upload-url',
       'option-label',
+      'option-value',
       'order-by', // deprecated. Remove in 0.15
       'each-label',
       'order-asc',

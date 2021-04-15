@@ -355,6 +355,18 @@ describe('form widgets', function() {
       .children()
       .should('have.length', 8)
       .should('not.contain', 'Skills :');
+
+      // With option-value
+      cy.get('solid-form-dropdown#test10 > select')
+        .children().eq(2)
+        .should('have.attr', 'value', 'CSS')
+        .should('contain', 'CSS');
+      cy.get('solid-form-dropdown#test11 > select')
+        .children().eq(2)
+        .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
+      cy.get('solid-form-dropdown#test12 > select')
+        .children().eq(2)
+        .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
   })
 
   it('solid-form-radio', () => {

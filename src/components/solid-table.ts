@@ -88,6 +88,7 @@ export const SolidTable = {
       'required',
       'autocomplete',
       'option-label',
+      'option-value',
       'min',
       'max',
       'pattern',
