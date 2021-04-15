@@ -97,10 +97,12 @@ export const SolidFormSearch = {
     return this.widgetFromTagName(tagName);
   },
   async attach(elm: any) {
+    if(this.attachedElements.has(elm)) return;
     this.attachedElements.add(elm);
     await this.updateAutoRanges();
   },
   async detach(elm: any) {
+    if(!this.attachedElements.has(elm)) return;
     this.attachedElements.delete(elm);
     await this.updateAutoRanges();
   },

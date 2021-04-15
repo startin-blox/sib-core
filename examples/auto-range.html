@@ -10,16 +10,33 @@
   </head>
   <body>
     <h4>with solid-form-search</h4>
+
     <solid-form-search
-      id="filter-label"
-      fields="profile, skills"
+      id="filter1"
+      fields="username, profile, skills"
       auto-range-profile
       auto-range-skills
     ></solid-form-search>
+
+
+    <solid-form-search
+      id="filter2"
+      fields="username, profile, skills"
+      auto-range-profile
+      auto-range-skills
+    ></solid-form-search>
+
     <solid-display
-      data-src="data/list/users.jsonld"
+      data-src="data/list/users(1,2,3).jsonld"
       fields="username, first_name, last_name, email, skills"
-      filtered-by="filter-label"
+      filtered-by="filter1"
+      counter-template="${counter} users here"
+    ></solid-display>
+
+    <solid-display
+      data-src="data/list/users(2,4).jsonld"
+      fields="username, first_name, last_name, email, skills"
+      filtered-by="filter1"
       counter-template="${counter} users here"
     ></solid-display>
   </body>

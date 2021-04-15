@@ -1,0 +1,94 @@
+{
+  "@id": "",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "user-2.jsonld",
+      "first_name": "Paris",
+      "last_name": "Hilton",
+      "name": "Paris Hilton",
+      "username": "paris",
+      "email": "paris@hilton.hi",
+      "available": true,
+      "years_experience": 5,
+      "skills": {
+        "@id": "user-2-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "skill-1.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-2.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "user-4.jsonld",
+      "first_name": "Pierre",
+      "last_name": "DLC",
+      "name": "Pierre DLC",
+      "username": "pierre",
+      "email": "pierredelacroix@happy-dev.fr",
+      "available": false,
+      "years_experience": 5,
+      "skills": {
+        "@id": "user-4-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "skill-1.jsonld"
+          },
+          {
+            "@id": "skill-2.jsonld"
+          },
+          {
+            "@id": "skill-4.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "profile-4.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
