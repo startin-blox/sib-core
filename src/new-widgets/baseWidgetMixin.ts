@@ -51,15 +51,16 @@ const BaseWidgetMixin = {
     this.listAttributes = {};
     this.listTemplateAdditions = [];
     this.listCallbacks = [];
-
-    this.planRender();
     this.subscription = null;
+  },
+  attached() {
+    this.planRender();
   },
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   planRender() {
-    if (!this.renderPlanned) {
+    if (!this.renderPlanned && document.body.contains(this.element)) {
       this.renderPlanned = true;
       setTimeout(() => {
         this.render();
