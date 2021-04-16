@@ -25,7 +25,7 @@ describe('solid-form-file test', function() {
     cy.get('#reset-file solid-form-file input[type=text]').should('have.value', '../../upload/fruits.jpg');
     cy.get('#reset-file solid-form-file button').should('have.attr', 'hidden');
   })
-  it('resets the image', function() {
+  it('resets the image', function () {
     cy.get('#reset-image solid-form-image input[type=file]').uploadFile('../../fake-image.svg')
     cy.get('#reset-image solid-form-image img').should($i => {
       expect($i.attr('src')).to.not.match(/\/upload\/fruits.jpg$/)
@@ -38,5 +38,12 @@ describe('solid-form-file test', function() {
     cy.get('#reset-image solid-form-image input[type=file]').should('be.empty');
     cy.get('#reset-image solid-form-image input[type=text]').should('have.value', '../../upload/fruits.jpg');
     cy.get('#reset-image solid-form-image button').should('have.attr', 'hidden');
+  });
+
+  it('handles required', function() {
+    cy.get('#form-required-image solid-form-image input[type=text]').should('have.attr', 'required')
+    cy.get('#form-required-image solid-form-image input[type=file]').should('not.have.attr', 'required')
+    cy.get('#form-required-file solid-form-file input[type=text]').should('have.attr', 'required')
+    cy.get('#form-required-file solid-form-file input[type=file]').should('not.have.attr', 'required')
   })
 })
