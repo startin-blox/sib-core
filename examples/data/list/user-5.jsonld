@@ -1,0 +1,43 @@
+{
+  "@id": "user-5.jsonld",
+  "first_name": "Camille",
+  "last_name": "CharlyTango",
+  "username": "Camcam",
+  "email": "camille.ctango@happy-dev.fr",
+  "name": "Camille Charly T",
+  "available": false,
+  "skills": {
+    "@id": "user-5-skills.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "skill-1.jsonld"
+      },
+      {
+        "@id": "skill-4.jsonld"
+      },
+      {
+        "@id": "skill-8.jsonld"
+      }
+    ],
+    "permissions": [
+      {
+        "mode": {
+          "@type": "view"
+        }
+      }
+    ]
+  },
+  "profile": {
+    "@id": "profile-5.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

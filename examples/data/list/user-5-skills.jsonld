@@ -1,10 +1,20 @@
 {
-  "@id": "user-2-skills.jsonld",
+  "@id": "user-5-skills.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
       "@id": "skill-1.jsonld",
       "name": "HTML",
+      "@type": "hd:skill"
+    },
+    {
+      "@id": "skill-4.jsonld",
+      "name": "DevOps",
+      "@type": "hd:skill"
+    },
+    {
+      "@id": "skill-8.jsonld",
+      "name": "Node",
       "@type": "hd:skill"
     }
   ],
