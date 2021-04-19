@@ -142,10 +142,21 @@ describe('solid-form', function() {
     cy.get('solid-form#form-6')
       .find('input[type=submit]')
       .should('have.value', 'Register');
+    cy.get('solid-form-search#form-search-6')
+      .find('input[type=submit]')
+      .should('have.value', 'Register');
+
     cy.get('solid-form#form-6')
       .then(el => {
         el.attr('submit-button', 'Register the user');
         cy.get('solid-form#form-6')
+        .find('input[type=submit]')
+        .should('have.value', 'Register the user');
+      })
+    cy.get('solid-form-search#form-search-6')
+      .then(el => {
+        el.attr('submit-button', 'Register the user');
+        cy.get('solid-form-search#form-search-6')
         .find('input[type=submit]')
         .should('have.value', 'Register the user');
       })
@@ -189,6 +200,21 @@ describe('solid-form', function() {
     cy.get('solid-form#form-7')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
+
+    // removes error after new submission
+    cy.route({
+        method: 'POST',
+        url: '**/events.jsonld',
+        status: 200,
+        response: 'ok',
+        onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    });
+
+    cy.get('solid-form#form-7')
+    .find('input[type=submit]')
+    .click();
+    cy.get('solid-form#form-7')
+      .find('[data-id="error"]').should('be.empty')
   });
   it('partial attribute', () => {
     cy.spy(win.sibStore, 'put');

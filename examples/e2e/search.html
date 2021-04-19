@@ -182,6 +182,29 @@
       filtered-by="filter-null-subject"
   ></solid-display>
 
+  <solid-form-search
+    id="profile-search"
+    fields="profile"
+    value-profile="profile-1.jsonld"
+  ></solid-form-search>
+  <solid-display
+    id="display-profile-search"
+    data-src="../data/list/users.jsonld"
+    fields="username"
+    filtered-by="profile-search"
+  ></solid-display>
+
+  <solid-form-search
+    id="number-search"
+    fields="username"
+  ></solid-form-search>
+  <solid-display
+    id="display-number-search"
+    data-src="../data/list/users.jsonld"
+    fields="username"
+    filtered-by="number-search"
+  ></solid-display>
+
   <solid-widget name="my-empty-widget">
     <template>No name found</template>
   </solid-widget>

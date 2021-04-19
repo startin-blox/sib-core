@@ -39,5 +39,10 @@ describe('binded-attributes', function() {
       .should('have.attr', 'value-user', 'Paris');
     cy.get('#infos solid-display-value[name="user"]')
       .should('have.text', 'Paris');
+
+    // Back home
+    cy.get('solid-route[name=home]').click();
+    cy.get('[data-view=home] solid-delete button').should('have.text', 'admin');
+    cy.get('[data-view=home] solid-form-search input[type=text]').should('have.value', 'Test');
   })
 })

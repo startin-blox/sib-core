@@ -1,6 +1,7 @@
 import { StoreMixin } from '../../mixins/storeMixin';
 import { SorterMixin } from '../../mixins/sorterMixin';
 import { FederationMixin } from '../../mixins/federationMixin';
+import type { Resource } from '../../mixins/interfaces';
 
 const RangeMixin = {
   name: 'range-mixin',
@@ -48,6 +49,13 @@ const RangeMixin = {
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'optionLabel');
       }
+    },
+    optionValue: {
+      type: String,
+      default: '@id',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'optionValue');
+      }
     }
   },
   initialState: {
@@ -56,6 +64,7 @@ const RangeMixin = {
   created() {
     this.listPostProcessors = [];
     this.listAttributes['optionLabel'] = this.optionLabel;
+    this.listAttributes['optionValue'] = this.optionValue;
   },
   async populate() {
     const resources = this.resource ? this.resource['ldp:contains'] : [];
@@ -70,10 +79,26 @@ const RangeMixin = {
       this.dataSrc,
     );
   },
-  setRangeAttribute(
-    resources: object[]
+  async setRangeAttribute(
+    resources: Resource[]
   ) {
-    this.listAttributes['range'] = resources;
+    if (resources) {
+      // process resources to create the template
+      const getRangeValue = async (resource: Resource) => {
+        const selectedValue = await resource[this.optionValue]; // value used for selected options
+        const value = (this.optionValue.includes('@id') || selectedValue['@id']) ? // value of the option
+          `{"@id": "${selectedValue}"}` : //  resource
+          selectedValue; // literal
+        const label = await resource[this.optionLabel]; // label of the option
+
+        return { value, label, selectedValue }
+      }
+
+      this.listAttributes['range'] = await Promise.all(
+        resources.filter(el => el !== null).map(r => getRangeValue(r))
+      );
+    }
+
     this.planRender();
   },
   empty() {

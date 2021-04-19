@@ -4,6 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin';
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { CounterMixin } from '../mixins/counterMixin';
 import { FilterMixin } from '../mixins/filterMixin';
+import { FederationMixin } from '../mixins/federationMixin';
 import { GrouperMixin } from '../mixins/grouperMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
@@ -24,6 +25,7 @@ export const SolidMap = {
     GrouperMixin,
     CounterMixin,
     FilterMixin,
+    FederationMixin,
     NextMixin,
   ],
   attributes: {

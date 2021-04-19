@@ -6,7 +6,10 @@ const FormFileMixin = {
     uploadUrl: {
       type: String,
       default: ''
-    }
+    },
+  },
+  initialState: {
+    initialValue: null
   },
   created() {
     this.listAttributes['output'] = '';
@@ -14,8 +17,21 @@ const FormFileMixin = {
     this.listAttributes['selectFile'] = this.selectFile.bind(this);
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
   },
+  attached() {
+    document.addEventListener('reset', (e) => {
+      if (e.target && (e.target as HTMLElement).contains(this.element)) {
+        this.value = this.initialValue;
+        this.listAttributes['resetButtonHidden'] = true;
+        this.planRender();
+      }
+    })
+  },
   selectFile() {
     if (this.uploadUrl === null) return;
+
+    if (this.initialValue === null) {
+      this.initialValue = this.value;
+    }
 
     const filePicker = this.element.querySelector('input[type="file"]');
     if (filePicker.files!.length < 1) return;

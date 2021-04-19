@@ -133,12 +133,19 @@ describe('solid-form-search widget', function() {
 
   it('solid-form-search + subject=null', () => {
     cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('exist')
-    
     cy.get('#filter-null-subject input').type("foo")
-    
     cy.get('#display-null-subject solid-display-value[name="profile.available"][value=""]').should('not.exist')
   });
 
+  it('solid-form-search + resource', () => {
+    cy.get('#display-profile-search > div').children().should('have.length', '1')
+    cy.get('#display-profile-search > div > solid-display').should('have.attr', 'data-src', 'user-1.jsonld')
+  });
+
+  it('solid-form-search + number', () => {
+    cy.get('#number-search solid-form-label-text[name=username] input').type('123');
+    cy.get('#display-number-search > div').children().should('have.length', 0)
+  });
   it('solid-form-search + empty-widget', () => {
     cy.get('#span-empty-widget > div')
       .children().should('have.length', 4);

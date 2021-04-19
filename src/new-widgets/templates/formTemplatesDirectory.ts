@@ -17,7 +17,6 @@ import { FormLengthMixin } from '../templatesDependencies/formLengthMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
-import { until } from 'lit-html/directives/until';
 
 export const formTemplates = {
   text: {
@@ -171,12 +170,12 @@ export const formTemplates = {
           ${attributes.placeholder || '-'}
         </option>
         ` : ''}
-        ${(attributes.range || []).filter(el => el !== null).map(el => html`
+        ${(attributes.range || []).map(el => html`
           <option
-            value='{"@id": "${el['@id']}"}'
-            ?selected=${!attributes.multiple ? value === el['@id'] : attributes.values.includes(el['@id'])}
+            value=${el.value}
+            ?selected=${!attributes.multiple ? value === el.selectedValue : attributes.values.includes(el.selectedValue)}
           >
-            ${until(el[attributes.optionLabel])}
+            ${el.label}
           </option>
         `)}
         ${Object.entries(attributes.enum || []).map(([key, val]) => html`
@@ -201,10 +200,10 @@ export const formTemplates = {
             <input
               type="radio"
               name=${ifDefined(attributes.id)}
-              value='{"@id": "${el['@id']}"}'
+              value=${el.value}
               ?required=${attributes.required}
-              ?checked=${value === el['@id']}
-            > <span>${until(el[attributes.optionLabel])}</span>
+              ?checked=${value === el.selectedValue}
+            > <span>${el.label}</span>
           </label>
         `)}
         ${Object.entries(attributes.enum || []).map(([key, val]) => html`
@@ -230,9 +229,9 @@ export const formTemplates = {
           <label>
             <input
               type="checkbox"
-              value='{"@id": "${el['@id']}"}'
-              ?checked=${attributes.values.includes(el['@id'])}
-            /> <span>${until(el[attributes.optionLabel])}</span>
+              value=${el.value}
+              ?checked=${attributes.values.includes(el.selectedValue)}
+            /> <span>${el.label}</span>
           </label>
         `)}
         ${Object.entries(attributes.enum || [])

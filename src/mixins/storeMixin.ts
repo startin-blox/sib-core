@@ -1,9 +1,10 @@
 import { base_context, store } from '../libs/store/store';
+import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 
 const StoreMixin = {
   name: 'store-mixin',
-  use: [],
+  use: [AttributeBinderMixin],
   attributes: {
     noRender: {
       type: String,
@@ -35,10 +36,8 @@ const StoreMixin = {
   initialState: {
     resourceId: null,
     subscription: null,
-    bindedAttributes: null
   },
   created() {
-    this.bindedAttributes = {};
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
   },
   detached() {

@@ -200,16 +200,11 @@ export const SolidForm = {
     if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
-    const error = this.element.querySelector('[data-id=form-error]');
-    if (error) this.element.removeChild(error);
+    const parentElement = this.element.querySelector('[data-id=error]');
+    if (parentElement) render('', parentElement);
   },
   reset() {
     if (!this.isNaked) this.element.querySelector('form').reset();
-    this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
-      const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
-      options.forEach(option => option.selected = false);
-      select.dispatchEvent(new Event('change'));
-    })
   },
   onSubmit(event: Event) {
     if (!this.isNaked) {
