@@ -78,6 +78,7 @@ const StoreMixin = {
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
+    this.searchForm?.component.updateAutoRanges();
   },
   /**
    * Replace store://XXX attributes by corresponding data

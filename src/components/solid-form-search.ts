@@ -123,8 +123,6 @@ export const SolidFormSearch = {
         "@type": "ldp:Container",
         "ldp:contains" : ldpContains,
       };
-      console.log(ldpContains);
-      
       sibStore.setLocalData(data, id);
     }
   },

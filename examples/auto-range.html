@@ -7,6 +7,14 @@
     <title>SIB test: auto-range</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .flex{
+        display:flex;
+      }
+      .flex>*{
+        flex: 1 1 0px;
+      }
+    </style>
   </head>
   <body>
     <h4>with solid-form-search</h4>
@@ -25,19 +33,26 @@
       auto-range-profile
       auto-range-skills
     ></solid-form-search>
-
-    <solid-display
+    <div class="flex">
+      <solid-display
       data-src="data/list/users-group1.jsonld"
       fields="username, first_name, last_name, email, skills"
       filtered-by="filter1"
       counter-template="${counter} users here"
-    ></solid-display>
-
-    <solid-display
+      ></solid-display>
+      
+      <solid-display
+      id="g2"
       data-src="data/list/users-group2.jsonld"
       fields="username, first_name, last_name, email, skills"
       filtered-by="filter1"
       counter-template="${counter} users here"
-    ></solid-display>
+      ></solid-display>
+    </div>
+    <h3>add user</h3>
+    <solid-form
+      data-src="data/list/users-group2.jsonld"
+      fields="username"
+    ></solid-form>
   </body>
 </html>

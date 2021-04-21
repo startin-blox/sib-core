@@ -101,5 +101,4 @@ describe('auto-range attribute', function() {
     cy.get('#auto-range-double2 > div > solid-display').eq(0)
       .should('have.attr', 'data-src', 'user-4.jsonld')
   });
-
 })
