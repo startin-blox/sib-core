@@ -26,6 +26,10 @@ const FilterMixin = {
   },
   created() {
     this.searchCount = new Map();
+    this.element.addEventListener('populate', () => {
+      if (!window.document.contains(this.element)) return;
+      this.searchForm?.component.updateAutoRanges();
+    })
   },
   attached(): void {
     this.listPostProcessors.push(this.filterCallback.bind(this));
