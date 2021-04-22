@@ -1,5 +1,3 @@
-import type { Store } from "../../../src/libs/store/store";
-
 const baseUrl = Cypress.config().baseUrl;
 
 export const base_context = {
@@ -56,7 +54,7 @@ describe('store', function () {
 
   it('save local data', () => {
   cy.window().then(async (win: any) => {
-      const store: Store = win.sibStore
+      const store = win.sibStore;
       const dataToSave1 = {foo: 'bar'};
       const customID = "myCustomID";
       const url = `store://local.${customID}`

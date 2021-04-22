@@ -119,7 +119,7 @@ const FilterMixin = {
       
       for (const obj of nextArrayOfIds) {
         // catch each element id 
-        arrayOfDataIds.push(await obj['@id']);
+        arrayOfDataIds.push(obj['@id']);
       }
       if (nextArrayOfObjects['@type'] !== 'ldp:Container') {
         // if no element in 'ldp:contains', catch object id

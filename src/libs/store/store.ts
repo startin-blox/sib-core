@@ -21,7 +21,7 @@ export const base_context = {
   lng: "geo:long"
 };
 
-export class Store {
+class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
@@ -257,9 +257,9 @@ export class Store {
   }
 
   /**
-   * Send a POST request to create a resource in a container
+   * Send data to create a local resource in a container
    * @param resource - resource to create
-   * @param id - uri of the container to add resource
+   * @param id - uri of the container to add resource. should start with ``
    *
    * @returns id of the posted resource
    */
