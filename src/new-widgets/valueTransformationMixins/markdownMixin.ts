@@ -8,11 +8,12 @@ const MarkdownMixin = {
     this.listValueTransformations.push(this.transformValue.bind(this));
   },
   transformValue(value: string, listValueTransformations: Function[]) {
-    if (!value) return;
-    const md = markdownit();
-    const html = md.render(value);
-    
-    const newValue = unsafeHTML(html);
+    let newValue: any = '';
+    if (value) {
+      const md = markdownit();
+      const html = md.render(value);
+      newValue = unsafeHTML(html);
+    }
 
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(newValue, listValueTransformations);

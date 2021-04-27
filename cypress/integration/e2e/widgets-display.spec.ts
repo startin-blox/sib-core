@@ -174,6 +174,17 @@ describe('display widgets', function() {
       .find('a')
       .should('contain', 'link')
       .and('have.attr', 'href', 'http://corndog.io/');
+
+    // Change value to something else
+    cy.get('solid-display-div-markdown')
+      .invoke('attr', 'value', '**bold** [link](http://corndog.io/)')
+      .find('em').should('not.exist');
+
+      // Change value to empty
+    cy.get('solid-display-div-markdown')
+      .invoke('attr', 'value', '')
+      .find('div[name="test display markdown"]')
+      .children().should('have.length', 0)
   });
   it('solid-display-div-autolink', () => {
     cy.get('solid-display-div-autolink > div').children()
