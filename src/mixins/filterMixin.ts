@@ -109,16 +109,18 @@ const FilterMixin = {
     const arrayOfDataObjects = this.resource['ldp:contains'];
     const arrayOfDataIds: string[] = [];
     for (const obj of arrayOfDataObjects) {
-      // for each element, if it's an object, catch all elements in 'ldp:contains' key 
-      if (typeof await obj[field] !== "object") {
+      // for each element, if it's an object, catch all elements in 'ldp:contains' key
+      const nextArrayOfObjects = await obj[field];
+      if (!nextArrayOfObjects) continue;
+
+      if (typeof nextArrayOfObjects !== "object") {
         console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
         continue;
       }
-      const nextArrayOfObjects = await obj[field];
+
       const nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
-      
       for (const obj of nextArrayOfIds) {
-        // catch each element id 
+        // catch each element id
         arrayOfDataIds.push(obj['@id']);
       }
       if (nextArrayOfObjects['@type'] !== 'ldp:Container') {

@@ -496,7 +496,7 @@ class CustomGetter {
     const path2: string[] = [];
     let value: any;
     if (!this.isFullResource()) { // if resource is not complete, fetch it first
-      await this.getResource(this.resourceId, this.clientContext, this.resourceId);
+      await this.getResource(this.resourceId, this.clientContext, this.parentId);
     }
     while (true) {
       try {
