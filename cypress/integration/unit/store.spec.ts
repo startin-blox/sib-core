@@ -43,15 +43,6 @@ describe('store', function () {
     })
   });
 
-  it('creates headers', () => {
-    cy.window().then(async (win: any) => {
-      expect(win.sibStore.headers).to.be.a('promise');
-      const headers = await win.sibStore.headers;
-      expect(headers).to.exist;
-      expect(headers.get('Content-Type')).to.equal('application/ld+json');
-    });
-  });
-
   it('save local data', () => {
   cy.window().then(async (win: any) => {
       const store = win.sibStore;
