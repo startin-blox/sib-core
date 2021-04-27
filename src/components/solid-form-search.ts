@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib';
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
+import { ContextMixin } from '../mixins/contextMixin';
 import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
@@ -10,7 +11,7 @@ import { uniqID } from '../libs/helpers';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
-  use: [WidgetMixin, AttributeBinderMixin],
+  use: [WidgetMixin, AttributeBinderMixin, ContextMixin],
   attributes: {
     defaultWidget: {
       type: String,
@@ -121,6 +122,7 @@ export const SolidFormSearch = {
       const ldpContains = Array.from(autoRangeValues).map(id => ({'@id' : id}));
       const data = {
         "@type": "ldp:Container",
+        "@context": this.context,
         "ldp:contains" : ldpContains,
       };
       sibStore.setLocalData(data, id);

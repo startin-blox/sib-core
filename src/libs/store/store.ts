@@ -167,9 +167,9 @@ class Store {
         body: JSON.stringify(resource),
         credentials: 'include'
       })
-    
+
     this.clearCache(id);
-    await this.getData(id, {}, '', resource);
+    await this.getData(id, resource['@context'] || {}, '', resource);
     return {ok: true}
   }
 
