@@ -260,45 +260,45 @@ describe('form widgets', function() {
       .should('have.attr', 'value', '')
       .contains('-');
     cy.get('solid-form-dropdown#test1 > select > option').eq(1)
-      .should('have.attr', 'value', '{"@id": "skill-1.jsonld"}')
+      .should('have.attr', 'value', '{"@id": "/examples/data/list/skill-1.jsonld"}')
       .contains('HTML');
 
     cy.get('solid-form-dropdown#test1').then($el => { // Check API value
       expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
     });
 
-    cy.get('solid-form-dropdown#test1 > select').select('CSS').should('have.value', '{"@id": "skill-2.jsonld"}'); // test change value
+    cy.get('solid-form-dropdown#test1 > select').select('CSS').should('have.value', '{"@id": "/examples/data/list/skill-2.jsonld"}'); // test change value
 
     cy.get('solid-form-dropdown#test1').then($el => { // Check API
       expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-2.jsonld"}'); // form value
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "/examples/data/list/skill-2.jsonld"}'); // form value
       expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
       expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
     });
 
     // With initial value
-    cy.get('solid-form-dropdown#test2 > select').should('have.value', '{"@id": "skill-2.jsonld"}');
+    cy.get('solid-form-dropdown#test2 > select').should('have.value', '{"@id": "/examples/data/list/skill-2.jsonld"}');
     cy.get('solid-form-dropdown#test2').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal('skill-2.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-2.jsonld"}'); // form value
+      expect((<any>$el[0]).component['value']).to.equal('/examples/data/list/skill-2.jsonld'); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "/examples/data/list/skill-2.jsonld"}'); // form value
     });
 
     // With optionLabel
     cy.get('solid-form-dropdown#test3 > select > option').eq(1)
-      .should('have.attr', 'value', '{"@id": "skill-1.jsonld"}')
-      .contains('skill-1.jsonld');
+      .should('have.attr', 'value', '{"@id": "/examples/data/list/skill-1.jsonld"}')
+      .contains('/examples/data/list/skill-1.jsonld');
 
     // With multiple
     cy.get('solid-form-dropdown#test4 > select')
       .should('have.attr', 'multiple', 'multiple')
       .children().should('have.length', 8);
     cy.get('solid-form-dropdown#test4').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': 'skill-1.jsonld'}, {'@id': 'skill-3.jsonld'}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': '/examples/data/list/skill-1.jsonld'}, {'@id': '/examples/data/list/skill-3.jsonld'}]); // form value
     });
 
     cy.get('solid-form-dropdown#test4 > select').select(['CSS', 'Javascript']) // change value
     cy.get('solid-form-dropdown#test4').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': 'skill-2.jsonld'}, {'@id': 'skill-3.jsonld'}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': '/examples/data/list/skill-2.jsonld'}, {'@id': '/examples/data/list/skill-3.jsonld'}]); // form value
     });
 
     // With order-desc
@@ -385,7 +385,7 @@ describe('form widgets', function() {
       .parent()
       .find('input')
       .should('have.attr', 'type', 'radio')
-      .should('have.attr', 'value', '{"@id": "skill-1.jsonld"}');
+      .should('have.attr', 'value', '{"@id": "/examples/data/list/skill-1.jsonld"}');
 
     cy.get('solid-form-radio#test1').then($el => { // Check API value
       expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
@@ -395,7 +395,7 @@ describe('form widgets', function() {
 
     cy.get('solid-form-radio#test1').then($el => { // Check API
       expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-2.jsonld"}'); // form value
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "/examples/data/list/skill-2.jsonld"}'); // form value
       expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
       expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
     });
@@ -403,8 +403,8 @@ describe('form widgets', function() {
     // With initial value
     cy.get('solid-form-radio#test2 label').eq(2).find('input').should('have.attr', 'checked', 'checked');
     cy.get('solid-form-radio#test2').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal('skill-3.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "skill-3.jsonld"}'); // form value
+      expect((<any>$el[0]).component['value']).to.equal('/examples/data/list/skill-3.jsonld'); // value attribute
+      expect((<any>$el[0]).component.getValue()).to.equal('{"@id": "/examples/data/list/skill-3.jsonld"}'); // form value
     });
 
     cy.get('solid-form-radio#test3')
@@ -453,9 +453,9 @@ describe('form widgets', function() {
     cy.get('#test-checkboxes').then(async ($el: any) => {
       const values = await $el[0].component.getValue();
       expect(values).to.deep.equal([
-        { "@id": "skill-2.jsonld" },
-        { "@id": "skill-4.jsonld" },
-        { "@id": "skill-6.jsonld" },
+        { "@id": "/examples/data/list/skill-2.jsonld" },
+        { "@id": "/examples/data/list/skill-4.jsonld" },
+        { "@id": "/examples/data/list/skill-6.jsonld" },
       ]);
     });
   })

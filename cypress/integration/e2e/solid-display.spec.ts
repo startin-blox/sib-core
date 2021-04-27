@@ -116,9 +116,9 @@ describe('solid-display', function() {
   it('nested-[field]', () => {
     // data-src in solid-display pointed on skill-*.jsonld
     cy.get('#display-18 > div').children().eq(0)
-      .should('have.attr', 'data-src', 'skill-2.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/skill-2.jsonld');
     cy.get('#display-18 > div').children().eq(1)
-      .should('have.attr','data-src', 'skill-3.jsonld');
+      .should('have.attr','data-src', '/examples/data/list/skill-3.jsonld');
     // User's name not displayed
     cy.get('#display-18 > div').children().eq(0)
       .find('solid-display-value').should('not.contain.value', 'Test User');

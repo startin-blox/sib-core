@@ -1,5 +1,5 @@
 {
-  "@id": "skill-2.jsonld",
+  "@id": "/examples/data/list/skill-2.jsonld",
   "name": "CSS",
   "@type": "hd:skill",
   "permissions": [

@@ -96,14 +96,14 @@ describe('multiple widgets', function() {
 
     // Check select values still here
     cy.get('solid-form-multiple#test2 > div[data-index="test1"] select')
-      .should('have.value', '{"@id": "skill-1.jsonld"}');
+      .should('have.value', '{"@id": "/examples/data/list/skill-1.jsonld"}');
     cy.get('solid-form-multiple#test2 > div[data-index="test2"] select')
-      .should('have.value', '{"@id": "skill-3.jsonld"}');
+      .should('have.value', '{"@id": "/examples/data/list/skill-3.jsonld"}');
 
     // Check widget value
     cy.get('solid-form-multiple#test2').then($el => { // Check API
       expect((<any>$el[0]).component.value).to.equal(''); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "skill-1.jsonld"}', '{"@id": "skill-3.jsonld"}']); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "/examples/data/list/skill-1.jsonld"}', '{"@id": "/examples/data/list/skill-3.jsonld"}']); // form value
     });
   })
 
@@ -118,21 +118,21 @@ describe('multiple widgets', function() {
         .should('contain', 'remove');
 
     cy.get('solid-form-multiple#test3 > div[data-index="test0"] solid-form-dropdown')
-      .should('have.attr', 'value', 'skill-2.jsonld');
+      .should('have.attr', 'value', '/examples/data/list/skill-2.jsonld');
     cy.get('solid-form-multiple#test3 > div[data-index="test1"] solid-form-dropdown')
-      .should('have.attr', 'value', 'skill-3.jsonld');
+      .should('have.attr', 'value', '/examples/data/list/skill-3.jsonld');
 
     // Check widget value
     cy.get('solid-form-multiple#test3').then($el => { // Check API
       expect((<any>$el[0]).component.value).to.equal('../data/list/user-1-skills.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "skill-2.jsonld"}', '{"@id": "skill-3.jsonld"}']); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "/examples/data/list/skill-2.jsonld"}', '{"@id": "/examples/data/list/skill-3.jsonld"}']); // form value
     });
 
     cy.get('solid-form-multiple#test3 > div[data-index="test1"] button').click(); //remove line
 
     cy.get('solid-form-multiple#test3').then($el => { // Check API
       expect((<any>$el[0]).component.value).to.equal('../data/list/user-1-skills.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "skill-2.jsonld"}']); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "/examples/data/list/skill-2.jsonld"}']); // form value
     });
   });
 
@@ -148,16 +148,16 @@ describe('multiple widgets', function() {
       .should('have.attr', 'name', 'test')
       .should('have.attr', 'range', '../data/list/skills.jsonld')
       .should('have.attr', 'data-src', '../data/list/skills.jsonld')
-      .should('have.attr', 'values', '["skill-2.jsonld","skill-3.jsonld"]');
+      .should('have.attr', 'values', '["/examples/data/list/skill-2.jsonld","/examples/data/list/skill-3.jsonld"]');
 
     cy.get('solid-form-multipleselect').then($el => { // Check API
       expect((<any>$el[0]).component.value).to.equal('../data/list/user-1-skills.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "skill-2.jsonld"}, {"@id": "skill-3.jsonld"}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "/examples/data/list/skill-2.jsonld"}, {"@id": "/examples/data/list/skill-3.jsonld"}]); // form value
     });
 
     cy.get('solid-form-multipleselect select').select(['CSS', 'Javascript', 'DevOps']);
     cy.get('solid-form-multipleselect').then($el => { // Check API
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "skill-2.jsonld"}, {"@id": "skill-3.jsonld"}, {"@id": "skill-4.jsonld"}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "/examples/data/list/skill-2.jsonld"}, {"@id": "/examples/data/list/skill-3.jsonld"}, {"@id": "/examples/data/list/skill-4.jsonld"}]); // form value
     });
   });
 

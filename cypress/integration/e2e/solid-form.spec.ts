@@ -280,7 +280,7 @@ describe('solid-form', function() {
     cy.get('solid-form#form-autosave [data-index="skills0"] button').click().then(() => {
       expect(win.sibStore.patch).to.have.callCount(2);
     });
-    cy.get('solid-form#form-autosave [data-index="skills1"] select').select('{"@id": "skill-5.jsonld"}').then(() => {
+    cy.get('solid-form#form-autosave [data-index="skills1"] select').select('{"@id": "/examples/data/list/skill-5.jsonld"}').then(() => {
       cy.wait(200).then(() => {
         expect(win.sibStore.patch).to.have.callCount(3);
       })

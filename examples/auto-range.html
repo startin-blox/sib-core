@@ -26,33 +26,23 @@
       auto-range-skills
     ></solid-form-search>
 
-
-    <solid-form-search
-      id="filter2"
-      fields="username, profile, skills"
-      auto-range-profile
-      auto-range-skills
-    ></solid-form-search>
     <div class="flex">
       <solid-display
-      data-src="data/list/users-group1.jsonld"
-      fields="username, first_name, last_name, email, skills"
-      filtered-by="filter1"
-      counter-template="${counter} users here"
+        data-src="data/list/users-group1.jsonld"
+        fields="username, first_name, last_name, email, skills"
+        filtered-by="filter1"
+        counter-template="${counter} users here"
+        multiple-skills
       ></solid-display>
-      
+
       <solid-display
-      id="g2"
-      data-src="data/list/users-group2.jsonld"
-      fields="username, first_name, last_name, email, skills"
-      filtered-by="filter1"
-      counter-template="${counter} users here"
+        id="g2"
+        data-src="data/list/users-group2.jsonld"
+        fields="username, first_name, last_name, email, skills"
+        filtered-by="filter1"
+        counter-template="${counter} users here"
+        multiple-skills
       ></solid-display>
     </div>
-    <h3>add user</h3>
-    <solid-form
-      data-src="data/list/users-group2.jsonld"
-      fields="username"
-    ></solid-form>
   </body>
 </html>

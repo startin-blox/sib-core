@@ -16,10 +16,10 @@
         "@type": "ldp:Container",
         "ldp:contains": [
           {
-            "@id": "skill-2.jsonld"
+            "@id": "/examples/data/list/skill-2.jsonld"
           },
           {
-            "@id": "skill-3.jsonld"
+            "@id": "/examples/data/list/skill-3.jsonld"
           }
         ],
         "permissions": [
@@ -56,7 +56,7 @@
         "@type": "ldp:Container",
         "ldp:contains": [
           {
-            "@id": "skill-1.jsonld"
+            "@id": "/examples/data/list/skill-1.jsonld"
           }
         ],
         "permissions": [

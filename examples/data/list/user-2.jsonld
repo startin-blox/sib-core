@@ -11,7 +11,7 @@
     "@type": "ldp:Container",
     "ldp:contains": [
       {
-        "@id": "skill-1.jsonld"
+        "@id": "/examples/data/list/skill-1.jsonld"
       }
     ],
     "permissions": [

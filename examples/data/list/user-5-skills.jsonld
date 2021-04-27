@@ -3,19 +3,13 @@
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "skill-1.jsonld",
-      "name": "HTML",
-      "@type": "hd:skill"
+      "@id": "/examples/data/list/skill-1.jsonld"
     },
     {
-      "@id": "skill-4.jsonld",
-      "name": "DevOps",
-      "@type": "hd:skill"
+      "@id": "/examples/data/list/skill-4.jsonld"
     },
     {
-      "@id": "skill-8.jsonld",
-      "name": "Node",
-      "@type": "hd:skill"
+      "@id": "/examples/data/list/skill-8.jsonld"
     }
   ],
   "permissions": [

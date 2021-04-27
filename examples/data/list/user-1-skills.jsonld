@@ -3,14 +3,10 @@
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "skill-2.jsonld",
-      "name": "CSS",
-      "@type": "hd:skill"
+      "@id": "/examples/data/list/skill-2.jsonld"
     },
     {
-      "@id": "skill-3.jsonld",
-      "name": "Javascript",
-      "@type": "hd:skill"
+      "@id": "/examples/data/list/skill-3.jsonld"
     }
   ],
   "permissions": [

@@ -11,13 +11,13 @@
     "@type": "ldp:Container",
     "ldp:contains": [
       {
-        "@id": "skill-1.jsonld"
+        "@id": "/examples/data/list/skill-1.jsonld"
       },
       {
-        "@id": "skill-2.jsonld"
+        "@id": "/examples/data/list/skill-2.jsonld"
       },
       {
-        "@id": "skill-4.jsonld"
+        "@id": "/examples/data/list/skill-4.jsonld"
       }
     ],
     "permissions": [
