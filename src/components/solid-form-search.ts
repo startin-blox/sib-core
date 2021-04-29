@@ -103,7 +103,6 @@ export const SolidFormSearch = {
     await this.getAttributesData();
     if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
-      this.element.addEventListener('change', () => this.inputChange());
     } else {
       this.element.addEventListener('submit', (e: Event) => {
         e.preventDefault();

@@ -186,4 +186,52 @@ describe('solid-table', function() {
       .and('have.attr', 'partial', '');
   });
 
+  it('keep selected lines', () => {
+    cy.get('#table-skills')
+
+      // Line 2 (CSS)
+      .find('input[type="checkbox"][data-selection]').eq(1)
+      .check()
+
+      // Line 3 (Javascript)
+      .parents('table').find('input[type="checkbox"][data-selection]').eq(2)
+      .check();
+
+    // Check data
+    cy.get('#table-skills').then($el => {
+      expect((<any>$el[0]).component.selectedLines).to.deep.equal([
+        'skill-2.jsonld', 'skill-3.jsonld'
+      ])
+    });
+
+    // Order list
+    cy.get('#sorter select[name=field]').select('Skill name');
+
+    // Check data
+    cy.get('#table-skills').then($el => {
+      expect((<any>$el[0]).component.selectedLines).to.deep.equal([
+        'skill-2.jsonld', 'skill-3.jsonld'
+      ])
+    });
+
+    cy.get('#table-skills')
+
+      // Line 1 (CSS)
+      .find('input[type="checkbox"][data-selection]').eq(0)
+      .should('be.checked')
+
+      // Line 2 (DevOps)
+      .parents('table').find('input[type="checkbox"][data-selection]').eq(1)
+      .should('not.be.checked')
+
+      // Line 3 (Git)
+      .parents('table').find('input[type="checkbox"][data-selection]').eq(2)
+      .should('not.be.checked')
+
+      // Line 5 (Javascript)
+      .parents('table').find('input[type="checkbox"][data-selection]').eq(4)
+      .should('be.checked');
+
+  });
+
 })
