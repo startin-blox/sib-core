@@ -48,5 +48,20 @@
       class-email="email-input"
       submit-button-email="Validate modifications"
     ></solid-table>
+
+    <h3>table with sorter</h3>
+    <solid-form-search
+      id="sorter"
+      fields="field"
+      enum-field="Skill name = name, Skill number = order"
+    ></solid-form-search>
+
+    <solid-table
+      id="table-skills"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name, order"
+      selectable
+      sorted-by="sorter"
+    ></solid-table>
   </body>
 </html>

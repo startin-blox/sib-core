@@ -64,7 +64,7 @@ const AutocompletionMixin = {
     this.slimSelect = slimSelect;
     select.addEventListener('change', () => {
       this.slimSelect.render();
-      this.element.dispatchEvent(new Event('input'));
+      this.element.dispatchEvent(new Event('input', { bubbles: true }));
     });
     this.element.addEventListener('input', (e:Event) => {
       if(e.target !== this.element) {
@@ -72,7 +72,7 @@ const AutocompletionMixin = {
         e.stopPropagation();
       }
     });
-    
+
     // when data changes, re-build slimSelect
     if (this.mutationObserver) this.mutationObserver.disconnect();
     this.mutationObserver = new MutationObserver(() => {

@@ -43,6 +43,20 @@
       enum-last_name="Williams, Smith, Anderson"
     ></solid-table>
 
+    <h2>Table with sort filters</h2>
+    <solid-form-search
+      id="sorter"
+      fields="field"
+      enum-field="email"
+    ></solid-form-search>
+
+    <solid-table
+      data-src="data/list/users.jsonld"
+      fields="email"
+      selectable
+      sorted-by="sorter"
+    ></solid-table>
+
     <style>
       table {
           border: solid 1px #DDEEEE;

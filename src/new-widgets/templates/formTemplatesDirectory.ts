@@ -303,7 +303,6 @@ export const formTemplates = {
           type="file"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
-          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <button
@@ -322,14 +321,14 @@ export const formTemplates = {
           data-holder
           type="text"
           name=${ifDefined(attributes.name)}
-          value=${value || ''}
+          value=${value || ''}
+          ?required=${attributes.required}
         >
         <input
           type="file"
           accept="image/*"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
-          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <img
