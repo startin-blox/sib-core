@@ -200,7 +200,7 @@ describe('solid-table', function() {
     // Check data
     cy.get('#table-skills').then($el => {
       expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-        'skill-2.jsonld', 'skill-3.jsonld'
+        '/examples/data/list/skill-2.jsonld', '/examples/data/list/skill-3.jsonld'
       ])
     });
 
@@ -210,7 +210,7 @@ describe('solid-table', function() {
     // Check data
     cy.get('#table-skills').then($el => {
       expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-        'skill-2.jsonld', 'skill-3.jsonld'
+        '/examples/data/list/skill-2.jsonld', '/examples/data/list/skill-3.jsonld'
       ])
     });
 
