@@ -54,8 +54,6 @@ class Store {
 
   async getData(id: string, context:any = {}, idParent = "", localData?: object): Promise<Resource|null> {
     const isLocalId = id.startsWith('store://local.');
-    
-    if(!isLocalId && localData != null) throw new Error("`localData` cant be set on `" + id + "` id. `localData` argument can only be set if `id` argument is of the form `store://local.*`.");
 
     if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
@@ -76,7 +74,7 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = await this.fetchData(id, clientContext, idParent);
+        resource = localData || await this.fetchData(id, clientContext, idParent);
       } catch (error) { console.error(error) }
       if (!resource) {
         this.loadingList.delete(id);
@@ -168,8 +166,10 @@ class Store {
         credentials: 'include'
       })
 
+    const resourceProxy = store.get(id);
+    const clientContext = resourceProxy ? resourceProxy.clientContext : resource['@context']
     this.clearCache(id);
-    await this.getData(id, resource['@context'] || {}, '', resource);
+    await this.getData(id, clientContext, '', resource);
     return {ok: true}
   }
 
