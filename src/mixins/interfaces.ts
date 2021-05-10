@@ -11,6 +11,7 @@ export interface WidgetInterface {
 
 export interface Resource {
   '@id': string
+  clientContext: object
   isContainer: Function
   isFullResource: Function
   properties: string[]
