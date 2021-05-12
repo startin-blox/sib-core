@@ -185,22 +185,23 @@ class Store {
 
           // Refresh and notify nested resources
           this.getNestedResources(resource, id) // get nested resources
-          .then((resources) => {
-            return Promise.all(resources.map(async (resourceId: string) => {
-              this.clearCache(resourceId); // remove them from cache
-              await this.getData(resourceId, resource['@context'], expandedId); // and fetch data again
-              PubSub.publish(resourceId); // notify components related to each resource
-            }));
-          })
-          .then(() => PubSub.publish(expandedId)); // then, notify components related to current resource
+            .then((resources) => {
+              return Promise.all(resources.map(async (resourceId: string) => {
+                this.clearCache(resourceId); // remove them from cache
+                await this.getData(resourceId, resource['@context'], expandedId); // and fetch data again
+                PubSub.publish(resourceId); // notify components related to each resource
+              }));
+            })
+            .then(() => PubSub.publish(expandedId)) // then, notify components related to current resource
+            .then(() => {
+              // Notify related resources
+              const toNotify = this.subscriptionIndex.get(expandedId);
+              if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
 
-          // Notify related resources
-          const toNotify = this.subscriptionIndex.get(expandedId);
-          if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
-
-          // Notify virtual containers
-          const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
-          if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
+              // Notify virtual containers
+              const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
+              if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
+            });
         });
         return response.headers?.get('Location') || null;
       } else {
