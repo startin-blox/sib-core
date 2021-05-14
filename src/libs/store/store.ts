@@ -222,7 +222,7 @@ class Store {
     let nestedProperties:any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
-      if (typeof resource[p] === 'object' && !excludeKeys.includes(p)) {
+      if (resource[p] && typeof resource[p] === 'object' && !excludeKeys.includes(p)) {
         nestedProperties.push((await cachedResource[p])['@id']);
       }
     }
