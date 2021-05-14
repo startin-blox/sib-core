@@ -176,6 +176,28 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   }
 };
 
+function transformArrayToContainer(resource: object) {
+  const newValue = { ...resource };
+  for (let predicate of Object.keys(newValue)) { // iterate over all properties
+    const predicateValue = newValue[predicate];
+    if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
+
+    // check all keys of nested resource
+    if (!Array.isArray(predicateValue) && predicateValue['@id']) {
+      newValue[predicate] = transformArrayToContainer(resource[predicate]);
+    }
+
+    // for arrays
+    if (Array.isArray(predicateValue)) {
+      newValue[predicate] = { 'ldp:contains': [...predicateValue] }; // transform to container
+      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // and check all nested resources
+        newValue[predicate]['ldp:contains'][index] = transformArrayToContainer(childPredicate);
+      });
+    }
+  }
+  return newValue;
+}
+
 export {
   uniqID,
   stringToDom,
@@ -190,4 +212,5 @@ export {
   defineComponent,
   fuzzyCompare,
   compare,
+  transformArrayToContainer
 };

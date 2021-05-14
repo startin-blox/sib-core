@@ -4,7 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 import { store } from '../libs/store/store';
-import { setDeepProperty } from '../libs/helpers';
+import { setDeepProperty, transformArrayToContainer } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
@@ -87,7 +87,7 @@ export const SolidForm = {
         if (object && object['@id'] && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
       }
     }
-    return value;
+    return transformArrayToContainer(value);
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';

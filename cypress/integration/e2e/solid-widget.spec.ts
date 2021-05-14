@@ -91,16 +91,18 @@ describe('solid-widget', function () {
       return (<any>$el[0]).component.getFormValue().then(res => {
         console.log(res);
         expect(res).to.deep.equal({
-          batches: [
-            {
-              title: "Développement",
-              "@id": "batch-1.jsonld"
-            },
-            {
-              title: "Déploiement automatique",
-              "@id": "batch-2.jsonld"
-            }
-          ],
+          batches: {
+            "ldp:contains": [
+              {
+                title: "Développement",
+                "@id": "batch-1.jsonld"
+              },
+              {
+                title: "Déploiement automatique",
+                "@id": "batch-2.jsonld"
+              }
+            ]
+          },
           "@id": "../data/nested-forms/customer-invoice-1.jsonld"
         })
       })

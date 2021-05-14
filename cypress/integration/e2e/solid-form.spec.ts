@@ -67,6 +67,21 @@ describe('solid-form', function() {
       .should('have.value', 'Coliving');
     cy.get('#form-edition-2 select')
       .should('have.value', '{"@id": "user-1.jsonld"}');
+
+    // Nested container
+    cy.get('#form-edition-3').then($el => {
+      return (<any>$el[0]).component.getFormValue().then(res => {
+        expect(res).to.deep.equal({
+          "@id": "/examples/data/list/user-1.jsonld",
+          skills: {
+            "ldp:contains": [
+              { "@id": "/examples/data/list/skill-2.jsonld" },
+              { "@id": "/examples/data/list/skill-3.jsonld" },
+            ]
+          }
+        });
+      });
+    });
   });
   it('widget creation', () => {
     cy.get('#form-3 solid-form-dropdown')

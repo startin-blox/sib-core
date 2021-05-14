@@ -5,6 +5,7 @@ import {
   parseFieldsString,
   findClosingBracketMatchIndex,
   evalTemplateString,
+  transformArrayToContainer
 } from '../../../src/libs/helpers';
 
 /**
@@ -185,3 +186,104 @@ describe('evalTemplateString', function() {
     });
   });
 });
+
+/**
+ * evalTemplateString
+ */
+describe('transformArrayToContainer', function () {
+  it('transforms simple resource', () => {
+    const value = {
+      "@id": "myresource",
+      skills: [
+        { "@id": "skill-1" },
+        { "@id": "skill-2" }
+      ]
+    };
+    const newValue = transformArrayToContainer(value);
+    expect(newValue).to.deep.equal({
+      "@id": "myresource",
+      skills: {
+        "ldp:contains": [
+          { "@id": "skill-1" },
+          { "@id": "skill-2" }
+        ]
+      }
+    })
+  })
+  it('transforms container in nested resource', () => {
+    const value = {
+      "@id": "myresource",
+      profile: {
+        "@id": "profile",
+        skills: [
+          { "@id": "skill-1" },
+          { "@id": "skill-2" }
+        ]
+      }
+    };
+    const newValue = transformArrayToContainer(value);
+    expect(newValue).to.deep.equal({
+      "@id": "myresource",
+      profile: {
+        "@id": "profile",
+        skills: {
+          "ldp:contains": [
+            { "@id": "skill-1" },
+            { "@id": "skill-2" }
+          ]
+        }
+      }
+    })
+  })
+  it('transforms nested container', () => {
+    const value = {
+      "@id": "myresource",
+      skills: [
+        {
+          "@id": "skill-1",
+          title: "HTML",
+          members: [
+            { "@id": "user-1" },
+            { "@id": "user-2" }
+          ]
+        },
+        {
+          "@id": "skill-2",
+          title: "CSS",
+          members: [
+            { "@id": "user-4" },
+            { "@id": "user-5" }
+          ]
+        }
+      ]
+    };
+    const newValue = transformArrayToContainer(value);
+    expect(newValue).to.deep.equal({
+      "@id": "myresource",
+      skills: {
+        "ldp:contains": [
+          {
+            "@id": "skill-1",
+            title: "HTML",
+            members: {
+              "ldp:contains": [
+                { "@id": "user-1" },
+                { "@id": "user-2" }
+              ]
+            }
+          },
+          {
+            "@id": "skill-2",
+            title: "CSS",
+            members: {
+              "ldp:contains": [
+                { "@id": "user-4" },
+                { "@id": "user-5" }
+              ]
+            }
+          }
+        ]
+      }
+    })
+  })
+})
