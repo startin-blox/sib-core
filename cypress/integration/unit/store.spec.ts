@@ -57,6 +57,27 @@ describe('store', function () {
     });
   });
 
+  it('replaces local data', () => {
+    cy.server()
+    cy.route('GET', '*/data/list/users.jsonld').as('users');
+
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      await store.getData('/examples/data/list/user-1.jsonld', base_context);
+      const dataToSave1 = {
+        "@id": "/examples/data/list/user-1.jsonld",
+        "@type": "foaf:user",
+        "username": "local user",
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+      }
+      await store.setLocalData(dataToSave1, '/examples/data/list/user-1.jsonld');
+      const dataRead = store.get('/examples/data/list/user-1.jsonld');
+      expect(await dataRead['username']).eq('local user');
+      expect(await dataRead['email']).not.exist;
+      store.clearCache('/examples/data/list/user-1.jsonld');
+    });
+  });
+
   it('fetches data and cache it', () => {
     cy.server()
     cy.route('GET', '*/data/list/users.jsonld').as('users')

@@ -176,7 +176,8 @@ class Store {
   async _updateResource(method: string, resource: object, id: string) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method)) throw new Error('Error: method not allowed');
 
-    const expandedId = this._getExpandedId(id, resource['@context']);
+    const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
+    const expandedId = this._getExpandedId(id, context);
     return this._fetch(method, resource, id).then(response => {
       if (response.ok) {
         if(method !== '_LOCAL')
