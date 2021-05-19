@@ -181,35 +181,41 @@ class Store {
     const expandedId = this._getExpandedId(id, context);
     return this._fetch(method, resource, id).then(response => {
       if (response.ok) {
-        if(method !== '_LOCAL')
-          this.clearCache(expandedId);
-        this.getData(expandedId, resource['@context']).then(() => {
+        if(method !== '_LOCAL') this.clearCache(expandedId); // clear cache
+        this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
+          const nestedResources = await this.getNestedResources(resource, id);
+          const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+          const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
 
-          // Refresh and notify nested resources
-          this.getNestedResources(resource, id) // get nested resources
-            .then((resources) => {
-              return Promise.all(resources.map(async (resourceId: string) => {
-                this.clearCache(resourceId); // remove them from cache
-                await this.getData(resourceId, resource['@context'], expandedId); // and fetch data again
-                PubSub.publish(resourceId); // notify components related to each resource
-              }));
-            })
-            .then(() => PubSub.publish(expandedId)) // then, notify components related to current resource
-            .then(() => {
-              // Notify related resources
-              const toNotify = this.subscriptionIndex.get(expandedId);
-              if (toNotify) toNotify.forEach((resourceId: string) => PubSub.publish(resourceId));
-
-              // Notify virtual containers
-              const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
-              if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
-            });
+          return this.refreshResources([...nestedResources, ...resourcesToRefresh]) // refresh related resources
+            .then(resourceIds => this.notifyResources([expandedId, ...resourceIds, ...resourcesToNotify])); // notify components
         });
         return response.headers?.get('Location') || null;
       } else {
         throw response;
       }
     });
+  }
+
+  /**
+   * Clear cache and refetch data for a list of ids
+   * @param resourceIds -
+   * @returns - all the resource ids
+   */
+  async refreshResources(resourceIds: string[]) {
+    resourceIds = [...new Set(resourceIds)]; // remove duplicates
+    const resourceWithContexts = resourceIds.map(resourceId => ({ "id": resourceId, "context": store.get(resourceId)?.clientContext }));
+    for (const resource of resourceWithContexts) this.clearCache(resource.id);
+    await Promise.all(resourceWithContexts.map(({ id, context }) => this.getData(id, context || base_context)))
+    return resourceIds;
+  }
+  /**
+   * Notifies all components for a list of ids
+   * @param resourceIds -
+   */
+  async notifyResources(resourceIds: string[]) {
+    resourceIds = [...new Set(resourceIds)]; // remove duplicates
+    for (const id of resourceIds) PubSub.publish(id);
   }
 
   /**
@@ -224,7 +230,8 @@ class Store {
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
       if (resource[p] && typeof resource[p] === 'object' && !excludeKeys.includes(p)) {
-        nestedProperties.push((await cachedResource[p])['@id']);
+        const property = await cachedResource[p];
+        if (property) nestedProperties.push(property['@id']);
       }
     }
     return nestedProperties.filter(a=> a != null);
@@ -318,16 +325,11 @@ class Store {
       credentials: 'include'
     });
 
-    // Notify related containers
-    const toNotify = this.subscriptionIndex.get(expandedId);
-    if (toNotify) toNotify.forEach((containerId: string) => {
-      this.clearCache(containerId);
-      this.getData(containerId, base_context).then(() => PubSub.publish(containerId));
-    });
+    const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
+    const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
 
-    // Notify virtual containers
-    const containersToNotify = this.subscriptionVirtualContainersIndex.get(expandedId);
-    if (containersToNotify) containersToNotify.forEach((resourceId: string) => this._updateVirtualContainer(resourceId));
+    this.refreshResources([...resourcesToNotify, ...resourcesToRefresh])
+      .then(resourceIds => this.notifyResources(resourceIds));
 
     return deleted;
   }
@@ -354,20 +356,6 @@ class Store {
   subscribeVirtualContainerTo(virtualContainerId: string, nestedResourceId: string) {
     const existingSubscriptions = this.subscriptionVirtualContainersIndex.get(nestedResourceId) || [];
     this.subscriptionVirtualContainersIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, virtualContainerId])])
-  }
-
-  /**
-   * Clears cache, and update a virtual container after a change
-   * @param containerId - id of the container to refresh
-   */
-  async _updateVirtualContainer(containerId: string) {
-    const container = store.get(containerId);
-    if (container) {
-      const context = container['clientContext'];
-      this.clearCache(containerId);
-      await this.getData(containerId, context);
-    }
-    PubSub.publish(containerId);
   }
 
   /**
