@@ -316,4 +316,62 @@ describe('store', function () {
       .invoke('_getAbsoluteIri', 'https://ldp-server.test/circles/', base_context, '')
       .should('equal', 'https://ldp-server.test/circles/');
   });
+
+  it('getNestedResources', () => {
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      await store.getData('/examples/data/list/user-1.jsonld', base_context);
+
+      const resource = {
+        "@id": "user-1.jsonld",
+        name: "Test User",
+        available: true,
+        skills: {
+          "@id": "user-1-skills.jsonld",
+          "@type": "ldp:Container",
+          "ldp:contains": [
+            {
+              "@id": "/examples/data/list/skill-2.jsonld"
+            },
+            {
+              "@id": "/examples/data/list/skill-3.jsonld"
+            }
+          ],
+        },
+        profile: {
+          "@id": "profile-1.jsonld"
+        },
+        "@type": "foaf:user"
+      };
+      const nestedResources = await store.getNestedResources(resource, '/examples/data/list/user-1.jsonld');
+      expect(nestedResources).to.deep.equal(["user-1-skills.jsonld", "profile-1.jsonld"]);
+    });
+  });
+
+  it('refreshResource', () => {
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      cy.spy(store, 'clearCache');
+      cy.spy(store, 'getData');
+      cy.spy(store, 'fetchData');
+
+      expect(store.cache).to.have.length(14);
+      await store.refreshResources(['/examples/data/list/user-1.jsonld', '/examples/data/list/users.jsonld']);
+
+      expect(store.clearCache).to.be.calledTwice;
+      expect(store.getData).to.be.calledTwice;
+      expect(store.fetchData).to.be.calledTwice;
+
+      expect(store.cache).to.have.length(14);
+    });
+  });
+
+  it('notifyResources', () => {
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      cy.spy(win.PubSub, 'publish');
+      await store.notifyResources(['/examples/data/list/user-1.jsonld', '/examples/data/list/users.jsonld']);
+      expect(win.PubSub.publish).to.be.calledTwice;
+    });
+  });
 });
