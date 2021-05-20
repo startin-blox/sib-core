@@ -92,8 +92,9 @@ class Store {
   }
 
   async fetchAuthn(iri: string, options: any) {
-    if (this.session) await this.session;
-    return this.fetch
+    let authenticated = false;
+    if (this.session) authenticated = await this.session;
+    return (this.fetch && authenticated)
       ? this.fetch.then(fn => fn(iri, options))
       : fetch(iri, options);
   }
