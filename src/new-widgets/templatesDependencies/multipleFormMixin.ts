@@ -27,6 +27,23 @@ const MultipleFormMixin = {
     range: {
       type: String,
       default: '',
+      
+    },
+    addClass: {
+      type: String,
+      default: undefined,
+      callback: function(value) {
+        if (value !== this.listAttributes['addClass']) this.listAttributes['addClass'] = value;
+        this.planRender();
+      }
+    },
+    removeClass: {
+      type: String,
+      default: undefined,
+      callback: function(value) {
+        if (value !== this.listAttributes['removeClass']) this.listAttributes['removeClass'] = value;
+        this.planRender();
+      }
     }
   },
   created() {
@@ -35,6 +52,8 @@ const MultipleFormMixin = {
     this.listAttributes['children'] = [];
     this.listAttributes['addLabel'] = this.addLabel;
     this.listAttributes['removeLabel'] = this.removeLabel;
+    this.listAttributes['addClass'] = this.addClass;
+    this.listAttributes['removeClass'] = this.removeClass;
     this.listAttributes['addItem'] = () => {
       this.insertWidget();
       this.planRender();

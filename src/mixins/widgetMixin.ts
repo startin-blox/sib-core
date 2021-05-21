@@ -203,7 +203,9 @@ const WidgetMixin = {
       'add-label',
       'remove-label',
       'next', 
-      'empty-widget'
+      'empty-widget',
+      'add-class',
+      'remove-class'
     ];
     for (let attr of multipleAttributes) this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs)
 

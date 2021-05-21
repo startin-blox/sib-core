@@ -134,6 +134,10 @@ describe('multiple widgets', function() {
       expect((<any>$el[0]).component.value).to.equal('../data/list/user-1-skills.jsonld'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.deep.equal(['{"@id": "/examples/data/list/skill-2.jsonld"}']); // form value
     });
+    cy.get('solid-form-multiple#test3 > button')
+      .should('have.class', 'class-addbutton');
+    cy.get('solid-form-multiple#test3 > div[data-index="test0"] > button')
+        .should('have.class', 'class-removebutton');
   });
 
 
