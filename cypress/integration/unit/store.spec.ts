@@ -320,6 +320,7 @@ describe('store', function () {
   it('getNestedResources', () => {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
+      cy.spy(store, 'fetchData');
       await store.getData('/examples/data/list/user-1.jsonld', base_context);
 
       const resource = {
@@ -345,6 +346,7 @@ describe('store', function () {
       };
       const nestedResources = await store.getNestedResources(resource, '/examples/data/list/user-1.jsonld');
       expect(nestedResources).to.deep.equal(["user-1-skills.jsonld", "profile-1.jsonld"]);
+      expect(store.fetchData).to.be.calledOnce;
     });
   });
 
@@ -355,14 +357,14 @@ describe('store', function () {
       cy.spy(store, 'getData');
       cy.spy(store, 'fetchData');
 
-      expect(store.cache).to.have.length(14);
+      expect(store.cache).to.have.length(10);
       await store.refreshResources(['/examples/data/list/user-1.jsonld', '/examples/data/list/users.jsonld']);
 
       expect(store.clearCache).to.be.calledTwice;
       expect(store.getData).to.be.calledTwice;
       expect(store.fetchData).to.be.calledTwice;
 
-      expect(store.cache).to.have.length(14);
+      expect(store.cache).to.have.length(10);
     });
   });
 

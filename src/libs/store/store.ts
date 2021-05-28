@@ -203,7 +203,7 @@ class Store {
    * @returns - all the resource ids
    */
   async refreshResources(resourceIds: string[]) {
-    resourceIds = [...new Set(resourceIds)]; // remove duplicates
+    resourceIds = [...new Set(resourceIds.filter(id => this.cache.has(id)))]; // remove duplicates and not cached resources
     const resourceWithContexts = resourceIds.map(resourceId => ({ "id": resourceId, "context": store.get(resourceId)?.clientContext }));
     for (const resource of resourceWithContexts) this.clearCache(resource.id);
     await Promise.all(resourceWithContexts.map(({ id, context }) => this.getData(id, context || base_context)))
@@ -229,12 +229,14 @@ class Store {
     let nestedProperties:any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
-      if (resource[p] && typeof resource[p] === 'object' && !excludeKeys.includes(p)) {
-        const property = await cachedResource[p];
-        if (property) nestedProperties.push(property['@id']);
+      if (resource[p]
+        && typeof resource[p] === 'object'
+        && !excludeKeys.includes(p)
+        && resource[p]['@id']) {
+        nestedProperties.push(resource[p]['@id']);
       }
     }
-    return nestedProperties.filter(a=> a != null);
+    return nestedProperties;
   }
 
   /**
