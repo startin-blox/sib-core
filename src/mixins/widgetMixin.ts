@@ -313,6 +313,7 @@ const WidgetMixin = {
     const attrs = { name: field };
     const setAttributes = [
       'class',
+      'label'
     ];
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
@@ -320,11 +321,11 @@ const WidgetMixin = {
     let widget = this.element.querySelector(`${setWidget.tagName}[name="${field}"]`);
     if (!widget) {
       widget = document.createElement(setWidget.tagName);
-      if (widget.component) widget.component.render();
     }
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
+    if (widget.component) widget.component.render();
     let setFields = this.getSet(field);
     // Catch widget for the set if all these fields are empty
     if (this.element.hasAttribute('empty-' + field)) {
