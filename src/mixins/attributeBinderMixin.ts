@@ -1,4 +1,5 @@
 import { base_context, store } from '../libs/store/store';
+import type { Resource } from './interfaces';
 
 const AttributeBinderMixin = {
   name: 'attribute-binder-mixin',
@@ -19,35 +20,64 @@ const AttributeBinderMixin = {
   },
   /**
    * Replace store://XXX attributes by corresponding data
+   * @param reset - set to false if no need to reset data
    */
-  async getAttributesData(reset = true) {
+  async replaceAttributesData(reset = true) {
     if (reset) this.resetAttributesData();
-    const isContainer = this.resource && this.resource.isContainer();
 
-    for (let attr of this.element.attributes) {
-      if (!attr.value.startsWith('store://')) continue;
+    const oldAttributes: any = Array.from(this.element.attributes) // transform NamedNodeMap in object
+      .reduce((obj: any, attr: any) => {
+        // Keep only attributes starting with `store://...`
+        if (!attr.value.match(/^store:\/\/(resource|container|user)/)) return { ...obj }
 
-      // Save attr for reset later
-      if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
+        // Save attr for reset later
+        if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
+
+        return {
+          ...obj,
+          [attr.name]: attr.value, // add "key: value"
+        };
+      }, {});
+
+    const newAttributes = await this.transformAttributes({ ...oldAttributes }, this.resource); // generate new attributes
+
+    for (let attr of Object.keys(newAttributes)) { // set attributes on element
+      if (oldAttributes[attr] == newAttributes[attr]) continue; // only if it changed
+      this.element.setAttribute(attr, newAttributes[attr]);
+    }
+  },
+
+  /**
+   * Transform attributes from `store://...` to their actual value
+   * @param attributes - object representing attributes of an element
+   * @param resource - resource to use to resolve attributes
+   * @returns - object representing attributes of an element with resolved values
+   */
+  async transformAttributes(attributes: object, resource: Resource) {
+    const isContainer = resource && resource.isContainer();
+
+    for (let attr of Object.keys(attributes)) {
+      const value = attributes[attr];
 
       // Replace attribute value
-      if (!isContainer && this.resource && attr.value.startsWith('store://resource')) { // RESOURCE
-        let path = attr.value.replace('store://resource.', '');
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (isContainer && this.resource && attr.value.startsWith('store://container')) { // CONTAINER
-        let path = attr.value.replace('store://container.', '');
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (attr.value.startsWith('store://user')) { // USER
+      if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
+        let path = value.replace('store://resource.', '');
+        attributes[attr] = resource ? await resource[path] : '';
+      } else if (isContainer && resource && value.startsWith('store://container')) { // CONTAINER
+        let path = value.replace('store://container.', '');
+        attributes[attr] = resource ? await resource[path] : '';
+      } else if (value.startsWith('store://user')) { // USER
         const userId = await this.retry(this.getUser.bind(this)); // retry until sibAuth is defined
         const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context || base_context) : null;
         if (!user) {
-          attr.value = '';
+          attributes[attr] = '';
           continue;
         }
-        let path = attr.value.replace('store://user.', '');
-        attr.value = user ? await user[path] : '';
+        let path = value.replace('store://user.', '');
+        attributes[attr] = user ? await user[path] : '';
       }
     }
+    return attributes;
   },
 
   /**

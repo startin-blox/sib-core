@@ -24,6 +24,11 @@ describe('binded-attributes', function() {
     cy.get('#infos solid-display-value[name="wrong-field"]')
       .should('have.text', 'store://container.@id');
 
+    // Works in solid-table
+    cy.get('#table')
+      .find('tr[data-resource="event-1.jsonld"] solid-display-value[name="temp"]')
+      .should('have.attr', 'value', 'event-1.jsonld')
+
     // Reset attribute
     cy.get('solid-route').contains('Events').click();
     cy.get('#events').contains('Coliving').click();

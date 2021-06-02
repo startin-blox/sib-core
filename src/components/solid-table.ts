@@ -97,7 +97,7 @@ export const SolidTable = {
    */
   async createCellWidget(field: string, resource: Resource) {
     // if regular widget
-    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource);
+    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource, true);
 
     // if editable widget
     const attributes = {};

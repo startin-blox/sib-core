@@ -72,54 +72,12 @@ const StoreMixin = {
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
-    await this.getAttributesData();
+    await this.replaceAttributesData();
     await this.populate();
     setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
-  },
-  /**
-   * Replace store://XXX attributes by corresponding data
-   */
-  async getAttributesData() {
-    this.resetAttributesData();
-    const isContainer = this.resource && this.resource.isContainer();
-
-    for (let attr of this.element.attributes) {
-      if (!attr.value.match(/^store:\/\/(resource|container|user)/)) continue;
-
-      // Save attr for reset later
-      if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
-
-      // Replace attribute value
-      if (!isContainer && attr.value.startsWith('store://resource')) { // resource
-        let path = attr.value.replace('store://resource.', '');
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (isContainer && attr.value.startsWith('store://container')) { // container
-        let path = attr.value.replace('store://container.', '');
-        console.log(path, this.resource, this.resource[path]);
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (attr.value.startsWith('store://user')) { // user
-        const sibAuth = document.querySelector('sib-auth');
-        const userId = await (sibAuth as any)?.getUser();
-        const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context) : null;
-        if (!user)  {
-          attr.value = '';
-          continue;
-        }
-        let path = attr.value.replace('store://user.', '');
-        attr.value = user ? await user[path] : '';
-      }
-    }
-  },
-  /**
-   * Reset attributes values
-   */
-  resetAttributesData() {
-    for (let attr of Object.keys(this.bindedAttributes)) {
-      this.element.setAttribute(attr, this.bindedAttributes[attr]);
-    }
   },
   empty():void {
   },

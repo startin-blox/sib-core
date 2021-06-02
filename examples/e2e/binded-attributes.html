@@ -41,6 +41,13 @@
         fields="firstName"
         value-firstName="store://user.first_name"
       ></solid-form-search>
+
+      <solid-table
+        id="table"
+        data-src="/examples/data/list/events.jsonld"
+        fields="temp"
+        value-temp="store://resource.@id"
+      ></solid-table>
     </div>
     <div data-view="event-infos" hidden>
       <solid-display
