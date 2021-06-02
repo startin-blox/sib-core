@@ -75,7 +75,7 @@ export const SolidDelete = {
     this.render();
   },
   async render(): Promise<void> {
-    await this.getAttributesData(false);
+    await this.replaceAttributesData(false);
     const button = html`
       <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
       ${this.getModalDialog()}

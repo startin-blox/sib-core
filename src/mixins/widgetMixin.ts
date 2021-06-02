@@ -237,7 +237,6 @@ const WidgetMixin = {
       'minlength',
       'search-text',
       'search-placeholder',
-      
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 
@@ -255,12 +254,12 @@ const WidgetMixin = {
    * Creates and return a widget for field + add it to the widget list
    * @param field - string
    */
-  async createWidgetTemplate(field: string, resource = null): Promise<TemplateResult> {
+  async createWidgetTemplate(field: string, resource = null, transformAttributes = false): Promise<TemplateResult> {
     if (this.isString(field)) return this.createString(field); // field is a static string
     if (this.isSet(field)) return await this.createSet(field);
 
     const currentResource = resource || this.resource;
-    const attributes = this.widgetAttributes(field, currentResource);
+    let attributes = this.widgetAttributes(field, currentResource);
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     let tagName = widgetMeta.tagName;
@@ -291,6 +290,10 @@ const WidgetMixin = {
 
       // Subscribe widgets if they show a resource
       if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
+
+      // Transform store://XXX attributes
+      if (transformAttributes) attributes = await this.transformAttributes(attributes, currentResource);
+
       widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
     }
 

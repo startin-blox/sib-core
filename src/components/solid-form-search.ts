@@ -152,7 +152,7 @@ export const SolidFormSearch = {
   },
   empty(): void {},
   async populate(): Promise<void> {
-    await this.getAttributesData();
+    await this.replaceAttributesData();
     if(this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
     } else {
