@@ -316,18 +316,21 @@ const WidgetMixin = {
     const attrs = { name: field };
     const setAttributes = [
       'class',
+      'label'
     ];
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
     // Create widget if not already existing
     let widget = this.element.querySelector(`${setWidget.tagName}[name="${field}"]`);
+    let initializing = false; // used to render widget only first time
     if (!widget) {
       widget = document.createElement(setWidget.tagName);
-      if (widget.component) widget.component.render();
+      initializing = true;
     }
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
+    if (widget.component && initializing) widget.component.render();
     let setFields = this.getSet(field);
     // Catch widget for the set if all these fields are empty
     if (this.element.hasAttribute('empty-' + field)) {

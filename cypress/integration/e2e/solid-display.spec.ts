@@ -203,5 +203,19 @@ describe('solid-display', function() {
     cy.get('#widget-empty-set3 > div')
       .children().eq(1).should('contain', 'empty set value')
       .and('not.contain', 'set empty');
+  });
+  it('solid-set-div-label', () =>  {
+    cy.get('#solid-set-div-label > div')
+      .children().should('have.length', 4);
+    cy.get('#solid-set-div-label > div').children().eq(0)
+      .find('solid-set-div-label').children().should('have.length', 2);
+    cy.get('#solid-set-div-label > div > solid-display > div > solid-set-div-label')
+      .find('label').should('contain', 'identity');
+    cy.get('#solid-set-div-label > div').children().eq(1)
+      .find('label').should('contain', 'identity');
+    cy.get('#solid-set-div-label > div').children().eq(2)
+      .find('label').should('contain', 'identity');
+    cy.get('#solid-set-div-label > div').children().eq(3)
+      .find('label').should('contain', 'identity');
   })
 })
