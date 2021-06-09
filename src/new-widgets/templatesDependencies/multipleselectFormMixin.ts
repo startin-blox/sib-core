@@ -55,7 +55,7 @@ const MultipleselectFormMixin = {
     this.planRender();
   },
   get type() {
-    return 'resource';
+    return this.enum === '' ? 'resource' : 'string';
   },
   get multiple() {
     return true;

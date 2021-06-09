@@ -165,4 +165,20 @@ describe('solid-form-search widget', function() {
       .children().should('have.length', 1)
       .and('contain', 'Pierre DLC');
   })
+  it('solid-form-search + checkboxes', () => {
+    cy.get('#enum-checkboxes-display > div')
+      .children().should('have.length', 8);
+
+    cy.get('#enum-checkboxes')
+      .find('input[value="HTML"]').check({ force: true });
+
+    cy.get('#enum-checkboxes-display > div')
+      .children().should('have.length', 1);
+
+    cy.get('#enum-checkboxes')
+      .find('input[value="CSS"]').check({ force: true });
+
+    cy.get('#enum-checkboxes-display > div')
+      .children().should('have.length', 2);
+  })
 })

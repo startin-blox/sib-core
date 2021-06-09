@@ -229,5 +229,19 @@
       empty-widget="my-empty-widget"
     ></solid-display>
 
+    <h3>solid-form-search + checkboxes</h3>
+    <solid-form-search
+      id="enum-checkboxes"
+      fields="name"
+      enum-name="HTML, CSS"
+      widget-name="solid-form-checkboxes"
+    ></solid-form-search>
+    <solid-display
+      id="enum-checkboxes-display"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="enum-checkboxes"
+    ></solid-display>
+
   </body>
 </html>
