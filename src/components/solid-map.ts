@@ -39,7 +39,8 @@ export const SolidMap = {
       default: null
     },
     subscriptions: null,
-    resetPlanned: false
+    resetPlanned: false,
+    hasResetOnce: false
   },
   created(): void {
     //@ts-ignore
@@ -51,11 +52,15 @@ export const SolidMap = {
     //@ts-ignore
     import('leaflet.markercluster/dist/MarkerCluster.Default.css');
 
+    // reset when it becomes visible to prevent bug https://git.startinblox.com/framework/sib-core/issues/661
     document.body.addEventListener('navigate', () =>
-      setTimeout(() => this.element.offsetParent && this.reset())
+      setTimeout(() => this.isVisible && !this.hasResetOnce && this.reset())
     );
     this.markers = [];
     this.subscriptions = new Map();
+  },
+  get isVisible() {
+    return this.element.offsetParent !== null
   },
   attached(): void {
     const id = uniqID();
@@ -75,12 +80,15 @@ export const SolidMap = {
     }
   },
   reset() {
-    this.map.invalidateSize();
+    if (this.isVisible) { // reset only if visible
+      this.map.invalidateSize();
 
-    if (this.markers.length) {
-      this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
-    } else {
-      this.map.fitWorld(); // ... or on the world if not
+      if (this.markers.length) {
+        this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
+      } else {
+        this.map.fitWorld(); // ... or on the world if not
+      }
+      this.hasResetOnce = true;
     }
   },
   /**
