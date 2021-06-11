@@ -40,7 +40,7 @@ export const SolidMap = {
     },
     subscriptions: null,
     resetPlanned: false,
-    hasResetOnce: false
+    hasBeenResetOnce: false
   },
   created(): void {
     //@ts-ignore
@@ -54,7 +54,7 @@ export const SolidMap = {
 
     // reset when it becomes visible to prevent bug https://git.startinblox.com/framework/sib-core/issues/661
     document.body.addEventListener('navigate', () =>
-      setTimeout(() => this.isVisible && !this.hasResetOnce && this.reset())
+      setTimeout(() => this.isVisible && !this.hasBeenResetOnce && this.reset())
     );
     this.markers = [];
     this.subscriptions = new Map();
@@ -88,7 +88,7 @@ export const SolidMap = {
       } else {
         this.map.fitWorld(); // ... or on the world if not
       }
-      this.hasResetOnce = true;
+      this.hasBeenResetOnce = true;
     }
   },
   /**
