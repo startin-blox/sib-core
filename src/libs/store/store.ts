@@ -149,7 +149,7 @@ class Store {
     if (resource['@id'] && !resource.properties) {
       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
       // Fetch data if
-      if (resource['@type'] === "sib:federatedContainer") { // if object is federated container
+      if (resource['@type'] === "sib:federatedContainer"  && resource['@cache'] !== 'false') { // if object is federated container
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }

@@ -1,7 +1,23 @@
-describe('federation', function() {
+let beenCalled = false;
+describe('federation', function () {
   this.beforeAll('visit', () => {
-    cy.visit('/examples/e2e/federation.html')
+    cy.visit('/examples/e2e/federation.html');
   })
+  this.beforeEach(() => {
+    cy.intercept('http://server.com/skills', (req) => {
+      beenCalled = true;
+      req.reply({
+        body: {
+          "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+          "@id": "http://server.com/skills",
+          "@type": "ldp:Container",
+          "ldp:contains": [
+            {"@id": "http://server.com/skills/1", "name": "HTML"}
+          ]
+        }
+      })
+    })
+  });
   it('check children', () => {
     cy.get('#federation-1').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 4)
@@ -83,5 +99,13 @@ describe('federation', function() {
     .should('have.attr', 'data-src', 'circles-6.jsonld')
     .and('contain.text', 'circles-6.jsonld')
     .and('contain.text', 'Circle from server 4');
+  });
+
+  it('does not fetch local federations', () => {
+    expect(beenCalled).to.be.false;
+    cy.get('#loadSkills').click()
+    cy.get('#federation-3 solid-display > div').children().should('have.length', 1).then(() => {
+      expect(beenCalled).to.be.true;
+    })
   });
 })

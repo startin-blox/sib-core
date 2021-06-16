@@ -12,33 +12,40 @@ const FederationMixin = {
   },
   async fetchSources(resources: Resource[], listPostProcessors: Function[], div: HTMLElement, context: string) {
     this.containerFetched = [];
-    let newResources: Resource[] = this.getResources(resources);
+    let newResources: Resource[] = await this.getResources(resources);
     newResources = [...new Set(newResources)]; // remove possible duplicates
 
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(newResources, listPostProcessors, div, context);
   },
-  getResources(resources: Resource[]): Resource[] {
+  async getResources(resources: Resource[]): Promise<Resource[]> {
     const newResources: Resource[] = [];
-    for (let res of resources) { // TODO : test with different response timings
-      if (!res) continue;
+
+    const getChildResources = async (res: Resource) => {
+      if (!res) return;
       if (res.isContainer()) { // if this is a container
         const containerId = res['@id'];
         if (!this.containerFetched.includes(containerId)) { // prevent from including twice the same source
           this.containerFetched.push(containerId);
 
-          const resourcesFetched = this.fetchSource(containerId); // fetch the resources of this container
-          if (resourcesFetched) newResources.push(...this.getResources(resourcesFetched)); // Add content of source to array...
+          const resourcesFetched = await this.fetchSource(containerId); // fetch the resources of this container
+          if (resourcesFetched) newResources.push(...(await this.getResources(resourcesFetched))); // Add content of source to array...
         }
       } else {
         newResources.push(res); // Or resource directly if not a container
       }
     }
+
+    await Promise.all(resources.map(res => getChildResources(res)));
     return newResources;
   },
 
-  fetchSource(containerId: string): Promise<Resource[] | null> {
-    const container = store.get(containerId);
+  async fetchSource(containerId: string): Promise<Resource[] | null> {
+    const cachedContainer = store.get(containerId); // find container in cache
+    if (!cachedContainer || cachedContainer['ldp:contains'] === null) { // if container not fetched
+      store.clearCache(containerId); // empty cache
+    }
+    const container = await store.getData(containerId, this.context); // and fetch it
     return container ? container['ldp:contains'] : null;
   },
 }

@@ -22,5 +22,37 @@
       data-src='../data/federation/nested-source.jsonld'
       fields='@id, name'
     ></solid-display>
+
+
+    <h3>Federation caching</h3>
+    <!-- TODO: remove when 759 fixed -->
+    <solid-display
+      id="federation-3"
+      data-src=''
+      fields='name'
+    ></solid-display>
+    <button id="loadSkills">load</button>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        sibStore.setLocalData({
+            "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+            "@type": "ldp:Container",
+            "@id": "store://local.54540a9004502/skills/",
+            "ldp:contains": [{
+              "@id": "http://server.com/skills",
+              "@type": "sib:federatedContainer",
+              "@cache": 'false'
+            }],
+            "permissions": [{
+              "mode": {
+                "@type": "view"
+              }
+            }]
+          }, "store://local.54540a9004502/skills/");
+      });
+      loadSkills.onclick= () => {
+        document.querySelector('#federation-3').dataset.src = "store://local.54540a9004502/skills/";
+      }
+    </script>
   </body>
 </html>
