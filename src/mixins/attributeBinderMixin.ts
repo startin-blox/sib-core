@@ -58,23 +58,25 @@ const AttributeBinderMixin = {
 
     for (let attr of Object.keys(attributes)) {
       const value = attributes[attr];
-
-      // Replace attribute value
-      if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
+      // Avoid error if value is a number
+      if (typeof value === 'string') {
+        // Replace attribute value
+        if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
         let path = value.replace('store://resource.', '');
         attributes[attr] = resource ? await resource[path] : '';
-      } else if (isContainer && resource && value.startsWith('store://container')) { // CONTAINER
-        let path = value.replace('store://container.', '');
-        attributes[attr] = resource ? await resource[path] : '';
-      } else if (value.startsWith('store://user')) { // USER
-        const userId = await this.retry(this.getUser.bind(this)); // retry until sibAuth is defined
-        const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context || base_context) : null;
-        if (!user) {
-          attributes[attr] = '';
-          continue;
+        } else if (isContainer && resource && value.startsWith('store://container')) { // CONTAINER
+          let path = value.replace('store://container.', '');
+          attributes[attr] = resource ? await resource[path] : '';
+        } else if (value.startsWith('store://user')) { // USER
+          const userId = await this.retry(this.getUser.bind(this)); // retry until sibAuth is defined
+          const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context || base_context) : null;
+          if (!user) {
+            attributes[attr] = '';
+            continue;
+          }
+          let path = value.replace('store://user.', '');
+          attributes[attr] = user ? await user[path] : '';
         }
-        let path = value.replace('store://user.', '');
-        attributes[attr] = user ? await user[path] : '';
       }
     }
     return attributes;

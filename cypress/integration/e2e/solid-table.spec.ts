@@ -230,8 +230,14 @@ describe('solid-table', function() {
 
       // Line 5 (Javascript)
       .parents('table').find('input[type="checkbox"][data-selection]').eq(4)
-      .should('be.checked');
-
+      .should('be.checked')
+  });
+  
+  it('numbers displayed', () => {
+    cy.get('#table-skills')
+    // Check numbers displayed
+      .find('solid-display-value[name="order"]').eq(0)
+      .should('be.visible').and('contain', '5');
   });
 
 })
