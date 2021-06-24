@@ -71,9 +71,11 @@ export const SolidMap = {
 
     const div = this.element.querySelector(`#${id}`);
     this.map = L.map(div);
+
     L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
     ).addTo(this.map);
+
     if (this.clustering !== null) {
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
