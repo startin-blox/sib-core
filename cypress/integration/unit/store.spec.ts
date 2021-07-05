@@ -376,4 +376,28 @@ describe('store', function () {
       expect(win.PubSub.publish).to.be.calledTwice;
     });
   });
+
+  it('refreshResource and localData', () => {
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      await store.setLocalData({
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@id": "store://local.2",
+        "name": "ok",
+      }, "store://local.2");
+
+      await store.setLocalData({
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@id": "store://local.1",
+        "ref": { "@id": "store://local.2" },
+      }, "store://local.1");
+
+      cy.wait(100).then(async () => {
+        const resource = store.get('store://local.2')
+        expect(resource).to.exist;
+        const name = await resource['name']
+        expect(name).to.equal('ok');
+      } );
+    });
+  });
 });

@@ -53,8 +53,6 @@ class Store {
    */
 
   async getData(id: string, context:any = {}, idParent = "", localData?: object): Promise<Resource|null> {
-    const isLocalId = id.startsWith('store://local.');
-
     if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
       if (resource && resource.isFullResource()) return resource; // if resource is not complete, re-fetch it
@@ -69,7 +67,7 @@ class Store {
       // Generate proxy
       const clientContext = await myParser.parse(context);
       let resource: any = null;
-      if(isLocalId) {
+      if(this._isLocalId(id)) {
         if(localData == null) localData = {};
         localData["@id"] = id;
         resource = localData;
@@ -205,7 +203,9 @@ class Store {
   async refreshResources(resourceIds: string[]) {
     resourceIds = [...new Set(resourceIds.filter(id => this.cache.has(id)))]; // remove duplicates and not cached resources
     const resourceWithContexts = resourceIds.map(resourceId => ({ "id": resourceId, "context": store.get(resourceId)?.clientContext }));
-    for (const resource of resourceWithContexts) this.clearCache(resource.id);
+    for (const resource of resourceWithContexts) {
+      if (!this._isLocalId(resource.id)) this.clearCache(resource.id);
+    }
     await Promise.all(resourceWithContexts.map(({ id, context }) => this.getData(id, context || base_context)))
     return resourceIds;
   }
@@ -338,6 +338,10 @@ class Store {
 
   _getExpandedId(id: string, context: object) {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
+  }
+
+  _isLocalId(id: string) {
+    return id.startsWith('store://local.');
   }
 
   /**
