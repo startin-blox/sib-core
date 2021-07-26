@@ -26,7 +26,7 @@ class Store {
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<String>;
-  headers: Headers;
+  headers: object;
   fetch: Promise<any> | undefined;
   session: Promise<any> | undefined;
 
@@ -35,8 +35,7 @@ class Store {
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
-    this.headers = new Headers();
-    this.headers.set('Content-Type', 'application/ld+json');
+    this.headers = {'Content-Type': 'application/ld+json'};
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
   }
@@ -92,15 +91,18 @@ class Store {
   async fetchAuthn(iri: string, options: any) {
     let authenticated = false;
     if (this.session) authenticated = await this.session;
-    return (this.fetch && authenticated)
-      ? this.fetch.then(fn => fn(iri, options))
-      : fetch(iri, options);
+
+    if (this.fetch && authenticated) { // authenticated
+      return this.fetch.then(fn => fn(iri, options))
+    } else { // anonymous
+      if (options.headers) options.headers = this._convertHeaders(options.headers);
+      return fetch(iri, options);
+    }
   }
 
   async fetchData(id: string, context = {}, idParent = "") {
     const iri = this._getAbsoluteIri(id, context, idParent);
-    const headers = this.headers;
-    headers.set('accept-language', this._getLanguage());
+    const headers = { ...this.headers, 'accept-language': this._getLanguage() };
     return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
@@ -156,11 +158,18 @@ class Store {
     }
   }
 
+  /**
+   * Update fetch
+   * @param method - 'POST', 'PATCH', 'PUT', '_LOCAL'
+   * @param resource - resource to send
+   * @param id - uri to update
+   * @returns - object
+   */
   async _fetch(method: string, resource: object, id: string): Promise<any> {
-    if(method !== '_LOCAL')
-      return fetch(id, {
+    if (method !== '_LOCAL')
+      return this.fetchAuthn(id, {
         method: method,
-        headers: await this.headers,
+        headers: this.headers,
         body: JSON.stringify(resource),
         credentials: 'include'
       })
@@ -334,6 +343,19 @@ class Store {
       .then(resourceIds => this.notifyResources(resourceIds));
 
     return deleted;
+  }
+
+  /**
+   * Convert headers object to Headers
+   * @param headersObject - object
+   * @returns {Headers}
+   */
+  _convertHeaders(headersObject: object): Headers {
+    const headers = new Headers();
+    for (const [key, value] of Object.entries(headersObject)){
+      headers.set(key, value as string);
+    }
+    return headers;
   }
 
   _getExpandedId(id: string, context: object) {
