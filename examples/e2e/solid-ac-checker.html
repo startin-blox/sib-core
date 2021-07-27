@@ -33,5 +33,22 @@
         ></solid-display>
       </solid-ac-checker>
     </div>
+    <div>
+      <h3>Fetch permissions</h3>
+      <solid-display
+        data-src="/examples/data/list/skills.jsonld"
+        fields="name"
+      ></solid-display>
+      <button id="load">Load data</button>
+      <solid-ac-checker id="ac-checker-3" permission="acl:Read" data-src>
+        <div id="test3">OK</div>
+      </solid-ac-checker>
+    </div>
+
+    <script>
+      load.onclick= () => {
+        document.querySelector('#ac-checker-3').dataset.src = "/examples/data/list/skill-2.jsonld";
+      }
+    </script>
   </body>
 </html>

@@ -45,16 +45,18 @@ class Store {
    * @param id - uri of the resource to fetch
    * @param context - context used to expand id and predicates when accessing the resource
    * @param idParent - uri of the parent caller used to expand uri for local files
+   * @param localData - data to put in cache
+   * @param forceFetch - force the fetch of data
    *
    * @returns The fetched resource
    *
    * @async
    */
 
-  async getData(id: string, context:any = {}, idParent = "", localData?: object): Promise<Resource|null> {
+  async getData(id: string, context:any = {}, idParent = "", localData?: object, forceFetch: boolean = false): Promise<Resource|null> {
     if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
-      if (resource && resource.isFullResource()) return resource; // if resource is not complete, re-fetch it
+      if (resource && resource.isFullResource() && !forceFetch) return resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async (resolve) => {
@@ -542,9 +544,10 @@ class CustomGetter {
    * @param id
    * @param context
    * @param iriParent
+   * @param forceFetch
    */
-  async getResource(id: string, context: object, iriParent: string): Promise<Resource | null> {
-    return store.getData(id, context, iriParent);
+  async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false): Promise<Resource | null> {
+    return store.getData(id, context, iriParent, undefined, forceFetch);
   }
 
   /**
@@ -617,8 +620,13 @@ class CustomGetter {
     return Object.keys(this.resource).filter(p => !p.startsWith('@')).length > 0;
   }
 
-  getPermissions(): string[] {
-    const permissions = this.resource[this.getExpandedPredicate("permissions")];
+  async getPermissions(): Promise<string[]> {
+    const permissionPredicate = this.getExpandedPredicate("permissions");
+    let permissions = this.resource[permissionPredicate];
+    if (!permissions) { // if no permission, re-fetch data
+      await this.getResource(this.resourceId, this.clientContext, this.parentId, true);
+      permissions = this.resource[permissionPredicate];
+    }
     return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
   }
 

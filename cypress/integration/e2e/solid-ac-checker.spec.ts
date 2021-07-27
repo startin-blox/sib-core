@@ -13,4 +13,9 @@ describe('solid-ac-checker', function() {
     cy.get('#ac-checker-2').should('not.have.attr', 'hidden');
     cy.get('#test2').should('be.visible');
   });
+  it('fetches permissions', () => {
+    cy.get('#load').click();
+    cy.get('#ac-checker-3').should('not.have.attr', 'hidden');
+    cy.get('#test3').should('be.visible');
+  });
 })

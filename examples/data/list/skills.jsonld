@@ -18,13 +18,7 @@
       "@id": "/examples/data/list/skill-2.jsonld",
       "name": "CSS",
       "order": 5,
-      "@type": "hd:skill",
-      "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
-      ]
+      "@type": "hd:skill"
     },
     {
       "@id": "/examples/data/list/skill-3.jsonld",
