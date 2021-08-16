@@ -239,7 +239,7 @@ const WidgetMixin = {
       'minlength',
       'search-text',
       'search-placeholder',
-      
+      'link-text',
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 

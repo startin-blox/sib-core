@@ -1,5 +1,6 @@
 import { EditableMixin } from '../templatesDependencies/editableMixin';
 import { AltMixin } from '../templatesDependencies/altMixin';
+import { LinkTextMixin } from '../templatesDependencies/linkTextMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -27,11 +28,13 @@ export const displayTemplates = {
         href=${(attributes.mailto || attributes.tel || '')+(value || '#')}
         target=${ifDefined(attributes.target)}
         ?data-editable=${attributes.editable}
+        id=${ifDefined(attributes.id)}
+        link-text=${ifDefined(attributes.linkText)}
       >
-        ${attributes.label || value || ''}
+        ${attributes.linkText || value || ''}
       </a>
     `,
-    dependencies: [ EditableMixin ]
+    dependencies: [ EditableMixin,  LinkTextMixin ]
   },
   img: {
     template: (value: string, attributes: any) => html`
