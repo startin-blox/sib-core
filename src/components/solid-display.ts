@@ -179,6 +179,7 @@ export const SolidDisplay = {
         attr.name.startsWith('editable-')    ||
         attr.name.startsWith('action-')      ||
         attr.name.startsWith('default-')     ||
+        attr.name.startsWith('link-text-')   ||
         attr.name == 'extra-context'
       )
         attributes[attr.name] = attr.value;
