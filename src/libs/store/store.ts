@@ -166,7 +166,7 @@ class Store {
         headers: await this.headers,
         body: JSON.stringify(resource),
         credentials: 'include'
-      })
+      });
 
     this.clearCache(id);
     await this.getData(id, resource['@context'] || {}, '', resource);
@@ -177,10 +177,12 @@ class Store {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method)) throw new Error('Error: method not allowed');
 
     const expandedId = this._getExpandedId(id, resource['@context']);
-    return this._fetch(method, resource, id).then(response => {
+    return this._fetch(method, resource, id).then(async(response) => {
       if (response.ok) {
-        if(method !== '_LOCAL')
+        if(method !== '_LOCAL') {
+          await this.purge(id);
           this.clearCache(expandedId);
+        }
         this.getData(expandedId, resource['@context']).then(() => {
 
           // Refresh and notify nested resources
@@ -301,6 +303,23 @@ class Store {
   }
 
   /**
+   * Send a PURGE request to remove a resource from REDIS AD cache
+   * @param id - uri of the resource to patch
+   *
+   * @returns id of the edited resource
+   */
+  async purge(id: string) {
+    console.log('Purging resource ' + id);
+    await fetch(id, {
+      method: "PURGE",
+      headers: this.headers,
+      credentials: 'include'
+    }).catch(function(error) {
+        console.warn('No purge method allowed: ' + error)
+    });
+  }
+
+  /**
    * Send a DELETE request to delete a resource
    * @param id - uri of the resource to delete
    * @param context - can be used to expand id
@@ -314,6 +333,7 @@ class Store {
       headers: this.headers,
       credentials: 'include'
     });
+    await this.purge(id);
 
     // Notify related containers
     const toNotify = this.subscriptionIndex.get(expandedId);
