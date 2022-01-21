@@ -35,15 +35,8 @@ test:
     - test
 
 publish:
-  stage: release
-  before_script:
-    - npm install -g semantic-release@v17 @semantic-release/gitlab@v6.0.5
-    - npm install
-  script:
-    - npm run build
-    - semantic-release
+  stage: publish
+  extends: .publish_npm
   only:
     - master
     - beta
-  tags:
-    - deploy
