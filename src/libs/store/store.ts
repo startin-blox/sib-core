@@ -174,7 +174,7 @@ class Store {
         headers: this.headers,
         body: JSON.stringify(resource),
         credentials: 'include'
-      })
+      });
 
     const resourceProxy = store.get(id);
     const clientContext = resourceProxy ? resourceProxy.clientContext : resource['@context']
@@ -188,9 +188,12 @@ class Store {
 
     const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
-    return this._fetch(method, resource, id).then(response => {
+    return this._fetch(method, resource, id).then(async(response) => {
       if (response.ok) {
-        if(method !== '_LOCAL') this.clearCache(expandedId); // clear cache
+        if(method !== '_LOCAL') {
+          await this.purge(id);
+          this.clearCache(expandedId);
+        } // clear cache
         this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
           const nestedResources = await this.getNestedResources(resource, id);
           const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
@@ -324,6 +327,23 @@ class Store {
   }
 
   /**
+   * Send a PURGE request to remove a resource from REDIS AD cache
+   * @param id - uri of the resource to patch
+   *
+   * @returns id of the edited resource
+   */
+  async purge(id: string) {
+    console.log('Purging resource ' + id);
+    await this.fetchAuthn(id, {
+      method: "PURGE",
+      headers: this.headers,
+      credentials: 'include'
+    }).catch(function(error) {
+        console.warn('No purge method allowed: ' + error)
+    });
+  }
+
+  /**
    * Send a DELETE request to delete a resource
    * @param id - uri of the resource to delete
    * @param context - can be used to expand id
@@ -337,6 +357,7 @@ class Store {
       headers: this.headers,
       credentials: 'include'
     });
+    await this.purge(id);
 
     const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
     const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];

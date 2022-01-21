@@ -14,14 +14,18 @@
       newWidgetFactory('solid-display-div');
       newWidgetFactory('solid-display-link');
       newWidgetFactory('solid-display-link-mailto');
+      newWidgetFactory('solid-display-link-mailto-label');
       newWidgetFactory('solid-display-link-tel');
+      newWidgetFactory('solid-display-link-tel-label');
       newWidgetFactory('solid-display-link-blank');
+      newWidgetFactory('solid-display-link-blank-label');
       newWidgetFactory('solid-display-img');
       newWidgetFactory('solid-display-boolean');
       newWidgetFactory('solid-display-label-div');
       newWidgetFactory('solid-display-date-div');
       newWidgetFactory('solid-display-datetime-div');
       newWidgetFactory('solid-display-multiline-div');
+      newWidgetFactory('solid-action-label');
       newWidgetFactory('solid-display-div-markdown');
       newWidgetFactory('solid-display-div-autolink');
       newWidgetFactory('solid-display-value-oembed');
@@ -51,15 +55,30 @@
       name="test1"
       value="http://example.com"
     ></solid-display-link-mailto>
+    <solid-display-link-mailto-label
+      name="test1"
+      value="http://example.com"
+      label="mail: "
+    ></solid-display-link-mailto-label>
     <solid-display-link-tel
       name="test1"
       value="http://example.com"
     ></solid-display-link-tel>
+    <solid-display-link-tel-label
+      name="test1"
+      value="http://example.com"
+      label="tel: "
+    ></solid-display-link-tel-label>
     <solid-display-link-blank
       name="test1"
       value="http://example.com"
-      label="link text"
+      link-text="link text"
     ></solid-display-link-blank>
+    <solid-display-link-blank-label
+      name="test1"
+      value="http://example.com"
+      label="blank test: "
+    ></solid-display-link-blank-label>
     <solid-display-img
       name="test1"
       value="test-img.png"
@@ -106,6 +125,18 @@
       value="next-page"
       src="resource-1.jsonld"
     ></solid-action>
+    <solid-action
+      name="test2"
+      value="next-page"
+      src="resource-1.jsonld"
+      link-text="link text"
+    ></solid-action>
+    <solid-action-label
+      name="test1"
+      value="next-page"
+      src="resource-1.jsonld"
+      label="label solid-action: "
+    ></solid-action-label>
     <solid-display-div-markdown
       name="test display markdown"
       value="**bold** _italic_ [link](http://corndog.io/)"

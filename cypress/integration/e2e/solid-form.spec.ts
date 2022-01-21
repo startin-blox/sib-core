@@ -268,7 +268,7 @@ describe('solid-form', function() {
     .and('have.attr', 'addable-data-src', '../data/list/users.jsonld')
     .and('have.attr', 'addable-fields', 'name')
     .and('have.attr', 'addable-widget-name', 'solid-form-text-placeholder-label')
-    .and('have.attr', 'addable-placeholder-name', 'Enter your name')
+    .and('have.attr', 'addable-placeholder-name', 'Enter skill name')
     .and('have.attr', 'addable-submit-button', 'Send name')
   });
   it('autocomplete attribute', () => {

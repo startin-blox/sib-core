@@ -266,10 +266,10 @@ export const formTemplates = {
       ${(attributes.children || []).map((child, index) => html`
         <div data-index=${attributes.name + index}>
           ${child}
-          <button type="button" @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
+          <button type="button" class=${ifDefined(attributes.removeClass)} @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
         </div>
       `)}
-      <button type="button" @click=${attributes.addItem}>${attributes.addLabel}</button>
+      <button type="button" class=${ifDefined(attributes.addClass)} @click=${attributes.addItem}>${attributes.addLabel}</button>
     `,
     dependencies: [ MultipleFormMixin, FormMixin ]
   },
