@@ -24,7 +24,7 @@ cache:
 stages:
   - prepare
   - test
-  - release
+  - publish
 
 test:
   image: cypress/base:10
