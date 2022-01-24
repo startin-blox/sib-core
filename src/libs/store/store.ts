@@ -349,11 +349,10 @@ class Store {
 
     try {
       const fullURL = new URL(id);
-
       var pathArray = fullURL.pathname.split('/');
       var containerUrl = fullURL.origin + '/' + pathArray[1];
-      const headers = { ...this.headers, 'X-Cache-Purge-Match': 'wildcard' };
-      await this.fetchAuthn(containerUrl + '/*', {
+      const headers = { ...this.headers, 'X-Cache-Purge-Match': 'startswith' };
+      await this.fetchAuthn(containerUrl, {
         method: "PURGE",
         headers: headers
       }).catch(function(error) {
