@@ -349,12 +349,10 @@ class Store {
 
     try {
       const fullURL = new URL(id);
-      console.log("Full URL object", fullURL);
 
-      var containerUrl = fullURL.hostname + (fullURL.pathname.split('/'))[0];
-      console.log("Container URL for wildcard purge", containerUrl);
+      var pathArray = fullURL.pathname.split('/');
+      var containerUrl = fullURL.origin + '/' + pathArray[1];
       const headers = { ...this.headers, 'X-Cache-Purge-Match': 'wildcard' };
-      console.log("Headers", headers);
       await this.fetchAuthn(containerUrl + '/*', {
         method: "PURGE",
         headers: headers
