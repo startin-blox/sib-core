@@ -41,6 +41,22 @@ test:
   tags:
     - test
 
+prepare:
+  stage: prepare
+  image: node:14
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
+  script:
+    - npm run build
+  artifacts:
+    when: on_success
+    paths:
+      - dist
+    expire_in: 1 day
+  tags:
+    - test
+
 publish:
   stage: publish
   extends: .publish_npm
