@@ -98,7 +98,13 @@ class Store {
       return this.fetch.then(fn => fn(iri, options))
     } else { // anonymous
       if (options.headers) options.headers = this._convertHeaders(options.headers);
-      return fetch(iri, options);
+      return fetch(iri, options).then(function(response) {
+        if (options.method === "PURGE" && !response.ok && response.status === 404) {
+            const err = new Error("PURGE call is returning 404");
+            throw err;
+        }
+        return response;
+      });
     }
   }
 
@@ -336,11 +342,29 @@ class Store {
     console.log('Purging resource ' + id);
     await this.fetchAuthn(id, {
       method: "PURGE",
-      headers: this.headers,
-      credentials: 'include'
+      headers: this.headers
     }).catch(function(error) {
         console.warn('No purge method allowed: ' + error)
     });
+
+    try {
+      const fullURL = new URL(id);
+      console.log("Full URL object", fullURL);
+
+      var containerUrl = fullURL.hostname + (fullURL.pathname.split('/'))[0];
+      console.log("Container URL for wildcard purge", containerUrl);
+      const headers = { ...this.headers, 'X-Cache-Purge-Match': 'wildcard' };
+      console.log("Headers", headers);
+      await this.fetchAuthn(containerUrl + '/*', {
+        method: "PURGE",
+        headers: headers
+      }).catch(function(error) {
+          console.warn('No purge method allowed: ' + error)
+      });
+    } catch (error) {
+      console.warn('The resource ID is not a complete URL: ' + error);
+      return;
+    }
   }
 
   /**
