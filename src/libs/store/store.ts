@@ -35,7 +35,7 @@ class Store {
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
-    this.headers = {'Content-Type': 'application/ld+json'};
+    this.headers = {'Content-Type': 'application/ld+json', 'Cache-Control': 'must-revalidate'};
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
   }
@@ -111,6 +111,7 @@ class Store {
   async fetchData(id: string, context = {}, idParent = "") {
     const iri = this._getAbsoluteIri(id, context, idParent);
     const headers = { ...this.headers, 'accept-language': this._getLanguage() };
+    console.log("Request Headers:", headers);
     return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
