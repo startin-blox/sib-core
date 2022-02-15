@@ -1,4 +1,5 @@
-import { compare, parseFieldsString } from '../libs/helpers';
+import type { SearchQuery } from '../libs/interfaces';
+import { searchInResources } from '../libs/filter';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -34,7 +35,7 @@ const FilterMixin = {
   attached(): void {
     this.listPostProcessors.push(this.filterCallback.bind(this));
   },
-  get filters(): object {
+  get filters(): SearchQuery {
     return this.searchForm?.component.value ?? {};
   },
   set filters(filters) {
@@ -45,7 +46,12 @@ const FilterMixin = {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount.has(context)) this.searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
-      const filteredResources = await Promise.all(resources.map(this.matchFilters.bind(this)));
+      const filteredResources = await searchInResources(
+        resources,
+        this.filters,
+        this.fields,
+        this.searchForm
+      );
       resources =	resources.filter((_v, index) => filteredResources[index]);
     }
 
@@ -57,53 +63,6 @@ const FilterMixin = {
     if (!this.resource) return;
     this.empty();
     await this.populate();
-  },
-  async matchValue(subject, query): Promise<boolean> {
-    if (subject == null && query.value === '') return true; // filter not set and subject not existing -> ignore filter
-    if (subject == null) return false; // property does not exist on resource
-    // Filter on a container
-    if (query.list) {
-      if(query.value.length === 0) return true;
-      for(const v of query.value) {
-        const q = {
-          type: query.type,
-          value: v,
-        }
-        if(await this.matchValue(subject, q)) return true;
-      }
-      return false;
-    }
-    if (subject.isContainer?.()) {
-      let ret = Promise.resolve(query.value === ''); // if no query, return a match
-      for (const value of subject['ldp:contains']) {
-        ret = await ret || await this.matchValue(value, query)
-      }
-      return ret;
-    }
-    return compare[query.type](subject, query.value);
-  },
-  async matchFilter(resource: object, filter: string, query: any): Promise<boolean> {
-    let fields: string[] = [];
-    if (this.isSet(filter)) fields = this.getSet(filter);
-    else if (this.isSearchField(filter)) fields = this.getSearchField(filter);
-
-    // search on 1 field
-    if (fields.length == 0)
-      return this.matchValue(await resource[filter], query);
-
-    // search on multiple fields
-    return fields.reduce( // return true if it matches at least one of the fields
-      async (initial, field) => await initial || await this.matchFilter(resource, field, query),
-      Promise.resolve(false),
-    );
-  },
-  async matchFilters(resource: object): Promise<boolean> {
-    //return true if all filters values are contained in the corresponding field of the resource
-    return Object.keys(this.filters).reduce(
-      async (initial, filter) =>
-        await initial && await this.matchFilter(resource, filter, this.filters[filter]),
-      Promise.resolve(true)
-    );
   },
   async getValuesOfField(field: string) {
     const arrayOfDataObjects = this.resource['ldp:contains'];
@@ -160,13 +119,6 @@ const FilterMixin = {
 
     this.element.insertBefore(this.searchForm, this.element.firstChild);
     await this.searchForm.component.populate();
-  },
-  // Search fields
-  isSearchField(field: string) {
-    return this.searchForm.hasAttribute('search-' + field);
-  },
-  getSearchField(field: string): string[] {
-    return parseFieldsString(this.searchForm.getAttribute('search-' + field));
   },
 }
 

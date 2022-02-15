@@ -75,3 +75,12 @@ export interface LocationResourceInterface {
   lat?: HookInterface;
   lng?: HookInterface;
 }
+export interface Query {
+  value: any
+  type: "boolean" | "number" | "range" | "resource" | "string";
+  list: boolean
+}
+
+export interface SearchQuery {
+  [key: string]: Query
+}

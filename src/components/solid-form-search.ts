@@ -8,6 +8,7 @@ import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
+import type { SearchQuery } from '../libs/interfaces';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
@@ -56,8 +57,8 @@ export const SolidFormSearch = {
     return 'solid-set-default';
   },
 
-  get value(): object {
-    const values = {};
+  get value(): SearchQuery {
+    const values: SearchQuery = {};
     this.widgets.forEach((widget) => {
       const name = (widget.component || widget).name;
       if (name == null) return;
