@@ -111,7 +111,7 @@ class Store {
   async fetchData(id: string, context = {}, idParent = "") {
     const iri = this._getAbsoluteIri(id, context, idParent);
     const headers = { ...this.headers, 'accept-language': this._getLanguage() };
-    console.log("Request Headers:", headers);
+    // console.log("Request Headers:", headers);
     return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
@@ -340,7 +340,7 @@ class Store {
    * @returns id of the edited resource
    */
   async purge(id: string) {
-    console.log('Purging resource ' + id);
+    // console.log('Purging resource ' + id);
     await this.fetchAuthn(id, {
       method: "PURGE",
       headers: this.headers
