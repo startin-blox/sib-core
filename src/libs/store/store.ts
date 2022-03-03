@@ -198,7 +198,7 @@ class Store {
     return this._fetch(method, resource, id).then(async(response) => {
       if (response.ok) {
         if(method !== '_LOCAL') {
-          await this.purge(id);
+          // await this.purge(id);
           this.clearCache(expandedId);
         } // clear cache
         this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
@@ -379,7 +379,7 @@ class Store {
       headers: this.headers,
       credentials: 'include'
     });
-    await this.purge(id);
+    // await this.purge(id);
 
     const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
     const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
