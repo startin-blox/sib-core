@@ -19,9 +19,12 @@ cache:
     - .npm
     - cache/Cypress
 
+default:
+  image: node:14
+
 stages:
   - test
-  - release
+  - publish
 
 test:
   image: cypress/base:10
