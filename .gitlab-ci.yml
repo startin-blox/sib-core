@@ -1,5 +1,9 @@
 ---
-image: node:12
+include:
+  project: infra/gitlab
+  ref: master
+  file: templates/nodejs.ci.yml
+
 
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
@@ -15,9 +19,13 @@ cache:
     - .npm
     - cache/Cypress
 
+default:
+  image: node:14
+
 stages:
   - test
-  - release
+  - prepare
+  - publish
 
 test:
   image: cypress/base:10
@@ -34,16 +42,25 @@ test:
   tags:
     - test
 
-publish:
-  stage: release
+prepare:
+  stage: prepare
+  image: node:14
   before_script:
-    - npm install -g semantic-release@v17 @semantic-release/gitlab@v6.0.5
-    - npm install
+    - npm ci --cache .npm --prefer-offline
+    - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
   script:
     - npm run build
-    - semantic-release
+  artifacts:
+    when: on_success
+    paths:
+      - dist
+    expire_in: 1 day
+  tags:
+    - test
+
+publish:
+  stage: publish
+  extends: .publish_npm
   only:
     - master
     - beta
-  tags:
-    - deploy
