@@ -354,6 +354,16 @@ export const formTemplates = {
     `,
     dependencies: [ ValueRichtextMixin, FormMixin ]
   },
+  editor: {
+    template: (_value: string, attributes: any) => html`
+      <div 
+        data-editor
+        name=${ifDefined(attributes.name)}
+        data-holder
+      ></div>
+    `,
+    dependencies: [ FormMixin ]
+  },
   color: {
     template: (_value: string, attributes: any) => html`
       <input
