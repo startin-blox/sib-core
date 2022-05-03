@@ -1,24 +1,32 @@
-import tinymce from 'tinymce';
+import tinymce from 'tinymce/tinymce';
+import 'tinymce/themes/silver';
+// //@ts-ignore
+import 'tinymce/models/dom';
+// //@ts-ignore
+import 'tinymce/icons/default';
+// //@ts-ignore
+import 'tinymce/skins/ui/oxide/skin.min.css';
+// //@ts-ignore
+import 'tinymce/skins/content/default/content.css';
+// //@ts-ignore
+import 'tinymce/skins/ui/oxide/content.min.css';
+
 
 const EditorMixin = {
   name: 'editor-mixin',
-  initialState:{
-    tinymce: null,
-  },
 
   created() {
-    // //@ts-ignore
-    // import('../../../node_modules/tinymce/tinymce.min.js');
-
-    this.tinymce = null;
+    console.log("created editor mixin");
+    // this.tinymce = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
   addCallback(value: string, listCallbacks: Function[]) {
     const editor = this.element.querySelector('[data-editor]');
+    console.log("Goin through the callback", editor);
     tinymce.init({
-      selector: editor,
+      selector: "div[data-editor]",
       height: 500,
-      menubar: false,
+      menubar: true,
       plugins: [
         'lists', 'link'
       ],
