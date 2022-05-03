@@ -1,14 +1,9 @@
 import tinymce from 'tinymce/tinymce';
 import 'tinymce/themes/silver';
-// //@ts-ignore
 import 'tinymce/models/dom';
-// //@ts-ignore
 import 'tinymce/icons/default';
-// //@ts-ignore
 import 'tinymce/skins/ui/oxide/skin.min.css';
-// //@ts-ignore
 import 'tinymce/skins/content/default/content.css';
-// //@ts-ignore
 import 'tinymce/skins/ui/oxide/content.min.css';
 
 
