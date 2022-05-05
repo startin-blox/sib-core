@@ -1,10 +1,4 @@
-import tinymce from 'tinymce/tinymce';
-import 'tinymce/themes/silver';
-import 'tinymce/models/dom';
-import 'tinymce/icons/default';
-import 'tinymce/skins/ui/oxide/skin.min.css';
-import 'tinymce/skins/content/default/content.css';
-import 'tinymce/skins/ui/oxide/content.min.css';
+import tinymce from 'tinymce';
 
 
 const EditorMixin = {
@@ -25,10 +19,7 @@ const EditorMixin = {
       plugins: [
         'lists', 'link'
       ],
-      toolbar: 'styles | blockquote | ' + 
-      'bold italic' + 
-      'alignright alignjustify | bullist numlist outdent indent | ' + 
-      'removeformat'
+      toolbar: 'styles | bold italic underline | blockquote | indent outdent | bullist numlist | link | removeformat',
     });
       const nextProcessor = listCallbacks.shift();
       if (nextProcessor) nextProcessor(value, listCallbacks); 
