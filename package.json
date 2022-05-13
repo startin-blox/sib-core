@@ -107,6 +107,7 @@
     "wait-on": "^5.2.1"
   },
   "dependencies": {
+    "showdown": "^2.1.0",
     "tinymce": "^6.0.2"
   }
 }
