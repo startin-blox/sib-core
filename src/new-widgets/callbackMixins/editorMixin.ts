@@ -1,4 +1,22 @@
 import tinymce from 'tinymce';
+// import tinymce from 'tinymce/tinymce';
+import 'tinymce/themes/silver';
+// //@ts-ignore
+import 'tinymce/models/dom';
+// //@ts-ignore
+import 'tinymce/icons/default';
+// //@ts-ignore
+import 'tinymce/skins/ui/oxide/skin.min.css';
+// //@ts-ignore
+import 'tinymce/skins/content/default/content.css';
+// //@ts-ignore
+import 'tinymce/skins/ui/oxide/content.min.css';
+
+//@ts-ignore
+import 'tinymce/plugins/lists/plugin.js';
+//@ts-ignore
+import 'tinymce/plugins/link/plugin.js';
+
 import showdown from 'showdown';
 
 const EditorMixin = {
@@ -22,6 +40,9 @@ const EditorMixin = {
     if (this.tinymce == null) {
       tinymce.init({
         selector: "#data-editor",
+        // skin: 'snow',
+        // skin_url: '../../../node_modules/tinymce/skins/content/default/content.css',
+        // content_css: 'false',
         height: 500,
         menubar: false,
         plugins: [
@@ -30,8 +51,7 @@ const EditorMixin = {
         toolbar: 'styles | bold italic | blockquote | bullist numlist | link | removeformat',
         style_formats: [
           { title: 'Normal', format: 'p' },
-          {
-            title: 'Headings', items: [
+          { title: 'Headings', items: [
               { title: 'Heading 1', format: 'h1' },
               { title: 'Heading 2', format: 'h2' },
               { title: 'Heading 3', format: 'h3' },
