@@ -357,12 +357,11 @@ export const formTemplates = {
   },
   editor: {
     template: (_value: string, attributes: any) => html`
-      <div 
-      data-editor
-        id='data-editor'
+      <textarea 
+        data-editor
         name=${ifDefined(attributes.name)}
         data-holder
-      ></div>
+      ></textarea>
     `,
     dependencies: [ ValueEditorMixin, FormMixin ]
   },

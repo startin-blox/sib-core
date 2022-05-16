@@ -1,20 +1,10 @@
 import tinymce from 'tinymce';
-// import tinymce from 'tinymce/tinymce';
 import 'tinymce/themes/silver';
-// //@ts-ignore
 import 'tinymce/models/dom';
-// //@ts-ignore
 import 'tinymce/icons/default';
-// //@ts-ignore
-import 'tinymce/skins/ui/oxide/skin.min.css';
-// //@ts-ignore
-import 'tinymce/skins/content/default/content.css';
-// //@ts-ignore
-import 'tinymce/skins/ui/oxide/content.min.css';
+import { importCSS } from '../../libs/helpers';
 
-//@ts-ignore
 import 'tinymce/plugins/lists/plugin.js';
-//@ts-ignore
 import 'tinymce/plugins/link/plugin.js';
 
 import showdown from 'showdown';
@@ -26,6 +16,9 @@ const EditorMixin = {
   },
 
   created() {
+    importCSS('https://cdn.skypack.dev/tinymce/skins/ui/oxide/skin.css');
+    importCSS('https://cdn.skypack.dev/tinymce/skins/content/default/content.css');
+    importCSS('https://cdn.skypack.dev/tinymce/skins/ui/oxide/content.css');
     this.tinymce = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
@@ -36,10 +29,11 @@ const EditorMixin = {
     const converter = new showdown.Converter();
     const htmlValue = converter.makeHtml(val);
     // console.log(htmlValue);
+    const editor = this.element.querySelector('[data-editor]');
 
     if (this.tinymce == null) {
       tinymce.init({
-        selector: "#data-editor",
+        target: editor,
         // skin: 'snow',
         // skin_url: '../../../node_modules/tinymce/skins/content/default/content.css',
         // content_css: 'false',
