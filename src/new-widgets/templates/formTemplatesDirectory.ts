@@ -357,7 +357,8 @@ export const formTemplates = {
   },
   editor: {
     template: (_value: string, attributes: any) => html`
-      <textarea 
+      <textarea
+        id=${attributes.id}
         data-editor
         name=${ifDefined(attributes.name)}
         data-holder

@@ -3,6 +3,7 @@ import 'tinymce/themes/silver';
 import 'tinymce/models/dom';
 import 'tinymce/icons/default';
 import { importCSS } from '../../libs/helpers';
+import { uniqID } from '../../libs/helpers';
 
 import 'tinymce/plugins/lists/plugin.js';
 import 'tinymce/plugins/link/plugin.js';
@@ -21,6 +22,7 @@ const EditorMixin = {
     importCSS('https://cdn.skypack.dev/tinymce/skins/ui/oxide/content.css');
     this.tinymce = null;
     this.listCallbacks.push(this.addCallback.bind(this));
+    this.listAttributes['id'] = uniqID();
   },
   addCallback(value: string, listCallbacks: Function[]) {
     //set value in editor (markdown format transform in html to edit it)
@@ -28,15 +30,12 @@ const EditorMixin = {
     // console.log(this.value);
     const converter = new showdown.Converter();
     const htmlValue = converter.makeHtml(val);
-    // console.log(htmlValue);
-    const editor = this.element.querySelector('[data-editor]');
-
+    console.log(htmlValue);
+    const editor = document.getElementById(this.listAttributes['id']);
+    if (editor == null) return;
     if (this.tinymce == null) {
       tinymce.init({
-        target: editor,
-        // skin: 'snow',
-        // skin_url: '../../../node_modules/tinymce/skins/content/default/content.css',
-        // content_css: 'false',
+        selector: '#'+editor.id,
         height: 500,
         menubar: false,
         plugins: [
@@ -55,7 +54,7 @@ const EditorMixin = {
             ]
           }
         ],
-        //to avoid line break not ok with markdown
+        //to avoid line break, not ok with markdown
         setup: function(editor) {
           editor.on('keydown', function(event) {
               if (event.code == 'Enter' && event.shiftKey)  {
@@ -66,7 +65,7 @@ const EditorMixin = {
           });
         }
       });
-      tinymce.get('data-editor').on('init', function (e) {
+      tinymce.get(editor.id).on('init', function (e) {
         e.target.setContent(htmlValue);
       });
     }

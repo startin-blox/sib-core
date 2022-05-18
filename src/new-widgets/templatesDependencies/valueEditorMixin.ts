@@ -5,9 +5,11 @@ const ValueEditorMixin = {
   name: 'valueeditor-mixin',
 
   getValue() {
+    const editor = document.getElementById(this.listAttributes['id']);
+    if (editor == null) return;
     const converter = new showdown.Converter();
-    converter.setOption('simpleLineBreaks', true);
-    const markdown = converter.makeMarkdown(tinymce.get('data-editor').getContent());
+    converter.setOption('simpleLineBreaks', false);
+    const markdown = converter.makeMarkdown(tinymce.get(editor.id).getContent());
     return markdown;
   },
 }
