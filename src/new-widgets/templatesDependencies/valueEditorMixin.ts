@@ -8,9 +8,9 @@ const ValueEditorMixin = {
     const editor = document.getElementById(this.listAttributes['id']);
     if (editor == null) return;
     const converter = new showdown.Converter();
-    converter.setOption('simpleLineBreaks', false);
-    const markdown = converter.makeMarkdown(tinymce.get(editor.id).getContent());
-    return markdown;
+    let markdown = converter.makeMarkdown(tinymce.get(editor.id).getContent());
+    const comment = '<!-- -->\n\n';
+    return markdown.includes(comment) ? markdown.split(comment).join("") : markdown
   },
 }
 
