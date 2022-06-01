@@ -1,10 +1,10 @@
 describe('solid-form', function() {
-  let win: Window;
+  // let win: Window;
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-form.html');
-    cy.window().then(w => {
-      win = w;
-    });
+    // cy.window().then(w => {
+    //   win = w;
+    // });
 
   });
   // it('creation form', () => {
