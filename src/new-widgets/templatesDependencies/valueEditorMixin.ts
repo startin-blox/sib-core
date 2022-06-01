@@ -1,5 +1,4 @@
 import tinymce from 'tinymce';
-// import TurndownService from 'turndown';
 import showdown from 'showdown';
 const ValueEditorMixin = {
   name: 'valueeditor-mixin',

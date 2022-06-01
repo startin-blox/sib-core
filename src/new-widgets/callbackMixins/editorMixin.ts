@@ -7,6 +7,7 @@ import { uniqID } from '../../libs/helpers';
 
 import 'tinymce/plugins/lists/plugin.js';
 import 'tinymce/plugins/link/plugin.js';
+import 'tinymce/plugins/autoresize/plugin.js';
 
 import showdown from 'showdown';
 
@@ -26,16 +27,19 @@ const EditorMixin = {
   },
   addCallback(value: string, listCallbacks: Function[]) {
     //set value in editor (markdown format transform in html to edit it)
-    const converter = new showdown.Converter();
-    const htmlValue = converter.makeHtml(this.value);
 
     if (this.tinymce == null) {
+      const converter = new showdown.Converter();
+      const htmlValue = converter.makeHtml(this.value);
+      console.log('init', this.listAttributes['id']);
       tinymce.init({
         selector: '#' + this.listAttributes['id'],
-        height: 500,
+        max_height: 500,
+        min_height: 120,
+        resize: true,
         menubar: false,
         plugins: [
-          'lists', 'link'
+          'lists', 'link', 'autoresize'
         ],
         toolbar: 'styles | bold italic | blockquote | bullist numlist | link | removeformat',
         style_formats: [
@@ -59,11 +63,17 @@ const EditorMixin = {
               event.stopPropagation();
               return false;
             } else return true;
-          });
+          })
+          editor.on('init', function() {
+            editor.setContent(htmlValue);
+          })
         }
       });
-      console.log(htmlValue);
-      tinymce.get(this.listAttributes['id']).setContent(htmlValue);
+      if(this.value) {
+        const converter = new showdown.Converter();
+        const htmlValue = converter.makeHtml(this.value);
+        tinymce.get(this.listAttributes['id']).setContent(htmlValue);
+      }
     }
     const nextProcessor = listCallbacks.shift();
     if (nextProcessor) nextProcessor(value, listCallbacks);
