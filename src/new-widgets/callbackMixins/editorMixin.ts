@@ -31,7 +31,6 @@ const EditorMixin = {
     if (this.tinymce == null) {
       const converter = new showdown.Converter();
       const htmlValue = converter.makeHtml(this.value);
-      console.log('init', this.listAttributes['id']);
       tinymce.init({
         selector: '#' + this.listAttributes['id'],
         max_height: 500,
