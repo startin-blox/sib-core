@@ -4,34 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-form</title>
+    <title>SIB test: solid-form-editor </title>
     <script type="module" src="../../dist/index.js"></script>
   </head>
 
   <body>
-    <h2>Solid Form Editor</h2>
-
-    <h3>solid-form-editor</h3>
+    <h3>Solid Form Editor</h3>
     <solid-form
       id="tinymce-editor1"
       data-src="../data/list/events.jsonld"
       fields="name"
       widget-name="solid-form-editor"
     ></solid-form>
+
+    <!-- To test getting formatted content  -->
     <!-- <solid-form
       id="tinymce-editor2"
-      data-src="../data/list/profile-5.jsonld"
-      fields="website"
-      widget-website="solid-form-editor"
-    ></solid-form>
-    <solid-form
+      data-src="../data/project2.jsonld"
+      fields="description"
+      widget-description="solid-form-editor"
+    ></solid-form> -->
+
+    <!-- To test formatted value passed by attribute -->
+    <!-- <solid-form
       id="tinymce-editor3"
-      data-src="../data/list/profile-5.jsonld"
-      fields="name"
-      widget-name="solid-form-editor"
-    ></solid-form>
-    <solid-form
-      id="tinymce-editor4"
       data-src="../data/list/events.jsonld"
       fields="name"
       value-name="**Jean-Bernard**"
