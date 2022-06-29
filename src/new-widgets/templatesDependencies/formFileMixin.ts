@@ -9,7 +9,7 @@ const FormFileMixin = {
     },
   },
   initialState: {
-    initialValue: null
+    initialValue: ''
   },
   created() {
     this.listAttributes['output'] = '';
@@ -29,7 +29,7 @@ const FormFileMixin = {
   selectFile() {
     if (this.uploadUrl === null) return;
 
-    if (this.initialValue === null) {
+    if (this.initialValue === '') {
       this.initialValue = this.value;
     }
 
