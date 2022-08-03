@@ -2,10 +2,11 @@ import { store } from '../libs/store/store';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
+import { ServerPaginationMixin } from './serverPaginationMixin';
 
 const StoreMixin = {
   name: 'store-mixin',
-  use: [AttributeBinderMixin, ContextMixin],
+  use: [AttributeBinderMixin, ContextMixin, ServerPaginationMixin],
   attributes: {
     noRender: {
       type: String,
@@ -46,13 +47,13 @@ const StoreMixin = {
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
+  
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
     if (!value || value == "undefined") return;
 
     this.resourceId = value;
-
     if (this.nestedField) {
       const resource = await store.getData(value, this.context);
       const nestedResource = resource ? await resource[this.nestedField] : null;
@@ -62,9 +63,11 @@ const StoreMixin = {
     this.updateNavigateSubscription();
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    await store.getData(this.resourceId, this.context);
+    console.log("From Store fetch", this.limit, this.getCurrentOffset(this.resourceId, this.limit));
+    await store.getData(this.resourceId, this.context, "", {}, false, this.limit, this.getCurrentOffset(this.resourceId, this.limit));
     this.updateDOM();
   },
+
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },

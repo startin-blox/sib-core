@@ -53,17 +53,17 @@ class Store {
    * @async
    */
 
-  async getData(id: string, context:any = {}, idParent = "", localData?: object, forceFetch: boolean = false): Promise<Resource|null> {
-    if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
-      const resource = this.get(id);
+  async getData(id: string, context:any = {}, idParent = "", localData?: object, forceFetch: boolean = false, limit:number = 0, offset:number = 0): Promise<Resource|null> {
+    if (localData == null && this.cache.has(id + "#p" + limit + "#o" + offset) && !this.loadingList.has(id + "#p" + limit + "#o" + offset)) {
+      const resource = this.get(id + "#p" + limit + "#o" + offset);
       if (resource && resource.isFullResource() && !forceFetch) return resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async (resolve) => {
       document.addEventListener('resourceReady', this.resolveResource(id, resolve));
 
-      if (this.loadingList.has(id)) return;
-      this.loadingList.add(id);
+      if (this.loadingList.has(id + "#p" + limit + "#o" + offset)) return;
+      this.loadingList.add(id + "#p" + limit + "#o" + offset);
 
       // Generate proxy
       const clientContext = await myParser.parse(context);
@@ -73,20 +73,25 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = localData || await this.fetchData(id, clientContext, idParent);
+        resource = await this.fetchData(id, clientContext, idParent, limit, offset);
+        console.log(["resource", resource]);
       } catch (error) { console.error(error) }
       if (!resource) {
-        this.loadingList.delete(id);
+        this.loadingList.delete(id + "#p" + limit + "#o" + offset);
         resolve(null);
         return;
       }
-      const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent).getProxy();
 
+      const serverContext = await myParser.parse([resource['@context'] || {}]);
+      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent, limit, offset).getProxy();
+      console.log(["resourceProxy", resourceProxy]);
       // Cache proxy
-      await this.cacheGraph(id, resourceProxy, clientContext, serverContext, idParent || id);
-      this.loadingList.delete(id);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id) } }));
+      await this.cacheGraph(id + "#p" + limit + "#o" + offset, resourceProxy, clientContext, serverContext, idParent || id, limit, offset);
+      console.log(["resource", this.get(id)]);
+      console.log(["resource", this.get(id + "#p" + limit + "#o" + offset)]);
+      this.loadingList.delete(id + "#p" + limit + "#o" + offset);
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id + "#p" + limit + "#o" + offset) } }));
+      return resource;
     });
   }
 
@@ -108,21 +113,29 @@ class Store {
     }
   }
 
-  async fetchData(id: string, context = {}, idParent = "") {
-    const iri = this._getAbsoluteIri(id, context, idParent);
-    const headers = { ...this.headers, 'accept-language': this._getLanguage() };
-    // console.log("Request Headers:", headers);
+  async fetchData(id: string, context = {}, idParent = "", limit:number = 0, offset:number = 0) {
+    let iri = this._getAbsoluteIri(id, context, idParent);
+    const headers = { 
+      ...this.headers,
+      'accept-language': this._getLanguage(),
+      'Prefer' : 'return=representation; max-triple-count="500"'
+    };
+
+    if (limit) {
+      iri = iri + '?limit=' + limit + '&offset' + offset;
+    }
+
     return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
       credentials: 'include'
     }).then(response => {
       if (!response.ok) return;
-      return response.json()
+      return response.json();
     })
   }
 
-  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string) {
+  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, limit: number, offset: number) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key)) { // if already cached, merge data
         this.cache.get(key).merge(resource);
@@ -137,9 +150,9 @@ class Store {
         let newParentContext = parentContext;
         // If additional context in resource, use it to expand properties
         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
-        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
+        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId, limit, offset).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
-        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId);
+        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, limit, offset);
       }
     }
 
@@ -148,7 +161,7 @@ class Store {
       const cacheChildrenPromises: Promise<void>[] = [];
       for (let res of resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId))
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, limit, offset))
       }
       await Promise.all(cacheChildrenPromises);
       return;
@@ -156,14 +169,14 @@ class Store {
 
     // Create proxy, (fetch data) and cache resource
     if (resource['@id'] && !resource.properties) {
-      if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
+      // if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
       // Fetch data if
       if (resource['@type'] === "sib:federatedContainer"  && resource['@cache'] !== 'false') { // if object is federated container
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }
-      const resourceProxy = new CustomGetter(resource['@id'], resource, clientContext, parentContext, parentId).getProxy();
-      await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId);
+      const resourceProxy = new CustomGetter(resource['@id'], resource, clientContext, parentContext, parentId, limit, offset).getProxy();
+      await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId, limit, offset);
     }
   }
 
@@ -511,13 +524,19 @@ class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
+  // page: number; // Page number, if exists
+  limit: number; // Number of entities to retrieve on current call
+  offset: number; // Offset of the current call
 
-  constructor(resourceId: string, resource: object, clientContext: object, serverContext: object = {}, parentId: string = "") {
+  constructor(resourceId: string, resource: object, clientContext: object, serverContext: object = {}, parentId: string = "", limit: number = 0, offset: number = 0) {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
     this.resource = this.expandProperties({ ...resource }, serverContext);
     this.resourceId = resourceId;
+    // this.page = page;
+    this.limit = limit;
+    this.offset = offset;
   }
 
   /**
@@ -556,8 +575,12 @@ class CustomGetter {
    */
   async get(path: any) {
     if (!path) return;
+    console.log("Path from get from custom getter", path);
     const path1: string[] = path.split('.');
     const path2: string[] = [];
+    const path3: string[] = path.split('#');
+    console.log("Path from get from custom getter", path);
+    console.log([path1, path2, path3]);
     let value: any;
     if (!this.isFullResource()) { // if resource is not complete, fetch it first
       await this.getResource(this.resourceId, this.clientContext, this.parentId);
