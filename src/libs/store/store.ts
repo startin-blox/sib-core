@@ -60,7 +60,7 @@ class Store {
     }
 
     return new Promise(async (resolve) => {
-      document.addEventListener('resourceReady', this.resolveResource(id, resolve));
+      document.addEventListener('resourceReady', this.resolveResource(id + "#p" + limit + "#o" + offset, resolve));
 
       if (this.loadingList.has(id + "#p" + limit + "#o" + offset)) return;
       this.loadingList.add(id + "#p" + limit + "#o" + offset);
@@ -87,11 +87,10 @@ class Store {
       console.log(["resourceProxy", resourceProxy]);
       // Cache proxy
       await this.cacheGraph(id + "#p" + limit + "#o" + offset, resourceProxy, clientContext, serverContext, idParent || id, limit, offset);
-      console.log(["resource", this.get(id)]);
+      
       console.log(["resource", this.get(id + "#p" + limit + "#o" + offset)]);
       this.loadingList.delete(id + "#p" + limit + "#o" + offset);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id, resource: this.get(id + "#p" + limit + "#o" + offset) } }));
-      return resource;
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id + "#p" + limit + "#o" + offset, resource: this.get(id + "#p" + limit + "#o" + offset) } }));
     });
   }
 
@@ -122,7 +121,7 @@ class Store {
     };
 
     if (limit) {
-      iri = iri + '?limit=' + limit + '&offset' + offset;
+      iri = iri + '?limit=' + limit + '&offset=' + offset;
     }
 
     return this.fetchAuthn(iri, {

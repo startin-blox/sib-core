@@ -1,4 +1,4 @@
-import { html, render, TemplateResult } from "lit-html";
+import { html, render } from "lit-html";
 
 const ServerPaginationMixin = {
   name: 'server-pagination-mixin',
@@ -36,7 +36,7 @@ const ServerPaginationMixin = {
       parent: parentDiv
     });
   },
-  
+
   getCurrentOffset(resourceId: string, limit: number) {
     return this.currentOffset[resourceId + "#p" + limit];
   },
@@ -44,8 +44,27 @@ const ServerPaginationMixin = {
   async setCurrentOffset(resourceId: string, offset: number): Promise<void> {
     console.log("Going thorugh the event");
     let index = resourceId + "#p" + this.limit;
-    console.log("offset index", index);
+    this.currentOffset[this.resourceId + "#p" + this.limit] 
+    console.log(["offset index", index, offset, this.offset]);
     this.currentOffset[index] = this.offset = offset;
+    await this.fetchData(this.dataSrc);
+  },
+
+  async decreaseCurrentOffset(resourceId: string, offset: number): Promise<void> {
+    console.log("Going thorugh the event");
+    let index = resourceId + "#p" + this.limit;
+    this.currentOffset[this.resourceId + "#p" + this.limit] 
+    console.log(["offset index", index, offset, this.offset]);
+    this.currentOffset[index] = this.offset = this.offset - this.limit;
+    await this.fetchData(this.dataSrc);
+  },
+
+  async increaseCurrentOffset(resourceId: string, offset: number): Promise<void> {
+    console.log("Going thorugh the event");
+    let index = resourceId + "#p" + this.limit;
+    this.currentOffset[this.resourceId + "#p" + this.limit] 
+    console.log(["offset index", index, offset, this.offset]);
+    this.currentOffset[index] = this.offset = this.offset + this.limit;
     await this.fetchData(this.dataSrc);
   },
 
@@ -77,20 +96,20 @@ const ServerPaginationMixin = {
     const currentOffset = this.getCurrentOffset(resourceId, this.limit);
 
     if (this.limit) {
-      console.log("Offset in pagination nav", currentOffset);
+      console.log("Offset in pagination nav", currentOffset, currentOffset - this.limit, currentOffset + this.limit, currentOffset + this.limit);
       render(html`
         <button
           data-id="prev"
           ?disabled=${currentOffset <= this.limit}
-          @click=${() => this.setCurrentOffset(resourceId, currentOffset - this.limit)}
+          @click=${() => this.decreaseCurrentOffset(resourceId, currentOffset - this.limit)}
         >←</button>
         <button
           data-id="next"
           ?disabled=${currentOffset >= this.pageCount}
-          @click=${ () => this.setCurrentOffset(resourceId, currentOffset + this.limit)}
+          @click=${ () => this.increaseCurrentOffset(resourceId, currentOffset + this.limit)}
         >→</button>
         <span>
-          <span data-id="current">${currentOffset}</span> / <span data-id="count">...</span>
+          <span data-id="current">${this.getCurrentOffset(resourceId, this.limit)}</span> / <span data-id="count">...</span>
         </span>
       `, div);
     }
