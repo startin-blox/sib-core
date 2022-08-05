@@ -1,4 +1,5 @@
 import { html, render } from "lit-html";
+import { store } from '../libs/store/store';
 
 const ServerPaginationMixin = {
   name: 'server-pagination-mixin',
@@ -6,11 +7,11 @@ const ServerPaginationMixin = {
   attributes: {
     limit: {
       type: Number,
-      default: 0
+      default: undefined
     },
     offset: {
       type: Number,
-      default: 0
+      default: undefined
     },
     pageCount: {
       type: Number,
@@ -23,13 +24,7 @@ const ServerPaginationMixin = {
 
   attached(): void {
     this.setCurrentOffset(this.resourceId, 0);
-    // if (!this.currentOffset[this.resourceId + "#p" + this.limit]) {
-    //   this.currentOffset[this.resourceId + "#p" + this.limit] = this.limit;
-    // }
-
     const parentDiv = this.initParentPaginationDiv(this.div);
-    console.log("Current Div", this.div);
-    console.log("ParentDiv", parentDiv);
   
     this.renderCallbacks.push({
       template: this.renderPaginationNav(this.resourceId, parentDiv),
@@ -42,28 +37,19 @@ const ServerPaginationMixin = {
   },
 
   async setCurrentOffset(resourceId: string, offset: number): Promise<void> {
-    console.log("Going thorugh the event");
     let index = resourceId + "#p" + this.limit;
-    this.currentOffset[this.resourceId + "#p" + this.limit] 
-    console.log(["offset index", index, offset, this.offset]);
     this.currentOffset[index] = this.offset = offset;
     await this.fetchData(this.dataSrc);
   },
 
-  async decreaseCurrentOffset(resourceId: string, offset: number): Promise<void> {
-    console.log("Going thorugh the event");
+  async decreaseCurrentOffset(resourceId: string): Promise<void> {
     let index = resourceId + "#p" + this.limit;
-    this.currentOffset[this.resourceId + "#p" + this.limit] 
-    console.log(["offset index", index, offset, this.offset]);
     this.currentOffset[index] = this.offset = this.offset - this.limit;
     await this.fetchData(this.dataSrc);
   },
 
-  async increaseCurrentOffset(resourceId: string, offset: number): Promise<void> {
-    console.log("Going thorugh the event");
+  async increaseCurrentOffset(resourceId: string): Promise<void> {
     let index = resourceId + "#p" + this.limit;
-    this.currentOffset[this.resourceId + "#p" + this.limit] 
-    console.log(["offset index", index, offset, this.offset]);
     this.currentOffset[index] = this.offset = this.offset + this.limit;
     await this.fetchData(this.dataSrc);
   },
@@ -91,25 +77,21 @@ const ServerPaginationMixin = {
    * Create pagination template
    */
   renderPaginationNav(resourceId: string, div: HTMLElement): void {
-    console.log("currentOffset", this.currentOffset[this.resourceId + "#p" + this.limit]);
-    console.log(this.currentOffset[this.resourceId + "#p" + this.limit] < this.limit);
     const currentOffset = this.getCurrentOffset(resourceId, this.limit);
 
     if (this.limit) {
-      console.log("Offset in pagination nav", currentOffset, currentOffset - this.limit, currentOffset + this.limit, currentOffset + this.limit);
       render(html`
         <button
           data-id="prev"
-          ?disabled=${currentOffset <= this.limit}
-          @click=${() => this.decreaseCurrentOffset(resourceId, currentOffset - this.limit)}
+          @click=${() => this.decreaseCurrentOffset(resourceId)}
         >←</button>
         <button
           data-id="next"
           ?disabled=${currentOffset >= this.pageCount}
-          @click=${ () => this.increaseCurrentOffset(resourceId, currentOffset + this.limit)}
+          @click=${ () => this.increaseCurrentOffset(resourceId)}
         >→</button>
         <span>
-          <span data-id="current">${this.getCurrentOffset(resourceId, this.limit)}</span> / <span data-id="count">...</span>
+          <span data-id="current">${this.offset}</span> / <span data-id="count">...</span>
         </span>
       `, div);
     }

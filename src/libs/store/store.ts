@@ -44,7 +44,7 @@ class Store {
    * Fetch data and cache it
    * @param id - uri of the resource to fetch
    * @param context - context used to expand id and predicates when accessing the resource
-   * @param idParent - uri of the parent caller used to expand uri for local files
+   * @param parentId - uri of the parent caller used to expand uri for local files
    * @param localData - data to put in cache
    * @param forceFetch - force the fetch of data
    *
@@ -52,18 +52,21 @@ class Store {
    *
    * @async
    */
-
-  async getData(id: string, context:any = {}, idParent = "", localData?: object, forceFetch: boolean = false, limit:number = 0, offset:number = 0): Promise<Resource|null> {
-    if (localData == null && this.cache.has(id + "#p" + limit + "#o" + offset) && !this.loadingList.has(id + "#p" + limit + "#o" + offset)) {
-      const resource = this.get(id + "#p" + limit + "#o" + offset);
+  async getData(id: string, context:any = {}, parentId = "", localData?: object, forceFetch: boolean = false, limit:number = 0, offset:number = 0): Promise<Resource|null> {
+    let key = id;
+    if (limit) {
+      key = id + "#p" + limit + "?o" + offset
+    }
+    if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
+      const resource = this.get(key);
       if (resource && resource.isFullResource() && !forceFetch) return resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async (resolve) => {
-      document.addEventListener('resourceReady', this.resolveResource(id + "#p" + limit + "#o" + offset, resolve));
+      document.addEventListener('resourceReady', this.resolveResource(key, resolve));
 
-      if (this.loadingList.has(id + "#p" + limit + "#o" + offset)) return;
-      this.loadingList.add(id + "#p" + limit + "#o" + offset);
+      if (this.loadingList.has(key)) return;
+      this.loadingList.add(key);
 
       // Generate proxy
       const clientContext = await myParser.parse(context);
@@ -73,24 +76,21 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = await this.fetchData(id, clientContext, idParent, limit, offset);
-        console.log(["resource", resource]);
+        resource = await this.fetchData(id, clientContext, parentId, limit, offset);
       } catch (error) { console.error(error) }
       if (!resource) {
-        this.loadingList.delete(id + "#p" + limit + "#o" + offset);
+        this.loadingList.delete(key);
         resolve(null);
         return;
       }
 
       const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, idParent, limit, offset).getProxy();
-      console.log(["resourceProxy", resourceProxy]);
+      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, parentId, limit, offset).getProxy();
       // Cache proxy
-      await this.cacheGraph(id + "#p" + limit + "#o" + offset, resourceProxy, clientContext, serverContext, idParent || id, limit, offset);
+      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId || key, limit, offset);
       
-      console.log(["resource", this.get(id + "#p" + limit + "#o" + offset)]);
-      this.loadingList.delete(id + "#p" + limit + "#o" + offset);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: id + "#p" + limit + "#o" + offset, resource: this.get(id + "#p" + limit + "#o" + offset) } }));
+      this.loadingList.delete(key);
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
     });
   }
 
@@ -112,8 +112,8 @@ class Store {
     }
   }
 
-  async fetchData(id: string, context = {}, idParent = "", limit:number = 0, offset:number = 0) {
-    let iri = this._getAbsoluteIri(id, context, idParent);
+  async fetchData(id: string, context = {}, parentId = "", limit:number = 0, offset:number = 0) {
+    let iri = this._getAbsoluteIri(id, context, parentId);
     const headers = { 
       ...this.headers,
       'accept-language': this._getLanguage(),
@@ -134,7 +134,7 @@ class Store {
     })
   }
 
-  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, limit: number, offset: number) {
+  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, limit: number = 0, offset: number = 0) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key)) { // if already cached, merge data
         this.cache.get(key).merge(resource);
@@ -168,7 +168,7 @@ class Store {
 
     // Create proxy, (fetch data) and cache resource
     if (resource['@id'] && !resource.properties) {
-      // if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
+      if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
       // Fetch data if
       if (resource['@type'] === "sib:federatedContainer"  && resource['@cache'] !== 'false') { // if object is federated container
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
@@ -352,7 +352,6 @@ class Store {
    * @returns id of the edited resource
    */
   async purge(id: string) {
-    // console.log('Purging resource ' + id);
     await this.fetchAuthn(id, {
       method: "PURGE",
       headers: this.headers
@@ -574,12 +573,8 @@ class CustomGetter {
    */
   async get(path: any) {
     if (!path) return;
-    console.log("Path from get from custom getter", path);
     const path1: string[] = path.split('.');
     const path2: string[] = [];
-    const path3: string[] = path.split('#');
-    console.log("Path from get from custom getter", path);
-    console.log([path1, path2, path3]);
     let value: any;
     if (!this.isFullResource()) { // if resource is not complete, fetch it first
       await this.getResource(this.resourceId, this.clientContext, this.parentId);
@@ -611,8 +606,8 @@ class CustomGetter {
    * @param iriParent
    * @param forceFetch
    */
-  async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false): Promise<Resource | null> {
-    return store.getData(id, context, iriParent, undefined, forceFetch);
+  async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false, limit: number = 0, offset: number = 0): Promise<Resource | null> {
+    return store.getData(id, context, iriParent, undefined, forceFetch, limit, offset);
   }
 
   /**
@@ -633,6 +628,7 @@ class CustomGetter {
    * Get children of container as objects
    */
   getChildren(): object[] {
+    // console.trace(this.resource[this.getExpandedPredicate("ldp:contains")]);
     return this.resource[this.getExpandedPredicate("ldp:contains")] || [];
   }
 
@@ -641,6 +637,7 @@ class CustomGetter {
    */
   getLdpContains(): CustomGetter[] {
     const children = this.resource[this.getExpandedPredicate("ldp:contains")];
+    // console.trace(children, children.map((res: object) => store.get(res['@id'])));
     return children ? children.map((res: object) => store.get(res['@id'])) : [];
   }
 

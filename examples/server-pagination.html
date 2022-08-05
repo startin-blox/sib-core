@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: pagination</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <summary>No Pagination:</summary>
+    <solid-display
+      data-src="http://localhost:8000/users/"
+      fields="@id, username, first_name, last_name, email"
+    ></solid-display>
+
+    <summary>Server Pagination:</summary>
+    <solid-display
+      data-src="http://localhost:8000/users/"
+      fields="@id, username, first_name, last_name, email"
+      limit="2"
+    ></solid-display>
+
+    <summary>Server Pagination + search:</summary>
+    <solid-display
+      data-src="http://localhost:8000/users/"
+      fields="@id, username, first_name, last_name, email"
+      search-fields="email"
+      limit="2"
+    ></solid-display>
+
+    <summary>Client Pagination:</summary>
+    <solid-display
+      data-src="http://localhost:8000/users/"
+      fields="@id, username, first_name, last_name, email"
+      paginate-by="2"
+    ></solid-display>
+  </body>
+</html>

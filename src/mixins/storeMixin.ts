@@ -42,7 +42,12 @@ const StoreMixin = {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   get resource(): Resource|null{
-    return this.resourceId ? store.get(this.resourceId) : null;
+    let id = this.resourceId;
+    if (this.limit) {
+      id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
+    }
+    console.log({id: id, 'resource': store.get(id)});
+    return id ? store.get(id) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
@@ -62,8 +67,10 @@ const StoreMixin = {
     }
     this.updateNavigateSubscription();
 
-    this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    console.log("From Store fetch", this.limit, this.getCurrentOffset(this.resourceId, this.limit));
+    if (this.limit)
+      this.subscription = PubSub.subscribe(this.resourceId + "#p" + this.limit + "?o" + this.offset, this.updateDOM.bind(this));
+    else
+      this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
     await store.getData(this.resourceId, this.context, "", {}, false, this.limit, this.getCurrentOffset(this.resourceId, this.limit));
     this.updateDOM();
   },
