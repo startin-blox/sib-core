@@ -18,9 +18,23 @@ const FormFileMixin = {
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
   },
   attached() {
+    console.log(this.value);
+    document.addEventListener('click', (e) => {
+      const input = e.target as HTMLElement;
+      //to reset solid-form-image value if reset button clicked || if submit button clicked and initialValue is empty (= resource creation)
+      if (input !== null && ((input.parentNode?.contains(this.element) && input.getAttribute('type') == 'reset') || (input.parentNode?.parentNode?.contains(this.element) && input.getAttribute('type') == 'submit' && this.initialValue === ''))) {
+        this.value = this.initialValue; 
+      }
+      this.listAttributes['resetButtonHidden'] = true;
+      this.planRender();
+    })
+    //to reset solid-form-image value if solid-form has "next" attribute after submit
     document.addEventListener('reset', (e) => {
       if (e.target && (e.target as HTMLElement).contains(this.element)) {
-        this.value = this.initialValue;
+        const solidForm = this.element.parentNode.parentNode // to get solid-form element in the DOM
+        if (solidForm.getAttribute('next')) {
+          this.value = this.initialValue;
+        }
         this.listAttributes['resetButtonHidden'] = true;
         this.planRender();
       }

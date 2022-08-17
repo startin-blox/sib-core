@@ -126,7 +126,7 @@ export const SolidForm = {
       } else {
         saved = await store.patch(resource, this.resourceId);
       }
-    } catch (e) {
+    } catch (e: any) {
       this.toggleLoaderHidden(true);
       if (e) { // if server error
         e.json().then(error => this.showError(error));
