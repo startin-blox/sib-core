@@ -19,16 +19,23 @@ const FormFileMixin = {
   },
   attached() {
     document.addEventListener('click', async (e) => {
-      const solidForm = this.element.parentNode.parentNode; //solid-form contenant un solid-form-file ou solid-form-image
-      const formValue = await solidForm.component.getFormValue();
-      if((e.target as HTMLElement).getAttribute('type') == 'reset' && solidForm.contains(e.target) && ((!solidForm.component.isCreationForm(formValue) && this.initialValue !== '') || solidForm.component.isCreationForm(formValue) )) {
-        this.value = this.initialValue;
+      const solidForm = this.element.parentNode.parentNode; //solid-form with solid-form-file/image
+      const formValue = await solidForm.component.getFormValue(); //to get modificated values
+
+      //if reset button clicked
+      if ((e.target as HTMLElement).getAttribute('type') === 'reset' && solidForm.contains(e.target)) {
+        console.log(this.value);
+        console.log(this.initialValue);
+
+        //if edition form and value or if creation form
+        if ((!solidForm.component.isCreationForm(formValue) && this.initialValue !== '') || solidForm.component.isCreationForm(formValue)) this.value = this.initialValue;
+        //if edition form and no value
+        else if (!solidForm.component.isCreationForm(formValue) && (this.initialValue === '')) this.value = this.initialValue = '';
         this.listAttributes['resetButtonHidden'] = true;
         this.planRender();
-      };
-
-      if((e.target as HTMLElement).getAttribute('type') == 'submit' && solidForm.contains(e.target)) {
-        const formValue = await solidForm.component.getFormValue();
+      }
+      // if submit button clicked
+      if ((e.target as HTMLElement).getAttribute('type') === 'submit' && solidForm.contains(e.target)) {
         if (solidForm.getAttribute('next') || solidForm.component.isCreationForm(formValue)) {
           this.value = this.initialValue;
           this.initialValue = '';
