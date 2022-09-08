@@ -46,6 +46,9 @@ prepare:
   stage: prepare
   image: node:14
   before_script:
+    - GENERATE_SOURCEMAP=false
+    - NODE_OPTIONS=\"--max_old_space_size=8192\"
+    - node --max-old-space-size=8192
     - npm ci --cache .npm --prefer-offline
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
   script:
