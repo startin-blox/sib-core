@@ -32,8 +32,6 @@ test:
   stage: test
   before_script:
     - npm ci
-    - GENERATE_SOURCEMAP=false
-    - node --max-old-space-size=8192
   script:
     - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
