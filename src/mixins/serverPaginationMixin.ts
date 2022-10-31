@@ -1,5 +1,4 @@
 import { html, render } from "lit-html";
-import { store } from '../libs/store/store';
 
 const ServerPaginationMixin = {
   name: 'server-pagination-mixin',

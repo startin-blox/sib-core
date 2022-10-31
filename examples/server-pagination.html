@@ -10,11 +10,11 @@
   </head>
 
   <body>
-    <summary>No Pagination:</summary>
+    <!-- <summary>No Pagination:</summary>
     <solid-display
       data-src="http://localhost:8000/users/"
       fields="@id, username, first_name, last_name, email"
-    ></solid-display>
+    ></solid-display> -->
 
     <summary>Server Pagination:</summary>
     <solid-display
@@ -28,14 +28,7 @@
       data-src="http://localhost:8000/users/"
       fields="@id, username, first_name, last_name, email"
       search-fields="email"
-      limit="2"
-    ></solid-display>
-
-    <summary>Client Pagination:</summary>
-    <solid-display
-      data-src="http://localhost:8000/users/"
-      fields="@id, username, first_name, last_name, email"
-      paginate-by="2"
+      limit="6"
     ></solid-display>
   </body>
 </html>

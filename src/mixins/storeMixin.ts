@@ -85,7 +85,7 @@ const StoreMixin = {
     await this.replaceAttributesData();
     await this.populate();
     setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
+      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.resourceId} } })))
     );
     this.toggleLoaderHidden(true);
   },

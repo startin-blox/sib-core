@@ -134,10 +134,19 @@ class Store {
     })
   }
 
+  /**
+   * return true resource seems complete
+   * @param prop
+   */
+  isFullResource(resource): boolean {
+    return Object.keys(resource).filter(p => !p.startsWith('@')).length > 0;
+  }
+
   async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, limit: number = 0, offset: number = 0) {
-    if (resource.properties) { // if proxy, cache it
-      if (this.get(key)) { // if already cached, merge data
-        this.cache.get(key).merge(resource);
+    // console.log({"Resource": resource});
+    if (resource.properties || this.isFullResource(resource)) { // if proxy, cache it
+      if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
+        this.cache.get(key).merge(resource);;
       } else {  // else, put in cache
         this.cache.set(key, resource);
       }
@@ -158,9 +167,23 @@ class Store {
     // Cache children of container
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       const cacheChildrenPromises: Promise<void>[] = [];
-      for (let res of resource.getChildren()) {
+      // console.log(await resource.getLdpContains());
+      // console.log(resource.getChildren());
+
+      //TODO: return complete object without the need for the fetch data from the cacheGraph
+      for (let res of await resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, limit, offset))
+        let resourceProxy = new Proxy(res, {
+          get: (res, property) => {
+            if (!res) return undefined;
+            if (typeof res[property] === 'function') return res[property].bind(res);
+            
+            return res[property];
+          }
+        });
+        // console.log({"Typeof resource Proxy": resourceProxy.constructor.name});
+        // const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId, limit, offset).getProxy();
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, limit, offset));
       }
       await Promise.all(cacheChildrenPromises);
       return;
@@ -174,7 +197,7 @@ class Store {
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }
-      const resourceProxy = new CustomGetter(resource['@id'], resource, clientContext, parentContext, parentId, limit, offset).getProxy();
+      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, limit, offset).getProxy();
       await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId, limit, offset);
     }
   }
@@ -576,9 +599,6 @@ class CustomGetter {
     const path1: string[] = path.split('.');
     const path2: string[] = [];
     let value: any;
-    if (!this.isFullResource()) { // if resource is not complete, fetch it first
-      await this.getResource(this.resourceId, this.clientContext, this.parentId);
-    }
     while (true) {
       try {
         value = this.resource[this.getExpandedPredicate(path1[0])];
@@ -659,7 +679,10 @@ class CustomGetter {
   }
 
   merge(resource: CustomGetter) {
-    this.resource = {...this.getResourceData(), ...resource.getResourceData()}
+    if (resource && resource.getResourceData)
+      this.resource = {...this.getResourceData(), ...resource.getResourceData()}
+    else
+      this.resource = {...this.getResourceData()}
   }
 
   getResourceData(): object { return this.resource }
@@ -713,7 +736,7 @@ class CustomGetter {
     return new Proxy(this, {
       get: (resource, property) => {
         if (!this.resource) return undefined;
-        if (typeof resource[property] === 'function') return resource[property].bind(resource)
+        if (typeof resource[property] === 'function') return resource[property].bind(resource);
 
         switch (property) {
           case '@id':

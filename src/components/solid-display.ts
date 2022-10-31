@@ -15,7 +15,6 @@ import { spread } from '../libs/lit-helpers';
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
-// import { ServerPaginationMixin } from '../mixins/serverPaginationMixin';
 
 export const SolidDisplay = {
   name: 'solid-display',
@@ -32,7 +31,6 @@ export const SolidDisplay = {
     RequiredMixin,
     FederationMixin,
     NextMixin
-    // ServerPaginationMixin
   ],
   attributes: {
     defaultWidget: {
