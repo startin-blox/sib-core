@@ -67,11 +67,14 @@ const StoreMixin = {
     }
     this.updateNavigateSubscription();
 
-    if (this.limit)
+    if (this.limit) {
       this.subscription = PubSub.subscribe(this.resourceId + "#p" + this.limit + "?o" + this.offset, this.updateDOM.bind(this));
-    else
+      await store.getData(this.resourceId, this.context, "", {}, true, this.limit, this.getCurrentOffset(this.resourceId, this.limit));
+    } else {
       this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    await store.getData(this.resourceId, this.context, "", {}, false, this.limit, this.getCurrentOffset(this.resourceId, this.limit));
+      await store.getData(this.resourceId, this.context);
+    }
+
     this.updateDOM();
   },
 
