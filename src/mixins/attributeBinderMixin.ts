@@ -98,7 +98,7 @@ const AttributeBinderMixin = {
    * @param maxRetries
    * @returns
    */
-  async retry(fn: Function, ms = 100, maxRetries = 5) {
+  async retry(fn: Function, ms = 200, maxRetries = 5) {
     return new Promise((resolve, reject) => {
       let retries = 0;
       fn().then(resolve).catch(() => {

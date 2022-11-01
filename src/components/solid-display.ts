@@ -30,7 +30,7 @@ export const SolidDisplay = {
     SorterMixin,
     RequiredMixin,
     FederationMixin,
-    NextMixin
+    NextMixin,
   ],
   attributes: {
     defaultWidget: {

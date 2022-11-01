@@ -59,7 +59,7 @@ class Store {
     }
     if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
       const resource = this.get(key);
-      if (resource && resource.isFullResource() && !forceFetch) return resource; // if resource is not complete, re-fetch it
+      if (resource && resource.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async (resolve) => {
@@ -85,9 +85,9 @@ class Store {
       }
 
       const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(id, resource, clientContext, serverContext, parentId, limit, offset).getProxy();
+      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, limit, offset).getProxy();
       // Cache proxy
-      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId || key, limit, offset);
+      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, limit, offset);
       
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
@@ -599,6 +599,10 @@ class CustomGetter {
     const path1: string[] = path.split('.');
     const path2: string[] = [];
     let value: any;
+    if (!this.isFullResource()) { // if resource is not complete, fetch it first
+      await this.getResource(this.resourceId, this.clientContext, this.parentId);
+    }
+
     while (true) {
       try {
         value = this.resource[this.getExpandedPredicate(path1[0])];

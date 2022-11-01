@@ -46,7 +46,7 @@ const StoreMixin = {
     if (this.limit) {
       id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
     }
-    console.log({id: id, 'resource': store.get(id)});
+    // console.log({id: id, 'resource': store.get(id)});
     return id ? store.get(id) : null;
   },
   get loader(): HTMLElement | null {
@@ -85,7 +85,7 @@ const StoreMixin = {
     await this.replaceAttributesData();
     await this.populate();
     setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.resourceId} } })))
+      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
     this.toggleLoaderHidden(true);
   },
