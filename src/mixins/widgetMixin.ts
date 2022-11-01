@@ -48,7 +48,7 @@ const WidgetMixin = {
     if (attr) return parseFieldsString(attr);
 
     let resource = this.resource as Resource;
-    if (resource && resource.isContainer()) { // If container, keep the 1rst resource
+    if (resource && resource.isContainer?.()) { // If container, keep the 1rst resource
       for (let res of resource['ldp:contains']) {
         resource = res;
         break;
@@ -116,7 +116,7 @@ const WidgetMixin = {
    * @param resource - Resource
    */
   async fetchValue(field: string, resource: Resource) {
-    return resource && !resource.isContainer() ? await resource[field] : undefined;
+    return resource && !resource.isContainer?.() ? await resource[field] : undefined;
   },
   /**
    * Return the value of the field
