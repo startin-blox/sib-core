@@ -33,6 +33,7 @@ test:
   before_script:
     - npm ci
   script:
+    - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
     - npm run build
     - npm test

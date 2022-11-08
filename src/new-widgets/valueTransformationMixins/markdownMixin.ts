@@ -10,7 +10,11 @@ const MarkdownMixin = {
   transformValue(value: string, listValueTransformations: Function[]) {
     let newValue: any = '';
     if (value) {
-      const md = markdownit();
+      const md = markdownit({
+        breaks: true,
+        html: false
+      });
+
       const html = md.render(value);
       newValue = unsafeHTML(html);
     }

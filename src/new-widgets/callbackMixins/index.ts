@@ -3,11 +3,11 @@ import { RichtextMixin } from './richtextMixin';
 
 const callbackDirectory = {
   autocompletion: AutocompletionMixin,
-  richtext: RichtextMixin
+  richtext: RichtextMixin,
 }
 
 export {
   callbackDirectory,
   AutocompletionMixin,
-  RichtextMixin
+  RichtextMixin,
 }

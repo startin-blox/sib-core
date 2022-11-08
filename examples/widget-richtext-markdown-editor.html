@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
     <script type="module" src="../dist/index.js"></script>
     <script type="module" src="https://unpkg.com/@startinblox/router"></script>
+    <script src="../node_modules/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -25,5 +26,19 @@
       fields="texte"
       widget-texte="solid-display-value-markdown"
     ></solid-display>
+
+    <h3>Form with editor widget:</h3>
+    <solid-form
+      data-src="data/project2.jsonld"
+      fields="description"
+      widget-description="solid-form-editor"
+    ></solid-form>
+
+    <h3>Solid-display using markdown widget:</h3>
+    <solid-display
+    data-src="data/project2.jsonld"
+    fields="description"
+    widget-description="solid-display-value-markdown"
+  ></solid-display>
   </body>
 </html>

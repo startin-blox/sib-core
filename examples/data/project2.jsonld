@@ -1,14 +1,13 @@
 {
-  "@id": "project.jsonld",
-  "name": "Envoyer une fusée",
-  "description": "c'est très clair enfin",
+  "@id": "project2.jsonld",
+  "name": "**Second project**",
+  "description": "###### this is content\n**gras, _gras italique,_** _italique_\n\n> citation\nliste à puces:\n\n- a\n- b\n\nliste numérotée:\n\n1. 1\n2. 2\n\n[Lien](http://corndog.io/)\n",
   "number": 1,
   "creationDate": "2019-03-25",
   "businessProvider": null,
   "businessProviderFee": 0,
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
-  "texte": "ceci est un texte avec du **markdown** à l'intérieur.",
   "@type": "doap:project",
   "permissions": [
     { "mode": { "@type": "change" } },
