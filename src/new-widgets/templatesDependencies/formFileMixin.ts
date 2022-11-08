@@ -24,9 +24,6 @@ const FormFileMixin = {
 
       //if reset button clicked
       if ((e.target as HTMLElement).getAttribute('type') === 'reset' && solidForm.contains(e.target)) {
-        console.log(this.value);
-        console.log(this.initialValue);
-
         //if edition form and value or if creation form
         if ((!solidForm.component.isCreationForm(formValue) && this.initialValue !== '') || solidForm.component.isCreationForm(formValue)) this.value = this.initialValue;
         //if edition form and no value
