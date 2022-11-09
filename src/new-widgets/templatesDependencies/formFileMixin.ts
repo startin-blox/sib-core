@@ -18,31 +18,12 @@ const FormFileMixin = {
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
   },
   attached() {
-    document.addEventListener('click', async (e) => {
-      const solidForm = this.element.parentNode.parentNode; //solid-form with solid-form-file/image
-      const formValue = await solidForm.component.getFormValue(); //to get modificated values
-
-      //if reset button clicked
-      if ((e.target as HTMLElement).getAttribute('type') === 'reset' && solidForm.contains(e.target)) {
-        //if edition form and value or if creation form
-        if ((!solidForm.component.isCreationForm(formValue) && this.initialValue !== '') || solidForm.component.isCreationForm(formValue)) this.value = this.initialValue;
-        //if edition form and no value
-        else if (!solidForm.component.isCreationForm(formValue) && (this.initialValue === '')) this.value = this.initialValue = '';
+    document.addEventListener('reset', (e) => {
+      if (e.target && (e.target as HTMLElement).contains(this.element)) {
+        this.value = this.initialValue;
         this.listAttributes['resetButtonHidden'] = true;
         this.planRender();
       }
-      // if submit button clicked
-      if ((e.target as HTMLElement).getAttribute('type') === 'submit' && solidForm.contains(e.target)) {
-        if (solidForm.getAttribute('next') || solidForm.component.isCreationForm(formValue)) {
-          this.value = this.initialValue;
-          this.initialValue = '';
-        }
-        if (!solidForm.component.isCreationForm(formValue)) {
-          this.initialValue = this.value;
-        }
-        this.listAttributes['resetButtonHidden'] = true;
-        this.planRender();
-      };
     })
   },
   selectFile() {
