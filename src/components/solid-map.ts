@@ -12,8 +12,8 @@ import { uniqID } from '../libs/helpers';
 import { spread } from '../libs/lit-helpers';
 
 //@ts-ignore
-import L, { MarkerOptions } from 'https://cdn.skypack.dev/leaflet'; // TODO : revert to "leaflet" when apps up to date
-import 'https://cdn.skypack.dev/leaflet.markercluster'; // TODO : revert to "leaflet.markercluster" when apps up to date
+import L, { MarkerOptions } from 'https://cdn.skypack.dev/leaflet@1.7.1'; // TODO : revert to "leaflet" when apps up to date
+import 'https://cdn.skypack.dev/leaflet.markercluster@1.4.1'; // TODO : revert to "leaflet.markercluster" when apps up to date
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
