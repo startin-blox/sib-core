@@ -19,6 +19,7 @@ const FormFileMixin = {
   },
   attached() {
     document.addEventListener('reset', (e) => {
+      console.log("reset", e.target, this.element);
       if (e.target && (e.target as HTMLElement).contains(this.element)) {
         this.value = this.initialValue;
         this.listAttributes['resetButtonHidden'] = true;
