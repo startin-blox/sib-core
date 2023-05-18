@@ -20,9 +20,11 @@ const FormFileMixin = {
   attached() {
     document.addEventListener('reset', (e) => {
       if (e.target && (e.target as HTMLElement).contains(this.element)) {
+        this.value = this.initialValue;
         this.listAttributes['resetButtonHidden'] = true;
         this.planRender();
         const dataHolder = this.element.querySelector('input[data-holder]');
+        dataHolder.value = this.value;
         dataHolder.dispatchEvent(new Event('change'));
       }
     })
