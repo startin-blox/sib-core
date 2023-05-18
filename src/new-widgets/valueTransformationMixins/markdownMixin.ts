@@ -1,6 +1,7 @@
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import markdownit from 'markdown-it';
+import mila from 'markdown-it-link-attributes';
 
 const MarkdownMixin = {
   name: 'markdown-mixin',
@@ -12,7 +13,15 @@ const MarkdownMixin = {
     if (value) {
       const md = markdownit({
         breaks: true,
-        html: false
+        html: false,
+        linkify: true,
+      });
+
+      md.use(mila, {
+        attrs: {
+          target: '_blank',
+          rel: 'noopener',
+        }
       });
 
       const html = md.render(value);
