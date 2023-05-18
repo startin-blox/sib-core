@@ -20,9 +20,10 @@ const FormFileMixin = {
   attached() {
     document.addEventListener('reset', (e) => {
       if (e.target && (e.target as HTMLElement).contains(this.element)) {
-        this.value = this.initialValue;
         this.listAttributes['resetButtonHidden'] = true;
         this.planRender();
+        const dataHolder = this.element.querySelector('input[data-holder]');
+        dataHolder.dispatchEvent(new Event('change'));
       }
     })
   },
@@ -36,6 +37,7 @@ const FormFileMixin = {
     const filePicker = this.element.querySelector('input[type="file"]');
     if (filePicker.files!.length < 1) return;
 
+    const dataHolder = this.element.querySelector('input[data-holder]');
     this.listAttributes['output'] = '⏳';
     this.planRender();
 
@@ -46,17 +48,7 @@ const FormFileMixin = {
       method: 'POST',
       body: formData,
     })
-      .then(response => {
-        const location = response.headers.get('location');
-        if (location == null) {
-          this.listAttributes['output'] = 'header location not found!';
-        } else {
-          this.value = location;
-          this.listAttributes['output'] = '';
-          this.listAttributes['resetButtonHidden'] = false;
-          this.planRender();
-        }
-      })
+      .then(response => this.updateFile(dataHolder, response) )
       .catch(error => {
         this.listAttributes['fileValue'] = '';
         this.listAttributes['output'] = 'upload error';
@@ -64,15 +56,37 @@ const FormFileMixin = {
         console.error(error);
       });
   },
+
+  updateFile(dataHolder: HTMLInputElement, response: Response) {
+    const location = response.headers.get('location');
+    if (location == null) {
+      this.listAttributes['output'] = 'header location not found!';
+    } else {
+      this.value = location;
+      this.listAttributes['output'] = '';
+      this.listAttributes['resetButtonHidden'] = false;
+
+      dataHolder.value = location;
+      dataHolder.dispatchEvent(new Event('change'));
+
+      this.planRender();
+    }
+  },
+
   resetFile(event) {
     event.preventDefault();
     this.value = '';
     const filePicker = this.element.querySelector('input[type="file"]');
-    if (filePicker) filePicker.value = '';
+    const dataHolder = this.element.querySelector('input[data-holder]');
+
+    if (filePicker && dataHolder ) {
+      filePicker.value = dataHolder.value = '';
+    }
+
     this.listAttributes['fileValue'] = '';
     this.listAttributes['output'] = '';
     this.listAttributes['resetButtonHidden'] = true;
-    this.input.dispatchEvent(new Event('change'));
+    dataHolder.dispatchEvent(new Event('change'));
     this.planRender();
   }
 }
