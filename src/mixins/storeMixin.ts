@@ -1,5 +1,5 @@
 import { store } from '../libs/store/store';
-import { formatAttributesToSearchFilter } from '../libs/store/search';
+import { formatAttributesToServerSearchOptions } from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -63,8 +63,8 @@ const StoreMixin = {
     this.updateNavigateSubscription();
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    const filter = formatAttributesToSearchFilter(this.element.attributes);
-    await store.getData(this.resourceId, this.context, undefined, undefined, false, filter);
+    const serverSearch = formatAttributesToServerSearchOptions(this.element.attributes);
+    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverSearch);
     this.updateDOM();
   },
   toggleLoaderHidden(toggle: boolean): void {

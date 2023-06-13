@@ -2,8 +2,8 @@ import JSONLDContextParser from 'jsonld-context-parser';
 //@ts-ignore
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
-import type { SearchFilter } from './search';
-import { appendSearchFilterToIri } from './search';
+import type { ServerSearchOptions } from './server-search';
+import { appendServerSearchToIri } from './server-search';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -55,7 +55,14 @@ class Store {
    * @async
    */
 
-  async getData(id: string, context:any = {}, idParent = "", localData?: object, forceFetch: boolean = false, filter?: SearchFilter): Promise<Resource|null> {
+  async getData(
+    id: string,
+    context:any = {},
+    idParent = "",
+    localData?: object,
+    forceFetch: boolean = false,
+    serverSearch?: ServerSearchOptions
+  ): Promise<Resource|null> {
     if (localData == null && this.cache.has(id) && !this.loadingList.has(id)) {
       const resource = this.get(id);
       if (resource && resource.isFullResource() && !forceFetch) return resource; // if resource is not complete, re-fetch it
@@ -75,7 +82,7 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = localData || await this.fetchData(id, clientContext, idParent, filter);
+        resource = localData || await this.fetchData(id, clientContext, idParent, serverSearch);
       } catch (error) { console.error(error) }
       if (!resource) {
         this.loadingList.delete(id);
@@ -110,9 +117,9 @@ class Store {
     }
   }
 
-  async fetchData(id: string, context = {}, idParent = "", filter?: SearchFilter) {
+  async fetchData(id: string, context = {}, idParent = "", serverSearch?: ServerSearchOptions) {
     let iri = this._getAbsoluteIri(id, context, idParent);
-    if (filter) iri = appendSearchFilterToIri(filter, iri);
+    if (serverSearch) iri = appendServerSearchToIri(serverSearch, iri);
     const headers = { ...this.headers, 'accept-language': this._getLanguage() };
     // console.log("Request Headers:", headers);
     return this.fetchAuthn(iri, {
