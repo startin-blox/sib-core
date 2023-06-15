@@ -3,6 +3,7 @@ import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
 import { ServerPaginationMixin } from './serverPaginationMixin';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination';
 
 const StoreMixin = {
   name: 'store-mixin',
@@ -46,7 +47,6 @@ const StoreMixin = {
     if (this.limit) {
       id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
     }
-    // console.log({id: id, 'resource': store.get(id)});
     return id ? store.get(id) : null;
   },
   get loader(): HTMLElement | null {
@@ -67,13 +67,9 @@ const StoreMixin = {
     }
     this.updateNavigateSubscription();
 
-    if (this.limit) {
-      this.subscription = PubSub.subscribe(this.resourceId + "#p" + this.limit + "?o" + this.offset, this.updateDOM.bind(this));
-      await store.getData(this.resourceId, this.context, "", {}, true, this.limit, this.getCurrentOffset(this.resourceId, this.limit));
-    } else {
-      this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-      await store.getData(this.resourceId, this.context);
-    }
+    this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+    const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
+    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverPagination);
 
     this.updateDOM();
   },

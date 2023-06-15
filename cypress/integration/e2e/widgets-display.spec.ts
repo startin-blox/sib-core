@@ -252,7 +252,7 @@ describe('display widgets', function() {
       .and('have.attr', 'width', '200')
       .and('have.attr', 'height', '113')
       .and('have.attr', 'frameborder', '0')
-      .and('have.attr', 'allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
+      .and('have.attr', 'allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share')
       .and('have.attr', 'allowfullscreen');
   });
 })

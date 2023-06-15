@@ -3,6 +3,9 @@ import JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
 
+import type { ServerPaginationOptions } from './server-pagination';
+import { appendServerPaginationToIri } from './server-pagination';
+
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
@@ -52,11 +55,19 @@ class Store {
    *
    * @async
    */
-  async getData(id: string, context:any = {}, parentId = "", localData?: object, forceFetch: boolean = false, limit:number = 0, offset:number = 0): Promise<Resource|null> {
+  async getData(
+    id: string,
+    context:any = {},
+    parentId = "",
+    localData?: object,
+    forceFetch: boolean = false,
+    serverPagination?: ServerPaginationOptions
+  ): Promise<Resource|null> {
     let key = id;
-    if (limit) {
-      key = id + "#p" + limit + "?o" + offset
+    if (serverPagination) {
+      key = id + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
     }
+
     if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
       const resource = this.get(key);
       if (resource && resource.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
@@ -76,7 +87,7 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = await this.fetchData(id, clientContext, parentId, limit, offset);
+        resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination);
       } catch (error) { console.error(error) }
       if (!resource) {
         this.loadingList.delete(key);
@@ -85,9 +96,9 @@ class Store {
       }
 
       const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, limit, offset).getProxy();
+      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination).getProxy();
       // Cache proxy
-      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, limit, offset);
+      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination);
       
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
@@ -112,17 +123,21 @@ class Store {
     }
   }
 
-  async fetchData(id: string, context = {}, parentId = "", limit:number = 0, offset:number = 0) {
+  async fetchData(
+    id: string,
+    context = {},
+    parentId = "",
+    serverPagination?: ServerPaginationOptions
+  ) {
     let iri = this._getAbsoluteIri(id, context, parentId);
+    if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
+
     const headers = { 
       ...this.headers,
       'accept-language': this._getLanguage(),
       'Prefer' : 'return=representation; max-triple-count="500"'
     };
 
-    if (limit) {
-      iri = iri + '?limit=' + limit + '&offset=' + offset;
-    }
 
     return this.fetchAuthn(iri, {
       method: 'GET',
@@ -134,17 +149,8 @@ class Store {
     })
   }
 
-  /**
-   * return true resource seems complete
-   * @param prop
-   */
-  isFullResource(resource): boolean {
-    return Object.keys(resource).filter(p => !p.startsWith('@')).length > 0;
-  }
-
-  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, limit: number = 0, offset: number = 0) {
-    // console.log({"Resource": resource});
-    if (resource.properties || this.isFullResource(resource)) { // if proxy, cache it
+  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, serverPagination?: ServerPaginationOptions) {
+    if (resource.properties) { // if proxy, cache it
       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
         this.cache.get(key).merge(resource);;
       } else {  // else, put in cache
@@ -158,32 +164,20 @@ class Store {
         let newParentContext = parentContext;
         // If additional context in resource, use it to expand properties
         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
-        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId, limit, offset).getProxy();
+        const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
-        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, limit, offset);
+        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, serverPagination);
       }
     }
 
     // Cache children of container
     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
       const cacheChildrenPromises: Promise<void>[] = [];
-      // console.log(await resource.getLdpContains());
-      // console.log(resource.getChildren());
 
       //TODO: return complete object without the need for the fetch data from the cacheGraph
       for (let res of await resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        let resourceProxy = new Proxy(res, {
-          get: (res, property) => {
-            if (!res) return undefined;
-            if (typeof res[property] === 'function') return res[property].bind(res);
-            
-            return res[property];
-          }
-        });
-        // console.log({"Typeof resource Proxy": resourceProxy.constructor.name});
-        // const resourceProxy = new CustomGetter(res['@id'], res, clientContext, parentContext, parentId, limit, offset).getProxy();
-        cacheChildrenPromises.push(this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, limit, offset));
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, serverPagination));
       }
       await Promise.all(cacheChildrenPromises);
       return;
@@ -197,8 +191,8 @@ class Store {
         await this.getData(resource['@id'], clientContext, parentId); // then init graph
         return;
       }
-      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, limit, offset).getProxy();
-      await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId, limit, offset);
+      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId).getProxy();
+      await this.cacheGraph(key, resourceProxy, clientContext, parentContext, parentId);
     }
   }
 
@@ -280,10 +274,8 @@ class Store {
    * @param id - string
    */
   async getNestedResources(resource: object, id: string) {
-    console.log("Get Nested resources", resource, id);
     const cachedResource = store.get(id);
     if (!cachedResource || cachedResource.isContainer?.()) return [];
-    console.log("Already returned ??");
     let nestedProperties:any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
@@ -547,19 +539,21 @@ class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
-  // page: number; // Page number, if exists
-  limit: number; // Number of entities to retrieve on current call
-  offset: number; // Offset of the current call
-
-  constructor(resourceId: string, resource: object, clientContext: object, serverContext: object = {}, parentId: string = "", limit: number = 0, offset: number = 0) {
+  serverPagination: object; // pagination attributes to give to server
+ 
+  constructor(
+    resourceId: string,
+    resource: object,
+    clientContext: object,
+    serverContext: object = {},
+    parentId: string = "",
+    serverPagination: object = {}) {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
     this.resource = this.expandProperties({ ...resource }, serverContext);
     this.resourceId = resourceId;
-    // this.page = page;
-    this.limit = limit;
-    this.offset = offset;
+    this.serverPagination = serverPagination;
   }
 
   /**
@@ -631,8 +625,8 @@ class CustomGetter {
    * @param iriParent
    * @param forceFetch
    */
-  async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false, limit: number = 0, offset: number = 0): Promise<Resource | null> {
-    return store.getData(id, context, iriParent, undefined, forceFetch, limit, offset);
+  async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false): Promise<Resource | null> {
+    return store.getData(id, context, iriParent, undefined, forceFetch);
   }
 
   /**
@@ -653,7 +647,6 @@ class CustomGetter {
    * Get children of container as objects
    */
   getChildren(): object[] {
-    // console.trace(this.resource[this.getExpandedPredicate("ldp:contains")]);
     return this.resource[this.getExpandedPredicate("ldp:contains")] || [];
   }
 
@@ -662,7 +655,6 @@ class CustomGetter {
    */
   getLdpContains(): CustomGetter[] {
     const children = this.resource[this.getExpandedPredicate("ldp:contains")];
-    // console.trace(children, children.map((res: object) => store.get(res['@id'])));
     return children ? children.map((res: object) => store.get(res['@id'])) : [];
   }
 
@@ -684,10 +676,7 @@ class CustomGetter {
   }
 
   merge(resource: CustomGetter) {
-    if (resource && resource.getResourceData)
-      this.resource = {...this.getResourceData(), ...resource.getResourceData()}
-    else
-      this.resource = {...this.getResourceData()}
+    this.resource = {...this.getResourceData(), ...resource.getResourceData()}
   }
 
   getResourceData(): object { return this.resource }
