@@ -16,9 +16,20 @@ const ServerPaginationMixin = {
       type: Number,
       default: 1000
     },
+    pageNumber: {
+      type: Number,
+      default: 0
+    }
   },
   initialState: {
     currentOffset: [],
+    currentPage: [],
+    pageNumber: 0,
+    pageCount: 1000,
+  },
+
+  created() {
+    this.currentPage = [];
   },
 
   attached(): void {
@@ -40,19 +51,35 @@ const ServerPaginationMixin = {
   async setCurrentOffset(resourceId: string, offset: number): Promise<void> {
     let index = resourceId + "#p" + this.limit;
     this.currentOffset[index] = this.offset = offset;
+    this.pageNumber = Number(this.offset / this.limit);
+    this.currentPage[resourceId] = this.pageNumber;
+
     await this.fetchData(this.dataSrc);
   },
 
   async decreaseCurrentOffset(resourceId: string): Promise<void> {
     let index = resourceId + "#p" + this.limit;
     this.currentOffset[index] = this.offset = this.offset - this.limit;
+    this.currentPage[index] = this.offset / this.limit;
+    this.pageNumber = this.offset / this.limit;
+
+    this.updateNavButtons(resourceId, index, -1);
     await this.fetchData(this.dataSrc);
   },
 
   async increaseCurrentOffset(resourceId: string): Promise<void> {
     let index = resourceId + "#p" + this.limit;
     this.currentOffset[index] = this.offset = this.offset + this.limit;
+    this.currentPage[index] = this.offset / this.limit;
+
+    this.updateNavButtons(resourceId, index, 1);
     await this.fetchData(this.dataSrc);
+  },
+
+  updateNavButtons(resourceId: string, index: string, variance: number) {
+    this.element.querySelector("[data-id='prev']").disabled = this.currentOffset[index] <= 0;
+    this.element.querySelector("[data-id='next']").disabled = this.currentOffset[index] * this.limit >= this.pageCount;
+    this.element.querySelector("[data-id='current']").innerText = this.getCurrentPage(resourceId, variance);
   },
 
   getServerNavElement(div: HTMLElement) {
@@ -62,6 +89,11 @@ const ServerPaginationMixin = {
     }
 
     return null;
+  },
+
+  getCurrentPage(context: string, variance: number): Promise<void> {
+    this.currentPage[context] = Number(this.currentPage[context]) + variance;
+    return this.currentPage[context];
   },
 
   /**
@@ -84,20 +116,28 @@ const ServerPaginationMixin = {
    */
   renderServerPaginationNav(resourceId: string, div: HTMLElement): void {
     const currentOffset = this.getCurrentOffset(resourceId, this.limit);
+    var currentPageNumber = this.getCurrentPage(resourceId, 1);
+    const pageCount = Math.ceil(this.pageCount / this.limit);
 
     if (this.limit) {
       render(html`
         <button
           data-id="prev"
+          ?disabled=${currentOffset <= 0}
           @click=${() => this.decreaseCurrentOffset(resourceId)}
         >←</button>
         <button
           data-id="next"
-          ?disabled=${currentOffset >= this.pageCount}
+          ?disabled=${currentOffset >= (pageCount - 1) * this.limit}
           @click=${ () => this.increaseCurrentOffset(resourceId)}
         >→</button>
         <span>
-          <span data-id="current">${this.offset}</span> / <span data-id="count">...</span>
+          <span data-id="current">
+            ${currentPageNumber}
+          </span> / 
+          <span data-id="count">
+            ${this.pageCount}
+          </span>
         </span>
       `, div);
     }
