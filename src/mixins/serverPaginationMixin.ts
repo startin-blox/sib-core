@@ -23,13 +23,6 @@ const ServerPaginationMixin = {
   },
   initialState: {
     currentOffset: [],
-    currentPage: [],
-    pageNumber: 0,
-    pageCount: 1000,
-  },
-
-  created() {
-    this.currentPage = [];
   },
 
   attached(): void {
@@ -79,7 +72,7 @@ const ServerPaginationMixin = {
   updateNavButtons(resourceId: string, index: string, variance: number) {
     this.element.querySelector("[data-id='prev']").disabled = this.currentOffset[index] <= 0;
     this.element.querySelector("[data-id='next']").disabled = this.currentOffset[index] * this.limit >= this.pageCount;
-    this.element.querySelector("[data-id='current']").innerText = this.getCurrentPage(resourceId, variance);
+    this.element.querySelector("[data-id='current']").innerText = this.getCurrentServedPage(resourceId, variance);
   },
 
   getServerNavElement(div: HTMLElement) {
@@ -91,7 +84,7 @@ const ServerPaginationMixin = {
     return null;
   },
 
-  getCurrentPage(context: string, variance: number): Promise<void> {
+  getCurrentServedPage(context: string, variance: number): Promise<void> {
     this.currentPage[context] = Number(this.currentPage[context]) + variance;
     return this.currentPage[context];
   },
@@ -115,11 +108,11 @@ const ServerPaginationMixin = {
    * Create pagination template
    */
   renderServerPaginationNav(resourceId: string, div: HTMLElement): void {
-    const currentOffset = this.getCurrentOffset(resourceId, this.limit);
-    var currentPageNumber = this.getCurrentPage(resourceId, 1);
-    const pageCount = Math.ceil(this.pageCount / this.limit);
-
     if (this.limit) {
+      const currentOffset = this.getCurrentOffset(resourceId, this.limit);
+      var currentPageNumber = this.getCurrentServedPage(resourceId, 1);
+      const pageCount = Math.ceil(this.pageCount / this.limit);
+
       render(html`
         <button
           data-id="prev"
