@@ -14,5 +14,6 @@ export interface Resource {
   clientContext: object
   isContainer: Function
   isFullResource: Function
-  properties: string[]
+  properties: string[],
+  serverPagination: object
 }

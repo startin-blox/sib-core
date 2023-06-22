@@ -3,10 +3,12 @@ import { formatAttributesToServerSearchOptions } from '../libs/store/server-sear
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
+import { ServerPaginationMixin } from './serverPaginationMixin';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination';
 
 const StoreMixin = {
   name: 'store-mixin',
-  use: [AttributeBinderMixin, ContextMixin],
+  use: [AttributeBinderMixin, ContextMixin, ServerPaginationMixin],
   attributes: {
     noRender: {
       type: String,
@@ -42,18 +44,22 @@ const StoreMixin = {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   get resource(): Resource|null{
-    return this.resourceId ? store.get(this.resourceId) : null;
+    let id = this.resourceId;
+    if (this.limit) {
+      id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
+    }
+    return id ? store.get(id) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
+  
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
     if (!value || value == "undefined") return;
 
     this.resourceId = value;
-
     if (this.nestedField) {
       const resource = await store.getData(value, this.context);
       const nestedResource = resource ? await resource[this.nestedField] : null;
@@ -63,10 +69,13 @@ const StoreMixin = {
     this.updateNavigateSubscription();
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+    const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
     const serverSearch = formatAttributesToServerSearchOptions(this.element.attributes);
-    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverSearch);
+    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverPagination, serverSearch);
+
     this.updateDOM();
   },
+
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },

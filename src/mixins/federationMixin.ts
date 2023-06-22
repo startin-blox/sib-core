@@ -23,7 +23,7 @@ const FederationMixin = {
 
     const getChildResources = async (res: Resource) => {
       if (!res) return;
-      if (res.isContainer()) { // if this is a container
+      if (res.isContainer?.()) { // if this is a container
         const containerId = res['@id'];
         if (!this.containerFetched.includes(containerId)) { // prevent from including twice the same source
           this.containerFetched.push(containerId);

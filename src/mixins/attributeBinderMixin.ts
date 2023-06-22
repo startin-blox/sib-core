@@ -54,7 +54,7 @@ const AttributeBinderMixin = {
    * @returns - object representing attributes of an element with resolved values
    */
   async transformAttributes(attributes: object, resource: Resource) {
-    const isContainer = resource && resource.isContainer();
+    const isContainer = resource && resource.isContainer?.();
 
     for (let attr of Object.keys(attributes)) {
       const value = attributes[attr];

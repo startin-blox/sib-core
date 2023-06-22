@@ -44,7 +44,7 @@ const ListMixin = {
     if (!this.resource) return;
 
     // Not a container but a single resource
-    if (!this.resource.isContainer()) {
+    if (!this.resource.isContainer?.()) {
       this.setElementAttribute("resource");
       this.appendSingleElt(div);
       return;

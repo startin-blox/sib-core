@@ -163,7 +163,7 @@ export class BaseWidget extends HTMLElement {
           res = await store.getData(resourceId, this.context)
         } catch (e) { continue; }
       }
-      if (res.isContainer()) { // if nested container
+      if (res.isContainer?.()) { // if nested container
         let resourcesFromContainer = await store.getData(res['@id'], this.context); // fetch the datas
         this._listen(res['@id']);
         if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);

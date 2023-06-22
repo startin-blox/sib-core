@@ -67,7 +67,7 @@ export const SolidForm = {
       setDeepProperty(values, name.split('.'), value);
     });
     // add @id if edition
-    if (this.resource && !this.resource.isContainer()) values['@id'] = this.resourceId;
+    if (this.resource && !this.resource.isContainer?.()) values['@id'] = this.resourceId;
     return values;
   },
   get isNaked(): boolean {
@@ -81,7 +81,7 @@ export const SolidForm = {
   },
   async getFormValue() {
     let value = this.value;
-    if (this.resource && !this.resource.isContainer()) {
+    if (this.resource && !this.resource.isContainer?.()) {
       for (let predicate of Object.keys(this.value)) { // add @id for nested resources
         const object = await this.resource[predicate];
         if (object && object['@id'] && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
