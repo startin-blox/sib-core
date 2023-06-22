@@ -141,8 +141,8 @@ class Store {
 
     const headers = { 
       ...this.headers,
-      'accept-language': this._getLanguage(),
-      'Prefer' : 'return=representation; max-triple-count="500"'
+      'accept-language': this._getLanguage()
+      // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
 
     return this.fetchAuthn(iri, {
