@@ -25,7 +25,7 @@ export function mergeServerSearchOptions(
   const fields = attributesOptions?.fields ?? dynamicOptions?.fields;
   const value = dynamicOptions?.value ?? attributesOptions?.value;
   const method = attributesOptions?.method ?? dynamicOptions?.method;
-  if (!fields || !value) return;
+  if (!fields || fields.length === 0 || !value) return;
   return { fields, value, method };
 }
 
