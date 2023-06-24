@@ -1,5 +1,5 @@
 import { store } from '../libs/store/store';
-import { formatAttributesToServerSearchOptions } from '../libs/store/server-search';
+import { ServerSearchOptions, formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -53,8 +53,7 @@ const StoreMixin = {
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  
-  async fetchData(value: string) {
+  async fetchData(value: string, dynamicServerSearch?: Partial<ServerSearchOptions>) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
     if (!value || value == "undefined") return;
@@ -70,8 +69,12 @@ const StoreMixin = {
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
     const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
-    const serverSearch = formatAttributesToServerSearchOptions(this.element.attributes);
-    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverPagination, serverSearch);
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      dynamicServerSearch
+    );
+    const forceRefetch = !!dynamicServerSearch;
+    await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
 
     this.updateDOM();
   },

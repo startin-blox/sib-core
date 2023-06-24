@@ -4,21 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: solid-display, filtered server-side</title>
+    <title>SIB test: solid-display, with server search</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <h2>Simple display / filtered server-side</h2>
+    <h2>Simple display / with server search</h2>
 
-    <solid-display
+    <!-- <solid-display
       data-src="https://api.test3.startinblox.com/users/"
       fields="username, name(first_name, last_name), email"
-      server-search-fields="first_name,last_name"
+      server-search-fields="first_name, last_name"
       server-search-value="antoine"
       server-search-method="ibasic"
-    ></solid-display>
+    ></solid-display> -->
+
+    <!-- <solid-display
+      data-src="https://api.test3.startinblox.com/users/"
+      fields="username, name(first_name, last_name), email"
+      server-search-fields="first_name, last_name"
+      server-search-value="marj"
+      server-search-method="ibasic"
+    ></solid-display> -->
+
+    <details>
+      <h4>with solid-form-search</h4>
+      <solid-form-search
+        id="search-form-1"
+        fields="first_name, last_name"
+        autocomplete-first_name="off"
+        submit-button="Search"
+      ></solid-form-search>
+      <solid-display
+        data-src="https://api.test3.startinblox.com/users/"
+        fields="username, first_name, last_name, email"
+        filtered-by="search-form-1"
+        filtered-on="server"
+        server-search-fields="first_name, last_name"
+        server-search-value="thomas"
+      ></solid-display>
+    </details>
 
     <style>
       .id{

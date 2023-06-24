@@ -23,7 +23,14 @@ const FilterMixin = {
           this.populate();
         }
       }
-    }
+    },
+    filteredOn: {
+      type: String, // 'server' | 'client'
+      default: 'client'
+    },
+  },
+  isFilteredOnServer() {
+    return this.filteredOn === 'server' && !!this.fetchData;
   },
   created() {
     this.searchCount = new Map();
@@ -33,7 +40,9 @@ const FilterMixin = {
     })
   },
   attached(): void {
-    this.listPostProcessors.push(this.filterCallback.bind(this));
+    this.listPostProcessors.push(
+      this.isFilteredOnServer() ? this.serverSearchCallback.bind(this) : this.filterCallback.bind(this)
+    );
   },
   get filters(): SearchQuery {
     return this.searchForm?.component.value ?? {};
@@ -58,9 +67,32 @@ const FilterMixin = {
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
   },
+  async serverSearchCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+    if ((this.filteredBy || this.searchFields) && !this.searchForm) {
+      await this.createFilter(context);
+    }
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
+  },
   async filterList(context: string): Promise<void> {
     this.searchCount.set(context, this.searchCount.get(context) + 1);
     if (!this.resource) return;
+
+    if (this.isFilteredOnServer()) {
+      const filters = this.filters;
+      const fields = Object.keys(filters);
+      const value = (Object.values(filters) as { value: string }[])
+        .map(({ value }) => value)
+        .filter((value) => !!value)
+        .join(' ').trim();
+      if (fields.length > 0 && value) {
+        await this.fetchData(this.dataSrc, {
+          fields,
+          value,
+        });
+      }
+    }
+
     this.empty();
     await this.populate();
   },

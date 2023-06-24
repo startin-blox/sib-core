@@ -1,28 +1,38 @@
 export interface ServerSearchOptions {
   fields: string[];
   value: string;
-  method: string;
+  method?: string;
 }
 
 export function formatAttributesToServerSearchOptions(
-  elementAttributes: { name: string, value: string }[]
-): ServerSearchOptions | undefined {
-  const attributes = new Map(Array.from(elementAttributes).map(({ name, value }) => [name, value]))
-  const fields = attributes.get('server-search-fields');
+  elementAttributes: Iterable<Attr>
+): Partial<ServerSearchOptions> {
+  const attributes = new Map(Array.from(elementAttributes).map(({ name, value }) => [name, value]));
+  const fields = attributes.get('server-search-fields')?.split(",").map((field) => field.trim());
   const value = attributes.get('server-search-value')?.trim();
   const method = attributes.get('server-search-method')?.trim();
-  if (!fields || !value) return;
   return {
-    fields: fields.split(",").map((field) => field.trim()),
-    value: value,
-    method: method ? method : 'ibasic'
+    fields: fields && fields.length > 0 ? fields : undefined,
+    value: value ? value : undefined,
+    method: method ? method : undefined
   }
 }
 
-export function appendServerSearchToIri(options: ServerSearchOptions, iri: string): string {
+export function mergeServerSearchOptions(
+  attributesOptions?: Partial<ServerSearchOptions>,
+  dynamicOptions?: Partial<ServerSearchOptions>
+): ServerSearchOptions | undefined {
+  const fields = attributesOptions?.fields ?? dynamicOptions?.fields;
+  const value = dynamicOptions?.value ?? attributesOptions?.value;
+  const method = attributesOptions?.method ?? dynamicOptions?.method;
+  if (!fields || !value) return;
+  return { fields, value, method };
+}
+
+export function appendServerSearchToIri(iri: string, options: ServerSearchOptions): string {
   const first = iri.includes('?') ? '&' : '?';
   const fields = options.fields.map(encodeURIComponent).join(',');
   const value = encodeURIComponent(options.value);
-  const method = encodeURIComponent(options.method);
+  const method = encodeURIComponent(options.method ?? 'ibasic');
   return `${iri}${first}search-fields=${fields}&search-terms=${value}&search-method=${method}`;
 }

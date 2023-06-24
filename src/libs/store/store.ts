@@ -137,7 +137,7 @@ class Store {
   ) {
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
-    if (serverSearch) iri = appendServerSearchToIri(serverSearch, iri);
+    if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
     const headers = { 
       ...this.headers,
