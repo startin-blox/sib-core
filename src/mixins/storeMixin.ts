@@ -21,7 +21,8 @@ const StoreMixin = {
       type: String,
       default: null,
       callback: async function (value: string) {
-        if (this.noRender === null) await this.fetchData(value);
+        const filteredOnServer = this.element.attributes['filtered-on']?.value === 'server';
+        if (this.noRender === null && !filteredOnServer) await this.fetchData(value);
       },
     },
     loaderId: {
