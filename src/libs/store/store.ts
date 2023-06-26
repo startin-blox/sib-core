@@ -313,7 +313,10 @@ class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string): Resource | null {
+  get(id: string, serverSearch?: ServerSearchOptions): Resource | null {
+    if (serverSearch) {
+      id = appendServerSearchToIri(id, serverSearch);
+    }
     return this.cache.get(id) || null;
   }
 

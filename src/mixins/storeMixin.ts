@@ -1,5 +1,5 @@
 import { store } from '../libs/store/store';
-import { ServerSearchOptions, formatAttributesToServerSearchOptions, mergeServerSearchOptions, appendServerSearchToIri } from '../libs/store/server-search';
+import { ServerSearchOptions, formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -49,30 +49,11 @@ const StoreMixin = {
     if (this.limit) {
       id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
     }
-
-    if (this.element.attributes['server-search-fields']) {
-      const serverSearch = mergeServerSearchOptions(
-        formatAttributesToServerSearchOptions(this.element.attributes),
-        {
-          value: this.element.attributes['server-search-value']?.value,
-          fields: this.element.attributes['server-search-fields']?.value,
-          method: this.element.attributes['server-search-method']?.value,
-        }
-      );
-      id = appendServerSearchToIri(id, serverSearch || {fields: [], value: ''});
-    } else if (this.element.attributes['filtered-on']?.value === 'server' && this.filters) {
-      const filters = this.filters;
-      const fields = Object.keys(filters);
-      const value = (Object.values(filters) as { value: string }[])
-        .map(({ value }) => value)
-        .filter((value) => !!value)
-        .join(' ').trim();
-      if (fields.length > 0 && value) {
-        id = appendServerSearchToIri(id, {fields: fields, value: value});
-      }
-    }
-
-    return id ? store.get(id) : null;
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      this.getDynamicServerSearch?.() // from `filterMixin`
+    );
+    return id ? store.get(id, serverSearch) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;

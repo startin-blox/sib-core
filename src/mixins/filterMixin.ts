@@ -1,5 +1,6 @@
 import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
+import type { ServerSearchOptions } from '../libs/store/server-search';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -58,20 +59,26 @@ const FilterMixin = {
     return this.filteredOn === 'server' && !!this.fetchData;
   },
   async onServerSearchChange() {
-    const filters = this.filters;
-    const fields = Object.keys(filters);
-    const value = (Object.values(filters) as { value: string }[])
-      .map(({ value }) => value)
-      .filter((value) => !!value)
-      .join(' ').trim();
-    if (fields.length > 0 && value) {
-      await this.fetchData(this.dataSrc, {
-        fields,
-        value,
-      });
+    const serverSearch = this.getDynamicServerSearch();
+    if (serverSearch) {
+      await this.fetchData(this.dataSrc, serverSearch);
     }
     this.empty();
     await this.populate();
+  },
+  getDynamicServerSearch(): ServerSearchOptions | undefined {
+    const filters = this.filters;
+    if (this.isFilteredOnServer() && filters) {
+      const fields = Object.keys(filters);
+      const value = (Object.values(filters) as { value: string }[])
+        .map(({ value }) => value)
+        .filter((value) => !!value)
+        .join(' ').trim();
+      if (fields.length > 0 && value) {
+        return { fields, value };
+      }
+    }
+    return;
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
