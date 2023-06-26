@@ -73,6 +73,10 @@ class Store {
       key = id + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
     }
 
+    if (serverSearch) {
+      key = appendServerSearchToIri(key, serverSearch)
+    }
+
     if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
       const resource = this.get(key);
       if (resource && resource.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
@@ -101,9 +105,9 @@ class Store {
       }
 
       const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination).getProxy();
+      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
-      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination);
+      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
       
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
@@ -155,7 +159,15 @@ class Store {
     })
   }
 
-  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, serverPagination?: ServerPaginationOptions) {
+  async cacheGraph(
+    key: string,
+    resource: any,
+    clientContext: object,
+    parentContext: object,
+    parentId: string,
+    serverPagination?: ServerPaginationOptions,
+    serverSearch?: ServerSearchOptions
+    ) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
         this.cache.get(key).merge(resource);;
@@ -172,7 +184,7 @@ class Store {
         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
         const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
-        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, serverPagination);
+        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, serverPagination, serverSearch);
       }
     }
 
@@ -183,7 +195,7 @@ class Store {
       //TODO: return complete object without the need for the fetch data from the cacheGraph
       for (let res of await resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, serverPagination));
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, serverPagination, serverSearch));
       }
       await Promise.all(cacheChildrenPromises);
       return;
@@ -546,20 +558,23 @@ class CustomGetter {
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
   serverPagination: object; // pagination attributes to give to server
- 
+  serverSearch: object; // search attributes to give to server
+
   constructor(
     resourceId: string,
     resource: object,
     clientContext: object,
     serverContext: object = {},
     parentId: string = "",
-    serverPagination: object = {}) {
+    serverPagination: object = {},
+    serverSearch: object = {}) {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
     this.resource = this.expandProperties({ ...resource }, serverContext);
     this.resourceId = resourceId;
     this.serverPagination = serverPagination;
+    this.serverSearch = serverSearch;
   }
 
   /**
