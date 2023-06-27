@@ -59,10 +59,7 @@ const FilterMixin = {
     return this.filteredOn === 'server' && !!this.fetchData;
   },
   async onServerSearchChange() {
-    const serverSearch = this.getDynamicServerSearch();
-    if (serverSearch) {
-      await this.fetchData(this.dataSrc, serverSearch);
-    }
+    await this.fetchData(this.dataSrc);
     this.empty();
     await this.populate();
   },

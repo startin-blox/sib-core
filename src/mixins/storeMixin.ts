@@ -1,5 +1,5 @@
 import { store } from '../libs/store/store';
-import { ServerSearchOptions, formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
+import { formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -58,7 +58,7 @@ const StoreMixin = {
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  async fetchData(value: string, dynamicServerSearch?: Partial<ServerSearchOptions>) {
+  async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
     if (!value || value == "undefined") return;
@@ -74,6 +74,7 @@ const StoreMixin = {
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
     const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
+    const dynamicServerSearch = this.getDynamicServerSearch?.(); // from `filterMixin`
     const serverSearch = mergeServerSearchOptions(
       formatAttributesToServerSearchOptions(this.element.attributes),
       dynamicServerSearch
