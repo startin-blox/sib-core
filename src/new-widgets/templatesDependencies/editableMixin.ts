@@ -17,6 +17,10 @@ const EditableMixin = {
     valueId: {
       type: String,
       default: ''
+    },
+    buttonLabel: {
+      type: String,
+      default: 'Modifier'
     }
   },
   created() {
@@ -25,10 +29,7 @@ const EditableMixin = {
   addEditButton(template, listTemplateAdditions: Function[]) {
     let newTemplate: any = null;
     if (this.editable !== null) {
-      newTemplate = html`
-        ${template}
-        <button @click=${this.activateEditableField.bind(this)}>Modifier</button>
-      `;
+      newTemplate = html`${template}<button @click=${this.activateEditableField.bind(this)}>${this.buttonLabel}</button>`;
     }
     const nextProcessor = listTemplateAdditions.shift();
     if(nextProcessor) nextProcessor(newTemplate || template, listTemplateAdditions);
