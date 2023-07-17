@@ -8,10 +8,6 @@
       "order": 1,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
       ]
     },
     {
@@ -26,10 +22,6 @@
       "order": 2,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
       ]
     },
     {
@@ -50,10 +42,6 @@
       "order": 15,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
       ]
     },
     {
