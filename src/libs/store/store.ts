@@ -2,6 +2,8 @@ import JSONLDContextParser from 'jsonld-context-parser';
 //@ts-ignore
 import PubSub from 'https://cdn.skypack.dev/pubsub-js';
 import type { Resource } from '../../mixins/interfaces';
+import type { ServerSearchOptions } from './server-search';
+import { appendServerSearchToIri } from './server-search';
 
 import type { ServerPaginationOptions } from './server-pagination';
 import { appendServerPaginationToIri } from './server-pagination';
@@ -50,6 +52,8 @@ class Store {
    * @param parentId - uri of the parent caller used to expand uri for local files
    * @param localData - data to put in cache
    * @param forceFetch - force the fetch of data
+   * @param serverPagination - Server pagination options
+   * @param serverSearch - Server search options
    *
    * @returns The fetched resource
    *
@@ -61,11 +65,16 @@ class Store {
     parentId = "",
     localData?: object,
     forceFetch: boolean = false,
-    serverPagination?: ServerPaginationOptions
+    serverPagination?: ServerPaginationOptions,
+    serverSearch?: ServerSearchOptions
   ): Promise<Resource|null> {
     let key = id;
     if (serverPagination) {
       key = id + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
+    }
+
+    if (serverSearch) {
+      key = appendServerSearchToIri(key, serverSearch)
     }
 
     if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
@@ -87,7 +96,7 @@ class Store {
         localData["@id"] = id;
         resource = localData;
       } else try {
-        resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination);
+        resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination, serverSearch);
       } catch (error) { console.error(error) }
       if (!resource) {
         this.loadingList.delete(key);
@@ -96,9 +105,9 @@ class Store {
       }
 
       const serverContext = await myParser.parse([resource['@context'] || {}]);
-      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination).getProxy();
+      const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
-      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination);
+      await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
       
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
@@ -127,17 +136,18 @@ class Store {
     id: string,
     context = {},
     parentId = "",
-    serverPagination?: ServerPaginationOptions
+    serverPagination?: ServerPaginationOptions,
+    serverSearch?: ServerSearchOptions
   ) {
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
+    if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
     const headers = { 
       ...this.headers,
-      'accept-language': this._getLanguage(),
-      'Prefer' : 'return=representation; max-triple-count="500"'
+      'accept-language': this._getLanguage()
+      // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
-
 
     return this.fetchAuthn(iri, {
       method: 'GET',
@@ -149,7 +159,15 @@ class Store {
     })
   }
 
-  async cacheGraph(key: string, resource: any, clientContext: object, parentContext: object, parentId: string, serverPagination?: ServerPaginationOptions) {
+  async cacheGraph(
+    key: string,
+    resource: any,
+    clientContext: object,
+    parentContext: object,
+    parentId: string,
+    serverPagination?: ServerPaginationOptions,
+    serverSearch?: ServerSearchOptions
+    ) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
         this.cache.get(key).merge(resource);;
@@ -166,7 +184,7 @@ class Store {
         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
         const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId).getProxy();
         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
-        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, serverPagination);
+        await this.cacheGraph(res['@id'], resourceProxy, clientContext, parentContext, parentId, serverPagination, serverSearch);
       }
     }
 
@@ -177,7 +195,7 @@ class Store {
       //TODO: return complete object without the need for the fetch data from the cacheGraph
       for (let res of await resource.getChildren()) {
         this.subscribeResourceTo(resource['@id'], res['@id']);
-        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, serverPagination));
+        cacheChildrenPromises.push(this.cacheGraph(res['@id'], res, clientContext, parentContext, parentId, serverPagination, serverSearch));
       }
       await Promise.all(cacheChildrenPromises);
       return;
@@ -295,7 +313,10 @@ class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string): Resource | null {
+  get(id: string, serverSearch?: ServerSearchOptions): Resource | null {
+    if (serverSearch) {
+      id = appendServerSearchToIri(id, serverSearch);
+    }
     return this.cache.get(id) || null;
   }
 
@@ -540,20 +561,23 @@ class CustomGetter {
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
   serverPagination: object; // pagination attributes to give to server
- 
+  serverSearch: object; // search attributes to give to server
+
   constructor(
     resourceId: string,
     resource: object,
     clientContext: object,
     serverContext: object = {},
     parentId: string = "",
-    serverPagination: object = {}) {
+    serverPagination: object = {},
+    serverSearch: object = {}) {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
     this.resource = this.expandProperties({ ...resource }, serverContext);
     this.resourceId = resourceId;
     this.serverPagination = serverPagination;
+    this.serverSearch = serverSearch;
   }
 
   /**

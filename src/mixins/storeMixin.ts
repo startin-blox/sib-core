@@ -1,4 +1,5 @@
 import { store } from '../libs/store/store';
+import { formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -20,7 +21,8 @@ const StoreMixin = {
       type: String,
       default: null,
       callback: async function (value: string) {
-        if (this.noRender === null) await this.fetchData(value);
+        const filteredOnServer = this.element.attributes['filtered-on']?.value === 'server';
+        if (this.noRender === null && !filteredOnServer) await this.fetchData(value);
       },
     },
     loaderId: {
@@ -47,12 +49,15 @@ const StoreMixin = {
     if (this.limit) {
       id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
     }
-    return id ? store.get(id) : null;
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      this.getDynamicServerSearch?.() // from `filterMixin`
+    );
+    return id ? store.get(id, serverSearch) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
-  
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
@@ -69,7 +74,13 @@ const StoreMixin = {
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
     const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
-    await store.getData(this.resourceId, this.context, undefined, undefined, false, serverPagination);
+    const dynamicServerSearch = this.getDynamicServerSearch?.(); // from `filterMixin`
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      dynamicServerSearch
+    );
+    const forceRefetch = !!dynamicServerSearch;
+    await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
 
     this.updateDOM();
   },

@@ -1,5 +1,6 @@
 import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
+import type { ServerSearchOptions } from '../libs/store/server-search';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -23,7 +24,11 @@ const FilterMixin = {
           this.populate();
         }
       }
-    }
+    },
+    filteredOn: {
+      type: String, // 'server' | 'client'
+      default: 'client'
+    },
   },
   created() {
     this.searchCount = new Map();
@@ -33,7 +38,15 @@ const FilterMixin = {
     })
   },
   attached(): void {
-    this.listPostProcessors.push(this.filterCallback.bind(this));
+    const filteredBy = this.filteredBy;
+    if (this.isFilteredOnServer() && filteredBy) {
+      this.searchForm = document.getElementById(filteredBy)
+      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
+      // this.searchForm.component.attach(this); // is it necessary?
+      this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
+    } else {
+      this.listPostProcessors.push(this.filterCallback.bind(this));
+    }
   },
   get filters(): SearchQuery {
     return this.searchForm?.component.value ?? {};
@@ -41,6 +54,28 @@ const FilterMixin = {
   set filters(filters) {
     this.searchForm.component.value = filters;
     this.filterList();
+  },
+  isFilteredOnServer() {
+    return this.filteredOn === 'server' && !!this.fetchData;
+  },
+  async onServerSearchChange() {
+    await this.fetchData(this.dataSrc);
+    this.empty();
+    await this.populate();
+  },
+  getDynamicServerSearch(): ServerSearchOptions | undefined {
+    const filters = this.filters;
+    if (this.isFilteredOnServer() && filters) {
+      const fields = Object.keys(filters);
+      const value = (Object.values(filters) as { value: string }[])
+        .map(({ value }) => value)
+        .filter((value) => !!value)
+        .join(' ').trim();
+      if (fields.length > 0 && value) {
+        return { fields, value };
+      }
+    }
+    return;
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
