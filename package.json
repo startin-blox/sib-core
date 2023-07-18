@@ -15,6 +15,7 @@
     "build": "snowpack build --polyfill-node",
     "watch": "npm run build -- --watch",
     "serve": "node server.js",
+    "serve:watch": "node --watch server.js",
     "check-types": "tsc",
     "test": "node server.js --test",
     "cypress": "node server.js --test-ui"
