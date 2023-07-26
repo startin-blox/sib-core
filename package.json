@@ -14,8 +14,8 @@
   "scripts": {
     "build": "snowpack build --polyfill-node",
     "watch": "npm run build -- --watch",
-    "serve": "node server.js",
-    "serve:watch": "node --watch server.js",
+    "serve": "node --watch server.js",
+    "dev": "concurrently -n 'WATCH,SERVE' -c 'yellow.bold,magenta.bold' 'npm run watch' 'npm run serve'",
     "check-types": "tsc",
     "test": "node server.js --test",
     "cypress": "node server.js --test-ui"
@@ -83,6 +83,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-remove-import-js-extension": "0.0.3",
     "body-parser": "^1.19.0",
+    "concurrently": "^8.2.0",
     "cypress": "^6.9.1",
     "cypress-plugin-tab": "^1.0.5",
     "delta-markdown-for-quill": "0.0.9",
