@@ -12,38 +12,20 @@
   <body>
     <h2>Simple display / with server search</h2>
 
+    <h4>with solid-form-search</h4>
+    <solid-form-search
+      id="search-form-1"
+      fields="first_name, last_name"
+      autocomplete-first_name="off"
+      value-first_name="benoit"
+      submit-button="Search"
+    ></solid-form-search>
     <solid-display
       data-src="https://api.test3.startinblox.com/users/"
-      fields="username, name(first_name, last_name), email"
-      server-search-fields="first_name, last_name"
-      server-search-value="antoine"
-      server-search-method="ibasic"
+      fields="username, first_name, last_name, email"
+      filtered-by="search-form-1"
+      filtered-on="server"
     ></solid-display>
-
-    <solid-display
-      data-src="https://api.test3.startinblox.com/users/"
-      fields="username, name(first_name, last_name), email"
-      server-search-fields="first_name, last_name"
-      server-search-value="marj"
-      server-search-method="ibasic"
-    ></solid-display>
-
-    <details>
-      <h4>with solid-form-search</h4>
-      <solid-form-search
-        id="search-form-1"
-        fields="first_name, last_name"
-        autocomplete-first_name="off"
-        value-first_name="benoit"
-        submit-button="Search"
-      ></solid-form-search>
-      <solid-display
-        data-src="https://api.test3.startinblox.com/users/"
-        fields="username, first_name, last_name, email"
-        filtered-by="search-form-1"
-        filtered-on="server"
-      ></solid-display>
-    </details>
 
     <style>
       .id{
