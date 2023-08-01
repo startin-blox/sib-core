@@ -6,8 +6,10 @@ const { resolve } = require('path');
 var url = require('url');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const port = require('find-free-port')(3000);
 const app = express();
+app.use(cors());
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app
