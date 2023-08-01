@@ -23,7 +23,6 @@ default:
   image: node:14
 
 stages:
-  - prepare
   - test
   - prepare
   - publish
