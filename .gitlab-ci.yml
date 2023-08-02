@@ -28,7 +28,7 @@ stages:
   - publish
 
 test:
-  image: cypress/base:10
+  image: cypress/base:11
   stage: test
   before_script:
     - npm ci
