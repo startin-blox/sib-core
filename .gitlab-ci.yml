@@ -15,14 +15,13 @@ variables:
 
 # cache using branch name
 # https://gitlab.com/help/ci/caching/index.md
-# cache:
-#   key: ${CI_COMMIT_REF_SLUG}
-#   paths:
-#     - .npm
-#     - cache/Cypress
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - cache/Cypress
 
 stages:
-  - prepare
   - test
   - prepare
   - publish
@@ -45,6 +44,7 @@ test:
 
 prepare:
   stage: prepare
+  image: node:14
   before_script:
     - npm ci --cache .npm --prefer-offline
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
