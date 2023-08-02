@@ -28,10 +28,9 @@ stages:
   - publish
 
 test:
-  image: cypress/base:14
+  image: cypress/base:10
   stage: test
   before_script:
-    - npm install
     - npm ci
   script:
     - export NODE_OPTIONS=--max_old_space_size=4096
