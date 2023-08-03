@@ -32,8 +32,8 @@ test:
   before_script:
     - node -v
     - npm -v
-    - npm list
     - npm ci --cache .npm --prefer-offline
+    - npm list
   script:
     - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
