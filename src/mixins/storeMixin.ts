@@ -22,9 +22,11 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         const filteredOnServer = this.element.attributes['filtered-on']?.value === 'server';
-        // const limited = this.element.attributes['limit']?.value !== undefined;
-        // if (this.noRender === null && !filteredOnServer && !limited) await this.fetchData(value);
-        if (this.noRender === null && !filteredOnServer) await this.fetchData(value);
+        // FIXME: find why tests failed
+        console.log('filteredOnServer =>', filteredOnServer, value)
+        const limited = this.element.attributes['limit']?.value !== undefined;
+        if (this.noRender === null && !filteredOnServer && !limited) await this.fetchData(value);
+        // if (this.noRender === null && !filteredOnServer) await this.fetchData(value);
       },
     },
     loaderId: {

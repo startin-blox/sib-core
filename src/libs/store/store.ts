@@ -108,7 +108,7 @@ class Store {
       const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-      
+
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
     });
@@ -124,8 +124,8 @@ class Store {
       if (options.headers) options.headers = this._convertHeaders(options.headers);
       return fetch(iri, options).then(function(response) {
         if (options.method === "PURGE" && !response.ok && response.status === 404) {
-            const err = new Error("PURGE call is returning 404");
-            throw err;
+          const err = new Error("PURGE call is returning 404");
+          throw err;
         }
         return response;
       });
@@ -143,11 +143,14 @@ class Store {
     if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
     if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
-    const headers = { 
+    const headers = {
       ...this.headers,
       'accept-language': this._getLanguage()
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
+
+    // TODO: Remove this
+    console.log('store.ts fetchData iri =>', iri)
 
     return this.fetchAuthn(iri, {
       method: 'GET',
@@ -167,7 +170,7 @@ class Store {
     parentId: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions
-    ) {
+  ) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
         this.cache.get(key).merge(resource);;
@@ -394,7 +397,7 @@ class Store {
       method: "PURGE",
       headers: this.headers
     }).catch(function(error) {
-        console.warn('No purge method allowed: ' + error)
+      console.warn('No purge method allowed: ' + error)
     });
 
     try {
@@ -406,7 +409,7 @@ class Store {
         method: "PURGE",
         headers: headers
       }).catch(function(error) {
-          console.warn('No purge method allowed: ' + error)
+        console.warn('No purge method allowed: ' + error)
       });
     } catch (error) {
       console.warn('The resource ID is not a complete URL: ' + error);
@@ -762,7 +765,7 @@ class CustomGetter {
               return this.getCompactedIri(this.resource['@id']); // Compact @id if possible
             else
               console.log(this.resource, this.resource['@id']);
-              return;
+            return;
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':

@@ -1,10 +1,11 @@
+<!-- TODO: Remove this -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: pagination</title>
+    <title>SIB test: Two requests launched 818</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -17,20 +18,15 @@
       limit="2"
     ></solid-display> -->
 
-    <summary>Server Pagination + search:</summary>
-    <solid-form-search
-      id="search-form-1"
-      fields="first_name, last_name"
-      autocomplete-first_name="off"
-      value-first_name="abi"
-      submit-button="Search"
-    ></solid-form-search>
     <solid-display
       data-src="https://api.test7.startinblox.com/users/"
-      fields="@id, username, first_name, last_name, email"
-      filtered-by="search-form-1"
-      filtered-on="server"
-      limit="6"
-    ></solid-display>
+      fields="segment1(send, segment2(member-picture(account.picture), segment3(name, member-pseudo(at, username), profile.job)), segment4(profile.city, communities, skills))"
+      order-asc="username"
+      multiple-skills=""
+      multiple-skills-fields="name"
+      limit="30"
+      filtered-by=""
+    </solid-display>
+
   </body>
 </html>

@@ -1,36 +1,41 @@
+<!-- TODO: Remove this -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: pagination</title>
+    <title>SIB test: server pagination search mock</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <!-- <summary>Server Pagination:</summary>
-    <solid-display
-      data-src="https://api.test7.startinblox.com/users/"
-      fields="@id, username, first_name, last_name, email"
-      limit="2"
-    ></solid-display> -->
-
-    <summary>Server Pagination + search:</summary>
+    <summary>Server Pagination + search mock:</summary>
     <solid-form-search
       id="search-form-1"
       fields="first_name, last_name"
       autocomplete-first_name="off"
-      value-first_name="abi"
+      value-first_name="benoit"
       submit-button="Search"
     ></solid-form-search>
     <solid-display
-      data-src="https://api.test7.startinblox.com/users/"
+      data-src="http://localhost:3000/mock/users/"
       fields="@id, username, first_name, last_name, email"
       filtered-by="search-form-1"
       filtered-on="server"
       limit="6"
     ></solid-display>
+
+    <style>
+      .id{
+        font-family: monospace;
+        color: blue;
+      }
+      .name{
+        font-family: cursive;
+        color: green;
+      }
+    </style>
   </body>
 </html>

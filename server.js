@@ -1,13 +1,16 @@
-const crypto = require('crypto');
-const distPath = '.';
-const cypress = require('cypress');
+const crypto = require("crypto")
+const cypress = require("cypress")
+const url =  require("url")
+const path =  require("path")
+const express =  require("express")
+const bodyParser =  require("body-parser")
+const findFreePort =  require("find-free-port")
+const fs =  require("fs")
 
-const { resolve } = require('path');
-var url = require('url');
-const express = require('express');
-const bodyParser = require('body-parser');
-const port = require('find-free-port')(3000);
+const port = findFreePort(3000);
 const app = express();
+const distPath = '.';
+
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app
@@ -26,7 +29,20 @@ const app = express();
       setTimeout(() => rep.send(), 1200);
     })
     .get(/^\/upload\/.+/, (req, rep) => {
-      rep.sendFile(resolve('./fake-image.svg'));
+      rep.sendFile(path.resolve('./fake-image.svg'));
+    })
+    .get("/mock/users", async (req, res) => {
+      const limit = Number(req.query.limit);
+      const offset = Number(req.query.offset);
+      const val = req.query["search-terms"] ?? "";
+
+      const jsonData = fs.readFileSync("./examples/data/list/users-long.jsonld", { encoding: "utf8" });
+      const data = JSON.parse(jsonData);
+      const list = data["ldp:contains"].filter(user => user["first_name"].toLowerCase().includes(val.toLowerCase()));
+      data["ldp:contains"] = limit ? list.slice(offset, offset + limit) : list;
+
+      res.send(data);
+      res.end();
     })
     // Listen for write requests
     .patch(updateURLs, handleUpdate)

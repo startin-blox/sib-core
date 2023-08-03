@@ -1,3 +1,4 @@
+<!-- TODO: Remove this -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,19 +11,12 @@
   </head>
 
   <body>
-    <!-- <summary>Server Pagination:</summary>
-    <solid-display
-      data-src="https://api.test7.startinblox.com/users/"
-      fields="@id, username, first_name, last_name, email"
-      limit="2"
-    ></solid-display> -->
-
     <summary>Server Pagination + search:</summary>
     <solid-form-search
       id="search-form-1"
       fields="first_name, last_name"
       autocomplete-first_name="off"
-      value-first_name="abi"
+      value-first_name="benoit"
       submit-button="Search"
     ></solid-form-search>
     <solid-display
@@ -32,5 +26,16 @@
       filtered-on="server"
       limit="6"
     ></solid-display>
+
+    <style>
+      .id{
+        font-family: monospace;
+        color: blue;
+      }
+      .name{
+        font-family: cursive;
+        color: green;
+      }
+    </style>
   </body>
 </html>
