@@ -28,7 +28,7 @@ default:
   image: node:18
 
 test:
-  image: cypress/base:18
+  image: cypress/base:18.16.0
   stage: test
   before_script:
     - node -v
