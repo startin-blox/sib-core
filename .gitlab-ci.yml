@@ -5,7 +5,7 @@ include:
   file: templates/nodejs.ci.yml
 
 default:
-  image: node:16
+  image: node:14
 
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
@@ -27,7 +27,7 @@ stages:
   - publish
 
 test:
-  image: cypress/base:14
+  # image: cypress/base:14
   stage: test
   before_script:
     - node -v
