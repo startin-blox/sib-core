@@ -30,6 +30,7 @@ test:
   image: cypress/base:10
   stage: test
   before_script:
+    - npm install -g npm
     - npm cache clean --force
     - npm ci --cache .npm --legacy-peer-deps --prefer-offline
   script:
