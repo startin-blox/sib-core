@@ -4,9 +4,6 @@ include:
   ref: master
   file: templates/nodejs.ci.yml
 
-default:
-  image: node:14
-
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
 variables:
@@ -20,21 +17,25 @@ cache:
   paths:
     - .npm
     - cache/Cypress
+    - node_modules/
 
 stages:
   - test
   - prepare
   - publish
 
+default:
+  image: node:14
+
 test:
-  # image: cypress/base:14
+  image: cypress/base:10
   stage: test
   before_script:
     - node -v
     - npm -v
-    - npm ci --cache .npm --prefer-offline
     - npm list
   script:
+    - npm ci --cache .npm --prefer-offline
     - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
     - npm run build
