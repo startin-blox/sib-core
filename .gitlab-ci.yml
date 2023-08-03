@@ -30,7 +30,6 @@ test:
   image: cypress/base:14
   stage: test
   before_script:
-    - npm install -g npm
     - node -v
     - npm -v
     - npm list
