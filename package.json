@@ -109,6 +109,6 @@
     "wait-on": "^5.2.1"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "2.8.5"
   }
 }
