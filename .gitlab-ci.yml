@@ -31,10 +31,7 @@ test:
   image: cypress/base:18.16.0
   stage: test
   before_script:
-    - node -v
-    - npm -v
-    - npm ci --cache .npm --prefer-offline
-    - npm list
+    - npm ci
   script:
     - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
