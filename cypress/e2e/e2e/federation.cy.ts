@@ -1,8 +1,9 @@
 let beenCalled = false;
 describe('federation', function () {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/federation.html');
   })
+
   this.beforeEach(() => {
     cy.intercept('http://server.com/skills', (req) => {
       beenCalled = true;
@@ -18,6 +19,7 @@ describe('federation', function () {
       })
     })
   });
+
   it('check children', () => {
     cy.get('#federation-1').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 4)
@@ -69,14 +71,20 @@ describe('federation', function () {
   });
 
   it('can fail one source', () => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: '**/circles-server3.jsonld',
-      status: 403,
-      response: {},
-    });
+    // cy.server();
+    // cy.route({
+    //   method: 'GET',
+    //   url: '**/circles-server3.jsonld',
+    //   status: 403,
+    //   response: {},
+    // });
+
+    cy.intercept('GET', '**/circles-server3.jsonld', {
+      statusCode: 403
+    })
+
     cy.reload();
+
     cy.get('#federation-2').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 5);
     cy.get('@federation').find('> div > solid-display').eq(0)

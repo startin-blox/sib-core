@@ -1,5 +1,5 @@
 describe('auto-range attribute', function() {
-  this.beforeAll('visit', () => {
+  beforeEach('visit', () => {
     cy.visit('/examples/e2e/auto-range.html')
   })
 
