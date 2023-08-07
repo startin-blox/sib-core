@@ -1,5 +1,5 @@
 describe('group-by', function() {
-  this.beforeAll('visit', () => {
+  beforeEach('visit', () => {
     cy.visit('/examples/e2e/group-by.html')
   })
   /**

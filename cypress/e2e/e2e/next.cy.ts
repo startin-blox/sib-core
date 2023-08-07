@@ -1,5 +1,5 @@
 describe('next', function() {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/next.html')
   });
 

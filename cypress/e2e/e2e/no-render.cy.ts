@@ -1,7 +1,7 @@
 describe('no-render', function() {
   let win: Window;
 
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/no-render.html');
     cy.window().then(w => {
       win = w;
