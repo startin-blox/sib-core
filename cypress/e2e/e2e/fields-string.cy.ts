@@ -1,5 +1,5 @@
 describe('fields-string', function() {
-  this.beforeAll('visit', () => {
+  beforeEach('visit', () => {
     cy.visit('/examples/e2e/fields-string.html')
   });
   it('display strings', () => {
