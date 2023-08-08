@@ -1,7 +1,9 @@
-describe('server-pagination', function () {
+// TODO: We should make tests run independently of one another
+describe('server-pagination', { testIsolation: false }, function () {
     this.beforeAll('visit', () => {
         cy.visit('/examples/e2e/server-pagination.html')
     });
+    
     /**
     * Paginates from server
     */
@@ -73,7 +75,7 @@ describe('server-pagination', function () {
         .contains('1000'); 
     });
 
-      /**
+  /**
   * Paginate and search
   */
   it('search and paginate', () => {

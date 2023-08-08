@@ -68,6 +68,7 @@ describe('helpers', function() {
           expect(win.scriptLoaded).is.true;
         });
     });
+
     it('add several scripts', () => {
       const urls = ['helpers.js?k=1', 'helpers.js?k=2'];
       helpers.importJS(...urls);
@@ -76,6 +77,7 @@ describe('helpers', function() {
         expect(srcs).deep.eq(urls.map(url => new URL(url, doc.baseURI).href));
       });
     });
+    
     it('add script only once', () => {
       const url = 'script';
       helpers.importJS(url);
@@ -85,6 +87,7 @@ describe('helpers', function() {
         .should('eq', 1);
     });
   });
+
   describe('defineComponent', function() {
     it('define my-component', () => {
       expect(win.customElements.get('my-component')).to.be.undefined;
@@ -99,5 +102,4 @@ describe('helpers', function() {
       expect(spy).to.have.been.called;
     });
   });
-  
 });

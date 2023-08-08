@@ -1,5 +1,5 @@
 describe('extra-context', function() {
-  beforeEach('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/extra-context.html')
   });
 

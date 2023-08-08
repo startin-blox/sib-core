@@ -1,7 +1,9 @@
-describe('paginate-by', function() {
+// TODO: We should make tests run independently of one another
+describe('paginate-by', { testIsolation: false }, function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/paginate-by.html')
   });
+
   /**
   * Paginates at loading time
   */

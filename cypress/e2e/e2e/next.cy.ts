@@ -1,5 +1,6 @@
-describe('next', function() {
-  this.beforeEach('visit', () => {
+// TODO: We should make tests run independently of one another
+describe('next', { testIsolation: false }, function() {
+  this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/next.html')
   });
 

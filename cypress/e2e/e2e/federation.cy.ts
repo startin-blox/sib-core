@@ -1,7 +1,11 @@
+// TODO: We should make tests run independently of one another
 let beenCalled = false;
-describe('federation', function () {
-  beforeEach('visit', () => {
+describe('federation', { testIsolation: false }, function () {
+  this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/federation.html');
+  })
+
+  this.beforeEach(() => {
     cy.intercept('http://server.com/skills', (req) => {
       beenCalled = true;
       req.reply({
@@ -15,7 +19,7 @@ describe('federation', function () {
         }
       })
     })
-  })
+  });
 
   it('check children', () => {
     cy.get('#federation-1').as('federation');
@@ -38,7 +42,7 @@ describe('federation', function () {
       .and('contain.text', 'Another circle from server 2');
   });
 
-  it('supports nested sources | can fail one source | does not fetch local federations', () => {
+  it('supports nested sources', () => {
     cy.get('#federation-2').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 6)
     cy.get('@federation').find('> div > solid-display').eq(0)
@@ -65,19 +69,19 @@ describe('federation', function () {
       .should('have.attr', 'data-src', 'circles-6.jsonld')
       .and('contain.text', 'circles-6.jsonld')
       .and('contain.text', 'Circle from server 4');
+  });
 
-
-      // can fail one source
-      cy.intercept('GET', '**/circles-server3.jsonld', {
-        statusCode: 403
-      })
-      cy.reload();
-      cy.get('#federation-2').as('federation');
-      cy.get('@federation').find('> div').children().should('have.length', 5);
-      cy.get('@federation').find('> div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'circles-1.jsonld')
-      .and('contain.text', 'circles-1.jsonld')
-      .and('contain.text', 'Circle from server 1');
+  it("can fail one source", () => {
+    cy.intercept('GET', '**/circles-server3.jsonld', {
+      statusCode: 403
+    })
+    cy.reload();
+    cy.get('#federation-2').as('federation');
+    cy.get('@federation').find('> div').children().should('have.length', 5);
+    cy.get('@federation').find('> div > solid-display').eq(0)
+    .should('have.attr', 'data-src', 'circles-1.jsonld')
+    .and('contain.text', 'circles-1.jsonld')
+    .and('contain.text', 'Circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(1)
       .should('have.attr', 'data-src', 'circles-2.jsonld')
       .and('contain.text', 'circles-2.jsonld')
@@ -94,12 +98,13 @@ describe('federation', function () {
       .should('have.attr', 'data-src', 'circles-6.jsonld')
       .and('contain.text', 'circles-6.jsonld')
       .and('contain.text', 'Circle from server 4');
+  })
 
-      // does not fetch local federations
-      expect(beenCalled).to.be.false;
-      cy.get('#loadSkills').click()
-      cy.get('#federation-3 solid-display > div').children().should('have.length', 1).then(() => {
-        expect(beenCalled).to.be.true;
-      })
-  });
+  it("does not fetch local federations", () => {
+    expect(beenCalled).to.be.false;
+    cy.get('#loadSkills').click()
+    cy.get('#federation-3 solid-display > div').children().should('have.length', 1).then(() => {
+      expect(beenCalled).to.be.true;
+    })
+  })
 })

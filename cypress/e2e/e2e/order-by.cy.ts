@@ -1,7 +1,9 @@
-describe('order-by', function() {
+// TODO: We should make tests run independently of one another
+describe('order-by', { testIsolation: false }, function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/order-by.html')
   });
+
   /**
   * Order-asc
   */

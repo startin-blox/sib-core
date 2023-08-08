@@ -1,24 +1,49 @@
-
-describe('Reactivity e2e test', function () {
+// TODO: We should make tests run independently of one another
+describe('Reactivity e2e test2', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
-    cy.server();
-    cy.route('GET', 'https://ldp-server2.test/users/', 'fixture:users-nantes.jsonld');
-    cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
-    cy.route('GET', '**/sources/users/', 'fixture:users-source.jsonld');
-    cy.route('GET', '**/users/matthieu/', 'fixture:users-matthieu.jsonld');
-    cy.route('GET', '**/users/matthieu/circles/', 'fixture:users-matthieu-circles.jsonld');
-    cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu.jsonld');
-    cy.route('GET', '**/profiles/jbpasquier/', 'fixture:profiles-jbpasquier.jsonld');
-    cy.route('GET', '**/profiles/alex/', 'fixture:profiles-alex.jsonld');
-    cy.route('GET', '**/circles/16/', 'fixture:circles-16.jsonld');
-    cy.route('GET', '**/circles/17/members/', 'fixture:circles-17-members.jsonld');
+    cy.intercept('GET', 'https://ldp-server2.test/users/', {
+      fixture: "users-nantes.jsonld"
+    })
+    cy.intercept('GET', 'https://ldp-server.test/users/', {
+      fixture: "users-paris.jsonld"
+    })
+    cy.intercept('GET', '**/sources/users/', {
+      fixture: "users-source.jsonld"
+    })
+    cy.intercept('GET', '**/users/matthieu/', {
+      fixture: "users-matthieu.jsonld"
+    })
+    cy.intercept('GET', '**/users/matthieu/circles/', {
+      fixture: "users-matthieu-circles.jsonld"
+    })
+    cy.intercept('GET', '**/profiles/matthieu/', {
+      fixture: "profiles-matthieu.jsonld"
+    })
+    cy.intercept('GET', '**/profiles/jbpasquier/', {
+      fixture: "profiles-jbpasquier.jsonld"
+    })
+    cy.intercept('GET', '**/profiles/alex/', {
+      fixture: "profiles-alex.jsonld"
+    })
+    cy.intercept('GET', '**/circles/16/', {
+      fixture: "circles-16.jsonld"
+    })
+    cy.intercept('GET', '**/circles/17/members/', {
+      fixture: "circles-17-members.jsonld"
+    })
+
     cy.visit('/examples/e2e/reactivity-e2e-test.html');
-    cy.server({ enable: false });
+
+    // cy.server({ enable: false });
   })
+
   it('check display', () => {
-    cy.server();
-    cy.route('GET', 'https://ldp-server2.test/users/', 'fixture:users-nantes.jsonld');
-    cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld'); // add fixture in case everything is not loaded yet
+    cy.intercept('GET', 'https://ldp-server2.test/users/', {
+      fixture: "users-nantes.jsonld"
+    })
+    cy.intercept('GET', 'https://ldp-server.test/users/', {
+      fixture: "users-paris.jsonld" // add fixture in case everything is not loaded yet
+    })
 
     cy.get('solid-display#user > div > solid-display-value:nth-child(1)').should('have.attr', 'name', 'first_name').should('contain', 'Matthieu');
     cy.get('solid-display#user > div > solid-display-value:nth-child(2)').should('have.attr', 'name', 'last_name').should('contain', 'Fesselier');
@@ -30,35 +55,45 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-display#profile-widget > div > custom-widget > div').should('contain', 'Rennes');
     cy.get('solid-display#federation solid-display').should('have.length', 3);
     cy.get('solid-display#circles-user solid-display').should('have.length', 1);
-    cy.server({ enable: false });
+
+    // cy.server({ enable: false });
   });
 
   it('has reactive nested resources', () => {
-    cy.server();
-    cy.route({
-      method: 'PATCH',
-      url: '**/profiles/matthieu/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
-    cy.route({
-      method: 'PATCH',
-      url: '**/users/matthieu/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
-    cy.route('GET', '**/users/matthieu/', 'fixture:users-matthieu.jsonld');
-    cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu-edited.jsonld');
-    cy.route('GET', '**/sources/users/', 'fixture:users-source.jsonld');
-    cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
-    cy.route('GET', 'https://ldp-server2.test/users/', 'fixture:users-nantes.jsonld');
+    cy.intercept("PATCH", '**/profiles/matthieu/',
+    {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
+
+    cy.intercept("PATCH", '**/users/matthieu/',
+    {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
+
+    cy.intercept("GET", '**/users/matthieu/', {
+      fixture: "users-matthieu.jsonld"
+    })
+    cy.intercept("GET", '**/profiles/matthieu/', {
+      fixture: "profiles-matthieu-edited.jsonld"
+    })
+    cy.intercept("GET", '**/sources/users/', {
+      fixture: "users-source.jsonld"
+    })
+    cy.intercept("GET", 'https://ldp-server.test/users/', {
+      fixture: "users-paris.jsonld"
+    })
+    cy.intercept("GET", 'https://ldp-server2.test/users/', {
+      fixture: "users-nantes.jsonld"
+    })
 
     cy.get('solid-form#profile-form input[name="city"]').clear().type('Paris');
     cy.get('solid-form#profile-form input[type=submit]').click();
 
-    // Nested resource in dot field
+    // Nested resource in2 dot field
     cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('contain', 'Paris');
 
     // Nested resource in nested field
@@ -68,7 +103,9 @@ describe('Reactivity e2e test', function () {
     cy.get('solid-display#profile-widget > div > custom-widget[name="profile"] > div').should('contain', 'Paris');
 
     // Nested field in form
-    cy.route('GET', '**/profiles/matthieu/', 'fixture:profiles-matthieu-edited-2.jsonld');
+    cy.intercept("GET", '**/profiles/matthieu/', {
+      fixture: "profiles-matthieu-edited-2.jsonld"
+    })
     cy.get('solid-form#user-form-city input[name="profile.city"]').clear().type('Briouze');
     cy.get('solid-form#user-form-city input[type=submit]').click();
 
@@ -78,37 +115,40 @@ describe('Reactivity e2e test', function () {
 
     // Nested resource in multi dot field
     // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); DOES NOT WORK YET
-    cy.server({ enable: false });
+    // cy.server({ enable: false });
   });
 
   it('has reactive properties', () => {
-    cy.server();
-    cy.route('GET', '**/users/matthieu/', 'fixture:users-matthieu-edited.jsonld');
-    cy.route('GET', '**/sources/users/', 'fixture:users-source.jsonld');
-    cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-edited.jsonld');
-    cy.route('GET', 'https://ldp-server2.test/users/', 'fixture:users-nantes.jsonld');
+    cy.intercept("GET", '**/users/matthieu/', {
+      fixture: "users-matthieu-edited.jsonld"
+    })
+    cy.intercept("GET", '**/sources/users/', {
+      fixture: "users-source.jsonld"
+    })
+    cy.intercept("GET", 'https://ldp-server.test/users/', {
+      fixture: "users-edited.jsonld"
+    })
+    cy.intercept("GET", 'https://ldp-server2.test/users/', {
+      fixture: "users-nantes.jsonld"
+    })
 
-    cy.route({
-      method: 'PATCH',
-      url: '**/users/matthieu/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
-    cy.route({
-      method: 'POST',
-      url: 'https://ldp-server.test/users/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
-    cy.route({
-      method: 'DELETE',
-      url: '**/users/alex/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+    cy.intercept("PATCH", '**/users/matthieu/', {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
+
+    cy.intercept("POST", "https://ldp-server.test/users/", {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
+
+    cy.intercept("DELETE", "**/users/alex/", {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
 
     // Fill matthieu's form
     cy.get('solid-form#user-form input[name="first_name"]').clear().type('Test');
@@ -155,31 +195,33 @@ describe('Reactivity e2e test', function () {
     cy.get(`solid-display#federation solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`).should('contain', 'alex');
 
     // delete user & range
-    cy.route('GET', 'https://ldp-server.test/users/', 'fixture:users-paris.jsonld');
+    cy.intercept("GET", 'https://ldp-server.test/users/', {
+      fixture: "users-paris.jsonld"
+    })
     cy.get('solid-delete#delete-user > button').click();
     cy.get(`solid-display#users solid-display`).should('have.length', 2);
     cy.get(`solid-form#range option`).should('have.length', 3);
     // cy.get(`solid-display#federation solid-display`).should('have.length', 3); NOT WORKING: should we loop on subscription index?
 
-    cy.server({ enable: false });
+    // cy.server({ enable: false });
   });
 
   it('makes virtual containers reactive', () => {
-    cy.server();
-    cy.route('GET', '**/users/matthieu/circles/', 'fixture:users-matthieu-circles-edited.jsonld');
-    cy.route('GET', '**/circles/17/members/', 'fixture:circles-17-members.jsonld');
+    cy.intercept("GET", '**/users/matthieu/circles/', {
+      fixture: "users-matthieu-circles-edited.jsonld"
+    })
+    cy.intercept("GET", '**/circles/17/members/', {
+      fixture: "circles-17-members.jsonld"
+    })
 
-    cy.route({
-      method: 'POST',
-      url: 'https://ldp-server.test/circles/17/members/',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+    cy.intercept("POST", "https://ldp-server.test/circles/17/members/", {
+      headers: {
+        "content-type": "application/ld+json"
+      },
+    })
 
     cy.get('solid-form#circles-user-form input[name="name"]').clear().type('New circle');
     cy.get('solid-form#circles-user-form input[type=submit]').click();
     cy.get('solid-display#circles-user solid-display').should('have.length', 2);
   });
-
 })

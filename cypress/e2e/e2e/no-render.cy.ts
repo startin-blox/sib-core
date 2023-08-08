@@ -7,6 +7,7 @@ describe('no-render', function() {
       win = w;
     });
   });
+  
   it('blocks rendering', () => {
     cy.spy(win.sibStore, 'fetchData');
 

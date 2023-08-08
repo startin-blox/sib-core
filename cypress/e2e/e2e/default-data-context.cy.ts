@@ -1,5 +1,5 @@
 describe('default-data-context', function() {
-  beforeEach('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/default-data-context.html')
   });
 

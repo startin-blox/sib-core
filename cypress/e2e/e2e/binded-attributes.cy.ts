@@ -1,5 +1,6 @@
-describe('binded-attributes', function() {
-  beforeEach('visit', () => {
+// TODO: We should make tests run independently of one another
+describe('binded-attributes', { testIsolation: false }, function() {
+  this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/binded-attributes.html')
   });
 
@@ -37,16 +38,17 @@ describe('binded-attributes', function() {
       .and('have.attr', 'value-custom-field', '2020-07-09');
     cy.get('#infos solid-display-value[name="custom-field"]')
       .should('have.text', '2020-07-09');
+  })
 
-    // replace store://user
+  it('replace store://user', () => {
     cy.get('#infos')
     .should('have.attr', 'value-user', 'Paris');
     cy.get('#infos solid-display-value[name="user"]')
-      .should('have.text', 'Paris');
-
+    .should('have.text', 'Paris');
+  
     // Back home
     cy.get('solid-route[name=home]').click();
     cy.get('[data-view=home] solid-delete button').should('have.text', 'admin');
-    cy.get('[data-view=home] solid-form-search input[type=text]').should('have.value', 'Test');
+    cy.get('[data-view=home] solid-form-search input[type=text]').should('have.value', 'Test');    
   })
 })

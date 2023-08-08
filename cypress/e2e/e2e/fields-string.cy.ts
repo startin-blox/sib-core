@@ -1,7 +1,8 @@
 describe('fields-string', function() {
-  beforeEach('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/fields-string.html')
   });
+
   it('display strings', () => {
     cy.get('#list-1 > div').as('list1');
     cy.get('#list-2 > div').as('list2');
@@ -20,6 +21,5 @@ describe('fields-string', function() {
     .should('have.text', ', description: ')
     cy.get('@list2').find('>span').eq(1)
     .should('have.text', ', description: ')
-
   });
 })

@@ -1,5 +1,5 @@
 describe('solid-display', function() {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/solid-display.html')
   });
 
@@ -12,6 +12,7 @@ describe('solid-display', function() {
       .should('have.class', 'completeName')
       .children().should('have.length', 3);
   });
+
   it('handle fields attribute', () => {
     // all fields
     cy.get('#display-3>div').children().eq(0)
@@ -40,12 +41,14 @@ describe('solid-display', function() {
       .find('>div').children()
       .should('have.length', 0);
   });
+
   it('handle native HTML tags', () => {
     cy.get('#display-5 > div > h2')
       .should('have.attr', 'name', 'name')
       .and('have.class', 'custom-class')
       .and('have.text', 'Coliving');
   });
+
   it('required mixin', () => {
     cy.get('#display-6 > div')
     .children().should('have.length', 4);
@@ -84,10 +87,12 @@ describe('solid-display', function() {
     cy.get('#display-12').should('have.attr', 'solid-resource');
     cy.get('#display-12 > div').children().should('have.length',1);
   });
+
   it('list-mixin : empty-value', () => {
     cy.get('#display-13').find('no-skill');
     cy.get('#display-13 > span > no-skill').contains('No skill yet')
   });
+
   it('define src attribute of solid-link by action', () => {
     cy.get('#display-14 > div > solid-action')
       .should('have.attr', 'src', 'user-1.jsonld');
@@ -99,20 +104,24 @@ describe('solid-display', function() {
     cy.get('#display-15 > div > solid-action > solid-link')
       .should('have.attr', 'data-src', 'other-resource');
     });
+
   it('handle default-[field] attribute', () => {
     cy.get('#default-field > div solid-display-value')
       .should('have.text', 'not defined');
   });
+
   it('counter mixin', () => {
     cy.get('#display-16').children().eq(0)
       .should('contain', '8 skills displayed :');
     cy.get('#display-16').children().eq(1)
       .find('div').should('have.length', '8');
   });
+
   it('highlighter-mixin', () => {
     cy.get('#display-17 > div').children().eq(0)
       .find('solid-display-value').should('contain', 'Javascript')
   });
+
   it('nested-[field]', () => {
     // data-src in solid-display pointed on skill-*.jsonld
     cy.get('#display-18 > div').children().eq(0)
@@ -130,6 +139,7 @@ describe('solid-display', function() {
     cy.get('#display-18 > div').children().eq(1)
       .find('solid-display-value').should('have.attr','value', 'Javascript');
   });
+
   it('default-widget', () => {
     // default-widget applied to every child
     cy.get('#display-19 > div')
@@ -153,11 +163,13 @@ describe('solid-display', function() {
       .find('solid-display-link').eq(1)
       .should('have.attr', 'name', 'username');
   });
+
   it('oembed template', () => {
     cy.get('#display-21 > div')
       .find('solid-display-value-oembed')
       .should('have.attr', 'value', 'https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json');
   });
+
   it('default-widget-[field]', () => {
     cy.get('#display-22 > div')
       .children().should('have.length', 4);
@@ -172,9 +184,11 @@ describe('solid-display', function() {
     cy.get('#display-22 > div > custom-default-widget-website')
       .should('contain', 'No website');
   });
+
   it('dispatch event when widget rendered', () => {
     cy.get('#log-event div').should('have.length', 12);
   });
+
   it('widget for empty set', () => {
     // empty set widget displayed
     cy.get('#widget-empty-set1 > div')
@@ -204,6 +218,7 @@ describe('solid-display', function() {
       .children().eq(1).should('contain', 'empty set value')
       .and('not.contain', 'set empty');
   });
+
   it('solid-set-div-label', () =>  {
     cy.get('#solid-set-div-label > div')
       .children().should('have.length', 4);

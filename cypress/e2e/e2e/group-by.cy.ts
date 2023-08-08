@@ -1,7 +1,8 @@
 describe('group-by', function() {
-  beforeEach('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/group-by.html')
   })
+
   /**
   * Groups resource at loading time
   */
@@ -18,6 +19,7 @@ describe('group-by', function() {
     cy.get('#list-1 > div > solid-group-default:first-child > div > solid-display') // check solid-display
     .should('have.length', 1);
   })
+
   /**
   * Group and pagination work together
   */
@@ -37,6 +39,7 @@ describe('group-by', function() {
     });
     cy.get('#list-2 > div > solid-group-default').eq(1).find('solid-display-value[name]').contains('Assemblée générale');
   });
+  
   /**
   * Group widgets
   */

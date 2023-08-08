@@ -1,10 +1,10 @@
-describe('solid-form-search widget', function() {
+// TODO: We should make tests run independently of one another
+describe('solid-form-search widget', { testIsolation: false }, function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/search.html')
   })
 
   it('solid-form-search', () => {
-
     cy.get('solid-form-search#filter1')
       .find('select')
       .should('have.attr', 'name', 'username')
@@ -43,6 +43,7 @@ describe('solid-form-search widget', function() {
     cy.get('@btn').click()
     cy.get('#display3 > div > solid-display').should('have.length', 1);
   });
+
   it('solid-form-search + submit-widget', () => {
     cy.get('solid-form-search#filter-submit-widget').find('input[type="submit"]')
       .should('not.exist');
@@ -50,6 +51,7 @@ describe('solid-form-search widget', function() {
       .should('exist')
       .and('have.text', 'OK');
   });
+
   it('solid-form-search + class-submit-button', () => {
     cy.get('solid-form-search#filter-class-submit-button')
       .find('div').should('have.class', 'button-class')
@@ -146,6 +148,7 @@ describe('solid-form-search widget', function() {
     cy.get('#number-search solid-form-label-text[name=username] input').type('123');
     cy.get('#display-number-search > div').children().should('have.length', 0)
   });
+
   it('solid-form-search + empty-widget', () => {
     cy.get('#span-empty-widget > div')
       .children().should('have.length', 4);
@@ -165,6 +168,7 @@ describe('solid-form-search widget', function() {
       .children().should('have.length', 1)
       .and('contain', 'Pierre DLC');
   })
+
   it('solid-form-search + checkboxes', () => {
     cy.get('#enum-checkboxes-display > div')
       .children().should('have.length', 8);
