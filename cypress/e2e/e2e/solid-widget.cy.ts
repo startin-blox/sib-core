@@ -1,7 +1,9 @@
-describe('solid-widget', function () {
+// TODO: We should make tests run independently of one another
+describe('solid-widget', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-widget.html')
   });
+
   // Display
   it('simple widget', () => {
     cy.get('#display-1')
@@ -11,11 +13,13 @@ describe('solid-widget', function () {
       .find('custom-widget-1 span')
       .should('contain.text', 'test-user@example.com');
   });
+
   it('dot field', () => {
     cy.get('#display-2')
       .find('custom-widget-2 span')
       .should('contain.text', 'Paris');
   });
+
   it('resource', () => {
     cy.get('#display-3')
       .find('custom-widget-3 span')

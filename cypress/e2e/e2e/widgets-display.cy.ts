@@ -1,12 +1,14 @@
-describe('display widgets', function() {
-  this.beforeAll('visit', () => {
+describe('display widgets', function () {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/widgets-display.html')
   })
+
   it('solid-display-value', () => {
     cy.get('solid-display-value')
       .should('contain', 'test value 1')
       .children().should('have.length', 0);
   })
+
   it('solid-display-div', () => {
     cy.get('solid-display-div#test1')
       .should('contain', 'test value 1')
@@ -14,22 +16,19 @@ describe('display widgets', function() {
       .should('have.length', 1)
       .should('have.attr', 'name', 'test1')
   })
+
   it('solid-display-div editable', () => {
-    cy.server();
-    cy.route({
-      method: 'PATCH',
-      url: '**/resource-1.jsonld',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
-    cy.route({
-      method: 'GET',
-      url: '**/resource-1.jsonld',
-      status: 200,
-      response: {},
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+    cy.intercept("PATCH", '**/resource-1.jsonld', {
+      headers: {
+        contentType: 'application/ld+json'
+      }
+    })
+    cy.intercept("GET", '**/resource-1.jsonld', {
+      headers: {
+        contentType: 'application/ld+json'
+      }
+    })
+   
     cy.get('solid-display-div#test2')
       .children().should('have.length', 2);
     cy.get('solid-display-div#test2')
@@ -44,6 +43,7 @@ describe('display widgets', function() {
       .find('> div')
       .should('have.attr', 'contenteditable', '');
   });
+
   it('solid-display-link', () => {
     cy.get('solid-display-link')
       .find('a')
@@ -52,6 +52,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-link-mailto', () => {
     cy.get('solid-display-link-mailto')
       .find('a')
@@ -60,6 +61,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'mailto:http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-link-mailto-label', () => {
     cy.get('solid-display-link-mailto-label')
       .find('label')
@@ -70,6 +72,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'mailto:http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-link-tel', () => {
     cy.get('solid-display-link-tel')
       .find('a')
@@ -78,6 +81,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'tel:http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-link-tel-label', () => {
     cy.get('solid-display-link-tel-label')
       .find('label')
@@ -88,6 +92,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'tel:http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-link-blank', () => {
     cy.get('solid-display-link-blank')
       .find('a')
@@ -98,6 +103,7 @@ describe('display widgets', function() {
       .and('have.attr', 'link-text', 'link text')
       .and('contain', 'link text')
   })
+  
   it('solid-display-link-blank-label', () => {
     cy.get('solid-display-link-blank-label')
       .find('label')
@@ -108,6 +114,7 @@ describe('display widgets', function() {
       .and('have.attr', 'href', 'http://example.com')
       .and('contain', 'http://example.com')
   })
+
   it('solid-display-img', () => {
     cy.get('solid-display-img')
       .find('img')
@@ -116,6 +123,7 @@ describe('display widgets', function() {
       .and('have.attr', 'src', 'test-img.png')
       .and('have.attr', 'alt', 'alternative text')
   })
+
   it('solid-display-boolean', () => {
     cy.get('solid-display-boolean[name=test1]')
       .find('label')
@@ -125,6 +133,7 @@ describe('display widgets', function() {
       .find('label')
       .should('not.exist')
   })
+  
   it('solid-display-label-div', () => {
     cy.get('solid-display-label-div[name=test1]')
       .find('label')
@@ -144,6 +153,7 @@ describe('display widgets', function() {
       .should('have.length', 1)
       .and('contain', 'test value 1');
   })
+
   it('solid-display-date-div', () => {
     cy.get('solid-display-date-div')
       .find('> div')
@@ -153,6 +163,7 @@ describe('display widgets', function() {
       .and('contain', '5')
       .and('contain', '2020');
   })
+
   it('solid-display-datetime-div', () => {
     cy.get('solid-display-datetime-div')
       .find('> div')
@@ -164,12 +175,14 @@ describe('display widgets', function() {
       .and('contain', '00')
       .and('contain', ':');
   })
+
   it('solid-display-multiline-div', () => {
     cy.get('solid-display-multiline-div')
       .find('> div')
       .should('have.length', 1)
       .and('contain.html', '<br>')
   })
+
   it('solid-multiple', () => {
     cy.get('solid-multiple')
       .find('> solid-display')
@@ -184,6 +197,7 @@ describe('display widgets', function() {
       .and('not.contain', 'DevOps')
       .and('not.contain', 'HTML')
   })
+
   it('solid-action', () => {
     cy.get('solid-action').first()
       .find('solid-link')
@@ -198,6 +212,7 @@ describe('display widgets', function() {
       .and('have.attr', 'next', 'next-page')
       .and('contain', 'link text');
   })
+
   it('solid-action-label', () => {
     cy.get('solid-action-label')
       .find('label')
@@ -208,6 +223,7 @@ describe('display widgets', function() {
       .and('have.attr', 'next', 'next-page')
       .and('contain', 'test1');
   })
+
   it('solid-display-div-markdown', () => {
     cy.get('solid-display-div-markdown')
       .find('div')
@@ -228,12 +244,13 @@ describe('display widgets', function() {
       .invoke('attr', 'value', '**bold** [link](http://corndog.io/)')
       .find('em').should('not.exist');
 
-      // Change value to empty
+    // Change value to empty
     cy.get('solid-display-div-markdown')
       .invoke('attr', 'value', '')
       .find('div[name="test display markdown"]')
       .children().should('have.length', 0)
   });
+  
   it('solid-display-div-autolink', () => {
     cy.get('solid-display-div-autolink > div').children()
       .should('have.length', 2);
@@ -242,9 +259,15 @@ describe('display widgets', function() {
     cy.get('solid-display-div-autolink > div').children().eq(1)
       .should('have.attr', 'href', 'http://www.window-swap.com')
   });
+
   it('solid-display-value-oembed', () => {
-    cy.server();
-    cy.route('GET', 'https://ldp-server2.test/oembed/', 'fixture:oembed.jsonld');
+    cy.intercept("GET", 'https://ldp-server2.test/oembed/', {
+      headers: {
+        contentType: 'application/ld+json'
+      }, fixture: "oembed.jsonld"
+
+    })
+   
     cy.get('solid-display-value-oembed').children()
       .should('have.length', 1);
     cy.get('solid-display-value-oembed > iframe')

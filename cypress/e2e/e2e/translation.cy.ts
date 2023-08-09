@@ -1,5 +1,5 @@
 describe('translation', function () {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/translation.html', {
       onBeforeLoad(win) {
         Object.defineProperty(win.navigator, 'language', {
@@ -8,6 +8,7 @@ describe('translation', function () {
       }
     });
   });
+
   it('French translation in validation attributes, submit buttons, autocompletion mixin', () => {
     // french in confirm and buttons
     const stub = cy.stub();
@@ -20,8 +21,8 @@ describe('translation', function () {
       });
     cy.get('solid-form#void-submitbutton')
       .find('input[type=submit]').should('contain', 'Envoyer');
-    
-      // french in dialog, buttons customized
+
+    // french in dialog, buttons customized
     cy.get('solid-delete#dialog')
       .find('button').should('contain', 'Delete data');
     cy.get('solid-delete#dialog > dialog')
@@ -41,6 +42,7 @@ describe('translation', function () {
     cy.get('solid-form-search#translation-autocomp')
       .find('.ss-list').children().contains('Aucun résultat')
   });
+
   it('English translation in validation attributes, submit buttons, autocompletion mixin', () => {
     cy.get('#en').click();
     // english in confirm and buttons
@@ -54,7 +56,7 @@ describe('translation', function () {
       });
     cy.get('solid-form#void-submitbutton')
       .find('input[type=submit]').should('contain', 'Submit');
-    
+
     // english in dialog, buttons customized
     cy.get('solid-delete#dialog')
       .find('button').should('contain', 'Delete data');
@@ -75,6 +77,7 @@ describe('translation', function () {
     cy.get('solid-form-search#translation-autocomp')
       .find('.ss-list').children().contains('No result')
   });
+
   it('Missing translation file', () => {
     cy.get('#fr').find('button').click();
     cy.get('solid-delete#confirm').find('button').should('contain', 'Supprimer');

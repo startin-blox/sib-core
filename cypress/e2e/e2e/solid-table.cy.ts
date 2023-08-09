@@ -1,5 +1,5 @@
-
-describe('solid-table', function() {
+// TODO: We should make tests run independently of one another
+describe('solid-table', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-table.html')
   });
@@ -114,7 +114,6 @@ describe('solid-table', function() {
 
   it('shows user-1', () => {
     cy.get('#table-user-1')
-
       // CHECK DATA
       // 1 child and <table> element
       .children()
@@ -232,10 +231,10 @@ describe('solid-table', function() {
       .parents('table').find('input[type="checkbox"][data-selection]').eq(4)
       .should('be.checked')
   });
-  
+
   it('numbers displayed', () => {
     cy.get('#table-skills')
-    // Check numbers displayed
+      // Check numbers displayed
       .find('solid-display-value[name="order"]').eq(0)
       .should('be.visible').and('contain', '5');
   });

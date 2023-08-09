@@ -1,10 +1,9 @@
 describe('solid-lang', function() {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/solid-lang.html')
   });
   
   it('test solid-lang', () => {
-
     // mark in window object to show reload
     cy.window().then((w: any) => w.beforeReload = true)
     
@@ -18,8 +17,6 @@ describe('solid-lang', function() {
 
     // reload verification : if no property, it confirms the page reload
     cy.window().should('not.have.prop', 'beforeReload')
-
   })
-
 })
 

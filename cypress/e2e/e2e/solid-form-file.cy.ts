@@ -1,5 +1,5 @@
 // TODO: We should make tests run independently of one another
-describe('solid-form-file test', {testIsolation: false}, function() {
+describe('solid-form-file test', { testIsolation: false }, function() {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-form-file.html')
   });

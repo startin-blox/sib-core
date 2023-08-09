@@ -1,5 +1,5 @@
 describe('multiple widgets', function() {
-  this.beforeAll('visit', () => {
+  this.beforeEach('visit', () => {
     cy.visit('/examples/e2e/widgets-display-multiple.html')
   });
 

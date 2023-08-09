@@ -1,4 +1,5 @@
-describe('form widgets', function() {
+// TODO: We should make tests run independently of one another
+describe('form widgets', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.clock(Date.UTC(2020, 11, 15), ['Date']); // Define fake date for start-value="today" test
     cy.visit('/examples/e2e/widgets-form.html')
@@ -87,8 +88,6 @@ describe('form widgets', function() {
     });
   })
 
-  
-
   it('solid-form-checkbox', () => {
     cy.get('solid-form-checkbox')
       .children().should('have.length', 1);
@@ -121,6 +120,7 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component.getValue()).to.equal(false); // form value
     });
   })
+
   it('solid-form-date', () => {
     cy.get('solid-form-date#test1')
       .children().should('have.length', 1);
@@ -180,11 +180,11 @@ describe('form widgets', function() {
       expect((<any>$el[0]).component['value']).to.equal('5'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(8); // form value
     });
-    
+
     // step attribute 
     cy.get('solid-form-number > input') // type value
-    .clear()
-    .type('{upArrow}{upArrow}{upArrow}');
+      .clear()
+      .type('{upArrow}{upArrow}{upArrow}');
 
     cy.get('solid-form-number').then($el => { // check API value
       expect((<any>$el[0]).component.getValue()).to.equal(6); // form value
@@ -293,12 +293,12 @@ describe('form widgets', function() {
       .should('have.attr', 'multiple', 'multiple')
       .children().should('have.length', 8);
     cy.get('solid-form-dropdown#test4').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': '/examples/data/list/skill-1.jsonld'}, {'@id': '/examples/data/list/skill-3.jsonld'}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{ '@id': '/examples/data/list/skill-1.jsonld' }, { '@id': '/examples/data/list/skill-3.jsonld' }]); // form value
     });
 
     cy.get('solid-form-dropdown#test4 > select').select(['CSS', 'Javascript']) // change value
     cy.get('solid-form-dropdown#test4').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{'@id': '/examples/data/list/skill-2.jsonld'}, {'@id': '/examples/data/list/skill-3.jsonld'}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{ '@id': '/examples/data/list/skill-2.jsonld' }, { '@id': '/examples/data/list/skill-3.jsonld' }]); // form value
     });
 
     // With order-desc
@@ -356,17 +356,17 @@ describe('form widgets', function() {
       .should('have.length', 8)
       .should('not.contain', 'Skills :');
 
-      // With option-value
-      cy.get('solid-form-dropdown#test10 > select')
-        .children().eq(2)
-        .should('have.attr', 'value', 'CSS')
-        .should('contain', 'CSS');
-      cy.get('solid-form-dropdown#test11 > select')
-        .children().eq(2)
-        .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
-      cy.get('solid-form-dropdown#test12 > select')
-        .children().eq(2)
-        .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
+    // With option-value
+    cy.get('solid-form-dropdown#test10 > select')
+      .children().eq(2)
+      .should('have.attr', 'value', 'CSS')
+      .should('contain', 'CSS');
+    cy.get('solid-form-dropdown#test11 > select')
+      .children().eq(2)
+      .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
+    cy.get('solid-form-dropdown#test12 > select')
+      .children().eq(2)
+      .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
   })
 
   it('solid-form-radio', () => {
@@ -419,7 +419,7 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'radio')
       .should('have.attr', 'value', 'option1');
 
-      // Test click on multiple radio
+    // Test click on multiple radio
     cy.get('solid-form-radio#test3 input[type=radio][value="option1"]')
       .check().should('be.checked');
     cy.get('solid-form-radio#test3 input[type=radio][value="option2"]')
@@ -449,7 +449,7 @@ describe('form widgets', function() {
 
   it('solid-form-checkboxes', () => {
     cy.get('#test-checkboxes')
-      .find('label:nth-child(-2n + 6)').click({ multiple:true })
+      .find('label:nth-child(-2n + 6)').click({ multiple: true })
     cy.get('#test-checkboxes').then(async ($el: any) => {
       const values = await $el[0].component.getValue();
       expect(values).to.deep.equal([
@@ -492,6 +492,7 @@ describe('form widgets', function() {
     cy.get('solid-form-rangenumber[name=test2] > input').eq(1)
       .should('have.attr', 'value', '10')
   });
+
   it('solid-form-rangedate', () => {
     cy.get('solid-form-rangedate[name=test1]')
       .children().should('have.length', 2);
@@ -532,12 +533,14 @@ describe('form widgets', function() {
     cy.get('solid-form-color > input')
       .should('have.attr', 'type', 'color')
   });
+
   it('solid-form-text-labellast', () => {
     cy.get('solid-form-text-labellast').children()
       .should('have.length', 2);
     cy.get('solid-form-text-labellast').find('label').last()
       .should('contain', 'test labellast');
   });
+
   it('solid-form-dropdown-addable', () => {
     // Without addable-data-src provided
     cy.get('solid-form-dropdown-addable#test1')
@@ -581,7 +584,8 @@ describe('form widgets', function() {
     cy.get('solid-form-dropdown-addable#test2 > solid-form > form > div > input')
       .should('have.attr', 'type', 'submit')
       .and('have.attr', 'value', 'Send data')
-    });
+  });
+
   it('solid-form-password', () => {
     cy.get('solid-form-label-password')
       .children().should('have.length', 2);
@@ -591,6 +595,7 @@ describe('form widgets', function() {
       .should('have.attr', 'type', 'password')
       .and('have.value', 'password123');
   });
+
   it('solid-form-time', () => {
     cy.get('solid-form-label-time#time1')
       .children().should('have.length', 2);
@@ -599,7 +604,7 @@ describe('form widgets', function() {
     cy.get('solid-form-label-time#time1 > input')
       .should('have.attr', 'type', 'time')
       .and('have.value', '15:15');
-    
+
     cy.get('solid-form-label-time#time2')
       .children().eq(0).should('contain', 'start time');
     cy.get('solid-form-label-time#time2 > input')

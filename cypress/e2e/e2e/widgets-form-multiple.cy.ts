@@ -1,4 +1,5 @@
-describe('multiple widgets', function() {
+// TODO: We should make tests run independently of one another
+describe('multiple widgets', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/widgets-form-multiple.html')
   })
@@ -115,7 +116,7 @@ describe('multiple widgets', function() {
     cy.get('solid-form-multiple#test3 > button')
       .should('contain', 'add');
     cy.get('solid-form-multiple#test3 > div[data-index="test0"] > button')
-        .should('contain', 'remove');
+      .should('contain', 'remove');
 
     cy.get('solid-form-multiple#test3 > div[data-index="test0"] solid-form-dropdown')
       .should('have.attr', 'value', '/examples/data/list/skill-2.jsonld');
@@ -137,7 +138,7 @@ describe('multiple widgets', function() {
     cy.get('solid-form-multiple#test3 > button')
       .should('have.class', 'class-addbutton');
     cy.get('solid-form-multiple#test3 > div[data-index="test0"] > button')
-        .should('have.class', 'class-removebutton');
+      .should('have.class', 'class-removebutton');
   });
 
 
@@ -156,12 +157,12 @@ describe('multiple widgets', function() {
 
     cy.get('solid-form-multipleselect').then($el => { // Check API
       expect((<any>$el[0]).component.value).to.equal('../data/list/user-1-skills.jsonld'); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "/examples/data/list/skill-2.jsonld"}, {"@id": "/examples/data/list/skill-3.jsonld"}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{ "@id": "/examples/data/list/skill-2.jsonld" }, { "@id": "/examples/data/list/skill-3.jsonld" }]); // form value
     });
 
     cy.get('solid-form-multipleselect select').select(['CSS', 'Javascript', 'DevOps']);
     cy.get('solid-form-multipleselect').then($el => { // Check API
-      expect((<any>$el[0]).component.getValue()).to.deep.equal([{"@id": "/examples/data/list/skill-2.jsonld"}, {"@id": "/examples/data/list/skill-3.jsonld"}, {"@id": "/examples/data/list/skill-4.jsonld"}]); // form value
+      expect((<any>$el[0]).component.getValue()).to.deep.equal([{ "@id": "/examples/data/list/skill-2.jsonld" }, { "@id": "/examples/data/list/skill-3.jsonld" }, { "@id": "/examples/data/list/skill-4.jsonld" }]); // form value
     });
   });
 
@@ -194,25 +195,27 @@ describe('multiple widgets', function() {
     cy.get('solid-form-multipleselect-autocompletion .ss-main').click();
     cy.get('solid-form-multipleselect-autocompletion .ss-content.ss-open .ss-option').eq(1).click();
     cy.get('solid-form-multipleselect-autocompletion .ss-option').eq(1)
-    .should('have.class', 'ss-option-selected');
+      .should('have.class', 'ss-option-selected');
     cy.get('solid-form-multipleselect-autocompletion .ss-values')
       .children().should('have.length', 1)
       .should('contain', 'DevOps');
     cy.get('solid-form-multipleselect-autocompletion')
       .find('.ss-add').click();
   });
+
   it('solid-form-autocompletion-placeholder & search attributes', () => {
     // attributes for placeholders and text displayed in SlimSelect
     cy.get('#search-attr')
       .find('.ss-disabled').contains('Sélectionne une compétence')
       .click();
     cy.get('solid-form-multipleselect-autocompletion-placeholder')
-      .find('.ss-search').children().should('have.attr','placeholder', 'Rechercher par clavier')
+      .find('.ss-search').children().should('have.attr', 'placeholder', 'Rechercher par clavier')
       .wait(200)
       .type('00');
     cy.get('#search-attr')
       .find('.ss-list').children().contains('Pas de concordance')
   })
+
   it('solid-form-checkboxes', () => {
     cy.get('solid-form-checkboxes#test1')
       .find('solid-form-multicheckbox > div[name=test1]')
@@ -237,7 +240,7 @@ describe('multiple widgets', function() {
     // Get value
     cy.get('solid-form-checkboxes#test2')
       .find('input[value="html"]')
-      .check({force: true});
+      .check({ force: true });
 
     cy.get('solid-form-checkboxes#test2').then($el => { // Check API
       expect((<any>$el[0]).component.getValue()).to.deep.equal(['html']); // form value

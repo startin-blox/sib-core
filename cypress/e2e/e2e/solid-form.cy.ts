@@ -1,4 +1,5 @@
-describe('solid-form', {testIsolation: false}, function() {
+// TODO: We should make tests run independently of one another
+describe('solid-form', { testIsolation: false }, function() {
   let win: Window;
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-form.html');
@@ -44,8 +45,7 @@ describe('solid-form', {testIsolation: false}, function() {
     cy.intercept("PUT", '**/event-1.jsonld', {
       headers: {
         contentType: 'application/ld+json'
-      },
-      statusCode: 200,
+      }
     })
     // cy.server();
     // cy.route({
@@ -187,24 +187,26 @@ describe('solid-form', {testIsolation: false}, function() {
   });
 
   it('show errors without resetting', () => {
-    cy.intercept('POST', '**/events.jsonld',{
+    cy.intercept('POST', '**/events.jsonld', {
       statusCode: 400,
-      body: { "name": [
-        "Ensure this field has no more than 10 characters."
-      ],
-      "batches": {
-            "title": ["Title too long", "Title not unique"],
-            "tasks": {
-              "@id": ["Task with this urlid already exists."],
-              "amount": ["Should be > 0"]
-            }
-      },
+      body: { 
+        "name": 
+        [
+          "Ensure this field has no more than 10 characters."
+        ],
+        "batches": {
+          "title": ["Title too long", "Title not unique"],
+          "tasks": {
+            "@id": ["Task with this urlid already exists."],
+            "amount": ["Should be > 0"]
+          }
+        },
       "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
-    },
-    headers: {
-      'content-type': 'application/ld+json'
-    }
-  })
+      },
+      headers: {
+        'content-type': 'application/ld+json'
+      }
+    })
     // cy.server();
     // cy.route({
     //   method: 'POST',
@@ -249,7 +251,6 @@ describe('solid-form', {testIsolation: false}, function() {
       headers: {
         contentType: 'application/ld+json'
       },
-      statusCode: 200,
       body: 'ok'
     })
     // cy.route({
@@ -284,12 +285,10 @@ describe('solid-form', {testIsolation: false}, function() {
 
   it('loader-id attribute', () => {
     cy.get('#form-loader').should('have.attr', 'hidden');
-    cy.intercept("POST", '**/users.jsonld', (req)=>{
-      req.reply({
-        body: {},
-        delay:3000
-      })
+    cy.intercept("POST", '**/users.jsonld', {
+        delay: 3000
     })
+  
     // cy.server();
     // cy.route({
     //   method: 'POST',
