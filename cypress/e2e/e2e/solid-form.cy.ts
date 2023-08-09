@@ -1,4 +1,4 @@
-describe('solid-form', function() {
+describe('solid-form', {testIsolation: false}, function() {
   let win: Window;
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/solid-form.html');
@@ -7,6 +7,7 @@ describe('solid-form', function() {
     });
 
   });
+
   it('creation form', () => {
     cy.get('#form-1 input[type=text]').should('have.length', 2)
     cy.get('#form-1 input[type=text][name=name]').should('have.value', '');
@@ -17,6 +18,7 @@ describe('solid-form', function() {
       });
     });
   });
+
   it('edition form', () => {
     cy.get('#form-edition-1 input[type=text]').should('have.length', 2)
     cy.get('#form-edition-1 input[type=text][name=name]')
@@ -39,14 +41,19 @@ describe('solid-form', function() {
       });
     });
 
-
-    cy.server();
-    cy.route({
-      method: 'PUT',
-      url: '**/event-1.jsonld',
-      status: 200,
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+    cy.intercept("PUT", '**/event-1.jsonld', {
+      headers: {
+        contentType: 'application/ld+json'
+      },
+      statusCode: 200,
+    })
+    // cy.server();
+    // cy.route({
+    //   method: 'PUT',
+    //   url: '**/event-1.jsonld',
+    //   status: 200,
+    //   onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    // });
     cy.get('#form-edition-2 input[type=text][name=name]')
       .type(' in BZH');
     cy.get('#form-edition-2 select').select('Pierre DLC')
@@ -83,6 +90,7 @@ describe('solid-form', function() {
       });
     });
   });
+
   it('widget creation', () => {
     cy.get('#form-3 solid-form-dropdown')
       .should('have.attr', 'range', '../data/list/skills.jsonld')
@@ -153,6 +161,7 @@ describe('solid-form', function() {
       .should('have.attr', 'pattern', '[a-z]{3}')
       .and('have.attr', 'title', '3 lowercase letters');
   });
+
   it('re-render when label on submit-button change', () => {
     cy.get('solid-form#form-6')
       .find('input[type=submit]')
@@ -176,27 +185,46 @@ describe('solid-form', function() {
         .should('have.value', 'Register the user');
       })
   });
+
   it('show errors without resetting', () => {
-    cy.server();
-    cy.route({
-      method: 'POST',
-      url: '**/events.jsonld',
-      status: 400,
-      response: {
-        "name": [
-          "Ensure this field has no more than 10 characters."
-        ],
-        "batches": {
-              "title": ["Title too long", "Title not unique"],
-              "tasks": {
-                "@id": ["Task with this urlid already exists."],
-                "amount": ["Should be > 0"]
-              }
-        },
-        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+    cy.intercept('POST', '**/events.jsonld',{
+      statusCode: 400,
+      body: { "name": [
+        "Ensure this field has no more than 10 characters."
+      ],
+      "batches": {
+            "title": ["Title too long", "Title not unique"],
+            "tasks": {
+              "@id": ["Task with this urlid already exists."],
+              "amount": ["Should be > 0"]
+            }
       },
-      onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+      "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+    },
+    headers: {
+      'content-type': 'application/ld+json'
+    }
+  })
+    // cy.server();
+    // cy.route({
+    //   method: 'POST',
+    //   url: '**/events.jsonld',
+    //   status: 400,
+    //   response: {
+    //     "name": [
+    //       "Ensure this field has no more than 10 characters."
+    //     ],
+    //     "batches": {
+    //           "title": ["Title too long", "Title not unique"],
+    //           "tasks": {
+    //             "@id": ["Task with this urlid already exists."],
+    //             "amount": ["Should be > 0"]
+    //           }
+    //     },
+    //     "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+    //   },
+    //   onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    // });
 
     cy.get('solid-form#form-7')
       .find('input[name=name]')
@@ -217,13 +245,20 @@ describe('solid-form', function() {
       .should('have.value', 'Mon très long titre')
 
     // removes error after new submission
-    cy.route({
-        method: 'POST',
-        url: '**/events.jsonld',
-        status: 200,
-        response: 'ok',
-        onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    });
+    cy.intercept("POST", '**/events.jsonld', {
+      headers: {
+        contentType: 'application/ld+json'
+      },
+      statusCode: 200,
+      body: 'ok'
+    })
+    // cy.route({
+    //     method: 'POST',
+    //     url: '**/events.jsonld',
+    //     status: 200,
+    //     response: 'ok',
+    //     onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
+    // });
 
     cy.get('solid-form#form-7')
     .find('input[type=submit]')
@@ -231,6 +266,7 @@ describe('solid-form', function() {
     cy.get('solid-form#form-7')
       .find('[data-id="error"]').should('be.empty')
   });
+
   it('partial attribute', () => {
     cy.spy(win.sibStore, 'put');
     cy.get('#form-8').find('input[type=submit]').click().then(() => {
@@ -241,18 +277,26 @@ describe('solid-form', function() {
       expect(win.sibStore.patch).to.be.called;
     });
   });
+
   it('naked attribute', () => {
     cy.get('#form-10').find('input[type=submit]').should('not.exist');
   });
+
   it('loader-id attribute', () => {
     cy.get('#form-loader').should('have.attr', 'hidden');
-    cy.server();
-    cy.route({
-      method: 'POST',
-      url: '**/users.jsonld',
-      response: {},
-      delay: 3000
-    });
+    cy.intercept("POST", '**/users.jsonld', (req)=>{
+      req.reply({
+        body: {},
+        delay:3000
+      })
+    })
+    // cy.server();
+    // cy.route({
+    //   method: 'POST',
+    //   url: '**/users.jsonld',
+    //   response: {},
+    //   delay: 3000
+    // });
     cy.get('#form-11')
       .find('input[name=name]')
       .type('Tryphon');
@@ -261,6 +305,7 @@ describe('solid-form', function() {
       .click();
     cy.get('#form-loader').should('not.have.attr', 'hidden');
   });
+
   it('solid-form with addable attributes', () => {
     // Verify addable's attributes are passed in the solid-form-dropdown-addable
     cy.get('solid-form#form-addable > form > solid-form-dropdown-addable')
@@ -271,6 +316,7 @@ describe('solid-form', function() {
     .and('have.attr', 'addable-placeholder-name', 'Enter skill name')
     .and('have.attr', 'addable-submit-button', 'Send name')
   });
+
   it('autocomplete attribute', () => {
     cy.get('solid-form#form-12 > form > solid-form-label-text').eq(0)
       .should('have.attr', 'autocomplete', 'off')
@@ -280,6 +326,7 @@ describe('solid-form', function() {
     cy.get('solid-form#form-12 > form > solid-form-label-text').eq(1)
       .should('not.have.attr', 'autocomplete')
   });
+
   it('autosaves form', () => {
     cy.spy(win.sibStore, 'patch');
     cy.get('solid-form#form-autosave').find('input[type="submit"]')
@@ -309,6 +356,7 @@ describe('solid-form', function() {
       });
     });
   });
+
   it('submit-widget attribute', () => {
     cy.get('solid-form#form-submit-widget').find('input[type="submit"]')
       .should('not.exist');
@@ -316,6 +364,7 @@ describe('solid-form', function() {
       .should('exist')
       .and('have.text', 'OK');
   });
+
   it('solid-form-time widget with attributes', () => {
     cy.spy(win.sibStore, 'post');
     cy.get('solid-form#time-widget').find('input[name="name"]')
@@ -348,6 +397,7 @@ describe('solid-form', function() {
         expect(win.sibStore.post).to.be.called;
       });
   });
+
   it('minlength attribute', () => {
     cy.spy(win.sibStore, 'post');
     cy.get('solid-form#minlength').find('input[type="text"]')
@@ -357,6 +407,7 @@ describe('solid-form', function() {
         expect(win.sibStore.post).not.be.called;
       });
   });
+
   it('class-submit-button attribute', () => {
     cy.get('solid-form#class-submit-button > form').find('div')
       .should('have.attr', 'class', 'submitB-class')

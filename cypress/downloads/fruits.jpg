@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="300px" height="300px" viewBox="0 0 300 300">
+
+  <rect x="1" y="1" width="998" height="298"
+        fill="#ccc" stroke-width="2" />
+  
+  <text x="50" y="150" transform='rotate(-25,150,150)'
+        font-family="cursive" 
+        font-size="30">
+    Fake Image
+  </text>
+</svg>
