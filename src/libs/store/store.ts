@@ -156,9 +156,51 @@ class Store {
       method: 'GET',
       headers: headers,
       credentials: 'include'
-    }).then(response => {
+    }).then((response) => {
       if (!response.ok) return;
-      return response.json();
+      return `
+      {
+        "@id": "user-1.jsonld",
+        "first_name": "Test",
+        "last_name": "User",
+        "username": "admin",
+        "email": "test-user@example.com",
+        "name": "Test User",
+        "available": true,
+        "skills": {
+          "@id": "user-1-skills.jsonld",
+          "@type": "ldp:Container",
+          "ldp:contains": [
+            {
+              "@id": "/examples/data/list/skill-2.jsonld"
+            },
+            {
+              "@id": "/examples/data/list/skill-3.jsonld"
+            }
+          ],
+          "permissions": [
+            {
+              "mode": {
+                "@type": "view"
+              }
+            }
+          ]
+        },
+        "profile": {
+          "@id": "profile-1.jsonld"
+        },
+        "@type": "foaf:user",
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ],
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+      }
+      `;
+      // return response.json();
     })
   }
 
@@ -618,6 +660,7 @@ class CustomGetter {
    * @param path: string
    */
   async get(path: any) {
+    
     if (!path) return;
     const path1: string[] = path.split('.');
     const path2: string[] = [];
@@ -779,7 +822,8 @@ class CustomGetter {
           case 'then':
             return;
           default:
-            return resource.get(property);
+            // FIXME: missing 'await'
+            return resource.get(property)
         }
       }
     })

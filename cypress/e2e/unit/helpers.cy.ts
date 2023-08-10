@@ -210,6 +210,7 @@ describe('transformArrayToContainer', function () {
       }
     })
   })
+
   it('transforms container in nested resource', () => {
     const value = {
       "@id": "myresource",
@@ -235,6 +236,7 @@ describe('transformArrayToContainer', function () {
       }
     })
   })
+
   it('transforms nested container', () => {
     const value = {
       "@id": "myresource",
@@ -257,6 +259,7 @@ describe('transformArrayToContainer', function () {
         }
       ]
     };
+    
     const newValue = transformArrayToContainer(value);
     expect(newValue).to.deep.equal({
       "@id": "myresource",
