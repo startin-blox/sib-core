@@ -47,13 +47,7 @@ describe('solid-form', { testIsolation: false }, function() {
         contentType: 'application/ld+json'
       }
     })
-    // cy.server();
-    // cy.route({
-    //   method: 'PUT',
-    //   url: '**/event-1.jsonld',
-    //   status: 200,
-    //   onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    // });
+
     cy.get('#form-edition-2 input[type=text][name=name]')
       .type(' in BZH');
     cy.get('#form-edition-2 select').select('Pierre DLC')
@@ -207,26 +201,6 @@ describe('solid-form', { testIsolation: false }, function() {
         'content-type': 'application/ld+json'
       }
     })
-    // cy.server();
-    // cy.route({
-    //   method: 'POST',
-    //   url: '**/events.jsonld',
-    //   status: 400,
-    //   response: {
-    //     "name": [
-    //       "Ensure this field has no more than 10 characters."
-    //     ],
-    //     "batches": {
-    //           "title": ["Title too long", "Title not unique"],
-    //           "tasks": {
-    //             "@id": ["Task with this urlid already exists."],
-    //             "amount": ["Should be > 0"]
-    //           }
-    //     },
-    //     "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
-    //   },
-    //   onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    // });
 
     cy.get('solid-form#form-7')
       .find('input[name=name]')
@@ -253,13 +227,6 @@ describe('solid-form', { testIsolation: false }, function() {
       },
       body: 'ok'
     })
-    // cy.route({
-    //     method: 'POST',
-    //     url: '**/events.jsonld',
-    //     status: 200,
-    //     response: 'ok',
-    //     onRequest: (xhr) => { xhr.setRequestHeader('content-type', 'application/ld+json') }
-    // });
 
     cy.get('solid-form#form-7')
     .find('input[type=submit]')
@@ -288,14 +255,7 @@ describe('solid-form', { testIsolation: false }, function() {
     cy.intercept("POST", '**/users.jsonld', {
         delay: 3000
     })
-  
-    // cy.server();
-    // cy.route({
-    //   method: 'POST',
-    //   url: '**/users.jsonld',
-    //   response: {},
-    //   delay: 3000
-    // });
+    
     cy.get('#form-11')
       .find('input[name=name]')
       .type('Tryphon');
@@ -341,7 +301,9 @@ describe('solid-form', { testIsolation: false }, function() {
     cy.get('solid-form#form-autosave [data-index="skills0"] button').click().then(() => {
       expect(win.sibStore.patch).to.have.callCount(2);
     });
-    cy.get('solid-form#form-autosave [data-index="skills1"] select').select('{"@id": "/examples/data/list/skill-5.jsonld"}').then(() => {
+    cy.get('solid-form#form-autosave [data-index="skills1"] select')
+    .select("PHP")
+    .then(() => {
       cy.wait(200).then(() => {
         expect(win.sibStore.patch).to.have.callCount(3);
       })

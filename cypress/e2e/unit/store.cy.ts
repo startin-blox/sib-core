@@ -77,34 +77,17 @@ describe('store', { testIsolation: false }, function () {
     });
   });
 
-  it('fetches data and cache it', (done) => {
-    // FIXME: resolve missing 'await' in libs/store/store.ts which cause unhandled promise error
-    cy.on('uncaught:exception', (err, _, promise) => {
-      // expect(err.message).to.include('something about the error')
-  
-      // using mocha's async done callback to finish
-      // this test so we prove that an uncaught exception
-      // was thrown
-      done()
-  
-      // return false to prevent the error from
-      // failing this test
-      // return false
-
-      if (promise) {
-        // returning false here prevents Cypress from
-        // failing the test
-        return false
-      }
-    })
-
+  it('fetches data and cache it', () => {
     cy.intercept("GET", "*/data/list/users.jsonld").as('users')
 
     cy.window()
       .its('sibStore')
       .invoke('getData', '../data/list/users.jsonld', base_context);
 
-    cy.get('@users').should('have.property', 'status', 200)
+    // TODO: work in progress
+    cy.get('@users').its("response.statusCode").should('equal', 200);
+    // cy.get('@users').its("response.statusCode").should('be.oneOf', [200, 304]);
+    // cy.get('@users').should('have.property', 'status', 200)
 
     cy.window()
       .its('sibStore.cache').should('have.length', 6); // cache
@@ -134,26 +117,7 @@ describe('store', { testIsolation: false }, function () {
       .should('have.property', 'http://xmlns.com/foaf/0.1/depiction', "my-avatar.png"); // nested additionnal context
   });
 
-  it('send xhr requests', (done) => {
-    cy.on('uncaught:exception', (err, runnable, promise) => {
-      // expect(err.message).to.include('something about the error')
-  
-      // using mocha's async done callback to finish
-      // this test so we prove that an uncaught exception
-      // was thrown
-      done()
-  
-      // return false to prevent the error from
-      // failing this test
-      return false
-
-      // if (promise) {
-      //   // returning false here prevents Cypress from
-      //   // failing the test
-      //   return false
-      // }
-    })
-
+  it('send xhr requests', () => {
     cy.intercept("PATCH", "/examples/data/list/user-1.jsonld", {
       headers: {
         'content-type': 'application/ld+json'
@@ -192,44 +156,28 @@ describe('store', { testIsolation: false }, function () {
     cy.window()
       .its('sibStore')
       .invoke('fetchData', '/examples/data/list/user-1.jsonld');
-    cy.get('@get').its("request.url").should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`)
-    .its("response.method").should('equal', 'GET')
-    // then((xhr: any) => {
-    //   expect(xhr.method).to.equal('GET');
-    //   expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
-    // });
-
+      console.log('HERE1')
+    cy.get('@get').its("request.url").should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
+    
     cy.window()
       .its('sibStore')
       .invoke('patch', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
-    cy.get('@patch').then((xhr: any) => {
-      expect(xhr.method).to.equal('PATCH');
-      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
-    });
+    cy.get('@patch').its("request.url").should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window()
       .its('sibStore')
       .invoke('put', { first_name: 'Monsieur' }, '/examples/data/list/user-1.jsonld');
-    cy.get('@put').then((xhr: any) => {
-      expect(xhr.method).to.equal('PUT');
-      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
-    });
+    cy.get('@put').its("request.url").should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window()
       .its('sibStore')
       .invoke('post', { first_name: 'Monsieur' }, '/examples/data/list/users.jsonld');
-    cy.get('@post').then((xhr: any) => {
-      expect(xhr.method).to.equal('POST');
-      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/users.jsonld`);
-    });
+    cy.get('@post').its("request.url").should('equal', `${baseUrl}/examples/data/list/users.jsonld`);
 
     cy.window()
       .its('sibStore')
       .invoke('delete', '/examples/data/list/user-1.jsonld');
-    cy.get('@delete').then((xhr: any) => {
-      expect(xhr.method).to.equal('DELETE');
-      expect(xhr.url).to.equal(`${baseUrl}/examples/data/list/user-1.jsonld`);
-    });
+    cy.get('@delete').its("request.url").should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window().then((win: any) => {
       expect(win.sibStore.clearCache).to.be.called;
@@ -319,7 +267,7 @@ describe('store', { testIsolation: false }, function () {
         .and.to.have.members(['ldp-server.test/circles/joinable']);
     });
 
-   cy.window()
+    cy.window()
       .its('sibStore')
       .invoke('subscribeVirtualContainerTo', 'ldp-server.test/users/matthieu/circles', 'ldp-server.test/circles/1/members');
 

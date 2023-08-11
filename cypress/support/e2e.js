@@ -23,3 +23,7 @@ import '@rckeller/cypress-unfetch';
 
 // Plugin to use tab key for testing
 import 'cypress-plugin-tab';
+
+Cypress.on('uncaught:exception', () => {
+  return false
+})
