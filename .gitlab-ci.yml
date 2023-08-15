@@ -36,7 +36,7 @@ test:
     - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
     - npm run build
-    - npm run test
+    - npm test
   except:
     - master
     - tags
