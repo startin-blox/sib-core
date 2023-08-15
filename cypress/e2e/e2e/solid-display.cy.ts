@@ -3,7 +3,7 @@ describe('solid-display', function() {
     cy.visit('/examples/e2e/solid-display.html')
   });
 
-  it('display user', () => {
+  it('display event', () => {
     cy.get('#display-1>div').children().eq(0).should('have.attr', 'name', 'event')
       .should('have.attr', 'value', 'Event name and date : ')
       .should('have.class', 'presentationEvent');
