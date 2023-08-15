@@ -17,15 +17,14 @@ cache:
   paths:
     - .npm
     - cache/Cypress
-    - node_modules/
+
+default:
+  image: node:14
 
 stages:
   - test
   - prepare
   - publish
-
-default:
-  image: node:14
 
 test:
   image: cypress/base:10
