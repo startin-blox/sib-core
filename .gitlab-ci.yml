@@ -4,6 +4,9 @@ include:
   ref: master
   file: templates/nodejs.ci.yml
 
+default:
+  image: node:14
+
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
 variables:
@@ -18,12 +21,9 @@ cache:
     - .npm
     - cache/Cypress
 
-default:
-  image: node:14
-
 stages:
-  - test
   - prepare
+  - test
   - publish
 
 test:
@@ -32,7 +32,6 @@ test:
   before_script:
     - npm ci
   script:
-    - export NODE_OPTIONS=--max_old_space_size=4096
     - npm run check-types
     - npm run build
     - npm test
@@ -64,3 +63,4 @@ publish:
   only:
     - master
     - beta
+
