@@ -7,8 +7,7 @@ describe('server-pagination', { testIsolation: false }, function () {
     /**
     * Paginates from server
     */
-   // TODO: work in progress
-    it.only('paginates resources', () => {
+    it('paginates resources', () => {
         cy.get('#list-1 > nav').as('nav')
         .should('have.length', 1);
 
