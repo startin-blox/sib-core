@@ -1,11 +1,12 @@
 const crypto = require("crypto")
 const cypress = require("cypress")
-const url =  require("url")
-const path =  require("path")
-const express =  require("express")
-const bodyParser =  require("body-parser")
-const findFreePort =  require("find-free-port")
-const fs =  require("fs")
+const url = require("url")
+const path = require("path")
+const express = require("express")
+const bodyParser = require("body-parser")
+const findFreePort = require("find-free-port")
+const fs = require("fs")
+const cors = require("cors")
 
 const port = findFreePort(3000);
 const app = express();
@@ -16,6 +17,7 @@ const distPath = '.';
   const server = app
     .use(express.static(distPath))
     .use(bodyParser.json({ type: 'application/*+json' }))
+    .use(cors({ origin: 'http://0.0.0.0:3001', credentials: true})) // Cypress default domain
     .get('/favicon.ico', (req, rep) => rep.send())
     .get('/examples/', (req, rep) => rep.redirect('/'))
     // Handle upload
