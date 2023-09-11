@@ -85,6 +85,7 @@
     "babel-plugin-remove-import-js-extension": "0.0.3",
     "body-parser": "^1.19.0",
     "concurrently": "^8.2.0",
+    "cors": "^2.8.5",
     "cypress": "^12.17.3",
     "cypress-plugin-tab": "^1.0.5",
     "delta-markdown-for-quill": "0.0.9",
@@ -110,6 +111,6 @@
     "wait-on": "^5.2.1"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    
   }
 }
