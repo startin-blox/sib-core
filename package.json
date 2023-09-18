@@ -109,8 +109,5 @@
     "tui-calendar": "^1.13.0",
     "typescript": "^4.1.3",
     "wait-on": "^5.2.1"
-  },
-  "dependencies": {
-    
   }
 }

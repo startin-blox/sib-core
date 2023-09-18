@@ -1,5 +1,5 @@
-describe('server-search', { testIsolation: false }, function () {
-    this.beforeAll('visit', () => {
+describe('server-search', function () {
+    this.beforeEach('visit', () => {
         cy.visit('/examples/e2e/server-search.html');
     })
 
