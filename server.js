@@ -36,7 +36,7 @@ const distPath = '.';
     .get("/mock/users", async (req, res) => {
       const limit = Number(req.query.limit);
       const offset = Number(req.query.offset);
-      const val = req.query["search-terms"] ?? "";
+      const val = req.query["search-terms"] || "";
 
       const jsonData = fs.readFileSync("./examples/data/list/users-long.jsonld", { encoding: "utf8" });
       const data = JSON.parse(jsonData);
