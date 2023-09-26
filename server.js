@@ -17,7 +17,7 @@ const distPath = '.';
   const server = app
     .use(express.static(distPath))
     .use(bodyParser.json({ type: 'application/*+json' }))
-    .use(cors({ origin: 'http://0.0.0.0:3001', credentials: true})) // Cypress default domain
+    .use(cors({ origin: ['http://0.0.0.0:3001', "*"], credentials: true })) // Cypress default domain
     .get('/favicon.ico', (req, rep) => rep.send())
     .get('/examples/', (req, rep) => rep.redirect('/'))
     // Handle upload
@@ -73,7 +73,7 @@ const distPath = '.';
       console.error(error);
     } finally {
       server.close();
-      if(test.totalFailed) {
+      if (test.totalFailed) {
         process.exit(1);
       }
     }
