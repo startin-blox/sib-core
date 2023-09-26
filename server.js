@@ -17,6 +17,9 @@ const distPath = '.';
   const server = app
     .use(express.static(distPath))
     .use(bodyParser.json({ type: 'application/*+json' }))
+    
+    // 'http://0.0.0.0:3001' used in local environment (Cypress default domain)
+    // '*' used in the CI
     .use(cors({ origin: ['http://0.0.0.0:3001', "*"], credentials: true })) // Cypress default domain
     .get('/favicon.ico', (req, rep) => rep.send())
     .get('/examples/', (req, rep) => rep.redirect('/'))
