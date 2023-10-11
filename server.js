@@ -6,7 +6,6 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const findFreePort = require("find-free-port")
 const fs = require("fs")
-const cors = require("cors")
 
 const port = findFreePort(3000);
 const app = express();
@@ -17,10 +16,6 @@ const distPath = '.';
   const server = app
     .use(express.static(distPath))
     .use(bodyParser.json({ type: 'application/*+json' }))
-
-    // 'http://0.0.0.0:3001' used in local environment (Cypress default domain)
-    // '*' used in the CI
-    .use(cors({ origin: ['http://0.0.0.0:3001', "*"], credentials: true }))
     .get('/favicon.ico', (req, rep) => rep.send())
     .get('/examples/', (req, rep) => rep.redirect('/'))
     // Handle upload

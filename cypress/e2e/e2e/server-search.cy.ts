@@ -20,7 +20,7 @@ describe('server-search', function () {
 
         // Check result
         cy.get('#result1')
-            .should('have.attr', 'data-src', 'http://localhost:3000/mock/users')
+            .should('have.attr', 'data-src', 'http://0.0.0.0:3000/mock/users')
             .find('div > solid-display').should('have.length', 1);
     })
 
@@ -41,7 +41,7 @@ describe('server-search', function () {
 
         // Check result
         cy.get('#result2')
-            .should('have.attr', 'data-src', 'http://localhost:3000/mock/users')
+            .should('have.attr', 'data-src', 'http://0.0.0.0:3000/mock/users')
             .find('div > solid-display').should('have.length', 5);
     });
 })
