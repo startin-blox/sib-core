@@ -108,7 +108,6 @@ class Store {
       const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
     });
@@ -148,9 +147,6 @@ class Store {
       'accept-language': this._getLanguage()
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
-
-    // TODO: Remove this
-    console.log('store.ts fetchData iri =>', iri)
 
     return this.fetchAuthn(iri, {
       method: 'GET',

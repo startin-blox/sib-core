@@ -24,6 +24,7 @@ describe('solid-form-file test', { testIsolation: false }, function() {
     cy.get('#reset-file solid-form-file input[name=picture]').should($i => {
       expect($i.val()).to.match(/\/upload\/[0-9a-f]+.jpg$/)
     })
+    cy.wait(500);
     cy.get('#reset-file input[type=reset]').click();
     cy.get('#reset-file solid-form-file input[type=file]').should('be.empty');
     cy.get('#reset-file solid-form-file input[type=text]').should('have.value', '../../upload/fruits.jpg');

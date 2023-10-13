@@ -79,6 +79,28 @@ const FilterMixin = {
     }
     return;
   },
+  isFilteredOnServer() {
+    return this.filteredOn === 'server' && !!this.fetchData;
+  },
+  async onServerSearchChange() {
+    await this.fetchData(this.dataSrc);
+    this.empty();
+    await this.populate();
+  },
+  getDynamicServerSearch(): ServerSearchOptions | undefined {
+    const filters = this.filters;
+    if (this.isFilteredOnServer() && filters) {
+      const fields = Object.keys(filters);
+      const value = (Object.values(filters) as { value: string }[])
+        .map(({ value }) => value)
+        .filter((value) => !!value)
+        .join(' ').trim();
+      if (fields.length > 0 && value) {
+        return { fields, value };
+      }
+    }
+    return;
+  },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount.has(context)) this.searchCount.set(context, 1);

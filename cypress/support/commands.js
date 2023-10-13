@@ -33,4 +33,12 @@ Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fileName) =>
       el.files = dataTransfer.files
       cy.wrap(subject).trigger('change', { force: true })
   })
-})
+});
+
+Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
+  return new Cypress.Promise(resolve => {
+    $iframe.on('load', () => {
+      resolve($iframe.contents().find('body'));
+    });
+  });
+});
