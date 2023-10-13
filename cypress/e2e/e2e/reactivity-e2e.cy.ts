@@ -55,8 +55,6 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.get('solid-display#profile-widget > div > custom-widget > div').should('contain', 'Rennes');
     cy.get('solid-display#federation solid-display').should('have.length', 3);
     cy.get('solid-display#circles-user solid-display').should('have.length', 1);
-
-    // cy.server({ enable: false });
   });
 
   it('has reactive nested resources', () => {
@@ -93,7 +91,7 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.get('solid-form#profile-form input[name="city"]').clear().type('Paris');
     cy.get('solid-form#profile-form input[type=submit]').click();
 
-    // Nested resource in2 dot field
+    // Nested resource in dot field
     cy.get('solid-display#user > div > solid-display-value[name="profile.city"]').should('contain', 'Paris');
 
     // Nested resource in nested field
@@ -115,7 +113,6 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
 
     // Nested resource in multi dot field
     // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); DOES NOT WORK YET
-    // cy.server({ enable: false });
   });
 
   it('has reactive properties', () => {

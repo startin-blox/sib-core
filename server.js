@@ -40,7 +40,6 @@ app.use(cors({credentials: true, origin: 'http://0.0.0.0:3000'}));
       const jsonData = fs.readFileSync("./examples/data/list/users-long.jsonld", { encoding: "utf8" });
       const data = JSON.parse(jsonData);
       const list = data["ldp:contains"].filter(user => user["first_name"].toLowerCase().includes(val.toLowerCase()));
-      // TODO: test this data["ldp:contains"] = limit ? list.slice(offset, offset + limit + 1) : list;
       data["ldp:contains"] = limit ? list.slice(offset, offset + limit) : list;
 
       res.send(data);
