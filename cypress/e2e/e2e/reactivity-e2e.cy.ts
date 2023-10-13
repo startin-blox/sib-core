@@ -33,8 +33,6 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     })
 
     cy.visit('/examples/e2e/reactivity-e2e-test.html');
-
-    // cy.server({ enable: false });
   })
 
   it('check display', () => {
