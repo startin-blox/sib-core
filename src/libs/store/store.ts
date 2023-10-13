@@ -154,55 +154,6 @@ class Store {
       credentials: 'include'
     }).then((response) => {
       if (!response.ok) return;
-
-      // TODO: work in progress
-      console.log('response =>', response)
-
-      // if (iri === "http://0.0.0.0:3000/examples/data/list/user-1.jsonld") {
-      //   return `
-      // {
-      //   "@id": "user-1.jsonld",
-      //   "first_name": "Test",
-      //   "last_name": "User",
-      //   "username": "admin",
-      //   "email": "test-user@example.com",
-      //   "name": "Test User",
-      //   "available": true,
-      //   "skills": {
-      //     "@id": "user-1-skills.jsonld",
-      //     "@type": "ldp:Container",
-      //     "ldp:contains": [
-      //       {
-      //         "@id": "/examples/data/list/skill-2.jsonld"
-      //       },
-      //       {
-      //         "@id": "/examples/data/list/skill-3.jsonld"
-      //       }
-      //     ],
-      //     "permissions": [
-      //       {
-      //         "mode": {
-      //           "@type": "view"
-      //         }
-      //       }
-      //     ]
-      //   },
-      //   "profile": {
-      //     "@id": "profile-1.jsonld"
-      //   },
-      //   "@type": "foaf:user",
-      //   "permissions": [
-      //     {
-      //       "mode": {
-      //         "@type": "view"
-      //       }
-      //     }
-      //   ],
-      //   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
-      // }
-      // `;
-      // }
-      
       return response.json();
     })
   }

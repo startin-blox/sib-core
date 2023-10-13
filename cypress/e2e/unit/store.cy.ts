@@ -85,10 +85,7 @@ describe.skip('store', { testIsolation: false }, function () {
       .its('sibStore')
       .invoke('getData', '../data/list/users.jsonld', base_context);
 
-    // TODO: work in progress
     cy.get('@users').its("response.statusCode").should('equal', 200);
-    // cy.get('@users').its("response.statusCode").should('be.oneOf', [200, 304]);
-    // cy.get('@users').should('have.property', 'status', 200)
 
     cy.window()
       .its('sibStore.cache').should('have.length', 6); // cache
