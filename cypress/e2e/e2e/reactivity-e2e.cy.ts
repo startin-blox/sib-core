@@ -197,8 +197,6 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.get(`solid-display#users solid-display`).should('have.length', 2);
     cy.get(`solid-form#range option`).should('have.length', 3);
     // cy.get(`solid-display#federation solid-display`).should('have.length', 3); NOT WORKING: should we loop on subscription index?
-
-    // cy.server({ enable: false });
   });
 
   it('makes virtual containers reactive', () => {
