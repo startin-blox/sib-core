@@ -1,16 +1,17 @@
-const crypto = require("crypto")
-const cypress = require("cypress")
-const url = require("url")
-const path = require("path")
-const express = require("express")
-const bodyParser = require("body-parser")
-const findFreePort = require("find-free-port")
-const fs = require("fs")
-
+const crypto = require("crypto");
+const cypress = require("cypress");
+var url = require("url");
+const path = require("path");
+const express = require("express");
+const bodyParser = require("body-parser");
+const findFreePort = require("find-free-port");
+const fs = require("fs");
+const cors = require('cors');
 const port = findFreePort(3000);
 const app = express();
 const distPath = '.';
 
+app.use(cors());
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app
