@@ -207,7 +207,7 @@ describe('multiple widgets', { testIsolation: false }, function () {
     // attributes for placeholders and text displayed in SlimSelect
     cy.get('#search-attr')
       .find('.ss-disabled').contains('Sélectionne une compétence')
-      .click();
+      .click({force: true});
     cy.get('solid-form-multipleselect-autocompletion-placeholder')
       .find('.ss-search').children().should('have.attr', 'placeholder', 'Rechercher par clavier')
       .wait(200)
