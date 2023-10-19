@@ -40,7 +40,7 @@ class Store {
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
-    this.headers = {'Content-Type': 'application/ld+json', 'Cache-Control': 'must-revalidate'};
+    this.headers = {'Accept': 'application/ld+json', 'Content-Type': 'application/ld+json', 'Cache-Control': 'must-revalidate'};
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
   }
@@ -108,7 +108,6 @@ class Store {
       const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(key, resourceProxy, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-      
       this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
     });
@@ -124,8 +123,8 @@ class Store {
       if (options.headers) options.headers = this._convertHeaders(options.headers);
       return fetch(iri, options).then(function(response) {
         if (options.method === "PURGE" && !response.ok && response.status === 404) {
-            const err = new Error("PURGE call is returning 404");
-            throw err;
+          const err = new Error("PURGE call is returning 404");
+          throw err;
         }
         return response;
       });
@@ -143,7 +142,7 @@ class Store {
     if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
     if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
-    const headers = { 
+    const headers = {
       ...this.headers,
       'accept-language': this._getLanguage()
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
@@ -153,7 +152,7 @@ class Store {
       method: 'GET',
       headers: headers,
       credentials: 'include'
-    }).then(response => {
+    }).then((response) => {
       if (!response.ok) return;
       return response.json();
     })
@@ -167,7 +166,7 @@ class Store {
     parentId: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions
-    ) {
+  ) {
     if (resource.properties) { // if proxy, cache it
       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
         this.cache.get(key).merge(resource);;
@@ -231,7 +230,7 @@ class Store {
       });
 
     const resourceProxy = store.get(id);
-    const clientContext = resourceProxy ? resourceProxy.clientContext : resource['@context']
+    const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
     this.clearCache(id);
     await this.getData(id, clientContext, '', resource);
     return {ok: true}
@@ -394,7 +393,7 @@ class Store {
       method: "PURGE",
       headers: this.headers
     }).catch(function(error) {
-        console.warn('No purge method allowed: ' + error)
+      console.warn('No purge method allowed: ' + error)
     });
 
     try {
@@ -406,7 +405,7 @@ class Store {
         method: "PURGE",
         headers: headers
       }).catch(function(error) {
-          console.warn('No purge method allowed: ' + error)
+        console.warn('No purge method allowed: ' + error)
       });
     } catch (error) {
       console.warn('The resource ID is not a complete URL: ' + error);
@@ -567,7 +566,7 @@ class CustomGetter {
     resourceId: string,
     resource: object,
     clientContext: object,
-    serverContext: object = {},
+    serverContext: object,
     parentId: string = "",
     serverPagination: object = {},
     serverSearch: object = {}) {
@@ -615,12 +614,13 @@ class CustomGetter {
    * @param path: string
    */
   async get(path: any) {
+    
     if (!path) return;
     const path1: string[] = path.split('.');
     const path2: string[] = [];
     let value: any;
     if (!this.isFullResource()) { // if resource is not complete, fetch it first
-      await this.getResource(this.resourceId, this.clientContext, this.parentId);
+      await this.getResource(this.resourceId, {...this.clientContext, ...this.serverContext}, this.parentId);
     }
     while (true) {
       try {
@@ -633,10 +633,10 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
+      return await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId); // return complete resource
     }
     if (!value) return undefined;
-    let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
+    let resource = await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId);
 
     store.subscribeResourceTo(this.resourceId, value['@id']);
     return resource ? await resource[path2.join('.')] : undefined; // return value
@@ -727,7 +727,7 @@ class CustomGetter {
     const permissionPredicate = this.getExpandedPredicate("permissions");
     let permissions = this.resource[permissionPredicate];
     if (!permissions) { // if no permission, re-fetch data
-      await this.getResource(this.resourceId, this.clientContext, this.parentId, true);
+      await this.getResource(this.resourceId, {...this.clientContext, ...this.serverContext}, this.parentId, true);
       permissions = this.resource[permissionPredicate];
     }
     return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
@@ -740,9 +740,9 @@ class CustomGetter {
     store.clearCache(this.resourceId);
   }
 
-  getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, this.clientContext, true) }
-  getCompactedPredicate(property: string) { return ContextParser.compactIri(property, this.clientContext, true) }
-  getCompactedIri(id: string) { return ContextParser.compactIri(id, this.clientContext) }
+  getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, {...this.clientContext, ...this.serverContext}, true) }
+  getCompactedPredicate(property: string) { return ContextParser.compactIri(property, {...this.clientContext, ...this.serverContext}, true) }
+  getCompactedIri(id: string) { return ContextParser.compactIri(id, {...this.clientContext, ...this.serverContext}) }
   toString() { return this.getCompactedIri(this.resource['@id']) }
   [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource['@id']) }
 
@@ -762,7 +762,7 @@ class CustomGetter {
               return this.getCompactedIri(this.resource['@id']); // Compact @id if possible
             else
               console.log(this.resource, this.resource['@id']);
-              return;
+            return;
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':
@@ -776,7 +776,8 @@ class CustomGetter {
           case 'then':
             return;
           default:
-            return resource.get(property);
+            // FIXME: missing 'await'
+            return resource.get(property)
         }
       }
     })

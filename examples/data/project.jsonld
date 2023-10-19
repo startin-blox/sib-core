@@ -8,7 +8,7 @@
   "businessProviderFee": 0,
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
-  "texte": "ceci est un texte avec du **markdown** à l'intérieur.",
+  "texte": "ceci est un texte avec du **markdown** à l'intérieur and a [link](https://startinblox.com).",
   "@type": "doap:project",
   "permissions": [
     { "mode": { "@type": "change" } },

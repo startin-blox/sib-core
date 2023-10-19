@@ -49,11 +49,13 @@ const FilterMixin = {
     }
   },
   get filters(): SearchQuery {
-    return this.searchForm?.component.value ?? {};
+    return this.searchForm?.component?.value ?? {};
   },
   set filters(filters) {
-    this.searchForm.component.value = filters;
-    this.filterList();
+    if (this.searchForm?.component?.value) {
+      this.searchForm.component.value = filters;
+      this.filterList();
+    }
   },
   isFilteredOnServer() {
     return this.filteredOn === 'server' && !!this.fetchData;
@@ -87,11 +89,11 @@ const FilterMixin = {
         this.fields,
         this.searchForm
       );
-      resources =	resources.filter((_v, index) => filteredResources[index]);
+      resources = resources.filter((_v, index) => filteredResources[index]);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
   },
   async filterList(context: string): Promise<void> {
     this.searchCount.set(context, this.searchCount.get(context) + 1);
@@ -142,13 +144,13 @@ const FilterMixin = {
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
-    .filter(attr => attr['name'].startsWith('search-'))
-    .map(attr => ({
-      name: attr['name'].replace('search-', ''),
-      value: attr['value'],
-    }));
+      .filter(attr => attr['name'].startsWith('search-'))
+      .map(attr => ({
+        name: attr['name'].replace('search-', ''),
+        value: attr['value'],
+      }));
 
-    searchAttributes.forEach(({name, value}) => {
+    searchAttributes.forEach(({ name, value }) => {
       this.searchForm.setAttribute(name, value);
     });
 
