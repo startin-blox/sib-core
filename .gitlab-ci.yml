@@ -22,6 +22,7 @@ cache:
     - cache/Cypress
 
 stages:
+  - prepare
   - test
   - publish
 
