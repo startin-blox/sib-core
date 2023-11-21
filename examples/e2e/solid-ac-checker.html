@@ -45,6 +45,23 @@
       </solid-ac-checker>
     </div>
 
+    <div>
+      <h3>Fetch permissions unitary</h3>
+      <solid-widget name="ac-checker-widget">
+        <template>
+          <solid-ac-checker permission="acl:Write" data-src="${value}">
+            <button>Edit</button>
+          </solid-ac-checker>
+        </template>
+      </solid-widget>
+
+      <solid-display
+        data-src="/examples/data/list/skills.jsonld"
+        fields="name, @id"
+        widget-id="ac-checker-widget"
+      ></solid-display>
+    </div>
+
     <script>
       load.onclick= () => {
         document.querySelector('#ac-checker-3').dataset.src = "/examples/data/list/skill-2.jsonld";

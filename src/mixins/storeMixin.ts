@@ -22,11 +22,13 @@ const StoreMixin = {
       default: null,
       callback: async function (value: string) {
         const filteredOnServer = this.element.attributes['filtered-on']?.value === 'server';
-        // FIXME: find why tests failed
-        console.log('filteredOnServer =>', filteredOnServer, value)
         const limited = this.element.attributes['limit']?.value !== undefined;
-        if (this.noRender === null && !filteredOnServer && !limited) await this.fetchData(value);
-        // if (this.noRender === null && !filteredOnServer) await this.fetchData(value);
+        
+        if (this.noRender === null && !filteredOnServer && !limited) {
+          await this.fetchData(value);
+        } else if (this.noRender === null && !filteredOnServer) {
+          this.resourceId = value
+        }
       },
     },
     loaderId: {

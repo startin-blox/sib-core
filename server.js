@@ -1,16 +1,17 @@
-const crypto = require("crypto")
-const cypress = require("cypress")
-const url =  require("url")
-const path =  require("path")
-const express =  require("express")
-const bodyParser =  require("body-parser")
-const findFreePort =  require("find-free-port")
-const fs =  require("fs")
-
+const crypto = require("crypto");
+const cypress = require("cypress");
+var url = require("url");
+const path = require("path");
+const express = require("express");
+const bodyParser = require("body-parser");
+const findFreePort = require("find-free-port");
+const fs = require("fs");
+const cors = require('cors');
 const port = findFreePort(3000);
 const app = express();
 const distPath = '.';
 
+app.use(cors({credentials: true, origin: 'http://0.0.0.0:3000'}));
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app
@@ -34,7 +35,7 @@ const distPath = '.';
     .get("/mock/users", async (req, res) => {
       const limit = Number(req.query.limit);
       const offset = Number(req.query.offset);
-      const val = req.query["search-terms"] ?? "";
+      const val = req.query["search-terms"] || "";
 
       const jsonData = fs.readFileSync("./examples/data/list/users-long.jsonld", { encoding: "utf8" });
       const data = JSON.parse(jsonData);
@@ -70,7 +71,7 @@ const distPath = '.';
       console.error(error);
     } finally {
       server.close();
-      if(test.totalFailed) {
+      if (test.totalFailed) {
         process.exit(1);
       }
     }
