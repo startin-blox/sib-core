@@ -59,6 +59,7 @@ const StoreMixin = {
       formatAttributesToServerSearchOptions(this.element.attributes),
       this.getDynamicServerSearch?.() // from `filterMixin`
     );
+    console.log("Resource ID", id);
     return id ? store.get(id, serverSearch) : null;
   },
   get loader(): HTMLElement | null {
