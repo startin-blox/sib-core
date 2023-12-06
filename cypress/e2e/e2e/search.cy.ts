@@ -83,10 +83,10 @@ describe('solid-form-search widget', { testIsolation: false }, function() {
 
     cy.get('#display-search-field-1 > div')
       .children().should('have.length', 1)
-      .filter('solid-display[data-src="user-3.jsonld"]');
+      .filter('solid-display[data-src="/examples/data/list/user-3.jsonld"]');
     cy.get('#display-search-field-2 > div')
       .children().should('have.length', 1)
-      .filter('solid-display[data-src="event-4.jsonld"]');
+      .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
   });
 
   it('solid-form-search + solid-form-hidden', () => {
@@ -141,7 +141,7 @@ describe('solid-form-search widget', { testIsolation: false }, function() {
 
   it('solid-form-search + resource', () => {
     cy.get('#display-profile-search > div').children().should('have.length', '1')
-    cy.get('#display-profile-search > div > solid-display').should('have.attr', 'data-src', 'user-1.jsonld')
+    cy.get('#display-profile-search > div > solid-display').should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
   });
 
   it('solid-form-search + number', () => {

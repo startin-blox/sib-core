@@ -187,7 +187,7 @@ describe('display widgets', function () {
     cy.get('solid-multiple')
       .find('> solid-display')
       .should('have.length', 1)
-      .and('have.attr', 'data-src', '../data/list/user-1-skills.jsonld')
+      .and('have.attr', 'data-src', '/examples/data/list/user-1-skills.jsonld')
       .and('have.attr', 'fields', 'name');
 
     cy.get('solid-multiple > solid-display > div > solid-display')

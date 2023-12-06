@@ -61,23 +61,23 @@ describe('solid-display', function() {
     cy.get('#display-8 > div')
     .children().should('have.length', 2)
     cy.get('#display-8 > div').children().eq(0)
-    .should('have.attr', 'data-src', 'event-3.jsonld');
+    .should('have.attr', 'data-src', '/examples/data/list/event-3.jsonld');
     cy.get('#display-8 > div').children().eq(1)
-    .should('have.attr', 'data-src', 'event-4.jsonld');
+    .should('have.attr', 'data-src', '/examples/data/list/event-4.jsonld');
 
     cy.get('#display-9').should('have.attr', 'required-place');
     cy.get('#display-9 > div')
     .children().should('have.length', 2);
     cy.get('#display-9 > div').children().eq(0)
-    .should('have.attr', 'data-src', 'event-2.jsonld');
+    .should('have.attr', 'data-src', '/examples/data/list/event-2.jsonld');
     cy.get('#display-9 > div').children().eq(1)
-    .should('have.attr', 'data-src', 'event-3.jsonld');
+    .should('have.attr', 'data-src', '/examples/data/list/event-3.jsonld');
 
     cy.get('#display-10').should('have.attr', 'required-city');
     cy.get('#display-10').should('have.attr', 'required-place');
     cy.get('#display-10 > div').children().should('have.length', 1)
     cy.get('#display-10 > div > solid-display')
-    .should('have.attr', 'data-src', 'event-3.jsonld');;
+    .should('have.attr', 'data-src', '/examples/data/list/event-3.jsonld');;
   });
 
   it('list-mixin : solid-container & solid-resource attributes', () => {
@@ -95,9 +95,9 @@ describe('solid-display', function() {
 
   it('define src attribute of solid-link by action', () => {
     cy.get('#display-14 > div > solid-action')
-      .should('have.attr', 'src', 'user-1.jsonld');
+      .should('have.attr', 'src', '/examples/data/list/user-1.jsonld');
     cy.get('#display-14 > div > solid-action > solid-link')
-      .should('have.attr', 'data-src', 'user-1.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld');
 
     cy.get('#display-15 > div > solid-action')
       .should('have.attr', 'src', 'other-resource');

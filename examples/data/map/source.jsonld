@@ -1,10 +1,10 @@
 {
-  "@id": "source.jsonld",
+  "@id": "/examples/data/map/source.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
       "federation": "events",
-      "@id": "events.jsonld",
+      "@id": "/examples/data/map/events.jsonld",
       "@type": "sib:federatedContainer",
       "permissions": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "@id": "other-events.jsonld",
+      "@id": "/examples/data/map/other-events.jsonld",
       "@type": "sib:federatedContainer"
     }
   ],

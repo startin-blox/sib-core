@@ -73,35 +73,58 @@ export class CustomGetter {
 
     /**
      * Get the property of a resource for a given path
+     * Which means that if the resource is not complete, it will fetch it
+     * And that we handle the `.` notation, traversing the path recursively
      * @param path: string
      */
-    async get(path: any) {
+    async get(path: any) {    
         if (!path) return;
-        console.warn("GET", path, this.resourceId);
-        const path1: string[] = path.split('.');
-        const path2: string[] = [];
-        let value: any;
-        if (!this.isFullResource()) { // if resource is not complete, fetch it first
-        await this.getResource(this.resourceId, this.clientContext, this.parentId);
-        }
-        while (true) {
-            try {
-                value = this.resource[this.getExpandedPredicate(path1[0])];
-            } catch (e) { break }
 
-            if (path1.length <= 1) break; // no dot path
-            const lastPath1El = path1.pop();
-            if(lastPath1El) path2.unshift(lastPath1El);
+        // Specific case where the predicates is a full IRI, avoid splitting it on the dot notation
+        try {
+            let isUrl = new URL(path);
+            // If the path is an absolute url, we need to fetch the resource
+            if (isUrl) {
+                let value = this.resource[this.getExpandedPredicate(path)];
+                return value ? value : undefined;
             }
-            if (path2.length === 0) { // end of the path
-            if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
-            return await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId); // return complete resource
-        }
-        if (!value) return undefined;
-        let resource = await this.getResource(value['@id'], this.clientContext, this.parentId || this.resourceId);
+        } catch (e) {
+            // Split the path on each dots
+            const path1: string[] = path.split('.');
 
-        store.subscribeResourceTo(this.resourceId, value['@id']);
-        return resource ? await resource[path2.join('.')] : undefined; // return value
+            // Intermediate path var to request each resource individually until the path traversal is completed
+            const path2: string[] = [];
+
+            // Actual value found from the store, if any
+            let value: any;
+
+            if (!this.isFullResource()) { // if resource is not complete, fetch it first
+                await this.getResource(this.resourceId, {...this.clientContext, ...this.serverContext}, this.parentId);
+            }
+
+            // If the path contains dot, we need to traverse the path recursively
+            // We do that by poping one element from path1 at each step and affecting it to path2
+            // Trying to get the value from it
+            while (true) {
+                try {
+                    value = this.resource[this.getExpandedPredicate(path1[0])];
+                } catch (e) { break }
+
+                if (path1.length <= 1) break; // no dot path
+                const lastPath1El = path1.pop();
+                if(lastPath1El) path2.unshift(lastPath1El);
+            }
+
+            if (path2.length === 0) { // end of the path
+                if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
+                return await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId); // return complete resource
+            }
+            if (!value) return undefined;
+
+            let resource = await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId);
+            store.subscribeResourceTo(this.resourceId, value['@id']);
+            return resource ? await resource[path2.join('.')] : undefined; // return value
+        }
     }
 
     /**
@@ -132,7 +155,6 @@ export class CustomGetter {
      * @param iriParent
      */
     async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false): Promise<Resource | null> {
-        console.table({ id, context, iriParent, forceFetch})
         if (id.startsWith('_:b')) return store.get(id + iriParent); // anonymous node = get from cache
         return store.getData(id, context, iriParent, undefined ,forceFetch);
     }
@@ -148,6 +170,16 @@ export class CustomGetter {
         return this.containerTypes.includes(this.resource["@type"] || this.resource["type"]);
     }
 
+    /**
+     * Return true if the given key in the current resource in an array
+     */
+    isArray(): boolean {
+        if (Array.isArray(this.resource))
+            return true;
+
+        return false;
+    }
+
 
     /**
      * Get all properties of a resource
@@ -159,8 +191,8 @@ export class CustomGetter {
     /**
      * Get children of container as objects
      */
-    getChildren(): object[] {
-        return this.resource[this.getExpandedPredicate("ldp:contains")] || [];
+    getChildren(predicateName : string): object[] {
+        return this.resource[this.getExpandedPredicate(predicateName)] || [];
     }
 
     /**
@@ -171,15 +203,17 @@ export class CustomGetter {
         if (!children) return null;
         if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
 
-        return children ? children.map((res: object) => {
-        let resource: any = store.get(res['@id']);
-        if (resource) return resource;
+        let result = children ? children.map((res: object) => {
+            let resource: any = store.get(res['@id']);
+            if (resource) return resource;
 
-        // if not in cache, generate the basic resource
-        resource = new CustomGetter(res['@id'], { '@id': res['@id'] }, this.clientContext, this.serverContext, this.parentId).getProxy()
-        store.cacheResource(res['@id'], resource); // put it in cache
-        return resource; // and return it
+            // if not in cache, generate the basic resource
+            resource = new CustomGetter(res['@id'], { '@id': res['@id'] }, this.clientContext, this.serverContext, this.parentId).getProxy()
+            store.cacheResource(res['@id'], resource); // put it in cache
+            return resource; // and return it
         }) : [];
+
+        return result;
     }
 
 
@@ -198,20 +232,29 @@ export class CustomGetter {
             || this.resource['@id'].startsWith('_:b'); // anonymous node = always full resource
     }
 
+    /**
+     * Get permissions of a resource
+     * @param resourceId
+     * @returns 
+     */
     async getPermissions(): Promise<string[]> {
-        const permissionPredicate = this.getExpandedPredicate("permissions");
-        const permissionsIds = this.resource[permissionPredicate];
-        let permissions = await Promise.all(
+        let permissionsIds = this.resource[this.getExpandedPredicate("permissions")];
+        if (!permissionsIds) { // if no permission, re-fetch data from store
+            await this.getResource(this.resourceId, { ...this.clientContext, ...this.serverContext }, this.parentId, true);
+            permissionsIds = this.resource[this.getExpandedPredicate("permissions")];
+        }
+
+        if (!permissionsIds) return [];
+
+        const permissions = await Promise.all(
           permissionsIds
             .map((p: string) => store.get(p['@id'] + this.parentId)) // get anonymous node from store
             .map((p: string) => p ? p['mode.@type'] : '')
         );
     
-        if (!permissions) { // if no permission, re-fetch data
-            await this.getResource(this.resourceId, { ...this.clientContext, ...this.serverContext }, this.parentId, true);
-            permissions = this.resource[permissionPredicate];
-        }
-        return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
+        return permissions ? permissions.map(
+          perm => ContextParser.expandTerm((perm as string), this.serverContext, true)
+        ) : [];
     }
 
     /**
@@ -261,11 +304,12 @@ export class CustomGetter {
                         return this.getPermissions(); // get expanded permissions
                     case 'clientContext':
                         return this.clientContext; // get saved client context to re-fetch easily a resource
+                    case 'serverContext':
+                        return this.serverContext; // get saved client context to re-fetch easily a resource
                     case 'then':
                         return;
                     default:
                         // FIXME: missing 'await'
-                        console.log("GET", property);
                         return resource.get(property)
                 }
             }

@@ -58,7 +58,8 @@ class Store {
    * @param forceFetch - force the fetch of data
    * @param serverPagination - Server pagination options
    * @param serverSearch - Server search options
-   *
+   * @param predicateName - predicate name if we target a specific predicate from the resource, useful for arrays
+   * 
    * @returns The fetched resource
    *
    * @async
@@ -200,11 +201,13 @@ class Store {
       for (let resource of compactedResources) {
         let id = resource['@id'] || resource['id'];
         let key = resource['@id'] || resource['id'];
+
+        if(!key) console.log('No key or id for resource:', resource);
         if (key === '/') key = parentId;
         if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
         const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-        if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id, );
-  
+        if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
+
         if (this.get(key)) { // if already cached, merge data
           this.cache.get(key).merge(resourceProxy);
         } else {  // else, put in cache
@@ -213,11 +216,10 @@ class Store {
 
         // Cache children of container
         if (resource['@type'] == "ldp:Container" && resource.getChildren) {
-          console.table([resource, key, parentId]);
           const cacheChildrenPromises: Promise<void>[] = [];
 
           //TODO: return complete object without the need for the fetch data from the cacheGraph
-          for (let res of await resource.getChildren()) {
+          for (let res of await resource.getChildren('ldp:contains')) {
             cacheChildrenPromises.push(this.cacheGraph(res, clientContext, parentContext, parentId, serverPagination, serverSearch));
           }
           await Promise.all(cacheChildrenPromises);
@@ -237,87 +239,6 @@ class Store {
         // }
       }
     }
-  
-
-  // /**
-  //  * Cache the whole graph
-  //  * @param resource - graph fetched
-  //  * @param clientContext - context of the client app
-  //  * @param parentContext - context of the server
-  //  * @param parentId - id of the parent caller
-  //  * @param serverPagination - Server pagination query params
-  //  * @param serverSearch - Server search query params
-  //  */
-  // async cacheGraph(
-  //   resource: any,
-  //   clientContext: object,
-  //   parentContext: object,
-  //   parentId: string,
-  //   serverPagination?: ServerPaginationOptions,
-  //   serverSearch?: ServerSearchOptions
-  // ) {
-  //   // if (resource.properties) { // if proxy, cache it
-  //   //   if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
-  //   //     this.cache.get(key).merge(resource);;
-  //   //   } else {  // else, put in cache
-  //   //     this.cache.set(key, resource);
-  //   //   }
-  //   // }
-  //   const flattenedResources = await jsonld.flatten(resource);
-  //   console.table(flattenedResources);
-  //   const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
-  //   console.table(compactedResources);
-  //   for (let resource of compactedResources) {
-  //     let key = resource['@id'];
-  //     if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
-  //     const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-  //     if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy);
-
-  //     if (resource.properties) { // if proxy, cache it
-  //       if (this.get(key) && this.cache.get(key).merge) { // if already cached, merge data
-  //         this.cache.get(key).merge(resource);
-  //       } else {  // else, put in cache
-  //         this.cacheResource(key, resourceProxy);
-  //       }
-  //     }
-  //     // Cache nested resources
-  //     if (resource.getSubObjects) {
-  //       for (let res of resource.getSubObjects()) {
-  //         let newParentContext = parentContext;
-  //         // If additional context in resource, use it to expand properties
-  //         if (res['@context']) newParentContext = await myParser.parse({ ...parentContext, ...res['@context'] });
-  //         // const resourceProxy = new CustomGetter(res['@id'], res, clientContext, newParentContext, parentId, serverPagination, serverSearch).getProxy();
-  //         // this.subscribeResourceTo(resource['@id'], res['@id']); // removed to prevent useless updates
-  //         await this.cacheGraph(res, clientContext, newParentContext, parentId, serverPagination, serverSearch);
-  //       }
-  //     }
-
-  //     // Cache children of container
-  //     if (resource['@type'] == "ldp:Container" && resource.getChildren) {
-  //       const cacheChildrenPromises: Promise<void>[] = [];
-
-  //       //TODO: return complete object without the need for the fetch data from the cacheGraph
-  //       for (let res of await resource.getChildren()) {
-  //         this.subscribeResourceTo(resource['@id'], res['@id']);
-  //         cacheChildrenPromises.push(this.cacheGraph(res, clientContext, parentContext, parentId, serverPagination, serverSearch));
-  //       }
-  //       await Promise.all(cacheChildrenPromises);
-  //       return;
-  //     }
-
-  //     // Create proxy, (fetch data) and cache resource
-  //     if (resource['@id'] && !resource.properties) {
-  //       if (resource['@id'].match(/^b\d+$/)) return; // not anonymous node
-  //       // Fetch data if
-  //       if (resource['@type'] === "sib:federatedContainer"  && resource['@cache'] !== 'false') { // if object is federated container
-  //         await this.getData(resource['@id'], clientContext, parentId, undefined, false, serverPagination, serverSearch); // then init graph
-  //         return;
-  //       }
-  //       // const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-  //       await this.cacheGraph(resource, clientContext, parentContext, parentId, serverPagination, serverSearch);
-  //     }
-  //   }
-  // }
 
   /**
    * Put proxy in cache
@@ -325,7 +246,6 @@ class Store {
    * @param resourceProxy
    */
   cacheResource(key: string, resourceProxy: any) {
-    console.log("From store cacheResource", key, resourceProxy);
     this.cache.set(key, resourceProxy);
   }
 
@@ -450,8 +370,6 @@ class Store {
     if (serverSearch) {
       id = appendServerSearchToIri(id, serverSearch);
     }
-
-    console.log("From store get from cache", id, this.cache.get(id));
     return this.cache.get(id) || null;
   }
 
@@ -590,6 +508,8 @@ class Store {
   _getExpandedId(id: string, context: object) {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
+
+  getExpandedPredicate(property: string, context: object) { return ContextParser.expandTerm(property, context, true) }
 
   _isLocalId(id: string) {
     return id.startsWith('store://local.');

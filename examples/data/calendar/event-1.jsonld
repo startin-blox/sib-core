@@ -1,5 +1,5 @@
 {
-	"@id": "event-1.jsonld",
+	"@id": "/examples/data/calendar/event-1.jsonld",
 	"name": "Test",
 	"deadline": "2019-09-09T19:55:44Z",
 	"permissions": [],

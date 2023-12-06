@@ -1,0 +1,18 @@
+{
+  "@id": "/examples/data/list/starwars.jsonld",
+  "@type": "ldp:Container",
+  "name": "Star Wars",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/list/darth-vader.json"
+    },
+    {
+      "@id": "/examples/data/list/chewbacca.jsonld"
+    },
+    {
+      "@id": "/examples/data/list/hansolo.jsonld",
+      "name": "Han solo"
+    }
+  ],
+	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

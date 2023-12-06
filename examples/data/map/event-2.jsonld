@@ -1,5 +1,5 @@
 {
-  "@id": "event-2.jsonld",
+  "@id": "/examples/data/map/event-2.jsonld",
   "name": "Test",
   "category": "meetup",
   "lat": "48.864716",

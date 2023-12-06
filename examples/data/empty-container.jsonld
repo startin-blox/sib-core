@@ -1,5 +1,5 @@
 {
-  "@id": "empty-container.jsonld",
+  "@id": "/examples/data/empty-container.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [],
   "permissions": [

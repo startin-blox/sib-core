@@ -1,9 +1,9 @@
 {
-  "@id": "circles-server3.jsonld",
+  "@id": "/examples/data/federation/circles-server3.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "circles-5.jsonld",
+      "@id": "/examples/data/federation/circles-5.jsonld",
       "is_backlink": false,
       "allow_create_backlink": true,
       "name": "Circle from server 3",
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "@id": "circles-1.jsonld",
+      "@id": "/examples/data/federation/circles-1.jsonld",
       "is_backlink": false,
       "allow_create_backlink": true,
       "name": "Circle from server 1",

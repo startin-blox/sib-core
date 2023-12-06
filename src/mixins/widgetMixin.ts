@@ -53,6 +53,11 @@ const WidgetMixin = {
         resource = res;
         break;
       }
+    } else if (resource && this.arrayField) { // if array, keep the 1rst resource
+      for (let res of resource[this.predicateName]) {
+        resource = res;
+        break;
+      }
     }
 
     if (!this.dataSrc) console.error(new Error('You must provide a "fields" attribute'));

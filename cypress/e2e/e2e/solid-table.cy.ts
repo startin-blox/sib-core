@@ -43,7 +43,7 @@ describe('solid-table', { testIsolation: false }, function () {
       // FIRST LINE
       .parents('table')
       .find('tr').eq(1)
-      .should('have.attr', 'data-resource', 'user-3.jsonld')
+      .should('have.attr', 'data-resource', '/examples/data/list/user-3.jsonld')
       .children('td')
       .should('have.length', 5)
 
@@ -80,7 +80,7 @@ describe('solid-table', { testIsolation: false }, function () {
     // Check data
     cy.get('#table-users').then($el => {
       expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-        'user-2.jsonld', 'user-4.jsonld'
+        '/examples/data/list/user-2.jsonld', '/examples/data/list/user-4.jsonld'
       ])
     });
 
@@ -89,7 +89,7 @@ describe('solid-table', { testIsolation: false }, function () {
       .find('input[type="checkbox"]').eq(0).check();
     cy.get('#table-users').then($el => {
       expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-        'user-3.jsonld', 'user-2.jsonld', 'user-4.jsonld', 'user-1.jsonld'
+        '/examples/data/list/user-3.jsonld', '/examples/data/list/user-2.jsonld', '/examples/data/list/user-4.jsonld', '/examples/data/list/user-1.jsonld'
       ])
     });
 
@@ -158,7 +158,7 @@ describe('solid-table', { testIsolation: false }, function () {
       // first_name
       .find('td').eq(0)
       .find('solid-form')
-      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
       .and('have.attr', 'fields', 'first_name')
       .and('have.attr', 'partial', '')
       .find('solid-form-label-text input[type="text"]')
@@ -168,7 +168,7 @@ describe('solid-table', { testIsolation: false }, function () {
       .parents('tr').eq(0)
       .find('td').eq(1)
       .find('solid-form')
-      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
       .and('have.attr', 'fields', 'last_name')
       .and('have.attr', 'enum-last_name', 'Smith, Williams, Anderson')
       .and('have.attr', 'partial', '')
@@ -177,7 +177,7 @@ describe('solid-table', { testIsolation: false }, function () {
       .parents('tr').eq(0)
       .find('td').eq(2)
       .find('solid-form')
-      .should('have.attr', 'data-src', 'user-1.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
       .and('have.attr', 'fields', 'email')
       .and('have.attr', 'widget-email', 'solid-form-email-label')
       .and('have.attr', 'class', 'email-input')

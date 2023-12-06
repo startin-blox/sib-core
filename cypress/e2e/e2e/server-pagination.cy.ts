@@ -34,8 +34,8 @@ describe('server-pagination', { testIsolation: false }, function () {
         cy.get('#list-1 > nav').as('nav');
     
         // Click next -> To investigate how to answer paginated responses in the test context (static files)
-        cy.get('@list').contains('user-1.jsonld');
-        cy.get('@list').contains('user-2.jsonld');
+        cy.get('@list').contains('/examples/data/list/user-1.jsonld');
+        cy.get('@list').contains('/examples/data/list/user-2.jsonld');
         // cy.get('@list').contains('user-3.jsonld').should('not.exist');
         // cy.get('@list').contains('user-4.jsonld').should('not.exist');
     
@@ -44,8 +44,8 @@ describe('server-pagination', { testIsolation: false }, function () {
         // Click next -> To investigate how to answer paginated responses in the test context (static files)
         // cy.get('@list').contains('user-1.jsonld').should('not.exist');
         // cy.get('@list').contains('user-2.jsonld').should('not.exist');
-        cy.get('@list').contains('user-3.jsonld');
-        cy.get('@list').contains('user-4.jsonld');
+        cy.get('@list').contains('/examples/data/list/user-3.jsonld');
+        cy.get('@list').contains('/examples/data/list/user-4.jsonld');
     
         // Check pager buttons
         cy.get('@nav').find('button[data-id="prev"]')
@@ -84,16 +84,16 @@ describe('server-pagination', { testIsolation: false }, function () {
 
     // cy.get('@list').contains('user-1.jsonld').should('not.exist');
     // cy.get('@list').contains('user-2.jsonld').should('not.exist');
-    cy.get('@list').contains('user-3.jsonld');
-    cy.get('@list').contains('user-4.jsonld');
+    cy.get('@list').contains('/examples/data/list/user-3.jsonld');
+    cy.get('@list').contains('/examples/data/list/user-4.jsonld');
 
     // search
     cy.get('#username-form').find('input[name="username"]').type('admin');
 
-    cy.get('@list').contains('user-1.jsonld').should('exist');
-    cy.get('@list').contains('user-2.jsonld').should('not.exist');
-    cy.get('@list').contains('user-3.jsonld').should('not.exist');
-    cy.get('@list').contains('user-4.jsonld').should('not.exist');
+    cy.get('@list').contains('/examples/data/list/user-1.jsonld').should('exist');
+    cy.get('@list').contains('/examples/data/list/user-2.jsonld').should('not.exist');
+    cy.get('@list').contains('/examples/data/list/user-3.jsonld').should('not.exist');
+    cy.get('@list').contains('/examples/data/list/user-4.jsonld').should('not.exist');
 
     //TODO: Improvement: hide the navigation when searching
     // cy.get('#list-2 > nav').should('be.hidden');

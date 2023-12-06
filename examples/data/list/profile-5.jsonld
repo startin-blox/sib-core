@@ -1,9 +1,9 @@
 {
-  "@id": "profile-5.jsonld",
+  "@id": "/examples/data/list/profile-5.jsonld",
   "jabberID": "paul@example.com",
   "name": "profile 5",
   "user": {
-    "@id": ""
+    "@id": "/examples/data/list/user-5.jsonld"
   },
   "available": null,
   "bio": "",

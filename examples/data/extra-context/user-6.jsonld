@@ -1,12 +1,12 @@
 {
-  "@id": "user-6.jsonld",
+  "@id": "/examples/data/extra-context/user-6.jsonld",
   "first_name": "Test",
   "last_name": "User",
   "username": "admin",
   "email": "test-user@example.com",
   "name": "Test User",
   "profile": {
-    "@id": "profile-6.jsonld",
+    "@id": "/examples/data/extra-context/profile-6.jsonld",
     "@context": {
       "picture": "foaf:depiction"
     },

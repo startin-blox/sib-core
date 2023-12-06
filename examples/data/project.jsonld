@@ -1,5 +1,5 @@
 {
-  "@id": "project.jsonld",
+  "@id": "/examples/data/project.jsonld",
   "name": "Envoyer une fusée",
   "description": "c'est très clair enfin",
   "number": 1,

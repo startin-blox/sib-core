@@ -60,7 +60,7 @@ const AttributeBinderMixin = {
       const value = attributes[attr];
       // Avoid error if value is a number
       if (typeof value === 'string') {
-        // Replace attribute value
+        // Replace attribute value                                              
         if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
         let path = value.replace('store://resource.', '');
         attributes[attr] = resource ? await resource[path] : '';

@@ -38,21 +38,21 @@ export class BaseWidget extends HTMLElement {
     this.addEditButtons();
     this.initChangeEvents();
   }
-  get label(): string | null {
+  get label(): string | null {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label: string | null) {
     if(label != null) this.setAttribute('label', label);
     this.render();
   }
-  get placeholder(): string | null {
+  get placeholder(): string | null {
     return this.hasAttribute('placeholder') ? this.getAttribute('placeholder') : this.label;
   }
   set placeholder(placeholder: string | null) {
     if(placeholder != null) this.setAttribute('placeholder', placeholder);
     this.render();
   }
-  get name(): string | null {
+  get name(): string | null {
     return this.getAttribute('name');
   }
   set name(name: string | null) {
@@ -159,7 +159,7 @@ export class BaseWidget extends HTMLElement {
     for (let res of resource['ldp:contains']) {
       if (!res) { // child not in cache yet
         try {
-          const resourceId = resource.getChildren()[index]['@id'];
+          const resourceId = resource.getChildren('ldp:contains')[index]['@id'];
           res = await store.getData(resourceId, this.context)
         } catch (e) { continue; }
       }
