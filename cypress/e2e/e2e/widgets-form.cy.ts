@@ -550,9 +550,9 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form')
       .children().should('have.length', 3)
-    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
-      .should('have.attr', 'name', 'name')
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'name')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
       .should('have.attr', 'name', 'order')
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form > div > input')
       .should('have.attr', 'type', 'submit')
