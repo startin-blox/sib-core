@@ -205,6 +205,14 @@ class Store {
         if(!key) console.log('No key or id for resource:', resource);
         if (key === '/') key = parentId;
         if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
+
+        // We have to add the server search and pagination attributes again here to the resource cache key
+        if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
+          if (serverPagination) key = key + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
+          if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
+          // console.log('Cache key from store.cacheGraph', key, serverPagination, serverSearch);
+        }
+        // console.log('Cache key from store.cacheGraph', key, id, resource, resource['@type'], serverPagination, serverSearch);
         const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
         if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
 
@@ -214,17 +222,17 @@ class Store {
           this.cacheResource(key, resourceProxy);
         }
 
-        // Cache children of container
-        if (resource['@type'] == "ldp:Container" && resource.getChildren) {
-          const cacheChildrenPromises: Promise<void>[] = [];
+        // // Cache children of container
+        // if (resource['@type'] == "ldp:Container" && resource.getChildren) {
+        //   const cacheChildrenPromises: Promise<void>[] = [];
 
-          //TODO: return complete object without the need for the fetch data from the cacheGraph
-          for (let res of await resource.getChildren('ldp:contains')) {
-            cacheChildrenPromises.push(this.cacheGraph(res, clientContext, parentContext, parentId, serverPagination, serverSearch));
-          }
-          await Promise.all(cacheChildrenPromises);
-          return;
-        }
+        //   //TODO: return complete object without the need for the fetch data from the cacheGraph
+        //   for (let res of await resource.getChildren('ldp:contains')) {
+        //     cacheChildrenPromises.push(this.cacheGraph(res, clientContext, parentContext, parentId, serverPagination, serverSearch));
+        //   }
+        //   await Promise.all(cacheChildrenPromises);
+        //   return;
+        // }
 
         // Create proxy, (fetch data) and cache resource
         // if (resource['@id'] && !resource.properties) {
