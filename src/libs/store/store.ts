@@ -286,8 +286,8 @@ class Store {
         } // clear cache
         this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
           const nestedResources = await this.getNestedResources(resource, id);
-          const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-          const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
+          const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+          const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
 
           return this.refreshResources([...nestedResources, ...resourcesToRefresh]) // refresh related resources
             .then(resourceIds => this.notifyResources([expandedId, ...resourceIds, ...resourcesToNotify])); // notify components
