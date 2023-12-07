@@ -35,7 +35,7 @@ describe('solid-form', { testIsolation: false }, function() {
           "@id": "/examples/data/list/event-1.jsonld",
           contact: {
             email: 'admin@example.com',
-            "@id": "user-1.jsonld",
+            "@id": "/examples/data/list/user-1.jsonld",
           },
           name: 'Coliving in BZH',
         });
@@ -56,7 +56,7 @@ describe('solid-form', { testIsolation: false }, function() {
         expect(res).to.deep.equal({
           name: 'Coliving in BZH',
           contact: {
-            "@id": "user-4.jsonld",
+            "@id": "/examples/data/list/user-4.jsonld",
           },
           "@id": "/examples/data/list/event-1.jsonld",
         });
@@ -67,7 +67,7 @@ describe('solid-form', { testIsolation: false }, function() {
     cy.get('#form-edition-2 input[type=text][name=name]')
       .should('have.value', 'Coliving');
     cy.get('#form-edition-2 select')
-      .should('have.value', '{"@id": "user-1.jsonld"}');
+      .should('have.value', '{"@id": "/examples/data/list/user-1.jsonld"}');
 
     // Nested container
     cy.get('#form-edition-3').then($el => {
