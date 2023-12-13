@@ -11,7 +11,7 @@ const port = findFreePort(3000);
 const app = express();
 const distPath = '.';
 
-app.use(cors({credentials: true, origin: 'http://0.0.0.0:3000'}));
+app.use(cors());
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app

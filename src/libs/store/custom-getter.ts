@@ -164,10 +164,17 @@ export class CustomGetter {
      * Return true if the resource is a container
      */
     isContainer(): boolean {
-        if (Array.isArray(this.resource["@type"] || this.resource["type"])) { // @type is an array
-            return this.containerTypes.some(type => this.resource["@type"].includes(type) || this.resource["type"].includes(type));
+        if (this.resource["@type"]) { // @type is an array
+            if (Array.isArray(this.resource["@type"]))
+                return this.containerTypes.some(type => this.resource["@type"].includes(type));
+            return this.containerTypes.includes(this.resource["@type"]);    
+        } else if (this.resource["type"]) {
+            if (Array.isArray(this.resource["type"]))
+                return this.containerTypes.some(type => this.resource["type"].includes(type));
+            return this.containerTypes.includes(this.resource["type"]);
         }
-        return this.containerTypes.includes(this.resource["@type"] || this.resource["type"]);
+
+        return false;
     }
 
     /**
@@ -246,6 +253,7 @@ export class CustomGetter {
 
         if (!permissionsIds) return [];
 
+        if (!Array.isArray(permissionsIds)) permissionsIds = [permissionsIds]; // convert to array if compacted to 1 resource
         const permissions = await Promise.all(
           permissionsIds
             .map((p: string) => store.get(p['@id'] + this.parentId)) // get anonymous node from store

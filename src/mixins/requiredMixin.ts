@@ -1,3 +1,5 @@
+import { store } from '../libs/store/store';
+
 const RequiredMixin = {
   name: 'required-mixin',
   use: [],
@@ -13,9 +15,20 @@ const RequiredMixin = {
       for (let resource of resources) {
         let hasProps = true;
         for(let field of requiredFields) {
-          if (await resource[field] == null || await resource[field] == "") {
-            hasProps = false;
-            continue
+          // Retrieve resource from store
+          let res = store.get(resource['@id']);
+          if (!res && !resource[field] && !await resource[field]) {
+            //TODO: refactor to better handle this edge case where res is either the direct resource or a proxy
+            res = await store.getData(resource['@id'], this.context);
+            if (!res || res[field] == null || res[field] == "") {
+              hasProps = false;
+              continue
+            }
+          } else if (res) {
+            if (await res[field] == null || await res[field] == "") {
+              hasProps = false;
+              continue
+            }
           }
         }
         if (hasProps) displays.push(resource);
