@@ -41,6 +41,7 @@ const FederationMixin = {
       }
     }
 
+    // Special case for list support, if there is only one item it is serialized as an object, not an array
     if (!Array.isArray(resources)) resources = [resources];
     await Promise.all(resources.map(res => getChildResources(res)));
     return newResources;
