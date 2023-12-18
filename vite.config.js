@@ -1,15 +1,21 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   root: './', // The root directory of your project
   base: './', // The base URL for your application
   build: {
     rollupOptions: {
-        input: "./src/index.ts",
-        output: {
-          dir: "dist",
-          entryFileNames: "index.js",
-        },
+      preserveEntrySignatures: 'strict',
+      input: [
+        './src/index.ts',
+        './src/libs/helpers.ts',
+        './src/new-widgets/new-widget-factory.ts',
+        './src/libs/Sib.ts',
+      ],
+      output: {
+        dir: 'dist',
+        entryFileNames: '[name].js',
+      },
     },
     outDir: 'dist', // The output directory for your build
     sourcemap: true, // Generate source maps
@@ -23,4 +29,4 @@ export default defineConfig({
     // You can use the "babel" field in your package.json to configure Babel
     // Any TypeScript compilation can be handled through the TypeScript plugin
   ],
-});
+})
