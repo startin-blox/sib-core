@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "vite build",
-    "watch": "vite",
+    "watch": "vite build --watch",
     "serve": "node --watch server.js",
     "check-types": "tsc",
     "test": "node server.js --test",
