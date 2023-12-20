@@ -17,7 +17,6 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": false,
     "alwaysStrict": true,
-    "importsNotUsedAsValues": "error",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -31,5 +30,5 @@
     "types": ["cypress"]
   },
   "include": ["./src/**/*", "./cypress/**/*"],
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules/", "./cypress.config.ts"]
 }
