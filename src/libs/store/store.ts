@@ -36,7 +36,7 @@ class Store {
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<String>;
   headers: object;
-  fetch: Promise<any> | undefined;
+  fetch: Promise<any> | undefined;
   session: Promise<any> | undefined;
 
   constructor(private storeOptions: StoreOptions) {

@@ -68,7 +68,7 @@ export const SolidWidget = {
   get template() {
     return this.element.querySelector('template:not([data-range])').innerHTML;
   },
-  get childTemplate(): string | null {
+  get childTemplate(): string | null {
     const child = this.element.querySelector('template[data-range]');
     return child ? child.innerHTML : null;
   }

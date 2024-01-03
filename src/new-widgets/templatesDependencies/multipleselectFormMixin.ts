@@ -37,13 +37,22 @@ const MultipleselectFormMixin = {
     this.listValueTransformations.push(this.setDataSrc.bind(this));
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {
-    if (value && value !== this.dataSrc) this.dataSrc = value;
+    if (value && value !== this.dataSrc) {
+      try {
+        if (Array.isArray(JSON.parse(value))) {
+          this.setValue(JSON.parse(value));
+        }
+      } catch (ex) {
+        this.dataSrc = value;
+        console.log('Not an array', ex);
+      }
+    }
 
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    if (!this.resource || !this.resource['ldp:contains']) return;
+    if (!this.resource || (!this.resource['ldp:contains'] && !Array.isArray(this.resource))) return;
     this.setValue(this.resource['ldp:contains']);
     this.planRender();
   },

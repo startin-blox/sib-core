@@ -26,7 +26,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         id=${ifDefined(attributes.id)}
-        value=${value || ''}
+        value=${value || ''}
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
         ?required=${attributes.required}
@@ -263,7 +263,7 @@ export const formTemplates = {
   },
   multiple: {
     template: (_value: string, attributes: any) => html`
-      ${(attributes.children || []).map((child, index) => html`
+      ${(attributes.children || []).map((child, index) => html`
         <div data-index=${attributes.name + index}>
           ${child}
           <button type="button" class=${ifDefined(attributes.removeClass)} @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>

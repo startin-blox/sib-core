@@ -53,7 +53,7 @@ const WidgetMixin = {
         resource = res;
         break;
       }
-    } else if (resource && this.arrayField) { // if array, keep the 1rst resource
+    } else if (resource && this.arrayField && this.predicateName) { // if array, keep the 1rst resource
       for (let res of resource[this.predicateName]) {
         resource = res;
         break;
@@ -121,6 +121,10 @@ const WidgetMixin = {
    * @param resource - Resource
    */
   async fetchValue(field: string, resource: Resource) {
+    if (resource && !resource.isContainer?.()) {
+      let fieldValue = await resource[field];
+      if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) return JSON.stringify(fieldValue);
+    }
     return resource && !resource.isContainer?.() ? await resource[field] : undefined;
   },
   /**

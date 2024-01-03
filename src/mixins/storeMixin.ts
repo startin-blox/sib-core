@@ -41,7 +41,10 @@ const StoreMixin = {
     },
     arrayField: {
       type: String,
-      default: null
+      default: null,
+      callback: function (value: boolean) {
+        if (value) this.predicateName = store.getExpandedPredicate(this.arrayField, this.context);
+      }
     },
     predicateName: {
       type: String,
@@ -104,9 +107,6 @@ const StoreMixin = {
       if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
     }
 
-    if (this.arrayField) {
-      this.predicateName = store.getExpandedPredicate(this.arrayField, this.context);
-    }
     this.updateNavigateSubscription();
 
     this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));

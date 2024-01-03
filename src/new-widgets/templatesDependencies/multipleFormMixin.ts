@@ -100,7 +100,12 @@ const MultipleFormMixin = {
   },
   getValue() {
     if (!this.dataHolder) return [];
-    return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
+    // Was returning an array of functions, now returns an array of values.
+    // Not sure about the tests results in that context
+    return Array.from(this.dataHolder).map((element: any) => {
+      let elValue = this.getValueFromElement(element);
+      return elValue;
+    });
   },
   get type() {
     return 'resource';
