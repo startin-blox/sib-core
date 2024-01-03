@@ -11,31 +11,24 @@
 
   <body>
     <h2>Simple display</h2>
-    <!-- <solid-display
-      data-src="/examples/data/list/colibris.jsonld"
-    ></solid-display> -->
+    <solid-display
+      data-src="/examples/data/list/users.jsonld"
+    ></solid-display>
 
-    <h2>Simple display of events</h2>
+    <h2>Simple display of nested fields</h2>
     <solid-display
       data-src="/examples/data/list/group-3.jsonld"
       nested-field="events"
       fields="name"
     ></solid-display>
 
-    <h2>Simple display of groups</h2>
+    <h2>Simple display of array of resources</h2>
     <solid-display
       data-src="/examples/data/list/group-3.jsonld"
-    ></solid-display>
-
-    <h2>Simple display of groups</h2>
-    <solid-display
-      data-src="/examples/data/list/group-3.jsonld"
-      nested-array="members"
+      array-field="members"
       fields="name"
     ></solid-display>
 
-    <!-- multiple-foaf:member
-    multiple-foaf:member-fields="name" -->
     <h2>With fields and sets</h2>
     <solid-display
       data-src="/examples/data/list/users.jsonld"
