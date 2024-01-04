@@ -123,8 +123,16 @@ const WidgetMixin = {
   async fetchValue(field: string, resource: Resource) {
     if (resource && !resource.isContainer?.()) {
       let fieldValue = await resource[field];
-      if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) return JSON.stringify(fieldValue);
-      else return JSON.stringify([fieldValue]);
+      if (fieldValue === null || fieldValue === undefined || fieldValue === '') return undefined;
+
+      if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) {
+        return JSON.stringify(fieldValue);
+      // Dumb edge case because if it bears only one item, when compacted the array translates into one object
+      } else if (
+        typeof fieldValue === 'object' &&
+        fieldValue['@id'] && 1 === Object.keys(fieldValue).length) {
+        return JSON.stringify([fieldValue]);
+      }
     }
     return resource && !resource.isContainer?.() ? await resource[field] : undefined;
   },

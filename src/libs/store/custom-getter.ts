@@ -27,7 +27,6 @@ export class CustomGetter {
         this.serverContext = serverContext;
         this.parentId = parentId;
         this.resource = resource;
-        // this.resource = this.expandProperties({ ...resource }, serverContext);
         this.resourceId = resourceId;
         this.serverPagination = serverPagination;
         this.serverSearch = serverSearch;
@@ -40,36 +39,6 @@ export class CustomGetter {
             "sib:federatedContainer"
         ];
     }
-
-    // /**
-    //  * Expand all predicates of a resource with a given context
-    //  * @param resource: object
-    //  * @param context: object
-    //  */
-    // expandProperties(resource: object, context: object | string) {
-    //     for (let prop of Object.keys(resource)) {
-    //         if (!prop) continue;
-    //         this.objectReplaceProperty(resource, prop, ContextParser.expandTerm(prop, context as JSONLDContextParser.IJsonLdContextNormalized, true));
-    //     }
-    //     return resource
-    // }
-
-    // /**
-    //  * Change the key of an object
-    //  * @param object: object
-    //  * @param oldProp: string - current key
-    //  * @param newProp: string - new key to set
-    //  */
-    // objectReplaceProperty(object: object, oldProp: string, newProp: string) {
-    //     if (newProp !== oldProp) {
-    //         Object.defineProperty(
-    //             object,
-    //             newProp,
-    //             Object.getOwnPropertyDescriptor(object, oldProp) || ''
-    //         );
-    //         delete object[oldProp];
-    //     }
-    // }
 
     /**
      * Get the property of a resource for a given path

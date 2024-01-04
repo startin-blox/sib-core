@@ -202,7 +202,7 @@ class Store {
         let id = resource['@id'] || resource['id'];
         let key = resource['@id'] || resource['id'];
 
-        if(!key) console.log('No key or id for resource:', resource);
+        if (!key) console.log('No key or id for resource:', resource);
         if (key === '/') key = parentId;
         if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
 
@@ -249,7 +249,7 @@ class Store {
       });
 
     const resourceProxy = store.get(id);
-    const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
+    const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
     this.clearCache(id);
     await this.getData(id, clientContext, '', resource);
     return {ok: true}
