@@ -124,6 +124,7 @@ const WidgetMixin = {
     if (resource && !resource.isContainer?.()) {
       let fieldValue = await resource[field];
       if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) return JSON.stringify(fieldValue);
+      else return JSON.stringify([fieldValue]);
     }
     return resource && !resource.isContainer?.() ? await resource[field] : undefined;
   },
