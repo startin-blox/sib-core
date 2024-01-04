@@ -64,7 +64,17 @@ const MultipleFormMixin = {
     };
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {
-    if (value && value !== this.dataSrc) this.dataSrc = value;
+    if (value && value !== this.dataSrc) {
+      try {
+        if (Array.isArray(JSON.parse(value))) {
+          this.setValue(JSON.parse(value));
+        }
+      } catch (ex) {
+        this.dataSrc = value;
+        console.log('Not an array', ex);
+      }
+    }
+
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(value, listValueTransformations);
   },
@@ -100,7 +110,12 @@ const MultipleFormMixin = {
   },
   getValue() {
     if (!this.dataHolder) return [];
-    return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
+    // Was returning an array of functions, now returns an array of values.
+    // Not sure about the tests results in that context
+    return Array.from(this.dataHolder).map((element: any) => {
+      let elValue = this.getValueFromElement(element);
+      return elValue;
+    });
   },
   get type() {
     return 'resource';

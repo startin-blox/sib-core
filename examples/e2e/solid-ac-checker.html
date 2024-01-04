@@ -10,25 +10,25 @@
 
   <body>
     <em>
-      Current user has no permission to view project
+      Use case: Current user has no permission to view project
     </em>
 
     <div>
       <h3>Permission attribute</h3>
-      <solid-ac-checker id="ac-checker-1" permission="acl:Read" data-src="../data/project.jsonld">
+      <solid-ac-checker id="ac-checker-1" permission="acl:Read" data-src="/examples/data/project.jsonld">
         <solid-display
           id="test1"
-          data-src="../data/project.jsonld"
+          data-src="/examples/data/project.jsonld"
           fields="name, description"
         ></solid-display>
       </solid-ac-checker>
     </div>
     <div>
       <h3>No-permission attribute</h3>
-      <solid-ac-checker id="ac-checker-2" no-permission="acl:Read" data-src="../data/project.jsonld">
+      <solid-ac-checker id="ac-checker-2" no-permission="acl:Read" data-src="/examples/data/project.jsonld">
         <solid-display
           id="test2"
-          data-src="../data/project.jsonld"
+          data-src="/examples/data/project.jsonld"
           fields="name, description"
         ></solid-display>
       </solid-ac-checker>

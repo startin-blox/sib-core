@@ -1,5 +1,5 @@
 {
-  "@id": "user-4-skills.jsonld",
+  "@id": "/examples/data/list/user-4-skills.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {

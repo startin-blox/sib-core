@@ -7,7 +7,7 @@
       "lat": "21.028511",
       "lng": "105.804817",
       "permissions": [],
-      "@id": "event-1.jsonld"
+      "@id": "/examples/data/map/event-1.jsonld"
     },
     {
       "name": "Test 2, France, Europe",
@@ -15,7 +15,7 @@
       "lat": "48.864716",
       "lng": "2.349014",
       "permissions": [],
-      "@id": "event-2.jsonld"
+      "@id": "/examples/data/map/event-2.jsonld"
     },
     {
       "name": "Test 3, Italy, Europe",
@@ -23,7 +23,7 @@
       "lat": "41.8902102",
       "lng": "12.4922309",
       "permissions": [],
-      "@id": "event-3.jsonld"
+      "@id": "/examples/data/map/event-3.jsonld"
     },
     {
       "name": "Test 4, France, Europe",
@@ -31,7 +31,7 @@
       "lat": "48.63976",
       "lng": "-2.42516",
       "permissions": [],
-      "@id": "event-4.jsonld"
+      "@id": "/examples/data/map/event-4.jsonld"
     },
     {
       "name": "Test 5, France, Europe",
@@ -39,7 +39,7 @@
       "lat": "48.64636",
       "lng": "-2.41981",
       "permissions": [],
-      "@id": "event-5.jsonld"
+      "@id": "/examples/data/map/event-5.jsonld"
     },
     {
       "name": "Test 6, France, Europe",
@@ -47,9 +47,9 @@
       "lat": "48.63683",
       "lng": "-2.47765",
       "permissions": [],
-      "@id": "event-6.jsonld"
+      "@id": "/examples/data/map/event-6.jsonld"
     }
   ],
-  "@id": "events.jsonld",
+  "@id": "/examples/data/map/events.jsonld",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

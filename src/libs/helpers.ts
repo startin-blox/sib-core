@@ -181,6 +181,7 @@ function transformArrayToContainer(resource: object) {
   for (let predicate of Object.keys(newValue)) { // iterate over all properties
     const predicateValue = newValue[predicate];
     if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
+    if (['permissions', '@context'].includes(predicate)) continue; // do not transform permissions and context
 
     // check all keys of nested resource
     if (!Array.isArray(predicateValue) && predicateValue['@id']) {

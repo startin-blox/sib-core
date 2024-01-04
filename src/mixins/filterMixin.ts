@@ -114,14 +114,15 @@ const FilterMixin = {
         continue;
       }
 
-      const nextArrayOfIds = nextArrayOfObjects['ldp:contains'];
-      for (const obj of nextArrayOfIds) {
-        // catch each element id
-        arrayOfDataIds.push(obj['@id']);
-      }
       if (nextArrayOfObjects['@type'] !== 'ldp:Container') {
         // if no element in 'ldp:contains', catch object id
         arrayOfDataIds.push(nextArrayOfObjects['@id']);
+      } else {
+        if (!nextArrayOfObjects['ldp:contains']) continue;
+        for (const obj of nextArrayOfObjects['ldp:contains']) {
+          // catch each element id
+          arrayOfDataIds.push(obj['@id']);
+        }
       }
     }
     return arrayOfDataIds;

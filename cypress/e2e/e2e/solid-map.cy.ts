@@ -12,7 +12,7 @@ describe('solid-map', function() {
     cy.get('#map-2 .leaflet-popup-pane').children().should('have.length', 1)
     cy.get('#map-2 .leaflet-popup-content solid-display')
       .should('have.length', 1)
-      .and('have.attr', 'data-src', 'event-1.jsonld')
+      .and('have.attr', 'data-src', '/examples/data/map/event-1.jsonld')
     cy.get('#map-2 .leaflet-popup-content solid-display > div > solid-set-default')
       .should('have.length', 1)
       .and('have.attr', 'name', 'infos')

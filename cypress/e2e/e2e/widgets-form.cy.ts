@@ -247,7 +247,7 @@ describe('form widgets', { testIsolation: false }, function () {
   it('solid-form-dropdown', () => {
     // With no initial value
     cy.get('solid-form-dropdown#test1')
-      .should('have.attr', 'data-src', '../data/list/skills.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/skills.jsonld')
       .children().should('have.length', 1);
 
     cy.get('solid-form-dropdown#test1') // check attributes
@@ -363,16 +363,16 @@ describe('form widgets', { testIsolation: false }, function () {
       .should('contain', 'CSS');
     cy.get('solid-form-dropdown#test11 > select')
       .children().eq(2)
-      .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
+      .should('have.attr', 'value', '{"@id": "/examples/data/list/profile-2.jsonld"}');
     cy.get('solid-form-dropdown#test12 > select')
       .children().eq(2)
-      .should('have.attr', 'value', '{"@id": "profile-2.jsonld"}');
+      .should('have.attr', 'value', '{"@id": "/examples/data/list/profile-2.jsonld"}');
   })
 
   it('solid-form-radio', () => {
     // With no initial value
     cy.get('solid-form-radio#test1')
-      .should('have.attr', 'data-src', '../data/list/skills.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/skills.jsonld')
       .children().should('have.length', 1);
 
     cy.get('solid-form-radio#test1') // check attributes
@@ -546,13 +546,13 @@ describe('form widgets', { testIsolation: false }, function () {
     cy.get('solid-form-dropdown-addable#test1')
       .children().should('have.length', 2);
     cy.get('solid-form-dropdown-addable#test1 > solid-form')
-      .should('have.attr', 'data-src', '../data/list/skills.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/skills.jsonld');
 
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form')
       .children().should('have.length', 3)
-    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
-      .should('have.attr', 'name', 'name')
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(1)
+      .should('have.attr', 'name', 'name')
+    cy.get('solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text').eq(0)
       .should('have.attr', 'name', 'order')
     cy.get('solid-form-dropdown-addable#test1 > solid-form > form > div > input')
       .should('have.attr', 'type', 'submit')
@@ -561,7 +561,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
     cy.get('solid-form-dropdown-addable#test2 > solid-form')
-      .should('have.attr', 'data-src', '../data/list/users.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/users.jsonld')
       .and('have.attr', 'fields', 'name, username, age')
       .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
       .and('have.attr', 'placeholder-name', 'Enter your name')

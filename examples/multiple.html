@@ -11,7 +11,7 @@
   <body>
     <h1>solid-display</h1>
     <solid-display
-      data-src="data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username, skills"
       multiple-skills
       multiple-skills-fields="name"
@@ -25,7 +25,7 @@
       </template>
     </solid-widget>
     <solid-display
-      data-src="data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username, skills"
       multiple-skills="custom-multiple"
     ></solid-display>
@@ -34,14 +34,14 @@
     <h1>solid-form</h1>
     <h2>multiple form</h2>
     <solid-form
-      data-src="data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="skills"
       multiple-skills
     ></solid-form>
 
     <h2>multiple form with dropdowns</h2>
     <solid-form
-      data-src="data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="skills"
       multiple-skills
       range-skills="data/list/skills.jsonld"
@@ -49,7 +49,7 @@
 
     <h2>multiple form with multiple select</h2>
     <solid-form
-      data-src="data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="skills"
       multiple-skills="solid-form-multipleselect-autocompletion"
       range-skills="data/list/skills.jsonld"
@@ -57,7 +57,7 @@
 
     <h1>creation form</h1>
     <solid-form
-      data-src="data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="username, skills"
       range-skills="data/list/skills.jsonld"
       multiple-skills

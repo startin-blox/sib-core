@@ -1,7 +1,7 @@
 {
-	"@id": "batch-1.jsonld",
+	"@id": "/examples/data/nested-forms/batch-1.jsonld",
 	"invoice": {
-		"@id": "customer-invoice-1.jsonld"
+		"@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
 	},
 	"title": "Développement",
 	"creationDate": "2020-10-02",

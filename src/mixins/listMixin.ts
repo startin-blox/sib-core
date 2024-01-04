@@ -44,32 +44,50 @@ const ListMixin = {
     if (!this.resource) return;
 
     // Not a container but a single resource
-    if (!this.resource.isContainer?.()) {
+    if (!this.resource.isContainer?.() && !this.arrayField && !this.predicateName) {
       this.setElementAttribute("resource");
       this.appendSingleElt(div);
       return;
     }
 
-    this.setElementAttribute("container");
-    const listPostProcessors = [...this.listPostProcessors];
-    this.renderCallbacks = [];
-    listPostProcessors.push(this.renderDOM.bind(this));
-    listPostProcessors.push(this.handleEmptyWidget.bind(this));
+    if (this.resource.isContainer?.()) {
+      this.setElementAttribute("container");
+      const listPostProcessors = [...this.listPostProcessors];
+      this.renderCallbacks = [];
+      listPostProcessors.push(this.renderDOM.bind(this));
+      listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
-    // Execute the first post-processor of the list
-    const nextProcessor = listPostProcessors.shift();
-    await nextProcessor(
-      this.resource['ldp:contains'],
-      listPostProcessors,
-      div,
-      this.dataSrc,
-    );
+      // Execute the first post-processor of the list
+      const nextProcessor = listPostProcessors.shift();
+      await nextProcessor(
+        this.resource['ldp:contains'],
+        listPostProcessors,
+        div,
+        this.dataSrc,
+      );
+    } else if (this.arrayField && this.predicateName && this.resource[this.predicateName]) {
+      this.setElementAttribute("container");
+      const listPostProcessors = [...this.listPostProcessors];
+      this.renderCallbacks = [];
+      listPostProcessors.push(this.renderDOM.bind(this));
+      listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
+      // Execute the first post-processor of the list
+      const nextProcessor = listPostProcessors.shift();
+      await nextProcessor(
+        await this.resource[this.predicateName],
+        listPostProcessors,
+        div,
+        this.dataSrc,
+      );
+
+    }
     // Execute the render callbacks
     for (const renderCallback of this.renderCallbacks) {
       // Render the template in the given parent element
       render(renderCallback.template, renderCallback.parent);
     }
+
   },
 
   /**

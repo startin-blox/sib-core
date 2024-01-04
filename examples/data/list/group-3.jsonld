@@ -1,0 +1,59 @@
+{
+  "name": "LDP_circle_members_1",
+  "members": [
+      {
+        "@id": "/examples/data/list/user-2.jsonld",
+        "@type": "foaf:user",
+        "name": "Benoit Alessandroni",
+        "email": "benoit@toto.com",
+        "last_name": "Alessandroni",
+        "@context": {
+          "get_full_name": "rdfs:label"
+        }
+      },
+      {
+        "@id": "/examples/data/list/user-1.jsonld",
+        "@type": "foaf:user",
+        "name": "Blaise Pascal",
+        "email": "blaise@toto.com",
+        "last_name": "Pascal",
+        "@context": {
+          "get_full_name": "rdfs:label"
+        }
+      }
+  ],
+  "events": {
+    "@type": "ldp:Container",
+    "@id": "/examples/data/list/events.jsonld",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/event-1.jsonld",
+        "name": "Coliving",
+        "date": "2020-07-09",
+        "seats": 12,
+        "place":"",
+        "city":"",
+        "permissions": []
+      },
+      {
+        "@id": "/examples/data/list/event-2.jsonld",
+        "name": "Workshop",
+        "date": "2020-05-10",
+        "seats": 2,
+        "place":"Opéra",
+        "city":"",
+        "permissions": []
+      }
+    ]
+  },
+  "community": null,
+  "admin_community": true,
+  "project": null,
+  "admin_project": null,
+  "admin_circle": null,
+  "@id": "/examples/data/list/group-3.jsonld",
+  "@type": "foaf:Group",
+  "@context": [
+    "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  ]
+}

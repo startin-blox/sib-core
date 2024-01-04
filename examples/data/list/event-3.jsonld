@@ -1,10 +1,10 @@
 {
-	"@id": "event-3.jsonld",
+	"@id": "/examples/data/list/event-3.jsonld",
 	"name": "Réunion d'information",
 	"date": "2020-07-10",
 	"seats": 230,
 	"contact": {
-		"@id": "user-3.jsonld"
+		"@id": "/examples/data/list/user-3.jsonld"
 	},
 	"permissions": [],
 	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"

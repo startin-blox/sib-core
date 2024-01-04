@@ -1,5 +1,5 @@
 {
-  "@id": "user-4.jsonld",
+  "@id": "/examples/data/list/user-4.jsonld",
   "first_name": "Pierre",
   "last_name": "DLC",
   "username": "pierre",
@@ -7,7 +7,7 @@
   "name": "Pierre DLC",
   "available": false,
   "skills": {
-    "@id": "user-4-skills.jsonld",
+    "@id": "/examples/data/list/user-4-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
       {
@@ -29,7 +29,7 @@
     ]
   },
   "profile": {
-    "@id": "profile-4.jsonld"
+    "@id": "/examples/data/list/profile-4.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [

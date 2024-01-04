@@ -1,9 +1,9 @@
 {
-  "@id": "",
+  "@id": "/examples/data/list/users-group2.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "user-2.jsonld",
+      "@id": "/examples/data/list/user-2.jsonld",
       "first_name": "Paris",
       "last_name": "Hilton",
       "name": "Paris Hilton",
@@ -12,7 +12,7 @@
       "available": true,
       "years_experience": 5,
       "skills": {
-        "@id": "user-2-skills.jsonld",
+        "@id": "/examples/data/list/user-2-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -28,7 +28,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-2.jsonld"
+        "@id": "/examples/data/list/profile-2.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "@id": "user-4.jsonld",
+      "@id": "/examples/data/list/user-4.jsonld",
       "first_name": "Pierre",
       "last_name": "DLC",
       "name": "Pierre DLC",
@@ -49,7 +49,7 @@
       "available": false,
       "years_experience": 5,
       "skills": {
-        "@id": "user-4-skills.jsonld",
+        "@id": "/examples/data/list/user-4-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -71,7 +71,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-4.jsonld"
+        "@id": "/examples/data/list/profile-4.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [
@@ -83,7 +83,7 @@
       ]
     },
     {
-      "@id": "user-5.jsonld",
+      "@id": "/examples/data/list/user-5.jsonld",
       "first_name": "Camille",
       "last_name": "CharlyTango",
       "username": "Camcam",
@@ -91,7 +91,7 @@
       "name": "Camille Charly T",
       "available": false,
       "skills": {
-        "@id": "user-5-skills.jsonld",
+        "@id": "/examples/data/list/user-5-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -113,7 +113,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-5.jsonld"
+        "@id": "/examples/data/list/profile-5.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [

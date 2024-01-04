@@ -23,9 +23,9 @@ describe('next', { testIsolation: false }, function() {
 
     // Check next in solid-display
     cy.get('@list').contains('CSS').click();
-    cy.get('#user-detail > div').should('be.visible').should('contain', 'user-1.jsonld')
+    cy.get('#user-detail > div').should('be.visible').should('contain', '/examples/data/list/user-1.jsonld')
     cy.location().should((loc) => {
-      expect(loc.hash).to.eq('#user/@user-1.jsonld@')
+      expect(loc.hash).to.eq('#user/@/examples/data/list/user-1.jsonld@')
     })
   });
 

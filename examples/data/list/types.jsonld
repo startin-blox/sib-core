@@ -1,0 +1,62 @@
+{
+  "@context": "https://colibris.social/context.json",
+  "id": "https://colibris.social/types",
+  "type": [
+    "ldp:Container",
+    "ldp:BasicContainer"
+  ],
+  "ldp:contains": [
+    {
+      "id": "https://colibris.social/types/camping",
+      "type": "oasis:HostingServiceType",
+      "pair:label": "Camping",
+      "pair:typeOf": "https://colibris.social/lafabrique/hosting-services/60b4d5000d4584bc44d59bf8"
+    },
+    {
+      "id": "https://colibris.social/types/hebergements-insolites",
+      "type": "oasis:HostingServiceType",
+      "pair:label": "Hébergements insolites",
+      "pair:typeOf": [
+        "https://colibris.social/lafabrique/hosting-services/60b893d90d4584bc44d59bfb",
+        "https://colibris.social/lafabrique/hosting-services/60b4d3ab0d4584bc44d59bf6",
+        "https://colibris.social/lafabrique/hosting-services/collectif-aerium"
+      ]
+    },
+    {
+      "id": "https://colibris.social/types/locations-de-salles-pour-stages",
+      "type": "oasis:HostingServiceType",
+      "pair:label": "Locations de salles pour stages",
+      "pair:typeOf": [
+        "https://colibris.social/lafabrique/hosting-services/60c9bdc9704daca191b429e9",
+        "https://colibris.social/lafabrique/hosting-services/60b4d3ab0d4584bc44d59bf6",
+        "https://colibris.social/lafabrique/hosting-services/chateau-d-arvieu",
+        "https://colibris.social/lafabrique/hosting-services/collectif-aerium",
+        "https://colibris.social/lafabrique/hosting-services/grain-sens"
+      ]
+    },
+    {
+      "id": "https://colibris.social/types/chambres-d-hotes",
+      "type": "oasis:HostingServiceType",
+      "pair:label": "Chambres d'hôtes",
+      "pair:typeOf": [
+        "https://colibris.social/lafabrique/hosting-services/60b4d3ab0d4584bc44d59bf6",
+        "https://colibris.social/lafabrique/hosting-services/chateau-d-arvieu",
+        "https://colibris.social/lafabrique/hosting-services/61961c437f658618d4137d7a",
+        "https://colibris.social/lafabrique/hosting-services/grain-sens",
+        "https://colibris.social/lafabrique/hosting-services/60c9bd16704daca191b429e7"
+      ]
+    },
+    {
+      "id": "https://colibris.social/types/gites",
+      "type": "oasis:HostingServiceType",
+      "pair:label": "Gîtes",
+      "pair:typeOf": [
+        "https://colibris.social/lafabrique/hosting-services/chateau-d-arvieu",
+        "https://colibris.social/lafabrique/hosting-services/60b4d3140d4584bc44d59bf5",
+        "https://colibris.social/lafabrique/hosting-services/collectif-aerium",
+        "https://colibris.social/lafabrique/hosting-services/grain-sens",
+        "https://colibris.social/lafabrique/hosting-services/60c9bd16704daca191b429e7"
+      ]
+    }
+  ]
+}

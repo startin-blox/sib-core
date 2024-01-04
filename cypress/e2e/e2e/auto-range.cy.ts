@@ -27,13 +27,13 @@ describe('auto-range attribute', function() {
     cy.get('#auto-range1 > div')
       .children().should('have.length', 3)
     cy.get('#auto-range1 > div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'user-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld')
       .find('solid-display[solid-container]').children().children().should('have.length', 1).and('contain', 'HTML')
     cy.get('#auto-range1 > div > solid-display').eq(1)
-      .should('have.attr', 'data-src', 'user-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld')
       .find('solid-display[solid-container]').children().children().should('have.length', 3).and('contain', 'HTML').and('contain', 'CSS').and('contain', 'DevOps')
     cy.get('#auto-range1 > div > solid-display').eq(2)
-      .should('have.attr', 'data-src', 'user-5.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-5.jsonld')
       .find('solid-display[solid-container]').children().children().should('have.length', 3).and('contain', 'HTML').and('contain', 'DevOps').and('contain', 'Node')
 
     // User visible after selection
@@ -41,7 +41,7 @@ describe('auto-range attribute', function() {
       .find('select').select('Node')
     cy.get('#auto-range1 > div').children().should('have.length', 1)
     cy.get('#auto-range1 > div > solid-display')
-      .should('have.attr', 'data-src', 'user-5.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-5.jsonld')
   });
 
   it('solid-form-search with 2 auto-range-[field] + 2 solid-display', () => {
@@ -58,15 +58,15 @@ describe('auto-range attribute', function() {
       .children().should('have.length', 6);
     // Each profile value visible once in the dropdown
     cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(1)
-      .should('contain', 'profile 2');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(2)
-      .should('contain', 'profile 4');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(3)
-      .should('contain', 'profile 5');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(4)
       .should('contain', 'profile 1');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(5)
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(2)
+      .should('contain', 'profile 2');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(3)
       .should('contain', 'profile 3');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(4)
+      .should('contain', 'profile 4');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="profile"] > select > option').eq(5)
+      .should('contain', 'profile 5');
 
     // Each skill value visible once in the dropdown
     cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(1)
@@ -85,20 +85,20 @@ describe('auto-range attribute', function() {
       .find('select[name="skills"]').select('HTML')
     cy.get('#auto-range-double > div').children().should('have.length', 1)
     cy.get('#auto-range-double > div > solid-display')
-      .should('have.attr', 'data-src', 'user-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld')
     cy.get('#auto-range-double2 > div').children().should('have.length', 3)
     cy.get('#auto-range-double2 > div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'user-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld')
     cy.get('#auto-range-double2 > div > solid-display').eq(1)
-      .should('have.attr', 'data-src', 'user-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld')
     cy.get('#auto-range-double2 > div > solid-display').eq(2)
-      .should('have.attr', 'data-src', 'user-5.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-5.jsonld')
     
     cy.get('#double-auto-range')
       .find('select[name="profile"]').select('profile 4')
     cy.get('#auto-range-double > div').should('be.empty')
     cy.get('#auto-range-double2 > div').children().should('have.length', 1)
     cy.get('#auto-range-double2 > div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'user-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld')
   });
 })

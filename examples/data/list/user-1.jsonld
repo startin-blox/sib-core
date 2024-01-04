@@ -1,5 +1,5 @@
 {
-  "@id": "user-1.jsonld",
+  "@id": "/examples/data/list/user-1.jsonld",
   "first_name": "Test",
   "last_name": "User",
   "username": "admin",
@@ -7,7 +7,7 @@
   "name": "Test User",
   "available": true,
   "skills": {
-    "@id": "user-1-skills.jsonld",
+    "@id": "/examples/data/list/user-1-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
       {
@@ -26,7 +26,7 @@
     ]
   },
   "profile": {
-    "@id": "profile-1.jsonld"
+    "@id": "/examples/data/list/profile-1.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [

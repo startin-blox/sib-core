@@ -83,7 +83,7 @@ describe.skip('store', { testIsolation: false }, function () {
 
     cy.window()
       .its('sibStore')
-      .invoke('getData', '../data/list/users.jsonld', base_context);
+      .invoke('getData', '/examples/data/list/users.jsonld', base_context);
 
     cy.get('@users').its("response.statusCode").should('equal', 200);
 
@@ -96,16 +96,16 @@ describe.skip('store', { testIsolation: false }, function () {
 
     cy.window()
       .its('sibStore')
-      .invoke('get', '../data/list/users.jsonld')
+      .invoke('get', '/examples/data/list/users.jsonld')
       .should('exist');
 
     // properties are expanded
     cy.window()
       .its('sibStore')
-      .invoke('getData', '../data/extra-context/user-6.jsonld', base_context);
+      .invoke('getData', '/examples/data/extra-context/user-6.jsonld', base_context);
     cy.window()
       .its('sibStore')
-      .invoke('get', '../data/extra-context/user-6.jsonld')
+      .invoke('get', '/examples/data/extra-context/user-6.jsonld')
       .invoke('getResourceData')
       .should('have.property', 'http://happy-dev.fr/owl/#email', "test-user@example.com"); // @vocab
     cy.window()
@@ -290,12 +290,12 @@ describe.skip('store', { testIsolation: false }, function () {
   it('gets absolute iri', () => {
     cy.window()
       .its('sibStore')
-      .invoke('_getAbsoluteIri', '../data/list/users.jsonld', base_context, '')
+      .invoke('_getAbsoluteIri', '/examples/data/list/users.jsonld', base_context, '')
       .should('equal', `${baseUrl}/examples/data/list/users.jsonld`);
 
     cy.window()
       .its('sibStore')
-      .invoke('_getAbsoluteIri', 'user-1.jsonld', base_context, '../data/list/users.jsonld')
+      .invoke('_getAbsoluteIri', 'user-1.jsonld', base_context, '/examples/data/list/users.jsonld')
       .should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
 
     cy.window()

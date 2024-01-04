@@ -1,5 +1,5 @@
 {
-  "@id": "user-3.jsonld",
+  "@id": "/examples/data/list/user-3.jsonld",
   "first_name": "Not A",
   "last_name": "Paris Member",
   "username": "not-member-paris",
@@ -7,7 +7,7 @@
   "name": "Not A Paris Member",
   "available": false,
   "skills": {
-    "@id": "user-3-skills.jsonld",
+    "@id": "/examples/data/list/user-3-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
 
@@ -21,7 +21,7 @@
     ]
   },
   "profile": {
-    "@id": "profile-3.jsonld"
+    "@id": "/examples/data/list/profile-3.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [

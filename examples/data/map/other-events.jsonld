@@ -7,9 +7,9 @@
       "lat": "40.741895",
       "lng": "-73.989308",
       "permissions": [],
-      "@id": "event-7.jsonld"
+      "@id": "/examples/data/map/event-7.jsonld"
     }
   ],
-  "@id": "other-events.jsonld",
+  "@id": "/examples/data/map/other-events.jsonld",
   "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
 }

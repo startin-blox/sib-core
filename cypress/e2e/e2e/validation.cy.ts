@@ -101,7 +101,7 @@ describe('validation', function () {
   it('confirmation widget', () => {
     cy.get('solid-form#confirmation-widget')
       .find('dialog')
-      .find('my-widget-confirm').should('have.attr', 'value', '../data/project.jsonld')
+      .find('my-widget-confirm').should('have.attr', 'value', '/examples/data/project.jsonld')
       .find('solid-display-value').should('have.attr', 'value', 'Envoyer une fusée')
     cy.get('solid-form#confirmation-widget > form > div > input')
       .click()
@@ -111,7 +111,7 @@ describe('validation', function () {
 
     cy.get('solid-delete#confirmation-widget')
       .find('dialog')
-      .find('my-widget-confirm2').should('have.attr', 'value', '../data/project.jsonld')
+      .find('my-widget-confirm2').should('have.attr', 'value', '/examples/data/project.jsonld')
       .find('solid-display-value').should('have.attr', 'value', 'Envoyer une fusée')
     cy.get('solid-delete#confirmation-widget > button')
       .click()

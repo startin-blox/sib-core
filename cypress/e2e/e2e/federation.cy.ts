@@ -25,20 +25,20 @@ describe('federation', { testIsolation: false }, function () {
     cy.get('#federation-1').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 4)
     cy.get('@federation').find('> div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'circles-1.jsonld')
-      .and('contain.text', 'circles-1.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-1.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-1.jsonld')
       .and('contain.text', 'Circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(1)
-      .should('have.attr', 'data-src', 'circles-2.jsonld')
-      .and('contain.text', 'circles-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-2.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-2.jsonld')
       .and('contain.text', 'Another circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(2)
-      .should('have.attr', 'data-src', 'circles-3.jsonld')
-      .and('contain.text', 'circles-3.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-3.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-3.jsonld')
       .and('contain.text', 'Circle from server 2');
     cy.get('@federation').find('> div > solid-display').eq(3)
-      .should('have.attr', 'data-src', 'circles-4.jsonld')
-      .and('contain.text', 'circles-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-4.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-4.jsonld')
       .and('contain.text', 'Another circle from server 2');
   });
 
@@ -46,57 +46,57 @@ describe('federation', { testIsolation: false }, function () {
     cy.get('#federation-2').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 6)
     cy.get('@federation').find('> div > solid-display').eq(0)
-      .should('have.attr', 'data-src', 'circles-1.jsonld')
-      .and('contain.text', 'circles-1.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-1.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-1.jsonld')
       .and('contain.text', 'Circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(1)
-      .should('have.attr', 'data-src', 'circles-2.jsonld')
-      .and('contain.text', 'circles-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-2.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-2.jsonld')
       .and('contain.text', 'Another circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(2)
-      .should('have.attr', 'data-src', 'circles-3.jsonld')
-      .and('contain.text', 'circles-3.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-3.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-3.jsonld')
       .and('contain.text', 'Circle from server 2');
     cy.get('@federation').find('> div > solid-display').eq(3)
-      .should('have.attr', 'data-src', 'circles-4.jsonld')
-      .and('contain.text', 'circles-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-4.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-4.jsonld')
       .and('contain.text', 'Another circle from server 2');
     cy.get('@federation').find('> div > solid-display').eq(4)
-      .should('have.attr', 'data-src', 'circles-5.jsonld')
-      .and('contain.text', 'circles-5.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-5.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-5.jsonld')
       .and('contain.text', 'Circle from server 3');
     cy.get('@federation').find('> div > solid-display').eq(5)
-      .should('have.attr', 'data-src', 'circles-6.jsonld')
-      .and('contain.text', 'circles-6.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-6.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-6.jsonld')
       .and('contain.text', 'Circle from server 4');
   });
 
   it("can fail one source", () => {
-    cy.intercept('GET', '**/circles-server3.jsonld', {
+    cy.intercept('GET', '/examples/data/federation/circles-server3.jsonld', {
       statusCode: 403
     })
     cy.reload();
     cy.get('#federation-2').as('federation');
     cy.get('@federation').find('> div').children().should('have.length', 5);
     cy.get('@federation').find('> div > solid-display').eq(0)
-    .should('have.attr', 'data-src', 'circles-1.jsonld')
-    .and('contain.text', 'circles-1.jsonld')
+    .should('have.attr', 'data-src', '/examples/data/federation/circles-1.jsonld')
+    .and('contain.text', '/examples/data/federation/circles-1.jsonld')
     .and('contain.text', 'Circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(1)
-      .should('have.attr', 'data-src', 'circles-2.jsonld')
-      .and('contain.text', 'circles-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-2.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-2.jsonld')
       .and('contain.text', 'Another circle from server 1');
     cy.get('@federation').find('> div > solid-display').eq(2)
-      .should('have.attr', 'data-src', 'circles-3.jsonld')
-      .and('contain.text', 'circles-3.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-3.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-3.jsonld')
       .and('contain.text', 'Circle from server 2');
     cy.get('@federation').find('> div > solid-display').eq(3)
-      .should('have.attr', 'data-src', 'circles-4.jsonld')
-      .and('contain.text', 'circles-4.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-4.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-4.jsonld')
       .and('contain.text', 'Another circle from server 2');
     cy.get('@federation').find('> div > solid-display').eq(4)
-      .should('have.attr', 'data-src', 'circles-6.jsonld')
-      .and('contain.text', 'circles-6.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/federation/circles-6.jsonld')
+      .and('contain.text', '/examples/data/federation/circles-6.jsonld')
       .and('contain.text', 'Circle from server 4');
   })
 

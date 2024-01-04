@@ -12,12 +12,26 @@
   <body>
     <h2>Simple display</h2>
     <solid-display
-      data-src="data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
     ></solid-display>
-    
+
+    <h2>Simple display of nested fields</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      nested-field="events"
+      fields="name"
+    ></solid-display>
+
+    <h2>Simple display of array of resources</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      array-field="members"
+      fields="name"
+    ></solid-display>
+
     <h2>With fields and sets</h2>
     <solid-display
-      data-src="data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="@id, username, name(first_name, last_name), email, profile.city"
       default-email="no email yet"
       default-profile.city="no city yet"
@@ -27,7 +41,7 @@
 
     <h2>Default widget</h2>
     <solid-display
-      data-src="data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="@id, name(first_name, last_name)"
       default-widget="solid-display-div"
     ></solid-display>
@@ -39,7 +53,7 @@
       </template>
     </solid-widget>
     <solid-display
-      data-src="data/list/user-3.jsonld"
+      data-src="/examples/data/list/user-3.jsonld"
       fields="username, skills"
       multiple-skills
       multiple-skills-fields="name"
@@ -48,7 +62,7 @@
   
     <h2>Required Mixin</h2>
     <solid-display
-      data-src="data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       required-city
     ></solid-display>
@@ -60,7 +74,7 @@
       </template>
     </solid-widget>
     <solid-display
-      data-src="data/list/profile-3.jsonld"
+      data-src="/examples/data/list/profile-3.jsonld"
       fields="bio, city, phone, website"
       default-widget-bio = "custom-test"
     ></solid-display>

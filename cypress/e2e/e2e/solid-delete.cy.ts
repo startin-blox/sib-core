@@ -25,8 +25,8 @@ describe('solid-delete', function () {
     });
     // events have been fired
     cy.get('#res')
-      .should('contain', 'save: data/project.jsonld')
-      .should('contain', 'resourceDeleted: data/project.jsonld')
+      .should('contain', 'save: /examples/data/project.jsonld')
+      .should('contain', 'resourceDeleted: /examples/data/project.jsonld')
       .should('contain', 'requestNavigation');
   });
 

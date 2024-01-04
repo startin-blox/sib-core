@@ -1,9 +1,9 @@
 {
-  "@id": "",
+  "@id": "/examples/data/list/users.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "user-1.jsonld",
+      "@id": "/examples/data/list/user-1.jsonld",
       "first_name": "Test",
       "last_name": "User",
       "name": "Test User",
@@ -12,7 +12,7 @@
       "available": true,
       "years_experience": 3,
       "skills": {
-        "@id": "user-1-skills.jsonld",
+        "@id": "/examples/data/list/user-1-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -31,7 +31,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-1.jsonld"
+        "@id": "/examples/data/list/profile-1.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "@id": "user-2.jsonld",
+      "@id": "/examples/data/list/user-2.jsonld",
       "first_name": "Paris",
       "last_name": "Hilton",
       "name": "Paris Hilton",
@@ -52,7 +52,7 @@
       "available": true,
       "years_experience": 5,
       "skills": {
-        "@id": "user-2-skills.jsonld",
+        "@id": "/examples/data/list/user-2-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -68,7 +68,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-2.jsonld"
+        "@id": "/examples/data/list/profile-2.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "@id": "user-4.jsonld",
+      "@id": "/examples/data/list/user-4.jsonld",
       "first_name": "Pierre",
       "last_name": "DLC",
       "name": "Pierre DLC",
@@ -89,7 +89,7 @@
       "available": false,
       "years_experience": 5,
       "skills": {
-        "@id": "user-4-skills.jsonld",
+        "@id": "/examples/data/list/user-4-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
           {
@@ -111,7 +111,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-4.jsonld"
+        "@id": "/examples/data/list/profile-4.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [
@@ -123,7 +123,7 @@
       ]
     },
     {
-      "@id": "user-3.jsonld",
+      "@id": "/examples/data/list/user-3.jsonld",
       "first_name": "Not A",
       "last_name": "Paris Member",
       "name": "Not A Paris Member",
@@ -132,7 +132,7 @@
       "available": false,
       "years_experience": 7,
       "skills": {
-        "@id": "user-3-skills.jsonld",
+        "@id": "/examples/data/list/user-3-skills.jsonld",
         "@type": "ldp:Container",
         "ldp:contains": [
 
@@ -146,7 +146,7 @@
         ]
       },
       "profile": {
-        "@id": "profile-3.jsonld"
+        "@id": "/examples/data/list/profile-3.jsonld"
       },
       "@type": "foaf:user",
       "permissions": [

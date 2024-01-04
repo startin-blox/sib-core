@@ -31,7 +31,7 @@ describe('solid-widget', { testIsolation: false }, function () {
   it('nested component', () => {
     cy.get('#display-4')
       .find('custom-widget-4 solid-display')
-      .should('have.attr', 'data-src', 'profile-1.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/profile-1.jsonld');
 
     cy.get('#display-4')
       .find('custom-widget-4 solid-display solid-display-value[name=city]')
@@ -41,7 +41,7 @@ describe('solid-widget', { testIsolation: false }, function () {
   it('src attribute', () => {
     cy.get('#display-5')
       .find('custom-widget-5 span[name=src]')
-      .should('have.text', 'user-1.jsonld');
+      .should('have.text', '/examples/data/list/user-1.jsonld');
     cy.get('#display-5')
       .find('custom-widget-5 span[name=value]')
       .should('have.text', 'next-view');
@@ -72,7 +72,7 @@ describe('solid-widget', { testIsolation: false }, function () {
         console.log(res);
         expect(res).to.deep.equal({
           "email": "test-user@example.com",
-          "@id": "../data/list/user-1.jsonld",
+          "@id": "/examples/data/list/user-1.jsonld",
         })
       })
     });
@@ -82,12 +82,12 @@ describe('solid-widget', { testIsolation: false }, function () {
     cy.get('#form-3')
       .find('custom-form-widget-3').eq(0)
       .find('solid-form')
-      .should('have.attr', 'data-src', 'batch-1.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/nested-forms/batch-1.jsonld');
 
     cy.get('#form-3')
       .find('custom-form-widget-3').eq(1)
       .find('solid-form')
-      .should('have.attr', 'data-src', 'batch-2.jsonld')
+      .should('have.attr', 'data-src', '/examples/data/nested-forms/batch-2.jsonld')
       .find('input[name=title]')
       .type(' automatique');
 
@@ -99,15 +99,15 @@ describe('solid-widget', { testIsolation: false }, function () {
             "ldp:contains": [
               {
                 title: "Développement",
-                "@id": "batch-1.jsonld"
+                "@id": "/examples/data/nested-forms/batch-1.jsonld"
               },
               {
                 title: "Déploiement automatique",
-                "@id": "batch-2.jsonld"
+                "@id": "/examples/data/nested-forms/batch-2.jsonld"
               }
             ]
           },
-          "@id": "../data/nested-forms/customer-invoice-1.jsonld"
+          "@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
         })
       })
     });

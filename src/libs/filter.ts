@@ -118,7 +118,7 @@ const cacheFieldsProps = (
  * @param resource - resource to test
  * @param filter - name of the property tested
  * @param query - query object to know how to compare values
- * @param fields - fields attribute of the element
+ * @param fieldsAttr - fields attribute of the element
  * @param searchForm - searchForm component
  * @param filterId - uniqId used to fill the cache
  * @param throwOn - should function throw error on True or False

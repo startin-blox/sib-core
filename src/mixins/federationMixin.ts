@@ -19,6 +19,7 @@ const FederationMixin = {
     if(nextProcessor) await nextProcessor(newResources, listPostProcessors, div, context);
   },
   async getResources(resources: Resource[]): Promise<Resource[]> {
+    if (!resources) return [];
     const newResources: Resource[] = [];
 
     const getChildResources = async (res: Resource) => {
@@ -31,11 +32,17 @@ const FederationMixin = {
           const resourcesFetched = await this.fetchSource(containerId); // fetch the resources of this container
           if (resourcesFetched) newResources.push(...(await this.getResources(resourcesFetched))); // Add content of source to array...
         }
-      } else {
+      } else if(!res.isArray?.()) {
+        const resource = await store.getData(res['@id'], this.context);
+        if (resource) newResources.push(resource);
+      }
+      else {
         newResources.push(res); // Or resource directly if not a container
       }
     }
 
+    // Special case for list support, if there is only one item it is serialized as an object, not an array
+    if (!Array.isArray(resources)) resources = [resources];
     await Promise.all(resources.map(res => getChildResources(res)));
     return newResources;
   },
