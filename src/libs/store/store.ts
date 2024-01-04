@@ -573,7 +573,7 @@ class CustomGetter {
     this.clientContext = clientContext;
     this.serverContext = serverContext;
     this.parentId = parentId;
-    this.resource = this.expandProperties({ ...resource }, serverContext);
+    this.resource = this.expandProperties({ ...resource }, {...serverContext, ...clientContext});
     this.resourceId = resourceId;
     this.serverPagination = serverPagination;
     this.serverSearch = serverSearch;
@@ -620,7 +620,7 @@ class CustomGetter {
     const path2: string[] = [];
     let value: any;
     if (!this.isFullResource()) { // if resource is not complete, fetch it first
-      await this.getResource(this.resourceId, {...this.clientContext, ...this.serverContext}, this.parentId);
+      await this.getResource(this.resourceId, {...this.serverContext, ...this.clientContext}, this.parentId);
     }
     while (true) {
       try {
@@ -633,10 +633,10 @@ class CustomGetter {
     }
     if (path2.length === 0) { // end of the path
       if (!value || !value['@id']) return value; // no value or not a resource
-      return await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId); // return complete resource
+      return await this.getResource(value['@id'], {...this.serverContext, ...this.clientContext}, this.parentId || this.resourceId); // return complete resource
     }
     if (!value) return undefined;
-    let resource = await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId);
+    let resource = await this.getResource(value['@id'], {...this.serverContext, ...this.clientContext}, this.parentId || this.resourceId);
 
     store.subscribeResourceTo(this.resourceId, value['@id']);
     return resource ? await resource[path2.join('.')] : undefined; // return value
@@ -727,7 +727,7 @@ class CustomGetter {
     const permissionPredicate = this.getExpandedPredicate("permissions");
     let permissions = this.resource[permissionPredicate];
     if (!permissions) { // if no permission, re-fetch data
-      await this.getResource(this.resourceId, {...this.clientContext, ...this.serverContext}, this.parentId, true);
+      await this.getResource(this.resourceId, {...this.serverContext, ...this.clientContext}, this.parentId, true);
       permissions = this.resource[permissionPredicate];
     }
     return permissions ? permissions.map(perm => ContextParser.expandTerm(perm.mode['@type'], this.serverContext, true)) : [];
@@ -740,9 +740,9 @@ class CustomGetter {
     store.clearCache(this.resourceId);
   }
 
-  getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, {...this.clientContext, ...this.serverContext}, true) }
-  getCompactedPredicate(property: string) { return ContextParser.compactIri(property, {...this.clientContext, ...this.serverContext}, true) }
-  getCompactedIri(id: string) { return ContextParser.compactIri(id, {...this.clientContext, ...this.serverContext}) }
+  getExpandedPredicate(property: string) { return ContextParser.expandTerm(property, {...this.serverContext, ...this.clientContext}, true) }
+  getCompactedPredicate(property: string) { return ContextParser.compactIri(property, {...this.serverContext, ...this.clientContext}, true) }
+  getCompactedIri(id: string) { return ContextParser.compactIri(id, {...this.serverContext, ...this.clientContext}) }
   toString() { return this.getCompactedIri(this.resource['@id']) }
   [Symbol.toPrimitive]() { return this.getCompactedIri(this.resource['@id']) }
 
