@@ -31,6 +31,7 @@ import { store } from './libs/store/store';
 import { Sib } from './libs/Sib';
 import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
+import { newWidgetFactory } from './new-widgets/new-widget-factory';
 import * as Helpers from './libs/helpers';
 
 // lit-html
@@ -72,6 +73,7 @@ export {
   Sib,
   SolidTemplateElement,
   widgetFactory,
+  newWidgetFactory,
   Helpers,
 
   // lit-html

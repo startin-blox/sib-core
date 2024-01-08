@@ -9,8 +9,6 @@ export default defineConfig({
       input: [
         './src/index.ts',
         './src/libs/helpers.ts',
-        './src/new-widgets/new-widget-factory.ts',
-        './src/libs/Sib.ts',
       ],
       output: {
         dir: 'dist',
