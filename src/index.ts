@@ -3,6 +3,7 @@ import "./libs/polyfills.js";
 import { SolidDisplay } from './components/solid-display';
 import { SolidForm } from './components/solid-form';
 import { SolidFormSearch } from './components/solid-form-search';
+import { SolidTraversalSearch } from './components/solid-traversal-search';
 import { SolidWidget } from './components/solid-widget';
 import { SolidAcChecker } from './components/solid-ac-checker';
 import { SolidDelete } from './components/solid-delete';
@@ -45,6 +46,7 @@ export {
   SolidDisplay,
   SolidForm,
   SolidFormSearch,
+  SolidTraversalSearch,
   SolidWidget,
   SolidAcChecker,
   SolidDelete,

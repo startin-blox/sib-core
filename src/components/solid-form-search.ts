@@ -56,7 +56,6 @@ export const SolidFormSearch = {
   get defaultSetWidget(): string {
     return 'solid-set-default';
   },
-
   get value(): SearchQuery {
     const values: SearchQuery = {};
     this.widgets.forEach((widget) => {
@@ -89,7 +88,7 @@ export const SolidFormSearch = {
     if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
       tagName = 'solid-form-dropdown'
     } else {
-      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
+      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
     if (!customElements.get(tagName)) { // component does not exist

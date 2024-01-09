@@ -11,18 +11,23 @@
 
   <body>
     <h2>Simplest scenario: search by skill field</h2>
+    <!-- Investigate why there is not resource attached to the component
+         I.e.: this.component.resource is undefined
+     -->
     <solid-traversal-search
-      data-src="/examples/data/traversal/index.jsonld"
-      fields="skill"
+      data-src="/examples/data/list/user-1.jsonld"
+      fields="skills"
       strategy="distributed"
+      widget-skills="solid-form-label-text"
+      class-skills="super-class"
     ></solid-traversal-search>
 
 
-    <h2>Harder scenario: search by first_name field</h2>
+    <!-- <h2>Harder scenario: search by first_name field</h2>
     <solid-traversal-search
       data-src="/examples/data/traversal/index.jsonld"
       fields="first_name"
       strategy="distributed"
-    ></solid-traversal-search>
+    ></solid-traversal-search> -->
   </body>
 </html>
