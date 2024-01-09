@@ -1,5 +1,4 @@
 import { Sib } from '../libs/Sib';
-import { spread, preHTML } from '../libs/lit-helpers';
 
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
@@ -56,12 +55,13 @@ export const SolidTraversalSearch = {
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
+
     // If auto-range-[field] exists, create range-[field] and sets its value
-    if (this.element.hasAttribute('auto-range-' + field) && !this.element.hasAttribute('range-' + field)) {
-      const idField = `${this.rangeId}_${field}`;
-      this.element.setAttribute('range-' + field, 'store://local.' + idField);
-      this.populate();
-    }
+    // if (this.element.hasAttribute('auto-range-' + field) && !this.element.hasAttribute('range-' + field)) {
+    //   const idField = `${this.rangeId}_${field}`;
+    //   this.element.setAttribute('range-' + field, 'store://local.' + idField);
+    //   this.populate();
+    // }
 
     const widgetAttribute = this.element.getAttribute('widget-' + field);
     // Choose widget
@@ -108,8 +108,7 @@ export const SolidTraversalSearch = {
     }
     const fields = await this.getFields();
     const widgetTemplates = await Promise.all(fields.map((field: string) => {
-      let attributes = this.widgetAttributes(field, this.resource);
-      return preHTML`<${'input'} type="text" ...=${spread(attributes)}></${'input'}>`;
+      return this.createWidgetTemplate(field);
     }));
     const template = html`
         <form>

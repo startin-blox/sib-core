@@ -1,4 +1,3 @@
-// import type { SearchQuery } from '../libs/interfaces';
 import { parseFieldsString } from '../libs/helpers';
 
 const TraversalSearchMixin = {
@@ -19,12 +18,18 @@ const TraversalSearchMixin = {
     });
   },
   triggerTraversalSearch(): void {
+    console.log(this.element);
+    console.log("Fields", this.fields);
     // Get all values from all fields in the form
     // Add that to a values[] arrayconst fields = Object.keys(filters);
     let fields = parseFieldsString(this.fields);
     fields.forEach((field) => {
-      console.log(field, this.element.querySelector('[name="'+field+'"]').value);
-      this.values.push(this.element.querySelector('[name="'+field+'"]').value);
+      console.log(field, this.element.querySelector('[name="'+field+'"] input').value);
+      this.values[field] = [];
+      let valuesArray = parseFieldsString(this.element.querySelector('[name="'+field+'"] input').value);
+      valuesArray.forEach((value) => {
+        this.values[field].push(value);
+      });
     });
     console.log(this.values);
   },
