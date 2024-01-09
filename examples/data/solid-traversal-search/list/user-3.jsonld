@@ -1,0 +1,35 @@
+{
+  "@id": "/examples/data/solid-traversal-search/list/user-3.jsonld",
+  "first_name": "Not A",
+  "last_name": "Paris Member",
+  "username": "not-member-paris",
+  "email": "not-a@paris.members",
+  "name": "Not A Paris Member",
+  "available": false,
+  "skills": {
+    "@id": "/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+
+    ],
+    "permissions": [
+      {
+        "mode": {
+          "@type": "view"
+        }
+      }
+    ]
+  },
+  "profile": {
+    "@id": "/examples/data/solid-traversal-search/list/profile-3.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

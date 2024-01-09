@@ -1,0 +1,15 @@
+{
+  "@id": "/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

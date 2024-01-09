@@ -1,0 +1,11 @@
+{
+    "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+    "@id": "/examples/data/solid-traversal-search/indexes/federated/skills/html.jsonld",
+    "@type": "PropertyIndex",
+    "forProperty": "skills",
+    "forValue": { "@type": "@id", "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld" },
+    "hasEntry": [
+        { "@type": "@id", "@id": "/examples/data/solid-traversal-search/list/user-2.jsonld" },
+        { "@type": "@id", "@id": "/examples/data/solid-traversal-search/list/user-4.jsonld" }
+    ]
+}

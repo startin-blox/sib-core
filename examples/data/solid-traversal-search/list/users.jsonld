@@ -1,0 +1,169 @@
+{
+  "@id": "/examples/data/solid-traversal-search/list/users.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/solid-traversal-search/list/user-1.jsonld",
+      "first_name": "Test",
+      "last_name": "User",
+      "name": "Test User",
+      "username": "admin",
+      "email": "test-user@example.com",
+      "available": true,
+      "years_experience": 3,
+      "skills": {
+        "@id": "/examples/data/solid-traversal-search/list/user-1-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-2.jsonld"
+          },
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-3.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "/examples/data/solid-traversal-search/list/profile-1.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "/examples/data/solid-traversal-search/list/user-2.jsonld",
+      "first_name": "Paris",
+      "last_name": "Hilton",
+      "name": "Paris Hilton",
+      "username": "paris",
+      "email": "paris@hilton.hi",
+      "available": true,
+      "years_experience": 5,
+      "skills": {
+        "@id": "/examples/data/solid-traversal-search/list/user-2-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "/examples/data/solid-traversal-search/list/profile-2.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "/examples/data/solid-traversal-search/list/user-4.jsonld",
+      "first_name": "Pierre",
+      "last_name": "DLC",
+      "name": "Pierre DLC",
+      "username": "pierre",
+      "email": "pierredelacroix@happy-dev.fr",
+      "available": false,
+      "years_experience": 5,
+      "skills": {
+        "@id": "/examples/data/solid-traversal-search/list/user-4-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld"
+          },
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-2.jsonld"
+          },
+          {
+            "@id": "/examples/data/solid-traversal-search/list/skill-4.jsonld"
+          }
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "/examples/data/solid-traversal-search/list/profile-4.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "/examples/data/solid-traversal-search/list/user-3.jsonld",
+      "first_name": "Not A",
+      "last_name": "Paris Member",
+      "name": "Not A Paris Member",
+      "username": "not-member-paris",
+      "email": "not-a@paris.members",
+      "available": false,
+      "years_experience": 7,
+      "skills": {
+        "@id": "/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+
+        ],
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      },
+      "profile": {
+        "@id": "/examples/data/solid-traversal-search/list/profile-3.jsonld"
+      },
+      "@type": "foaf:user",
+      "permissions": [
+        {
+          "mode": {
+            "@type": "view"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}

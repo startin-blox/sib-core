@@ -1,0 +1,23 @@
+{
+  "@id": "/examples/data/solid-traversal-search/list/user-5-skills.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld"
+    },
+    {
+      "@id": "/examples/data/solid-traversal-search/list/skill-4.jsonld"
+    },
+    {
+      "@id": "/examples/data/solid-traversal-search/list/skill-8.jsonld"
+    }
+  ],
+  "permissions": [
+    {
+      "mode": {
+        "@type": "view"
+      }
+    }
+  ],
+  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+}
