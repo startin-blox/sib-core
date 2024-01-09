@@ -4,7 +4,7 @@ import { spread, preHTML } from '../libs/lit-helpers';
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 import { ContextMixin } from '../mixins/contextMixin';
-// import type { WidgetInterface } from '../mixins/interfaces';
+import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit-html';
@@ -45,6 +45,14 @@ export const SolidTraversalSearch = {
     },
     initialState: {
         error: '',
+    },
+    change(resource: object): void {
+      this.element.dispatchEvent(
+        new CustomEvent('formChange', {
+          bubbles: true,
+          detail: { resource },
+        }),
+      );
     },
     async inputChange(): Promise<void> {
       this.change(this.value);

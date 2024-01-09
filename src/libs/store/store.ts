@@ -563,10 +563,13 @@ class Store {
 }
 
 let store: Store;
+// @ts-ignore
 if (window.sibStore) {
+  // @ts-ignore
   store = window.sibStore;
 } else {
   const sibAuth = document.querySelector('sib-auth');
+  // @ts-ignore
   const storeOptions: StoreOptions = {}
 
   if (sibAuth) {
@@ -576,6 +579,7 @@ if (window.sibStore) {
   }
 
   store = new Store(storeOptions);
+  // @ts-ignore
   window.sibStore = store;
 }
 
