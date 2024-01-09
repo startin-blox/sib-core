@@ -199,6 +199,85 @@ function transformArrayToContainer(resource: object) {
   return newValue;
 }
 
+export default class AsyncIterableBuilder<Type> {
+  readonly #values: Promise<{ value: Type; done: boolean }>[] = []
+  #resolve!: (value: { value: Type; done: boolean }) => void
+  readonly iterable: AsyncIterable<Type>
+  readonly next: (value: Type, done?: boolean) => void
+
+  constructor() {
+    this.#nextPromise()
+    this.iterable = this.#createIterable()
+    this.next = this.#next.bind(this)
+  }
+
+  async *#createIterable() {
+    for (let index = 0; ; index++) {
+      const { value, done } = await this.#values[index]
+      delete this.#values[index]
+      yield value
+      if (done) return
+    }
+  }
+
+  #next(value: Type, done: boolean = false) {
+    this.#resolve({ value, done })
+    this.#nextPromise()
+  }
+
+  #nextPromise() {
+    this.#values.push(new Promise(resolve => (this.#resolve = resolve)))
+  }
+}
+
+import {
+  AsyncQuerySelectorAllType,
+  AsyncQuerySelectorType,
+} from './async-query-selector-types';
+
+const asyncQuerySelector: AsyncQuerySelectorType = (
+  selector: string,
+  parent: ParentNode = document
+) =>
+  new Promise<Element>(resolve => {
+    const element = parent.querySelector(selector);
+    if (element) return resolve(element);
+    const observer = new MutationObserver(() => {
+      const element = parent.querySelector(selector);
+      if (!element) return;
+      observer.disconnect();
+      return resolve(element);
+    });
+    observer.observe(parent, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+    });
+  });
+
+const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
+  selector: string,
+  parent: ParentNode = document
+) => {
+  const delivered = new WeakSet<Element>();
+  const { next, iterable } = new AsyncIterableBuilder<Element>();
+  function checkNewElement() {
+    for (const element of parent.querySelectorAll(selector)) {
+      if (delivered.has(element)) continue;
+      delivered.add(element);
+      next(element);
+    }
+  }
+  checkNewElement();
+  const observer = new MutationObserver(checkNewElement);
+  observer.observe(parent, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+  });
+  return iterable;
+};
+
 export {
   uniqID,
   stringToDom,
@@ -213,5 +292,8 @@ export {
   defineComponent,
   fuzzyCompare,
   compare,
-  transformArrayToContainer
+  transformArrayToContainer,
+  AsyncIterableBuilder,
+  asyncQuerySelectorAll,
+  asyncQuerySelector,
 };
