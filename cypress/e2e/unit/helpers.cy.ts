@@ -5,7 +5,8 @@ import {
   parseFieldsString,
   findClosingBracketMatchIndex,
   evalTemplateString,
-  transformArrayToContainer
+  transformArrayToContainer,
+  AsyncIterableBuilder,
 } from '../../../src/libs/helpers';
 
 /**
@@ -288,5 +289,29 @@ describe('transformArrayToContainer', function () {
         ]
       }
     })
+  })
+})
+import sleep from '../sleep'
+describe('AsyncIterableBuilder',  () => {
+  it('create an asyncIterable', async () => {
+    const { iterable, next } = new AsyncIterableBuilder<number>()
+    next(1)
+    next(2)
+    const values: number[] = []
+    let done = false
+    ;(async () => {
+      for await (const number of iterable) {
+        values.push(number)
+      }
+      done = true
+    })()
+    await sleep()
+    expect(values).to.deep.eq([1, 2])
+    expect(done).to.be.false
+    next(3)
+    next(4, true)
+    await sleep()
+    expect(values).to.deep.eq([1, 2, 3, 4])
+    expect(done).to.be.true
   })
 })

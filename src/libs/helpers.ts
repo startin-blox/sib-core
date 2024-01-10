@@ -294,6 +294,6 @@ export {
   compare,
   transformArrayToContainer,
   AsyncIterableBuilder,
-  asyncQuerySelectorAll,
   asyncQuerySelector,
+  asyncQuerySelectorAll,
 };

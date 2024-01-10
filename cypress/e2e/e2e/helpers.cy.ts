@@ -1,3 +1,5 @@
+import sleep from '../sleep'
+
 describe('helpers', function() {
   let helpers: typeof import('../../../src/libs/helpers');
   let win: Window;
@@ -9,7 +11,7 @@ describe('helpers', function() {
       doc = win.document;
       ///@ts-ignore
       helpers = win.helpers;
-      win.document
+      doc
         .querySelectorAll('script')
         .forEach(script => script.remove());
     });
@@ -102,4 +104,63 @@ describe('helpers', function() {
       expect(spy).to.have.been.called;
     });
   });
+
+  
+  describe('asyncQuerySelector', function () {
+    it('select an element already in document', async () => {
+      const list = doc.querySelector('#async-qs ul')!
+      const list2 = await helpers.asyncQuerySelector('#async-qs ul')
+      expect(list2).to.equal(list)
+    })
+    it('select an element already in another element', async () => {
+      const list = doc.querySelector('#async-qs ul')!
+      const first1 = list.querySelector<HTMLLIElement>(':scope > :first-child')
+      const first2 = await helpers.asyncQuerySelector<HTMLLIElement>(
+        ':scope > :first-child',
+        list,
+      )
+      expect(first2).to.equal(first1!)
+    })
+
+    it('select an element not yet in the DOM', async () => {
+      const list = doc.querySelector('#async-qs ul')!
+      const li = doc.createElement('li')
+      li.classList.add('added')
+      setTimeout(() => list.append(li))
+      const added1 = list.querySelector(':scope > .added')
+      expect(added1).to.be.null
+      const added2 = await helpers.asyncQuerySelector(':scope > .added', list)
+      const added3 = list.querySelector(':scope > .added')
+      expect(added2).to.equal(added3!)
+    })
+
+    it('select an element not yet matching selector', async () => {
+      const list = doc.querySelector('#async-qs ul')!
+      const li = doc.createElement('li')
+      list.append(li)
+      setTimeout(() => li.classList.add('classed'))
+      const classed1 = list.querySelector(':scope > .classed')
+      expect(classed1).to.be.null
+      const classed2 = await helpers.asyncQuerySelector(':scope > .classed', list)
+      const classed3 = list.querySelector(':scope > .classed')
+      expect(classed2).to.equal(classed3!)
+    })
+  })
+
+  describe('asyncQuerySelectorAll', () => {
+    const items: Element[] = []
+    it('select currents and futures elements in DOM', async () => {
+      const list = doc.querySelector('#async-qs ol')!
+      ;(async () => {
+        for await (const li of helpers.asyncQuerySelectorAll('li', list)) items.push(li)
+      })()
+      await sleep()
+      expect(items).to.have.length(2)
+      for (let index = 0; index < 3; index++)
+        list.append(doc.createElement('li'))
+      await sleep()
+      expect(items).to.have.length(5)
+    })
+  })
+
 });
