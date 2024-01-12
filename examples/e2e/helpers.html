@@ -6,15 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>helpers.js</title>
     <script type="module">
-      import * as helpers from '../../dist/helpers.js';
-      window.helpers = helpers;
-      console.log({helpers});
+      import { Helpers } from '../../dist/index.js';
+      window.helpers = Helpers;
+      console.log({Helpers});
     </script>
+    <style>
+      solid-display {
+        display: block;
+        border: 1px solid black;
+      }
+      solid-display-value {
+        display: inline-block;
+        margin: .1em;
+        padding: .1em;
+      }
+    </style>
   </head>
   <body>
     <div id="async-qs">
       <ul><li></li></ul>
-      <ol><li>1</li><li>2</li></ol>`
+      <ol><li>1</li><li>2</li></ol>
     </div>
   </body>
 </html>
