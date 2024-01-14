@@ -63,14 +63,13 @@ const StoreMixin = {
   },
   get resource(): Resource|null{
     let id = this.resourceId;
-    if (this.limit) {
-      id = this.resourceId + "#p" + this.limit + "?o" + this.offset;
-    }
+    const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes)
     const serverSearch = mergeServerSearchOptions(
       formatAttributesToServerSearchOptions(this.element.attributes),
       this.getDynamicServerSearch?.() // from `filterMixin`
     );
-    return id ? store.get(id, serverSearch) : null;
+
+    return id ? store.get(id, serverPagination, serverSearch) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;

@@ -84,7 +84,7 @@ class Store {
   ): Promise<Resource|null> {
     let key = id;
     if (serverPagination) {
-      key = id + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
+      key = appendServerPaginationToIri(key, serverPagination)
     }
 
     if (serverSearch) {
@@ -217,7 +217,7 @@ class Store {
 
         // We have to add the server search and pagination attributes again here to the resource cache key
         if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
-          if (serverPagination) key = key + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
+          if (serverPagination) key = appendServerPaginationToIri(key, serverPagination);
           if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
         }
 
@@ -358,10 +358,15 @@ class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string, serverSearch?: ServerSearchOptions): Resource | null {
+  get(id: string, serverPagination?: ServerPaginationOptions, serverSearch?: ServerSearchOptions): Resource | null {
+    if (serverPagination) {
+      id = appendServerPaginationToIri(id, serverPagination);
+    }
+
     if (serverSearch) {
       id = appendServerSearchToIri(id, serverSearch);
     }
+
     return this.cache.get(id) || null;
   }
 
