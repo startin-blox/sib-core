@@ -7,5 +7,5 @@
 		"@id": "/examples/data/list/user-4.jsonld"
 	},
 	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

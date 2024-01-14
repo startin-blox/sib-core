@@ -10,7 +10,7 @@
   },
   "@type": "foaf:user",
   "@context": [
-    "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+    "https://cdn.startinblox.com/owl/context.jsonld",
     {
       "get_full_name": "rdfs:label"
     }

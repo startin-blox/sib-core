@@ -16,18 +16,27 @@ const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
 export const base_context = {
-  '@vocab': 'http://happy-dev.fr/owl/#',
-  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-  ldp: 'http://www.w3.org/ns/ldp#',
-  foaf: 'http://xmlns.com/foaf/0.1/',
-  name: 'rdfs:label',
-  acl: 'http://www.w3.org/ns/auth/acl#',
-  permissions: 'acl:accessControl',
-  mode: 'acl:mode',
+  '@vocab': "https://cdn.startinblox.com/owl#",
+  foaf: "http://xmlns.com/foaf/0.1/",
+  doap: "http://usefulinc.com/ns/doap#",
+  ldp: "http://www.w3.org/ns/ldp#",
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  xsd: "http://www.w3.org/2001/XMLSchema#",
   geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+  acl: "http://www.w3.org/ns/auth/acl#",
+  name: "rdfs:label",
+  deadline: "xsd:dateTime",
   lat: "geo:lat",
-  lng: "geo:long"
+  lng: "geo:long",
+  jabberID: "foaf:jabberID",
+  permissions: "acl:accessControl",
+  mode: "acl:mode",
+  view: "acl:Read",
+  change: "acl:Write",
+  add: "acl:Append",
+  delete: "acl:Delete",
+  control: "acl:Control"
 };
 
 class Store {

@@ -297,7 +297,7 @@ export const formTemplates = {
           type="text"
           ?required=${attributes.required}
           name=${ifDefined(attributes.name)}
-          value=${value || ''}
+          value=${value || ''}
         >
         <input
           type="file"

@@ -138,7 +138,7 @@ export const SolidForm = {
         bubbles: true,
         detail: {
           resource: resource,
-          id: saved || null
+          id: saved || null
         },
       }),
     );

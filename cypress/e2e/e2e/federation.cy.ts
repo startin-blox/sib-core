@@ -10,7 +10,7 @@ describe('federation', { testIsolation: false }, function () {
       beenCalled = true;
       req.reply({
         body: {
-          "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+          "@context": "https://cdn.startinblox.com/owl/context.jsonld",
           "@id": "http://server.com/skills",
           "@type": "ldp:Container",
           "ldp:contains": [

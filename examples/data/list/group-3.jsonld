@@ -54,6 +54,6 @@
   "@id": "/examples/data/list/group-3.jsonld",
   "@type": "foaf:Group",
   "@context": [
-    "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+    "https://cdn.startinblox.com/owl/context.jsonld"
   ]
 }

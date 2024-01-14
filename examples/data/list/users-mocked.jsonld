@@ -8,7 +8,7 @@
       }
     }
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "ldp:contains": [
     {
       "@id": "/examples/data/list/--user-0.jsonld",

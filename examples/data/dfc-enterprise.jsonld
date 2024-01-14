@@ -1,6 +1,6 @@
 {
     "@context": [
-        "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "https://cdn.startinblox.com/owl/context.jsonld",
         {  
         "dfc:b": "https://www.datafoodconsortium.org#"
         }

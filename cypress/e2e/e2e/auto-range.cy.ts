@@ -70,15 +70,15 @@ describe('auto-range attribute', function() {
 
     // Each skill value visible once in the dropdown
     cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(1)
-      .should('contain', 'HTML');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(2)
       .should('contain', 'CSS');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(3)
-      .should('contain', 'DevOps');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(4)
-      .should('contain', 'Node');
-    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(5)
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(2)
       .should('contain', 'Javascript');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(3)
+      .should('contain', 'HTML');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(4)
+      .should('contain', 'DevOps');
+    cy.get('#double-auto-range > form >  solid-form-dropdown[name="skills"] > select > option').eq(5)
+      .should('contain', 'Node');
 
     // User(s) visible after selection
     cy.get('#double-auto-range')

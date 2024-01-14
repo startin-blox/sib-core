@@ -195,7 +195,7 @@ describe('solid-form', { testIsolation: false }, function() {
             "amount": ["Should be > 0"]
           }
         },
-      "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+      "@context": "https://cdn.startinblox.com/owl/context.jsonld"
       },
       headers: {
         'content-type': 'application/ld+json'

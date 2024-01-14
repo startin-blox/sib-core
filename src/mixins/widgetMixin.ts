@@ -123,11 +123,16 @@ const WidgetMixin = {
   async fetchValue(field: string, resource: Resource) {
     if (resource && !resource.isContainer?.()) {
       let fieldValue = await resource[field];
+      if (fieldValue === null || fieldValue === undefined || fieldValue === '') {
+        let expandedPredicate = sibStore.getExpandedPredicate(field, this.context);
+        fieldValue = await resource[expandedPredicate];
+      }
+
       if (fieldValue === null || fieldValue === undefined || fieldValue === '') return undefined;
 
       if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) {
         return JSON.stringify(fieldValue);
-      // Dumb edge case because if it bears only one item, when compacted the array translates into one object
+      // Dumb edge case because if the array bears only one item, when compacted the array translates into one object
       } else if (
         typeof fieldValue === 'object' &&
         fieldValue['@id'] && 1 === Object.keys(fieldValue).length) {

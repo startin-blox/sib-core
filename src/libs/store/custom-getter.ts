@@ -36,7 +36,7 @@ export class CustomGetter {
             this.getExpandedPredicate("ldp:BasicContainer"),
             this.getExpandedPredicate("ldp:DirectContainer"),
             this.getExpandedPredicate("ldp:IndirectContainer"),
-            "sib:federatedContainer"
+            this.getExpandedPredicate("sib:federatedContainer"),
         ];
     }
 

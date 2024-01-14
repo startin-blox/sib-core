@@ -1,5 +1,5 @@
 {
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "@id": "/examples/data/list/starwars-origin.jsonld",
   "@type": "hd:film",
   "ebu:originalTitle": "Star Wars",
