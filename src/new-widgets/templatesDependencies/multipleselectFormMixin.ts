@@ -39,12 +39,14 @@ const MultipleselectFormMixin = {
   setDataSrc(value: string, listValueTransformations: Function[]) {
     if (value && value !== this.dataSrc) {
       try {
-        if (Array.isArray(JSON.parse(value))) {
-          this.setValue(JSON.parse(value));
+        let values = JSON.parse(value);
+        if (values && Array.isArray(values)) {
+          this.setValue(values);
+        } else {
+          this.setValue([value]);
         }
       } catch (ex) {
-        this.dataSrc = value;
-        console.log('Not an array', ex);
+        this.setValue([ {"@id": value}]);
       }
     }
 
