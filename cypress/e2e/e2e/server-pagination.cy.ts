@@ -79,21 +79,24 @@ describe('server-pagination', { testIsolation: false }, function () {
   * Paginate and search
   */
   it('search and paginate', () => {
-    cy.get('#list-2').as('list');
-    cy.get('@list').find('button[data-id="next"]').click();
+    cy.get('#list-2').as('list2');
+    cy.get('@list2').contains('/examples/data/list/--user-2.jsonld');
+    cy.get('@list2').contains('/examples/data/list/--user-3.jsonld');
+    
+    cy.get('@list2').find('button[data-id="next"]').click();
 
-    // cy.get('@list').contains('user-1.jsonld').should('not.exist');
-    // cy.get('@list').contains('user-2.jsonld').should('not.exist');
-    cy.get('@list').contains('/examples/data/list/--user-2.jsonld');
-    cy.get('@list').contains('/examples/data/list/--user-3.jsonld');
-
+    cy.get('@list2').contains('/examples/data/list/--user-2.jsonld').should('not.exist');
+    cy.get('@list2').contains('/examples/data/list/--user-3.jsonld').should('not.exist');
+    cy.get('@list2').contains('/examples/data/list/--user-6.jsonld');
+    cy.get('@list2').contains('/examples/data/list/--user-7.jsonld');
+    
     // search
     cy.get('#username-form').find('input[name="username"]').type('henry');
 
-    cy.get('@list').contains('/examples/data/list/--user-10.jsonld').should('exist');
-    cy.get('@list').contains('/examples/data/list/--user-6.jsonld').should('not.exist');
-    cy.get('@list').contains('/examples/data/list/--user-7.jsonld').should('not.exist');
-    cy.get('@list').contains('/examples/data/list/--user-8.jsonld').should('not.exist');
+    cy.get('@list2').contains('/examples/data/list/--user-10.jsonld').should('exist');
+    cy.get('@list2').contains('/examples/data/list/--user-6.jsonld').should('not.exist');
+    cy.get('@list2').contains('/examples/data/list/--user-7.jsonld').should('not.exist');
+    cy.get('@list2').contains('/examples/data/list/--user-8.jsonld').should('not.exist');
 
     //TODO: Improvement: hide the navigation when searching
     // cy.get('#list-2 > nav').should('be.hidden');
