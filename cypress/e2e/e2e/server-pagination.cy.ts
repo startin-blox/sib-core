@@ -67,7 +67,7 @@ describe('server-pagination', { testIsolation: false }, function () {
     });
 
   /**
-  * Paginate and search
+  * Paginate and search client-side
   */
   it('search and paginate', () => {
     cy.get('#list-2').as('list');
