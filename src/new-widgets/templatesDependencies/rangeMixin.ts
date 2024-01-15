@@ -87,6 +87,9 @@ const RangeMixin = {
       // process resources to create the template
       const getRangeValue = async (resource: Resource) => {
         let res = await store.getData(resource['@id'], this.context || base_context, undefined, undefined, true);
+        if (res === null) {
+          res = resource;
+        }
         //TODO: this splitting and expanding is disgusting, please find another solution !!
         let valuePredicate = store.getExpandedPredicate(this.optionValue.split(/[.]+/).pop(), this.context || base_context);
         //TODO: handle properly the fact that the res could be null
