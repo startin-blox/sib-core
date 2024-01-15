@@ -7,9 +7,11 @@ export type AsyncQuerySelectorType = {
     selectors: K,
     parent?: ParentNode,
   ): Promise<SVGElementTagNameMap[K]>
+  //@ts-ignore
   <K extends keyof MathMLElementTagNameMap>(
     selectors: K,
     parent?: ParentNode,
+  //@ts-ignore
   ): Promise<MathMLElementTagNameMap[K]>
   /** @deprecated */
   <K extends keyof HTMLElementDeprecatedTagNameMap>(
@@ -31,9 +33,11 @@ export type AsyncQuerySelectorAllType = {
     selectors: K,
     parent?: ParentNode,
   ): AsyncIterable<SVGElementTagNameMap[K]>
+  //@ts-ignore
   <K extends keyof MathMLElementTagNameMap>(
     selectors: K,
     parent?: ParentNode,
+  //@ts-ignore
   ): AsyncIterable<MathMLElementTagNameMap[K]>
   /** @deprecated */
   <K extends keyof HTMLElementDeprecatedTagNameMap>(
