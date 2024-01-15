@@ -6,6 +6,7 @@ const TraversalSearchMixin = {
   use: [],
   initialState: {
     searchCount: null,
+    engine: null,
   },
   attributes: {
     values: {
@@ -15,6 +16,7 @@ const TraversalSearchMixin = {
   },
   created() {
     this.searchCount = new Map();
+    this.engine = new QueryEngine();
     this.element.addEventListener('populate', () => {
     });
   },
@@ -33,11 +35,8 @@ const TraversalSearchMixin = {
         this.values[field].push(value);
       });
     });
-    console.log(this.values);
 
     this.results = [];
-
-    const engine = new QueryEngine();
 
     const query = `SELECT DISTINCT ?user ?first_name ?last_name WHERE {
       ?skillIndex a <http://happy-dev.fr/owl/#PropertyIndex>;
@@ -47,11 +46,12 @@ const TraversalSearchMixin = {
       <http://happy-dev.fr/owl/#last_name> ?last_name;
     } LIMIT 100`;
 
-    const indexDirectory = 'http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills';
+    // TODO: check the URL is a container.
+    const indexDirectory = this.element.attributes["data-src"].value; // data-src value
 
-    const makeSources = (indexes: string[]) => indexes.map(index => `${indexDirectory}/${index}.jsonld`);
+    const makeSources = (indexes: string[]) => indexes.map(index => `${indexDirectory}${index}.jsonld`);
 
-    const bindingsStream = await engine.queryBindings(query, {
+    const bindingsStream = await this.engine.queryBindings(query, {
       lenient: true, // ignore HTTP fails
       sources: makeSources(this.values['skills']),
     });
