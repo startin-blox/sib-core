@@ -1,3 +1,4 @@
+import { base_context, store } from '../../libs/store/store';
 import { StoreMixin } from '../../mixins/storeMixin';
 import { SorterMixin } from '../../mixins/sorterMixin';
 import { FederationMixin } from '../../mixins/federationMixin';
@@ -85,12 +86,19 @@ const RangeMixin = {
     if (resources) {
       // process resources to create the template
       const getRangeValue = async (resource: Resource) => {
-        const selectedValue = await resource[this.optionValue]; // value used for selected options
-        const value = (this.optionValue.includes('@id') || selectedValue['@id']) ? // value of the option
+        let res = await store.getData(resource['@id'], this.context || base_context, undefined, undefined, true);
+        //TODO: this splitting and expanding is disgusting, please find another solution !!
+        let valuePredicate = store.getExpandedPredicate(this.optionValue.split(/[.]+/).pop(), this.context || base_context);
+        //TODO: handle properly the fact that the res could be null
+        const selectedValue = await res[valuePredicate]; // value used for selected options
+        const value = (this.optionValue.includes('@id') || (selectedValue && selectedValue['@id'])) ? // value of the option
           `{"@id": "${selectedValue}"}` : //  resource
           selectedValue; // literal
-        const label = await resource[this.optionLabel]; // label of the option
 
+        //TODO: this splitting and expanding is disgusting, please find another solution !!
+        let labelPredicate = store.getExpandedPredicate(this.optionLabel.split(/[.]+/).pop(), this.context || base_context);
+        //TODO: handle properly the fact that the res could be null
+        const label = await res[labelPredicate]; // label of the option
         return { value, label, selectedValue }
       }
 
