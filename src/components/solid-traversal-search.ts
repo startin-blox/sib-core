@@ -96,8 +96,21 @@ export const SolidTraversalSearch = {
     if (!this.attachedElements.has(elm)) return;
     this.attachedElements.delete(elm);
   },
+  getResultsTemplate() {
+    return html`
+      <div class="results">
+        ${this.results.map((result: any) => html`
+          <div class="result">
+            <div class="result-title">${result.first_name}</div>
+            <div class="result-description">${result.last_name}</div>
+          </div>
+        `)}
+      </div>
+    `
+  },
   empty(): void { },
   async populate(): Promise<void> {
+    console.log('Triggerring populate ??', this.results);
     if (this.submitButton == null) {
       this.element.addEventListener('input', () => this.inputChange());
     } else {
@@ -110,12 +123,14 @@ export const SolidTraversalSearch = {
     const widgetTemplates = await Promise.all(fields.map((field: string) => {
       return this.createWidgetTemplate(field);
     }));
-    const template = html`
-        <form>
-            ${widgetTemplates}
-            ${this.submitButton == null ? '' : this.getSubmitTemplate()}
-        </form>
-        `;
+    let template = html`
+      <form>
+          ${widgetTemplates}
+          ${this.submitButton == null ? '' : this.getSubmitTemplate()}
+      </form>
+      ${this.results ? this.getResultsTemplate() : ''}
+    `;
+
     render(template, this.element);
   }
 };

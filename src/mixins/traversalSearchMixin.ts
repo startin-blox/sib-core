@@ -7,17 +7,31 @@ const TraversalSearchMixin = {
   initialState: {
     searchCount: null,
     engine: null,
+    results: [],
   },
   attributes: {
     values: {
       type: Array,
-      default: []
+      default: [],
+    },
+    results: {
+      type: Array,
+      default: [],
+      callback(newValue: []) {
+        // if results are refreshed, re-populate
+        console.log("Results changed, repopulate");
+        if (newValue) {
+          console.log("Results changed, repopulate");
+          this.populate();
+        }
+      }
     },
   },
   created() {
     this.searchCount = new Map();
     this.engine = new QueryEngine();
     this.element.addEventListener('populate', () => {
+      console.log(this.results);
     });
   },
   async triggerTraversalSearch(): Promise<void> {
@@ -36,7 +50,6 @@ const TraversalSearchMixin = {
       });
     });
 
-    this.results = [];
 
     const query = `SELECT DISTINCT ?user ?first_name ?last_name WHERE {
       ?skillIndex a <http://happy-dev.fr/owl/#PropertyIndex>;
@@ -59,16 +72,17 @@ const TraversalSearchMixin = {
     console.log("Start querying...");
 
     bindingsStream.on('data', (binding: any) => {
-      //console.log(binding.toString());
-      
       const user = {
+        '@id': binding.get('user').value,
         first_name: binding.get('first_name').value,
         last_name: binding.get('last_name').value
       }
 
-      console.log(user);
-      
+      console.log("Found new user", user);
+
       this.results.push(user);
+      console.log(this.results);
+      this.populate();
     });
 
     bindingsStream.on('end', () => {
