@@ -77,7 +77,7 @@ class Store {
    */
   async getData(
     id: string,
-    context:any = {},
+    context: any = {},
     parentId = "",
     localData?: object,
     forceFetch: boolean = false,

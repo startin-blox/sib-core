@@ -52,7 +52,10 @@ export class CustomGetter {
         // Specific case where the predicates is a full IRI, avoid splitting it on the dot notation
         try {
             let isUrl = new URL(path);
-            // If the path is an absolute url, we need to fetch the resource
+            // My goal is to be able to solve user['circles.ldp:contains'] on the fly
+            // If we do not check the url protocol, then it is considered valid
+            if (!isUrl.protocol.startsWith('http')) throw new Error('Not a valid HTTP url');
+            // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
             if (isUrl) {
                 let value = this.resource[this.getExpandedPredicate(path)];
                 return value ? value : undefined;
