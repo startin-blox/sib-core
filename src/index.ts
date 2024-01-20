@@ -26,13 +26,20 @@ import { TranslationMixin } from './mixins/translationMixin';
 import { ValidationMixin } from './mixins/validationMixin';
 import { WidgetMixin } from './mixins/widgetMixin';
 
+// New widgets system
+import { newWidgetFactory } from './new-widgets/new-widget-factory';
+import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
+import * as AttributeMixins from './new-widgets/attributeMixins';
+import * as CallbackMixins from './new-widgets/callbackMixins';
+import * as TemplateAdditionMixins from './new-widgets/templateAdditionMixins';
+import * as Templates from './new-widgets/templates';
+import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies';
+
 // Libs
 import { store } from './libs/store/store';
 import { Sib } from './libs/Sib';
 import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
-import { newWidgetFactory } from './new-widgets/new-widget-factory';
-import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
 import * as Helpers from './libs/helpers';
 
 // lit-html
@@ -68,6 +75,13 @@ export {
   TranslationMixin,
   ValidationMixin,
   WidgetMixin,
+
+  // New widgets system
+  AttributeMixins,
+  CallbackMixins,
+  TemplateAdditionMixins,
+  TemplatesDependenciesMixins,
+  Templates,
 
   // Libs
   store,
