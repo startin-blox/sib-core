@@ -36,7 +36,7 @@ import * as Templates from './new-widgets/templates';
 import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies';
 
 // Libs
-import { store } from './libs/store/store';
+import { store, base_context as baseContext } from './libs/store/store';
 import { Sib } from './libs/Sib';
 import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
@@ -91,6 +91,7 @@ export {
   newWidgetFactory,
   BaseWidgetMixin,
   Helpers,
+  baseContext,
 
   // lit-html
   html,
