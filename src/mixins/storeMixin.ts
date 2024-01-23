@@ -83,27 +83,13 @@ const StoreMixin = {
     if (this.nestedField) {
       // First step: store.getData
       const resource = await store.getData(value, this.context);
-
       // Which internally triggers store.fetchData -> Fine
-
       // Which triggers store.fetchAuthn -> Fine
-
       // Once done it calls store.cacheGraph
-
-      // And the issue seems to reside in the caching ?
-
-      // How is computed the key to cache the nested resource with proper id like 
-      // http:///localhost:3000/examples/data/list/group-3.jsonld#foaf:member ?
-      // Should it be:
-      //    - http:///localhost:3000/examples/data/list/group-3.jsonld#foaf:member
-      //    - _:b1/examples/data/list/group-3.jsonld#foaf:member
-      //    - _:b9/examples/data/list/group-3.jsonld
-      //    - examples/data/list/group-3.jsonld#foaf:member
-
-      // So the work is in cacheGraph ?
       const nestedResource = resource ? await resource[this.nestedField] : null;
       this.resourceId = nestedResource ? nestedResource['@id'] : null;
-      if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+
+      if (resource && !this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
     }
 
     this.updateNavigateSubscription();
