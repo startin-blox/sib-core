@@ -207,32 +207,34 @@ class Store {
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions
   ) {
-      const flattenedResources = await jsonld.flatten(resource);
-      const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
-      for (let resource of compactedResources) {
-        let id = resource['@id'] || resource['id'];
-        let key = resource['@id'] || resource['id'];
+    // Flatten and compact the graph, which is an issue with large containers having child permissions serialized
+    // Because
+    const flattenedResources = await jsonld.flatten(resource);
+    const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
+    for (let resource of compactedResources) {
+      let id = resource['@id'] || resource['id'];
+      let key = resource['@id'] || resource['id'];
 
-        if (!key) console.log('No key or id for resource:', resource);
-        if (key === '/') key = parentId;
-        if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
+      if (!key) console.log('No key or id for resource:', resource);
+      if (key === '/') key = parentId;
+      // if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
 
-        // We have to add the server search and pagination attributes again here to the resource cache key
-        if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
-          if (serverPagination) key = appendServerPaginationToIri(key, serverPagination);
-          if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
-        }
+      // We have to add the server search and pagination attributes again here to the resource cache key
+      if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
+        if (serverPagination) key = appendServerPaginationToIri(key, serverPagination);
+        if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
+      }
 
-        const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-        if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
+      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
+      if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
 
-        if (this.get(key)) { // if already cached, merge data
-          this.cache.get(key).merge(resourceProxy);
-        } else {  // else, put in cache
-          this.cacheResource(key, resourceProxy);
-        }
+      if (this.get(key)) { // if already cached, merge data
+        this.cache.get(key).merge(resourceProxy);
+      } else {  // else, put in cache
+        this.cacheResource(key, resourceProxy);
       }
     }
+  }
 
   /**
    * Put proxy in cache

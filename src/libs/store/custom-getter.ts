@@ -127,7 +127,7 @@ export class CustomGetter {
      * @param iriParent
      */
     async getResource(id: string, context: object, iriParent: string, forceFetch: boolean = false): Promise<Resource | null> {
-        if (id.startsWith('_:b')) return store.get(id + iriParent); // anonymous node = get from cache
+        if (id.startsWith('_:b')) return store.get(id); // anonymous node = get from cache
         return store.getData(id, context, iriParent, undefined ,forceFetch);
     }
 
@@ -228,7 +228,7 @@ export class CustomGetter {
         if (!Array.isArray(permissionsIds)) permissionsIds = [permissionsIds]; // convert to array if compacted to 1 resource
         const permissions = await Promise.all(
           permissionsIds
-            .map((p: string) => store.get(p['@id'] + this.parentId)) // get anonymous node from store
+            .map((p: string) => store.get(p['@id'])) // get anonymous node from store
             .map((p: string) => p ? p['mode.@type'] : '')
         );
     
