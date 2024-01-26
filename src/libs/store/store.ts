@@ -120,7 +120,7 @@ class Store {
         return;
       }
 
-      const serverContext = await myParser.parse([resource['@context'] || {}]);
+      const serverContext = await myParser.parse([resource['@context'] || base_context]);
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);

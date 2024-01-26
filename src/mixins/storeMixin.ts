@@ -87,9 +87,16 @@ const StoreMixin = {
       // Which triggers store.fetchAuthn -> Fine
       // Once done it calls store.cacheGraph
       const nestedResource = resource ? await resource[this.nestedField] : null;
-      this.resourceId = nestedResource ? nestedResource['@id'] : null;
+      this.resourceId = nestedResource ? await nestedResource['@id'] : null;
 
-      if (resource && !this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
+      if (resource && !this.resourceId && !nestedResource) {
+        console.trace();
+        console.log(nestedResource);
+        for (const property in await resource) {
+          console.log(`${property}: ${await resource[property]}`);
+        }
+        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
+      }
     }
 
     this.updateNavigateSubscription();
