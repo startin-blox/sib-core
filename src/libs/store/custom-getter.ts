@@ -227,6 +227,9 @@ export class CustomGetter {
             );
             permissions = this.resource[this.getExpandedPredicate("permissions")];
         }
+
+        if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
+
         return permissions ? permissions : [];
     }
 
