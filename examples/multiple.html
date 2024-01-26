@@ -7,17 +7,29 @@
     <title>SIB test: multiple</title>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@startinblox/oidc@0.16/+esm"
+    ></script>
   </head>
   <body>
+
+    <sib-auth style="display: none !important" auto-login="">
+      <sib-auth-provider
+        data-authority="https://api.tzcld-stg.startinblox.com/"
+        data-id="dataserver"
+        data-client-name="Test3"
+      ></sib-auth-provider>
+    </sib-auth>
     <h1>solid-display</h1>
     <solid-display
-      data-src="/examples/data/list/user-1.jsonld"
-      fields="username, skills"
-      multiple-skills
-      multiple-skills-fields="name"
+      data-src="https://api.tzcld-stg.startinblox.com/users/balessan/"
+      fields="username, communities"
+      multiple-communities
+      multiple-communities-fields="name"
     ></solid-display>
 
-    <h2>Custom widget</h2>
+    <!-- <h2>Custom widget</h2>
     <solid-widget name="custom-multiple">
       <template>
         <h2>Skills list</h2>
@@ -63,6 +75,6 @@
       multiple-skills
       multiple-skills-add-label="Ajouter une compétence"
       multiple-skills-remove-label="Supprimer cette compétence"
-    ></solid-form>
+    ></solid-form> -->
   </body>
 </html>

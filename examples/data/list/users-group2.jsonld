@@ -32,11 +32,7 @@
       },
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -75,11 +71,7 @@
       },
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -117,20 +109,12 @@
       },
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     }
   ],
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

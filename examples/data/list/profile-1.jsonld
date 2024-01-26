@@ -11,11 +11,7 @@
   "phone": "06-03-23-98-23",
   "website": "www.startinblox.com",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

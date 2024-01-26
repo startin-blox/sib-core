@@ -7,11 +7,7 @@
       "@id": "/examples/data/federation/circles-server1.jsonld",
       "@type": "sib:federatedContainer",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -20,11 +16,7 @@
     }
   ],
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -10,11 +10,7 @@
     "@id": "https://ldp-server.test/users/jbpasquier/"
   },
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

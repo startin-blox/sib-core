@@ -33,11 +33,7 @@
   },
   "@type": "foaf:user",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

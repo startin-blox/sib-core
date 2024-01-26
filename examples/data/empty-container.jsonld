@@ -3,8 +3,11 @@
   "@type": "ldp:Container",
   "ldp:contains": [],
   "permissions": [
-    { "mode": { "@type": "view" } },
-    { "mode": { "@type": "add" } }
+    "view",
+    "control",
+    "add",
+    "delete",
+    "change"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

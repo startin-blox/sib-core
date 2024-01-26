@@ -13,30 +13,14 @@
       },
       "@type": "hd:circlemember",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        },
-        {
-          "mode": {
-            "@type": "delete"
-          }
-        }
+        "view",
+        "delete"
       ]
     }
   ],
   "permissions": [
-    {
-      "mode": {
-        "@type": "add"
-      }
-    },
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "add",
+    "view"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }
