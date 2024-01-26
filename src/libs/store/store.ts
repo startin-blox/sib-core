@@ -234,7 +234,8 @@ class Store {
         if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
       }
 
-      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
+
+      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, undefined, serverPagination, serverSearch).getProxy();
       if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
 
       if (this.get(key)) { // if already cached, merge data

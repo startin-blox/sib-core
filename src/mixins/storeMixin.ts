@@ -82,7 +82,7 @@ const StoreMixin = {
     this.resourceId = value;
     if (this.nestedField) {
       // First step: store.getData
-      const resource = await store.getData(value, this.context);
+      const resource = await store.getData(value, this.context, this.resourceId, undefined, true);
       // Which internally triggers store.fetchData -> Fine
       // Which triggers store.fetchAuthn -> Fine
       // Once done it calls store.cacheGraph
@@ -102,7 +102,6 @@ const StoreMixin = {
       dynamicServerSearch
     );
     const forceRefetch = !!dynamicServerSearch;
-
     await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
 
     this.updateDOM();
