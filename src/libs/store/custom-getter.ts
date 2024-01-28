@@ -57,8 +57,8 @@ export class CustomGetter {
             if (!isUrl.protocol.startsWith('http')) throw new Error('Not a valid HTTP url');
             // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
             if (isUrl) {
-                let value = this.resource[this.getExpandedPredicate(path)];
-                return value ? value : undefined;
+              let value = this.resource[this.getExpandedPredicate(path)];
+              return value ? value : undefined;
             }
         } catch (e) {
             // Split the path on each dots

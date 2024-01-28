@@ -564,6 +564,13 @@ class Store {
   }
 
   /**
+   * Return the user session information
+   */
+  async getSession() {
+    return await this.session;
+  }
+
+  /**
    * Return language of the users
    */
   _getLanguage() {
