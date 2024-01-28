@@ -45,6 +45,8 @@ export const SolidMembership = {
 
     // Retrieve the current user from the current store authenticated session
     let currentUserSession = await store.session;
+    if (!currentUserSession) return;
+
     this.userId = await currentUserSession.webId;
     if (!this.userId) return;
 
@@ -80,10 +82,10 @@ export const SolidMembership = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async joinGroup() {
-    let userSet = this.currentMembers.push({"@id": this.userId});
+    this.currentMembers.push({"@id": this.userId});
     let currentRes = {
       "@context": this.context,
-      "user_set": userSet
+      "user_set": this.currentMembers
     }
     return store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
