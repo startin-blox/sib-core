@@ -207,8 +207,11 @@ export class CustomGetter {
      * @param prop
      */
     isFullResource(): boolean {
-        return Object.keys(this.resource).filter(p => !p.startsWith('@')).length > 0 // has some properties
-            || this.resource['@id'].startsWith('_:b'); // anonymous node = always full resource
+      let propertiesKeys = Object.keys(this.resource).filter(p => !p.startsWith('@'))
+      if (propertiesKeys.length === 0) return false;
+      if (propertiesKeys.length === 1 && propertiesKeys[0] === 'permissions') return false;
+
+      return this.resource['@id'].startsWith('_:b'); // anonymous node = always full resource
     }
 
     /**
