@@ -207,11 +207,14 @@ export class CustomGetter {
      * @param prop
      */
     isFullResource(): boolean {
-      let propertiesKeys = Object.keys(this.resource).filter(p => !p.startsWith('@'))
-      if (propertiesKeys.length === 0) return false;
-      if (propertiesKeys.length === 1 && propertiesKeys[0] === 'permissions') return false;
+      let propertiesKeys = Object.keys(this.resource).filter(p => !p.startsWith('@'));
+      if (this.resource['@id'].startsWith('_:b')) return true; // anonymous node = considered as always full
 
-      return this.resource['@id'].startsWith('_:b'); // anonymous node = always full resource
+      if (propertiesKeys.length === 1 && propertiesKeys[0] === this.getExpandedPredicate('permissions'))
+        return false; // If only the permissions are present, then the resource is not complete
+      else if (propertiesKeys.length > 0) return true;
+
+      return false;
     }
 
     /**
