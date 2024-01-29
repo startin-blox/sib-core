@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:membership</title>
+    <script
+    type="module"
+    src="https://cdn.skypack.dev/@startinblox/router@latest"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+    ></script>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-auth auto-login>
+      <sib-auth-provider
+        data-authority="https://api.tzcld-dev.startinblox.com/"
+      ></sib-auth-provider>
+    </sib-auth>
+    
+    <h3>
+      Solid-member-delete component with data-label and next attributes
+    </h3>
+    <solid-member-delete
+      data-src="https://api.tzcld-dev.startinblox.com/groups/308/"
+      data-target-src="https://api.tzcld-dev.startinblox.com/users/antoine/"
+      data-label="Retirer membre"
+      next="detail"
+    ></solid-member-delete>
+
+    <script>
+      document.querySelector('solid-member-delete').addEventListener('memberRemoved', e => {
+        console.log("You removed the user from the group: ", e.detail.resource);
+      });
+    </script>
+  </body>
+</html>

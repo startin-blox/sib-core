@@ -10,6 +10,7 @@ import { SolidLang } from './components/solid-lang';
 import { SolidTable } from './components/solid-table';
 import { SolidMap } from './components/solid-map';
 import { SolidMembership } from './components/solid-membership';
+import { SolidMemberDelete } from './components/solid-member-delete.js';
 
 // Mixins
 import { CounterMixin } from './mixins/counterMixin';
@@ -61,6 +62,7 @@ export {
   SolidTable,
   SolidMap,
   SolidMembership,
+  SolidMemberDelete,
 
   // Mixins
   CounterMixin,
