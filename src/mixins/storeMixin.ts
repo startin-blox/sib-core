@@ -86,7 +86,7 @@ const StoreMixin = {
       // Which internally triggers store.fetchData -> Fine
       // Which triggers store.fetchAuthn -> Fine
       // Once done it calls store.cacheGraph
-      const nestedResource = resource ? await resource[store.getExpandedPredicate(this.nestedField, this.context)] : null;
+      const nestedResource = resource ? await resource[this.nestedField] : null;
       this.resourceId = nestedResource ? await nestedResource['@id'] : null;
 
       if (resource && !this.resourceId && !nestedResource) {
