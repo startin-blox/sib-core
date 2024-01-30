@@ -3,7 +3,7 @@ import { ListMixin } from '../mixins/listMixin';
 import { StoreMixin } from '../mixins/storeMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
-import { uniqID } from '../libs/helpers';
+import { importInlineCSS, uniqID } from '../libs/helpers';
 
 import Calendar from 'tui-calendar';
 import { html, render } from 'lit-html';
@@ -19,8 +19,8 @@ export const SolidCalendar = {
     subscriptions: null
   },
   created(): void {
-    //@ts-ignore
-    import('tui-calendar/dist/tui-calendar.css');
+    importInlineCSS('tui-calendar', () => import('tui-calendar/dist/tui-calendar.css?inline'))
+
     const id = uniqID();
     const template = html`
       <div id=${id} style="width:100%;height:100%;"></div>

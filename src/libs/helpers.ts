@@ -40,6 +40,28 @@ function importCSS(...stylesheets: string[]) {
   return linksElements;
 }
 
+async function importInlineCSS(
+  id: string,
+  importer: string | (() => string | Promise<string | { default : string }>)
+) {
+  id = `sib-inline-css-${id}`;
+  if (document.head.querySelector(`style#${id}`)) return;
+  const style = document.createElement('style');
+  style.id = id;
+  document.head.appendChild(style);
+  let textContent: string
+  if(typeof importer === 'string') textContent = importer
+  else {
+    const imported = await importer()
+    if(typeof imported === 'string') textContent = imported
+    else textContent = imported.default || ''
+  }
+  console.log(textContent);
+  style.textContent = textContent
+  
+  return style;
+}
+
 function importJS(...plugins: string[]): HTMLScriptElement[] {
   return plugins.map(url => {
     url = new URL(url, document.baseURI).href;
@@ -285,6 +307,7 @@ export {
   stringToDom,
   evalTemplateString,
   importCSS,
+  importInlineCSS,
   importJS,
   loadScript,
   domIsReady,

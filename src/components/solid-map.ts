@@ -8,7 +8,7 @@ import { FederationMixin } from '../mixins/federationMixin';
 import { GrouperMixin } from '../mixins/grouperMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
-import { uniqID } from '../libs/helpers';
+import { importInlineCSS, uniqID } from '../libs/helpers';
 import { spread } from '../libs/lit-helpers';
 
 //@ts-ignore
@@ -45,14 +45,10 @@ export const SolidMap = {
     hasBeenResetOnce: false
   },
   created(): void {
-    //@ts-ignore
-    import('leaflet/dist/leaflet.css');
-    //@ts-ignore
-    import('../style/default-theme.css');
-    //@ts-ignore
-    import('leaflet.markercluster/dist/MarkerCluster.css');
-    //@ts-ignore
-    import('leaflet.markercluster/dist/MarkerCluster.Default.css');
+    importInlineCSS('leaflet', () => import('leaflet/dist/leaflet.css?inline'))
+    importInlineCSS('default-theme', () => import('../style/default-theme.css?inline'))
+    importInlineCSS('marker-cluster', () => import('leaflet.markercluster/dist/MarkerCluster.css?inline'))
+    importInlineCSS('marker-cluster-default', () => import('leaflet.markercluster/dist/MarkerCluster.Default.css?inline'))
 
     // reset when it becomes visible to prevent bug https://git.startinblox.com/framework/sib-core/issues/661
     document.body.addEventListener('navigate', () =>
