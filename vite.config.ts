@@ -1,9 +1,14 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: './', // The root directory of your project
   base: './', // The base URL for your application
   build: {
+    lib: {
+      entry: './src/index.ts',
+      name: 'sib',
+      formats: ['es'],
+    },
     rollupOptions: {
       preserveEntrySignatures: 'strict',
       input: [
