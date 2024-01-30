@@ -29,9 +29,7 @@ describe('helpers', function() {
               link[0].addEventListener('load', resolve);
             }),
         );
-      cy.get('html').then(html => {
-        expect(html.css('background-color')).eq('rgb(0, 128, 0)');
-      });
+      cy.get('html').should('have.css', 'background-color', 'rgb(0, 128, 0)');
     });
 
     it('add several stylesheet', () => {
@@ -50,6 +48,20 @@ describe('helpers', function() {
       cy.get('link')
         .its('length')
         .should('eq', 1);
+    });
+  });
+
+  describe('importInlineCSS', () => {
+    it('add inline stylesheet', () => {
+      helpers.importInlineCSS('test1', 'html {background-color: green}');
+      cy.get('html').should('have.css', 'background-color', 'rgb(0, 128, 0)');
+    });
+    
+    it('avoid import stylesheet twice', () => {
+      helpers.importInlineCSS('test2', 'html {background-color: green}');
+      helpers.importInlineCSS('test2', 'html {background-color: red}');
+      cy.get('html').should('have.css', 'background-color', 'rgb(0, 128, 0)');
+      cy.get('html').should('not.have.css', 'background-color', 'rgb(255, 0, 0)');
     });
   });
 

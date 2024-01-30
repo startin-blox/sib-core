@@ -10,5 +10,6 @@ export default defineConfig({
       "cypress/e2e/e2e/*.cy.ts"
     ],
     baseUrl: 'http://0.0.0.0:3000',
+    experimentalRunAllSpecs: true,
   },
 })
