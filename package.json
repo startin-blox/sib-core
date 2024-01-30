@@ -4,6 +4,7 @@
   "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
+  "type": "module",
   "directories": {
     "example": "examples"
   },
@@ -73,7 +74,6 @@
     "@types/pubsub-js": "^1.8.2",
     "@types/quill": "^2.0.4",
     "autolinker": "^3.14.2",
-    "body-parser": "^1.19.0",
     "cypress": "^13.2.0",
     "cypress-plugin-tab": "^1.0.5",
     "delta-markdown-for-quill": "0.0.9",
@@ -95,7 +95,7 @@
     "slim-select": "^1.27.0",
     "tui-calendar": "^1.13.0",
     "typescript": "^4.9.5",
-    "vite": "^4.4.9"
+    "vite": "^5.0.12"
   },
   "dependencies": {
     "cors": "^2.8.5"
