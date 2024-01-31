@@ -39,6 +39,17 @@ function importCSS(...stylesheets: string[]) {
   };
   return linksElements;
 }
+/**
+ * @param id an uniq id to avoid import a style twice
+ * @param importer a callback returning this `import()` promise
+ * @returns the style element
+ * 
+ * typical use:
+ * ```js
+ * importInlineCSS('bootstrap', () => import('./css/bootstrap.css?inline')) 
+ * // adding '?inline' lets Vite convert css to js
+ * ```
+ */
 
 function importInlineCSS(
   id: string,
