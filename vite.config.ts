@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -5,7 +6,7 @@ export default defineConfig({
   base: './',
   build: {
     lib: {
-      entry: './src/index.ts',
+      entry: resolve(__dirname, 'src/index.ts'),
       name: 'sib',
       formats: ['es'],
     },
@@ -21,7 +22,6 @@ export default defineConfig({
       },
     },
     outDir: 'dist',
-    sourcemap: true,
     minify: false,
   },
 });
