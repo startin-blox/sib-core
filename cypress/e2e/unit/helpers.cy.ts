@@ -5,7 +5,6 @@ import {
   parseFieldsString,
   findClosingBracketMatchIndex,
   evalTemplateString,
-  transformArrayToContainer,
   AsyncIterableBuilder,
 } from '../../../src/libs/helpers';
 
