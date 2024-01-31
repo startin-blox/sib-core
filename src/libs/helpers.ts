@@ -183,15 +183,17 @@ function transformArrayToContainer(resource: object) {
     if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
     if (['permissions', '@context'].includes(predicate)) continue; // do not transform permissions and context
 
-    // check all keys of nested resource
+    // if nested resource, transform its own nested resources to container recursively
     if (!Array.isArray(predicateValue) && predicateValue['@id']) {
       newValue[predicate] = transformArrayToContainer(resource[predicate]);
     }
 
-    // for arrays
-    if (Array.isArray(predicateValue)) {
-      newValue[predicate] = { 'ldp:contains': [...predicateValue] }; // transform to container
-      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // and check all nested resources
+    if (Array.isArray(predicateValue) && predicateValue['@id']) { // Do not systematically transform arrays to containers
+      newValue[predicate] = {
+        '@id': predicateValue['@id'],
+        'ldp:contains': [...predicateValue]
+      };
+      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // but check all nested resources
         newValue[predicate]['ldp:contains'][index] = transformArrayToContainer(childPredicate);
       });
     }
