@@ -45,8 +45,9 @@ async function importInlineCSS(
   importer: string | (() => string | Promise<string | { default : string }>)
 ) {
   id = `sib-inline-css-${id}`;
-  if (document.head.querySelector(`style#${id}`)) return;
-  const style = document.createElement('style');
+  let style = document.head.querySelector<HTMLStyleElement>(`style#${id}`)
+  if(style) return style;
+  style = document.createElement('style');
   style.id = id;
   document.head.appendChild(style);
   let textContent: string
