@@ -26,7 +26,7 @@ const AutocompletionMixin = {
     mutationObserver: null
   },
   created() {
-    importInlineCSS('slimselect', () => import('./slimselect.css?inline?inline'))
+    importInlineCSS('slimselect', () => import('./slimselect.css?inline'))
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
