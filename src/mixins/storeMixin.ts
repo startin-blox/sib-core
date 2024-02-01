@@ -82,7 +82,7 @@ const StoreMixin = {
     this.resourceId = value;
     if (this.nestedField) {
       // First step: store.getData
-      const resource = await store.getData(value, this.context, undefined, undefined, true);
+      const resource = await store.getData(value, this.context);
       // Which internally triggers store.fetchData -> Fine
       // Which triggers store.fetchAuthn -> Fine
       // Once done it calls store.cacheGraph
