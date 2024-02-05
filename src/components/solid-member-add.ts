@@ -100,14 +100,13 @@ export const SolidMemberAdd = {
     this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
   },
   async render(): Promise<void> {
-    // await this.replaceAttributesData(false);
     await this.populate();
     let button = html`
-      <solid-ac-checker data-src="${this.resourceId}"
+      <solid-ac-checker data-src="${this.dataSrc}"
         permission="acl:Write"
       >
-        <form 
-          src="${this.resourceId}"
+        <form
+          src="${this.dataSrc}"
           @submit="${this.addMember.bind(this)}"
         >
           <solid-form-dropdown-autocompletion
