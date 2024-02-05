@@ -42,22 +42,11 @@ export const SolidMemberAdd = {
     newWidgetFactory('solid-form-dropdown-autocompletion');
     this.planRender();
   },
-  async populate() {
-    if (!this.resource) return;
-
-    // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
-    this.currentMembers = await this.resource[memberPredicate];
-
-    if (!Array.isArray(this.currentMembers)) {
-      this.currentMembers = [this.currentMembers];
-    }
-  },
   planRender() {
     if (!this.renderPlanned) {
       this.renderPlanned = true;
       setTimeout(() => {
-        this.render();
+        this.updateDOM();
         this.renderPlanned = false;
       });
     }
@@ -90,17 +79,25 @@ export const SolidMemberAdd = {
   validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
     return this.addMembership();
   },
-  update() {
-    this.render();
-  },
   changeSelectedUser(e: Event) {
     if (!e.target || !(e.target as HTMLElement).firstElementChild) return;
 
     //FIXME: disgusting way to get the @id of the autocomplete slimselect widget value
     this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
   },
-  async render(): Promise<void> {
-    await this.populate();
+  async populate(): Promise<void> {
+    console.log("Calling populate");
+    console.trace();
+    if (!this.resource) return;
+
+    // Check if current user is member of this group ?
+    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    this.currentMembers = await this.resource[memberPredicate];
+
+    if (!Array.isArray(this.currentMembers)) {
+      this.currentMembers = [this.currentMembers];
+    }
+
     let button = html`
       <solid-ac-checker data-src="${this.dataSrc}"
         permission="acl:Write"
