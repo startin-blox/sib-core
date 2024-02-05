@@ -27,6 +27,13 @@ export const SolidMemberAdd = {
         if (newValue !== oldValue) this.planRender();
       },
     },
+    classSubmitButton: {
+      type: String,
+      default: '',
+      callback: function (newValue: string, oldValue: string) {
+        if (newValue !== oldValue) this.planRender();
+      },
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -109,7 +116,7 @@ export const SolidMemberAdd = {
             name="users"
             @change="${this.changeSelectedUser.bind(this)}"
           ></solid-form-dropdown-autocompletion>
-          <button type="submit">${this.addMemberLabel}</button>
+          <button class="${this.classSubmitButton}" type="submit">${this.addMemberLabel}</button>
         </form>
 
         ${this.getModalDialog()}
