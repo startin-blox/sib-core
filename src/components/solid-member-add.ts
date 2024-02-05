@@ -6,19 +6,12 @@ import { ValidationMixin } from '../mixins/validationMixin';
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { StoreMixin } from '../mixins/storeMixin';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',
-  use: [NextMixin, ValidationMixin, ContextMixin],
+  use: [NextMixin, ValidationMixin, ContextMixin, StoreMixin],
   attributes: {
-    // Data Source being a group URI in that case
-    dataSrc: {
-      type: String,
-      default: null,
-      callback: function () {
-        this.resourceId = this.dataSrc;
-      },
-    },
     // The list of users to load
     rangeUsers: {
       type: String,
@@ -39,12 +32,10 @@ export const SolidMemberAdd = {
     renderPlanned: false,
   },
   created(): void {
+    newWidgetFactory('solid-form-dropdown-autocompletion');
     this.planRender();
   },
   async populate() {
-    newWidgetFactory('solid-form-dropdown-autocompletion');
-    // Retrieve the group resource
-    this.resource = await store.getData(this.resourceId);
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
@@ -65,7 +56,7 @@ export const SolidMemberAdd = {
     }
   },
   async addMember(e: Event): Promise<void> {
-    if (!this.dataSrc) return;
+    if (!this.dataSrc || !this.resourceId) return;
     e.preventDefault();
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
@@ -76,9 +67,9 @@ export const SolidMemberAdd = {
       "@context": this.context,
       "user_set": this.currentMembers
     }
-    return store.patch(currentRes, this.dataSrc).then(response => {
+    return store.patch(currentRes, this.resourceId).then(response => {
       if (!response) {
-        console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.dataSrc}`);
+        console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`);
         return;
       }
 
@@ -105,11 +96,11 @@ export const SolidMemberAdd = {
     // await this.replaceAttributesData(false);
     await this.populate();
     let button = html`
-      <solid-ac-checker data-src="${this.dataSrc}"
+      <solid-ac-checker data-src="${this.resourceId}"
         permission="acl:Write"
       >
         <form 
-          src="${this.dataSrc}"
+          src="${this.resourceId}"
           @submit="${this.addMember.bind(this)}"
         >
           <solid-form-dropdown-autocompletion
