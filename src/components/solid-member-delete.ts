@@ -2,7 +2,6 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-// import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
@@ -31,7 +30,9 @@ export const SolidMemberDelete = {
       type: String,
       default: null,
       callback: function (newValue: string, oldValue: string) {
-        if (newValue !== oldValue) this.planRender();
+        if (newValue !== oldValue) {
+          this.planRender();
+        } 
       },
     },
     dataUnknownMember: {
@@ -49,6 +50,8 @@ export const SolidMemberDelete = {
     this.planRender();
   },
   async populate() {
+    if (!this.resourceId) return;
+
     // Retrieve the group resource
     this.resource = await store.getData(this.resourceId);
     if (!this.resource) return;
@@ -65,8 +68,6 @@ export const SolidMemberDelete = {
     this.isMember = this.currentMembers
       ? this.currentMembers.some((member) => member['@id'] === this.dataTargetSrc)
       : false;
-
-    console.log("populate", this.dataSrc, this.dataTargetSrc, this.currentMembers, this.isMember);
   },
   planRender() {
     if (!this.renderPlanned) {

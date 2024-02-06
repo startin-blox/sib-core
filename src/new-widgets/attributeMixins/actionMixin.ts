@@ -8,6 +8,13 @@ const ActionMixin = {
         this.addToAttributes(newValue, 'src');
       }
     },
+    targetSrc: {
+      type: String,
+      default: '',
+      callback: function (newValue: string) {
+        this.addToAttributes(newValue, 'target-src');
+      }
+    },
   },
 }
 

@@ -262,6 +262,8 @@ const WidgetMixin = {
       'search-text',
       'search-placeholder',
       'link-text',
+      'target-src',
+      'data-label'
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 
