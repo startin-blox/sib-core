@@ -20,16 +20,39 @@
   <body>
     <sib-auth auto-login>
       <sib-auth-provider
-        data-authority="https://api.tzcld-dev.startinblox.com/"
+        data-authority="https://api.tzcld-stg.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
     
     <h3>
+      Solid-display with a solid-member-delete widget with data-label and next attributes
+    </h3>
+    <solid-widget name="member-delete-widget">
+      <template>
+        <solid-member-delete
+          data-src="${targetSrc}"
+          data-target-src="${value}"
+          data-label="${label}"
+        ></solid-member-delete>
+      </template>
+    </solid-widget>
+    <solid-display
+      id="members-list"
+      data-src="https://api.tzcld-stg.startinblox.com/groups/190/"
+      array-field="user_set"
+      fields="@id, name"
+      widget-id="member-delete-widget"
+      target-src-id="store://resource.@id"
+      label-id="Retirer Member"
+      >
+    </solid-display>
+
+    <h3>
       Solid-member-delete component with data-label and next attributes
     </h3>
     <solid-member-delete
-      data-src="https://api.tzcld-dev.startinblox.com/groups/308/"
-      data-target-src="https://api.tzcld-dev.startinblox.com/users/antoine/"
+      data-src="https://api.tzcld-stg.startinblox.com/groups/190/"
+      data-target-src="https://api.tzcld-stg.startinblox.com/users/alex/"
       data-label="Retirer membre"
       next="detail"
     ></solid-member-delete>
