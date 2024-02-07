@@ -7,6 +7,7 @@ import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { StoreMixin } from '../mixins/storeMixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',
@@ -29,10 +30,7 @@ export const SolidMemberAdd = {
     },
     classSubmitButton: {
       type: String,
-      default: '',
-      callback: function (newValue: string, oldValue: string) {
-        if (newValue !== oldValue) this.planRender();
-      },
+      default: undefined
     },
   },
   initialState: {
@@ -112,7 +110,11 @@ export const SolidMemberAdd = {
             name="users"
             @change="${this.changeSelectedUser.bind(this)}"
           ></solid-form-dropdown-autocompletion>
-          <button class="${this.classSubmitButton}" type="submit">${this.addMemberLabel}</button>
+          <div class=${ifDefined(this.classSubmitButton)}>
+            <button type="submit">
+              ${this.addMemberLabel}
+            </button>
+          </div>
         </form>
 
         ${this.getModalDialog()}
