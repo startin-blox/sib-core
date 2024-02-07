@@ -6,6 +6,7 @@ import { ValidationMixin } from '../mixins/validationMixin';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 export const SolidMembership = {
   name: 'solid-membership',
@@ -32,6 +33,10 @@ export const SolidMembership = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
+    },
+    class: {
+      type: String,
+      default: undefined,
     }
   },
   initialState: {
@@ -144,6 +149,7 @@ export const SolidMembership = {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
               permission="acl:Read"
+              class=${ifDefined(this.class)}
             >
           <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t("solid-leave-group.button")}</button>
           ${this.getModalDialog()}
@@ -153,6 +159,7 @@ export const SolidMembership = {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
               permission="acl:Read"
+              class=${ifDefined(this.class)}
             >
           <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t("solid-join-group.button")}</button>
           ${this.getModalDialog()}
