@@ -2,6 +2,7 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
@@ -41,7 +42,11 @@ export const SolidMemberDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
-    }
+    },
+    classSubmitButton: {
+      type: String,
+      default: undefined,
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -122,8 +127,12 @@ export const SolidMemberDelete = {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
               permission="acl:Write"
+              class=${ifDefined(this.classSubmitButton)}
             >
-          <button @click=${this.removeMember.bind(this)}>${this.dataLabel || this.t("solid-delete-member.button")}</button>
+          <button
+            @click=${this.removeMember.bind(this)}>
+              ${this.dataLabel || this.t("solid-delete-member.button")}
+          </button>
           ${this.getModalDialog()}
         </solid-ac-checker>
         `;
