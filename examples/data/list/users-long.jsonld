@@ -2,13 +2,9 @@
   "@id": "/examples/data/list/users-long.jsonld",
   "@type": "ldp:Container",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "ldp:contains": [
     {
       "@id": "/examples/data/list/--user-0.jsonld",
@@ -19,11 +15,7 @@
       "email": "mayer.glenn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -35,11 +27,7 @@
       "email": "santiago.fowler@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -51,11 +39,7 @@
       "email": "imelda.kemp@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -67,11 +51,7 @@
       "email": "tillman.mcmahon@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -83,11 +63,7 @@
       "email": "torres.henry@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -99,11 +75,7 @@
       "email": "ines.head@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -115,11 +87,7 @@
       "email": "cotton.sullivan@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -131,11 +99,7 @@
       "email": "nelda.armstrong@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -147,11 +111,7 @@
       "email": "marianne.gentry@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -163,11 +123,7 @@
       "email": "sweet.petersen@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -179,11 +135,7 @@
       "email": "henry.noble@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -195,11 +147,7 @@
       "email": "rhodes.michael@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -211,11 +159,7 @@
       "email": "browning.sherman@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -227,11 +171,7 @@
       "email": "ellen.walter@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -243,11 +183,7 @@
       "email": "jolene.winters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -259,11 +195,7 @@
       "email": "benton.powell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -275,11 +207,7 @@
       "email": "lott.franklin@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -291,11 +219,7 @@
       "email": "noble.ramirez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -307,11 +231,7 @@
       "email": "case.gillespie@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -323,11 +243,7 @@
       "email": "oneill.frank@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -339,11 +255,7 @@
       "email": "francesca.tanner@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -355,11 +267,7 @@
       "email": "shauna.floyd@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -371,11 +279,7 @@
       "email": "michelle.terrell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -387,11 +291,7 @@
       "email": "carmella.bennett@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -403,11 +303,7 @@
       "email": "levine.morrison@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -419,11 +315,7 @@
       "email": "janice.lane@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -435,11 +327,7 @@
       "email": "woods.clay@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -451,11 +339,7 @@
       "email": "anna.abbott@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -467,11 +351,7 @@
       "email": "atkins.levine@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -483,11 +363,7 @@
       "email": "tiffany.dunn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -499,11 +375,7 @@
       "email": "valarie.lindsay@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -515,11 +387,7 @@
       "email": "finley.solis@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -531,11 +399,7 @@
       "email": "mclaughlin.wagner@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -547,11 +411,7 @@
       "email": "roslyn.hyde@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -563,11 +423,7 @@
       "email": "rosetta.craig@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -579,11 +435,7 @@
       "email": "geraldine.waters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -595,11 +447,7 @@
       "email": "zamora.ellison@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -611,11 +459,7 @@
       "email": "eileen.cantu@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -627,11 +471,7 @@
       "email": "lynette.oconnor@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -643,11 +483,7 @@
       "email": "maritza.middleton@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -659,11 +495,7 @@
       "email": "norman.peters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -675,11 +507,7 @@
       "email": "lane.navarro@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -691,11 +519,7 @@
       "email": "oliver.fulton@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -707,11 +531,7 @@
       "email": "dale.bishop@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -723,11 +543,7 @@
       "email": "wise.vazquez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -739,11 +555,7 @@
       "email": "gilliam.moran@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -755,11 +567,7 @@
       "email": "ellison.wilson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -771,11 +579,7 @@
       "email": "fanny.sandoval@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -787,11 +591,7 @@
       "email": "hale.macdonald@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -803,11 +603,7 @@
       "email": "riley.mcfarland@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -819,11 +615,7 @@
       "email": "prince.wilkerson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -835,11 +627,7 @@
       "email": "barnett.klein@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -851,11 +639,7 @@
       "email": "amy.collins@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -867,11 +651,7 @@
       "email": "wells.grant@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -883,11 +663,7 @@
       "email": "melton.peterson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -899,11 +675,7 @@
       "email": "davenport.townsend@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -915,11 +687,7 @@
       "email": "mayo.flynn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -931,11 +699,7 @@
       "email": "latoya.haynes@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -947,11 +711,7 @@
       "email": "catherine.parrish@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -963,11 +723,7 @@
       "email": "bernadette.roman@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -979,11 +735,7 @@
       "email": "jeanne.rosa@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -995,11 +747,7 @@
       "email": "ward.cunningham@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1011,11 +759,7 @@
       "email": "melba.nelson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1027,11 +771,7 @@
       "email": "johnston.ashley@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1043,11 +783,7 @@
       "email": "mavis.sellers@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1059,11 +795,7 @@
       "email": "veronica.rollins@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1075,11 +807,7 @@
       "email": "renee.melendez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1091,11 +819,7 @@
       "email": "mccarty.gates@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1107,11 +831,7 @@
       "email": "day.rios@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1123,11 +843,7 @@
       "email": "frye.johns@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1139,11 +855,7 @@
       "email": "cheryl.wilkinson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1155,11 +867,7 @@
       "email": "munoz.douglas@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1171,11 +879,7 @@
       "email": "debra.cook@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1187,11 +891,7 @@
       "email": "schneider.villarreal@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1203,11 +903,7 @@
       "email": "hayes.holloway@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1219,11 +915,7 @@
       "email": "buck.velazquez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1235,11 +927,7 @@
       "email": "aida.pugh@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1251,11 +939,7 @@
       "email": "pamela.olsen@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1267,11 +951,7 @@
       "email": "trudy.lucas@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1283,11 +963,7 @@
       "email": "madge.casey@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1299,11 +975,7 @@
       "email": "nicole.palmer@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1315,11 +987,7 @@
       "email": "hopper.harrell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1331,11 +999,7 @@
       "email": "chelsea.kennedy@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1347,11 +1011,7 @@
       "email": "townsend.morin@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1363,11 +1023,7 @@
       "email": "valenzuela.herring@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1379,11 +1035,7 @@
       "email": "iris.durham@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
@@ -1395,11 +1047,7 @@
       "email": "guerrero.wooten@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     }
   ]

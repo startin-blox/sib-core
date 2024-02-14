@@ -16,18 +16,29 @@ const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
 export const base_context = {
-  '@vocab': 'http://happy-dev.fr/owl/#',
-  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-  ldp: 'http://www.w3.org/ns/ldp#',
-  foaf: 'http://xmlns.com/foaf/0.1/',
-  name: 'rdfs:label',
-  acl: 'http://www.w3.org/ns/auth/acl#',
-  permissions: 'acl:accessControl',
-  mode: 'acl:mode',
+  '@vocab': "https://cdn.startinblox.com/owl#",
+  foaf: "http://xmlns.com/foaf/0.1/",
+  doap: "http://usefulinc.com/ns/doap#",
+  ldp: "http://www.w3.org/ns/ldp#",
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  xsd: "http://www.w3.org/2001/XMLSchema#",
   geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
+  acl: "http://www.w3.org/ns/auth/acl#",
+  hd: "http://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+  sib: "http://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+  name: "rdfs:label",
+  deadline: "xsd:dateTime",
   lat: "geo:lat",
-  lng: "geo:long"
+  lng: "geo:long",
+  jabberID: "foaf:jabberID",
+  permissions: "acl:accessControl",
+  mode: "acl:mode",
+  view: "acl:Read",
+  change: "acl:Write",
+  add: "acl:Append",
+  delete: "acl:Delete",
+  control: "acl:Control"
 };
 
 class Store {
@@ -66,7 +77,7 @@ class Store {
    */
   async getData(
     id: string,
-    context:any = {},
+    context: any = {},
     parentId = "",
     localData?: object,
     forceFetch: boolean = false,
@@ -75,7 +86,7 @@ class Store {
   ): Promise<Resource|null> {
     let key = id;
     if (serverPagination) {
-      key = id + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
+      key = appendServerPaginationToIri(key, serverPagination)
     }
 
     if (serverSearch) {
@@ -109,7 +120,7 @@ class Store {
         return;
       }
 
-      const serverContext = await myParser.parse([resource['@context'] || {}]);
+      const serverContext = await myParser.parse([resource['@context'] || base_context]);
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
@@ -196,32 +207,43 @@ class Store {
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions
   ) {
-      const flattenedResources = await jsonld.flatten(resource);
-      const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
-      for (let resource of compactedResources) {
-        let id = resource['@id'] || resource['id'];
-        let key = resource['@id'] || resource['id'];
+    // Flatten and compact the graph, which is an issue with large containers having child permissions serialized
+    // Because
+    // That strategy cannot work for containers
+    // As we loose the capability to apply the proper parentId to the permissions blank nodes which are moved
+    // At top level of the graph
+    // So either we do not modify the key of the blank nodes to force them into the cache
+    // Either we modify it by adding the parentId and we end up with
+    // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
+    const flattenedResources = await jsonld.flatten(resource);
+    const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
+    for (let resource of compactedResources) {
+      let id = resource['@id'] || resource['id'];
+      let key = resource['@id'] || resource['id'];
 
-        if (!key) console.log('No key or id for resource:', resource);
-        if (key === '/') key = parentId;
-        if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> change key before saving in cache
+      if (!key) console.log('No key or id for resource:', resource);
+      if (key === '/') key = parentId;
+      if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> store in cache with parentId not being a container resourceId
+      // But how to handle the case where the parent is a container, we need its permissions in the cache !
+      // Or maybe for containers we should refetch and only get the permissions nodes without flattening the whole container ?
+      // Using a dedicated method in the custom-getter.
 
-        // We have to add the server search and pagination attributes again here to the resource cache key
-        if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
-          if (serverPagination) key = key + "#p" + serverPagination.limit + "?o" + serverPagination.offset;
-          if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
-        }
+      // We have to add the server search and pagination attributes again here to the resource cache key
+      if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
+        if (serverPagination) key = appendServerPaginationToIri(key, serverPagination);
+        if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
+      }
 
-        const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-        if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
+      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
+      if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
 
-        if (this.get(key)) { // if already cached, merge data
-          this.cache.get(key).merge(resourceProxy);
-        } else {  // else, put in cache
-          this.cacheResource(key, resourceProxy);
-        }
+      if (this.get(key)) { // if already cached, merge data
+        this.cache.get(key).merge(resourceProxy);
+      } else {  // else, put in cache
+        this.cacheResource(key, resourceProxy);
       }
     }
+  }
 
   /**
    * Put proxy in cache
@@ -349,10 +371,15 @@ class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string, serverSearch?: ServerSearchOptions): Resource | null {
+  get(id: string, serverPagination?: ServerPaginationOptions, serverSearch?: ServerSearchOptions): Resource | null {
+    if (serverPagination) {
+      id = appendServerPaginationToIri(id, serverPagination);
+    }
+
     if (serverSearch) {
       id = appendServerSearchToIri(id, serverSearch);
     }
+
     return this.cache.get(id) || null;
   }
 
@@ -533,6 +560,13 @@ class Store {
       iri = new URL(iri, document.location.href).href;
     }
     return iri;
+  }
+
+  /**
+   * Return the user session information
+   */
+  async getSession() {
+    return await this.session;
   }
 
   /**

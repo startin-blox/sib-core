@@ -1,12 +1,11 @@
-const crypto = require("crypto");
-const cypress = require("cypress");
-var url = require("url");
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
-const findFreePort = require("find-free-port");
-const fs = require("fs");
-const cors = require('cors');
+import crypto from 'crypto';
+import cypress from 'cypress';
+import url from 'url';
+import path from 'path';
+import express from 'express';
+import findFreePort from 'find-free-port';
+import fs from 'fs/promises';
+import cors from 'cors';
 const port = findFreePort(3000);
 const app = express();
 const distPath = '.';
@@ -16,7 +15,7 @@ app.use(cors());
   const updateURLs = /.*jsonld/;
   const server = app
     .use(express.static(distPath))
-    .use(bodyParser.json({ type: 'application/*+json' }))
+    .use(express.json({ type: 'application/*+json' }))
     .get('/favicon.ico', (req, rep) => rep.send())
     // Handle upload
     .post('/upload', (req, rep) => {
@@ -34,12 +33,17 @@ app.use(cors());
     .get('/mock/users.jsonld', async (req, res) => {
       const limit = Number(req.query.limit);
       const offset = Number(req.query.offset);
-      const val = req.query["search-terms"] || "";
+      const val = req.query['search-terms'] || '';
 
-      const jsonData = fs.readFileSync("./examples/data/list/users-mocked.jsonld", { encoding: "utf8" });
+      const jsonData = await fs.readFile(
+        './examples/data/list/users-mocked.jsonld',
+        { encoding: 'utf8' }
+      );
       const data = JSON.parse(jsonData);
-      const list = data["ldp:contains"].filter(user => user["first_name"].toLowerCase().includes(val.toLowerCase()));
-      data["ldp:contains"] = limit ? list.slice(offset, offset + limit) : list;
+      const list = data['ldp:contains'].filter((user) =>
+        user['first_name'].toLowerCase().includes(val.toLowerCase())
+      );
+      data['ldp:contains'] = limit ? list.slice(offset, offset + limit) : list;
 
       res.send(data);
       res.end();
@@ -53,7 +57,10 @@ app.use(cors());
     .listen((await port)[0], '0.0.0.0');
   server.on('listening', async () => {
     const addr = address(server.address());
-    if (!process.argv.includes('--test') && !process.argv.includes('--test-ui')) {
+    if (
+      !process.argv.includes('--test') &&
+      !process.argv.includes('--test-ui')
+    ) {
       console.log(addr);
       return;
     }
@@ -63,11 +70,11 @@ app.use(cors());
         config: {
           baseUrl: addr,
         },
-      }
-      test = await (process.argv.includes('--test-ui') ?
-        cypress.open(opt) : cypress.run(opt));
-    }
-    catch (error) {
+      };
+      test = process.argv.includes('--test-ui')
+        ? await cypress.open(opt)
+        : await cypress.run(opt);
+    } catch (error) {
       console.error(error);
     } finally {
       server.close();
@@ -95,4 +102,3 @@ function handleUpdate(req, rep) {
   rep.setHeader('location', req.body['@id'] || '');
   rep.send(req.body);
 }
-

@@ -1,6 +1,7 @@
 import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
+import { importInlineCSS } from '../../libs/helpers.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
@@ -9,9 +10,8 @@ const RichtextMixin = {
   },
 
   created() {
-    //@ts-ignore
-    import('quill/dist/quill.snow.css');
-
+    importInlineCSS('quill', () => import('quill/dist/quill.snow.css?inline'))
+    
     this.quill = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },

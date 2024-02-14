@@ -82,9 +82,26 @@ export const SolidForm = {
   async getFormValue() {
     let value = this.value;
     if (this.resource && !this.resource.isContainer?.()) {
-      for (let predicate of Object.keys(this.value)) { // add @id for nested resources
-        const object = await this.resource[predicate];
-        if (object && object['@id'] && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
+      for (let predicate of Object.keys(this.value)) {
+        // add @id for nested resources
+        let object = await this.resource[predicate];
+        // edge-case where object is null because predicate needs to be expanded manually (arrays)
+        if (!object) {
+          object = await this.resource[store.getExpandedPredicate(predicate, this.context)];
+        }
+
+        // Nested containers
+        if (object
+          && object['@id']
+          && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
+
+        //FIXME: Edge case of array support, ugly management
+        if (object && !object['@id']
+          && Array.isArray(object)
+          && value[predicate].length == 0
+          && object.length > 0) {
+          value[predicate] = object;
+        }
       }
     }
     return transformArrayToContainer(value);
@@ -138,7 +155,7 @@ export const SolidForm = {
         bubbles: true,
         detail: {
           resource: resource,
-          id: saved || null
+          id: saved || null
         },
       }),
     );

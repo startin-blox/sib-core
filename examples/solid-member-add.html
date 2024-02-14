@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: add a member</title>
+    <script
+    type="module"
+    src="https://cdn.skypack.dev/@startinblox/router@latest"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+    ></script>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@startinblox/orbit-styling-framework/dist/index.css" />
+  </head>
+
+  <body>
+    <sib-auth auto-login>
+      <sib-auth-provider
+        data-authority="https://api.tzcld-stg.startinblox.com/"
+      ></sib-auth-provider>
+    </sib-auth>
+
+    <h3>
+      Solid-member add component
+    </h3>
+
+    <solid-member-add
+      data-src="https://api.tzcld-stg.startinblox.com/circles/41/"
+      nested-field="members"
+      range-users="https://api.tzcld-stg.startinblox.com/users/"
+      add-member-label="Ajouter un membre"
+      class-submit-button="add-member-button segment sm-full margin-top-xsmall text-xsmall children-link-button children-link-text-bold children-link-text-uppercase children-link-color-secondary bordered"
+    ></solid-member-add>
+
+    <!-- <solid-member-add
+      data-src="https://api.tzcld-stg.startinblox.com/groups/182/"
+      range-users="https://api.tzcld-stg.startinblox.com/users/"
+      add-member-label="Ajouter un membre"
+    ></solid-member-add> -->
+
+    <h2>Members list</h2>
+    <solid-display
+      data-src="https://api.tzcld-stg.startinblox.com/groups/182/"
+      array-field="user_set"
+      fields="first_name, last_name, email"
+    ></solid-display>
+
+    <script>
+      document.querySelector('solid-member-add').addEventListener('memberAdded', e => {
+        console.log("You added a new member to the group: ", e.detail.resource);
+      });
+    </script>
+  </body>
+</html>

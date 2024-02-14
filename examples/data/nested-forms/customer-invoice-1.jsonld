@@ -27,5 +27,5 @@
 	"tvaAmount": 400,
 	"ttcAmount": 2400,
 	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

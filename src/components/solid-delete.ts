@@ -1,14 +1,15 @@
 import { Sib } from '../libs/Sib';
-import { base_context, store } from '../libs/store/store';
+import { store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
+import { ContextMixin } from '../mixins/contextMixin';
 
 export const SolidDelete = {
   name: 'solid-delete',
-  use: [NextMixin, ValidationMixin, AttributeBinderMixin],
+  use: [NextMixin, ValidationMixin, AttributeBinderMixin, ContextMixin],
   attributes: {
     dataSrc: {
       type: String,
@@ -23,10 +24,6 @@ export const SolidDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
-    },
-    extraContext: {
-      type: String,
-      default: null
     }
   },
   initialState: {
@@ -43,16 +40,6 @@ export const SolidDelete = {
         this.renderPlanned = false;
       });
     }
-  },
-  get context(): object {
-    let extraContextElement = this.extraContext ?
-      document.getElementById(this.extraContext) : // take element extra context first
-      document.querySelector('[data-default-context]'); // ... or look for a default extra context
-
-    let extraContext = {};
-    if (extraContextElement) extraContext = JSON.parse(extraContextElement.textContent || "{}");
-
-    return { ...base_context, ...extraContext };
   },
   async delete(e: Event): Promise<void> {
     e.stopPropagation();

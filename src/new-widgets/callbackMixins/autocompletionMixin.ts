@@ -1,4 +1,4 @@
-import { fuzzyCompare } from '../../libs/helpers';
+import { fuzzyCompare, importInlineCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
 
@@ -26,8 +26,7 @@ const AutocompletionMixin = {
     mutationObserver: null
   },
   created() {
-    //@ts-ignore
-    import('./slimselect.css');
+    importInlineCSS('slimselect', () => import('./slimselect.css?inline'))
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');

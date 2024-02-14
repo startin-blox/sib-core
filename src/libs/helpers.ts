@@ -39,6 +39,40 @@ function importCSS(...stylesheets: string[]) {
   };
   return linksElements;
 }
+/**
+ * @param id an uniq id to avoid import a style twice
+ * @param importer a callback returning this `import()` promise
+ * @returns the style element
+ * 
+ * typical use:
+ * ```js
+ * importInlineCSS('bootstrap', () => import('./css/bootstrap.css?inline')) 
+ * // adding '?inline' lets Vite convert css to js
+ * ```
+ */
+
+function importInlineCSS(
+  id: string,
+  importer: string | (() => string | Promise<string | { default: string }>)
+) {
+  id = `sib-inline-css-${id}`;
+  let style = document.head.querySelector<HTMLStyleElement>(`style#${id}`);
+  if (style) return style;
+  style = document.createElement("style");
+  style.id = id;
+  document.head.appendChild(style);
+  (async () => {
+    let textContent: string;
+    if (typeof importer === "string") textContent = importer;
+    else {
+      const imported = await importer();
+      if (typeof imported === "string") textContent = imported;
+      else textContent = imported.default || "";
+    }
+    style.textContent = textContent;
+  })();
+  return style;
+}
 
 function importJS(...plugins: string[]): HTMLScriptElement[] {
   return plugins.map(url => {
@@ -183,15 +217,17 @@ function transformArrayToContainer(resource: object) {
     if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
     if (['permissions', '@context'].includes(predicate)) continue; // do not transform permissions and context
 
-    // check all keys of nested resource
+    // if nested resource, transform its own nested resources to container recursively
     if (!Array.isArray(predicateValue) && predicateValue['@id']) {
       newValue[predicate] = transformArrayToContainer(resource[predicate]);
     }
 
-    // for arrays
-    if (Array.isArray(predicateValue)) {
-      newValue[predicate] = { 'ldp:contains': [...predicateValue] }; // transform to container
-      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // and check all nested resources
+    if (Array.isArray(predicateValue) && predicateValue['@id']) { // Do not systematically transform arrays to containers
+      newValue[predicate] = {
+        '@id': predicateValue['@id'],
+        'ldp:contains': [...predicateValue]
+      };
+      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // but check all nested resources
         newValue[predicate]['ldp:contains'][index] = transformArrayToContainer(childPredicate);
       });
     }
@@ -199,11 +235,91 @@ function transformArrayToContainer(resource: object) {
   return newValue;
 }
 
+export default class AsyncIterableBuilder<Type> {
+  readonly #values: Promise<{ value: Type; done: boolean }>[] = []
+  #resolve!: (value: { value: Type; done: boolean }) => void
+  readonly iterable: AsyncIterable<Type>
+  readonly next: (value: Type, done?: boolean) => void
+
+  constructor() {
+    this.#nextPromise()
+    this.iterable = this.#createIterable()
+    this.next = this.#next.bind(this)
+  }
+
+  async *#createIterable() {
+    for (let index = 0; ; index++) {
+      const { value, done } = await this.#values[index]
+      delete this.#values[index]
+      yield value
+      if (done) return
+    }
+  }
+
+  #next(value: Type, done: boolean = false) {
+    this.#resolve({ value, done })
+    this.#nextPromise()
+  }
+
+  #nextPromise() {
+    this.#values.push(new Promise(resolve => (this.#resolve = resolve)))
+  }
+}
+
+import {
+  AsyncQuerySelectorAllType,
+  AsyncQuerySelectorType,
+} from './async-query-selector-types';
+
+const asyncQuerySelector: AsyncQuerySelectorType = (
+  selector: string,
+  parent: ParentNode = document
+) =>
+  new Promise<Element>(resolve => {
+    const element = parent.querySelector(selector);
+    if (element) return resolve(element);
+    const observer = new MutationObserver(() => {
+      const element = parent.querySelector(selector);
+      if (!element) return;
+      observer.disconnect();
+      return resolve(element);
+    });
+    observer.observe(parent, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+    });
+  });
+
+const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
+  selector: string,
+  parent: ParentNode = document
+) => {
+  const delivered = new WeakSet<Element>();
+  const { next, iterable } = new AsyncIterableBuilder<Element>();
+  function checkNewElement() {
+    for (const element of parent.querySelectorAll(selector)) {
+      if (delivered.has(element)) continue;
+      delivered.add(element);
+      next(element);
+    }
+  }
+  checkNewElement();
+  const observer = new MutationObserver(checkNewElement);
+  observer.observe(parent, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+  });
+  return iterable;
+};
+
 export {
   uniqID,
   stringToDom,
   evalTemplateString,
   importCSS,
+  importInlineCSS,
   importJS,
   loadScript,
   domIsReady,
@@ -213,5 +329,8 @@ export {
   defineComponent,
   fuzzyCompare,
   compare,
-  transformArrayToContainer
+  transformArrayToContainer,
+  AsyncIterableBuilder,
+  asyncQuerySelector,
+  asyncQuerySelectorAll,
 };

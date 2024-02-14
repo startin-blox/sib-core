@@ -17,25 +17,13 @@
         "get_full_name": "rdfs:label"
       },
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     }
   ],
   "permissions": [
-    {
-      "mode": {
-        "@type": "add"
-      }
-    },
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "add",
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

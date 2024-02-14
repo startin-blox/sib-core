@@ -69,10 +69,11 @@ const ServerPaginationMixin = {
     await this.fetchData(this.dataSrc);
   },
 
-  updateNavButtons(resourceId: string, index: string, variance: number) {
+  async updateNavButtons(resourceId: string, index: string, variance: number) {
     this.element.querySelector("[data-id='prev']").disabled = this.currentOffset[index] <= 0;
-    this.element.querySelector("[data-id='next']").disabled = this.currentOffset[index] * this.limit >= this.pageCount;
+    // this.element.querySelector("[data-id='next']").disabled = await this.resource['ldp:contains'].length == 0;
     this.element.querySelector("[data-id='current']").innerText = this.getCurrentServedPage(resourceId, variance);
+
   },
 
   getServerNavElement(div: HTMLElement) {
@@ -86,6 +87,7 @@ const ServerPaginationMixin = {
 
   getCurrentServedPage(context: string, variance: number): Promise<void> {
     this.currentPage[context] = Number(this.currentPage[context]) + variance;
+    this.pageNumber = this.currentPage[context];
     return this.currentPage[context];
   },
 
@@ -119,18 +121,15 @@ const ServerPaginationMixin = {
           ?disabled=${currentOffset <= 0}
           @click=${() => this.decreaseCurrentOffset(resourceId)}
         >←</button>
+        <span data-id="current">
+          ${currentPageNumber}
+        </span>
         <button
           data-id="next"
           ?disabled=${currentOffset >= (pageCount - 1) * this.limit}
           @click=${ () => this.increaseCurrentOffset(resourceId)}
         >→</button>
         <span>
-          <span data-id="current">
-            ${currentPageNumber}
-          </span> / 
-          <span data-id="count">
-            ${this.pageCount}
-          </span>
         </span>
       `, div);
     }

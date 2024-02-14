@@ -77,7 +77,8 @@ describe('solid-form', { testIsolation: false }, function() {
             "ldp:contains": [
               { "@id": "/examples/data/list/skill-2.jsonld" },
               { "@id": "/examples/data/list/skill-3.jsonld" },
-            ]
+            ],
+            "@id": "/examples/data/list/user-1-skills.jsonld",
           },
           "@id": "/examples/data/list/user-1.jsonld"
         });
@@ -195,7 +196,7 @@ describe('solid-form', { testIsolation: false }, function() {
             "amount": ["Should be > 0"]
           }
         },
-      "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+      "@context": "https://cdn.startinblox.com/owl/context.jsonld"
       },
       headers: {
         'content-type': 'application/ld+json'

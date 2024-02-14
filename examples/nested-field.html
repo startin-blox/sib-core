@@ -10,11 +10,28 @@
   </head>
 
   <body>
-    <h2>Profile of user 1</h2>
+    <h2>Display skills of user 1</h2>
     <solid-display
       data-src="/examples/data/list/user-1.jsonld"
-      nested-field="profile"
-      fields="city, phone, website"
+      nested-field="skills"
+      fields="name"
+    ></solid-display>
+
+    <h2>Display skills associated with current job of user 1</h2>
+    <solid-display
+      data-src="/examples/data/list/user-1.jsonld"
+      nested-field="job.skills"
+      fields="name"
+    ></solid-display>
+
+    <h2>Alternative using multiple to display teachers associated with current user skills</h2>
+    <solid-display
+      data-src="/examples/data/list/user-1.jsonld"
+      nested-field="skills"
+      fields="name, teacher"
+      multiple-teacher-label="Teacher:"
+      multiple-teacher=""
+      multiple-teacher-fields="name, email"
     ></solid-display>
   </body>
 </html>

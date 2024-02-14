@@ -59,6 +59,7 @@ export const SolidFormSearch = {
   get value(): SearchQuery {
     const values: SearchQuery = {};
     this.widgets.forEach((widget) => {
+      if (widget == null) return;
       const name = (widget.component || widget).name;
       if (name == null) return;
       let value = widget.component ? widget.component.getValue() : widget.value;

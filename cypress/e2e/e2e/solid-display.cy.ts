@@ -19,7 +19,7 @@ describe('solid-display', function() {
       .should('not.have.attr', 'fields');
     cy.get('#display-3>div').children().eq(0)
       .find('>div').children()
-      .should('have.length', 9);
+      .should('have.length', 10);
     cy.get('#display-3 > div ')
       .find("[name=permissions]")
       .should('not.exist');

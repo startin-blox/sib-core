@@ -11,5 +11,5 @@
       "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit?"
     }
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

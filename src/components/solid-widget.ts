@@ -46,6 +46,7 @@ export const SolidWidget = {
           value: this.value || this.resource || '',
           src: this.src,
           label: this.label,
+          targetSrc: this.targetSrc || '',
         });
         return tpl;
       },

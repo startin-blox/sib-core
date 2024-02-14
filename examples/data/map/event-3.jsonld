@@ -5,5 +5,5 @@
   "lat": "41.8902102",
   "lng": "12.4922309",
   "permissions": [],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

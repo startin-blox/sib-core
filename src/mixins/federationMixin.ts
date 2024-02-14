@@ -32,11 +32,7 @@ const FederationMixin = {
           const resourcesFetched = await this.fetchSource(containerId); // fetch the resources of this container
           if (resourcesFetched) newResources.push(...(await this.getResources(resourcesFetched))); // Add content of source to array...
         }
-      } else if(!res.isArray?.()) {
-        const resource = await store.getData(res['@id'], this.context);
-        if (resource) newResources.push(resource);
-      }
-      else {
+      } else {
         newResources.push(res); // Or resource directly if not a container
       }
     }

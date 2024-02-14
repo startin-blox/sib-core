@@ -126,6 +126,18 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.intercept("GET", 'https://ldp-server2.test/users/', {
       fixture: "users-nantes.jsonld"
     })
+    cy.intercept("GET", '**/users/jbpasquier/', {
+      fixture: "users-jbpasquier.jsonld"
+    })
+    cy.intercept('GET', '**/profiles/jbpasquier/', {
+      fixture: "profiles-jbpasquier.jsonld"
+    })
+    cy.intercept("GET", '**/users/alex/', {
+      fixture: "users-alex.jsonld"
+    })
+    cy.intercept('GET', '**/profiles/alex/', {
+      fixture: "profiles-alex.jsonld"
+    })
 
     cy.intercept("PATCH", '**/users/matthieu/', {
       headers: {

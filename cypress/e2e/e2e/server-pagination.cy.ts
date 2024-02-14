@@ -20,13 +20,9 @@ describe('server-pagination', { testIsolation: false }, function () {
         .and('not.be.disabled');
 
         // Check page infos
-        cy.get('@nav').find('> span > span:first-child')
+        cy.get('@nav').find('> span')
         .should('have.attr', 'data-id', 'current')
         .contains('1');
-
-        cy.get('@nav').find('> span > span:last-child')
-        .should('have.attr', 'data-id', 'count')
-        .contains('1000');
     });
 
     it('goes to prev/next page', () => {
@@ -36,14 +32,15 @@ describe('server-pagination', { testIsolation: false }, function () {
         // Click next -> To investigate how to answer paginated responses in the test context (static files)
         cy.get('@list').contains('/examples/data/list/--user-0.jsonld');
         cy.get('@list').contains('/examples/data/list/--user-1.jsonld');
-        // cy.get('@list').contains('user-3.jsonld').should('not.exist');
+        cy.get('@list').contains('/examples/data/list/--user-2.jsonld').should('not.exist');
+        cy.get('@list').contains('/examples/data/list/--user-3.jsonld').should('not.exist');
         // cy.get('@list').contains('user-4.jsonld').should('not.exist');
     
         cy.get('@nav').find('button[data-id="next"]').click();
         
         // Click next -> To investigate how to answer paginated responses in the test context (static files)
-        // cy.get('@list').contains('user-1.jsonld').should('not.exist');
-        // cy.get('@list').contains('user-2.jsonld').should('not.exist');
+        cy.get('@list').contains('/examples/data/list/--user-1.jsonld').should('not.exist');
+        cy.get('@list').contains('/examples/data/list/--user-0.jsonld').should('not.exist');
         cy.get('@list').contains('/examples/data/list/--user-2.jsonld');
         cy.get('@list').contains('/examples/data/list/--user-3.jsonld');
     
@@ -52,11 +49,8 @@ describe('server-pagination', { testIsolation: false }, function () {
         .should('not.be.disabled');
 
         // Check pager infos
-        cy.get('@nav').find('> span [data-id=current]')
+        cy.get('@nav').find('> [data-id=current]')
         .contains('2');
-
-        cy.get('@nav').find('> span [data-id=count]')
-        .contains('1000');
 
         // Click prev
         cy.get('@nav').find('button[data-id="prev"]').click();
@@ -68,25 +62,25 @@ describe('server-pagination', { testIsolation: false }, function () {
         .should('not.be.disabled');
 
         // Check pager infos
-        cy.get('@nav').find('> span [data-id=current]')
+        cy.get('@nav').find('> [data-id=current]')
         .contains('1');
-
-        cy.get('@nav').find('> span [data-id=count]')
-        .contains('1000'); 
     });
 
   /**
-  * Paginate and search
+  * Paginate and search client-side
   */
   it('search and paginate', () => {
     cy.get('#list-2').as('list');
-    cy.get('@list').find('button[data-id="next"]').click();
-
-    // cy.get('@list').contains('user-1.jsonld').should('not.exist');
-    // cy.get('@list').contains('user-2.jsonld').should('not.exist');
     cy.get('@list').contains('/examples/data/list/--user-2.jsonld');
     cy.get('@list').contains('/examples/data/list/--user-3.jsonld');
+    
+    cy.get('@list').find('button[data-id="next"]').click();
 
+    cy.get('@list').contains('/examples/data/list/--user-2.jsonld').should('not.exist');
+    cy.get('@list').contains('/examples/data/list/--user-3.jsonld').should('not.exist');
+    cy.get('@list').contains('/examples/data/list/--user-6.jsonld');
+    cy.get('@list').contains('/examples/data/list/--user-7.jsonld');
+    
     // search
     cy.get('#username-form').find('input[name="username"]').type('henry');
 

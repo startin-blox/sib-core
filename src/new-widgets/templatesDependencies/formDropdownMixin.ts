@@ -27,7 +27,9 @@ const FormDropdownMixin = {
   },
   created() {
     this.listAttributes['values'] = [];
-    if (this.listAttributes['value'] && !(JSON.parse(this.listAttributes['value']['@id'])) && Array.isArray(JSON.parse(this.listAttributes['value']))) {
+    if (this.listAttributes['value'] &&
+      !(JSON.parse(this.listAttributes['value']['@id'])) && Array.isArray(JSON.parse(this.listAttributes['value']))
+    ) {
       this.listAttributes['values'] = this.listAttributes['value'];
     }
     if (this.multiple) this.listAttributes['multiple'] = true;

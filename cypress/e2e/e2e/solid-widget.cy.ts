@@ -105,7 +105,8 @@ describe('solid-widget', { testIsolation: false }, function () {
                 title: "Déploiement automatique",
                 "@id": "/examples/data/nested-forms/batch-2.jsonld"
               }
-            ]
+            ],
+            "@id": "/examples/data/nested-forms/customer-invoice-1-batches.jsonld",
           },
           "@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
         })

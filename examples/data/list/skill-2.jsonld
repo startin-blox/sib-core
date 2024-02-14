@@ -2,11 +2,29 @@
   "@id": "/examples/data/list/skill-2.jsonld",
   "name": "CSS",
   "@type": "hd:skill",
+  "teacher": {
+    "@id": "/examples/data/list/skills-2-teacher.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/teacher-1.jsonld",
+        "name": "John Doe",
+        "@type": "hd:teacher",
+        "email": "bento@sib.com"
+      },
+      {
+        "@id": "/examples/data/list/teacher-2.jsonld",
+        "name": "Jane Doe",
+        "@type": "hd:teacher",
+        "email": "jane@doe.com"
+      }
+    ]
+  },
   "permissions": [
-    { "mode": { "@type": "view" }},
-    { "mode": { "@type": "change" }},
-    { "mode": { "@type": "control" }},
-    { "mode": { "@type": "delete" }}
+    "view",
+    "change",
+    "control",
+    "delete"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

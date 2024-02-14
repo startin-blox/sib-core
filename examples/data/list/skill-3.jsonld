@@ -2,11 +2,29 @@
   "@id": "/examples/data/list/skill-3.jsonld",
   "name": "Javascript",
   "@type": "hd:skill",
+  "teacher": {
+    "@id": "/examples/data/list/skills-2-teacher.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/teacher-3.jsonld",
+        "name": "Brittany Doe",
+        "@type": "hd:teacher",
+        "email": "brittany@sib.com"
+      },
+      {
+        "@id": "/examples/data/list/teacher-4.jsonld",
+        "name": "Virgil Doe",
+        "@type": "hd:teacher",
+        "email": "virgil@doe.com"
+      }
+    ]
+  },
   "permissions": [
-    { "mode": { "@type": "view" }},
-    { "mode": { "@type": "change" }},
-    { "mode": { "@type": "control" }},
-    { "mode": { "@type": "delete" }}
+    "view",
+    "change",
+    "control",
+    "delete"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

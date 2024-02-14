@@ -36,7 +36,7 @@ export class CustomGetter {
             this.getExpandedPredicate("ldp:BasicContainer"),
             this.getExpandedPredicate("ldp:DirectContainer"),
             this.getExpandedPredicate("ldp:IndirectContainer"),
-            "sib:federatedContainer"
+            this.getExpandedPredicate("sib:federatedContainer"),
         ];
     }
 
@@ -52,10 +52,13 @@ export class CustomGetter {
         // Specific case where the predicates is a full IRI, avoid splitting it on the dot notation
         try {
             let isUrl = new URL(path);
-            // If the path is an absolute url, we need to fetch the resource
+            // My goal is to be able to solve user['circles.ldp:contains'] on the fly
+            // If we do not check the url protocol, then it is considered valid
+            if (!isUrl.protocol.startsWith('http')) throw new Error('Not a valid HTTP url');
+            // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
             if (isUrl) {
-                let value = this.resource[this.getExpandedPredicate(path)];
-                return value ? value : undefined;
+              let value = this.resource[this.getExpandedPredicate(path)];
+              return value ? value : undefined;
             }
         } catch (e) {
             // Split the path on each dots
@@ -204,8 +207,14 @@ export class CustomGetter {
      * @param prop
      */
     isFullResource(): boolean {
-        return Object.keys(this.resource).filter(p => !p.startsWith('@')).length > 0 // has some properties
-            || this.resource['@id'].startsWith('_:b'); // anonymous node = always full resource
+      let propertiesKeys = Object.keys(this.resource).filter(p => !p.startsWith('@'));
+      if (this.resource['@id'].startsWith('_:b')) return true; // anonymous node = considered as always full
+
+      if (propertiesKeys.length === 1 && propertiesKeys[0] === this.getExpandedPredicate('permissions'))
+        return false; // If only the permissions are present, then the resource is not complete
+      else if (propertiesKeys.length > 0) return true;
+
+      return false;
     }
 
     /**
@@ -214,24 +223,20 @@ export class CustomGetter {
      * @returns 
      */
     async getPermissions(): Promise<string[]> {
-        let permissionsIds = this.resource[this.getExpandedPredicate("permissions")];
-        if (!permissionsIds) { // if no permission, re-fetch data from store
-            await this.getResource(this.resourceId, { ...this.clientContext, ...this.serverContext }, this.parentId, true);
-            permissionsIds = this.resource[this.getExpandedPredicate("permissions")];
+        let permissions = this.resource[this.getExpandedPredicate("permissions")];
+        if (!permissions) { // if no permission, re-fetch data from store
+            await this.getResource(
+                this.resourceId,
+                { ...this.clientContext, ...this.serverContext },
+                this.parentId,
+                true
+            );
+            permissions = this.resource[this.getExpandedPredicate("permissions")];
         }
 
-        if (!permissionsIds) return [];
+        if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
 
-        if (!Array.isArray(permissionsIds)) permissionsIds = [permissionsIds]; // convert to array if compacted to 1 resource
-        const permissions = await Promise.all(
-          permissionsIds
-            .map((p: string) => store.get(p['@id'] + this.parentId)) // get anonymous node from store
-            .map((p: string) => p ? p['mode.@type'] : '')
-        );
-    
-        return permissions ? permissions.map(
-          perm => ContextParser.expandTerm((perm as string), this.serverContext, true)
-        ) : [];
+        return permissions ? permissions : [];
     }
 
     /**

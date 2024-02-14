@@ -14,5 +14,5 @@
       "name": "Han solo"
     }
   ],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

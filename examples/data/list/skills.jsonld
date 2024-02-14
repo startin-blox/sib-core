@@ -30,10 +30,10 @@
       "order": 10,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
+        "view",
+        "change",
+        "control",
+        "delete"
       ]
     },
     {
@@ -50,10 +50,10 @@
       "order": 20,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
+        "view",
+        "change",
+        "control",
+        "delete"
       ]
     },
     {
@@ -62,10 +62,10 @@
       "order": 27,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
+        "view",
+        "change",
+        "control",
+        "delete"
       ]
     },
     {
@@ -74,16 +74,16 @@
       "order": 30,
       "@type": "hd:skill",
       "permissions": [
-        { "mode": { "@type": "view" }},
-        { "mode": { "@type": "change" }},
-        { "mode": { "@type": "control" }},
-        { "mode": { "@type": "delete" }}
+        "view",
+        "change",
+        "control",
+        "delete"
       ]
     }
   ],
   "permissions": [
-    { "mode": { "@type": "view" }},
+    "view",
     { "mode": { "@type": "add" }}
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

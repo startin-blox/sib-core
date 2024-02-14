@@ -68,7 +68,7 @@ describe.skip('store', { testIsolation: false }, function () {
         "@id": "/examples/data/list/user-1.jsonld",
         "@type": "foaf:user",
         "username": "local user",
-        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld"
       }
       await store.setLocalData(dataToSave1, '/examples/data/list/user-1.jsonld');
       const dataRead = store.get('/examples/data/list/user-1.jsonld');
@@ -368,13 +368,13 @@ describe.skip('store', { testIsolation: false }, function () {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
       await store.setLocalData({
-        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld",
         "@id": "store://local.2",
         "name": "ok",
       }, "store://local.2");
 
       await store.setLocalData({
-        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld",
         "@id": "store://local.1",
         "ref": { "@id": "store://local.2" },
       }, "store://local.1");

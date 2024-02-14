@@ -39,12 +39,15 @@ const MultipleselectFormMixin = {
   setDataSrc(value: string, listValueTransformations: Function[]) {
     if (value && value !== this.dataSrc) {
       try {
-        if (Array.isArray(JSON.parse(value))) {
-          this.setValue(JSON.parse(value));
+        let values = JSON.parse(value);
+        if (values && Array.isArray(values)) {
+          this.setValue(values);
+        } else {
+          this.setValue([value]);
         }
       } catch (ex) {
         this.dataSrc = value;
-        console.log('Not an array', ex);
+        this.setValue([ {"@id": value}]);
       }
     }
 
@@ -54,6 +57,12 @@ const MultipleselectFormMixin = {
   populate() {
     if (!this.resource || (!this.resource['ldp:contains'] && !Array.isArray(this.resource))) return;
     this.setValue(this.resource['ldp:contains']);
+
+    // TODO: Rationalize or clean this commented code
+    // console.log("Populate of multipleselectformmixin", this.dataSrc, this.resource, this.resourceId, this.resource['ldp:contains'])
+    // if (this.resource['ldp:contains']) this.setValue(this.resource['ldp:contains']);
+    // else if(!Array.isArray(this.resource)) this.setValue(this.resource)
+
     this.planRender();
   },
   setValue(values: string[]) { // set the values to the dropdown

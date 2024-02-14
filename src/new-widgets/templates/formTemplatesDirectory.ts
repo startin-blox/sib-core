@@ -297,7 +297,7 @@ export const formTemplates = {
           type="text"
           ?required=${attributes.required}
           name=${ifDefined(attributes.name)}
-          value=${value || ''}
+          value=${value || ''}
         >
         <input
           type="file"
@@ -412,7 +412,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         id=${ifDefined(attributes.id)}
-        value=${value || ''}
+        value=${value || ''}
         min=${ifDefined(attributes.min)}
         max=${ifDefined(attributes.max)}
         step=${ifDefined(attributes.step)}

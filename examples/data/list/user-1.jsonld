@@ -25,16 +25,15 @@
       }
     ]
   },
+  "job": {
+    "@id": "/examples/data/list/job-1.jsonld"
+  },
   "profile": {
     "@id": "/examples/data/list/profile-1.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }
