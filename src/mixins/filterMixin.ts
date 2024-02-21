@@ -2,6 +2,12 @@ import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
 
+const enum FilterMode {
+  Server = 'server',
+  Client = 'client',
+  Index = 'index'
+};
+
 const FilterMixin = {
   name: 'filter-mixin',
   use: [],
@@ -26,8 +32,8 @@ const FilterMixin = {
       }
     },
     filteredOn: {
-      type: String, // 'server' | 'client'
-      default: 'client'
+      type: String, // 'server' | 'client' | 'index'
+      default: FilterMode.Client // 'client'
     },
   },
   created() {
@@ -44,6 +50,8 @@ const FilterMixin = {
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
       this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
+    } else if (this.filteredOn === FilterMode.Index) {
+      console.log("FILTER INDEX");
     } else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
     }
@@ -58,7 +66,7 @@ const FilterMixin = {
     }
   },
   isFilteredOnServer() {
-    return this.filteredOn === 'server' && !!this.fetchData;
+    return this.filteredOn === FilterMode.Server && !!this.fetchData;
   },
   async onServerSearchChange() {
     await this.fetchData(this.dataSrc);
