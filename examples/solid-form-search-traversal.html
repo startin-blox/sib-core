@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: federation</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <script
+      type="module"
+      src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+    ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@startinblox/orbit-styling-framework/dist/index.css" />
+  </head>
+
+  <body>
+    <sib-auth auto-login>
+      <sib-auth-provider
+        data-authority="https://api.community.startinblox.com/"
+      ></sib-auth-provider>
+    </sib-auth>
+
+    <script>
+      setTimeout(() => {
+        window.sibStore.setLocalData({
+          "@cache": "false",
+          "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+          "@type": "ldp:Container",
+          "@id": "store://local.5e7ab94250757/dataSrc/",
+          "ldp:contains": [
+            {
+              "@id": "https://api.community.startinblox.com/users/",
+              "@type": "sib:federatedContainer"
+            },
+            {
+              "@id": "https://api.artefacts.hubl.world/users/",
+              "@type": "sib:federatedContainer"
+            },
+            {
+              "@id": "https://api.casaco.hubl.world/users/",
+              "@type": "sib:federatedContainer"
+            },
+            {
+              "@id": "https://api.coderbunker.hubl.world/users/",
+              "@type": "sib:federatedContainer"
+            },
+            {
+              "@id": "https://api.community.hubl.world/users/",
+              "@type": "sib:federatedContainer"
+            },
+          ],
+          "permissions": [
+            {
+              "mode": {
+                "@type": "view"
+              }
+            }
+          ]
+        });
+      }, 3000);
+    </script>
+
+    <solid-form-search
+      id="solid-directory-listing-search"
+      class="segment block padding-top-large padding-bottom-large whitespace-normal form search-form"
+      fields="name, profile.job, profile.city, skills"
+      class-name="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+      label-name="Search by name and/or firstname"
+      widget-name="solid-form-placeholder-text"
+      class-profile.job="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+      label-profile.job="Search by job"
+      widget-profile.job="solid-form-placeholder-text"
+      class-profile.city="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+      label-profile.city="Search by city"
+      widget-profile.city="solid-form-placeholder-text"
+      submit-button="GO"
+      submit-widget="button"
+      class-submit-button="search-button segment sm-full text-xsmall children-link-button children-link-text-bold children-link-text-uppercase children-link-reversed color-secondary bordered children-button-icon children-icon-arrow-right-circle children-icon-small children-icon-margin-right-xsmall"
+      range-skills="https://api.community.hubl.world/skills/"
+      order-asc-skills="name"
+      class-skills="search-skills segment margin-bottom-small two-third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small select-shadow select-bg-white"
+      label-skills="Add a skill filter"
+      widget-skills="solid-form-multipleselect-autocompletion"
+      naked=""
+      ></solid-form-search>
+    <solid-display
+      data-src="store://local.5e7ab94250757/dataSrc/" 
+      filtered-by="solid-directory-listing-search">
+    </solid-display>
+  </body>
+</html>
