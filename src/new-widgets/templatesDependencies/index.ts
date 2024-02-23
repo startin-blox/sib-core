@@ -6,6 +6,8 @@ import { FormCheckboxMixin } from './formCheckboxMixin';
 import { FormDropdownMixin } from './formDropdownMixin';
 import { FormFileMixin } from './formFileMixin';
 import { FormLengthMixin } from './formLengthMixin';
+import { FormMinMaxMixin } from './formMinMaxMixin';
+import { FormMixin } from './formMixin';
 import { FormNumberMixin } from './formNumberMixin';
 import { FormRadioMixin } from './formRadioMixin';
 import { FormStepMixin } from './formStepMixin';
@@ -30,6 +32,8 @@ export {
     FormDropdownMixin,
     FormFileMixin,
     FormLengthMixin,
+    FormMinMaxMixin,
+    FormMixin,
     FormNumberMixin,
     FormRadioMixin,
     FormStepMixin,
