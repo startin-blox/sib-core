@@ -1,6 +1,7 @@
 import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
+import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
 
 const enum FilterMode {
   Server = 'server',
@@ -45,13 +46,22 @@ const FilterMixin = {
   },
   attached(): void {
     const filteredBy = this.filteredBy;
+    this.searchForm = document.getElementById(filteredBy)
     if (this.isFilteredOnServer() && filteredBy) {
-      this.searchForm = document.getElementById(filteredBy)
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
       this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
     } else if (this.filteredOn === FilterMode.Index) {
+      if (!filteredBy) throw `#Missing filtered-by attribute`;
+      this.listPostProcessors.push(this.filterCallback.bind(this));
       console.log("FILTER INDEX");
+
+      this.searchForm.addEventListener('formChange', (formChangeEvent: any) => {
+        const resource = formChangeEvent.detail.resource;
+        const query = SparqlQueryFactory.make("user", resource);
+        // queryEngine.execute(query)
+        console.log(query);
+      });
     } else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
     }
