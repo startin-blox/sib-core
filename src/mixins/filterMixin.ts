@@ -2,6 +2,7 @@ import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
 import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
+import { QueryEngine } from '@comunica/query-sparql-link-traversal';
 
 const enum FilterMode {
   Server = 'server',
@@ -19,6 +20,13 @@ const FilterMixin = {
     searchFields: {
       type: String,
       default: null
+    },
+    dataSrcIndex: {
+      type: String,
+      default: null,
+      callback: async function (value: string) {
+        //console.log("Set index src", value)
+      }
     },
     filteredBy: {
       type: String,
@@ -44,20 +52,107 @@ const FilterMixin = {
       this.searchForm?.component.updateAutoRanges();
     })
   },
-  attached(): void {
+  async attached(): Promise<void> {
     const filteredBy = this.filteredBy;
-    this.searchForm = document.getElementById(filteredBy)
-    if (this.isFilteredOnServer() && filteredBy) {
-      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
-      // this.searchForm.component.attach(this); // is it necessary?
-      this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
-    } else if (this.filteredOn === FilterMode.Index) {
+    this.searchForm = document.getElementById(filteredBy);
+
+    if (this.dataSrcIndex && this.dataSrcIndex !== "") {
+      this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw `#Missing filtered-by attribute`;
       //this.listPostProcessors.push(this.filterCallback.bind(this));
+
+      // Create the local container to store search results
+      this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
+      let results = {
+        "@cache": "false",
+        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@type": "ldp:Container",
+        "@id": this.dataSrc,
+        "ldp:contains": new Array<any>(),
+        "permissions": [
+          {
+            "mode": {
+              "@type": "view"
+            }
+          }
+        ]
+      };
+      window.sibStore.setLocalData(results, this.dataSrc);
+
+      const update = async (id: string): Promise<void> => {
+        console.log("Update user", id);
+        results['ldp:contains'].push({
+          "@id": id,
+          "@type": "foaf:user"
+        });
+        console.log(results);
+        setTimeout(() => window.sibStore.setLocalData(results, this.dataSrc), 1000);
+        //await window.sibStore.setLocalData(results, this.dataSrc);
+      }
+
+      this.engine = new QueryEngine();
+
+      // Set the initial results:
+      // - Pick 30 arbitrary users (ex: with skill 1) 
+      // - or pick the first 30 users whose name starts with the letter "A".
+      // console.log(window.sibStore.getData(this.dataSrcIndex));
+
+      // Find skill index
+      const bindingsStream = await this.engine.queryBindings(SparqlQueryFactory.makeSkillMetaIndex(), {
+        lenient: true, // ignore HTTP fails
+        sources: [this.dataSrcIndex],
+      });
+  
+      let skillMetaIndex = "";
+  
+      bindingsStream.on('data', (binding: any) => {
+        skillMetaIndex = binding.get('result').value;
+        console.log(`Found meta skill index ${skillMetaIndex}`);
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        bindingsStream.on('end', () => resolve());
+        bindingsStream.on('error', () => reject());
+      });
+
+      const skill = "http://localhost:3000/examples/data/solid-traversal-search/list/skill-2.jsonld";
+      const bindingsStream2 = await this.engine.queryBindings(SparqlQueryFactory.makeSkillIndex(skill), {
+        lenient: true, // ignore HTTP fails
+        sources: [skillMetaIndex],
+      });
+
+      let skillIndex = "";
+
+      bindingsStream2.on('data', (binding: any) => {
+        skillIndex = binding.get('result').value;
+        console.log(`Found skill index ${skillIndex}`);
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        bindingsStream2.on('end', () => resolve());
+        bindingsStream2.on('error', () => reject());
+      });
+
+      const bindingsStream3 = await this.engine.queryBindings(SparqlQueryFactory.makeSkill(skill), {
+        lenient: true, // ignore HTTP fails
+        sources: [skillIndex],
+      });
+
+      bindingsStream3.on('data', async (binding: any) => {
+        const user = binding.get('result').value;
+        console.log(`Found user ${user}`);
+        await update(user);
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        bindingsStream3.on('end', () => resolve());
+        bindingsStream3.on('error', () => reject());
+      });
+
       console.log("FILTER INDEX");
 
       this.searchForm.addEventListener('formChange', (formChangeEvent: any) => {
-        //const resource = formChangeEvent.detail.resource;
+        // const resource = formChangeEvent.detail.resource;
         // const query = SparqlQueryFactory.make("user", resource);
         // queryEngine.execute(query)
         // console.log(query);
@@ -65,35 +160,18 @@ const FilterMixin = {
         // initialiser le conteneur avec 10, 20 ou 30 premier users.
         console.log("FILTER");
 
-        let results = {
-          "@cache": "false",
-          "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
-          "@type": "ldp:Container",
-          "@id": "store://local.5e7ab94250757/dataSrc/",
-          "ldp:contains": new Array<any>(),
-          "permissions": [
-            {
-              "mode": {
-                "@type": "view"
-              }
-            }
-          ]
-        };
-
-        window.sibStore.setLocalData(results, "store://local.5e7ab94250757/dataSrc/");
-
-        const update = (id: string): void => {
-          results['ldp:contains'].push({
-            "@id": id,
-            "@type": "foaf:user"
-          });
-          window.sibStore.setLocalData(results, "store://local.5e7ab94250757/dataSrc/");
-        }
-
-        setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
-        setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
+        //setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
+        //setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
       });
-    } else {
+    }
+
+    else if (this.isFilteredOnServer() && filteredBy) {
+      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
+      // this.searchForm.component.attach(this); // is it necessary?
+      this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
+    } 
+    
+    else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
     }
   },

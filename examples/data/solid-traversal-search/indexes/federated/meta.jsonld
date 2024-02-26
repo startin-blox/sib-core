@@ -1,0 +1,29 @@
+{
+    "@context": {
+        "ex": "https://example.org#",
+        "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+        "ex:forProperty": { "@type": "@id" },
+        "ex:forValue": { "@type": "@id" },
+        "ex:instancesIn": { "@type": "@id" }
+    },
+    "@graph": [
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/meta.jsonld",
+            "@type": "ex:Index"
+        },
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/meta.jsonld#1",
+            "@type": "ex:PropertyIndexRegistration",
+            "ex:forProperty": "ex:forProperty",
+            "ex:forValue": "ns1:hasSkill",
+            "ex:instancesIn": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/all.jsonld"
+        },
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/meta.jsonld#2",
+            "@type": "ex:PropertyIndexRegistration",
+            "ex:forProperty": "ex:forProperty",
+            "ex:forValue": "ns1:hasLocation",
+            "ex:instancesIn": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/all.jsonld"
+        }
+    ]
+}

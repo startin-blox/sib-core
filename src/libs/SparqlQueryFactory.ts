@@ -33,4 +33,47 @@ export class SparqlQueryFactory {
         return query;
     }
 
+    public static makeUserInit(): string {
+        return `PREFIX ex: <https://example.org#>
+        SELECT ?`;
+    }
+
+    public static makeSkillMetaIndex(): string {
+        return `PREFIX ex: <https://example.org#>
+        PREFIX ns1: <https://cdn.startinblox.com/owl/ttl/vocab.ttl#> 
+        SELECT ?result 
+        WHERE {
+            ?registration a ex:PropertyIndexRegistration;
+            ex:forProperty ex:forProperty;
+            ex:forValue ns1:hasSkill;
+            ex:instancesIn ?result.
+        }`;
+    }
+
+    public static makeSkillIndex(skill: string): string {
+        return `PREFIX ex: <https://example.org#>
+        PREFIX ns1: <https://cdn.startinblox.com/owl/ttl/vocab.ttl#> 
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+        SELECT ?result 
+        WHERE {
+            ?registration a ex:PropertyIndexRegistration;
+            ex:forProperty ns1:hasSkill;
+            ex:forValue <${skill}>;
+            rdfs:seeAlso ?result.
+        }`;
+    }
+
+    public static makeSkill(skill: string): string {
+        return `PREFIX ex: <https://example.org#>
+        PREFIX ns1: <https://cdn.startinblox.com/owl/ttl/vocab.ttl#> 
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+        SELECT ?result 
+        WHERE {
+            ?index a ex:PropertyIndex;
+            ex:forProperty ns1:hasSkill;
+            ex:forValue <${skill}>;
+            ex:instance ?result.
+        }`;
+    }
+
 }
