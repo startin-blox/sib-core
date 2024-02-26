@@ -43,6 +43,8 @@ export const SolidDisplay = {
     removeActiveSubscription: null,
   },
   created(): void {
+    console.log("created solid display")
+    this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
     // Set route active at initialization
     const route = document.querySelector('solid-route[active]') as any;
     if (!route) return;

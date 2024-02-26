@@ -20,6 +20,7 @@
       ></sib-auth-provider>
     </sib-auth>
 
+    <h1>Test</h1>
 
     <solid-form-search
       id="solid-directory-listing-search"
@@ -44,51 +45,42 @@
       widget-skills="solid-form-multipleselect-autocompletion"
       naked=""
     ></solid-form-search>
-
+      
+      <!-- data-src: passer les liens vers les indexes ? Utiliser un index fédéré-->
     <solid-display
-      data-src="store://local.5e7ab94250757/dataSrc/"
-      fields="name, profile.job, profile.city, skills"
+      data-src-index="https://api.community.startinblox.com/indexes/metaIndex"
       filtered-on="index"
-      filtered-by="solid-directory-listing-search">
-    </solid-display>
-
-    <script>
-      setTimeout(() => {
-        window.sibStore.setLocalData({
-          "@context": "https://cdn.startinblox.com/owl/context.jsonld",
-          "@type": "ldp:Container",
-          "@id": "store://local.5e7ab94250757/dataSrc/",
-          "ldp:contains": [
-            {
-              "@id": "https://api.community.startinblox.com/users/",
-              "@type": "sib:federatedContainer"
-            },
-            {
-              "@id": "https://api.artefacts.hubl.world/users/",
-              "@type": "sib:federatedContainer"
-            },
-            {
-              "@id": "https://api.casaco.hubl.world/users/",
-              "@type": "sib:federatedContainer"
-            },
-            {
-              "@id": "https://api.coderbunker.hubl.world/users/",
-              "@type": "sib:federatedContainer"
-            },
-            {
-              "@id": "https://api.community.hubl.world/users/",
-              "@type": "sib:federatedContainer"
-            },
-          ],
-          "permissions": [
-            {
-              "mode": {
-                "@type": "view"
-              }
-            }
-          ]
-        }, 'store://local.5e7ab94250757/dataSrc/');
-      }, 3000);
-    </script>
+      filtered-by="solid-directory-listing-search"
+      fields="name"
+    ></solid-display>
   </body>
 </html>
+    
+    <!--
+      data-src="store://local.5e7ab94250757/dataSrc/" 
+
+
+
+
+      {
+        "@id": "https://api.community.startinblox.com/users/",
+            "@type": "sib:federatedContainer"
+          },
+          {
+            "@id": "https://api.artefacts.hubl.world/users/",
+            "@type": "sib:federatedContainer"
+          },
+          {
+            "@id": "https://api.casaco.hubl.world/users/",
+            "@type": "sib:federatedContainer"
+          },
+          {
+            "@id": "https://api.coderbunker.hubl.world/users/",
+            "@type": "sib:federatedContainer"
+          },
+          {
+            "@id": "https://api.community.hubl.world/users/",
+            "@type": "sib:federatedContainer"
+          },
+
+-->

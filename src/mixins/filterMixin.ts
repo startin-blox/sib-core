@@ -53,14 +53,45 @@ const FilterMixin = {
       this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
     } else if (this.filteredOn === FilterMode.Index) {
       if (!filteredBy) throw `#Missing filtered-by attribute`;
-      this.listPostProcessors.push(this.filterCallback.bind(this));
+      //this.listPostProcessors.push(this.filterCallback.bind(this));
       console.log("FILTER INDEX");
 
       this.searchForm.addEventListener('formChange', (formChangeEvent: any) => {
-        const resource = formChangeEvent.detail.resource;
-        const query = SparqlQueryFactory.make("user", resource);
+        //const resource = formChangeEvent.detail.resource;
+        // const query = SparqlQueryFactory.make("user", resource);
         // queryEngine.execute(query)
-        console.log(query);
+        // console.log(query);
+
+        // initialiser le conteneur avec 10, 20 ou 30 premier users.
+        console.log("FILTER");
+
+        let results = {
+          "@cache": "false",
+          "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+          "@type": "ldp:Container",
+          "@id": "store://local.5e7ab94250757/dataSrc/",
+          "ldp:contains": new Array<any>(),
+          "permissions": [
+            {
+              "mode": {
+                "@type": "view"
+              }
+            }
+          ]
+        };
+
+        window.sibStore.setLocalData(results, "store://local.5e7ab94250757/dataSrc/");
+
+        const update = (id: string): void => {
+          results['ldp:contains'].push({
+            "@id": id,
+            "@type": "foaf:user"
+          });
+          window.sibStore.setLocalData(results, "store://local.5e7ab94250757/dataSrc/");
+        }
+
+        setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
+        setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
       });
     } else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
