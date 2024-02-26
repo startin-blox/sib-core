@@ -86,7 +86,7 @@ const RangeMixin = {
     if (resources) {
       // process resources to create the template
       const getRangeValue = async (resource: Resource) => {
-        let res = await store.getData(resource['@id'], this.context || base_context, undefined, undefined, true);
+        let res = await store.getData(resource['@id'], this.context || base_context);
         //TODO: handle properly the fact that the res could be null
         if (res === null) {
           res = resource;
