@@ -1,4 +1,4 @@
-import { QueryEngine } from '@comunica/query-sparql-link-traversal';
+import { QueryEngine } from '@comunica/query-sparql';
 import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
 
 export type SparqlQueryEngineComunicaCallback = (user: string) => Promise<void>;
@@ -81,7 +81,7 @@ export class SparqlQueryEngineComunica {
         }
 
         else if (hasCity && !hasSkill) {
-            this.searchByLocation("");
+            this.searchByLocation(searchForm["profile.city"].value);
         }
 
         else if (hasSkill && hasCity) {

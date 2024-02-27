@@ -98,7 +98,7 @@
     "vite": "^5.0.12"
   },
   "dependencies": {
-    "@comunica/query-sparql-link-traversal": "^0.2.0",
+    "@comunica/query-sparql": "^2.10.2",
     "cors": "^2.8.5"
   }
 }

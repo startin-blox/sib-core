@@ -1,5 +1,5 @@
 import { parseFieldsString } from '../libs/helpers';
-import { QueryEngine } from '@comunica/query-sparql-link-traversal';
+//import { QueryEngine } from '@comunica/query-sparql-link-traversal';
 
 const TraversalSearchMixin = {
   name: 'traversal-search-mixin',
@@ -29,7 +29,7 @@ const TraversalSearchMixin = {
   },
   created() {
     this.searchCount = new Map();
-    this.engine = new QueryEngine();
+    this.engine = undefined; //new QueryEngine();
     this.element.addEventListener('populate', () => {
       console.log(this.results);
     });
