@@ -1,8 +1,6 @@
 import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
-import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
-import { QueryEngine } from '@comunica/query-sparql-link-traversal';
 import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica';
 
 const enum FilterMode {
@@ -139,9 +137,11 @@ const FilterMixin = {
       });
       */
 
-      this.searchForm.addEventListener('formChange', (formChangeEvent: any) => {
+      this.searchForm.addEventListener('submit', (submitEvent: any) => {
         // const resource = formChangeEvent.detail.resource;
-        console.log("Filterting form changeEvent", formChangeEvent);
+        console.log("Filtering form submit", submitEvent, submitEvent.target);
+        console.log(submitEvent.target.parentElement.component.value);
+        console.log(submitEvent.target.parentElement.component.value.skills);
         //setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
         //setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
       });
