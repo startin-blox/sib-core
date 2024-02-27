@@ -72,15 +72,7 @@ const FilterMixin = {
           "view"
         ]
       };
-      sibStore.setLocalData(results, this.dataSrc);
-
-      // document.addEventListener('resourceReady', (resourceUpdatedEvent: any) => {
-      //   console.log("Resource updated", resourceUpdatedEvent.detail.resource);
-      //   console.log("Resource updated", resourceUpdatedEvent.detail.resource["@id"])
-      //   if (resourceUpdatedEvent.detail.resource["@id"] === this.dataSrc) {
-      //     sibStore.setLocalData(results, this.dataSrc);
-      //   }
-      // });
+      sibStore.setLocalData(results, this.dataSrc, true);
 
       const update = async (id: string): Promise<void> => {
         console.log("Update user", id);
@@ -89,7 +81,7 @@ const FilterMixin = {
           "@type": "foaf:user"
         });
         sibStore.clearCache(this.dataSrc);
-        await sibStore.setLocalData(results, this.dataSrc);
+        await sibStore.setLocalData(results, this.dataSrc, true);
       }
 
       this.engine = new QueryEngine();

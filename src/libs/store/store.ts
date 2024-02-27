@@ -267,7 +267,8 @@ class Store {
    * @param id - uri to update
    * @returns - object
    */
-  async _fetch(method: string, resource: object, id: string): Promise<any> {
+  async _fetch(method: string, resource: object, id: string, bypassLoadingList: boolean = false): Promise<any> {
+    // console.log('from _fetch', method, resource, id);
     if (method !== '_LOCAL')
       return this.fetchAuthn(id, {
         method: method,
@@ -281,8 +282,8 @@ class Store {
     const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
     this.clearCache(id);
 
-    if (method === '_LOCAL')
-      await this.getData(id, clientContext, '', resource, false, undefined, undefined, true);
+    if (method === '_LOCAL' && bypassLoadingList)
+      await this.getData(id, clientContext, '', resource, false, undefined, undefined, bypassLoadingList);
     else
       await this.getData(id, clientContext, '', resource);
     return {ok: true}
@@ -306,12 +307,12 @@ class Store {
    * @param id - id of the resource to update
    * @returns void
    */
-  async _updateResource(method: string, resource: object, id: string) {
+  async _updateResource(method: string, resource: object, id: string, bypassLoadingList: boolean = false) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method)) throw new Error('Error: method not allowed');
 
     const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
-    return this._fetch(method, resource, id).then(async(response) => {
+    return this._fetch(method, resource, id, bypassLoadingList).then(async(response) => {
       if (response.ok) {
         if(method !== '_LOCAL') {
           // await this.purge(id);
@@ -420,8 +421,8 @@ class Store {
    *
    * @returns id of the posted resource
    */
-  async setLocalData(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('_LOCAL', resource, id);
+  async setLocalData(resource: object, id: string, bypassLoadingList: boolean = false): Promise<string | null> {
+    return this._updateResource('_LOCAL', resource, id, bypassLoadingList);
   }
 
   /**
