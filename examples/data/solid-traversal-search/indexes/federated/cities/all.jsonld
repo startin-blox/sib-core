@@ -1,0 +1,31 @@
+{
+    "@context": {
+        "ex": "https://example.org#",
+        "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "ex:forProperty": { "@type": "@id" },
+        "ex:forValue": { "@type": "@id" },
+        "ex:instancesIn": { "@type": "@id" },
+        "rdfs:seeAlso": { "@type": "@id" }
+    },
+    "@graph": [
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/all.jsonld",
+            "@type": "ex:Index"
+        },
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/all.jsonld#1",
+            "@type": "ex:PropertyIndexRegistration",
+            "ex:forProperty": "ns1:hasLocation",
+            "ex:forValue": "paris",
+            "rdfs:seeAlso": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/paris.jsonld"
+        },
+        {
+            "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/all.jsonld#2",
+            "@type": "ex:PropertyIndexRegistration",
+            "ex:forProperty": "ns1:hasLocation",
+            "ex:forValue": "nantes",
+            "rdfs:seeAlso": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/nantes.jsonld"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "@context": {
+        "ex": "https://example.org#",
+        "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+        "ex:forProperty": { "@type": "@id" },
+        "ex:forValue": { "@type": "@id" },
+        "ex:instancesIn": { "@type": "@id" }
+    },
+    "@id": "/examples/data/solid-traversal-search/indexes/federated/skills/paris.jsonld",
+    "@type": "ex:PropertyIndex",
+    "ex:forProperty": "ns1:hasLocation",
+    "ex:forValue": "paris",
+    "ex:instance": [
+        "/examples/data/solid-traversal-search/list/user-1.jsonld",
+        "/examples/data/solid-traversal-search/list/user-4.jsonld"
+    ]
+}
