@@ -1,5 +1,5 @@
 {
-  "@id": "/examples/data/solid-traversal-search/list/user-5.jsonld",
+  "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-5.jsonld",
   "first_name": "Camille",
   "last_name": "CharlyTango",
   "username": "Camcam",
@@ -7,17 +7,17 @@
   "name": "Camille Charly T",
   "available": false,
   "skills": {
-    "@id": "/examples/data/solid-traversal-search/list/user-5-skills.jsonld",
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-5-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
       {
-        "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld"
+        "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-1.jsonld"
       },
       {
-        "@id": "/examples/data/solid-traversal-search/list/skill-4.jsonld"
+        "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-4.jsonld"
       },
       {
-        "@id": "/examples/data/solid-traversal-search/list/skill-8.jsonld"
+        "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-8.jsonld"
       }
     ],
     "permissions": [
@@ -29,7 +29,7 @@
     ]
   },
   "profile": {
-    "@id": "/examples/data/solid-traversal-search/list/profile-5.jsonld"
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/profile-5.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [
@@ -39,5 +39,5 @@
       }
     }
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -71,71 +71,15 @@ const FilterMixin = {
         });
         sibStore.clearCache(this.dataSrc);
         await sibStore.setLocalData(results, this.dataSrc, true);
+        this.element.dataset.src = this.dataSrc;
+        console.log("Update user after setLocalData etc", id, results, this);
+
+        this.empty();
+        await this.populate();
       }
 
       const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update);
       comunicaEngine.searchByLocation("paris");
-
-      /*
-      this.engine = new QueryEngine();
-
-      // Set the initial results:
-      // - Pick 30 arbitrary users (ex: with skill 1) 
-      // - or pick the first 30 users whose name starts with the letter "A".
-      // console.log(window.sibStore.getData(this.dataSrcIndex));
-
-      // Find skill index
-      const bindingsStream = await this.engine.queryBindings(SparqlQueryFactory.makeMetaMetaIndexSkillQuery(), {
-        lenient: true, // ignore HTTP fails
-        sources: [this.dataSrcIndex],
-      });
-  
-      let skillMetaIndex = "";
-  
-      bindingsStream.on('data', (binding: any) => {
-        skillMetaIndex = binding.get('result').value;
-        console.log(`Found meta skill index ${skillMetaIndex}`);
-      });
-
-      await new Promise<void>((resolve, reject) => {
-        bindingsStream.on('end', () => resolve());
-        bindingsStream.on('error', () => reject());
-      });
-
-      const skill = "http://localhost:3000/examples/data/solid-traversal-search/list/skill-2.jsonld";
-      const bindingsStream2 = await this.engine.queryBindings(SparqlQueryFactory.makeMetaIndexSkillQuery(skill), {
-        lenient: true, // ignore HTTP fails
-        sources: [skillMetaIndex],
-      });
-
-      let skillIndex = "";
-
-      bindingsStream2.on('data', (binding: any) => {
-        skillIndex = binding.get('result').value;
-        console.log(`Found skill index ${skillIndex}`);
-      });
-
-      await new Promise<void>((resolve, reject) => {
-        bindingsStream2.on('end', () => resolve());
-        bindingsStream2.on('error', () => reject());
-      });
-
-      const bindingsStream3 = await this.engine.queryBindings(SparqlQueryFactory.makeIndexSkillQuery(skill), {
-        lenient: true, // ignore HTTP fails
-        sources: [skillIndex],
-      });
-
-      bindingsStream3.on('data', async (binding: any) => {
-        const user = binding.get('result').value;
-        console.log(`Found user ${user}`);
-        await update(user);
-      });
-
-      await new Promise<void>((resolve, reject) => {
-        bindingsStream3.on('end', () => resolve());
-        bindingsStream3.on('error', () => reject());
-      });
-      */
 
       this.searchForm.addEventListener('submit', (submitEvent: any) => {
         // const resource = formChangeEvent.detail.resource;

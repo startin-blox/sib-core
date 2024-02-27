@@ -1,5 +1,5 @@
 {
-  "@id": "/examples/data/solid-traversal-search/list/user-3.jsonld",
+  "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-3.jsonld",
   "first_name": "Not A",
   "last_name": "Paris Member",
   "username": "not-member-paris",
@@ -7,7 +7,7 @@
   "name": "Not A Paris Member",
   "available": false,
   "skills": {
-    "@id": "/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
 
@@ -21,7 +21,7 @@
     ]
   },
   "profile": {
-    "@id": "/examples/data/solid-traversal-search/list/profile-3.jsonld"
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/profile-3.jsonld"
   },
   "@type": "foaf:user",
   "permissions": [
@@ -31,5 +31,5 @@
       }
     }
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

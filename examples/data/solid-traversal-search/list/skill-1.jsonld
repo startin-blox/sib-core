@@ -1,5 +1,5 @@
 {
-  "@id": "/examples/data/solid-traversal-search/list/skill-1.jsonld",
+  "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-1.jsonld",
   "name": "HTML",
   "@type": "hd:skill",
   "permissions": [
@@ -8,5 +8,5 @@
     { "mode": { "@type": "control" }},
     { "mode": { "@type": "delete" }}
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,5 +1,5 @@
 {
-  "@id": "/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
+  "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
 
@@ -11,5 +11,5 @@
       }
     }
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

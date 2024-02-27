@@ -5,12 +5,12 @@
         "ex:forProperty": { "@type": "@id" },
         "ex:instance": { "@type": "@id" }
     },
-    "@id": "/examples/data/solid-traversal-search/indexes/federated/cities/nantes.jsonld",
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/cities/nantes.jsonld",
     "@type": "ex:PropertyIndex",
     "ex:forProperty": "ns1:hasLocation",
     "ex:forValue": "nantes",
     "ex:instance": [
-        "/examples/data/solid-traversal-search/list/user-2.jsonld",
-        "/examples/data/solid-traversal-search/list/user-3.jsonld"
+        "http://localhost:3000/examples/data/solid-traversal-search/list/user-2.jsonld",
+        "http://localhost:3000/examples/data/solid-traversal-search/list/user-3.jsonld"
     ]
 }
