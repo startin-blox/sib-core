@@ -37,7 +37,7 @@ export class SparqlQueryFactory {
             ex:forValue ?value;
             ex:instance ?result.
             FILTER (?value IN (${forValue}))
-        }`;
+        } LIMIT 30`;
     }
 
     public static makeMixedIndexQuery(skills: string, city: string): string {
@@ -55,7 +55,7 @@ export class SparqlQueryFactory {
             ex:forValue ${city};
             ex:instance ?result.
             FILTER (?skill IN (${skills}))
-        }`;
+        } LIMIT 30`;
     }
 
     public static makeMetaMetaIndexSkillQuery(): string {
