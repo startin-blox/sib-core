@@ -1,10 +1,16 @@
 {
-    "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+    "@context": {
+        "ex": "https://example.org#",
+        "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
+        "ex:forProperty": { "@type": "@id" },
+        "ex:forValue": { "@type": "@id" },
+        "ex:instance": { "@type": "@id" }
+    },
     "@id": "/examples/data/solid-traversal-search/indexes/federated/skills/html.jsonld",
-    "@type": "PropertyIndex",
-    "forProperty": "skills",
-    "forValue": { "@type": "@id", "@id": "/examples/data/solid-traversal-search/list/skill-4.jsonld" },
-    "hasEntry": [
-        { "@type": "@id", "@id": "/examples/data/solid-traversal-search/list/user-4.jsonld" }
+    "@type": "ex:PropertyIndex",
+    "ex:forProperty": "skills",
+    "ex:forValue": "/examples/data/solid-traversal-search/list/skill-4.jsonld",
+    "ex:instance": [
+        "/examples/data/solid-traversal-search/list/user-4.jsonld"
     ]
 }

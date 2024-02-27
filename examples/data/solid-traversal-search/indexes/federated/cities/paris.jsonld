@@ -3,8 +3,7 @@
         "ex": "https://example.org#",
         "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
         "ex:forProperty": { "@type": "@id" },
-        "ex:forValue": { "@type": "@id" },
-        "ex:instancesIn": { "@type": "@id" }
+        "ex:instance": { "@type": "@id" }
     },
     "@id": "/examples/data/solid-traversal-search/indexes/federated/cities/paris.jsonld",
     "@type": "ex:PropertyIndex",

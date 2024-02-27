@@ -3,6 +3,7 @@ import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
 import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
 import { QueryEngine } from '@comunica/query-sparql-link-traversal';
+import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica';
 
 const enum FilterMode {
   Server = 'server',
@@ -60,19 +61,9 @@ const FilterMixin = {
       this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw `#Missing filtered-by attribute`;
       //this.listPostProcessors.push(this.filterCallback.bind(this));
-
+      
       // Create the local container to store search results
-      this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
-      let results = {
-        "@context": "https://cdn.startinblox.com/owl/context.jsonld",
-        "@type": "ldp:Container",
-        "@id": this.dataSrc,
-        "ldp:contains": new Array<any>(),
-        "permissions": [
-          "view"
-        ]
-      };
-      sibStore.setLocalData(results, this.dataSrc, true);
+      let results = this.initLocalDataSourceContainerForSearchResults();
 
       const update = async (id: string): Promise<void> => {
         console.log("Update user", id);
@@ -84,6 +75,10 @@ const FilterMixin = {
         await sibStore.setLocalData(results, this.dataSrc, true);
       }
 
+      const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update);
+      comunicaEngine.searchByLocation("paris");
+
+      /*
       this.engine = new QueryEngine();
 
       // Set the initial results:
@@ -92,7 +87,7 @@ const FilterMixin = {
       // console.log(window.sibStore.getData(this.dataSrcIndex));
 
       // Find skill index
-      const bindingsStream = await this.engine.queryBindings(SparqlQueryFactory.makeSkillMetaIndex(), {
+      const bindingsStream = await this.engine.queryBindings(SparqlQueryFactory.makeMetaMetaIndexSkillQuery(), {
         lenient: true, // ignore HTTP fails
         sources: [this.dataSrcIndex],
       });
@@ -110,7 +105,7 @@ const FilterMixin = {
       });
 
       const skill = "http://localhost:3000/examples/data/solid-traversal-search/list/skill-2.jsonld";
-      const bindingsStream2 = await this.engine.queryBindings(SparqlQueryFactory.makeSkillIndex(skill), {
+      const bindingsStream2 = await this.engine.queryBindings(SparqlQueryFactory.makeMetaIndexSkillQuery(skill), {
         lenient: true, // ignore HTTP fails
         sources: [skillMetaIndex],
       });
@@ -127,7 +122,7 @@ const FilterMixin = {
         bindingsStream2.on('error', () => reject());
       });
 
-      const bindingsStream3 = await this.engine.queryBindings(SparqlQueryFactory.makeSkill(skill), {
+      const bindingsStream3 = await this.engine.queryBindings(SparqlQueryFactory.makeIndexSkillQuery(skill), {
         lenient: true, // ignore HTTP fails
         sources: [skillIndex],
       });
@@ -142,18 +137,11 @@ const FilterMixin = {
         bindingsStream3.on('end', () => resolve());
         bindingsStream3.on('error', () => reject());
       });
-
-      console.log("FILTER INDEX");
+      */
 
       this.searchForm.addEventListener('formChange', (formChangeEvent: any) => {
         // const resource = formChangeEvent.detail.resource;
-        // const query = SparqlQueryFactory.make("user", resource);
-        // queryEngine.execute(query)
-        // console.log(query);
-
-        // initialiser le conteneur avec 10, 20 ou 30 premier users.
         console.log("Filterting form changeEvent", formChangeEvent);
-
         //setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
         //setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
       });
@@ -177,6 +165,20 @@ const FilterMixin = {
       this.searchForm.component.value = filters;
       this.filterList();
     }
+  },
+  initLocalDataSourceContainerForSearchResults(): any {
+    this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
+    const results = {
+      "@context": "https://cdn.startinblox.com/owl/context.jsonld",
+      "@type": "ldp:Container",
+      "@id": this.dataSrc,
+      "ldp:contains": new Array<any>(),
+      "permissions": [
+        "view"
+      ]
+    };
+    sibStore.setLocalData(results, this.dataSrc, true);
+    return results;
   },
   isFilteredOnServer() {
     return this.filteredOn === FilterMode.Server && !!this.fetchData;
