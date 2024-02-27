@@ -11,6 +11,6 @@
     "ex:forProperty": "ns1:hasSkill",
     "ex:forValue": "https://api.community.hubl.world/skills/22/",
     "ex:instance": [
-        "http://localhost:3000/examples/data/solid-traversal-search/list/user-4.jsonld"
+        "http://localhost:3000/examples/data/solid-traversal-search/list/user-3.jsonld"
     ]
 }

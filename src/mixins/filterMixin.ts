@@ -78,7 +78,12 @@ const FilterMixin = {
         await this.populate();
       }
 
-      const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update);
+      const reset = (): void => {
+        results['ldp:contains'] = [];
+        sibStore.setLocalData(results, this.dataSrc, true);
+      }
+
+      const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
       comunicaEngine.searchFromSearchForm(); // no filter = default case
 
       this.searchForm.addEventListener('submit', async (submitEvent: any) => {

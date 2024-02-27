@@ -20,8 +20,9 @@ export class SparqlQueryFactory {
         WHERE {
             ?registration a ex:PropertyIndexRegistration;
             ex:forProperty ${forProperty};
-            ex:forValue ${forValue};
+            ex:forValue ?value;
             rdfs:seeAlso ?result.
+            FILTER (?value IN (${forValue}))
         }`;
     }
 
@@ -33,8 +34,27 @@ export class SparqlQueryFactory {
         WHERE {
             ?index a ex:PropertyIndex;
             ex:forProperty ${forProperty};
-            ex:forValue ${forValue};
+            ex:forValue ?value;
             ex:instance ?result.
+            FILTER (?value IN (${forValue}))
+        }`;
+    }
+
+    public static makeMixedIndexQuery(skills: string, city: string): string {
+        return `PREFIX ex: <https://example.org#>
+        PREFIX ns1: <https://cdn.startinblox.com/owl/ttl/vocab.ttl#> 
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+        SELECT ?result 
+        WHERE {
+            ?skillIndex a ex:PropertyIndex;
+            ex:forProperty ns1:hasSkill;
+            ex:forValue ?skill;
+            ex:instance ?result.
+            ?cityIndex a ex:PropertyIndex;
+            ex:forProperty ns1:hasLocation;
+            ex:forValue ${city};
+            ex:instance ?result.
+            FILTER (?skill IN (${skills}))
         }`;
     }
 
@@ -42,12 +62,12 @@ export class SparqlQueryFactory {
         return SparqlQueryFactory.makeMetaMetaIndexQuery("ns1:hasSkill");
     }
 
-    public static makeMetaIndexSkillQuery(skill: string): string {
-        return SparqlQueryFactory.makeMetaIndexQuery("ns1:hasSkill", `<${skill}>`);
+    public static makeMetaIndexSkillQuery(skills: string[]): string {
+        return SparqlQueryFactory.makeMetaIndexQuery("ns1:hasSkill", skills.map(s => `<${s}>`).join(', '));
     }
 
-    public static makeIndexSkillQuery(skill: string): string {
-        return SparqlQueryFactory.makeIndexQuery("ns1:hasSkill", `<${skill}>`);
+    public static makeIndexSkillQuery(skills: string[]): string {
+        return SparqlQueryFactory.makeIndexQuery("ns1:hasSkill", skills.map(s => `<${s}>`).join(', '));
     }
 
     public static makeMetaMetaIndexCityQuery(): string {
@@ -62,4 +82,7 @@ export class SparqlQueryFactory {
         return SparqlQueryFactory.makeIndexQuery("ns1:hasLocation", `"${city}"`);
     }
 
+    public static makeIndexSkillCityQuery(skills: string[], city: string): string {
+        return SparqlQueryFactory.makeMixedIndexQuery(skills.map(s => `<${s}>`).join(', '), `"${city}"`);
+    }
 }
