@@ -74,12 +74,13 @@ const FilterMixin = {
       };
       sibStore.setLocalData(results, this.dataSrc);
 
-      document.addEventListener('resourceReady', (resourceUpdatedEvent: any) => {
-        console.log("Resource updated", resourceUpdatedEvent.detail.resource);
-        if (resourceUpdatedEvent.detail.resource["@id"] !== this.dataSrc) {
-          sibStore.setLocalData(results, this.dataSrc);
-        }
-      });
+      // document.addEventListener('resourceReady', (resourceUpdatedEvent: any) => {
+      //   console.log("Resource updated", resourceUpdatedEvent.detail.resource);
+      //   console.log("Resource updated", resourceUpdatedEvent.detail.resource["@id"])
+      //   if (resourceUpdatedEvent.detail.resource["@id"] === this.dataSrc) {
+      //     sibStore.setLocalData(results, this.dataSrc);
+      //   }
+      // });
 
       const update = async (id: string): Promise<void> => {
         console.log("Update user", id);

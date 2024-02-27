@@ -82,7 +82,8 @@ class Store {
     localData?: object,
     forceFetch: boolean = false,
     serverPagination?: ServerPaginationOptions,
-    serverSearch?: ServerSearchOptions
+    serverSearch?: ServerSearchOptions,
+    bypassLoadingList: boolean = false
   ): Promise<Resource|null> {
     let key = id;
     if (serverPagination) {
@@ -101,8 +102,10 @@ class Store {
     return new Promise(async (resolve) => {
       document.addEventListener('resourceReady', this.resolveResource(key, resolve));
 
-      if (this.loadingList.has(key)) return;
-      this.loadingList.add(key);
+      if (!bypassLoadingList) {
+        if (this.loadingList.has(key)) return;
+        this.loadingList.add(key);
+      }
 
       // Generate proxy
       const clientContext = await myParser.parse(context);
@@ -111,11 +114,13 @@ class Store {
         if(localData == null) localData = {};
         localData["@id"] = id;
         resource = localData;
+        console.log("From get Data Local data", localData);
       } else try {
         resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination, serverSearch);
       } catch (error) { console.error(error) }
       if (!resource) {
-        this.loadingList.delete(key);
+        if (!bypassLoadingList)
+          this.loadingList.delete(key);
         resolve(null);
         return;
       }
@@ -124,7 +129,9 @@ class Store {
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-      this.loadingList.delete(key);
+
+      if (!bypassLoadingList)
+        this.loadingList.delete(key);
       document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
     });
   }
@@ -236,7 +243,6 @@ class Store {
 
       const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
       if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
-
       if (this.get(key)) { // if already cached, merge data
         this.cache.get(key).merge(resourceProxy);
       } else {  // else, put in cache
@@ -271,9 +277,14 @@ class Store {
       });
 
     const resourceProxy = store.get(id);
+    // console.log('from _fetch', method, resource, id);
     const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
     this.clearCache(id);
-    await this.getData(id, clientContext, '', resource);
+
+    if (method === '_LOCAL')
+      await this.getData(id, clientContext, '', resource, false, undefined, undefined, true);
+    else
+      await this.getData(id, clientContext, '', resource);
     return {ok: true}
   }
 
