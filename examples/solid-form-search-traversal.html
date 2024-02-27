@@ -20,7 +20,7 @@
       ></sib-auth-provider>
     </sib-auth>
 
-    <h1>Test</h1>
+    <h1>Statin'Blox demo: search for distributed data efficiently with indexes</h1>
 
     <solid-form-search
       id="solid-directory-listing-search"
@@ -45,41 +45,33 @@
       widget-skills="solid-form-multipleselect-autocompletion"
       naked=""
     ></solid-form-search>
-
-      <!-- data-src: passer les liens vers les indexes ? Utiliser un index fédéré-->
+      
     <solid-display
       data-src-index="http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/meta.jsonld"
       filtered-by="solid-directory-listing-search"
       fields="first_name, name, email"
     ></solid-display>
+
+    <!--
+          <p>
+      The <code>&lt;solid-display&gt;</code> component has a new attribute <code>data-src-index</code> 
+      for passing link to indexes. The component internally set the <code>data-src</code> attribute to 
+      a local container in order to host the results. When the form is submited, the component runs a 
+      SPARQL query to find the users with the provided criteria. 
+    </p>
+
+    <p>
+      <code>
+<pre>
+&lt;solid-display
+  data-src-index="http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/meta.jsonld"
+  filtered-by="solid-directory-listing-search"
+  fields="name"
+&gt;&lt;/solid-display&gt;
+</pre>
+      </code>
+    </p>
+    -->
+
   </body>
 </html>
-    
-    <!--
-      data-src="store://local.5e7ab94250757/dataSrc/" 
-
-
-
-
-      {
-        "@id": "https://api.community.startinblox.com/users/",
-            "@type": "sib:federatedContainer"
-          },
-          {
-            "@id": "https://api.artefacts.hubl.world/users/",
-            "@type": "sib:federatedContainer"
-          },
-          {
-            "@id": "https://api.casaco.hubl.world/users/",
-            "@type": "sib:federatedContainer"
-          },
-          {
-            "@id": "https://api.coderbunker.hubl.world/users/",
-            "@type": "sib:federatedContainer"
-          },
-          {
-            "@id": "https://api.community.hubl.world/users/",
-            "@type": "sib:federatedContainer"
-          },
-
--->
