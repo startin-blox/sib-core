@@ -403,7 +403,7 @@ class Store {
   }
 
   /**
-   * Send data to create a local resource in a container
+   * Set data to create a local resource in a container
    * @param resource - resource to create
    * @param id - uri of the container to add resource. should start with ``
    *

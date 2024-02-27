@@ -25,7 +25,7 @@ const FilterMixin = {
       type: String,
       default: null,
       callback: async function (value: string) {
-        //console.log("Set index src", value)
+        console.log("Set index src", value);
       }
     },
     filteredBy: {
@@ -64,20 +64,22 @@ const FilterMixin = {
       // Create the local container to store search results
       this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
       let results = {
-        "@cache": "false",
-        "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld",
         "@type": "ldp:Container",
         "@id": this.dataSrc,
         "ldp:contains": new Array<any>(),
         "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
+          "view"
         ]
       };
-      window.sibStore.setLocalData(results, this.dataSrc);
+      sibStore.setLocalData(results, this.dataSrc);
+
+      document.addEventListener('resourceReady', (resourceUpdatedEvent: any) => {
+        console.log("Resource updated", resourceUpdatedEvent.detail.resource);
+        if (resourceUpdatedEvent.detail.resource["@id"] !== this.dataSrc) {
+          sibStore.setLocalData(results, this.dataSrc);
+        }
+      });
 
       const update = async (id: string): Promise<void> => {
         console.log("Update user", id);
@@ -85,9 +87,8 @@ const FilterMixin = {
           "@id": id,
           "@type": "foaf:user"
         });
-        console.log(results);
-        setTimeout(() => window.sibStore.setLocalData(results, this.dataSrc), 1000);
-        //await window.sibStore.setLocalData(results, this.dataSrc);
+        sibStore.clearCache(this.dataSrc);
+        await sibStore.setLocalData(results, this.dataSrc);
       }
 
       this.engine = new QueryEngine();
@@ -158,7 +159,7 @@ const FilterMixin = {
         // console.log(query);
 
         // initialiser le conteneur avec 10, 20 ou 30 premier users.
-        console.log("FILTER");
+        console.log("Filterting form changeEvent", formChangeEvent);
 
         //setTimeout(() => update("https://api.community.startinblox.com/users/antoine/"), 1000);
         //setTimeout(() => update("https://api.community.startinblox.com/users/gwenle-bars/"), 2000);
