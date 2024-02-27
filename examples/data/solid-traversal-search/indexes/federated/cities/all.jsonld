@@ -4,7 +4,6 @@
         "ns1": "https://cdn.startinblox.com/owl/ttl/vocab.ttl#",
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
         "ex:forProperty": { "@type": "@id" },
-        "ex:forValue": { "@type": "@id" },
         "ex:instancesIn": { "@type": "@id" },
         "rdfs:seeAlso": { "@type": "@id" }
     },
