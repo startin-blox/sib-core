@@ -79,10 +79,10 @@ const FilterMixin = {
       }
 
       const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update);
-      comunicaEngine.searchByLocation("paris");
+      comunicaEngine.searchFromSearchForm(); // no filter = default case
 
       this.searchForm.addEventListener('submit', async (submitEvent: any) => {
-        await this.initLocalDataSourceContainerForSearchResults();
+        results['ldp:contains'] = []; // empty the previous results
         const filterValues = submitEvent.target.parentElement.component.value;
         comunicaEngine.searchFromSearchForm(filterValues);
       });

@@ -16,14 +16,14 @@
             "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/all.jsonld#1",
             "@type": "ex:PropertyIndexRegistration",
             "ex:forProperty": "ns1:hasSkill",
-            "ex:forValue": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-2.jsonld",
+            "ex:forValue": "https://api.community.hubl.world/skills/88/",
             "rdfs:seeAlso": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/css.jsonld"
         },
         {
             "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/all.jsonld#2",
             "@type": "ex:PropertyIndexRegistration",
             "ex:forProperty": "ns1:hasSkill",
-            "ex:forValue": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-4.jsonld",
+            "ex:forValue": "https://api.community.hubl.world/skills/22/",
             "rdfs:seeAlso": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/devops.jsonld"
         }
     ]

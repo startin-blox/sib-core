@@ -9,7 +9,7 @@
     "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/css.jsonld",
     "@type": "ex:PropertyIndex",
     "ex:forProperty": "ns1:hasSkill",
-    "ex:forValue": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-2.jsonld",
+    "ex:forValue": "https://api.community.hubl.world/skills/88/",
     "ex:instance": [
         "http://localhost:3000/examples/data/solid-traversal-search/list/user-1.jsonld",
         "http://localhost:3000/examples/data/solid-traversal-search/list/user-4.jsonld"

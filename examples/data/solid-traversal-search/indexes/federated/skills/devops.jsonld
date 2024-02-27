@@ -6,10 +6,10 @@
         "ex:forValue": { "@type": "@id" },
         "ex:instance": { "@type": "@id" }
     },
-    "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/html.jsonld",
+    "@id": "http://localhost:3000/examples/data/solid-traversal-search/indexes/federated/skills/devops.jsonld",
     "@type": "ex:PropertyIndex",
-    "ex:forProperty": "skills",
-    "ex:forValue": "http://localhost:3000/examples/data/solid-traversal-search/list/skill-4.jsonld",
+    "ex:forProperty": "ns1:hasSkill",
+    "ex:forValue": "https://api.community.hubl.world/skills/22/",
     "ex:instance": [
         "http://localhost:3000/examples/data/solid-traversal-search/list/user-4.jsonld"
     ]

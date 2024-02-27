@@ -56,8 +56,10 @@ export class SparqlQueryEngineComunica {
         return await this.getResultsFromBindingsStream(bindingsStream);
     }
 
-    public searchBySkill(): void {
-        
+    public async searchBySkill(skill: string): Promise<void> {
+        const skillMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexSkillQuery());
+        const skillIndex = await this.getIndex(SparqlQueryFactory.makeMetaIndexSkillQuery(skill), skillMetaIndex);
+        this.getUsers(SparqlQueryFactory.makeIndexSkillQuery(skill), skillIndex);
     }
 
     public async searchByLocation(location: string): Promise<void> {
@@ -70,14 +72,12 @@ export class SparqlQueryEngineComunica {
 
     }
 
-    public searchFromSearchForm(searchForm: any): void {
+    public searchFromSearchForm(searchForm: any = {}): void {
         const hasSkill = searchForm["skills"] && searchForm["skills"].value.length > 0;
         const hasCity = searchForm["profile.city"] && searchForm["profile.city"].value.length > 0;
 
-        // searchFormResource["profile.city"].value
-
         if (hasSkill && !hasCity) {
-            this.searchBySkill();
+            this.searchBySkill(searchForm["skills"].value[0]["@id"]);
         }
 
         else if (hasCity && !hasSkill) {
@@ -87,6 +87,8 @@ export class SparqlQueryEngineComunica {
         else if (hasSkill && hasCity) {
             this.searchBySkillAndLocation();
         }
+
+        else this.searchByLocation("paris"); // default filter and reset
     }
 
 }
