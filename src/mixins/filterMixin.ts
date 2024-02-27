@@ -64,7 +64,7 @@ const FilterMixin = {
       let results = await this.initLocalDataSourceContainerForSearchResults();
 
       const update = async (id: string): Promise<void> => {
-        console.log("Update user", id);
+        console.log("Update user", id, results);
         results['ldp:contains'].push({
           "@id": id,
           "@type": "foaf:user"
@@ -72,7 +72,7 @@ const FilterMixin = {
         sibStore.clearCache(this.dataSrc);
         await sibStore.setLocalData(results, this.dataSrc, true);
         this.element.dataset.src = this.dataSrc;
-        console.log("Update user after setLocalData etc", id, results, this);
+        console.log("Update user after setLocalData etc", id, results);
 
         this.empty();
         await this.populate();
@@ -85,6 +85,7 @@ const FilterMixin = {
 
       const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
       comunicaEngine.searchFromSearchForm(); // no filter = default case
+      console.log("Search by location for Paris", this.dataSrcIndex, this.dataSrc, results, this);
 
       this.searchForm.addEventListener('submit', async (submitEvent: any) => {
         results['ldp:contains'] = []; // empty the previous results
@@ -113,7 +114,10 @@ const FilterMixin = {
     }
   },
   async initLocalDataSourceContainerForSearchResults(): Promise<any> {
-    this.dataSrc = "store://local.5e7ab94250757/dataSrc/";
+    const idField = Array.from(Array(20), () => Math.floor(Math.random() * 36).toString(36)).join('');
+    // const id = `store://local.${idField}`;
+    console.log("Init local data source container for search results", idField);
+    this.dataSrc = `store://local.${idField}/dataSrc/`;
     const results = {
       "@context": "https://cdn.startinblox.com/owl/context.jsonld",
       "@type": "ldp:Container",
@@ -123,7 +127,7 @@ const FilterMixin = {
         "view"
       ]
     };
-    await sibStore.setLocalData(results, this.dataSrc, true);
+    await sibStore.setLocalData(results, this.dataSrc);
     return results;
   },
   isFilteredOnServer() {
