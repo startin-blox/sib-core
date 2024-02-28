@@ -31,6 +31,10 @@
     .main-block.children-third > div > solid-display {
       width: 32.2% !important;
     }
+    solid-form-multipleselect-autocompletion solid-form-dropdown>div {
+      box-sizing: border-box;
+      box-shadow: 0 0 5px 0 rgba(133,140,148,.09);
+    }
   </style>
 
   <body class="segment full">
@@ -52,7 +56,7 @@
         <solid-form-search
           id="solid-directory-listing-search"
           class="segment block padding-top-large padding-bottom-large whitespace-normal form search-form"
-          fields="name, profile.job, profile.city, skills"
+          fields="profile.city, skills"
           class-name="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
           label-name="Search by name and/or firstname"
           widget-name="solid-form-placeholder-text"
