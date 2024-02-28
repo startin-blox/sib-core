@@ -119,7 +119,7 @@ const FilterMixin = {
     console.log("Init local data source container for search results", idField);
     this.dataSrc = `store://local.${idField}/dataSrc/`;
     const results = {
-      "@context": "https://cdn.startinblox.com/owl/context.jsonld",
+      "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
       "@type": "ldp:Container",
       "@id": this.dataSrc,
       "ldp:contains": new Array<any>(),
