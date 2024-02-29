@@ -104,16 +104,19 @@ export class CustomGetter {
      * @param value
      * @returns
      */
-    getLiteralValue(value: any): string|null {
+    getLiteralValue(value: any): string|string[]|null {
         if (typeof value === "object") { // value object: https://www.w3.org/TR/json-ld11/#value-objects
             if (value['@value']) { // 1 language
                 return value['@value'];
-            } else if (Array.isArray(value)) { // multiple languages
+            } else if (Array.isArray(value)) {
                 if (value.length === 0) return null;
-                const ln = store._getLanguage();
-                let translatedValue = value.find(v => v['@language'] && v['@language'] === ln); // find current language
-                if (!translatedValue) translatedValue = value.find(v => v['@language'] && v['@language'] === 'en'); // default to en
-                return translatedValue ? (translatedValue['@value'] || null) : null;
+                if(Array.isArray(value[0])) { // multiple languages
+                    const ln = store._getLanguage();
+                    let translatedValue = value.find(v => v['@language'] && v['@language'] === ln); // find current language
+                    if (!translatedValue) translatedValue = value.find(v => v['@language'] && v['@language'] === 'en'); // default to en
+                    return translatedValue ? (translatedValue['@value'] || null) : null; // return value when no translated value is found
+                }
+                return value;
             }
         }
         return value; // simple value
