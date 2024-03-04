@@ -9,7 +9,12 @@ const RequiredMixin = {
   async requiredResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     const displays: any[] = [];
     const requiredFields = Array.from((this.element as Element).attributes).filter(attr => attr.name.startsWith('required-'))
-      .map(attr => attr['name'].replace('required-', ''));
+      .map(attr => {
+        let fieldName = attr['name'].replace('required-', '');
+        if (attr.value !== '')
+          fieldName = attr.value;
+        return fieldName;
+      });
 
     if (requiredFields.length) {
       for (let resource of resources) {

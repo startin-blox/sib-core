@@ -111,15 +111,20 @@ export const SolidFormSearch = {
   },
   async updateAutoRanges() {
     for(const attr of (this.element as Element).attributes) {
-      if(!attr['name'].startsWith('auto-range-')) continue;
-      const field = attr['name'].replace('auto-range-', '');
+      if (!attr['name'].startsWith('auto-range-')) continue;
+      let fieldName = attr['name'].replace('auto-range-', '');
+
+      if (attr.value !== '')
+        fieldName = attr.value;
+
       const autoRangeValues = new Set();
       for(const elm of this.attachedElements) {
-        for(const value of await elm.getValuesOfField(field)) {
+        for(const value of await elm.getValuesOfField(fieldName)) {
           autoRangeValues.add(value);
         }
       }
-      const idField = `${this.rangeId}_${field}`;
+
+      const idField = `${this.rangeId}_${fieldName}`;
       const id = `store://local.${idField}`;
       const ldpContains = Array.from(autoRangeValues).map(id => ({'@id' : id}));
       const data = {
