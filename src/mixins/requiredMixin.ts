@@ -10,7 +10,7 @@ const RequiredMixin = {
     const displays: any[] = [];
     const requiredFields = Array.from((this.element as Element).attributes).filter(attr => attr.name.startsWith('required-'))
       .map(attr => {
-        return (attr.value !== '' ? attr.value : attr['name'].replace('auto-range-', ''));
+        return (attr.value !== '' ? attr.value : attr['name'].replace('required-', ''));
     });
 
     if (requiredFields.length) {
