@@ -142,9 +142,9 @@ const traversePath = async (resource: object, path: string[], targetedType: stri
 
     if(lastPath1El) remainingPath = path;
 
-    if (currentRes.isContainer?.() && remainingPath.length > 1) {
+    if (currentRes && currentRes.isContainer?.() && remainingPath.length > 1) {
       result = await traversePath(currentRes, remainingPath, targetedType); // Await the result of traversePath
-    } else if (Array.isArray(currentRes)) {
+    } else if (currentRes && Array.isArray(currentRes)) {
       for (const res of currentRes) {
         if (remainingPath.length > 1) {
           result = await traversePath(res, remainingPath, targetedType);
