@@ -61,6 +61,8 @@ export class CustomGetter {
               return value ? value : undefined;
             }
         } catch (e) {
+            if (!path.split) return undefined;
+
             // Split the path on each dots
             const path1: string[] = path.split('.');
 
@@ -78,9 +80,7 @@ export class CustomGetter {
             // We do that by poping one element from path1 at each step and affecting it to path2
             // Trying to get the value from it
             while (true) {
-                try {
-                    value = this.resource[this.getExpandedPredicate(path1[0])];
-                } catch (e) { break }
+                value = await this.resource[this.getExpandedPredicate(path1[0])];
 
                 if (path1.length <= 1) break; // no dot path
                 const lastPath1El = path1.pop();
@@ -91,7 +91,7 @@ export class CustomGetter {
                 if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
                 return await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId); // return complete resource
             }
-            if (!value) return undefined;
+            if (!value || !value['@id']) return undefined;
 
             let resource = await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId);
             store.subscribeResourceTo(this.resourceId, value['@id']);

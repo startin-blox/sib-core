@@ -203,9 +203,10 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   },
   resource(subject, query) {
     // dropdown default ' - ' option return an empty string
+    if (!subject || !subject["@id"]) return false; // if no resource, return false
     if(query === '') return true;
     if (!query['@id']) return false;
-    const ret = subject['@id'] === query['@id'];
+    const ret = (subject['@id'] === query['@id']);
     return ret;
   }
 };
