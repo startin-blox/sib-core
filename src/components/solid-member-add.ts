@@ -84,8 +84,6 @@ export const SolidMemberAdd = {
     this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
   },
   async populate(): Promise<void> {
-    console.log("Calling populate");
-    console.trace();
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
