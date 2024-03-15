@@ -135,14 +135,14 @@ const traversePath = async (resource: object, path: string[], targetedType: stri
   let remainingPath: string[] = path;
   if (!path.length) return [];
 
-  // Split and get last item
+  // Split and get first item
   try {
     currentRes = await resource[path[0]];
     const lastPath1El = path.shift();
 
     if(lastPath1El) remainingPath = path;
 
-    if (currentRes && currentRes.isContainer?.() && remainingPath.length > 1) {
+    if (currentRes && remainingPath.length > 1) {
       result = await traversePath(currentRes, remainingPath, targetedType); // Await the result of traversePath
     } else if (currentRes && Array.isArray(currentRes)) {
       for (const res of currentRes) {
@@ -168,6 +168,7 @@ const traversePath = async (resource: object, path: string[], targetedType: stri
     console.error(e);
     return [];
   }
+  // console.log(`TraversePath result for ${resource['@id']} : `, await result);
   return result;
 }
 
@@ -204,13 +205,14 @@ const matchFilter = async (
   } else { // search on 1 field
     //FIXME: Better assumption that just using ldp:contains does the job ?
     if (!(await resource[filter]) && filter.includes('ldp:contains')) { // nested field
+      // console.log(`No ${filter} found for ${resource['@id']} and ${filter} is a nested field. Trying to traverse path.`);
       const path1: string[] = filter.split('.');
       const targetedType = path1[path1.length - 1];
 
       let targetIds: object[] = [];
 
       targetIds = await traversePath(resource, path1, targetedType);
-      // console.log(`TargetIds : ${targetIds} found for ${resource['@id']}`);
+      // console.log(`TargetIds : ${targetIds} found for ${await resource['name']} : ${resource['@id']}`);
 
       if (!Array.isArray(targetIds) || targetIds.length === 0 && query.value !== '') {
         // console.log(`No targetIds found for ${resource['@id']} returning false`);
