@@ -254,12 +254,14 @@ export const formTemplates = {
         range=${ifDefined(attributes.range)}
         enum=${ifDefined(attributes.enum)}
         values=${ifDefined(attributes.values)}
+        option-label=${ifDefined(attributes.optionLabel)}
+        option-value=${ifDefined(attributes.optionValue)}
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
       ></solid-form-multicheckbox>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin ]
+    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
   },
   multiple: {
     template: (_value: string, attributes: any) => html`
@@ -281,13 +283,15 @@ export const formTemplates = {
         data-id=${ifDefined(attributes.id)}
         range=${ifDefined(attributes.range)}
         values=${ifDefined(attributes.values)}
+        option-label=${ifDefined(attributes.optionLabel)}
+        option-value=${ifDefined(attributes.optionValue)}
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
         multiple
       ></solid-form-dropdown>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin ]
+    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
   },
   file: {
     template: (value: string, attributes: any) => html`
