@@ -27,6 +27,7 @@ const AttributeBinderMixin = {
 
     const oldAttributes: any = Array.from(this.element.attributes) // transform NamedNodeMap in object
       .reduce((obj: any, attr: any) => {
+        
         // Keep only attributes starting with `store://...`
         if (!attr.value.match(/^store:\/\/(resource|container|user)/)) return { ...obj }
 
@@ -60,15 +61,17 @@ const AttributeBinderMixin = {
       const value = attributes[attr];
       // Avoid error if value is a number
       if (typeof value === 'string') {
-        // Replace attribute value                                              
+        // Replace attribute value
         if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
-        let path = value.replace('store://resource.', '');
-        attributes[attr] = resource ? await resource[path] : '';
+          let path = value.replace('store://resource.', '');
+          attributes[attr] = resource ? await resource[path] : '';
         } else if (isContainer && resource && value.startsWith('store://container')) { // CONTAINER
           let path = value.replace('store://container.', '');
           attributes[attr] = resource ? await resource[path] : '';
         } else if (value.startsWith('store://user')) { // USER
-          const userId = await this.retry(this.getUser.bind(this)); // retry until sibAuth is defined
+          // retry until sibAuth is defined
+          const userId = await this.retry(this.getUser.bind(this));
+          // TODO: Using this.context makes no sense here. Use same-attribute-context="context-id" instead?
           const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context || base_context) : null;
           if (!user) {
             attributes[attr] = '';

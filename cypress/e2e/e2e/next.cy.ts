@@ -14,7 +14,7 @@ describe('next', { testIsolation: false }, function() {
     cy.get('@list').contains('PHP').click();
     cy.get('#detail > div').should('be.visible').should('contain', '/examples/data/list/skill-5.jsonld')
     cy.location().should((loc) => {
-      expect(loc.hash).to.eq('#view/@/examples/data/list/skill-5.jsonld@')
+      expect(loc.hash).to.eq('#view/@%2Fexamples%2Fdata%2Flist%2Fskill-5.jsonld@')
     })
   });
 
@@ -25,7 +25,7 @@ describe('next', { testIsolation: false }, function() {
     cy.get('@list').contains('CSS').click();
     cy.get('#user-detail > div').should('be.visible').should('contain', '/examples/data/list/user-1.jsonld')
     cy.location().should((loc) => {
-      expect(loc.hash).to.eq('#user/@/examples/data/list/user-1.jsonld@')
+      expect(loc.hash).to.eq('#user/@%2Fexamples%2Fdata%2Flist%2Fuser-1.jsonld@')
     })
   });
 
@@ -34,7 +34,7 @@ describe('next', { testIsolation: false }, function() {
     cy.get('body').tab().tab().type('{enter}'); //.tab() from plugin to use tab keypress
     cy.get('#detail > div').should('be.visible').should('contain', '/examples/data/list/skill-2.jsonld')
     cy.location().should((loc) => {
-      expect(loc.hash).to.eq('#view/@/examples/data/list/skill-2.jsonld@')
+      expect(loc.hash).to.eq('#view/@%2Fexamples%2Fdata%2Flist%2Fskill-2.jsonld@')
     })
   });
 })
