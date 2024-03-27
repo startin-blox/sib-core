@@ -57,8 +57,21 @@ export class CustomGetter {
             if (!isUrl.protocol.startsWith('http')) throw new Error('Not a valid HTTP url');
             // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
             if (isUrl) {
-              let value = this.resource[this.getExpandedPredicate(path)];
-              return value ? value : undefined;
+              let resources = this.resource[this.getExpandedPredicate(path)];
+              if (!resources) return undefined;
+              if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
+
+              let result = resources ? resources.map((res: object) => {
+                  let resource: any = store.get(res['@id']);
+                  if (resource) return resource;
+
+                  // if not in cache, generate the basic resource
+                  resource = new CustomGetter(res['@id'], { '@id': res['@id'] }, this.clientContext, this.serverContext, this.parentId).getProxy()
+                  store.cacheResource(res['@id'], resource); // put it in cache
+                  return resource; // and return it
+              }) : [];
+
+              return result;
             }
         } catch (e) {
             if (!path.split) return undefined;
