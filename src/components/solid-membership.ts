@@ -2,7 +2,6 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-// import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
@@ -12,7 +11,6 @@ export const SolidMembership = {
   name: 'solid-membership',
   use: [NextMixin, ValidationMixin, ContextMixin],
   attributes: {
-    // Data Source being a group URI in that case
     dataSrc: {
       type: String,
       default: null,
@@ -74,6 +72,8 @@ export const SolidMembership = {
     if (!Array.isArray(this.currentMembers)) {
       this.currentMembers = [this.currentMembers];
     }
+
+    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
 
     // Check if current user is member of this group
     this.isMember = this.currentMembers
@@ -150,7 +150,6 @@ export const SolidMembership = {
     this.render();
   },
   async render(): Promise<void> {
-    // await this.replaceAttributesData(false);
     await this.populate();
     let button = html``;
     if (this.isMember) {

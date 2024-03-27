@@ -56,11 +56,11 @@ export const SolidMemberAdd = {
   },
   async addMembership() {
     this.currentMembers.push(JSON.parse(this.dataTargetSrc));
-
     let currentRes = {
       "@context": this.context,
       "user_set": this.currentMembers
     }
+
     return store.patch(currentRes, this.resourceId).then(response => {
       if (!response) {
         console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`);
@@ -88,11 +88,14 @@ export const SolidMemberAdd = {
 
     // Check if current user is member of this group ?
     let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    // Here we now retrieve an array of proxy, when we would like an array of @ids only
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
       this.currentMembers = [this.currentMembers];
     }
+    // In each item in this.currentMembers, I'd like to return only their @id and store it in this.currentMembers
+    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
 
     let button = html`
       <solid-ac-checker data-src="${this.dataSrc}"

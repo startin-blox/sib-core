@@ -89,7 +89,6 @@ export const SolidMemberDelete = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async deleteMembership() {
-    console.log("deleteMembership", this.dataSrc, this.dataTargetSrc, this.currentMembers);
     let userSet = this.currentMembers.filter((value) => {
       const userId = value['@id'];
       if (userId == this.dataTargetSrc) 
