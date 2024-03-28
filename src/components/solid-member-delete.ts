@@ -69,6 +69,10 @@ export const SolidMemberDelete = {
       this.currentMembers = [this.currentMembers];
     }
 
+    this.currentMembers = this.currentMembers.map((member) => {
+      return { "@id": member['@id'] };
+    });
+
     // Check if current user is member of this group
     this.isMember = this.currentMembers
       ? this.currentMembers.some((member) => member['@id'] === this.dataTargetSrc)

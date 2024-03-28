@@ -32,6 +32,10 @@ export const SolidMemberAdd = {
       type: String,
       default: undefined
     },
+    orderAsc: {
+      type: String,
+      default: undefined
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -110,6 +114,7 @@ export const SolidMemberAdd = {
             data-src="${this.rangeUsers}"
             name="users"
             @change="${this.changeSelectedUser.bind(this)}"
+            order-asc="${ifDefined(this.orderAsc || 'name')}"
           ></solid-form-dropdown-autocompletion>
           <div class=${ifDefined(this.classSubmitButton)}>
             <button type="submit">
