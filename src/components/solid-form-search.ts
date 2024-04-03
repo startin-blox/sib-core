@@ -13,6 +13,7 @@ import type { SearchQuery } from '../libs/interfaces';
 export const SolidFormSearch = {
   name: 'solid-form-search',
   use: [WidgetMixin, AttributeBinderMixin, ContextMixin],
+  debounceTimeout: undefined as (number | undefined),
   attributes: {
     defaultWidget: {
       type: String,
@@ -40,6 +41,10 @@ export const SolidFormSearch = {
         if (value === null) this.populate()
       }
     },
+    debounce: {
+      type: Number,
+      default: 500
+    }
   },
   initialState: {
     error: '',
@@ -154,10 +159,17 @@ export const SolidFormSearch = {
     ` 
   },
   empty(): void {},
+  debounceInput() {
+    clearTimeout(this.debounceTimeout);
+    this.debounceTimeout = setTimeout(() => {
+      this.debounceTimeout = undefined;
+      this.inputChange();
+    }, this.debounce);
+  },
   async populate(): Promise<void> {
     await this.replaceAttributesData();
     if(this.submitButton == null) {
-      this.element.addEventListener('input', () => this.inputChange());
+      this.element.addEventListener('input', () => this.debounceInput());
     } else {
       this.element.addEventListener('submit', (e: Event) => {
         e.preventDefault();
