@@ -7,6 +7,7 @@
         "name": "Benoit Alessandroni",
         "email": "benoit@toto.com",
         "last_name": "Alessandroni",
+        "first_name": "Benoit",
         "@context": {
           "get_full_name": "rdfs:label"
         }
@@ -17,6 +18,29 @@
         "name": "Blaise Pascal",
         "email": "blaise@toto.com",
         "last_name": "Pascal",
+        "first_name": "Blaise",
+        "@context": {
+          "get_full_name": "rdfs:label"
+        }
+      },
+      {
+        "@id": "/examples/data/list/user-3.jsonld",
+        "@type": "foaf:user",
+        "name": "Vitali Klitschko",
+        "email": "blaise@toto.com",
+        "last_name": "Klitschko",
+        "first_name": "Vitali",
+        "@context": {
+          "get_full_name": "rdfs:label"
+        }
+      },
+      {
+        "@id": "/examples/data/list/user-4.jsonld",
+        "@type": "foaf:user",
+        "name": "Eric Cantona",
+        "email": "cantona@toto.com",
+        "last_name": "Cantona",
+        "first_name": "Eric",
         "@context": {
           "get_full_name": "rdfs:label"
         }

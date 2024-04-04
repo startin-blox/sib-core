@@ -15,11 +15,7 @@
       }
     ],
     "permissions": [
-      {
-        "mode": {
-          "@type": "view"
-        }
-      }
+      "view"
     ]
   },
   "profile": {

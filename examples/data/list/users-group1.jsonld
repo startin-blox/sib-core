@@ -23,11 +23,7 @@
           }
         ],
         "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
+          "view"
         ]
       },
       "profile": {
@@ -56,11 +52,7 @@
           }
         ],
         "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
+          "view"
         ]
       },
       "profile": {
@@ -87,11 +79,7 @@
 
         ],
         "permissions": [
-          {
-            "mode": {
-              "@type": "view"
-            }
-          }
+          "view"
         ]
       },
       "profile": {
