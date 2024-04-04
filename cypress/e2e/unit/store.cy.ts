@@ -257,7 +257,7 @@ describe('store', { testIsolation: false }, function () {
     cy.get('@users').its("response.statusCode").should('equal', 200);
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 15); // cache
+      .its('sibStore.cache').should('have.length', 13); // cache
     cy.window()
       .its('sibStore.loadingList').should('have.property', 'size', 0); // loading list
     cy.window()
@@ -316,7 +316,7 @@ describe('store', { testIsolation: false }, function () {
           "@type": "foaf:user",
           "first_name": "Matthieu",
           "last_name": "Garcia",
-          "email": ""
+          "email": "matthieu@example.com"
       },
       headers: {
         'content-type': 'application/ld+json'
@@ -378,7 +378,7 @@ describe('store', { testIsolation: false }, function () {
 
   it('clears cache', () => {
     cy.window()
-      .its('sibStore.cache').should('have.length', 17);
+      .its('sibStore.cache').should('have.length', 15);
 
     cy.window()
       .its('sibStore')
@@ -390,7 +390,7 @@ describe('store', { testIsolation: false }, function () {
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 16);
+      .its('sibStore.cache').should('have.length', 14);
 
     cy.window()
       .its('sibStore')
@@ -402,7 +402,7 @@ describe('store', { testIsolation: false }, function () {
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 16);
+      .its('sibStore.cache').should('have.length', 14);
   });
 
   it('subscribes resource', () => {
@@ -521,14 +521,14 @@ describe('store', { testIsolation: false }, function () {
       cy.spy(store, 'getData');
       cy.spy(store, 'fetchData');
 
-      expect(store.cache).to.have.length(17);
+      expect(store.cache).to.have.length(15);
       await store.refreshResources(['/examples/data/list/user-1.jsonld', '/examples/data/list/users.jsonld']);
 
       expect(store.clearCache).to.be.calledTwice;
       expect(store.getData).to.be.calledTwice;
       expect(store.fetchData).to.be.calledTwice;
 
-      expect(store.cache).to.have.length(17);
+      expect(store.cache).to.have.length(15);
     });
   });
 
