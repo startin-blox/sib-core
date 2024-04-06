@@ -243,5 +243,17 @@
       filtered-by="enum-checkboxes"
     ></solid-display>
 
+    <h3>solid-form-search + debounce 2s</h3>
+    <solid-form-search
+      id="filter-debounce"
+      fields="name"
+      debounce="2000"
+    ></solid-form-search>
+    <solid-display
+      id="debounce"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="filter-debounce"
+    ></solid-display>
   </body>
 </html>
