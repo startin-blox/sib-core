@@ -43,7 +43,7 @@ export const SolidFormSearch = {
     },
     debounce: {
       type: Number,
-      default: 500
+      default: 0 // Avoiding blink effect with static values
     }
   },
   initialState: {
