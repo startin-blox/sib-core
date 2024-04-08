@@ -92,14 +92,15 @@ const RangeMixin = {
           res = resource;
         }
 
+        //TODO: this splitting and expanding is disgusting, please find another solution !!
         const selectedValue = await resource[this.optionValue]; // value used for selected options
         const value = (this.optionValue.includes('@id') || selectedValue['@id']) ?
           `{"@id": "${selectedValue}"}` : //  resource
           selectedValue; // literal
 
         //TODO: this splitting and expanding is disgusting, please find another solution !!
-        let labelPredicate = store.getExpandedPredicate(this.optionLabel.split(/[.]+/).pop(), this.context || base_context);
-        const label = await res[labelPredicate]; // label of the option
+        let labelProperty = this.optionLabel.split(/[.]+/).pop()
+        const label = await res[labelProperty]; // label of the option
         return { value, label, selectedValue }
       }
 
