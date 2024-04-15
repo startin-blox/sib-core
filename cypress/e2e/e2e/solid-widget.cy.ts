@@ -69,7 +69,6 @@ describe('solid-widget', { testIsolation: false }, function () {
 
     cy.get('#form-2').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
-        console.log(res);
         expect(res).to.deep.equal({
           "email": "test-user@example.com",
           "@id": "/examples/data/list/user-1.jsonld",
@@ -93,7 +92,6 @@ describe('solid-widget', { testIsolation: false }, function () {
 
     cy.get('#form-3').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
-        console.log(res);
         expect(res).to.deep.equal({
           batches: {
             "ldp:contains": [

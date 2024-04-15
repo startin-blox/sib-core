@@ -136,16 +136,23 @@ export const SolidFormSearch = {
       sibStore.setLocalData(data, id);
     }
   },
-  change(resource: object): void {
+  change(value: object): void {
     this.element.dispatchEvent(
       new CustomEvent('formChange', {
         bubbles: true,
-        detail: { resource },
+        detail: value,
       }),
     );
   },
-  async inputChange(): Promise<void> {
-    this.change(this.value);
+  async inputChange(input: EventTarget): Promise<void> {
+    // FIXME: Improve this as we need to support more than input and single select.
+    // What about multiple select, checkboxes, radio buttons, etc?
+    try {
+      const selectedLabel = (input as HTMLSelectElement).selectedOptions[0].textContent?.trim();
+      this.change(selectedLabel);
+    } catch {
+      this.change((input as HTMLInputElement).value);
+    }
   },
   getSubmitTemplate() {
     return html`
@@ -159,21 +166,21 @@ export const SolidFormSearch = {
     ` 
   },
   empty(): void {},
-  debounceInput() {
+  debounceInput(input: EventTarget | null) {
     clearTimeout(this.debounceTimeout);
     this.debounceTimeout = setTimeout(() => {
       this.debounceTimeout = undefined;
-      this.inputChange();
+      this.inputChange(input);
     }, this.debounce);
   },
   async populate(): Promise<void> {
     await this.replaceAttributesData();
     if(this.submitButton == null) {
-      this.element.addEventListener('input', () => this.debounceInput());
+      this.element.addEventListener('input', (e: Event) => this.debounceInput(e.target));
     } else {
       this.element.addEventListener('submit', (e: Event) => {
         e.preventDefault();
-        this.inputChange();
+        this.inputChange(e.target);
       });
     }
     const fields = await this.getFields();
