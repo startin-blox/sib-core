@@ -136,9 +136,18 @@ export const SolidFormSearch = {
       sibStore.setLocalData(data, id);
     }
   },
-  change(value: object): void {
+  change(resource: object, value: string): void {
+    if (!resource) return;
     this.element.dispatchEvent(
       new CustomEvent('formChange', {
+        bubbles: true,
+        detail: { resource },
+      }),
+    );
+
+    if (!value) return;
+    this.element.dispatchEvent(
+      new CustomEvent('filterChange', {
         bubbles: true,
         detail: value,
       }),
@@ -149,9 +158,9 @@ export const SolidFormSearch = {
     // What about multiple select, checkboxes, radio buttons, etc?
     try {
       const selectedLabel = (input as HTMLSelectElement).selectedOptions[0].textContent?.trim();
-      this.change(selectedLabel);
+      this.change(this.value, selectedLabel);
     } catch {
-      this.change((input as HTMLInputElement).value);
+      this.change(this.value, (input as HTMLInputElement).value);
     }
   },
   getSubmitTemplate() {
