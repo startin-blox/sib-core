@@ -29,7 +29,7 @@
       multiple-communities-fields="name"
     ></solid-display>
 
-    <!-- <h2>Custom widget</h2>
+    <h2>Custom widget</h2>
     <solid-widget name="custom-multiple">
       <template>
         <h2>Skills list</h2>
@@ -56,7 +56,7 @@
       data-src="/examples/data/list/user-1.jsonld"
       fields="skills"
       multiple-skills
-      range-skills="data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
     ></solid-form>
 
     <h2>multiple form with multiple select</h2>
@@ -64,17 +64,17 @@
       data-src="/examples/data/list/user-1.jsonld"
       fields="skills"
       multiple-skills="solid-form-multipleselect-autocompletion"
-      range-skills="data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
     ></solid-form>
 
     <h1>creation form</h1>
     <solid-form
       data-src="/examples/data/list/users.jsonld"
       fields="username, skills"
-      range-skills="data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
       multiple-skills
       multiple-skills-add-label="Ajouter une compétence"
       multiple-skills-remove-label="Supprimer cette compétence"
-    ></solid-form> -->
+    ></solid-form>
   </body>
 </html>
