@@ -14,25 +14,18 @@
   </head>
   <body>
 
-    <sib-auth style="display: none !important" auto-login="">
-      <sib-auth-provider
-        data-authority="https://api.tzcld-stg.startinblox.com/"
-        data-id="dataserver"
-        data-client-name="Test3"
-      ></sib-auth-provider>
-    </sib-auth>
-    <h1>solid-display</h1>
+    <h1>Solid-display</h1>
     <solid-display
-      data-src="https://api.tzcld-stg.startinblox.com/users/balessan/"
-      fields="username, communities"
-      multiple-communities
-      multiple-communities-fields="name"
+      data-src="/examples/data/list/user-1.jsonld"
+      fields="username, skills"
+      multiple-skills
+      multiple-skills-fields="name"
     ></solid-display>
 
-    <h2>Custom widget</h2>
+    <h2>With custom widget</h2>
     <solid-widget name="custom-multiple">
       <template>
-        <h2>Skills list</h2>
+        <h3>Skills list</h3>
         <solid-display data-src="${value}" fields="name"></solid-display>
       </template>
     </solid-widget>
@@ -42,8 +35,7 @@
       multiple-skills="custom-multiple"
     ></solid-display>
 
-
-    <h1>solid-form</h1>
+    <h1>Solid-form</h1>
     <h2>multiple form</h2>
     <solid-form
       data-src="/examples/data/list/user-1.jsonld"
