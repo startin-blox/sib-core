@@ -116,7 +116,7 @@ class Store {
       } catch (error) { console.error(error) }
       if (!resource) {
         this.loadingList.delete(key);
-        resolve(null);
+        document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: null, fetchedResource: null } }));
         return;
       }
 
@@ -125,7 +125,7 @@ class Store {
       // Cache proxy
       await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
       this.loadingList.delete(key);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key), fetchedResource: resource } }));
     });
   }
 
@@ -587,7 +587,11 @@ class Store {
   resolveResource = function(id: string, resolve) {
     const handler = function(event) {
       if (event.detail.id === id) {
-        resolve(event.detail.resource);
+        if(event.detail.resource) {
+          resolve(event.detail.resource);
+        } else {
+          resolve(event.detail.fetchedResource);
+        }
         // TODO : callback
         document.removeEventListener('resourceReady', handler);
       }
