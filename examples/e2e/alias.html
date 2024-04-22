@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: alias in fields</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css" />
+
+  </head>
+
+  <body>
+    <h2>Simple display with aliased @ids</h2>
+    <solid-display
+      id="alias-test"
+      data-src="/examples/data/list/users.jsonld"
+      fields="@id, @id as user_id, username, username as strangename"
+    ></solid-display>
+
+    <h2>Simple display with aliased @ids, username and email + sets</h2>
+    <solid-display
+      id="alias-test-2"
+      data-src="/examples/data/list/users.jsonld"
+      fields="@id, @id as user_id, info(username, username as strangename), email, first_name, email as ratatouille"
+    ></solid-display>
+  </body>
+</html>
