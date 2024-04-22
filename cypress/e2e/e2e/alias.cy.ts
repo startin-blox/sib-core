@@ -76,6 +76,21 @@ describe('alias', function() {
         expect($element).to.have.attr('name', 'username as strangename');
         expect($element).to.have.attr('value', 'pierre');
       });
-    
+  });
+
+  it('display users with alias and custom widget on aliased field', () => {
+    cy.get('#alias-test-3 > div').children().eq(0)
+      .find('div:nth-child(1) > custom-widget:nth-child(2) > div:nth-child(1) > solid-display:nth-child(1) > div:nth-child(1) > solid-display-value:nth-child(4)')
+      .should(($element) => {
+        expect($element).to.have.attr('name', 'username as strangename');
+        expect($element).to.have.attr('value', 'admin');
+    });
+
+    cy.get('#alias-test-3 > div').children().eq(3)
+      .find('div:nth-child(1) > custom-widget:nth-child(2) > div:nth-child(1) > solid-display:nth-child(1) > div:nth-child(1) > solid-display-value:nth-child(4)')
+      .should(($element) => {
+        expect($element).to.have.attr('name', 'username as strangename');
+        expect($element).to.have.attr('value', 'not-member-paris');
+    });
   });
 });

@@ -201,6 +201,7 @@ const WidgetMixin = {
    * @param isSet - boolean
    */
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const widget = this.element.getAttribute('widget-' + field);
 
     if (widget) return this.widgetFromTagName(widget);
@@ -295,7 +296,6 @@ const WidgetMixin = {
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId) attrs['src'] = this.element.getAttribute('src-' + escapedField) || resourceId;
     if (this.editable(escapedField) && resourceId) attrs['value-id'] = resourceId;
-
     return attrs;
   },
   /**

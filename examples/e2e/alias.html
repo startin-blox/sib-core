@@ -24,5 +24,23 @@
       data-src="/examples/data/list/users.jsonld"
       fields="@id, @id as user_id, info(username, username as strangename), email, first_name, email as ratatouille"
     ></solid-display>
+
+    <solid-widget id="custom-widget" name="custom-widget">
+      <template>
+        <div>
+          <solid-display
+            data-src="${value}"
+            fields="first_name, last_name, username, username as strangename">
+          </solid-display>
+        </div>
+      </template>
+    </solid-widget>
+    <h2>Simple display with custom widget, username and email + sets</h2>
+    <solid-display
+      id="alias-test-3"
+      data-src="/examples/data/list/users.jsonld"
+      fields="@id, @id as user_id"
+      widget-user_id="custom-widget"
+    ></solid-display>
   </body>
 </html>
