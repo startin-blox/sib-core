@@ -237,6 +237,7 @@ const WidgetMixin = {
    */
   widgetAttributes(field: string, resource: Resource): object {
     const attrs = { name: field };
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const escapedField = this.getEscapedField(field);
 
     // transfer all multiple-[field]-[attr] attributes as [attr] for multiple widget [field]
@@ -330,8 +331,18 @@ const WidgetMixin = {
       // Set attributes to the widget
       // setAttribute set a string. Make sure null values are empty
       if (value === null || value === undefined) attributes.value = '';
-      if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
-        attributes['data-src'] = value['@id'];
+      if (widgetMeta.type === WidgetType.USER) { // if value is a resource and solid-widget used, set data-src
+        if (value['@id']) {
+          attributes['data-src'] = value['@id'];
+        } else {
+          try {
+            let isUrl = new URL(value);
+            if (isUrl) attributes['data-src'] = value;
+          } catch (e) {}
+
+          // in any case, set value attribute
+          attributes['value'] = value;
+        }
       } else { // otherwise, set value attribute
         attributes['value'] = value;
       }
