@@ -8,7 +8,7 @@ import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
-import type { SearchQuery } from '../libs/interfaces';
+import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
@@ -136,7 +136,7 @@ export const SolidFormSearch = {
       sibStore.setLocalData(data, id);
     }
   },
-  change(resource: object, value: string): void {
+  change(resource: object, eventOptions: FilterEventOptions): void {
     if (!resource) return;
     this.element.dispatchEvent(
       new CustomEvent('formChange', {
@@ -145,22 +145,40 @@ export const SolidFormSearch = {
       }),
     );
 
-    if (!value) return;
+    if (!eventOptions.value) return;
     this.element.dispatchEvent(
       new CustomEvent('filterChange', {
         bubbles: true,
-        detail: value,
+        detail: {
+          value: eventOptions.value,
+          inputLabel: eventOptions.inputLabel,
+          type: eventOptions.type
+        }
       }),
     );
   },
   async inputChange(input: EventTarget): Promise<void> {
     // FIXME: Improve this as we need to support more than input and single select.
     // What about multiple select, checkboxes, radio buttons, etc?
+    let parentElementLabel = (input as HTMLInputElement)?.parentElement?.getAttribute('label');
     try {
       const selectedLabel = (input as HTMLSelectElement).selectedOptions[0].textContent?.trim();
-      this.change(this.value, selectedLabel);
+      this.change(
+        this.value,
+        {
+          value: selectedLabel,
+          inputLabel: parentElementLabel,
+          type: 'select'
+        }
+      );
     } catch {
-      this.change(this.value, (input as HTMLInputElement).value);
+      this.change(this.value,
+        {
+          value: (input as HTMLInputElement).value,
+          inputLabel: parentElementLabel,
+          type: 'input'
+        }
+      );
     }
   },
   getSubmitTemplate() {
