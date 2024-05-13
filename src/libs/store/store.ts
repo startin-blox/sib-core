@@ -482,8 +482,35 @@ class Store {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
 
-  getExpandedPredicate(property: string, context: object) { return ContextParser.expandTerm(property, context, true) }
+  /**
+   * Returns the expanded predicate based on provided context or the base one.
+   * @param property The property to expand
+   * @param context Your current context
+   * @returns The fully expanded term
+   */
+  getExpandedPredicate(property: string, context: object | null) {
+    if (!context)
+      return ContextParser.expandTerm(property, base_context, true)
+    return ContextParser.expandTerm(property, context, true)
+  }
 
+  /**
+   * Returns the compacted IRI based on provided context or the base one.
+   * @param property The property to compact
+   * @param context Your current context
+   * @returns The compacted term
+   */
+  getCompactedIri(property: string, context: object | null) {
+    if (!context)
+      return ContextParser.compactIri(property, base_context, true)
+    return ContextParser.compactIri(property, context, true)
+  }
+
+  /**
+   * Check if the id is a local id
+   * @param id - string
+   * @returns boolean
+   */
   _isLocalId(id: string) {
     return id.startsWith('store://local.');
   }
