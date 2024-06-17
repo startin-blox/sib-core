@@ -193,7 +193,6 @@ export const SolidForm = {
         if (formField) {
           formField.classList.add('error');
           let errorParagraph = document.createElement('p');
-          console.log(`Error message for ${formField}`, Object.values(member)[1])
           if (Array.isArray(Object.values(member)[1]) === true) {
             Object.values(member)[1].forEach((error) => {
               let errorText = document.createElement('p');
@@ -201,7 +200,6 @@ export const SolidForm = {
               errorParagraph.appendChild(errorText);
             });
           } else if (typeof Object.values(member)[1] === 'object') {
-            console.log('It is an object yes');
             for (const [key, value] of Object.entries(Object.values(member)[1])) {
               if (Array.isArray(value)) {
                 value.forEach((error) => {
@@ -215,12 +213,6 @@ export const SolidForm = {
                 errorParagraph.appendChild(errorText);
               }
             }
-            // let subErrors = Object.entries(objectErrors).forEach((error) => {
-            //   let errorText = document.createElement('p');
-            //   errorText.textContent = error[1];
-            //   errorParagraph.appendChild(errorText);
-            // } );
-            // console.log('subErrors', subErrors)
           } else {
             errorParagraph.textContent = Object.values(member)[1];
           }
