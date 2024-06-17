@@ -148,7 +148,7 @@ export const SolidForm = {
       if (e) { // if server error
         e.json().then(error => this.showError(error));
         throw e;
-      } // else, ldpframework error, we continue
+      }
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {
@@ -179,44 +179,82 @@ export const SolidForm = {
     if (!this.isCreationForm(formValue) && this.isSavingAutomatically)
       this.submitForm(); // if autosave, submitForm
   },
-  findErrorMessage(errors: [string, any][], errorFullName: string = '') {
-    let errorsArray: string[] = [];
+  displayErrorMessage(errors: [string, any][], errorFullName: string = '') {
     errors.forEach((member: [string, any]) => {
       let errorNextName: string = Object.values(member)[0];
-      let errorAddName = (errorFullName === "" ? errorNextName : errorFullName.concat(' - ', errorNextName));
-      if (Array.isArray(Object.values(member)[1]) === true) {
-        let errorMessage: string[] = Object.values(member)[1];
-        let errorGlobal = errorAddName.concat(': ', errorMessage.join(', '));
-        errorsArray.push(errorGlobal);
-      } else {
+      let subErrorName = (errorFullName === "" ? errorNextName : errorFullName.concat('.' + errorNextName));
+      let errorFieldName = ""
+
+      if (errorFullName) errorFieldName = errorFullName.concat('.' + errorNextName);
+      else errorFieldName = errorNextName;
+
+      if (errorFieldName) {
+        let formField = this.element.querySelector(`[name="${errorFieldName}"]`);
+        if (formField) {
+          formField.classList.add('error');
+          let errorParagraph = document.createElement('p');
+          console.log(`Error message for ${formField}`, Object.values(member)[1])
+          if (Array.isArray(Object.values(member)[1]) === true) {
+            Object.values(member)[1].forEach((error) => {
+              let errorText = document.createElement('p');
+              errorText.textContent = error;
+              errorParagraph.appendChild(errorText);
+            });
+          } else if (typeof Object.values(member)[1] === 'object') {
+            console.log('It is an object yes');
+            for (const [key, value] of Object.entries(Object.values(member)[1])) {
+              if (Array.isArray(value)) {
+                value.forEach((error) => {
+                  let errorText = document.createElement('p');
+                  errorText.textContent = error;
+                  errorParagraph.appendChild(errorText);
+                });
+              } else if (typeof value === 'string') {
+                let errorText = document.createElement('p');
+                errorText.textContent = value;
+                errorParagraph.appendChild(errorText);
+              }
+            }
+            // let subErrors = Object.entries(objectErrors).forEach((error) => {
+            //   let errorText = document.createElement('p');
+            //   errorText.textContent = error[1];
+            //   errorParagraph.appendChild(errorText);
+            // } );
+            // console.log('subErrors', subErrors)
+          } else {
+            errorParagraph.textContent = Object.values(member)[1];
+          }
+          errorParagraph.classList.add('error-message');
+          formField.appendChild(errorParagraph);
+        }
+      }
+
+      if (!Array.isArray(Object.values(member)[1]) === true) {
         let objectErrors = Object.values(member)[1];
         let subErrors = Object.entries(objectErrors);
-        errorsArray = [...errorsArray, ...this.findErrorMessage(subErrors, errorAddName)];
+        this.displayErrorMessage(subErrors, subErrorName)
       }
     });
-    return errorsArray;
   },
   empty(): void {},
   showError(e: object) {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
-
+    this.displayErrorMessage(errors);
     const errorTemplate = html`
       <p>${this.t('solid-form.validation-error')}</p>
-      <ul>
-        ${this.findErrorMessage(errors).map(field => html`
-         <li>${field}</li>
-        `)}
-      </ul>
     `;
-    // If field exists pick its label (unsure if that's easily possible)
-    // In this.getFields() map with each field and get label
-    // If it does not just add a notice as we do that it's missing that field
 
     // Validation message in english ?
     const parentElement = this.element.querySelector('[data-id=error]');
     if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
+    let formErrors = this.element.querySelectorAll('.error-message');
+    if (formErrors) formErrors.forEach((error) => error.remove());
+
+    let errorFields = this.element.querySelectorAll('.error');
+    if (errorFields) errorFields.forEach((errorField) => errorField.classList.remove('error'));
+
     const parentElement = this.element.querySelector('[data-id=error]');
     if (parentElement) render('', parentElement);
   },
