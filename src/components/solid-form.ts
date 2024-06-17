@@ -200,6 +200,7 @@ export const SolidForm = {
               errorParagraph.appendChild(errorText);
             });
           } else if (typeof Object.values(member)[1] === 'object') {
+            // @ts-ignore
             for (const [key, value] of Object.entries(Object.values(member)[1])) {
               if (Array.isArray(value)) {
                 value.forEach((error) => {
