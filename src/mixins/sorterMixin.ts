@@ -101,16 +101,20 @@ const SorterMixin = {
   },
   sortValuesByKey(key: string, asc: boolean): Function {
     return function (a: object, b: object): number {
-      if (!a[key]) return 1;
-      if (!b[key]) return -1;
+      if (!a.hasOwnProperty(key)) return 1;
+      if (!b.hasOwnProperty(key)) return -1;
 
-      const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
-      const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
+      const varA = a[key];
+      const varB = b[key];
 
       let comparison = 0;
-      if (varA > varB) comparison = asc ? 1 : -1;
-      else if (varA < varB) comparison = asc ? -1 : 1;
-
+      if (typeof varA === 'string' && typeof varB === 'string') {
+        comparison = varA.localeCompare(varB, undefined, { sensitivity: 'base' });
+        comparison = asc ? comparison : -comparison;
+      } else {
+        if (varA > varB) comparison = asc ? 1 : -1;
+        else if (varA < varB) comparison = asc ? -1 : 1;
+      }
       return comparison;
     }
   },
