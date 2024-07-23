@@ -13,7 +13,7 @@ export class SparqlQueryEngineComunica {
 
     public constructor(metaMetaIndex: string, updateCallback: SparqlQueryEngineComunicaUpdateCallback, resetCallback: SparqlQueryEngineComunicaResetCallback) {
         this.engine = new QueryEngine();
-        this.metaMetaIndex = metaMetaIndex;
+        this.metaMetaIndex = "https://api.test-inria-index.startinblox.com/fedex/indexes/users/index"; //metaMetaIndex;
         this.updateCallback = updateCallback;
         this.resetCallback = resetCallback;
     }
@@ -89,12 +89,13 @@ export class SparqlQueryEngineComunica {
         const skillIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexSkillQuery(skills), skillMetaIndex);
         const cityIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexCityQuery(location), cityMetaIndex);
         const sources = skillIndexes.concat(cityIndexes);
-        console.log(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location));
-        console.log(sources);
+        // console.log(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location));
         this.getUsers(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location), sources);
     }
 
     public searchFromSearchForm(searchForm: any = {}): void {
+        // this.engine.invalidateHttpCache();
+
         const hasSkill = searchForm["skills"] && searchForm["skills"].value.length > 0;
         const hasCity = searchForm["profile.city"] && searchForm["profile.city"].value.length > 0;
 
