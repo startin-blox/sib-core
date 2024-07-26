@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>SIB test: solid-display</title>
+  <script type="module" src="../../dist/index.js"></script>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+  <h2>Reproducing "required" issue</h2>
+
+  <solid-form
+    data-src="/examples/data/list/event-1.jsonld"
+    fields="description,name"
+    widget-description="solid-form-richtext"
+    required-description
+    required-name>
+  </solid-form>
+
+  <style>
+    .id {
+      font-family: monospace;
+      color: blue;
+    }
+
+    .name {
+      font-family: cursive;
+      color: green;
+    }
+  </style>
+</body>
+
+</html>
