@@ -15,6 +15,9 @@ const RichtextMixin = {
     this.quill = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
+  getPlaceHolderValue() {
+    return this.element.hasAttribute('placeholder') ? this.element.getAttribute('placeholder') : '';
+  },
   addCallback(value: string, listCallbacks: Function[]) {
     if (this.quill == null) {
       var toolbarOptions = [
@@ -26,20 +29,25 @@ const RichtextMixin = {
         ['clean']
       ];
       const richtext = this.element.querySelector('[data-richtext]');
-      this.quill = new Quill(richtext, {
-        modules: {toolbar: toolbarOptions},
-        theme: 'snow'});
-      }
-      const ops = deltaMd.toDelta(this.value);
-      this.quill.setContents(ops);
+      this.quill = new Quill(
+        richtext,
+        {
+          modules: {toolbar: toolbarOptions},
+          placeholder: this.getPlaceHolderValue(),
+          theme: 'snow'
+        }
+      );
+    }
 
-      if (this.isRequired()) {
-        this.createHiddenRequiredInput()
-        this.quill.on('text-change', this.onTextChange.bind(this))
-      }
+    const ops = deltaMd.toDelta(this.value);
+    this.quill.setContents(ops);
+    if (this.isRequired()) {
+      this.createHiddenRequiredInput()
+      this.quill.on('text-change', this.onTextChange.bind(this))
+    }
 
-      const nextProcessor = listCallbacks.shift();
-      if (nextProcessor) nextProcessor(value, listCallbacks); 
+    const nextProcessor = listCallbacks.shift();
+    if (nextProcessor) nextProcessor(value, listCallbacks); 
   },
   isRequired() {
     return Array.from(this.element.attributes).some(attr => (attr as Attr).name === 'required')
