@@ -1,10 +1,10 @@
 # Getting started
 
-> Please before to start, check [our contribution guidelines](https://git.startinblox.com/documentation/doc/wikis/Contribution-guidelines):)
+> Before you begin, please review [our contribution guidelines](https://git.startinblox.com/documentation/doc/wikis/Contribution-guidelines):)
 
-This documentation is for developers who would like to contribute to the core of the framework.
+This documentation is intended for developers who wish to contribute to the core of the framework.
 
-**If you just want to use the framework, please refer to [the general documentation](https://docs.startinblox.com).**
+**If you are looking to use the framework, please refer to [the general documentation](https://docs.startinblox.com).**
 
 ## Installation
 To start developing in `sib-core`, you need:
@@ -22,7 +22,7 @@ npm run serve
 You can now see examples at [http://127.0.0.1:3000](http://127.0.0.1:3000/).
 
 ## Adding new features
-To develop new features of `sib-core`, you can add an HTML example file in `/examples` and link it in `/index.html`.
+To develop new features for `sib-core`, you can add an HTML example file in `/examples` directory and link it in `/index.html`.
 Don't forget to import the framework:
 
 ```html
@@ -31,7 +31,7 @@ Don't forget to import the framework:
 You can now write HTML using `sib-core` and test it in your browser.
 
 
-## Test
+## Testing
 You can test the API by running:
 ```shell
 npm run test
@@ -49,7 +49,7 @@ Here is a simplified schema of how the API works to create a component:
     return 'string';
   }
 ```
-The static getter "name" return a string that will be used to register the component tag name or the mixin name. This getter is required.
+The static `name` getter returns a string that will be used to register the component tag name or the mixin name. This getter is required.
 
 ## Install mixins
 ```js
@@ -58,7 +58,7 @@ The static getter "name" return a string that will be used to register the compo
   }
 ```
 
-The static getter "use" return an array of mixins to install. The mixin compositor install mixin recursively.
+The static `use` getter return an array of mixins to install. The mixin compositor install mixin recursively.
 
 ## Declare attributes
 ```js
@@ -76,9 +76,9 @@ The static getter "use" return an array of mixins to install. The mixin composit
   }
 ```
 
-To declare an attribute, you should use the static getter "attributes". It should return an object. Each property will be bind with kebab case equivalent. Example: 'myProp' is bound to 'my-prop'. Each property should be an object with :
+To declare an attribute, use the static `attributes` getter. It should return an object where each property will be bound with its kebab-case equivalent. Example: `myProp` is bound to `my-prop`. Each property should be an object with the following :
 - type
-  - description: The js type of your attribute data
+  - description: The JavaScript type of your attribute data
   - required: false
   - default: String
 - default
@@ -86,15 +86,15 @@ To declare an attribute, you should use the static getter "attributes". It shoul
   - required: false
   - default: undefined
 - required
-  - description: Is this attribute required, if true, throw an Error if not provided
+  - description: Indicates if this attribute required. If `true`,  an error is thrown if not provided
   - required: false
   - default: false
 - callback
-  - description: A function that will be invoke when the attribute changed. It receive 2 arguments : newValue, oldValue.
+  - description: A function invoked when the attribute changed. It receives 2 arguments : `newValue`, `oldValue`.
   - required: false
   - default: undefined
 
-The mixin compositor register all attribute recursively. The last declaration is keeped.
+The mixin compositor registers all attribute recursively, keeping the last declaration.
 
 ## Declare initial state
 ```js
@@ -104,7 +104,8 @@ The mixin compositor register all attribute recursively. The last declaration is
     };
   }
 ```
-The static getter initialState should return an object that contains initial state of the component. The mixin compositor merge recursively the initial state. Last declaration is keeped.
+The static `initialState`` getter should return an object containing the initial state of the component. The mixin compositor recursively merges the initial state, ensuring that the last declaration is preserved.
+
 Every property in the initial state could be watched by the component in order to provide reactivity.
 
 
@@ -119,7 +120,7 @@ Available hook:
 - attached
 - detached
 
-Each hook is a function. The mixin compositor *append* hooks. If a deeper mixin register a created hook, its function will be called before the current created hook.
+Each hook is a function. The mixin compositor *appends* hooks. If a deeper mixin registers a created hook, its function will be called before the current created hook.
 
 ## Declare methods
 ```js
@@ -127,48 +128,47 @@ Each hook is a function. The mixin compositor *append* hooks. If a deeper mixin 
     console.log('Hi!');
   }
 ```
-In order to declare methods, you just add a method to your mixin. The mixin compositor keep the last method declared.
+To declare methods, simply add a method to your mixin. The mixin compositor retains the last declared method.
 
 # Core Architecture
-Here is a simplified schema of the organization and the responsibilities of the classes of the core:
+Here is a simplified schema of the organization and the responsibilities of the classes of the core classes:
 ![core-architecture](./images-documentation/core-architecture.png)
 
 ## List post-processing
-A `solid-display` component is capable of showing a list of resources and applying different filters on this list to filter, sort, group... resources. Here is a schema of the order of these transformations:
+A `solid-display` component can show a list of resources and apply various filters to sort, group, and otherwise transform these resources. Below is a schema illustrating the sequence of these transformations:
 ![list-post-processing](./images-documentation/list-post-processing.png)
 
 # Widgets API
-A widget is a small component responsible for a value. The widget is composed and built on demand when the developer ask for it.
-To do that, the name of the widget is splitted and analyzed to add the right mixins. Here is a schema of how it works:
+A widget is a small component responsible for managing a value. Widgets are composed and built on demand when the developer requests them. The widget name is parsed and analyzed to add the appropriate mixins. Here is a schema showing how this process works:
 
 ![widget-api](./images-documentation/widget-api.png)
 
 ## Values
-Values are given to a widget through its `value` attribute. For the widgets defined by sib-core, it can have different types:
-- `string`: most common and encouraged use case
-- `boolean` (checkbox): is converted to string (`'true'` or `'false'`)
-- `number` (input number): is converted to string
-- `container` (multiple, multiple form): is converted to `@id` and resolved by the widget
+Values are provided to a widget through its `value` attribute. For the widgets defined by sib-core, the value can have different types:
+- `string`: This is the most common and encouraged use case
+- `boolean` (checkbox): The value is converted to string (`'true'` or `'false'`)
+- `number` (input number): The value is converted to a string
+- `container` (multiple, multiple form): The value is converted to `@id` and resolved by the widget
 
-As custom widgets still use the old API, you can give them these types:
+Custom widgets, which still use the old API, can accept the following types:
 - `string`
 - `resource` Proxy
 - `container` Proxy
 
-### Get the values
-With the display widgets, you can get the value through its HTML attribute:
+### Getting Values
+With display widgets, you can retrieve the value through its HTML attribute:
 ```js
 const value = widgetElement.getAttribute('value');
 // or thanks to the core API
 const value = widgetElement.component.value;
 ```
 
-In the form widgets, the value can be changed by the user. If you need to retrieve it, proceed like this:
+For form widgets, where the value can be changed by the user, you can retrieve it as follows:
 ```js
 const value = widgetElement.component.getValue();
 ```
 
-Under the hood, the core finds elements which have a `data-holder` attribute, and get the value from their properties, instead of their attribute (where you would have the initial value of the widget).
+Under the hood, the core locates elements with a `data-holder`` attribute and retrieves the value from their properties, rather than their attributes, which hold the initial value of the widget.
 
 A widget can have:
 - 1 `data-holder` element (simple inputs)
