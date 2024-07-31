@@ -6,7 +6,7 @@ export type SparqlQueryEngineComunicaResetCallback = () => void;
 
 export class SparqlQueryEngineComunica {
 
-    private engine: any;
+    private engine: any; //QueryEngine;
     private metaMetaIndex: string;
     private updateCallback: SparqlQueryEngineComunicaUpdateCallback;
     private resetCallback: SparqlQueryEngineComunicaResetCallback;
@@ -66,6 +66,13 @@ export class SparqlQueryEngineComunica {
         return this.getMultipleResultFromBindingsStream(bindingsStream);
     }
 
+    private async getIndexResultsAsStream(query: string, callback: Function, metaIndex: string[]): Promise<void> {
+        const bindingsStream = await this.makeBindingsStream(query, metaIndex);
+        console.log("Query launched", query);
+        bindingsStream.on('data', (binding: any) => callback(binding.get('result').value));
+        return this.makeBindingsStreamPromise(bindingsStream);
+    }
+
     private async getUsers(query: string, indexes: string[]): Promise<void> {
         const bindingsStream = await this.makeBindingsStream(query, indexes);
         return await this.getResultsFromBindingsStream(bindingsStream);
@@ -85,13 +92,15 @@ export class SparqlQueryEngineComunica {
 
     public async searchByName(name: string): Promise<void> {
         const names = name.split(' ').map(n => n.toLowerCase().substring(0, 3)); // split the name and take the first 3 chars.
-        const nameMetaMetaIndexes = [
-            await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery()),
-            await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
-        ]
-        const nameMetaIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexNameQuery(names), ...nameMetaMetaIndexes);
-        // console.log(SparqlQueryFactory.makeMetaIndexNameQuery(names), nameMetaIndexes);
-        this.getUsers(SparqlQueryFactory.makeIndexNameQuery(names), nameMetaIndexes);
+        const firstNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery());
+        const callback = (nameMetaIndex: string) => {
+            this.getUsers(SparqlQueryFactory.makeIndexNameQuery(names), [nameMetaIndex]);
+        }
+        const query = SparqlQueryFactory.makeMetaIndexNameQuery(names);
+        await this.getIndexResultsAsStream(query, callback, [firstNameMetaIndex]);
+        const lastNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
+        await this.getIndexResultsAsStream(query, callback, [lastNameMetaIndex]);
+        
     }
 
     public async searchBySkillAndLocation(skills: string[], location: string): Promise<void> {
@@ -105,7 +114,7 @@ export class SparqlQueryEngineComunica {
     }
 
     public searchFromSearchForm(searchForm: any = {}): void {
-        // this.engine.invalidateHttpCache();
+        this.engine.invalidateHttpCache();
 
         const hasSkill: boolean = searchForm["skills"] && searchForm["skills"].value.length > 0;
         const hasCity: boolean = searchForm["profile.city"] && searchForm["profile.city"].value.length > 0;
