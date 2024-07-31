@@ -90,17 +90,20 @@ export class SparqlQueryEngineComunica {
         this.getUsers(SparqlQueryFactory.makeIndexCityQuery(location), cityIndexes);
     }
 
+    private extractPatterns(input: string): string[] {
+        return input.split(' ').map(n => n.toLowerCase().substring(0, 3)); // split the name and take the first 3 chars.
+    }
+
     public async searchByName(name: string): Promise<void> {
-        const names = name.split(' ').map(n => n.toLowerCase().substring(0, 3)); // split the name and take the first 3 chars.
+        const patterns = this.extractPatterns(name);
         const firstNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery());
         const callback = (nameMetaIndex: string) => {
-            this.getUsers(SparqlQueryFactory.makeIndexNameQuery(names), [nameMetaIndex]);
+            this.getUsers(SparqlQueryFactory.makeIndexNameQuery(patterns), [nameMetaIndex]);
         }
-        const query = SparqlQueryFactory.makeMetaIndexNameQuery(names);
+        const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
         await this.getIndexResultsAsStream(query, callback, [firstNameMetaIndex]);
         const lastNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
         await this.getIndexResultsAsStream(query, callback, [lastNameMetaIndex]);
-        
     }
 
     public async searchBySkillAndLocation(skills: string[], location: string): Promise<void> {
@@ -112,6 +115,77 @@ export class SparqlQueryEngineComunica {
         this.getUsers(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location), sources);
     }
 
+    public async searchBySkillAndName(skills: string[], name: string): Promise<void> {
+        const patterns = this.extractPatterns(name);
+        const skillMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexSkillQuery());
+        const skillIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexSkillQuery(skills), skillMetaIndex);
+        const firstNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery());
+        const callback = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexSkillFirstNameQuery(skills, patterns);
+            const sources = [nameMetaIndex, ...skillIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
+        await this.getIndexResultsAsStream(query, callback, [firstNameMetaIndex]);
+        const lastNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
+        const callbackLastName = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexSkillLastNameQuery(skills, patterns);
+            const sources = [nameMetaIndex, ...skillIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        await this.getIndexResultsAsStream(query, callbackLastName, [lastNameMetaIndex]);
+    }
+
+    public async searchByLocationAndName(location: string, name: string): Promise<void> {
+        const patterns = this.extractPatterns(name);
+        const cityMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexCityQuery());
+        const cityIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexCityQuery(location), cityMetaIndex);
+        const firstNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery());
+        const callback = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexCityFirstNameQuery(location, patterns);
+            const sources = [nameMetaIndex, ...cityIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
+        await this.getIndexResultsAsStream(query, callback, [firstNameMetaIndex]);
+        const lastNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
+        const callbackLastName = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexCityLastNameQuery(location, patterns);
+            const sources = [nameMetaIndex, ...cityIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        await this.getIndexResultsAsStream(query, callbackLastName, [lastNameMetaIndex]);
+    }
+
+    public async searchBySkillAndLocationAndName(skills: string[], location: string, name: string): Promise<void> {
+        const patterns = this.extractPatterns(name);
+        const skillMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexSkillQuery());
+        const cityMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexCityQuery());
+        const skillIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexSkillQuery(skills), skillMetaIndex);
+        const cityIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexCityQuery(location), cityMetaIndex);
+        const firstNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexFirstNameQuery());
+        const callback = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexSkillAndCityFirstNameQuery(skills, location, patterns);
+            const sources = [nameMetaIndex, ...skillIndexes, ...cityIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
+        await this.getIndexResultsAsStream(query, callback, [firstNameMetaIndex]);
+        const lastNameMetaIndex = await this.getMetaIndex(SparqlQueryFactory.makeMetaMetaIndexLastNameQuery())
+        const callbackLastName = (nameMetaIndex: string) => {
+            const userQuery = SparqlQueryFactory.makeIndexSkillAndCityLastNameQuery(skills, location, patterns);
+            const sources = [nameMetaIndex, ...skillIndexes, ...cityIndexes];
+            console.log(userQuery, sources);
+            this.getUsers(userQuery, sources);
+        }
+        await this.getIndexResultsAsStream(query, callbackLastName, [lastNameMetaIndex]);
+    }
+
     public searchFromSearchForm(searchForm: any = {}): void {
         this.engine.invalidateHttpCache();
 
@@ -119,23 +193,49 @@ export class SparqlQueryEngineComunica {
         const hasCity: boolean = searchForm["profile.city"] && searchForm["profile.city"].value.length > 0;
         const hasName: boolean = searchForm["name"] && searchForm["name"].value.length > 0;
 
+        // search by skill
         if (hasSkill && !hasCity && !hasName) {
             const skills = searchForm["skills"].value.map(s => s["@id"]);
-            this.searchBySkill(skills); //searchForm["skills"].value[0]["@id"]);
+            this.searchBySkill(skills);
         }
 
+        // search by location
         else if (hasCity && !hasSkill && !hasName) {
             this.searchByLocation(searchForm["profile.city"].value);
         }
 
+        // search by name
         else if (hasName && !hasSkill && !hasCity) {
             this.searchByName(searchForm["name"].value);
         }
 
-        else if (hasSkill && hasCity) {
+        // search by skill and location
+        else if (hasSkill && hasCity && !hasName) {
             const skills = searchForm["skills"].value.map(s => s["@id"]);
             const city = searchForm["profile.city"].value;
             this.searchBySkillAndLocation(skills, city);
+        }
+
+        // search by skill and name
+        else if (hasSkill && hasName && !hasCity) {
+            const skills = searchForm["skills"].value.map(s => s["@id"]);
+            const name = searchForm["name"].value;
+            this.searchBySkillAndName(skills, name);
+        }
+
+        // search by city and name
+        else if (hasCity && hasName && !hasSkill) {
+            const location = searchForm["profile.city"].value;
+            const name = searchForm["name"].value;
+            this.searchByLocationAndName(location, name);
+        }
+
+        // search by skill, city and name
+        else if (hasSkill && hasName && hasCity) {
+            const skills = searchForm["skills"].value.map(s => s["@id"]);
+            const location = searchForm["profile.city"].value;
+            const name = searchForm["name"].value;
+            this.searchBySkillAndLocationAndName(skills, location, name);
         }
     }
 
