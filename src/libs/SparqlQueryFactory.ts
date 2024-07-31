@@ -20,7 +20,6 @@ export class SparqlQueryFactory {
         return `PREFIX idx: <https://ns.inria.fr/idx/terms#>
         PREFIX sib: <http://cdn.startinblox.com/owl/ttl/vocab.ttl#>
         PREFIX sh: <https://www.w3.org/ns/shacl#>
-        PREFIX test: <https://api.test-inria-index.startinblox.com/fedex/indexes/users/cities/>
         SELECT ?result 
         WHERE {
             ?entry a idx:IndexEntry;
@@ -39,7 +38,6 @@ export class SparqlQueryFactory {
         return `PREFIX idx: <https://ns.inria.fr/idx/terms#>
         PREFIX sib: <http://cdn.startinblox.com/owl/ttl/vocab.ttl#>
         PREFIX sh: <https://www.w3.org/ns/shacl#>
-        PREFIX test: <https://api.test-inria-index.startinblox.com/fedex/indexes/users/cities/>
         SELECT ?result 
         WHERE {
             ?entry a idx:IndexEntry;
@@ -59,7 +57,6 @@ export class SparqlQueryFactory {
         return `PREFIX idx: <https://ns.inria.fr/idx/terms#>
         PREFIX sib: <http://cdn.startinblox.com/owl/ttl/vocab.ttl#>
         PREFIX sh: <https://www.w3.org/ns/shacl#>
-        PREFIX test: <https://api.test-inria-index.startinblox.com/fedex/indexes/users/cities/>
         SELECT ?result 
         WHERE {
             ?entry a idx:IndexEntry;
@@ -78,7 +75,6 @@ export class SparqlQueryFactory {
         return `PREFIX idx: <https://ns.inria.fr/idx/terms#>
         PREFIX sib: <http://cdn.startinblox.com/owl/ttl/vocab.ttl#>
         PREFIX sh: <https://www.w3.org/ns/shacl#>
-        PREFIX test: <https://api.test-inria-index.startinblox.com/fedex/indexes/users/cities/>
         SELECT ?result 
         WHERE {
             ?entry a idx:IndexEntry;
@@ -98,7 +94,6 @@ export class SparqlQueryFactory {
         return `PREFIX idx: <https://ns.inria.fr/idx/terms#>
         PREFIX sib: <http://cdn.startinblox.com/owl/ttl/vocab.ttl#>
         PREFIX sh: <https://www.w3.org/ns/shacl#>
-        PREFIX test: <https://api.test-inria-index.startinblox.com/fedex/indexes/users/cities/>
         SELECT ?result 
         WHERE {
             ?skillEntry a idx:IndexEntry;
@@ -148,7 +143,7 @@ export class SparqlQueryFactory {
     }
 
     public static makeMetaIndexCityQuery(city: string): string {
-        return SparqlQueryFactory.makeMetaIndexQuery("sib:city", `test:${city}`);
+        return SparqlQueryFactory.makeMetaIndexQuery("sib:city", `"${city.toLowerCase()}"`);
     }
 
     public static makeMetaIndexNameQuery(names: string[]): string {
@@ -156,7 +151,7 @@ export class SparqlQueryFactory {
     }
 
     public static makeIndexCityQuery(city: string): string {
-        return SparqlQueryFactory.makeIndexQuery("sib:city", `test:${city.toLowerCase()}`);
+        return SparqlQueryFactory.makeIndexQuery("sib:city", `"${city.toLowerCase()}"`);
     }
 
     public static makeIndexNameQuery(names: string[]): string {
@@ -164,6 +159,6 @@ export class SparqlQueryFactory {
     }
 
     public static makeIndexSkillCityQuery(skills: string[], city: string): string {
-        return SparqlQueryFactory.makeMixedIndexQuery(skills.map(s => `<${s}>`).join(', '), `test:${city.toLowerCase()}`);
+        return SparqlQueryFactory.makeMixedIndexQuery(skills.map(s => `<${s}>`).join(', '), `"${city.toLowerCase()}"`);
     }
 }

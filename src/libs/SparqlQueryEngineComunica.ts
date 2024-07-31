@@ -109,7 +109,6 @@ export class SparqlQueryEngineComunica {
         const skillIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexSkillQuery(skills), skillMetaIndex);
         const cityIndexes = await this.getIndex(SparqlQueryFactory.makeMetaIndexCityQuery(location), cityMetaIndex);
         const sources = skillIndexes.concat(cityIndexes);
-        // console.log(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location));
         this.getUsers(SparqlQueryFactory.makeIndexSkillCityQuery(skills, location), sources);
     }
 
@@ -138,8 +137,6 @@ export class SparqlQueryEngineComunica {
             const city = searchForm["profile.city"].value;
             this.searchBySkillAndLocation(skills, city);
         }
-
-        else this.searchByLocation("paris"); // default filter and reset
     }
 
 }
