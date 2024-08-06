@@ -1,7 +1,7 @@
 const baseUrl = Cypress.config().baseUrl;
 
 export const base_context = {
-  '@vocab': 'http://happy-dev.fr/owl/#',
+  '@vocab': 'https://cdn.startinblox.com/owl#',
   rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
   ldp: 'http://www.w3.org/ns/ldp#',
@@ -16,7 +16,7 @@ export const base_context = {
 };
 
 // FIXME: Fix this tests suite
-describe.skip('store', { testIsolation: false }, function () {
+describe('store', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/store.html')
   })
@@ -45,14 +45,18 @@ describe.skip('store', { testIsolation: false }, function () {
   });
 
   it('save local data', () => {
-  cy.window().then(async (win: any) => {
+    cy.window().then(async (win: any) => {
       const store = win.sibStore;
-      const dataToSave1 = {foo: 'bar'};
       const customID = "myCustomID";
       const url = `store://local.${customID}`
+
+      // Now the context needs to be explicitly defined
+      const dataToSave1 = {
+        foo: 'bar',
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+      };
       await store.setLocalData(dataToSave1, url);
-      const dataRead1 = await store.getData(url);
-      console.log(await dataRead1!['foo']);
+      let dataRead1 = await store.getData(url);
       expect(await dataRead1!['foo']).eq('bar');
       store.clearCache(url);
     });
@@ -79,7 +83,172 @@ describe.skip('store', { testIsolation: false }, function () {
   });
 
   it('fetches data and cache it', () => {
-    cy.intercept("GET", "*/data/list/users.jsonld").as('users')
+    cy.intercept("GET", "/examples/data/list/users.jsonld", {
+      statusCode: 200,
+      body: {
+        "@id": "/examples/data/list/users.jsonld",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "/examples/data/list/user-1.jsonld",
+            "first_name": "Test",
+            "last_name": "User",
+            "name": "Test User",
+            "username": "admin",
+            "email": "test-user@example.com",
+            "available": true,
+            "years_experience": 3,
+            "skills": {
+              "@id": "/examples/data/list/user-1-skills.jsonld",
+              "@type": "ldp:Container",
+              "ldp:contains": [
+                {
+                  "@id": "/examples/data/list/skill-2.jsonld"
+                },
+                {
+                  "@id": "/examples/data/list/skill-3.jsonld"
+                }
+              ],
+              "permissions": [
+                "view"
+              ]
+            },
+            "profile": {
+              "@id": "/examples/data/list/profile-1.jsonld"
+            },
+            "@type": "foaf:user",
+            "permissions": [
+              "view"
+            ]
+          },
+          {
+            "@id": "/examples/data/list/user-2.jsonld",
+            "first_name": "Paris",
+            "last_name": "Hilton",
+            "name": "Paris Hilton",
+            "username": "paris",
+            "email": "paris@hilton.hi",
+            "available": true,
+            "years_experience": 5,
+            "skills": {
+              "@id": "/examples/data/list/user-2-skills.jsonld",
+              "@type": "ldp:Container",
+              "ldp:contains": [
+                {
+                  "@id": "/examples/data/list/skill-1.jsonld"
+                }
+              ],
+              "permissions": [
+                "view"
+              ]
+            },
+            "profile": {
+              "@id": "/examples/data/list/profile-2.jsonld"
+            },
+            "@type": "foaf:user",
+            "permissions": [
+              "view"
+            ]
+          },
+          {
+            "@id": "/examples/data/list/user-4.jsonld",
+            "first_name": "Pierre",
+            "last_name": "DLC",
+            "name": "Pierre DLC",
+            "username": "pierre",
+            "email": "pierredelacroix@happy-dev.fr",
+            "available": false,
+            "years_experience": 5,
+            "skills": {
+              "@id": "/examples/data/list/user-4-skills.jsonld",
+              "@type": "ldp:Container",
+              "ldp:contains": [
+                {
+                  "@id": "/examples/data/list/skill-1.jsonld"
+                },
+                {
+                  "@id": "/examples/data/list/skill-2.jsonld"
+                },
+                {
+                  "@id": "/examples/data/list/skill-4.jsonld"
+                }
+              ],
+              "permissions": [
+                "view"
+              ]
+            },
+            "profile": {
+              "@id": "/examples/data/list/profile-4.jsonld"
+            },
+            "@type": "foaf:user",
+            "permissions": [
+              "view"
+            ]
+          },
+          {
+            "@id": "/examples/data/list/user-3.jsonld",
+            "first_name": "Not A",
+            "last_name": "Paris Member",
+            "name": "Not A Paris Member",
+            "username": "not-member-paris",
+            "email": "not-a@paris.members",
+            "available": false,
+            "years_experience": 7,
+            "skills": {
+              "@id": "/examples/data/list/user-3-skills.jsonld",
+              "@type": "ldp:Container",
+              "ldp:contains": [
+      
+              ],
+              "permissions": [
+                "view"
+              ]
+            },
+            "profile": {
+              "@id": "/examples/data/list/profile-3.jsonld"
+            },
+            "@type": "foaf:user",
+            "permissions": [
+              "view"
+            ]
+          }
+        ],
+        "permissions": [
+          "view"
+        ],
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+      },
+      headers: {
+        'content-type': 'application/ld+json'
+      }
+    }).as('users')
+
+    cy.intercept("GET", "/examples/data/extra-context/user-6.jsonld", {
+      statusCode: 200,
+      body: {
+        "@id": "/examples/data/extra-context/user-6.jsonld",
+        "first_name": "Test",
+        "last_name": "User",
+        "username": "admin",
+        "email": "test-user@example.com",
+        "name": "Test User",
+        "profile": {
+          "@id": "/examples/data/extra-context/profile-6.jsonld",
+          "@context": {
+            "picture": "foaf:depiction"
+          },
+          "picture": "my-avatar.png"
+        },
+        "@type": "foaf:user",
+        "permissions": [
+          "view"
+        ],
+        "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+      },
+      headers: {
+        'content-type': 'application/ld+json'
+      }
+    }).as('user-6')
 
     cy.window()
       .its('sibStore')
@@ -88,11 +257,11 @@ describe.skip('store', { testIsolation: false }, function () {
     cy.get('@users').its("response.statusCode").should('equal', 200);
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 6); // cache
+      .its('sibStore.cache').should('have.length', 13); // cache
     cy.window()
       .its('sibStore.loadingList').should('have.property', 'size', 0); // loading list
     cy.window()
-      .its('sibStore.subscriptionIndex').should('have.length', 4); // loading list
+      .its('sibStore.subscriptionIndex').should('have.length', 8); // Subscription index
 
     cy.window()
       .its('sibStore')
@@ -107,10 +276,10 @@ describe.skip('store', { testIsolation: false }, function () {
       .its('sibStore')
       .invoke('get', '/examples/data/extra-context/user-6.jsonld')
       .invoke('getResourceData')
-      .should('have.property', 'http://happy-dev.fr/owl/#email', "test-user@example.com"); // @vocab
+      .should('have.property', 'https://cdn.startinblox.com/owl#email', "test-user@example.com"); // @vocab
     cy.window()
       .its('sibStore')
-      .invoke('get', 'profile-6.jsonld')
+      .invoke('get', '/examples/data/extra-context/profile-6.jsonld')
       .invoke('getResourceData')
       .should('have.property', 'http://xmlns.com/foaf/0.1/depiction', "my-avatar.png"); // nested additionnal context
   });
@@ -140,7 +309,15 @@ describe.skip('store', { testIsolation: false }, function () {
       }
     }).as("delete")
 
-    cy.intercept("GET", "/examples/data/list/user-1.jsonld", {
+    cy.intercept("GET", `${baseUrl}/examples/data/list/user-1.jsonld`, {
+      statusCode: 200,
+      body: {
+          "@id": "/examples/data/list/user-1.jsonld",
+          "@type": "foaf:user",
+          "first_name": "Matthieu",
+          "last_name": "Garcia",
+          "email": "matthieu@example.com"
+      },
       headers: {
         'content-type': 'application/ld+json'
       }
@@ -201,7 +378,7 @@ describe.skip('store', { testIsolation: false }, function () {
 
   it('clears cache', () => {
     cy.window()
-      .its('sibStore.cache').should('have.length', 10);
+      .its('sibStore.cache').should('have.length', 15);
 
     cy.window()
       .its('sibStore')
@@ -213,7 +390,7 @@ describe.skip('store', { testIsolation: false }, function () {
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 9);
+      .its('sibStore.cache').should('have.length', 14);
 
     cy.window()
       .its('sibStore')
@@ -225,7 +402,7 @@ describe.skip('store', { testIsolation: false }, function () {
       .invoke('clearCache', 'wrong-id.jsonld');
 
     cy.window()
-      .its('sibStore.cache').should('have.length', 9);
+      .its('sibStore.cache').should('have.length', 14);
   });
 
   it('subscribes resource', () => {
@@ -234,7 +411,7 @@ describe.skip('store', { testIsolation: false }, function () {
       .invoke('subscribeResourceTo', 'ldp-server.test/circles/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
-      expect(win.sibStore.subscriptionIndex).to.have.length(5);
+      expect(win.sibStore.subscriptionIndex).to.have.length(9);
       expect(win.sibStore.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(1)
         .and.to.have.members(['ldp-server.test/circles/']);
@@ -245,7 +422,7 @@ describe.skip('store', { testIsolation: false }, function () {
       .invoke('subscribeResourceTo', 'ldp-server.test/users/matthieu/', 'ldp-server.test/circles/1/');
 
     cy.window().then((win: any) => {
-      expect(win.sibStore.subscriptionIndex).to.have.length(5);
+      expect(win.sibStore.subscriptionIndex).to.have.length(9);
       expect(win.sibStore.subscriptionIndex.get('ldp-server.test/circles/1/'))
         .to.have.length(2)
         .and.to.have.members(['ldp-server.test/circles/', 'ldp-server.test/users/matthieu/']);
@@ -311,11 +488,11 @@ describe.skip('store', { testIsolation: false }, function () {
       await store.getData('/examples/data/list/user-1.jsonld', base_context);
 
       const resource = {
-        "@id": "user-1.jsonld",
+        "@id": "/examples/data/list/user-1.jsonld",
         name: "Test User",
         available: true,
         skills: {
-          "@id": "user-1-skills.jsonld",
+          "@id": "/examples/data/list/user-1-skills.jsonld",
           "@type": "ldp:Container",
           "ldp:contains": [
             {
@@ -327,12 +504,12 @@ describe.skip('store', { testIsolation: false }, function () {
           ],
         },
         profile: {
-          "@id": "profile-1.jsonld"
+          "@id": "/examples/data/list/profile-1.jsonld"
         },
         "@type": "foaf:user"
       };
       const nestedResources = await store.getNestedResources(resource, '/examples/data/list/user-1.jsonld');
-      expect(nestedResources).to.deep.equal(["user-1-skills.jsonld", "profile-1.jsonld"]);
+      expect(nestedResources).to.deep.equal(["/examples/data/list/user-1-skills.jsonld", "/examples/data/list/profile-1.jsonld"]);
       expect(store.fetchData).to.be.calledOnce;
     });
   });
@@ -344,14 +521,14 @@ describe.skip('store', { testIsolation: false }, function () {
       cy.spy(store, 'getData');
       cy.spy(store, 'fetchData');
 
-      expect(store.cache).to.have.length(10);
+      expect(store.cache).to.have.length(15);
       await store.refreshResources(['/examples/data/list/user-1.jsonld', '/examples/data/list/users.jsonld']);
 
       expect(store.clearCache).to.be.calledTwice;
       expect(store.getData).to.be.calledTwice;
       expect(store.fetchData).to.be.calledTwice;
 
-      expect(store.cache).to.have.length(10);
+      expect(store.cache).to.have.length(15);
     });
   });
 

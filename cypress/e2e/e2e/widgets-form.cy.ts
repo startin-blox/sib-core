@@ -320,13 +320,13 @@ describe('form widgets', { testIsolation: false }, function () {
       .should('contain', 'CSS');
 
     // With federation
-    cy.get('solid-form-dropdown#test6 > select > option').eq(1)
+    cy.get('solid-form-dropdown#test6 > select > option[value="{\\"@id\\": \\"/examples/data/federation/circles-1.jsonld\\"}"]')
       .should('contain', 'Circle from server 1');
-    cy.get('solid-form-dropdown#test6 > select > option').eq(2)
+      cy.get('solid-form-dropdown#test6 > select > option[value="{\\"@id\\": \\"/examples/data/federation/circles-2.jsonld\\"}"]')
       .should('contain', 'Another circle from server 1');
-    cy.get('solid-form-dropdown#test6 > select > option').eq(3)
+      cy.get('solid-form-dropdown#test6 > select > option[value="{\\"@id\\": \\"/examples/data/federation/circles-3.jsonld\\"}"]')
       .should('contain', 'Circle from server 2');
-    cy.get('solid-form-dropdown#test6 > select > option').eq(4)
+      cy.get('solid-form-dropdown#test6 > select > option[value="{\\"@id\\": \\"/examples/data/federation/circles-4.jsonld\\"}"]')
       .should('contain', 'Another circle from server 2');
 
     // With enumeration in range

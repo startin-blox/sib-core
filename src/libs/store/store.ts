@@ -122,6 +122,7 @@ class Store {
         if (!bypassLoadingList)
           this.loadingList.delete(key);
         resolve(null);
+        document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: null, fetchedResource: null } }));
         return;
       }
 
@@ -129,10 +130,9 @@ class Store {
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
       await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-
       if (!bypassLoadingList)
         this.loadingList.delete(key);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key) } }));
+      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key), fetchedResource: resource } }));
     });
   }
 
@@ -145,10 +145,6 @@ class Store {
     } else { // anonymous
       if (options.headers) options.headers = this._convertHeaders(options.headers);
       return fetch(iri, options).then(function(response) {
-        if (options.method === "PURGE" && !response.ok && response.status === 404) {
-          const err = new Error("PURGE call is returning 404");
-          throw err;
-        }
         return response;
       });
     }
@@ -315,7 +311,6 @@ class Store {
     return this._fetch(method, resource, id, bypassLoadingList).then(async(response) => {
       if (response.ok) {
         if(method !== '_LOCAL') {
-          // await this.purge(id);
           this.clearCache(expandedId);
         } // clear cache
         this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
@@ -459,37 +454,6 @@ class Store {
   }
 
   /**
-   * Send a PURGE request to remove a resource from REDIS AD cache
-   * @param id - uri of the resource to patch
-   *
-   * @returns id of the edited resource
-   */
-  async purge(id: string) {
-    await this.fetchAuthn(id, {
-      method: "PURGE",
-      headers: this.headers
-    }).catch(function(error) {
-      console.warn('No purge method allowed: ' + error)
-    });
-
-    try {
-      const fullURL = new URL(id);
-      var pathArray = fullURL.pathname.split('/');
-      var containerUrl = fullURL.origin + '/' + pathArray[1] + '/';
-      const headers = { ...this.headers, 'X-Cache-Purge-Match': 'startswith' };
-      await this.fetchAuthn(containerUrl, {
-        method: "PURGE",
-        headers: headers
-      }).catch(function(error) {
-        console.warn('No purge method allowed: ' + error)
-      });
-    } catch (error) {
-      console.warn('The resource ID is not a complete URL: ' + error);
-      return;
-    }
-  }
-
-  /**
    * Send a DELETE request to delete a resource
    * @param id - uri of the resource to delete
    * @param context - can be used to expand id
@@ -503,7 +467,6 @@ class Store {
       headers: this.headers,
       credentials: 'include'
     });
-    // await this.purge(id);
 
     const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
     const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
@@ -531,8 +494,35 @@ class Store {
     return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
   }
 
-  getExpandedPredicate(property: string, context: object) { return ContextParser.expandTerm(property, context, true) }
+  /**
+   * Returns the expanded predicate based on provided context or the base one.
+   * @param property The property to expand
+   * @param context Your current context
+   * @returns The fully expanded term
+   */
+  getExpandedPredicate(property: string, context: object | null) {
+    if (!context)
+      return ContextParser.expandTerm(property, base_context, true)
+    return ContextParser.expandTerm(property, context, true)
+  }
 
+  /**
+   * Returns the compacted IRI based on provided context or the base one.
+   * @param property The property to compact
+   * @param context Your current context
+   * @returns The compacted term
+   */
+  getCompactedIri(property: string, context: object | null) {
+    if (!context)
+      return ContextParser.compactIri(property, base_context, true)
+    return ContextParser.compactIri(property, context, true)
+  }
+
+  /**
+   * Check if the id is a local id
+   * @param id - string
+   * @returns boolean
+   */
   _isLocalId(id: string) {
     return id.startsWith('store://local.');
   }
@@ -599,7 +589,11 @@ class Store {
   resolveResource = function(id: string, resolve) {
     const handler = function(event) {
       if (event.detail.id === id) {
-        resolve(event.detail.resource);
+        if(event.detail.resource) {
+          resolve(event.detail.resource);
+        } else {
+          resolve(event.detail.fetchedResource);
+        }
         // TODO : callback
         document.removeEventListener('resourceReady', handler);
       }

@@ -83,7 +83,7 @@
   ],
   "permissions": [
     "view",
-    { "mode": { "@type": "add" }}
+    "add"
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

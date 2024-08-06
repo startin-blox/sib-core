@@ -4,6 +4,7 @@
     "autocompletion.searchText": "Aucun résultat",
     "solid-delete.button": "Supprimer",
     "solid-form.submit-button": "Envoyer",
+    "solid-form.validation-error": "Erreur de validation.",
     "validation.message": "Merci de confirmer votre choix",
     "validation.submit-text": "Oui",
     "validation.cancel-text": "Annuler"

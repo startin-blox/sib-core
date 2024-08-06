@@ -185,4 +185,13 @@ describe('solid-form-search widget', { testIsolation: false }, function() {
     cy.get('#enum-checkboxes-display > div')
       .children().should('have.length', 2);
   })
+
+  it('solid-form-search + debounce', () => {
+    const input = cy.get('#filter-debounce input')
+    input.type('p')
+    cy.wait(1000)
+    cy.get('#debounce>div>solid-display').should('not.have.length', 4)
+    input.type('hp')
+    cy.get('#debounce>div>solid-display').should('have.length', 1)
+  })
 })

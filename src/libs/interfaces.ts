@@ -84,3 +84,9 @@ export interface Query {
 export interface SearchQuery {
   [key: string]: Query
 }
+
+export interface FilterEventOptions {
+  value: string;
+  inputLabel: string;
+  type: string;
+}

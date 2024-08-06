@@ -211,15 +211,23 @@ describe('solid-form', { testIsolation: false }, function() {
       .click();
     cy.get('solid-form#form-7')
       .find('[data-id="error"]')
-      .should('contain', 'A validation error occurred')
-      .and('contain', 'name: Ensure this field has no more than 10 characters.')
-      .and('contain', 'batches - title: Title too long, Title not unique')
-      .and('contain', 'batches - tasks - @id: Task with this urlid already exists.')
-      .and('contain', 'batches - tasks - amount: Should be > 0')
+      .should('contain', 'A validation error occurred.')
       .and('not.contain', '@context');
     cy.get('solid-form#form-7')
       .find('input[name=name]')
       .should('have.value', 'Mon très long titre')
+    cy.get('solid-form#form-7')
+      .find('.error[name=name] .error-message')
+      .should('contain', 'Ensure this field has no more than 10 characters.')
+    cy.get('solid-form#form-7')
+      .find('.error[name="batches.title"] .error-message')
+      .should('contain', 'Title too long')
+    cy.get('solid-form#form-7')
+      .find('.error[name="batches.tasks"] .error-message')
+      .should('contain', 'Task with this urlid already exists.')
+    cy.get('solid-form#form-7')
+      .find('.error[name="batches.tasks"] .error-message')
+      .should('contain', 'Should be > 0')
 
     // removes error after new submission
     cy.intercept("POST", '**/events.jsonld', {

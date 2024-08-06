@@ -57,10 +57,25 @@ export class CustomGetter {
             if (!isUrl.protocol.startsWith('http')) throw new Error('Not a valid HTTP url');
             // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
             if (isUrl) {
-              let value = this.resource[this.getExpandedPredicate(path)];
-              return value ? value : undefined;
+              let resources = this.resource[this.getExpandedPredicate(path)];
+              if (!resources) return undefined;
+              if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
+
+              let result = resources ? resources.map((res: object) => {
+                  let resource: any = store.get(res['@id']);
+                  if (resource) return resource;
+
+                  // if not in cache, generate the basic resource
+                  resource = new CustomGetter(res['@id'], { '@id': res['@id'] }, this.clientContext, this.serverContext, this.parentId).getProxy()
+                  store.cacheResource(res['@id'], resource); // put it in cache
+                  return resource; // and return it
+              }) : [];
+
+              return result;
             }
         } catch (e) {
+            if (!path.split) return undefined;
+
             // Split the path on each dots
             const path1: string[] = path.split('.');
 
@@ -78,9 +93,7 @@ export class CustomGetter {
             // We do that by poping one element from path1 at each step and affecting it to path2
             // Trying to get the value from it
             while (true) {
-                try {
-                    value = this.resource[this.getExpandedPredicate(path1[0])];
-                } catch (e) { break }
+                value = await this.resource[this.getExpandedPredicate(path1[0])];
 
                 if (path1.length <= 1) break; // no dot path
                 const lastPath1El = path1.pop();
@@ -91,7 +104,7 @@ export class CustomGetter {
                 if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
                 return await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId); // return complete resource
             }
-            if (!value) return undefined;
+            if (!value || !value['@id']) return undefined;
 
             let resource = await this.getResource(value['@id'], {...this.clientContext, ...this.serverContext}, this.parentId || this.resourceId);
             store.subscribeResourceTo(this.resourceId, value['@id']);
@@ -104,16 +117,19 @@ export class CustomGetter {
      * @param value
      * @returns
      */
-    getLiteralValue(value: any): string|null {
+    getLiteralValue(value: any): string|string[]|null {
         if (typeof value === "object") { // value object: https://www.w3.org/TR/json-ld11/#value-objects
             if (value['@value']) { // 1 language
                 return value['@value'];
-            } else if (Array.isArray(value)) { // multiple languages
+            } else if (Array.isArray(value)) {
                 if (value.length === 0) return null;
-                const ln = store._getLanguage();
-                let translatedValue = value.find(v => v['@language'] && v['@language'] === ln); // find current language
-                if (!translatedValue) translatedValue = value.find(v => v['@language'] && v['@language'] === 'en'); // default to en
-                return translatedValue ? (translatedValue['@value'] || null) : null;
+                if(Array.isArray(value[0])) { // multiple languages
+                    const ln = store._getLanguage();
+                    let translatedValue = value.find(v => v['@language'] && v['@language'] === ln); // find current language
+                    if (!translatedValue) translatedValue = value.find(v => v['@language'] && v['@language'] === 'en'); // default to en
+                    return translatedValue ? (translatedValue['@value'] || null) : null; // return value when no translated value is found
+                }
+                return value;
             }
         }
         return value; // simple value

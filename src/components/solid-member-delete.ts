@@ -69,6 +69,10 @@ export const SolidMemberDelete = {
       this.currentMembers = [this.currentMembers];
     }
 
+    this.currentMembers = this.currentMembers.map((member) => {
+      return { "@id": member['@id'] };
+    });
+
     // Check if current user is member of this group
     this.isMember = this.currentMembers
       ? this.currentMembers.some((member) => member['@id'] === this.dataTargetSrc)
@@ -89,7 +93,6 @@ export const SolidMemberDelete = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async deleteMembership() {
-    console.log("deleteMembership", this.dataSrc, this.dataTargetSrc, this.currentMembers);
     let userSet = this.currentMembers.filter((value) => {
       const userId = value['@id'];
       if (userId == this.dataTargetSrc) 

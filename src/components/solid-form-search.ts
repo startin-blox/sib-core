@@ -8,11 +8,12 @@ import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
-import type { SearchQuery } from '../libs/interfaces';
+import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
   use: [WidgetMixin, AttributeBinderMixin, ContextMixin],
+  debounceTimeout: undefined as (number | undefined),
   attributes: {
     defaultWidget: {
       type: String,
@@ -40,6 +41,10 @@ export const SolidFormSearch = {
         if (value === null) this.populate()
       }
     },
+    debounce: {
+      type: Number,
+      default: 0 // Avoiding blink effect with static values
+    }
   },
   initialState: {
     error: '',
@@ -110,15 +115,16 @@ export const SolidFormSearch = {
   },
   async updateAutoRanges() {
     for(const attr of (this.element as Element).attributes) {
-      if(!attr['name'].startsWith('auto-range-')) continue;
-      const field = attr['name'].replace('auto-range-', '');
+      if (!attr['name'].startsWith('auto-range-')) continue;
+      let fieldName = attr.value !== '' ? attr.value : attr['name'].replace('auto-range-', '');
       const autoRangeValues = new Set();
       for(const elm of this.attachedElements) {
-        for(const value of await elm.getValuesOfField(field)) {
+        for(const value of await elm.getValuesOfField(fieldName)) {
           autoRangeValues.add(value);
         }
       }
-      const idField = `${this.rangeId}_${field}`;
+
+      const idField = `${this.rangeId}_${fieldName}`;
       const id = `store://local.${idField}`;
       const ldpContains = Array.from(autoRangeValues).map(id => ({'@id' : id}));
       const data = {
@@ -130,16 +136,50 @@ export const SolidFormSearch = {
       sibStore.setLocalData(data, id);
     }
   },
-  change(resource: object): void {
+  change(resource: object, eventOptions: FilterEventOptions): void {
+    if (!resource) return;
     this.element.dispatchEvent(
       new CustomEvent('formChange', {
         bubbles: true,
         detail: { resource },
       }),
     );
+
+    if (!eventOptions.value) return;
+    this.element.dispatchEvent(
+      new CustomEvent('filterChange', {
+        bubbles: true,
+        detail: {
+          value: eventOptions.value,
+          inputLabel: eventOptions.inputLabel,
+          type: eventOptions.type
+        }
+      }),
+    );
   },
-  async inputChange(): Promise<void> {
-    this.change(this.value);
+  async inputChange(input: EventTarget): Promise<void> {
+    // FIXME: Improve this as we need to support more than input and single select.
+    // What about multiple select, checkboxes, radio buttons, etc?
+    let parentElementLabel = (input as HTMLInputElement)?.parentElement?.getAttribute('label');
+    try {
+      const selectedLabel = (input as HTMLSelectElement).selectedOptions[0].textContent?.trim();
+      this.change(
+        this.value,
+        {
+          value: selectedLabel,
+          inputLabel: parentElementLabel,
+          type: 'select'
+        }
+      );
+    } catch {
+      this.change(this.value,
+        {
+          value: (input as HTMLInputElement).value,
+          inputLabel: parentElementLabel,
+          type: 'input'
+        }
+      );
+    }
   },
   getSubmitTemplate() {
     return html`
@@ -153,14 +193,21 @@ export const SolidFormSearch = {
     ` 
   },
   empty(): void {},
+  debounceInput(input: EventTarget | null) {
+    clearTimeout(this.debounceTimeout);
+    this.debounceTimeout = setTimeout(() => {
+      this.debounceTimeout = undefined;
+      this.inputChange(input);
+    }, this.debounce);
+  },
   async populate(): Promise<void> {
     await this.replaceAttributesData();
     if(this.submitButton == null) {
-      this.element.addEventListener('input', () => this.inputChange());
+      this.element.addEventListener('input', (e: Event) => this.debounceInput(e.target));
     } else {
       this.element.addEventListener('submit', (e: Event) => {
         e.preventDefault();
-        this.inputChange();
+        this.inputChange(e.target);
       });
     }
     const fields = await this.getFields();

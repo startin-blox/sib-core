@@ -7,23 +7,24 @@
     <title>SIB test:membership</title>
     <script
     type="module"
-    src="https://cdn.skypack.dev/@startinblox/router@latest"
+    src="https://cdn.skypack.dev/@startinblox/router"
     ></script>
     <script
       type="module"
-      src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+      src="https://cdn.skypack.dev/@startinblox/oidc"
     ></script>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
+  <a href="/index.html">Back to index</a>
   <body>
     <sib-auth auto-login>
       <sib-auth-provider
         data-authority="https://api.tzcld-stg.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
-    
+
     <h3>
       Solid-display with a solid-member-delete widget with data-label and next attributes
     </h3>

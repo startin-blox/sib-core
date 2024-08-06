@@ -187,7 +187,7 @@ const FilterMixin = {
         continue;
       }
 
-      if (nextArrayOfObjects['@type'] !== 'ldp:Container') {
+      if (!nextArrayOfObjects.isContainer()) {
         // if no element in 'ldp:contains', catch object id
         arrayOfDataIds.push(nextArrayOfObjects['@id']);
       } else {

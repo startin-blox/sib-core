@@ -90,8 +90,6 @@ const StoreMixin = {
       this.resourceId = nestedResource ? await nestedResource['@id'] : null;
 
       if (resource && !this.resourceId && !nestedResource) {
-        console.trace();
-        console.log(nestedResource);
         for (const property in await resource) {
           console.log(`${property}: ${await resource[property]}`);
         }

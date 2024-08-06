@@ -32,6 +32,10 @@ export const SolidMemberAdd = {
       type: String,
       default: undefined
     },
+    orderAsc: {
+      type: String,
+      default: undefined
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -56,11 +60,11 @@ export const SolidMemberAdd = {
   },
   async addMembership() {
     this.currentMembers.push(JSON.parse(this.dataTargetSrc));
-
     let currentRes = {
       "@context": this.context,
       "user_set": this.currentMembers
     }
+
     return store.patch(currentRes, this.resourceId).then(response => {
       if (!response) {
         console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`);
@@ -84,17 +88,18 @@ export const SolidMemberAdd = {
     this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
   },
   async populate(): Promise<void> {
-    console.log("Calling populate");
-    console.trace();
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
     let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    // Here we now retrieve an array of proxy, when we would like an array of @ids only
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
       this.currentMembers = [this.currentMembers];
     }
+    // In each item in this.currentMembers, I'd like to return only their @id and store it in this.currentMembers
+    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
 
     let button = html`
       <solid-ac-checker data-src="${this.dataSrc}"
@@ -109,6 +114,7 @@ export const SolidMemberAdd = {
             data-src="${this.rangeUsers}"
             name="users"
             @change="${this.changeSelectedUser.bind(this)}"
+            order-asc="${ifDefined(this.orderAsc || 'name')}"
           ></solid-form-dropdown-autocompletion>
           <div class=${ifDefined(this.classSubmitButton)}>
             <button type="submit">

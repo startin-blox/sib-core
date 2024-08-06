@@ -65,7 +65,10 @@ const WidgetMixin = {
 
     let fields: string[] = [];
     for (const prop of resource.properties) {
-      if ((!prop.startsWith('@') && !(prop === "permissions")) && await resource[prop]) fields.push(prop);
+      if ((!prop.startsWith('@') && !(prop === "permissions"))) {
+        if (!this.isAlias(prop) && await resource[prop]) fields.push(prop);
+        else if (this.isAlias(prop)) fields.push(prop);
+      }
     }
     return fields;
   },
@@ -112,8 +115,20 @@ const WidgetMixin = {
     let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
+  /**
+   * Return true if "field" is a string
+   * @param field - string
+   */
   isString(field: string): boolean {
     return field.startsWith('\'') || field.startsWith('\"');
+  },
+  /**
+   * Return true if "field" is an alias (contains " as ")
+   * @param field - string
+   */
+  isAlias(field: string): boolean {
+    const aliasRegex = /^[\w@.]+\s+as\s+[\w@.]+$/;
+    return aliasRegex.test(field);
   },
   /**
    * Return the value of "resource" for predicate "field"
@@ -149,11 +164,17 @@ const WidgetMixin = {
     if (this.getAction(escapedField)) {
       return this.getAction(escapedField);
     }
+
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resourceValue = await this.fetchValue(field, resource);
 
+    if (this.isAlias(field)) {
+      const alias = field.split(' as ');
+      return await this.fetchValue(alias[0], resource);
+    }
+
+    let resourceValue = await this.fetchValue(field, resource);
     // Empty value
     if (resourceValue === undefined || resourceValue === '' || resourceValue === null) // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
@@ -180,6 +201,7 @@ const WidgetMixin = {
    * @param isSet - boolean
    */
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const widget = this.element.getAttribute('widget-' + field);
 
     if (widget) return this.widgetFromTagName(widget);
@@ -215,6 +237,7 @@ const WidgetMixin = {
    */
   widgetAttributes(field: string, resource: Resource): object {
     const attrs = { name: field };
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const escapedField = this.getEscapedField(field);
 
     // transfer all multiple-[field]-[attr] attributes as [attr] for multiple widget [field]
@@ -274,7 +297,6 @@ const WidgetMixin = {
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId) attrs['src'] = this.element.getAttribute('src-' + escapedField) || resourceId;
     if (this.editable(escapedField) && resourceId) attrs['value-id'] = resourceId;
-
     return attrs;
   },
   /**
@@ -309,8 +331,18 @@ const WidgetMixin = {
       // Set attributes to the widget
       // setAttribute set a string. Make sure null values are empty
       if (value === null || value === undefined) attributes.value = '';
-      if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
-        attributes['data-src'] = value['@id'];
+      if (widgetMeta.type === WidgetType.USER) { // if value is a resource and solid-widget used, set data-src
+        if (value['@id']) {
+          attributes['data-src'] = value['@id'];
+        } else {
+          try {
+            let isUrl = new URL(value);
+            if (isUrl) attributes['data-src'] = value;
+          } catch (e) {}
+
+          // in any case, set value attribute
+          attributes['value'] = value;
+        }
       } else { // otherwise, set value attribute
         attributes['value'] = value;
       }

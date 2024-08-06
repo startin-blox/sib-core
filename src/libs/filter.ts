@@ -87,6 +87,15 @@ const matchValue = async (val: any, query: Query, throwOn?: boolean): Promise<bo
       if (ret) return orThrow(throwOn, true);
     }
     return orThrow(throwOn, await ret);
+  } else if(Array.isArray(subject)) {
+    let ret: any = Promise.resolve(query.value === ''); // if no query, return a match
+    for (const value of subject) {
+      ret = await ret || await matchValue(value, query); // do not throw here, we need the result
+      if (ret) {
+        return true;
+      }
+    }
+    return orThrow(throwOn, await ret);
   }
 
   return orThrow(throwOn, compare[query.type](subject, query.value));
@@ -112,6 +121,57 @@ const cacheFieldsProps = (
     }
   }
 }
+
+/**
+ * Allow to traverse a multi-depth path to filter on resources of a given type
+ * @param resource The actual resource to filter on
+ * @param path The complete path to traverse
+ * @param targetedType The type of resources we are looking for
+ * @returns The list of all resources ids found of given type
+ */
+const traversePath = async (resource: object, path: string[], targetedType: string): Promise<object[]> => {
+  let result: object[] = [];
+  let currentRes: any;
+  let remainingPath: string[] = path;
+  if (!path.length) return [];
+
+  // Split and get first item
+  try {
+    currentRes = await resource[path[0]];
+    const lastPath1El = path.shift();
+
+    if(lastPath1El) remainingPath = path;
+
+    if (currentRes && remainingPath.length > 1) {
+      result = await traversePath(currentRes, remainingPath, targetedType); // Await the result of traversePath
+    } else if (currentRes && Array.isArray(currentRes)) {
+      for (const res of currentRes) {
+        if (remainingPath.length > 1) {
+          result = await traversePath(res, remainingPath, targetedType);
+        } else {
+          let targetsRes = await res[remainingPath[0]];
+          if (!targetsRes) return [];
+          if (targetsRes.isContainer?.()) {
+            targetsRes = targetsRes['ldp:contains'];
+          }
+          if (!Array.isArray(targetsRes)) targetsRes = [targetsRes];
+
+          for(const targetRes of targetsRes) {
+            if (!result.some(item => item["@id"] === targetRes["@id"])) {
+              result.push({"@id": targetRes["@id"]});
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+  // console.log(`TraversePath result for ${resource['@id']} : `, await result);
+  return result;
+}
+
 
 /**
  * Check if one resource match one filter
@@ -143,6 +203,25 @@ const matchFilter = async (
   } else if (window.cachePropsSearchFilter[cacheKey].setSearchFields !== null) {
     fields = window.cachePropsSearchFilter[cacheKey].setSearchFields;
   } else { // search on 1 field
+    //FIXME: Better assumption that just using ldp:contains does the job ?
+    if (!(await resource[filter]) && filter.includes('ldp:contains')) { // nested field
+      // console.log(`No ${filter} found for ${resource['@id']} and ${filter} is a nested field. Trying to traverse path.`);
+      const path1: string[] = filter.split('.');
+      const targetedType = path1[path1.length - 1];
+
+      let targetIds: object[] = [];
+
+      targetIds = await traversePath(resource, path1, targetedType);
+      // console.log(`TargetIds : ${targetIds} found for ${await resource['name']} : ${resource['@id']}`);
+
+      if (!Array.isArray(targetIds) || targetIds.length === 0 && query.value !== '') {
+        // console.log(`No targetIds found for ${resource['@id']} returning false`);
+        throw throwOn ? false : true;
+      }
+
+      // console.log(`Do we have a match for ${resource['@id']} ?`, match);
+      return await matchValue(targetIds, query, throwOn);;
+    }
     return matchValue(resource[filter], query, throwOn);
   }
 
@@ -158,8 +237,8 @@ const matchFilter = async (
         filterId,
         true // stop searching when 1 filter is true (= OR)
       )
-    ))
-  } catch (e) { return true }
+    ));
+  } catch (e) { return true; }
   throw false;
 }
 
@@ -183,18 +262,19 @@ const matchFilters = async (
 ): Promise<boolean> => {
   // return true if all filters values are contained in the corresponding field of the resource
   try {
-    await Promise.all(filterNames.map(filter =>
-      matchFilter(
-        resource,
-        filter,
-        filters[filter],
-        fields,
-        searchForm,
-        filterId,
-        false // stop searching when 1 filter is false (= AND)
-      )
-    ));
-  } catch (e) { return false }
+    await Promise.all(filterNames.map(async (filter) => {
+        let match = await matchFilter(
+          resource,
+          filter,
+          filters[filter],
+          fields,
+          searchForm,
+          filterId,
+          false // stop searching when 1 filter is false (= AND)
+        );
+        return match;
+    }));
+  } catch (e) { return false; }
   return true;
 }
 
@@ -216,17 +296,17 @@ const searchInResources = async (
   const filterNames = Object.keys(filters);
   const filterId = uniqID();
   window.cachePropsSearchFilter = {};
-
-  return Promise.all(resources.map(resource =>
-    matchFilters(
+  return Promise.all(resources.map(async (resource) => {
+    let match = await matchFilters(
       resource,
       filters,
       filterNames,
       fields,
       searchForm,
       filterId
-    )
-  ));
+    );
+    return match;
+  }));
 }
 
 export {

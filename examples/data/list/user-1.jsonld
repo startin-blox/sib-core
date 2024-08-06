@@ -18,11 +18,7 @@
       }
     ],
     "permissions": [
-      {
-        "mode": {
-          "@type": "view"
-        }
-      }
+      "view"
     ]
   },
   "job": {

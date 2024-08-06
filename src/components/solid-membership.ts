@@ -2,7 +2,6 @@ import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-// import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
@@ -12,13 +11,16 @@ export const SolidMembership = {
   name: 'solid-membership',
   use: [NextMixin, ValidationMixin, ContextMixin],
   attributes: {
-    // Data Source being a group URI in that case
     dataSrc: {
       type: String,
       default: null,
       callback: function () {
         this.resourceId = this.dataSrc;
       },
+    },
+    dataTargetSrc: {
+      type: String,
+      default: null
     },
     dataLeaveLabel: {
       type: String,
@@ -52,7 +54,11 @@ export const SolidMembership = {
     let currentUserSession = await store.session;
     if (!currentUserSession) return;
 
-    this.userId = await currentUserSession.webId;
+    if (!this.dataTargetSrc)
+      this.userId = await currentUserSession.webId;
+    else
+      this.userId = this.dataTargetSrc;
+
     if (!this.userId) return;
 
     // Retrieve the group resource
@@ -66,6 +72,8 @@ export const SolidMembership = {
     if (!Array.isArray(this.currentMembers)) {
       this.currentMembers = [this.currentMembers];
     }
+
+    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
 
     // Check if current user is member of this group
     this.isMember = this.currentMembers
@@ -142,14 +150,13 @@ export const SolidMembership = {
     this.render();
   },
   async render(): Promise<void> {
-    // await this.replaceAttributesData(false);
     await this.populate();
     let button = html``;
     if (this.isMember) {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
               permission="acl:Read"
-              class=${ifDefined(this.classSubmitButton)}
+              class=${ifDefined(`${this.classSubmitButton ?  'leave ' + this.classSubmitButton: 'leave'}`)}
             >
           <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t("solid-leave-group.button")}</button>
           ${this.getModalDialog()}
@@ -159,7 +166,7 @@ export const SolidMembership = {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
               permission="acl:Read"
-              class=${ifDefined(this.classSubmitButton)}
+              class=${ifDefined(`${this.classSubmitButton ?  'join ' + this.classSubmitButton: 'join'}`)}
             >
           <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t("solid-join-group.button")}</button>
           ${this.getModalDialog()}
