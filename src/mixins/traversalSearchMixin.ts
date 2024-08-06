@@ -52,11 +52,11 @@ const TraversalSearchMixin = {
 
 
     const query = `SELECT DISTINCT ?user ?first_name ?last_name WHERE {
-      ?skillIndex a <http://happy-dev.fr/owl/#PropertyIndex>;
-      <http://happy-dev.fr/owl/#hasEntry> ?user.
+      ?skillIndex a <https://cdn.startinblox.com/owl#PropertyIndex>;
+      <https://cdn.startinblox.com/owl#hasEntry> ?user.
 
-      ?user <http://happy-dev.fr/owl/#first_name> ?first_name;
-      <http://happy-dev.fr/owl/#last_name> ?last_name;
+      ?user <https://cdn.startinblox.com/owl#first_name> ?first_name;
+      <https://cdn.startinblox.com/owl#last_name> ?last_name;
     } LIMIT 100`;
 
     // TODO: check the URL is a container.

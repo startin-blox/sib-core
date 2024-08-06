@@ -16,7 +16,7 @@ const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
 export const base_context = {
-  '@vocab': "http://happy-dev.fr/owl/#",
+  '@vocab': "https://cdn.startinblox.com/owl#",
   foaf: "http://xmlns.com/foaf/0.1/",
   doap: "http://usefulinc.com/ns/doap#",
   ldp: "http://www.w3.org/ns/ldp#",
@@ -26,7 +26,7 @@ export const base_context = {
   geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
   acl: "http://www.w3.org/ns/auth/acl#",
   hd: "http://happy-dev.fr/owl/#",
-  sib: "http://happy-dev.fr/owl/#",
+  sib: "https://cdn.startinblox.com/owl#",
   name: "rdfs:label",
   deadline: "xsd:dateTime",
   lat: "geo:lat",

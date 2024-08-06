@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SIB test: federation</title>
+    <title>SIB test: Traversal Search Feature</title>
     <script type="module" src="../../dist/index.js"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
     <script
       type="module"
       src="https://cdn.skypack.dev/@startinblox/oidc@latest"
@@ -38,9 +39,9 @@
   </style>
 
   <body class="segment full">
-    <sib-auth auto-login>
+    <sib-auth auto-login="true">
       <sib-auth-provider
-        data-authority="https://api.community.startinblox.com/"
+        data-authority="https://api.test-inria-index.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
 
