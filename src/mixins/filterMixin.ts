@@ -61,45 +61,52 @@ const FilterMixin = {
       //this.listPostProcessors.push(this.filterCallback.bind(this));
       
       // Create the local container to store search results
-      let results = await this.initLocalDataSourceContainerForSearchResults();
+      await this.initLocalDataSourceContainerForSearchResults();
 
       const update = async (id: string): Promise<void> => {
-        console.log("Update user", id, results);
-        results['ldp:contains'].push({
+        console.log("Update user", id, this.resources);
+        this.resources['ldp:contains'].push({
           "@id": id,
           "@type": "foaf:user"
         });
         sibStore.clearCache(this.dataSrc);
-        await sibStore.setLocalData(results, this.dataSrc, true);
         this.element.dataset.src = this.dataSrc;
-        console.log("Update user after setLocalData etc", id, results);
+        console.log("Update user after setLocalData etc", id, this.resources);
 
-        this.empty();
-        await this.populate();
+        var reRender = true;
+        setTimeout(async () => {
+          if (reRender) {
+            await sibStore.setLocalData(this.resources, this.dataSrc, true);
+            this.populate();
+          }
+          reRender = false;
+        }, 2000);
       }
 
       const reset = (): void => {
-        results['ldp:contains'] = [];
-        sibStore.setLocalData(results, this.dataSrc, true);
+        this.resources['ldp:contains'] = [];
+        sibStore.setLocalData(this.resources, this.dataSrc, true);
       }
 
       const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
       comunicaEngine.searchFromSearchForm(); // no filter = default case
-      console.log("Search by location for Paris", this.dataSrcIndex, this.dataSrc, results, this);
+      console.log("Search by location for Paris", this.dataSrcIndex, this.dataSrc, this.resources, this);
 
       this.searchForm.addEventListener('submit', async (submitEvent: any) => {
-        results['ldp:contains'] = []; // empty the previous results
+        this.resources['ldp:contains'] = []; // empty the previous results
         const filterValues = submitEvent.target.parentElement.component.value;
         comunicaEngine.searchFromSearchForm(filterValues);
       });
+
+      this.listPostProcessors.push(this.applyPostProcessors.bind(this));
     }
 
     else if (this.isFilteredOnServer() && filteredBy) {
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
       this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
-    } 
-    
+    }
+
     else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
     }
@@ -118,7 +125,7 @@ const FilterMixin = {
     // const id = `store://local.${idField}`;
     console.log("Init local data source container for search results", idField);
     this.dataSrc = `store://local.${idField}/dataSrc/`;
-    const results = {
+    this.resources = {
       "@context": "https://cdn.startinblox.com/owl/context.jsonld",
       "@type": "ldp:Container",
       "@id": this.dataSrc,
@@ -127,8 +134,8 @@ const FilterMixin = {
         "view"
       ]
     };
-    await sibStore.setLocalData(results, this.dataSrc);
-    return results;
+    await sibStore.setLocalData(this.resources, this.dataSrc);
+    // return this.resources;
   },
   isFilteredOnServer() {
     return this.filteredOn === FilterMode.Server && !!this.fetchData;
@@ -151,6 +158,11 @@ const FilterMixin = {
       }
     }
     return;
+  },
+  async applyPostProcessors(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+    console.log("Applying other post processors", resources);
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
   async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
