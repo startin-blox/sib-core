@@ -161,6 +161,8 @@ const FilterMixin = {
   },
   async applyPostProcessors(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
     console.log("Applying other post processors", resources);
+    //TODO: Reorder by "pertinence" ??
+
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
