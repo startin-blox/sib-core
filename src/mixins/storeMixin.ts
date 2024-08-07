@@ -117,14 +117,15 @@ const StoreMixin = {
   },
   updateNavigateSubscription() { },
   async updateDOM(): Promise<void> {
-    this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
+    const indexServerSearch = this.isIndexBasedSearch?.(); // from `filterMixin`
+    if (!indexServerSearch) this.toggleLoaderHidden(false);
     this.empty();
     await this.replaceAttributesData();
     await this.populate();
     setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
       this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
     );
-    this.toggleLoaderHidden(true);
+    if (!indexServerSearch) this.toggleLoaderHidden(true);
   },
   empty():void {
   },

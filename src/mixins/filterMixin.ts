@@ -73,30 +73,29 @@ const FilterMixin = {
         this.element.dataset.src = this.dataSrc;
         console.log("Update user after setLocalData etc", id, this.resources);
 
-        var reRender = true;
-        setTimeout(async () => {
-          if (reRender) {
-            await sibStore.setLocalData(this.resources, this.dataSrc, true);
-            this.populate();
-          }
-          reRender = false;
-        }, 2000);
+        await sibStore.setLocalData(this.resources, this.dataSrc, true);
+        this.populate();
+
+        //FIXME: Find a way to no re-execute all post-processors after each update
+        // var reRender = true;
+        // setTimeout(async () => {
+        //   if (reRender) {
+        //   }
+        //   reRender = false;
+        // }, 2000);
       }
 
       const reset = (): void => {
+        this.empty();
         this.resources['ldp:contains'] = [];
         sibStore.setLocalData(this.resources, this.dataSrc, true);
       }
 
-      const comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
-      comunicaEngine.searchFromSearchForm(); // no filter = default case
+      this.comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
+      this.comunicaEngine.searchFromSearchForm(); // no filter = default case
       console.log("Search by location for Paris", this.dataSrcIndex, this.dataSrc, this.resources, this);
 
-      this.searchForm.addEventListener('submit', async (submitEvent: any) => {
-        this.resources['ldp:contains'] = []; // empty the previous results
-        const filterValues = submitEvent.target.parentElement.component.value;
-        comunicaEngine.searchFromSearchForm(filterValues);
-      });
+      this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
 
       this.listPostProcessors.push(this.applyPostProcessors.bind(this));
     }
@@ -110,6 +109,19 @@ const FilterMixin = {
     else {
       this.listPostProcessors.push(this.filterCallback.bind(this));
     }
+  },
+  isIndexBasedSearch(): boolean {
+    return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
+  },
+  async onIndexSearch(submitEvent: any) : Promise<void> {
+    this.resources['ldp:contains'] = []; // empty the previous results
+    sibStore.setLocalData(this.resources, this.dataSrc, true);
+    if (this.loader) {
+      console.log("Toggle loader hidden", this.loader);
+      this.loader.toggleAttribute('hidden', false);
+    }
+    const filterValues = submitEvent.target.parentElement.component.value;
+    this.comunicaEngine.searchFromSearchForm(filterValues);
   },
   get filters(): SearchQuery {
     return this.searchForm?.component?.value ?? {};
@@ -135,7 +147,7 @@ const FilterMixin = {
       ]
     };
     await sibStore.setLocalData(this.resources, this.dataSrc);
-    // return this.resources;
+    if (this.loader) this.loader.toggleAttribute('hidden', true);
   },
   isFilteredOnServer() {
     return this.filteredOn === FilterMode.Server && !!this.fetchData;
