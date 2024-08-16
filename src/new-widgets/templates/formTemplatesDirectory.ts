@@ -303,6 +303,11 @@ export const formTemplates = {
           name=${ifDefined(attributes.name)}
           value=${value || ''}
         >
+        <a
+          href=${value || ''}
+          ?hidden=${value === ''}
+        >${ ((value !== '') ? decodeURI(value.split("/").pop() as string) : '' ) }</a>
+
         <input
           type="file"
           id=${ifDefined(attributes.id)}
