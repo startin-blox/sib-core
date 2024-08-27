@@ -18,16 +18,25 @@ const FormFileMixin = {
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
   },
   attached() {
-    document.addEventListener('reset', (e) => {
-      if (e.target && (e.target as HTMLElement).contains(this.element)) {
+    this.element.closest('form').addEventListener('reset', this.resetFormFile.bind(this))
+    this.element.closest('solid-form').addEventListener('populate', this.onPopulate.bind(this))
+  },
+  onPopulate() {
+    const dataHolder = this.element.querySelector('input[data-holder]');
+    dataHolder.value = this.value;
+    dataHolder.dispatchEvent(new Event('change'));
+  },
+  resetFormFile(e) {
+    if (e.target && (e.target as HTMLElement).contains(this.element)) {
+      if (this.initialValue !== "")  {
         this.value = this.initialValue;
-        this.listAttributes['resetButtonHidden'] = true;
-        this.planRender();
-        const dataHolder = this.element.querySelector('input[data-holder]');
-        dataHolder.value = this.value;
-        dataHolder.dispatchEvent(new Event('change'));
       }
-    })
+      this.listAttributes['resetButtonHidden'] = true;
+      this.planRender();
+      const dataHolder = this.element.querySelector('input[data-holder]');
+      dataHolder.value = this.value;
+      dataHolder.dispatchEvent(new Event('change'));
+    }
   },
   selectFile() {
     if (this.uploadUrl === null) return;
