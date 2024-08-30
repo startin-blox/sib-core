@@ -14,12 +14,24 @@ export const SolidForm = {
   name: 'solid-form',
   use: [WidgetMixin, StoreMixin, NextMixin, ValidationMixin],
   attributes: {
+    autosave: {
+      type: Boolean,
+      default: null
+    },
+    classSubmitButton: {
+      type: String,
+      default: undefined,
+    },
     defaultWidget: {
       type: String,
       default: 'solid-form-label-text'
     },
     naked: {
-      type: String,
+      type: Boolean,
+      default: null
+    },
+    partial: {
+      type: Boolean,
       default: null
     },
     submitButton: {
@@ -31,18 +43,6 @@ export const SolidForm = {
     },
     submitWidget: {
       type: String,
-      default: null
-    },
-    classSubmitButton: {
-      type: String,
-      default: undefined,
-    },
-    partial: {
-      type: Boolean,
-      default: null
-    },
-    autosave: {
-      type: Boolean,
       default: null
     },
   },
