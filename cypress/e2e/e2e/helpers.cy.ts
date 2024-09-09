@@ -17,6 +17,57 @@ describe('helpers', function() {
     });
   });
 
+  describe('generalComparator Function Tests', () => {
+    it('should compare two numbers correctly', () => {
+        expect(helpers.generalComparator(5, 10)).to.equal(-5);
+        expect(helpers.generalComparator(10, 5)).to.equal(5);
+        expect(helpers.generalComparator(5, 5)).to.equal(0);
+    });
+
+    it('should compare two strings correctly', () => {
+        expect(helpers.generalComparator('apple', 'banana')).to.be.lessThan(0);
+        expect(helpers.generalComparator('panana', 'banana')).to.be.greaterThan(0);
+        expect(helpers.generalComparator('apple', 'apple')).to.equal(0);
+    });
+
+    it('should compare dates correctly', () => {
+        const date1 = new Date('2024-01-01');
+        const date2 = new Date('2024-12-31');
+        expect(helpers.generalComparator(date1, date2)).to.be.lessThan(0);
+        expect(helpers.generalComparator(date2, date1)).to.be.greaterThan(0);
+        expect(helpers.generalComparator(date1, date1)).to.equal(0);
+    });
+
+    it('should compare booleans correctly', () => {
+        expect(helpers.generalComparator(true, false)).to.equal(1);
+        expect(helpers.generalComparator(false, true)).to.equal(-1);
+        expect(helpers.generalComparator(true, true)).to.equal(0);
+    });
+
+    it('should compare arrays by length', () => {
+        expect(helpers.generalComparator([1, 2], [1, 2, 3])).to.be.lessThan(0);
+        expect(helpers.generalComparator([1, 2, 3], [1, 2])).to.be.greaterThan(0);
+        expect(helpers.generalComparator([1, 2, 3], [4, 5, 6])).to.equal(0);
+    });
+
+    it('should compare objects by number of keys', () => {
+        expect(helpers.generalComparator({ a: 1 }, { a: 1, b: 2 })).to.be.lessThan(0);
+        expect(helpers.generalComparator({ a: 1, b: 2 }, { a: 1 })).to.be.greaterThan(0);
+        expect(helpers.generalComparator({ a: 1, b: 2 }, { x: 10, y: 20 })).to.equal(0);
+    });
+
+    it('should handle null or undefined values', () => {
+        expect(helpers.generalComparator(null, undefined)).to.equal(0);
+        expect(helpers.generalComparator(null, 1)).to.equal(-1);
+        expect(helpers.generalComparator(1, null)).to.equal(1);
+    });
+
+    it('should handle different orders correctly', () => {
+        expect(helpers.generalComparator(5, 10, 'asc')).to.be.lessThan(0);
+        expect(helpers.generalComparator(5, 10, 'desc')).to.be.greaterThan(0);
+    });
+});
+
   describe('importCSS', () => {
     it('add one stylesheet', () => {
       const url = 'helpers.css';

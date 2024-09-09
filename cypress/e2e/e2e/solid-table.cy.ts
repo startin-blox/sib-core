@@ -239,4 +239,82 @@ describe('solid-table', { testIsolation: false }, function () {
       .should('be.visible').and('contain', '5');
   });
 
+
+  it('grouped ordered tables', () => {
+    cy.get('#grouped-table')
+    .within(() => {
+      cy.get('solid-group-default').should('have.length', 4);
+      cy.get('solid-group-default').each((item, index) => {
+        if (index === 0) {
+          cy.wrap(item).find('span').contains('Opéra3')
+        }
+        if (index === 1) {
+          cy.wrap(item).find('span').contains('Opéra2')
+        }
+        if (index === 2) {
+          cy.wrap(item).find('span').contains('Opéra')
+        }
+      }); 
+    });
+
+    cy.get('#grouped-table-year-desc')
+    .within(() => {
+      cy.get('solid-group-default').should('have.length', 4);
+      cy.get('solid-group-default').each((item, index) => {
+        if (index === 0) {
+          cy.wrap(item).find('span').contains('2020')
+        }
+        if (index === 1) {
+          cy.wrap(item).find('span').contains('2019')
+        }
+        if (index === 2) {
+          cy.wrap(item).find('span').contains('2017')
+        }
+        if (index === 3) {
+          cy.wrap(item).find('span').contains('2015')
+        }
+      }); 
+    });
+
+    cy.get('#grouped-table-year-asc')
+    .within(() => {
+      cy.get('solid-group-default').should('have.length', 4);
+      cy.get('solid-group-default').each((item, index) => {
+        if (index === 0) {
+          cy.wrap(item).find('span').contains('2015')
+        }
+        if (index === 1) {
+          cy.wrap(item).find('span').contains('2017')
+        }
+        if (index === 2) {
+          cy.wrap(item).find('span').contains('2019')
+        }
+        if (index === 3) {
+          cy.wrap(item).find('span').contains('2020')
+        }
+      }); 
+    });
+
+    cy.get('#grouped-table-date-asc')
+    .within(() => {
+      cy.get('solid-group-default').should('have.length', 4);
+      cy.get('solid-group-default').each((item, index) => {
+        if (index === 0) {
+          cy.wrap(item).find('span').contains('2020-07-09')
+        }
+        if (index === 1) {
+          cy.wrap(item).find('span').contains('2020-05-10')
+        }
+        if (index === 2) {
+          cy.wrap(item).find('span').contains('2017-05-10')
+        }
+        if (index === 3) {
+          cy.wrap(item).find('span').contains('2015-05-10')
+        }
+      }); 
+    });
+
+
+  });
+
 })

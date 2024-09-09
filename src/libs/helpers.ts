@@ -210,6 +210,36 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   }
 };
 
+function generalComparator(a, b, order = 'asc') {
+  let comparison = 0;
+
+  if (typeof a === 'boolean' && typeof b === 'boolean') {
+      comparison = (a === b) ? 0 : a ? 1 : -1;
+  } else if (!isNaN(a) && !isNaN(b)) {
+      comparison = Number(a) - Number(b);
+  } else if (Array.isArray(a) && Array.isArray(b)) {
+    comparison = a.length - b.length;
+  }  else if (!isNaN(Date.parse(a)) && !isNaN(Date.parse(b))) {
+      const dateA = new Date(a);
+      const dateB = new Date(a);
+      comparison =  dateA.getTime() - dateB.getTime();
+  } else if (typeof a === 'object' && typeof b === 'object') {
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+      comparison = aKeys.length - bKeys.length;
+  } else if (a == null || b == null) {
+      comparison = a == null ? (b == null ? 0 : -1) : (b == null ? 1 : 0);
+  } else {
+      comparison = a.toString().localeCompare(b.toString());
+  }
+
+  if (order === 'desc') {
+      comparison = comparison * -1;
+  }
+  return comparison;
+};
+
+
 function transformArrayToContainer(resource: object) {
   const newValue = { ...resource };
   for (let predicate of Object.keys(newValue)) { // iterate over all properties
@@ -329,6 +359,7 @@ export {
   defineComponent,
   fuzzyCompare,
   compare,
+  generalComparator,
   transformArrayToContainer,
   AsyncIterableBuilder,
   asyncQuerySelector,
