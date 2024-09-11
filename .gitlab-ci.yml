@@ -12,7 +12,6 @@ default:
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
-  VITE_DEBUG: false
 
 # cache using branch name
 # https://gitlab.com/help/ci/caching/index.md
