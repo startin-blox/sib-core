@@ -28,7 +28,7 @@ const RichtextMixin = {
         ['link'],
         ['clean']
       ];
-      const richtext = this.element.querySelector('[data-richtext]');
+      const richtext = this.element.querySelector('[data-richtext]') as HTMLElement;
       this.quill = new Quill(
         richtext,
         {
