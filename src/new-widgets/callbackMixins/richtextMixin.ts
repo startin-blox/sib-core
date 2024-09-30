@@ -1,17 +1,17 @@
 import Quill from 'quill';
 
-import deltaMd from 'delta-markdown-for-quill';
+import markdownToDelta from "markdown-to-quill-delta";
 import { importInlineCSS } from '../../libs/helpers.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
-  initialState:{
+  initialState: {
     quill: null,
   },
 
   created() {
     importInlineCSS('quill', () => import('quill/dist/quill.snow.css?inline'))
-    
+
     this.quill = null;
     this.listCallbacks.push(this.addCallback.bind(this));
   },
@@ -23,8 +23,8 @@ const RichtextMixin = {
       var toolbarOptions = [
         ['bold', 'italic'],
         ['blockquote'],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false]}],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['link'],
         ['clean']
       ];
@@ -32,14 +32,14 @@ const RichtextMixin = {
       this.quill = new Quill(
         richtext,
         {
-          modules: {toolbar: toolbarOptions},
+          modules: { toolbar: toolbarOptions },
           placeholder: this.getPlaceHolderValue(),
           theme: 'snow'
         }
       );
     }
 
-    const ops = deltaMd.toDelta(this.value);
+    const ops = markdownToDelta(this.value);
     this.quill.setContents(ops);
     if (this.isRequired()) {
       this.createHiddenRequiredInput()
@@ -47,7 +47,7 @@ const RichtextMixin = {
     }
 
     const nextProcessor = listCallbacks.shift();
-    if (nextProcessor) nextProcessor(value, listCallbacks); 
+    if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   isRequired() {
     return Array.from(this.element.attributes).some(attr => (attr as Attr).name === 'required')
@@ -61,7 +61,7 @@ const RichtextMixin = {
       this.element.appendChild(this.hiddenInput);
       this.addInvalidEventListener();
     }
-    this.hiddenInput.value=this.quill.getText();
+    this.hiddenInput.value = this.quill.getText();
   },
   createHiddenInput(attributeName: string): HTMLInputElement {
     const input = document.createElement('input');
@@ -77,11 +77,11 @@ const RichtextMixin = {
     return attribute ? attribute.value : '';
   },
   displayCustomErrorMessage(message: string) {
-    const richtext = this.element.querySelector('[data-richtext]'); 
-  
+    const richtext = this.element.querySelector('[data-richtext]');
+
     if (richtext) {
       let errorMessageElement = richtext.querySelector('.required-error-message') as HTMLDivElement;
-      
+
       if (!errorMessageElement) {
         errorMessageElement = document.createElement('div');
         errorMessageElement.className = 'required-error-message';
@@ -99,7 +99,7 @@ const RichtextMixin = {
     });
   },
   onTextChange() {
-    this.hiddenInput.value=this.quill.getText();
+    this.hiddenInput.value = this.quill.getText();
     this.removeErrorMessageAndStyling();
   },
   removeErrorMessageAndStyling() {
