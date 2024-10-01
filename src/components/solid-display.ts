@@ -15,6 +15,8 @@ import { spread } from '../libs/lit-helpers';
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { trackRenderAsync } from '../logger';
 
 export const SolidDisplay = {
   name: 'solid-display',
@@ -141,9 +143,8 @@ export const SolidDisplay = {
    * @param div
    * @param context
    */
-  async renderDOM(
-    resources: object[],
-    listPostProcessors: Function[],
+  renderDOM: trackRenderAsync(async function( resources: object[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
@@ -151,8 +152,9 @@ export const SolidDisplay = {
     // and create a child template for each resource
     const template = html`${resources.map(r => r ? this.getChildTemplate(r['@id'], attributes) : null)}`;
     render(template, div);
-
+    
     const nextProcessor = listPostProcessors.shift();
+
     if (nextProcessor)
       await nextProcessor(
         resources,
@@ -160,7 +162,7 @@ export const SolidDisplay = {
         div,
         context
       );
-  },
+  }, "SolidDisplay:renderDom"),
 
   /**
    * Get attributes to dispatch to children from current element

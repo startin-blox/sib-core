@@ -1,9 +1,11 @@
+import { PostProcessorRegistry } from "../../libs/PostProcessorRegistry";
+
 const DateMixin = {
   name: 'date-mixin',
   created() {
-    this.listValueTransformations.push(this.transformValue.bind(this));
+    this.listValueTransformations.attach(this.transformValue.bind(this), "DateMixin:transformValue");
   },
-  transformValue(value: string, listValueTransformations: Function[]) {
+  transformValue(value: string, listValueTransformations: PostProcessorRegistry) {
     try {
       // workaround for giving a specific-formatted value to the form widget
       this.listAttributes['originalValue'] = this.formatDateForInput(value);

@@ -2,13 +2,14 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import markdownit from 'markdown-it';
 import mila from 'markdown-it-link-attributes';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const MarkdownMixin = {
   name: 'markdown-mixin',
   created() {
-    this.listValueTransformations.push(this.transformValue.bind(this));
+    this.listValueTransformations.attach(this.transformValue.bind(this), "MarkdownMixin:transformValue");
   },
-  transformValue(value: string, listValueTransformations: Function[]) {
+  transformValue(value: string, listValueTransformations: PostProcessorRegistry) {
     let newValue: any = '';
     if (value) {
       const md = markdownit({
@@ -29,7 +30,7 @@ const MarkdownMixin = {
     }
 
     const nextProcessor = listValueTransformations.shift();
-    if(nextProcessor) nextProcessor(newValue, listValueTransformations);
+    if (nextProcessor) nextProcessor(newValue, listValueTransformations);
   }
 }
 

@@ -6,6 +6,7 @@ import { ifDefined } from 'lit-html/directives/if-defined';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
+import { trackRenderAsync } from '../logger';
 
 export const SolidMemberDelete = {
   name: 'solid-member-delete',
@@ -122,7 +123,8 @@ export const SolidMemberDelete = {
   update() {
     this.render();
   },
-  async render(): Promise<void> {
+  render: trackRenderAsync(
+  async function(): Promise<void> {
     // await this.replaceAttributesData(false);
     await this.populate();
     let button = html``
@@ -145,7 +147,7 @@ export const SolidMemberDelete = {
       `;
     }
     render(button, this.element);
-  }
+  }, "SolidMemberDelete:render")
 };
 
 Sib.register(SolidMemberDelete);

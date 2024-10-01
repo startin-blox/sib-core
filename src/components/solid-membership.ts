@@ -6,6 +6,7 @@ import { ValidationMixin } from '../mixins/validationMixin';
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { trackRenderAsync } from '../logger';
 
 export const SolidMembership = {
   name: 'solid-membership',
@@ -149,32 +150,34 @@ export const SolidMembership = {
   update() {
     this.render();
   },
-  async render(): Promise<void> {
-    await this.populate();
-    let button = html``;
-    if (this.isMember) {
-      button = html`
-        <solid-ac-checker data-src="${this.dataSrc}"
-              permission="acl:Read"
-              class=${ifDefined(`${this.classSubmitButton ?  'leave ' + this.classSubmitButton: 'leave'}`)}
-            >
-          <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t("solid-leave-group.button")}</button>
-          ${this.getModalDialog()}
-        </solid-ac-checker>
-        `;
-    } else {
-      button = html`
-        <solid-ac-checker data-src="${this.dataSrc}"
-              permission="acl:Read"
-              class=${ifDefined(`${this.classSubmitButton ?  'join ' + this.classSubmitButton: 'join'}`)}
-            >
-          <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t("solid-join-group.button")}</button>
-          ${this.getModalDialog()}
-        </solid-ac-checker>
-        `;
-    }
-    render(button, this.element);
-  }
+  render: trackRenderAsync(
+    async function(): Promise<void> {
+      await this.populate();
+      let button = html``;
+      if (this.isMember) {
+        button = html`
+          <solid-ac-checker data-src="${this.dataSrc}"
+                permission="acl:Read"
+                class=${ifDefined(`${this.classSubmitButton ?  'leave ' + this.classSubmitButton: 'leave'}`)}
+              >
+            <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t("solid-leave-group.button")}</button>
+            ${this.getModalDialog()}
+          </solid-ac-checker>
+          `;
+      } else {
+        button = html`
+          <solid-ac-checker data-src="${this.dataSrc}"
+                permission="acl:Read"
+                class=${ifDefined(`${this.classSubmitButton ?  'join ' + this.classSubmitButton: 'join'}`)}
+              >
+            <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t("solid-join-group.button")}</button>
+            ${this.getModalDialog()}
+          </solid-ac-checker>
+          `;
+      }
+      render(button, this.element);
+    },
+    "SolidMembership:render")
 };
 
 Sib.register(SolidMembership);

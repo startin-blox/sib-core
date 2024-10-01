@@ -9,6 +9,7 @@ import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { uniqID } from '../libs/helpers';
 import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
+import { trackRenderAsync } from '../logger';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
@@ -200,26 +201,30 @@ export const SolidFormSearch = {
       this.inputChange(input);
     }, this.debounce);
   },
-  async populate(): Promise<void> {
-    await this.replaceAttributesData();
-    if(this.submitButton == null) {
-      this.element.addEventListener('input', (e: Event) => this.debounceInput(e.target));
-    } else {
-      this.element.addEventListener('submit', (e: Event) => {
-        e.preventDefault();
-        this.inputChange(e.target);
-      });
-    }
-    const fields = await this.getFields();
-    const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
-    const template = html`
-      <form>
-        ${widgetTemplates}
-        ${this.submitButton == null ? '' : this.getSubmitTemplate()}
-      </form>
-    `;
-    render(template, this.element);
-  }
+  populate: trackRenderAsync(
+    async function(): Promise<void> {
+      await this.replaceAttributesData();
+      if(this.submitButton == null) {
+        this.element.addEventListener('input', (e: Event) => this.debounceInput(e.target));
+      } else {
+        this.element.addEventListener('submit', (e: Event) => {
+          e.preventDefault();
+          this.inputChange(e.target);
+        });
+      }
+      const fields = await this.getFields();
+      const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
+      const template = html`
+        <form>
+          ${widgetTemplates}
+          ${this.submitButton == null ? '' : this.getSubmitTemplate()}
+        </form>
+      `;
+      render(template, this.element);
+    },
+    "SolidFormSearch:populate"
+  )
+  
 };
 
 Sib.register(SolidFormSearch);

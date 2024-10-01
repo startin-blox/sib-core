@@ -1,6 +1,7 @@
 import type { SearchQuery } from '../libs/interfaces';
 import { searchInResources } from '../libs/filter';
 import type { ServerSearchOptions } from '../libs/store/server-search';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -45,7 +46,7 @@ const FilterMixin = {
       // this.searchForm.component.attach(this); // is it necessary?
       this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
     } else {
-      this.listPostProcessors.push(this.filterCallback.bind(this));
+      this.listPostProcessors.attach(this.filterCallback.bind(this), 'FilterMixin:filterCallback');
     }
   },
   get filters(): SearchQuery {
@@ -79,7 +80,7 @@ const FilterMixin = {
     }
     return;
   },
-  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+  async filterCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string): Promise<void> {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount.has(context)) this.searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);

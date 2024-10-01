@@ -2,6 +2,7 @@ import { StoreMixin } from '../../mixins/storeMixin';
 import { store } from '../../libs/store/store';
 
 import { html } from 'lit-html';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const EditableMixin = {
   name: 'editable-mixin',
@@ -24,15 +25,15 @@ const EditableMixin = {
     }
   },
   created() {
-    this.listTemplateAdditions.push(this.addEditButton.bind(this));
+    this.listTemplateAdditions.attach(this.addEditButton.bind(this), "EditableMixin:addEditButton");
   },
-  addEditButton(template, listTemplateAdditions: Function[]) {
+  addEditButton(template, listTemplateAdditions: PostProcessorRegistry) {
     let newTemplate: any = null;
     if (this.editable !== null) {
       newTemplate = html`${template}<button @click=${this.activateEditableField.bind(this)}>${this.buttonLabel}</button>`;
     }
     const nextProcessor = listTemplateAdditions.shift();
-    if(nextProcessor) nextProcessor(newTemplate || template, listTemplateAdditions);
+    if (nextProcessor) nextProcessor(newTemplate || template, listTemplateAdditions);
   },
   activateEditableField(e: Event): void {
     const editableField = this.element.querySelector('[data-editable]');

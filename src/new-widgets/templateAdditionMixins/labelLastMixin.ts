@@ -1,18 +1,19 @@
 import { html } from 'lit-html';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const LabelLastMixin = {
   name: 'label-last-mixin',
   created() {
-    this.listTemplateAdditions.push(this.addLabelLast.bind(this));
+    this.listTemplateAdditions.attach(this.addLabelLast.bind(this), "LabelLastMixin:addLabelLast");
   },
-  addLabelLast(template, listTemplateAdditions: Function[]) {
+  addLabelLast(template, listTemplateAdditions: PostProcessorRegistry) {
     const newTemplate = html`
       ${template}
       <label>${this.label || this.name}</label>
     `;
 
     const nextProcessor = listTemplateAdditions.shift();
-    if(nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);
+    if (nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);
   }
 }
 

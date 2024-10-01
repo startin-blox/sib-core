@@ -16,6 +16,8 @@ import { RequiredMixin } from '../mixins/requiredMixin';
 import { html, render } from 'lit-html';
 import { until } from 'lit-html/directives/until';
 import { spread } from '../libs/lit-helpers';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { trackRenderAsync } from '../logger';
 
 export const SolidTable = {
   name: 'solid-table',
@@ -195,9 +197,9 @@ export const SolidTable = {
    * @param div
    * @param context
    */
-  async renderDOM(
+  renderDOM: trackRenderAsync(async function(
     resources: object[],
-    listPostProcessors: Function[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
@@ -224,7 +226,7 @@ export const SolidTable = {
         div,
         context
       );
-  },
+  }, "SolidTable:renderDom"),
 };
 
 Sib.register(SolidTable);

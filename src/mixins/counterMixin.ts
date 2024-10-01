@@ -1,6 +1,8 @@
 import { html } from 'lit-html';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { evalTemplateString } from '../libs/helpers';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+
 
 const CounterMixin = {
   name: 'counter-mixin',
@@ -16,9 +18,9 @@ const CounterMixin = {
     parentCounterDiv: null,
   },
   attached() {
-    this.listPostProcessors.push(this.countResources.bind(this));
+    this.listPostProcessors.attach(this.countResources.bind(this), 'CounterMixin:countResources');
   },
-  async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async countResources(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
     if (this.counterTemplate) {
       this.initParentCounterDiv(div);
       this.renderCallbacks.push({ // add counter template to render callback

@@ -9,6 +9,7 @@ import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { trackRenderAsync } from '../logger';
 
 export const SolidForm = {
   name: 'solid-form',
@@ -277,31 +278,35 @@ export const SolidForm = {
       </div>
     `
   },
-  async populate(): Promise<void> {
-    this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
-    this.element.onchange = () => this.onChange();
-    const fields = await this.getFields();
-    const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
-    const template = html`
-      <div data-id="error"></div>
-      ${!this.isNaked ? html`
-        <form
-          @submit=${this.onSubmit.bind(this)}
-          @reset=${this.onReset.bind(this)}
-        >
+  populate: trackRenderAsync(
+    async function(): Promise<void> {
+      this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
+      this.element.onchange = () => this.onChange();
+      const fields = await this.getFields();
+      const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
+      const template = html`
+        <div data-id="error"></div>
+        ${!this.isNaked ? html`
+          <form
+            @submit=${this.onSubmit.bind(this)}
+            @reset=${this.onReset.bind(this)}
+          >
+            ${widgetTemplates}
+            ${!this.isSavingAutomatically ? this.getSubmitTemplate() : ''}
+            ${this.element.hasAttribute('reset')
+              ? html`<input type="reset" />` : ''}
+          </form>
+        ` : html`
           ${widgetTemplates}
-          ${!this.isSavingAutomatically ? this.getSubmitTemplate() : ''}
-          ${this.element.hasAttribute('reset')
-            ? html`<input type="reset" />` : ''}
-        </form>
-      ` : html`
-        ${widgetTemplates}
-      `
-      }
-      ${this.getModalDialog()}
-    `;
-    render(template, this.element);
-  }
+        `
+        }
+        ${this.getModalDialog()}
+      `;
+      render(template, this.element);
+    },
+    "SolidForm:populate"
+  )
+  
 };
 
 Sib.register(SolidForm);

@@ -2,6 +2,7 @@ import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
 import { importInlineCSS } from '../../libs/helpers.js';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
@@ -13,12 +14,12 @@ const RichtextMixin = {
     importInlineCSS('quill', () => import('quill/dist/quill.snow.css?inline'))
     
     this.quill = null;
-    this.listCallbacks.push(this.addCallback.bind(this));
+    this.listCallbacks.attach(this.addCallback.bind(this), "RichtextMixin:addCallback");
   },
   getPlaceHolderValue() {
     return this.element.hasAttribute('placeholder') ? this.element.getAttribute('placeholder') : '';
   },
-  addCallback(value: string, listCallbacks: Function[]) {
+  addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.quill == null) {
       var toolbarOptions = [
         ['bold', 'italic'],

@@ -1,3 +1,4 @@
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { StoreMixin } from '../../mixins/storeMixin';
 
 const MultipleFormMixin = {
@@ -47,7 +48,7 @@ const MultipleFormMixin = {
     }
   },
   created() {
-    this.listValueTransformations.push(this.setDataSrc.bind(this));
+    this.listValueTransformations.attach(this.setDataSrc.bind(this), "MultipleFormMixin:setDataSrc");
 
     this.listAttributes['children'] = [];
     this.listAttributes['addLabel'] = this.addLabel;
@@ -63,7 +64,7 @@ const MultipleFormMixin = {
       this.element.dispatchEvent(new Event('change', {bubbles: true}));
     };
   },
-  setDataSrc(value: string, listValueTransformations: Function[]) {
+  setDataSrc(value: string, listValueTransformations: PostProcessorRegistry) {
     if (value && value !== this.dataSrc) {
       try {
         if (Array.isArray(JSON.parse(value))) {
@@ -76,7 +77,7 @@ const MultipleFormMixin = {
     }
 
     const nextProcessor = listValueTransformations.shift();
-    if(nextProcessor) nextProcessor(value, listValueTransformations);
+    if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
     if (!this.resource || !this.resource['ldp:contains']) return;

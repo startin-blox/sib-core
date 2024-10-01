@@ -1,3 +1,5 @@
+import { PostProcessorRegistry } from "../libs/PostProcessorRegistry";
+
 const SorterMixin = {
   name: 'sorter-mixin',
   use: [],
@@ -34,7 +36,7 @@ const SorterMixin = {
     randomOrder: null
   },
   attached(): void {
-    this.listPostProcessors.push(this.orderCallback.bind(this));
+    this.listPostProcessors.attach(this.orderCallback.bind(this), 'SorterMixin:orderCallback');
   },
   created(): void {
     this.randomOrder = [];
@@ -50,7 +52,7 @@ const SorterMixin = {
     });
   },
 
-  async orderCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {    
+  async orderCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {    
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
     let sortingKey = '';
     let orderValueToSort = '';

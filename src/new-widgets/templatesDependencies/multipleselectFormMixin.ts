@@ -1,3 +1,4 @@
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { StoreMixin } from '../../mixins/storeMixin';
 
 const MultipleselectFormMixin = {
@@ -34,9 +35,9 @@ const MultipleselectFormMixin = {
     }
   },
   created() {
-    this.listValueTransformations.push(this.setDataSrc.bind(this));
+    this.listValueTransformations.attach(this.setDataSrc.bind(this), "MultipleselectFormMixin:setDataSrc");
   },
-  setDataSrc(value: string, listValueTransformations: Function[]) {
+  setDataSrc(value: string, listValueTransformations: PostProcessorRegistry) {
     if (value && value !== this.dataSrc) {
       try {
         let values = JSON.parse(value);

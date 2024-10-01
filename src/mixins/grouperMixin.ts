@@ -1,4 +1,5 @@
 import { generalComparator } from "../libs/helpers";
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const GrouperMixin = {
   name: 'grouper-mixin',
@@ -26,9 +27,9 @@ const GrouperMixin = {
     },
   },
   attached() {
-    this.listPostProcessors.push(this.groupResources.bind(this));
+    this.listPostProcessors.attach(this.groupResources.bind(this), 'GrouperMixin:groupResources');
   },
-  async groupResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async groupResources(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
     const nextProcessor = listPostProcessors.shift();
     if (this.groupBy) {
       let groups = {};
@@ -52,7 +53,7 @@ const GrouperMixin = {
       for (let { group, parent } of parents) {
         if (nextProcessor) await nextProcessor(
           groups[group].resources, // give only resources from group
-          [...listPostProcessors], // copy post processors
+          listPostProcessors.deepCopy(), // copy post processors
           parent, // parent is group widget
           context + "_" + group
         );

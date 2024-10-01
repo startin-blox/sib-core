@@ -1,10 +1,12 @@
+import { PostProcessorRegistry } from "../libs/PostProcessorRegistry";
+
 const HighlighterMixin = {
   name: 'highlighter-mixin',
   use: [],
   attached(): void {
-    this.listPostProcessors.push(this.hightlightCallback.bind(this));
+    this.listPostProcessors.attach(this.hightlightCallback.bind(this), 'HighlighterMixin:hightlightCallback');
   },
-  async hightlightCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+  async hightlightCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string): Promise<void> {
     for (let attr of this.element.attributes) {
       if (attr.name.startsWith('highlight-')) {
         const field = attr.name.split('highlight-')[1];

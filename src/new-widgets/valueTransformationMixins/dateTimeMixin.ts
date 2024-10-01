@@ -1,9 +1,11 @@
+import { PostProcessorRegistry } from "../../libs/PostProcessorRegistry";
+
 const DateTimeMixin = {
   name: 'date-time-mixin',
   created() {
-    this.listValueTransformations.push(this.transformValue.bind(this));
+    this.listValueTransformations.attach(this.transformValue.bind(this), "DateTimeMixin:transformValue");
   },
-  transformValue(value: string, listValueTransformations: Function[]) {
+  transformValue(value: string, listValueTransformations: PostProcessorRegistry) {
     const newValue = value ? new Date(value).toLocaleString() : value;
 
     const nextProcessor = listValueTransformations.shift();

@@ -1,3 +1,4 @@
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { store } from '../libs/store/store';
 import type { Resource } from './interfaces';
 
@@ -8,15 +9,15 @@ const FederationMixin = {
     containerFetched: null
   },
   attached(): void {
-    this.listPostProcessors.push(this.fetchSources.bind(this));
+    this.listPostProcessors.attach(this.fetchSources.bind(this), 'FederationMixin:fetchSources');
   },
-  async fetchSources(resources: Resource[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async fetchSources(resources: Resource[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
     this.containerFetched = [];
     let newResources: Resource[] = await this.getResources(resources);
     newResources = [...new Set(newResources)]; // remove possible duplicates
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(newResources, listPostProcessors, div, context);
+    if (nextProcessor) await nextProcessor(newResources, listPostProcessors, div, context);
   },
   async getResources(resources: Resource[]): Promise<Resource[]> {
     if (!resources) return [];

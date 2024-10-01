@@ -17,6 +17,8 @@ import 'https://cdn.skypack.dev/leaflet.markercluster'; // TODO : revert to "lea
 
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { trackRenderAsync } from '../logger';
 
 export const SolidMap = {
   name: 'solid-map',
@@ -216,14 +218,15 @@ export const SolidMap = {
    * @param div
    * @param context
    */
-  async renderDOM(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  renderDOM: trackRenderAsync(
+  async function(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
     const groupClass = div.dataset.groupClass || ''; // get the group class from the useless div element
     await Promise.all(resources.map(resource => this.appendChildElt(resource['@id'], groupClass)))
     this.planReset();
 
-    const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
-  }
+    const nextProcessor = listPostProcessors.shift(); 
+    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+  }, "SolidMap:renderDOM" )
 };
 
 Sib.register(SolidMap);

@@ -1,6 +1,7 @@
 import { fuzzyCompare, importInlineCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',
@@ -30,13 +31,13 @@ const AutocompletionMixin = {
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
-    this.listCallbacks.push(this.addCallback.bind(this));
+    this.listCallbacks.attach(this.addCallback.bind(this), "AutocompletionMixin:addCallback");
   },
   detached() {
     if (this.slimSelect) this.slimSelect.destroy();
     if (this.mutationObserver) this.mutationObserver.disconnect();
   },
-  addCallback(value: string, listCallbacks: Function[]) {
+  addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.slimSelect) return;
     let select = this.element.querySelector('select');
     if (select) {

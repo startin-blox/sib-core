@@ -1,3 +1,5 @@
+import { Profiler } from "../logger";
+
 export interface AccessorStaticInterface {
   [key: string]: {
     get: Function;
@@ -29,6 +31,7 @@ export interface AttributesDefinitionInterface {
 export type ComponentConstructorInterface = new (element: HTMLElement) => ComponentInterface;
 
 export interface ComponentInterface {
+  profiler: Profiler;
   element: HTMLElement;
   created():void;
   attached():void;

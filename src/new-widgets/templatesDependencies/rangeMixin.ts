@@ -3,6 +3,7 @@ import { StoreMixin } from '../../mixins/storeMixin';
 import { SorterMixin } from '../../mixins/sorterMixin';
 import { FederationMixin } from '../../mixins/federationMixin';
 import type { Resource } from '../../mixins/interfaces';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const RangeMixin = {
   name: 'range-mixin',
@@ -60,22 +61,22 @@ const RangeMixin = {
     }
   },
   initialState: {
-    listPostProcessors: [],
+    listPostProcessors: new PostProcessorRegistry(),
   },
   created() {
-    this.listPostProcessors = [];
+    this.listPostProcessors = new PostProcessorRegistry();
     this.listAttributes['optionLabel'] = this.optionLabel;
     this.listAttributes['optionValue'] = this.optionValue;
   },
   async populate() {
     const resources = this.resource ? this.resource['ldp:contains'] : [];
-    const listPostProcessors = [...this.listPostProcessors];
-    listPostProcessors.push(this.setRangeAttribute.bind(this));
+    const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
+    listPostProcessorsCopy.attach(this.setRangeAttribute.bind(this), 'RangeMixin:setRangeAttribute');
 
-    const nextProcessor = listPostProcessors.shift();
+    const nextProcessor = listPostProcessorsCopy.shift();
     await nextProcessor(
       resources,
-      listPostProcessors,
+      listPostProcessorsCopy,
       null,
       this.dataSrc,
     );

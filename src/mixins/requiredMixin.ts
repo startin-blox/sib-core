@@ -1,10 +1,12 @@
+import { PostProcessorRegistry } from "../libs/PostProcessorRegistry";
+
 const RequiredMixin = {
   name: 'required-mixin',
   use: [],
   attached(): void {
-    this.listPostProcessors.push(this.requiredResources.bind(this));
+    this.listPostProcessors.attach(this.requiredResources.bind(this), 'RequiredMixin:requiredResources');
   },
-  async requiredResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+  async requiredResources(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string): Promise<void> {
     const displays: any[] = [];
     const requiredFields = Array.from((this.element as Element).attributes).filter(attr => attr.name.startsWith('required-'))
       .map(attr => {

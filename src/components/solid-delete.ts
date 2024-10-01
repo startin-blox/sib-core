@@ -6,6 +6,7 @@ import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
 import { ContextMixin } from '../mixins/contextMixin';
+import { trackRenderAsync } from '../logger';
 
 export const SolidDelete = {
   name: 'solid-delete',
@@ -61,14 +62,17 @@ export const SolidDelete = {
   update() {
     this.render();
   },
-  async render(): Promise<void> {
-    await this.replaceAttributesData(false);
-    const button = html`
-      <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
-      ${this.getModalDialog()}
-    `;
-    render(button, this.element);
-  }
+  render: trackRenderAsync(
+    async function(): Promise<void> {
+      await this.replaceAttributesData(false);
+      const button = html`
+        <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
+        ${this.getModalDialog()}
+      `;
+      render(button, this.element);
+    },
+    "SolidDelete:render"
+  )
 };
 
 Sib.register(SolidDelete);

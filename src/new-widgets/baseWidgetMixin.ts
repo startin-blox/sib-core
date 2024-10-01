@@ -1,3 +1,4 @@
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import type { Template } from './interfaces';
 
 import {render} from 'lit-html';
@@ -37,20 +38,20 @@ const BaseWidgetMixin = {
     },
   },
   initialState: {
-    listValueTransformations: [],
-    listTemplateAdditions: [],
+    listValueTransformations: new PostProcessorRegistry(),
+    listTemplateAdditions: new PostProcessorRegistry(),
     listAttributes: {},
-    listCallbacks: [],
+    listCallbacks: new PostProcessorRegistry(),
     renderPlanned: false,
   },
   get template() {
     return null
   },
   created() {
-    this.listValueTransformations = [];
+    this.listValueTransformations = new PostProcessorRegistry();
     this.listAttributes = {};
-    this.listTemplateAdditions = [];
-    this.listCallbacks = [];
+    this.listTemplateAdditions = new PostProcessorRegistry();
+    this.listCallbacks = new PostProcessorRegistry();
     this.subscription = null;
   },
   attached() {
@@ -69,28 +70,27 @@ const BaseWidgetMixin = {
     }
   },
   render() {
-    const listValueTransformations = [...this.listValueTransformations];
-    listValueTransformations.push(this.renderTemplate.bind(this));
-
-    const nextProcessor = listValueTransformations.shift();
-    nextProcessor(this.value, listValueTransformations);
+    const listValueTransformationsCopy = this.listValueTransformations.deepCopy();
+    listValueTransformationsCopy.attach(this.renderTemplate.bind(this), "BaseWidgetMixin:renderTemplate");
+    const nextProcessor = listValueTransformationsCopy.shift();
+    nextProcessor(this.value, listValueTransformationsCopy);
 
     // Callbacks
-    const listCallbacks = [...this.listCallbacks];
-    if (listCallbacks.length) {
-      const nextCallback = listCallbacks.shift();
-      nextCallback(this.value, listCallbacks);
+    const listCallbacksCopy = this.listCallbacks.deepCopy();
+    const nextCallback = listCallbacksCopy.shift();
+    if (nextCallback) {
+      nextCallback(this.value, listCallbacksCopy);
     }
 
     this.element.dispatchEvent(new CustomEvent('widgetRendered', { bubbles: true }));
   },
   renderTemplate(value: string) {
     const template: Template = this.template(value, { ...this.listAttributes });
-    const listTemplateAdditions = [...this.listTemplateAdditions];
-    listTemplateAdditions.push(this.templateToDOM.bind(this));
+    const listTemplateAdditionsCopy = this.listTemplateAdditions.deepCopy();
+    listTemplateAdditionsCopy.attach(this.templateToDOM.bind(this), "BaseWidgetMixin:templateToDOM");
 
-    const nextProcessor = listTemplateAdditions.shift();
-    nextProcessor(template, listTemplateAdditions);
+    const nextProcessor = listTemplateAdditionsCopy.shift();
+    nextProcessor(template, listTemplateAdditionsCopy);
   },
   templateToDOM(template: Template) {
     render(template, this.element);

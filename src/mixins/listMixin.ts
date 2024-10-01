@@ -1,6 +1,7 @@
 import { html, render } from 'lit-html';
 import { preHTML } from '../libs/lit-helpers';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const ListMixin = {
   name: 'list-mixin',
@@ -17,12 +18,12 @@ const ListMixin = {
   },
   initialState: {
     // Processors functions to execute on the list before rendering
-    listPostProcessors: [],
+    listPostProcessors: new PostProcessorRegistry(),
     // Rendering to execute after all the processors have been executed
     renderCallbacks: [],
   },
   created() {
-    this.listPostProcessors = [];
+    this.listPostProcessors = new PostProcessorRegistry();
     this.renderCallbacks = [];
   },
   appendSingleElt(parent: HTMLElement): void {
@@ -40,6 +41,7 @@ const ListMixin = {
     }
   },
   async populate(): Promise<void> {
+    const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     const div = this.div;
     if (!this.resource) return;
 
@@ -52,31 +54,31 @@ const ListMixin = {
 
     if (this.resource.isContainer?.()) {
       this.setElementAttribute("container");
-      const listPostProcessors = [...this.listPostProcessors];
       this.renderCallbacks = [];
-      listPostProcessors.push(this.renderDOM.bind(this));
-      listPostProcessors.push(this.handleEmptyWidget.bind(this));
+      listPostProcessorsCopy.attach(this.renderDOM.bind(this), 'ListMixin:renderDOM');
+      listPostProcessorsCopy.attach(this.handleEmptyWidget.bind(this), 'ListMixin:handleEmptyWidget');
 
       // Execute the first post-processor of the list
-      const nextProcessor = listPostProcessors.shift();
+      const nextProcessor = listPostProcessorsCopy.shift();
+    
       await nextProcessor(
         this.resource['ldp:contains'],
-        listPostProcessors,
+        listPostProcessorsCopy,
         div,
         this.dataSrc,
       );
     } else if (this.arrayField && this.predicateName && this.resource[this.predicateName]) {
       this.setElementAttribute("container");
-      const listPostProcessors = [...this.listPostProcessors];
       this.renderCallbacks = [];
-      listPostProcessors.push(this.renderDOM.bind(this));
-      listPostProcessors.push(this.handleEmptyWidget.bind(this));
+      listPostProcessorsCopy.attach(this.renderDOM.bind(this), 'ListMixin:renderDOM');
+      listPostProcessorsCopy.attach(this.handleEmptyWidget.bind(this), 'ListMixin:handleEmptyWidget');
 
       // Execute the first post-processor of the list
-      const nextProcessor = listPostProcessors.shift();
+      const nextProcessor = listPostProcessorsCopy.shift();
+
       await nextProcessor(
         await this.resource[this.predicateName],
-        listPostProcessors,
+        listPostProcessorsCopy,
         div,
         this.dataSrc,
       );
@@ -99,7 +101,7 @@ const ListMixin = {
    */
   async renderDOM(
     resources: object[],
-    listPostProcessors: Function[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
@@ -128,7 +130,7 @@ const ListMixin = {
    */
   async handleEmptyWidget(
     resources: object[],
-    listPostProcessors: Function[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
@@ -140,7 +142,7 @@ const ListMixin = {
         this.emptyWrapper = document.createElement('span')
         this.element.appendChild(this.emptyWrapper)
       }
-      
+
       render(resources.length > 0 ? html`` : emptyWidgetTemplate, this.emptyWrapper);
     }
 
