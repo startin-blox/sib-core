@@ -1,8 +1,9 @@
 {
-  "@id": "profile-1.jsonld",
+  "@id": "/examples/data/list/profile-1.jsonld",
   "jabberID": "admin@example.com",
+  "name": "profile 1",
   "user": {
-    "@id": "user-1.jsonld"
+    "@id": "/examples/data/list/user-1.jsonld"
   },
   "available": null,
   "bio": "Long description\non two lines",
@@ -10,11 +11,7 @@
   "phone": "06-03-23-98-23",
   "website": "www.startinblox.com",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

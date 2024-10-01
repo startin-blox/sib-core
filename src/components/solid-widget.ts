@@ -46,6 +46,7 @@ export const SolidWidget = {
           value: this.value || this.resource || '',
           src: this.src,
           label: this.label,
+          targetSrc: this.targetSrc || '',
         });
         return tpl;
       },
@@ -68,7 +69,7 @@ export const SolidWidget = {
   get template() {
     return this.element.querySelector('template:not([data-range])').innerHTML;
   },
-  get childTemplate(): string | null {
+  get childTemplate(): string | null {
     const child = this.element.querySelector('template[data-range]');
     return child ? child.innerHTML : null;
   }

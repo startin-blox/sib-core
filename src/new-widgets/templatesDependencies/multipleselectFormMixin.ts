@@ -37,14 +37,32 @@ const MultipleselectFormMixin = {
     this.listValueTransformations.push(this.setDataSrc.bind(this));
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {
-    if (value && value !== this.dataSrc) this.dataSrc = value;
+    if (value && value !== this.dataSrc) {
+      try {
+        let values = JSON.parse(value);
+        if (values && Array.isArray(values)) {
+          this.setValue(values);
+        } else {
+          this.setValue([value]);
+        }
+      } catch (ex) {
+        this.dataSrc = value;
+        this.setValue([ {"@id": value}]);
+      }
+    }
 
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    if (!this.resource || !this.resource['ldp:contains']) return;
+    if (!this.resource || (!this.resource['ldp:contains'] && !Array.isArray(this.resource))) return;
     this.setValue(this.resource['ldp:contains']);
+
+    // TODO: Rationalize or clean this commented code
+    // console.log("Populate of multipleselectformmixin", this.dataSrc, this.resource, this.resourceId, this.resource['ldp:contains'])
+    // if (this.resource['ldp:contains']) this.setValue(this.resource['ldp:contains']);
+    // else if(!Array.isArray(this.resource)) this.setValue(this.resource)
+
     this.planRender();
   },
   setValue(values: string[]) { // set the values to the dropdown
@@ -55,7 +73,7 @@ const MultipleselectFormMixin = {
     this.planRender();
   },
   get type() {
-    return 'resource';
+    return this.enum === '' ? 'resource' : 'string';
   },
   get multiple() {
     return true;

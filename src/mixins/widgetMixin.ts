@@ -48,21 +48,27 @@ const WidgetMixin = {
     if (attr) return parseFieldsString(attr);
 
     let resource = this.resource as Resource;
-    if (resource && resource.isContainer()) { // If container, keep the 1rst resource
+    if (resource && resource.isContainer?.()) { // If container, keep the 1rst resource
       for (let res of resource['ldp:contains']) {
+        resource = res;
+        break;
+      }
+    } else if (resource && this.arrayField && this.predicateName) { // if array, keep the 1rst resource
+      for (let res of resource[this.predicateName]) {
         resource = res;
         break;
       }
     }
 
-    if (!resource) {
-      console.error(new Error('You must provide a "fields" attribute'));
-      return [];
-    }
+    if (!this.dataSrc) console.error(new Error('You must provide a "fields" attribute'));
+    if(!resource) return [];
 
     let fields: string[] = [];
     for (const prop of resource.properties) {
-      if ((!prop.startsWith('@') && !(prop === "permissions")) && await resource[prop]) fields.push(prop);
+      if ((!prop.startsWith('@') && !(prop === "permissions"))) {
+        if (!this.isAlias(prop) && await resource[prop]) fields.push(prop);
+        else if (this.isAlias(prop)) fields.push(prop);
+      }
     }
     return fields;
   },
@@ -109,8 +115,20 @@ const WidgetMixin = {
     let foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
+  /**
+   * Return true if "field" is a string
+   * @param field - string
+   */
   isString(field: string): boolean {
     return field.startsWith('\'') || field.startsWith('\"');
+  },
+  /**
+   * Return true if "field" is an alias (contains " as ")
+   * @param field - string
+   */
+  isAlias(field: string): boolean {
+    const aliasRegex = /^[\w@.]+\s+as\s+[\w@.]+$/;
+    return aliasRegex.test(field);
   },
   /**
    * Return the value of "resource" for predicate "field"
@@ -118,7 +136,24 @@ const WidgetMixin = {
    * @param resource - Resource
    */
   async fetchValue(field: string, resource: Resource) {
-    return resource && !resource.isContainer() ? await resource[field] : undefined;
+    if (resource && !resource.isContainer?.()) {
+      let fieldValue = await resource[field];
+      if (fieldValue === null || fieldValue === undefined || fieldValue === '') {
+        let expandedPredicate = sibStore.getExpandedPredicate(field, this.context);
+        fieldValue = await resource[expandedPredicate];
+      }
+
+      if (fieldValue === null || fieldValue === undefined || fieldValue === '') return undefined;
+      if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) {
+        return JSON.stringify(fieldValue);
+      // Dumb edge case because if the array bears only one item, when compacted the array translates into one object
+      } else if (
+        typeof fieldValue === 'object' &&
+        fieldValue['@id'] && 1 === Object.keys(fieldValue).length) {
+        return JSON.stringify([fieldValue]);
+      }
+    }
+    return resource && !resource.isContainer?.() ? await resource[field] : undefined;
   },
   /**
    * Return the value of the field
@@ -129,11 +164,17 @@ const WidgetMixin = {
     if (this.getAction(escapedField)) {
       return this.getAction(escapedField);
     }
+
     if (this.element.hasAttribute('value-' + field)) {
       return this.element.getAttribute('value-' + field);
     }
-    let resourceValue = await this.fetchValue(field, resource);
 
+    if (this.isAlias(field)) {
+      const alias = field.split(' as ');
+      return await this.fetchValue(alias[0], resource);
+    }
+
+    let resourceValue = await this.fetchValue(field, resource);
     // Empty value
     if (resourceValue === undefined || resourceValue === '' || resourceValue === null) // If null or empty, return field default value
       return this.element.hasAttribute('default-' + field) ?
@@ -160,6 +201,7 @@ const WidgetMixin = {
    * @param isSet - boolean
    */
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const widget = this.element.getAttribute('widget-' + field);
 
     if (widget) return this.widgetFromTagName(widget);
@@ -195,6 +237,7 @@ const WidgetMixin = {
    */
   widgetAttributes(field: string, resource: Resource): object {
     const attrs = { name: field };
+    if (this.isAlias(field)) field = field.split(' as ')[1];
     const escapedField = this.getEscapedField(field);
 
     // transfer all multiple-[field]-[attr] attributes as [attr] for multiple widget [field]
@@ -205,7 +248,9 @@ const WidgetMixin = {
       'add-label',
       'remove-label',
       'next', 
-      'empty-widget'
+      'empty-widget',
+      'add-class',
+      'remove-class'
     ];
     for (let attr of multipleAttributes) this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs)
 
@@ -222,6 +267,7 @@ const WidgetMixin = {
       'autocomplete',
       'upload-url',
       'option-label',
+      'option-value',
       'order-by', // deprecated. Remove in 0.15
       'each-label',
       'order-asc',
@@ -235,7 +281,12 @@ const WidgetMixin = {
       'alt',
       'step',
       'maxlength',
-      'minlength'
+      'minlength',
+      'search-text',
+      'search-placeholder',
+      'link-text',
+      'target-src',
+      'data-label'
     ];
     for (let attr of defaultAttributes) this.addToAttributes(`${attr}-${escapedField}`, attr,  attrs)
 
@@ -246,19 +297,18 @@ const WidgetMixin = {
     if (this.multiple(escapedField)) attrs['widget'] = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId) attrs['src'] = this.element.getAttribute('src-' + escapedField) || resourceId;
     if (this.editable(escapedField) && resourceId) attrs['value-id'] = resourceId;
-
     return attrs;
   },
   /**
    * Creates and return a widget for field + add it to the widget list
    * @param field - string
    */
-  async createWidgetTemplate(field: string, resource = null): Promise<TemplateResult> {
+  async createWidgetTemplate(field: string, resource = null, transformAttributes = false): Promise<TemplateResult> {
     if (this.isString(field)) return this.createString(field); // field is a static string
     if (this.isSet(field)) return await this.createSet(field);
 
     const currentResource = resource || this.resource;
-    const attributes = this.widgetAttributes(field, currentResource);
+    let attributes = this.widgetAttributes(field, currentResource);
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     let tagName = widgetMeta.tagName;
@@ -281,14 +331,28 @@ const WidgetMixin = {
       // Set attributes to the widget
       // setAttribute set a string. Make sure null values are empty
       if (value === null || value === undefined) attributes.value = '';
-      if (widgetMeta.type === WidgetType.USER && value['@id']) { // if value is a resource and solid-widget used, set data-src
-        attributes['data-src'] = value['@id'];
+      if (widgetMeta.type === WidgetType.USER) { // if value is a resource and solid-widget used, set data-src
+        if (value['@id']) {
+          attributes['data-src'] = value['@id'];
+        } else {
+          try {
+            let isUrl = new URL(value);
+            if (isUrl) attributes['data-src'] = value;
+          } catch (e) {}
+
+          // in any case, set value attribute
+          attributes['value'] = value;
+        }
       } else { // otherwise, set value attribute
         attributes['value'] = value;
       }
 
       // Subscribe widgets if they show a resource
       if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
+
+      // Transform store://XXX attributes
+      if (transformAttributes) attributes = await this.transformAttributes(attributes, currentResource);
+
       widgetTemplate = preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
     }
 
@@ -311,21 +375,43 @@ const WidgetMixin = {
     const attrs = { name: field };
     const setAttributes = [
       'class',
+      'label'
     ];
     for (let attr of setAttributes) this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
     // Create widget if not already existing
     let widget = this.element.querySelector(`${setWidget.tagName}[name="${field}"]`);
+    let initializing = false; // used to render widget only first time
     if (!widget) {
       widget = document.createElement(setWidget.tagName);
-      if (widget.component) widget.component.render();
+      initializing = true;
     }
     for (let name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
+    if (widget.component && initializing) widget.component.render();
+    let setFields = this.getSet(field);
+    // Catch widget for the set if all these fields are empty
+    if (this.element.hasAttribute('empty-' + field)) {
+      let hasOnlyEmpty = true;
+      for(let field of setFields) {
+        let value: string = await this.getValue(field, this.resource);
+        if (value !== '') { // if one not empty
+          hasOnlyEmpty = false;
+          continue; // break loop
+        }
+      };
+      if(hasOnlyEmpty) { // if only empty values, return empty-widget
+        const attributes = this.widgetAttributes(field, this.resource);
+        const tagName = this.element.getAttribute(`empty-${field}`);
+        const valueSet = this.element.getAttribute(`empty-${field}-value`);
+        if (valueSet) attributes.value = valueSet;
+        return preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
+      };
+    }
 
     // Render template
-    const widgetsTemplate = await Promise.all(this.getSet(field).map((field: string) => this.createWidgetTemplate(field)));
+    const widgetsTemplate = await Promise.all(setFields.map((field: string) => this.createWidgetTemplate(field)));
     const template = html`${widgetsTemplate}`;
     render(template, widget.querySelector('[data-content]') || widget);
     return widget;

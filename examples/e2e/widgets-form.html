@@ -9,7 +9,7 @@
   </head>
   <body>
     <script type="module">
-      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+      import { newWidgetFactory } from '../../dist/index.js';
 
       newWidgetFactory('solid-form-text');
       newWidgetFactory('solid-form-text-label');
@@ -24,7 +24,6 @@
       newWidgetFactory('solid-form-dropdown');
       newWidgetFactory('solid-form-dropdown-autocompletion-placeholder');
       newWidgetFactory('solid-form-radio');
-      newWidgetFactory('solid-form-checkboxes');
       newWidgetFactory('solid-form-rangenumber');
       newWidgetFactory('solid-form-rangedate');
       newWidgetFactory('solid-form-color');
@@ -94,37 +93,37 @@
     <solid-form-dropdown
       id="test1"
       name="test1"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test2"
       name="test2"
-      value='skill-2.jsonld'
-      range="../data/list/skills.jsonld"
+      value='/examples/data/list/skill-2.jsonld'
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test3"
       name="test3"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
       option-label="@id"
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test4"
       name="test4"
-      range="../data/list/skills.jsonld"
-      values='["skill-1.jsonld", "skill-3.jsonld"]'
+      range="/examples/data/list/skills.jsonld"
+      values='["/examples/data/list/skill-1.jsonld", "/examples/data/list/skill-3.jsonld"]'
       multiple
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test5"
       name="test5"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
       order-desc="name"
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test6"
       name="test6"
-      range="../data/federation/source1.jsonld"
+      range="/examples/data/federation/source1.jsonld"
     ></solid-form-dropdown>
     <solid-form-dropdown
       id="test7"
@@ -140,19 +139,37 @@
     <solid-form-dropdown-autocompletion-placeholder
       id="test9"
       name="test9"
-      placeholder="Skills :"
-      range="../data/list/skills.jsonld"
+      search-placeholder="Skills :"
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-dropdown-autocompletion-placeholder>
+    <solid-form-dropdown
+      id="test10"
+      name="test10"
+      range="/examples/data/list/skills.jsonld"
+      option-value="name"
+    ></solid-form-dropdown>
+    <solid-form-dropdown
+      id="test11"
+      name="test11"
+      range="/examples/data/list/users.jsonld"
+      option-value="profile"
+    ></solid-form-dropdown>
+    <solid-form-dropdown
+      id="test12"
+      name="test12"
+      range="/examples/data/list/users.jsonld"
+      option-value="profile.@id"
+    ></solid-form-dropdown>
     <solid-form-radio
       id="test1"
       name="test1"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-radio>
     <solid-form-radio
       id="test2"
       name="test2"
-      range="../data/list/skills.jsonld"
-      value="skill-3.jsonld"
+      range="/examples/data/list/skills.jsonld"
+      value="/examples/data/list/skill-3.jsonld"
     ></solid-form-radio>
     <solid-form-radio
       id="test3"
@@ -166,7 +183,7 @@
     ></solid-form-radio>
     <solid-form-checkboxes
       id="test-checkboxes"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-checkboxes>
     <solid-form-rangenumber
       name="test1"
@@ -193,31 +210,31 @@
     ></solid-form-text-labellast>
     <solid-form-dropdown-addable
       id="test1"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
     ></solid-form-dropdown-addable>
     <solid-form-dropdown-addable
       id="test2"
-      range="../data/list/skills.jsonld"
-      addable-data-src="../data/list/users.jsonld"
+      range="/examples/data/list/skills.jsonld"
+      addable-data-src="/examples/data/list/users.jsonld"
       addable-fields="name, username, age"
       addable-widget-name="solid-form-text-placeholder-label"
       addable-placeholder-name="Enter your name"
       addable-submit-button="Send data"
     ></solid-form-dropdown-addable>
     <solid-form-label-password
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       name="password"
       value="password123"
     ></solid-form-label-password>
     <solid-form-label-time
       id="time1"
-      data-src="../data/list/event.jsonld"
+      data-src="/examples/data/list/event.jsonld"
       name="time"
       value="15:15"
     ></solid-form-label-time>
     <solid-form-label-time
       id="time2"
-      data-src="../data/list/event.jsonld"
+      data-src="/examples/data/list/event.jsonld"
       label="start time"
       min="12:00"
       max="14:00"

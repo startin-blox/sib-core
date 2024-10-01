@@ -9,28 +9,36 @@
   </head>
   <body>
     <script type="module">
-      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+      import { newWidgetFactory } from '../../dist/index.js';
 
       newWidgetFactory('solid-display-div');
       newWidgetFactory('solid-display-link');
       newWidgetFactory('solid-display-link-mailto');
+      newWidgetFactory('solid-display-link-mailto-label');
       newWidgetFactory('solid-display-link-tel');
+      newWidgetFactory('solid-display-link-tel-label');
       newWidgetFactory('solid-display-link-blank');
+      newWidgetFactory('solid-display-link-blank-label');
       newWidgetFactory('solid-display-img');
       newWidgetFactory('solid-display-boolean');
       newWidgetFactory('solid-display-label-div');
       newWidgetFactory('solid-display-date-div');
       newWidgetFactory('solid-display-datetime-div');
       newWidgetFactory('solid-display-multiline-div');
+      newWidgetFactory('solid-action-label');
       newWidgetFactory('solid-display-div-markdown');
       newWidgetFactory('solid-display-div-autolink');
       newWidgetFactory('solid-display-value-oembed');
       newWidgetFactory('solid-multiple');
     </script>
+    
+    <h3>solid-display-value</h3>
     <solid-display-value
       name="test1"
       value="test value 1"
     ></solid-display-value>
+
+    <h3>solid-display-div</h3>
     <solid-display-div
       id="test1"
       name="test1"
@@ -43,28 +51,56 @@
       value-id="resource-1.jsonld"
       editable
     ></solid-display-div>
+    
+    <h3>solid-display-link</h3>
     <solid-display-link
       name="test1"
       value="http://example.com"
     ></solid-display-link>
+
+    <h3>solid-display-link-mailto</h3>
     <solid-display-link-mailto
       name="test1"
       value="http://example.com"
     ></solid-display-link-mailto>
+
+    <solid-display-link-mailto-label
+      name="test1"
+      value="http://example.com"
+      label="mail: "
+    ></solid-display-link-mailto-label>
+
     <solid-display-link-tel
       name="test1"
       value="http://example.com"
     ></solid-display-link-tel>
+
+    <solid-display-link-tel-label
+      name="test1"
+      value="http://example.com"
+      label="tel: "
+    ></solid-display-link-tel-label>
+
     <solid-display-link-blank
       name="test1"
       value="http://example.com"
-      label="link text"
+      link-text="link text"
     ></solid-display-link-blank>
+
+    <solid-display-link-blank-label
+      name="test1"
+      value="http://example.com"
+      label="blank test: "
+    ></solid-display-link-blank-label>
+
+    <h3>solid-display-img</h3>
     <solid-display-img
       name="test1"
       value="test-img.png"
       alt="alternative text"
     ></solid-display-img>
+
+    <h3>solid-display-boolean</h3>
     <solid-display-boolean
       name="test1"
       value="true"
@@ -75,6 +111,8 @@
       value="false"
       label="Is displayed ?"
     ></solid-display-boolean>
+
+    <h3>solid-display-label-div</h3>
     <solid-display-label-div
       name="test1"
       value="test value 1"
@@ -84,36 +122,66 @@
       value="test value 1"
       label="Test field"
     ></solid-display-label-div>
+
+    <h3>solid-display-date-div</h3>
     <solid-display-date-div
       name="test1"
       value="2020-05-28"
     ></solid-display-date-div>
+
+    <h3>solid-display-datetime-div</h3>
     <solid-display-datetime-div
       name="test2"
       value="2020-05-28"
     ></solid-display-datetime-div>
+
+    <h3>solid-display-multiline-div</h3>
     <solid-display-multiline-div
       name="test2"
       value="test line 1
       and line 2"
     ></solid-display-multiline-div>
+
+    <h3>solid-multiple</h3>
     <solid-multiple
-      value="../data/list/user-1-skills.jsonld"
+      value="/examples/data/list/user-1-skills.jsonld"
       fields="name"
     ></solid-multiple>
+
+    <h3>solid-action</h3>
     <solid-action
       name="test1"
       value="next-page"
       src="resource-1.jsonld"
     ></solid-action>
+
+    <solid-action
+      name="test2"
+      value="next-page"
+      src="resource-1.jsonld"
+      link-text="link text"
+    ></solid-action>
+
+    <solid-action-label
+      name="test1"
+      value="next-page"
+      src="resource-1.jsonld"
+      label="label solid-action: "
+    ></solid-action-label>
+
+    <h3>solid-display-div-markdown</h3>
     <solid-display-div-markdown
       name="test display markdown"
       value="**bold** _italic_ [link](http://corndog.io/)"
     ></solid-display-div-markdown>
+    
+    <h3>solid-display-div-autolink</h3>
     <solid-display-div-autolink
       name="test display autolink"
       value="Maybe you want to go on this website www.w3.org but you can also discover that one www.window-swap.com"
     ></solid-display-div-autolink>
+
+    <h3>solid-display-value-oembed</h3>
     <solid-display-value-oembed
       name="test oembed"
       value="https://www.youtube.com/oembed?url=https%3A//youtube.com/watch%3Fv%3DM3r2XDceM6A&format=json"

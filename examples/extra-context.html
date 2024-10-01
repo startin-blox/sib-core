@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: extra-context</title>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-loader.js"></script>
-    <script type="module" src="https://unpkg.com/@startinblox/router@latest"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
     <script type="module" src="../dist/index.js"></script>
     <link rel="stylesheet" href="styles.css" />
-    <script id="alpha" type="application/ld+json">
+    <script data-default-context id="alpha" type="application/ld+json">
       {
         "user":"http://localhost:3000/examples/data/extra-context/"
       }
@@ -23,7 +23,7 @@
       <solid-route name="detail" use-id></solid-route>
     </solid-router>
 
-    <div id="home">
+    <div data-view="home">
       <h1>HOME</h1>
       <solid-display
         data-src="http://localhost:3000/examples/data/extra-context/users.jsonld"
@@ -33,7 +33,7 @@
       ></solid-display>
     </div>
 
-    <div id="detail">
+    <div data-view="detail">
       <h1>DETAIL</h1>
       <solid-display
         fields="@id, username, first_name, last_name, email"

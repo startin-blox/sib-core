@@ -1,17 +1,13 @@
 {
-  "@id": "",
+  "@id": "/examples/data/list/users-long.jsonld",
   "@type": "ldp:Container",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "ldp:contains": [
     {
-      "@id": "--user-0.jsonld",
+      "@id": "/examples/data/list/--user-0.jsonld",
       "first_name": "Mayer",
       "last_name": "Glenn",
       "name": "Mayer Glenn",
@@ -19,15 +15,11 @@
       "email": "mayer.glenn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-1.jsonld",
+      "@id": "/examples/data/list/--user-1.jsonld",
       "first_name": "Santiago",
       "last_name": "Fowler",
       "name": "Santiago Fowler",
@@ -35,15 +27,11 @@
       "email": "santiago.fowler@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-2.jsonld",
+      "@id": "/examples/data/list/--user-2.jsonld",
       "first_name": "Imelda",
       "last_name": "Kemp",
       "name": "Imelda Kemp",
@@ -51,15 +39,11 @@
       "email": "imelda.kemp@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-3.jsonld",
+      "@id": "/examples/data/list/--user-3.jsonld",
       "first_name": "Tillman",
       "last_name": "Mcmahon",
       "name": "Tillman Mcmahon",
@@ -67,15 +51,11 @@
       "email": "tillman.mcmahon@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-4.jsonld",
+      "@id": "/examples/data/list/--user-4.jsonld",
       "first_name": "Torres",
       "last_name": "Henry",
       "name": "Torres Henry",
@@ -83,15 +63,11 @@
       "email": "torres.henry@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-5.jsonld",
+      "@id": "/examples/data/list/--user-5.jsonld",
       "first_name": "Ines",
       "last_name": "Head",
       "name": "Ines Head",
@@ -99,15 +75,11 @@
       "email": "ines.head@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-6.jsonld",
+      "@id": "/examples/data/list/--user-6.jsonld",
       "first_name": "Cotton",
       "last_name": "Sullivan",
       "name": "Cotton Sullivan",
@@ -115,15 +87,11 @@
       "email": "cotton.sullivan@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-7.jsonld",
+      "@id": "/examples/data/list/--user-7.jsonld",
       "first_name": "Nelda",
       "last_name": "Armstrong",
       "name": "Nelda Armstrong",
@@ -131,15 +99,11 @@
       "email": "nelda.armstrong@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-8.jsonld",
+      "@id": "/examples/data/list/--user-8.jsonld",
       "first_name": "Marianne",
       "last_name": "Gentry",
       "name": "Marianne Gentry",
@@ -147,15 +111,11 @@
       "email": "marianne.gentry@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-9.jsonld",
+      "@id": "/examples/data/list/--user-9.jsonld",
       "first_name": "Sweet",
       "last_name": "Petersen",
       "name": "Sweet Petersen",
@@ -163,15 +123,11 @@
       "email": "sweet.petersen@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-10.jsonld",
+      "@id": "/examples/data/list/--user-10.jsonld",
       "first_name": "Henry",
       "last_name": "Noble",
       "name": "Henry Noble",
@@ -179,15 +135,11 @@
       "email": "henry.noble@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-11.jsonld",
+      "@id": "/examples/data/list/--user-11.jsonld",
       "first_name": "Rhodes",
       "last_name": "Michael",
       "name": "Rhodes Michael",
@@ -195,15 +147,11 @@
       "email": "rhodes.michael@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-12.jsonld",
+      "@id": "/examples/data/list/--user-12.jsonld",
       "first_name": "Browning",
       "last_name": "Sherman",
       "name": "Browning Sherman",
@@ -211,15 +159,11 @@
       "email": "browning.sherman@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-13.jsonld",
+      "@id": "/examples/data/list/--user-13.jsonld",
       "first_name": "Ellen",
       "last_name": "Walter",
       "name": "Ellen Walter",
@@ -227,15 +171,11 @@
       "email": "ellen.walter@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-14.jsonld",
+      "@id": "/examples/data/list/--user-14.jsonld",
       "first_name": "Jolene",
       "last_name": "Winters",
       "name": "Jolene Winters",
@@ -243,15 +183,11 @@
       "email": "jolene.winters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-15.jsonld",
+      "@id": "/examples/data/list/--user-15.jsonld",
       "first_name": "Benton",
       "last_name": "Powell",
       "name": "Benton Powell",
@@ -259,15 +195,11 @@
       "email": "benton.powell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-16.jsonld",
+      "@id": "/examples/data/list/--user-16.jsonld",
       "first_name": "Lott",
       "last_name": "Franklin",
       "name": "Lott Franklin",
@@ -275,15 +207,11 @@
       "email": "lott.franklin@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-17.jsonld",
+      "@id": "/examples/data/list/--user-17.jsonld",
       "first_name": "Noble",
       "last_name": "Ramirez",
       "name": "Noble Ramirez",
@@ -291,15 +219,11 @@
       "email": "noble.ramirez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-18.jsonld",
+      "@id": "/examples/data/list/--user-18.jsonld",
       "first_name": "Case",
       "last_name": "Gillespie",
       "name": "Case Gillespie",
@@ -307,15 +231,11 @@
       "email": "case.gillespie@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-19.jsonld",
+      "@id": "/examples/data/list/--user-19.jsonld",
       "first_name": "Oneill",
       "last_name": "Frank",
       "name": "Oneill Frank",
@@ -323,15 +243,11 @@
       "email": "oneill.frank@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-20.jsonld",
+      "@id": "/examples/data/list/--user-20.jsonld",
       "first_name": "Francesca",
       "last_name": "Tanner",
       "name": "Francesca Tanner",
@@ -339,15 +255,11 @@
       "email": "francesca.tanner@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-21.jsonld",
+      "@id": "/examples/data/list/--user-21.jsonld",
       "first_name": "Shauna",
       "last_name": "Floyd",
       "name": "Shauna Floyd",
@@ -355,15 +267,11 @@
       "email": "shauna.floyd@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-22.jsonld",
+      "@id": "/examples/data/list/--user-22.jsonld",
       "first_name": "Michelle",
       "last_name": "Terrell",
       "name": "Michelle Terrell",
@@ -371,15 +279,11 @@
       "email": "michelle.terrell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-23.jsonld",
+      "@id": "/examples/data/list/--user-23.jsonld",
       "first_name": "Carmella",
       "last_name": "Bennett",
       "name": "Carmella Bennett",
@@ -387,15 +291,11 @@
       "email": "carmella.bennett@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-24.jsonld",
+      "@id": "/examples/data/list/--user-24.jsonld",
       "first_name": "Levine",
       "last_name": "Morrison",
       "name": "Levine Morrison",
@@ -403,15 +303,11 @@
       "email": "levine.morrison@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-25.jsonld",
+      "@id": "/examples/data/list/--user-25.jsonld",
       "first_name": "Janice",
       "last_name": "Lane",
       "name": "Janice Lane",
@@ -419,15 +315,11 @@
       "email": "janice.lane@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-26.jsonld",
+      "@id": "/examples/data/list/--user-26.jsonld",
       "first_name": "Woods",
       "last_name": "Clay",
       "name": "Woods Clay",
@@ -435,15 +327,11 @@
       "email": "woods.clay@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-27.jsonld",
+      "@id": "/examples/data/list/--user-27.jsonld",
       "first_name": "Anna",
       "last_name": "Abbott",
       "name": "Anna Abbott",
@@ -451,15 +339,11 @@
       "email": "anna.abbott@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-28.jsonld",
+      "@id": "/examples/data/list/--user-28.jsonld",
       "first_name": "Atkins",
       "last_name": "Levine",
       "name": "Atkins Levine",
@@ -467,15 +351,11 @@
       "email": "atkins.levine@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-29.jsonld",
+      "@id": "/examples/data/list/--user-29.jsonld",
       "first_name": "Tiffany",
       "last_name": "Dunn",
       "name": "Tiffany Dunn",
@@ -483,15 +363,11 @@
       "email": "tiffany.dunn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-30.jsonld",
+      "@id": "/examples/data/list/--user-30.jsonld",
       "first_name": "Valarie",
       "last_name": "Lindsay",
       "name": "Valarie Lindsay",
@@ -499,15 +375,11 @@
       "email": "valarie.lindsay@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-31.jsonld",
+      "@id": "/examples/data/list/--user-31.jsonld",
       "first_name": "Finley",
       "last_name": "Solis",
       "name": "Finley Solis",
@@ -515,15 +387,11 @@
       "email": "finley.solis@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-32.jsonld",
+      "@id": "/examples/data/list/--user-32.jsonld",
       "first_name": "Mclaughlin",
       "last_name": "Wagner",
       "name": "Mclaughlin Wagner",
@@ -531,15 +399,11 @@
       "email": "mclaughlin.wagner@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-33.jsonld",
+      "@id": "/examples/data/list/--user-33.jsonld",
       "first_name": "Roslyn",
       "last_name": "Hyde",
       "name": "Roslyn Hyde",
@@ -547,15 +411,11 @@
       "email": "roslyn.hyde@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-34.jsonld",
+      "@id": "/examples/data/list/--user-34.jsonld",
       "first_name": "Rosetta",
       "last_name": "Craig",
       "name": "Rosetta Craig",
@@ -563,15 +423,11 @@
       "email": "rosetta.craig@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-35.jsonld",
+      "@id": "/examples/data/list/--user-35.jsonld",
       "first_name": "Geraldine",
       "last_name": "Waters",
       "name": "Geraldine Waters",
@@ -579,15 +435,11 @@
       "email": "geraldine.waters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-36.jsonld",
+      "@id": "/examples/data/list/--user-36.jsonld",
       "first_name": "Zamora",
       "last_name": "Ellison",
       "name": "Zamora Ellison",
@@ -595,15 +447,11 @@
       "email": "zamora.ellison@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-37.jsonld",
+      "@id": "/examples/data/list/--user-37.jsonld",
       "first_name": "Eileen",
       "last_name": "Cantu",
       "name": "Eileen Cantu",
@@ -611,15 +459,11 @@
       "email": "eileen.cantu@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-38.jsonld",
+      "@id": "/examples/data/list/--user-38.jsonld",
       "first_name": "Lynette",
       "last_name": "Oconnor",
       "name": "Lynette Oconnor",
@@ -627,15 +471,11 @@
       "email": "lynette.oconnor@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-39.jsonld",
+      "@id": "/examples/data/list/--user-39.jsonld",
       "first_name": "Maritza",
       "last_name": "Middleton",
       "name": "Maritza Middleton",
@@ -643,15 +483,11 @@
       "email": "maritza.middleton@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-40.jsonld",
+      "@id": "/examples/data/list/--user-40.jsonld",
       "first_name": "Norman",
       "last_name": "Peters",
       "name": "Norman Peters",
@@ -659,15 +495,11 @@
       "email": "norman.peters@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-41.jsonld",
+      "@id": "/examples/data/list/--user-41.jsonld",
       "first_name": "Lane",
       "last_name": "Navarro",
       "name": "Lane Navarro",
@@ -675,15 +507,11 @@
       "email": "lane.navarro@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-42.jsonld",
+      "@id": "/examples/data/list/--user-42.jsonld",
       "first_name": "Oliver",
       "last_name": "Fulton",
       "name": "Oliver Fulton",
@@ -691,15 +519,11 @@
       "email": "oliver.fulton@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-43.jsonld",
+      "@id": "/examples/data/list/--user-43.jsonld",
       "first_name": "Dale",
       "last_name": "Bishop",
       "name": "Dale Bishop",
@@ -707,15 +531,11 @@
       "email": "dale.bishop@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-44.jsonld",
+      "@id": "/examples/data/list/--user-44.jsonld",
       "first_name": "Wise",
       "last_name": "Vazquez",
       "name": "Wise Vazquez",
@@ -723,15 +543,11 @@
       "email": "wise.vazquez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-45.jsonld",
+      "@id": "/examples/data/list/--user-45.jsonld",
       "first_name": "Gilliam",
       "last_name": "Moran",
       "name": "Gilliam Moran",
@@ -739,15 +555,11 @@
       "email": "gilliam.moran@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-46.jsonld",
+      "@id": "/examples/data/list/--user-46.jsonld",
       "first_name": "Ellison",
       "last_name": "Wilson",
       "name": "Ellison Wilson",
@@ -755,15 +567,11 @@
       "email": "ellison.wilson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-47.jsonld",
+      "@id": "/examples/data/list/--user-47.jsonld",
       "first_name": "Fanny",
       "last_name": "Sandoval",
       "name": "Fanny Sandoval",
@@ -771,15 +579,11 @@
       "email": "fanny.sandoval@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-48.jsonld",
+      "@id": "/examples/data/list/--user-48.jsonld",
       "first_name": "Hale",
       "last_name": "Macdonald",
       "name": "Hale Macdonald",
@@ -787,15 +591,11 @@
       "email": "hale.macdonald@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-49.jsonld",
+      "@id": "/examples/data/list/--user-49.jsonld",
       "first_name": "Riley",
       "last_name": "Mcfarland",
       "name": "Riley Mcfarland",
@@ -803,15 +603,11 @@
       "email": "riley.mcfarland@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-50.jsonld",
+      "@id": "/examples/data/list/--user-50.jsonld",
       "first_name": "Prince",
       "last_name": "Wilkerson",
       "name": "Prince Wilkerson",
@@ -819,15 +615,11 @@
       "email": "prince.wilkerson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-51.jsonld",
+      "@id": "/examples/data/list/--user-51.jsonld",
       "first_name": "Barnett",
       "last_name": "Klein",
       "name": "Barnett Klein",
@@ -835,15 +627,11 @@
       "email": "barnett.klein@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-52.jsonld",
+      "@id": "/examples/data/list/--user-52.jsonld",
       "first_name": "Amy",
       "last_name": "Collins",
       "name": "Amy Collins",
@@ -851,15 +639,11 @@
       "email": "amy.collins@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-53.jsonld",
+      "@id": "/examples/data/list/--user-53.jsonld",
       "first_name": "Wells",
       "last_name": "Grant",
       "name": "Wells Grant",
@@ -867,15 +651,11 @@
       "email": "wells.grant@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-54.jsonld",
+      "@id": "/examples/data/list/--user-54.jsonld",
       "first_name": "Melton",
       "last_name": "Peterson",
       "name": "Melton Peterson",
@@ -883,15 +663,11 @@
       "email": "melton.peterson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-55.jsonld",
+      "@id": "/examples/data/list/--user-55.jsonld",
       "first_name": "Davenport",
       "last_name": "Townsend",
       "name": "Davenport Townsend",
@@ -899,15 +675,11 @@
       "email": "davenport.townsend@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-56.jsonld",
+      "@id": "/examples/data/list/--user-56.jsonld",
       "first_name": "Mayo",
       "last_name": "Flynn",
       "name": "Mayo Flynn",
@@ -915,15 +687,11 @@
       "email": "mayo.flynn@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-57.jsonld",
+      "@id": "/examples/data/list/--user-57.jsonld",
       "first_name": "Latoya",
       "last_name": "Haynes",
       "name": "Latoya Haynes",
@@ -931,15 +699,11 @@
       "email": "latoya.haynes@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-58.jsonld",
+      "@id": "/examples/data/list/--user-58.jsonld",
       "first_name": "Catherine",
       "last_name": "Parrish",
       "name": "Catherine Parrish",
@@ -947,15 +711,11 @@
       "email": "catherine.parrish@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-59.jsonld",
+      "@id": "/examples/data/list/--user-59.jsonld",
       "first_name": "Bernadette",
       "last_name": "Roman",
       "name": "Bernadette Roman",
@@ -963,15 +723,11 @@
       "email": "bernadette.roman@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-60.jsonld",
+      "@id": "/examples/data/list/--user-60.jsonld",
       "first_name": "Jeanne",
       "last_name": "Rosa",
       "name": "Jeanne Rosa",
@@ -979,15 +735,11 @@
       "email": "jeanne.rosa@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-61.jsonld",
+      "@id": "/examples/data/list/--user-61.jsonld",
       "first_name": "Ward",
       "last_name": "Cunningham",
       "name": "Ward Cunningham",
@@ -995,15 +747,11 @@
       "email": "ward.cunningham@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-62.jsonld",
+      "@id": "/examples/data/list/--user-62.jsonld",
       "first_name": "Melba",
       "last_name": "Nelson",
       "name": "Melba Nelson",
@@ -1011,15 +759,11 @@
       "email": "melba.nelson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-63.jsonld",
+      "@id": "/examples/data/list/--user-63.jsonld",
       "first_name": "Johnston",
       "last_name": "Ashley",
       "name": "Johnston Ashley",
@@ -1027,15 +771,11 @@
       "email": "johnston.ashley@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-64.jsonld",
+      "@id": "/examples/data/list/--user-64.jsonld",
       "first_name": "Mavis",
       "last_name": "Sellers",
       "name": "Mavis Sellers",
@@ -1043,15 +783,11 @@
       "email": "mavis.sellers@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-65.jsonld",
+      "@id": "/examples/data/list/--user-65.jsonld",
       "first_name": "Veronica",
       "last_name": "Rollins",
       "name": "Veronica Rollins",
@@ -1059,15 +795,11 @@
       "email": "veronica.rollins@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-66.jsonld",
+      "@id": "/examples/data/list/--user-66.jsonld",
       "first_name": "Renee",
       "last_name": "Melendez",
       "name": "Renee Melendez",
@@ -1075,15 +807,11 @@
       "email": "renee.melendez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-67.jsonld",
+      "@id": "/examples/data/list/--user-67.jsonld",
       "first_name": "Mccarty",
       "last_name": "Gates",
       "name": "Mccarty Gates",
@@ -1091,15 +819,11 @@
       "email": "mccarty.gates@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-68.jsonld",
+      "@id": "/examples/data/list/--user-68.jsonld",
       "first_name": "Day",
       "last_name": "Rios",
       "name": "Day Rios",
@@ -1107,15 +831,11 @@
       "email": "day.rios@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-69.jsonld",
+      "@id": "/examples/data/list/--user-69.jsonld",
       "first_name": "Frye",
       "last_name": "Johns",
       "name": "Frye Johns",
@@ -1123,15 +843,11 @@
       "email": "frye.johns@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-70.jsonld",
+      "@id": "/examples/data/list/--user-70.jsonld",
       "first_name": "Cheryl",
       "last_name": "Wilkinson",
       "name": "Cheryl Wilkinson",
@@ -1139,15 +855,11 @@
       "email": "cheryl.wilkinson@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-71.jsonld",
+      "@id": "/examples/data/list/--user-71.jsonld",
       "first_name": "Munoz",
       "last_name": "Douglas",
       "name": "Munoz Douglas",
@@ -1155,15 +867,11 @@
       "email": "munoz.douglas@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-72.jsonld",
+      "@id": "/examples/data/list/--user-72.jsonld",
       "first_name": "Debra",
       "last_name": "Cook",
       "name": "Debra Cook",
@@ -1171,15 +879,11 @@
       "email": "debra.cook@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-73.jsonld",
+      "@id": "/examples/data/list/--user-73.jsonld",
       "first_name": "Schneider",
       "last_name": "Villarreal",
       "name": "Schneider Villarreal",
@@ -1187,15 +891,11 @@
       "email": "schneider.villarreal@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-74.jsonld",
+      "@id": "/examples/data/list/--user-74.jsonld",
       "first_name": "Hayes",
       "last_name": "Holloway",
       "name": "Hayes Holloway",
@@ -1203,15 +903,11 @@
       "email": "hayes.holloway@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-75.jsonld",
+      "@id": "/examples/data/list/--user-75.jsonld",
       "first_name": "Buck",
       "last_name": "Velazquez",
       "name": "Buck Velazquez",
@@ -1219,15 +915,11 @@
       "email": "buck.velazquez@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-76.jsonld",
+      "@id": "/examples/data/list/--user-76.jsonld",
       "first_name": "Aida",
       "last_name": "Pugh",
       "name": "Aida Pugh",
@@ -1235,15 +927,11 @@
       "email": "aida.pugh@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-77.jsonld",
+      "@id": "/examples/data/list/--user-77.jsonld",
       "first_name": "Pamela",
       "last_name": "Olsen",
       "name": "Pamela Olsen",
@@ -1251,15 +939,11 @@
       "email": "pamela.olsen@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-78.jsonld",
+      "@id": "/examples/data/list/--user-78.jsonld",
       "first_name": "Trudy",
       "last_name": "Lucas",
       "name": "Trudy Lucas",
@@ -1267,15 +951,11 @@
       "email": "trudy.lucas@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-79.jsonld",
+      "@id": "/examples/data/list/--user-79.jsonld",
       "first_name": "Madge",
       "last_name": "Casey",
       "name": "Madge Casey",
@@ -1283,15 +963,11 @@
       "email": "madge.casey@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-80.jsonld",
+      "@id": "/examples/data/list/--user-80.jsonld",
       "first_name": "Nicole",
       "last_name": "Palmer",
       "name": "Nicole Palmer",
@@ -1299,15 +975,11 @@
       "email": "nicole.palmer@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-81.jsonld",
+      "@id": "/examples/data/list/--user-81.jsonld",
       "first_name": "Hopper",
       "last_name": "Harrell",
       "name": "Hopper Harrell",
@@ -1315,15 +987,11 @@
       "email": "hopper.harrell@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-82.jsonld",
+      "@id": "/examples/data/list/--user-82.jsonld",
       "first_name": "Chelsea",
       "last_name": "Kennedy",
       "name": "Chelsea Kennedy",
@@ -1331,15 +999,11 @@
       "email": "chelsea.kennedy@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-83.jsonld",
+      "@id": "/examples/data/list/--user-83.jsonld",
       "first_name": "Townsend",
       "last_name": "Morin",
       "name": "Townsend Morin",
@@ -1347,15 +1011,11 @@
       "email": "townsend.morin@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-84.jsonld",
+      "@id": "/examples/data/list/--user-84.jsonld",
       "first_name": "Valenzuela",
       "last_name": "Herring",
       "name": "Valenzuela Herring",
@@ -1363,15 +1023,11 @@
       "email": "valenzuela.herring@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-85.jsonld",
+      "@id": "/examples/data/list/--user-85.jsonld",
       "first_name": "Iris",
       "last_name": "Durham",
       "name": "Iris Durham",
@@ -1379,15 +1035,11 @@
       "email": "iris.durham@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     },
     {
-      "@id": "--user-86.jsonld",
+      "@id": "/examples/data/list/--user-86.jsonld",
       "first_name": "Guerrero",
       "last_name": "Wooten",
       "name": "Guerrero Wooten",
@@ -1395,11 +1047,7 @@
       "email": "guerrero.wooten@example.com",
       "@type": "foaf:user",
       "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
+        "view"
       ]
     }
   ]

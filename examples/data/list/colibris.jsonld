@@ -1,0 +1,143 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
+  "@id": "/examples/data/list/colibris.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/list/universite.jsonld",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/bots.jsonld",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/miniparcours",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/users",
+      "@type": [
+        "ldp:BasicContainer",
+        "ldp:Container",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/lafabrique",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/laboutique",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/lemouvement",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/groupeslocaux",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/activities",
+      "@type": [
+        "ldp:BasicContainer",
+        "ldp:Container",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/lemag",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/status",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/themes",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/files",
+      "@type": [
+        "ldp:BasicContainer",
+        "ldp:Container",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/@types",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/services",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/skills",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    },
+    {
+      "@id": "/examples/data/list/presdecheznous",
+      "@type": [
+        "ldp:Container",
+        "ldp:BasicContainer",
+        "ldp:Resource"
+      ]
+    }
+  ]
+}

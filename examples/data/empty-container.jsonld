@@ -1,10 +1,13 @@
 {
-  "@id": "empty-container.jsonld",
+  "@id": "/examples/data/empty-container.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [],
   "permissions": [
-    { "mode": { "@type": "view" } },
-    { "mode": { "@type": "add" } }
+    "view",
+    "control",
+    "add",
+    "delete",
+    "change"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

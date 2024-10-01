@@ -23,8 +23,8 @@ const SorterMixin = {
       default: null,
       callback(newValue: string) {
         // if we change search form, re-populate
-        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
-          this.searchForm = null;
+        if (newValue && this.sortForm && newValue !== this.sortForm.getAttribute('id')) {
+          this.sortForm = null;
           this.populate();
         }
       }
@@ -45,7 +45,7 @@ const SorterMixin = {
     await this.populate();
   },
   linkSorterForm() {
-    this.searchForm.addEventListener('formChange', () => {
+    this.sortForm.addEventListener('formChange', () => {
       this.sorterList();
     });
   },
@@ -63,17 +63,17 @@ const SorterMixin = {
     else if (this.sortedBy) {
       const sortedBy = this.sortedBy;
       if (sortedBy != null) {
-        if (!this.searchForm) {
-          this.searchForm = document.getElementById(sortedBy);
-          if (!this.searchForm) throw `#${sortedBy} is not in DOM`; 
+        if (!this.sortForm) {
+          this.sortForm = document.getElementById(sortedBy);
+          if (!this.sortForm) throw `#${sortedBy} is not in DOM`; 
           this.linkSorterForm();
         }
-        if (!this.searchForm.component.value.field) {
+        if (!this.sortForm.component.value.field) {
           console.warn('The attribute field does not exist')
         } else { 
-          sortingKey = this.searchForm.component.value.field['value'];
+          sortingKey = this.sortForm.component.value.field['value'];
         }
-        const orderField = this.searchForm.component.value.order;
+        const orderField = this.sortForm.component.value.order;
         orderValueToSort = orderField && orderField.value ? orderField.value : 'asc';
       }
     }
@@ -101,15 +101,20 @@ const SorterMixin = {
   },
   sortValuesByKey(key: string, asc: boolean): Function {
     return function (a: object, b: object): number {
-      if (!a[key] || !b[key]) {
-        return 0; // property doesn't exist on either object
-      }
-      const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
-      const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
-      let comparison = 0;
-      if (varA > varB) comparison = asc ? 1 : -1;
-      else if (varA < varB) comparison = asc ? -1 : 1;
+      if (!a.hasOwnProperty(key)) return 1;
+      if (!b.hasOwnProperty(key)) return -1;
 
+      const varA = a[key];
+      const varB = b[key];
+
+      let comparison = 0;
+      if (typeof varA === 'string' && typeof varB === 'string') {
+        comparison = varA.localeCompare(varB, undefined, { sensitivity: 'base' });
+        comparison = asc ? comparison : -comparison;
+      } else {
+        if (varA > varB) comparison = asc ? 1 : -1;
+        else if (varA < varB) comparison = asc ? -1 : 1;
+      }
       return comparison;
     }
   },

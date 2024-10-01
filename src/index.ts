@@ -8,6 +8,10 @@ import { SolidAcChecker } from './components/solid-ac-checker';
 import { SolidDelete } from './components/solid-delete';
 import { SolidLang } from './components/solid-lang';
 import { SolidTable } from './components/solid-table';
+import { SolidMap } from './components/solid-map';
+import { SolidMembership } from './components/solid-membership';
+import { SolidMemberDelete } from './components/solid-member-delete';
+import { SolidMemberAdd } from './components/solid-member-add';
 
 // Mixins
 import { CounterMixin } from './mixins/counterMixin';
@@ -21,11 +25,21 @@ import { PaginateMixin } from './mixins/paginateMixin';
 import { RequiredMixin } from './mixins/requiredMixin';
 import { SorterMixin } from './mixins/sorterMixin';
 import { StoreMixin } from './mixins/storeMixin';
+import { TranslationMixin } from './mixins/translationMixin';
 import { ValidationMixin } from './mixins/validationMixin';
 import { WidgetMixin } from './mixins/widgetMixin';
 
+// New widgets system
+import { newWidgetFactory } from './new-widgets/new-widget-factory';
+import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
+import * as AttributeMixins from './new-widgets/attributeMixins';
+import * as CallbackMixins from './new-widgets/callbackMixins';
+import * as TemplateAdditionMixins from './new-widgets/templateAdditionMixins';
+import * as Templates from './new-widgets/templates';
+import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies';
+
 // Libs
-import { store } from './libs/store/store';
+import { store, base_context as baseContext } from './libs/store/store';
 import { Sib } from './libs/Sib';
 import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
@@ -47,6 +61,10 @@ export {
   SolidDelete,
   SolidLang,
   SolidTable,
+  SolidMap,
+  SolidMembership,
+  SolidMemberDelete,
+  SolidMemberAdd,
 
   // Mixins
   CounterMixin,
@@ -60,15 +78,26 @@ export {
   RequiredMixin,
   SorterMixin,
   StoreMixin,
+  TranslationMixin,
   ValidationMixin,
   WidgetMixin,
+
+  // New widgets system
+  AttributeMixins,
+  CallbackMixins,
+  TemplateAdditionMixins,
+  TemplatesDependenciesMixins,
+  Templates,
 
   // Libs
   store,
   Sib,
   SolidTemplateElement,
   widgetFactory,
+  newWidgetFactory,
+  BaseWidgetMixin,
   Helpers,
+  baseContext,
 
   // lit-html
   html,

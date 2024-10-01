@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test:binded attributes</title>
     <script type="module" src="../../dist/index.js"></script>
-    <script type="module" src="https://cdn.skypack.dev/@startinblox/router@0.10"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
     <link rel="stylesheet" href="../styles.css" />
 
     <sib-auth></sib-auth>
@@ -26,12 +26,28 @@
       <h1>Events</h1>
       <solid-display
         id="events"
-        data-src="../data/list/events.jsonld"
+        data-src="/examples/data/list/events.jsonld"
         fields="name, custom-id, child-date"
         value-custom-id="store://container.@id"
         value-child-date="store://resource.date"
         next="event-infos"
       ></solid-display>
+
+      <solid-delete
+        data-label="store://user.username"
+      ></solid-delete>
+
+      <solid-form-search
+        fields="firstName"
+        value-firstName="store://user.first_name"
+      ></solid-form-search>
+
+      <solid-table
+        id="table"
+        data-src="/examples/data/list/events.jsonld"
+        fields="temp"
+        value-temp="store://resource.@id"
+      ></solid-table>
     </div>
     <div data-view="event-infos" hidden>
       <solid-display
@@ -47,7 +63,10 @@
     <script type="module">
       export default class SibAuth extends HTMLElement {
         getUser() {
-          return {"@id": '../data/list/user-1.jsonld'}
+          return {"@id": '/examples/data/list/user-1.jsonld'}
+        }
+        getFetch() {
+          return fetch
         }
       }
       customElements.define('sib-auth', SibAuth);

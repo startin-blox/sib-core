@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>SIB test: solid-display</title>
+  <script type="module" src="../../dist/index.js"></script>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+    <solid-form 
+        id="form-image"
+        data-src="/examples/data/list/event-1.jsonld"
+        fields="someimage"
+        widget-someimage="solid-form-image"
+        value-someimage="https://cdn.startinblox.com/logos/spacelinkers.png"
+    ></solid-form>
+
+    <h2>Form with a data-src on "event-1.jsonld"</h2>
+    <solid-form
+        id="form-1"
+        data-src="/examples/data/list/event-1.jsonld"
+        fields="image,name,description"
+        widget-description="solid-form-richtext"
+        widget-image="solid-form-file-image">
+    </solid-form>
+
+    <h2>Form with a data-src on "event-empty.jsonld"</h2>
+    <solid-form
+        id="form-2"
+        data-src="/examples/data/list/event-empty.jsonld"
+        fields="image,name,description"
+        widget-description="solid-form-richtext"
+        widget-image="solid-form-file-image">
+    </solid-form>
+
+    <h2>Form with autosave attribute on</h2>
+    <solid-form
+        id="form-3"
+        data-src="/examples/data/list/event-1.jsonld"
+        fields="image,name,description"
+        widget-description="solid-form-richtext"
+        autosave
+        widget-image="solid-form-file-image">
+    </solid-form>
+
+    <h2>Form without submit button (naked) and with autosave</h2>
+    <solid-form
+        id="form-4"
+        data-src="/examples/data/list/event-1.jsonld"
+        fields="image,name,description"
+        widget-description="solid-form-richtext"
+        naked
+        autosave
+        widget-image="solid-form-file-image">
+    </solid-form>
+
+    <h2>Form with reset attribute on</h2>
+    <solid-form
+        id="form-5"
+        data-src="/examples/data/list/event-1.jsonld"
+        fields="image,name,description"
+        widget-description="solid-form-richtext"
+        reset
+        widget-image="solid-form-file-image">
+    </solid-form>
+
+</body>
+
+</html>

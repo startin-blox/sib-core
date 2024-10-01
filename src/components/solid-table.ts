@@ -71,13 +71,33 @@ export const SolidTable = {
     }
   },
   /**
+   * Unselect all lines
+   */
+  unselectAll(): void {
+    if (this.selectable === null) return;
+    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+      checkbox.checked = false;
+    }
+  },
+  /**
+   * Select specific lines
+   * @param lines - array of selected lines
+   */
+  selectLines(lines: string[]) {
+    if (this.selectable === null || lines.length === 0) return;
+    for (const line of lines) {
+      const checkbox = this.element.querySelector(`[data-resource="${line}"] input[data-selection]`);
+      if (checkbox) checkbox.checked = true;
+    }
+  },
+  /**
    * Create a widget for the field or a form if it's editable
    * @param field
    * @param resource
    */
   async createCellWidget(field: string, resource: Resource) {
     // if regular widget
-    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource);
+    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource, true);
 
     // if editable widget
     const attributes = {};
@@ -88,6 +108,7 @@ export const SolidTable = {
       'required',
       'autocomplete',
       'option-label',
+      'option-value',
       'min',
       'max',
       'pattern',
@@ -180,12 +201,20 @@ export const SolidTable = {
     div: HTMLElement,
     context: string,
   ) {
+    const selectedLines = [...this.selectedLines]; // save selected lines before moving them
     const fields = await this.getFields();
+    const childTemplates = await Promise.all(
+      resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)
+    );
     const template = html`
       ${this.header !== null ? this.getHeader(fields) : ''}
-      ${until(Promise.all(resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)))}
+      ${childTemplates}
     `; // create a child template for each resource
     render(template, div);
+
+    // Re-select the right lines
+    this.unselectAll();
+    this.selectLines(selectedLines);
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)

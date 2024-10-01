@@ -1,11 +1,12 @@
 {
-	"@id": "event-1.jsonld",
+	"@id": "/examples/data/list/event-1.jsonld",
 	"name": "Coliving",
 	"date": "2020-07-09",
 	"seats": 12,
+	"description": "some description",
 	"contact": {
-		"@id": "user-1.jsonld"
+		"@id": "/examples/data/list/user-1.jsonld"
 	},
 	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

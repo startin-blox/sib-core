@@ -17,7 +17,6 @@ import { FormLengthMixin } from '../templatesDependencies/formLengthMixin';
 
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
-import { until } from 'lit-html/directives/until';
 
 export const formTemplates = {
   text: {
@@ -27,7 +26,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         id=${ifDefined(attributes.id)}
-        value=${value || ''}
+        value=${value || ''}
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
         ?required=${attributes.required}
@@ -171,12 +170,12 @@ export const formTemplates = {
           ${attributes.placeholder || '-'}
         </option>
         ` : ''}
-        ${(attributes.range || []).filter(el => el !== null).map(el => html`
+        ${(attributes.range || []).map(el => html`
           <option
-            value='{"@id": "${el['@id']}"}'
-            ?selected=${!attributes.multiple ? value === el['@id'] : attributes.values.includes(el['@id'])}
+            value=${el.value}
+            ?selected=${!attributes.multiple ? value === el.selectedValue : attributes.values.includes(el.selectedValue)}
           >
-            ${until(el[attributes.optionLabel])}
+            ${el.label}
           </option>
         `)}
         ${Object.entries(attributes.enum || []).map(([key, val]) => html`
@@ -200,10 +199,10 @@ export const formTemplates = {
             <input
               type="radio"
               name=${ifDefined(attributes.id)}
-              value='{"@id": "${el['@id']}"}'
+              value=${el.value}
               ?required=${attributes.required}
-              ?checked=${value === el['@id']}
-            > <span>${until(el[attributes.optionLabel])}</span>
+              ?checked=${value === el.selectedValue}
+            > <span>${el.label}</span>
           </label>
         `)}
         ${Object.entries(attributes.enum || []).map(([key, val]) => html`
@@ -229,9 +228,9 @@ export const formTemplates = {
           <label>
             <input
               type="checkbox"
-              value='{"@id": "${el['@id']}"}'
-              ?checked=${attributes.values.includes(el['@id'])}
-            /> <span>${until(el[attributes.optionLabel])}</span>
+              value=${el.value}
+              ?checked=${attributes.values.includes(el.selectedValue)}
+            /> <span>${el.label}</span>
           </label>
         `)}
         ${Object.entries(attributes.enum || [])
@@ -254,23 +253,25 @@ export const formTemplates = {
         range=${ifDefined(attributes.range)}
         enum=${ifDefined(attributes.enum)}
         values=${ifDefined(attributes.values)}
+        option-label=${ifDefined(attributes.optionLabel)}
+        option-value=${ifDefined(attributes.optionValue)}
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
         label=${ifDefined(attributes.label)} 
       ></solid-form-multicheckbox>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin ]
+    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
   },
   multiple: {
     template: (_value: string, attributes: any) => html`
-      ${(attributes.children || []).map((child, index) => html`
+      ${(attributes.children || []).map((child, index) => html`
         <div data-index=${attributes.name + index}>
           ${child}
-          <button type="button" @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
+          <button type="button" class=${ifDefined(attributes.removeClass)} @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
         </div>
       `)}
-      <button type="button" @click=${attributes.addItem}>${attributes.addLabel}</button>
+      <button type="button" class=${ifDefined(attributes.addClass)} @click=${attributes.addItem}>${attributes.addLabel}</button>
     `,
     dependencies: [ MultipleFormMixin, FormMixin ]
   },
@@ -282,13 +283,15 @@ export const formTemplates = {
         data-id=${ifDefined(attributes.id)}
         range=${ifDefined(attributes.range)}
         values=${ifDefined(attributes.values)}
+        option-label=${ifDefined(attributes.optionLabel)}
+        option-value=${ifDefined(attributes.optionValue)}
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
         multiple
       ></solid-form-dropdown>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin ]
+    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
   },
   file: {
     template: (value: string, attributes: any) => html`
@@ -298,13 +301,17 @@ export const formTemplates = {
           type="text"
           ?required=${attributes.required}
           name=${ifDefined(attributes.name)}
-          value=${value || ''}
+          value=${value || ''}
         >
+        <a
+          href=${value || ''}
+          ?hidden=${value === ''}
+        >${ ((value !== '') ? decodeURI(value.split("/").pop() as string) : '' ) }</a>
+
         <input
           type="file"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
-          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <button
@@ -323,14 +330,14 @@ export const formTemplates = {
           data-holder
           type="text"
           name=${ifDefined(attributes.name)}
-          value=${value || ''}
+          value=${value || ''}
+          ?required=${attributes.required}
         >
         <input
           type="file"
           accept="image/*"
           id=${ifDefined(attributes.id)}
           value=${ifDefined(attributes.fileValue)}
-          ?required=${attributes.required}
           @change=${attributes.selectFile}
         />
         <img
@@ -414,7 +421,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         name=${ifDefined(attributes.name)}
         id=${ifDefined(attributes.id)}
-        value=${value || ''}
+        value=${value || ''}
         min=${ifDefined(attributes.min)}
         max=${ifDefined(attributes.max)}
         step=${ifDefined(attributes.step)}

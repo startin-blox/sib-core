@@ -1,0 +1,180 @@
+{
+  "@id": "/examples/data/list/users/blaisepascal.jsonld",
+  "first_name": "Blaise",
+  "groups": [
+    {
+      "@id": "/examples/data/list/users/groups/3/",
+      "name": "LDP_circle_members_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        },
+        {
+          "@id": "/examples/data/list/users/blaisepascal/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": null,
+      "admin_community": null,
+      "project": null,
+      "admin_project": null,
+      "circle": {
+        "@id": "/examples/data/list/users/circles/1/",
+        "@type": "hd:circle"
+      },
+      "admin_circle": null,
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    },
+    {
+      "@id": "/examples/data/list/users/groups/1/",
+      "name": "LDP_community_members_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        },
+        {
+          "@id": "/examples/data/list/users/blaisepascal/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": {
+        "@id": "/examples/data/list/users/communities/matthieu-empire/",
+        "@type": "sib:Community"
+      },
+      "admin_community": null,
+      "project": null,
+      "admin_project": null,
+      "circle": null,
+      "admin_circle": null,
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    }
+  ],
+  "last_name": "Pascal",
+  "username": "blaisepascal",
+  "email": "benoit+345@startinblox.com",
+  "account": {
+    "@id": "/examples/data/list/users/accounts/blaisepascal/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "blaisepascal",
+    "picture": null,
+    "issuer": null,
+    "user": {
+      "@id": "/examples/data/list/users/blaisepascal/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "chatProfile": {
+    "@id": "/examples/data/list/users/chatprofiles/blaisepascal/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "blaisepascal",
+    "jabberID": "blaisepascal4e438f4@test5.startinblox.com",
+    "user": {
+      "@id": "/examples/data/list/users/blaisepascal/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "name": "Blaise Pascal",
+  "uploadURL": {
+    "@id": "/examples/data/list/users/upload/"
+  },
+  "inbox": {
+    "@id": "/examples/data/list/users/blaisepascal/inbox"
+  },
+  "settings": {
+    "@id": "/examples/data/list/users/settings/3/",
+    "receiveMail": true,
+    "@type": "sib:usersettings"
+  },
+  "profile": {
+    "@id": "/examples/data/list/users/profiles/blaisepascal/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "blaisepascal",
+    "available": null,
+    "job": "",
+    "city": "",
+    "phone": "",
+    "website": "",
+    "user": {
+      "@id": "/examples/data/list/users/blaisepascal/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "jobOffers": {
+    "@id": "/examples/data/list/users/blaisepascal/jobOffers"
+  },
+  "projects": {
+    "@id": "/examples/data/list/users/blaisepascal/projects",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "contacts": {
+    "@id": "/examples/data/list/users/blaisepascal/contacts",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "skills": {
+    "@id": "/examples/data/list/users/blaisepascal/skills",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "communityContainer": {
+    "@id": "/examples/data/list/users/blaisepascal/communities/"
+  },
+  "projectContainer": {
+    "@id": "/examples/data/list/users/blaisepascal/projects/"
+  },
+  "circleContainer": {
+    "@id": "/examples/data/list/users/blaisepascal/circles/"
+  },
+  "owned_circles": {
+    "@id": "/examples/data/list/users/blaisepascal/owned_circles",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "@type": "foaf:user",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "get_full_name": "rdfs:label"
+    }
+  ],
+  "permissions": [
+    "change",
+    "control",
+    "view",
+    "delete",
+    "add"
+  ]
+}

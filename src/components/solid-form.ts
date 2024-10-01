@@ -4,7 +4,7 @@ import { StoreMixin } from '../mixins/storeMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 import { store } from '../libs/store/store';
-import { setDeepProperty } from '../libs/helpers';
+import { setDeepProperty, transformArrayToContainer } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
 import { html, render } from 'lit-html';
@@ -14,12 +14,24 @@ export const SolidForm = {
   name: 'solid-form',
   use: [WidgetMixin, StoreMixin, NextMixin, ValidationMixin],
   attributes: {
+    autosave: {
+      type: Boolean,
+      default: null
+    },
+    classSubmitButton: {
+      type: String,
+      default: undefined,
+    },
     defaultWidget: {
       type: String,
       default: 'solid-form-label-text'
     },
     naked: {
-      type: String,
+      type: Boolean,
+      default: null
+    },
+    partial: {
+      type: Boolean,
       default: null
     },
     submitButton: {
@@ -31,14 +43,6 @@ export const SolidForm = {
     },
     submitWidget: {
       type: String,
-      default: null
-    },
-    partial: {
-      type: Boolean,
-      default: null
-    },
-    autosave: {
-      type: Boolean,
       default: null
     },
   },
@@ -63,7 +67,7 @@ export const SolidForm = {
       setDeepProperty(values, name.split('.'), value);
     });
     // add @id if edition
-    if (this.resource && !this.resource.isContainer()) values['@id'] = this.resourceId;
+    if (this.resource && !this.resource.isContainer?.()) values['@id'] = this.resourceId;
     return values;
   },
   get isNaked(): boolean {
@@ -77,13 +81,30 @@ export const SolidForm = {
   },
   async getFormValue() {
     let value = this.value;
-    if (this.resource && !this.resource.isContainer()) {
-      for (let predicate of Object.keys(this.value)) { // add @id for nested resources
-        const object = await this.resource[predicate];
-        if (object && object['@id'] && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
+    if (this.resource && !this.resource.isContainer?.()) {
+      for (let predicate of Object.keys(this.value)) {
+        // add @id for nested resources
+        let object = await this.resource[predicate];
+        // edge-case where object is null because predicate needs to be expanded manually (arrays)
+        if (!object) {
+          object = await this.resource[store.getExpandedPredicate(predicate, this.context)];
+        }
+
+        // Nested containers
+        if (object
+          && object['@id']
+          && !value[predicate]['@id']) value[predicate]['@id'] = object['@id'];
+
+        //FIXME: Edge case of array support, ugly management
+        if (object && !object['@id']
+          && Array.isArray(object)
+          && value[predicate].length == 0
+          && object.length > 0) {
+          value[predicate] = object;
+        }
       }
     }
-    return value;
+    return transformArrayToContainer(value);
   },
   getWidget(field: string, isSet: boolean = false): WidgetInterface {
     let tagName = '';
@@ -95,7 +116,7 @@ export const SolidForm = {
     } else if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
       tagName = 'solid-form-dropdown'
     } else {
-      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
+      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
     return this.widgetFromTagName(tagName);
@@ -122,19 +143,19 @@ export const SolidForm = {
       } else {
         saved = await store.patch(resource, this.resourceId);
       }
-    } catch (e) {
+    } catch (e: any) {
       this.toggleLoaderHidden(true);
       if (e) { // if server error
         e.json().then(error => this.showError(error));
         throw e;
-      } // else, ldpframework error, we continue
+      }
     }
     this.element.dispatchEvent(
       new CustomEvent('save', {
         bubbles: true,
         detail: {
           resource: resource,
-          id: saved || null
+          id: saved || null
         },
       }),
     );
@@ -158,54 +179,80 @@ export const SolidForm = {
     if (!this.isCreationForm(formValue) && this.isSavingAutomatically)
       this.submitForm(); // if autosave, submitForm
   },
-  findErrorMessage(errors: [string, any][], errorFullName: string = '') {
-    let errorsArray: string[] = [];
+  displayErrorMessage(errors: [string, any][], errorFullName: string = '') {
     errors.forEach((member: [string, any]) => {
       let errorNextName: string = Object.values(member)[0];
-      let errorAddName = (errorFullName === "" ? errorNextName : errorFullName.concat(' - ', errorNextName));
-      if (Array.isArray(Object.values(member)[1]) === true) {
-        let errorMessage: string[] = Object.values(member)[1];
-        let errorGlobal = errorAddName.concat(': ', errorMessage.join(', '));
-        errorsArray.push(errorGlobal);
-      } else {
+      let subErrorName = (errorFullName === "" ? errorNextName : errorFullName.concat('.' + errorNextName));
+      let errorFieldName = ""
+
+      if (errorFullName) errorFieldName = errorFullName.concat('.' + errorNextName);
+      else errorFieldName = errorNextName;
+
+      if (errorFieldName) {
+        let formField = this.element.querySelector(`[name="${errorFieldName}"]`);
+        if (formField) {
+          formField.classList.add('error');
+          let errorParagraph = document.createElement('p');
+          if (Array.isArray(Object.values(member)[1]) === true) {
+            Object.values(member)[1].forEach((error) => {
+              let errorText = document.createElement('p');
+              errorText.textContent = error;
+              errorParagraph.appendChild(errorText);
+            });
+          } else if (typeof Object.values(member)[1] === 'object') {
+            // @ts-ignore
+            for (const [key, value] of Object.entries(Object.values(member)[1])) {
+              if (Array.isArray(value)) {
+                value.forEach((error) => {
+                  let errorText = document.createElement('p');
+                  errorText.textContent = error;
+                  errorParagraph.appendChild(errorText);
+                });
+              } else if (typeof value === 'string') {
+                let errorText = document.createElement('p');
+                errorText.textContent = value;
+                errorParagraph.appendChild(errorText);
+              }
+            }
+          } else {
+            errorParagraph.textContent = Object.values(member)[1];
+          }
+          errorParagraph.classList.add('error-message');
+          formField.appendChild(errorParagraph);
+        }
+      }
+
+      if (!Array.isArray(Object.values(member)[1]) === true) {
         let objectErrors = Object.values(member)[1];
         let subErrors = Object.entries(objectErrors);
-        errorsArray = [...errorsArray, ...this.findErrorMessage(subErrors, errorAddName)];
+        this.displayErrorMessage(subErrors, subErrorName)
       }
     });
-    return errorsArray;
   },
   empty(): void {},
   showError(e: object) {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
-
+    this.displayErrorMessage(errors);
     const errorTemplate = html`
-      <p>A validation error occured.</p>
-      <ul>
-        ${this.findErrorMessage(errors).map(field => html`
-         <li>${field}</li>
-        `)}
-      </ul>
+      <p>${this.t('solid-form.validation-error')}</p>
     `;
-    // If field exists pick its label (unsure if that's easily possible)
-    // In this.getFields() map with each field and get label
-    // If it does not just add a notice as we do that it's missing that field
 
     // Validation message in english ?
     const parentElement = this.element.querySelector('[data-id=error]');
     if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
-    const error = this.element.querySelector('[data-id=form-error]');
-    if (error) this.element.removeChild(error);
+    let formErrors = this.element.querySelectorAll('.error-message');
+    if (formErrors) formErrors.forEach((error) => error.remove());
+
+    let errorFields = this.element.querySelectorAll('.error');
+    if (errorFields) errorFields.forEach((errorField) => errorField.classList.remove('error'));
+
+    const parentElement = this.element.querySelector('[data-id=error]');
+    if (parentElement) render('', parentElement);
   },
   reset() {
     if (!this.isNaked) this.element.querySelector('form').reset();
-    this.element.querySelectorAll('select[multiple]').forEach((select: HTMLSelectElement) => { // reset multiple select
-      const options = select.querySelectorAll('option:checked') as NodeListOf<HTMLOptionElement>;
-      options.forEach(option => option.selected = false);
-      select.dispatchEvent(new Event('change'));
-    })
   },
   onSubmit(event: Event) {
     if (!this.isNaked) {
@@ -220,9 +267,15 @@ export const SolidForm = {
     if (!this.isNaked) setTimeout(() => this.onInput())
   },
   getSubmitTemplate() {
-    return (this.submitWidget === 'button') ?
-      html`<button type="submit">${this.submitButton || ''}</button>` :
-      html`<input type="submit" value=${ifDefined(this.submitButton)}>`;
+    return html`
+      <div class=${ifDefined(this.classSubmitButton)}>
+        ${this.submitWidget === 'button' ? html`
+          <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
+        ` : html`
+          <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
+        `}
+      </div>
+    `
   },
   async populate(): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times

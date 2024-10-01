@@ -72,6 +72,7 @@ const PaginateMixin = {
   shouldLoop(): boolean {
     return this.paginateLoop !== null;
   },
+
   /**
    * Create pagination template
    * @param pageCount

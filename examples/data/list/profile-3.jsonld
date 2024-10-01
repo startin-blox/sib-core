@@ -1,8 +1,9 @@
 {
-  "@id": "profile-3.jsonld",
+  "@id": "/examples/data/list/profile-3.jsonld",
   "jabberID": "not-member-paris@example.com",
+  "name": "profile 3",
   "user": {
-    "@id": "user-3.jsonld"
+    "@id": "/examples/data/list/user-3.jsonld"
   },
   "available": null,
   "bio": "",
@@ -10,11 +11,7 @@
   "phone": "",
   "website": "",
   "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
+    "view"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

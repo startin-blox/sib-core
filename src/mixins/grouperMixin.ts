@@ -1,3 +1,5 @@
+import { generalComparator } from "../libs/helpers";
+
 const GrouperMixin = {
   name: 'grouper-mixin',
   use: [],
@@ -13,7 +15,15 @@ const GrouperMixin = {
     groupClass: {
       type: String,
       default: ''
-    }
+    },
+    orderGroupAsc: {
+      type: Boolean,
+      default: null
+    },
+    orderGroupDesc: {
+      type: Boolean,
+      default: null
+    },
   },
   attached() {
     this.listPostProcessors.push(this.groupResources.bind(this));
@@ -29,8 +39,16 @@ const GrouperMixin = {
         groups[valueGroup].resources.push(resource) // ...and push corresponding resource into it
       }
 
+      let sortedKeys = Object.keys(groups);
+      if (this.orderGroupAsc !== null || this.orderGroupDesc !== null) {
+        const order = this.orderGroupDesc !== null ? 'desc' : 'asc'
+        sortedKeys = Object.keys(groups).sort((a, b) => {
+            return generalComparator(a, b, order);
+        });
+      }
+
       // For each group, get group widget and call next processors
-      const parents = Object.keys(groups).map(g => ({ group: g, parent: this.renderGroup(g, div) }));
+      const parents = sortedKeys.map(g => ({ group: g, parent: this.renderGroup(g, div) }));
       for (let { group, parent } of parents) {
         if (nextProcessor) await nextProcessor(
           groups[group].resources, // give only resources from group

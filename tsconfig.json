@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2018",
     "module": "ESNext",
     "moduleResolution": "node",
     "allowJs": true,
@@ -12,16 +12,12 @@
     "composite": false,
     "strict": true,
     "noImplicitAny": false,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
     "noImplicitThis": false,
-    "alwaysStrict": true,
-    "importsNotUsedAsValues": "error",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
       "*": ["web_modules/.types/*"]
@@ -30,5 +26,5 @@
     "types": ["cypress"]
   },
   "include": ["./src/**/*", "./cypress/**/*"],
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules/", "./cypress.config.ts"]
 }

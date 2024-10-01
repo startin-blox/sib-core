@@ -1,7 +1,7 @@
 {
-	"@id": "event-2.jsonld",
+	"@id": "/examples/data/calendar/event-2.jsonld",
 	"name": "Test demain",
 	"deadline": "2019-09-10T19:55:56Z",
 	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

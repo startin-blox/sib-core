@@ -4,14 +4,17 @@ import { StoreMixin } from '../mixins/storeMixin';
 import { WidgetMixin } from '../mixins/widgetMixin';
 import { CounterMixin } from '../mixins/counterMixin';
 import { FilterMixin } from '../mixins/filterMixin';
+import { FederationMixin } from '../mixins/federationMixin';
 import { GrouperMixin } from '../mixins/grouperMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { store } from '../libs/store/store';
-import { uniqID } from '../libs/helpers';
+import { importInlineCSS, uniqID } from '../libs/helpers';
 import { spread } from '../libs/lit-helpers';
 
-import L, { MarkerOptions } from 'leaflet';
-import 'leaflet.markercluster';
+//@ts-ignore
+import L, { MarkerOptions } from 'https://cdn.skypack.dev/leaflet'; // TODO : revert to "leaflet" when apps up to date
+import 'https://cdn.skypack.dev/leaflet.markercluster'; // TODO : revert to "leaflet.markercluster" when apps up to date
+
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
@@ -24,6 +27,7 @@ export const SolidMap = {
     GrouperMixin,
     CounterMixin,
     FilterMixin,
+    FederationMixin,
     NextMixin,
   ],
   attributes: {
@@ -37,23 +41,24 @@ export const SolidMap = {
       default: null
     },
     subscriptions: null,
-    resetPlanned: false
+    resetPlanned: false,
+    hasBeenResetOnce: false
   },
   created(): void {
-    //@ts-ignore
-    import('leaflet/dist/leaflet.css');
-    //@ts-ignore
-    import('../style/default-theme.css');
-    //@ts-ignore
-    import('leaflet.markercluster/dist/MarkerCluster.css');
-    //@ts-ignore
-    import('leaflet.markercluster/dist/MarkerCluster.Default.css');
+    importInlineCSS('leaflet', () => import('leaflet/dist/leaflet.css?inline'))
+    importInlineCSS('default-theme', () => import('../style/default-theme.css?inline'))
+    importInlineCSS('marker-cluster', () => import('leaflet.markercluster/dist/MarkerCluster.css?inline'))
+    importInlineCSS('marker-cluster-default', () => import('leaflet.markercluster/dist/MarkerCluster.Default.css?inline'))
 
+    // reset when it becomes visible to prevent bug https://git.startinblox.com/framework/sib-core/issues/661
     document.body.addEventListener('navigate', () =>
-      setTimeout(() => this.element.offsetParent && this.reset())
+      setTimeout(() => this.isVisible && !this.hasBeenResetOnce && this.reset())
     );
     this.markers = [];
     this.subscriptions = new Map();
+  },
+  get isVisible() {
+    return this.element.offsetParent !== null
   },
   attached(): void {
     const id = uniqID();
@@ -64,21 +69,26 @@ export const SolidMap = {
 
     const div = this.element.querySelector(`#${id}`);
     this.map = L.map(div);
+
     L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
     ).addTo(this.map);
+
     if (this.clustering !== null) {
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
     }
   },
   reset() {
-    this.map.invalidateSize();
+    if (this.isVisible) { // reset only if visible
+      this.map.invalidateSize();
 
-    if (this.markers.length) {
-      this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
-    } else {
-      this.map.fitWorld(); // ... or on the world if not
+      if (this.markers.length) {
+        this.map.fitBounds(L.featureGroup(this.markers).getBounds()); // Center map on markers if some available
+      } else {
+        this.map.fitWorld(); // ... or on the world if not
+      }
+      this.hasBeenResetOnce = true;
     }
   },
   /**

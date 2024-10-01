@@ -1,0 +1,22 @@
+{
+  "@id": "https://ldp-server.test/users/jbpasquier/",
+  "first_name": "JB",
+  "last_name": "Pasquier",
+  "username": "jbpasquier",
+  "email": "jbpasquier@startinblox.com",
+  "name": "JB Pasquier",
+  "profile": {
+    "@id": "https://ldp-server.test/profiles/jbpasquier/"
+  },
+  "@type": "foaf:user",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "get_full_name": "rdfs:label"
+    }
+  ],
+  "permissions": [
+    "view",
+    "change"
+  ]
+}

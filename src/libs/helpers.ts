@@ -39,6 +39,40 @@ function importCSS(...stylesheets: string[]) {
   };
   return linksElements;
 }
+/**
+ * @param id an uniq id to avoid import a style twice
+ * @param importer a callback returning this `import()` promise
+ * @returns the style element
+ * 
+ * typical use:
+ * ```js
+ * importInlineCSS('bootstrap', () => import('./css/bootstrap.css?inline')) 
+ * // adding '?inline' lets Vite convert css to js
+ * ```
+ */
+
+function importInlineCSS(
+  id: string,
+  importer: string | (() => string | Promise<string | { default: string }>)
+) {
+  id = `sib-inline-css-${id}`;
+  let style = document.head.querySelector<HTMLStyleElement>(`style#${id}`);
+  if (style) return style;
+  style = document.createElement("style");
+  style.id = id;
+  document.head.appendChild(style);
+  (async () => {
+    let textContent: string;
+    if (typeof importer === "string") textContent = importer;
+    else {
+      const imported = await importer();
+      if (typeof imported === "string") textContent = imported;
+      else textContent = imported.default || "";
+    }
+    style.textContent = textContent;
+  })();
+  return style;
+}
 
 function importJS(...plugins: string[]): HTMLScriptElement[] {
   return plugins.map(url => {
@@ -148,7 +182,7 @@ function fuzzyCompare(subject: string, search: string) {
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
     if(query === '') return true;
-    if(subject.toLowerCase().includes(query.toLowerCase())) return true;
+    if(subject.toString().toLowerCase().includes(String(query).toLowerCase())) return true;
     return fuzzyCompare(subject, query);
   },
   boolean(subject: boolean, query: boolean) {
@@ -171,9 +205,143 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
     // dropdown default ' - ' option return an empty string
     if(query === '') return true;
     if (!query['@id']) return false;
-    const ret = subject['@id'] === query['@id'];
+    const ret = (subject['@id'] === query['@id']);
     return ret;
   }
+};
+
+function generalComparator(a, b, order = 'asc') {
+  let comparison = 0;
+
+  if (typeof a === 'boolean' && typeof b === 'boolean') {
+      comparison = (a === b) ? 0 : a ? 1 : -1;
+  } else if (!isNaN(a) && !isNaN(b)) {
+      comparison = Number(a) - Number(b);
+  } else if (Array.isArray(a) && Array.isArray(b)) {
+    comparison = a.length - b.length;
+  }  else if (!isNaN(Date.parse(a)) && !isNaN(Date.parse(b))) {
+      const dateA = new Date(a);
+      const dateB = new Date(a);
+      comparison =  dateA.getTime() - dateB.getTime();
+  } else if (typeof a === 'object' && typeof b === 'object') {
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+      comparison = aKeys.length - bKeys.length;
+  } else if (a == null || b == null) {
+      comparison = a == null ? (b == null ? 0 : -1) : (b == null ? 1 : 0);
+  } else {
+      comparison = a.toString().localeCompare(b.toString());
+  }
+
+  if (order === 'desc') {
+      comparison = comparison * -1;
+  }
+  return comparison;
+};
+
+
+function transformArrayToContainer(resource: object) {
+  const newValue = { ...resource };
+  for (let predicate of Object.keys(newValue)) { // iterate over all properties
+    const predicateValue = newValue[predicate];
+    if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
+    if (['permissions', '@context'].includes(predicate)) continue; // do not transform permissions and context
+
+    // if nested resource, transform its own nested resources to container recursively
+    if (!Array.isArray(predicateValue) && predicateValue['@id']) {
+      newValue[predicate] = transformArrayToContainer(resource[predicate]);
+    }
+
+    if (Array.isArray(predicateValue) && predicateValue['@id']) { // Do not systematically transform arrays to containers
+      newValue[predicate] = {
+        '@id': predicateValue['@id'],
+        'ldp:contains': [...predicateValue]
+      };
+      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // but check all nested resources
+        newValue[predicate]['ldp:contains'][index] = transformArrayToContainer(childPredicate);
+      });
+    }
+  }
+  return newValue;
+}
+
+export default class AsyncIterableBuilder<Type> {
+  readonly #values: Promise<{ value: Type; done: boolean }>[] = []
+  #resolve!: (value: { value: Type; done: boolean }) => void
+  readonly iterable: AsyncIterable<Type>
+  readonly next: (value: Type, done?: boolean) => void
+
+  constructor() {
+    this.#nextPromise()
+    this.iterable = this.#createIterable()
+    this.next = this.#next.bind(this)
+  }
+
+  async *#createIterable() {
+    for (let index = 0; ; index++) {
+      const { value, done } = await this.#values[index]
+      delete this.#values[index]
+      yield value
+      if (done) return
+    }
+  }
+
+  #next(value: Type, done: boolean = false) {
+    this.#resolve({ value, done })
+    this.#nextPromise()
+  }
+
+  #nextPromise() {
+    this.#values.push(new Promise(resolve => (this.#resolve = resolve)))
+  }
+}
+
+import {
+  AsyncQuerySelectorAllType,
+  AsyncQuerySelectorType,
+} from './async-query-selector-types';
+
+const asyncQuerySelector: AsyncQuerySelectorType = (
+  selector: string,
+  parent: ParentNode = document
+) =>
+  new Promise<Element>(resolve => {
+    const element = parent.querySelector(selector);
+    if (element) return resolve(element);
+    const observer = new MutationObserver(() => {
+      const element = parent.querySelector(selector);
+      if (!element) return;
+      observer.disconnect();
+      return resolve(element);
+    });
+    observer.observe(parent, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+    });
+  });
+
+const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
+  selector: string,
+  parent: ParentNode = document
+) => {
+  const delivered = new WeakSet<Element>();
+  const { next, iterable } = new AsyncIterableBuilder<Element>();
+  function checkNewElement() {
+    for (const element of parent.querySelectorAll(selector)) {
+      if (delivered.has(element)) continue;
+      delivered.add(element);
+      next(element);
+    }
+  }
+  checkNewElement();
+  const observer = new MutationObserver(checkNewElement);
+  observer.observe(parent, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+  });
+  return iterable;
 };
 
 export {
@@ -181,6 +349,7 @@ export {
   stringToDom,
   evalTemplateString,
   importCSS,
+  importInlineCSS,
   importJS,
   loadScript,
   domIsReady,
@@ -190,4 +359,9 @@ export {
   defineComponent,
   fuzzyCompare,
   compare,
+  generalComparator,
+  transformArrayToContainer,
+  AsyncIterableBuilder,
+  asyncQuerySelector,
+  asyncQuerySelectorAll,
 };

@@ -11,7 +11,10 @@ export interface WidgetInterface {
 
 export interface Resource {
   '@id': string
+  clientContext: object
   isContainer: Function
+  isArray: Function
   isFullResource: Function
-  properties: string[]
+  properties: string[],
+  serverPagination: object
 }

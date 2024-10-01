@@ -1,4 +1,6 @@
-import { render } from 'lit-html';
+import { html, render } from 'lit-html';
+import { preHTML } from '../libs/lit-helpers';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 const ListMixin = {
   name: 'list-mixin',
@@ -42,32 +44,50 @@ const ListMixin = {
     if (!this.resource) return;
 
     // Not a container but a single resource
-    if (!this.resource.isContainer()) {
+    if (!this.resource.isContainer?.() && !this.arrayField && !this.predicateName) {
       this.setElementAttribute("resource");
       this.appendSingleElt(div);
       return;
     }
 
-    this.setElementAttribute("container");
-    const listPostProcessors = [...this.listPostProcessors];
-    this.renderCallbacks = [];
-    listPostProcessors.push(this.renderDOM.bind(this));
-    listPostProcessors.push(this.handleEmptyWidget.bind(this));
+    if (this.resource.isContainer?.()) {
+      this.setElementAttribute("container");
+      const listPostProcessors = [...this.listPostProcessors];
+      this.renderCallbacks = [];
+      listPostProcessors.push(this.renderDOM.bind(this));
+      listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
-    // Execute the first post-processor of the list
-    const nextProcessor = listPostProcessors.shift();
-    await nextProcessor(
-      this.resource['ldp:contains'],
-      listPostProcessors,
-      div,
-      this.dataSrc,
-    );
+      // Execute the first post-processor of the list
+      const nextProcessor = listPostProcessors.shift();
+      await nextProcessor(
+        this.resource['ldp:contains'],
+        listPostProcessors,
+        div,
+        this.dataSrc,
+      );
+    } else if (this.arrayField && this.predicateName && this.resource[this.predicateName]) {
+      this.setElementAttribute("container");
+      const listPostProcessors = [...this.listPostProcessors];
+      this.renderCallbacks = [];
+      listPostProcessors.push(this.renderDOM.bind(this));
+      listPostProcessors.push(this.handleEmptyWidget.bind(this));
 
+      // Execute the first post-processor of the list
+      const nextProcessor = listPostProcessors.shift();
+      await nextProcessor(
+        await this.resource[this.predicateName],
+        listPostProcessors,
+        div,
+        this.dataSrc,
+      );
+
+    }
     // Execute the render callbacks
     for (const renderCallback of this.renderCallbacks) {
       // Render the template in the given parent element
       render(renderCallback.template, renderCallback.parent);
     }
+
   },
 
   /**
@@ -112,10 +132,16 @@ const ListMixin = {
     div: HTMLElement,
     context: string,
   ) {
-    if (resources.length === 0 && this.emptyWidget) {
-      const emptyWidgetElement = document.createElement(this.emptyWidget);
-      emptyWidgetElement.setAttribute('value', this.emptyValue);
-      div.appendChild(emptyWidgetElement);
+    if (this.emptyWidget) {
+      const emptyWidgetTemplate = preHTML`
+        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>
+      `
+      if (!this.emptyWrapper) {
+        this.emptyWrapper = document.createElement('span')
+        this.element.appendChild(this.emptyWrapper)
+      }
+      
+      render(resources.length > 0 ? html`` : emptyWidgetTemplate, this.emptyWrapper);
     }
 
     const nextProcessor = listPostProcessors.shift();

@@ -27,6 +27,23 @@ const MultipleFormMixin = {
     range: {
       type: String,
       default: '',
+      
+    },
+    addClass: {
+      type: String,
+      default: undefined,
+      callback: function(value) {
+        if (value !== this.listAttributes['addClass']) this.listAttributes['addClass'] = value;
+        this.planRender();
+      }
+    },
+    removeClass: {
+      type: String,
+      default: undefined,
+      callback: function(value) {
+        if (value !== this.listAttributes['removeClass']) this.listAttributes['removeClass'] = value;
+        this.planRender();
+      }
     }
   },
   created() {
@@ -35,6 +52,8 @@ const MultipleFormMixin = {
     this.listAttributes['children'] = [];
     this.listAttributes['addLabel'] = this.addLabel;
     this.listAttributes['removeLabel'] = this.removeLabel;
+    this.listAttributes['addClass'] = this.addClass;
+    this.listAttributes['removeClass'] = this.removeClass;
     this.listAttributes['addItem'] = () => {
       this.insertWidget();
       this.planRender();
@@ -45,7 +64,17 @@ const MultipleFormMixin = {
     };
   },
   setDataSrc(value: string, listValueTransformations: Function[]) {
-    if (value && value !== this.dataSrc) this.dataSrc = value;
+    if (value && value !== this.dataSrc) {
+      try {
+        if (Array.isArray(JSON.parse(value))) {
+          this.setValue(JSON.parse(value));
+        }
+      } catch (ex) {
+        //FIXME: Awful trick to handle both resource @ids as value and serialized arrays values
+        this.dataSrc = value;
+      }
+    }
+
     const nextProcessor = listValueTransformations.shift();
     if(nextProcessor) nextProcessor(value, listValueTransformations);
   },
@@ -81,7 +110,12 @@ const MultipleFormMixin = {
   },
   getValue() {
     if (!this.dataHolder) return [];
-    return Array.from(this.dataHolder).map((element: any) => this.getValueFromElement(element));
+    // Was returning an array of functions, now returns an array of values.
+    // Not sure about the tests results in that context
+    return Array.from(this.dataHolder).map((element: any) => {
+      let elValue = this.getValueFromElement(element);
+      return elValue;
+    });
   },
   get type() {
     return 'resource';

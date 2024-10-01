@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: solid-map</title>
     <script type="module" src="../../dist/index.js"></script>
-    <script type="module" src="../../dist/components/solid-map.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", event => {
           document.querySelector("solid-map").addEventListener("resourceSelect", event => console.log(event.detail.resource));
@@ -21,27 +20,27 @@
 
     <solid-map
       id="map-1"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
+    <br>
     <solid-map
       id="map-2"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       fields="infos(name, category)"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
+    <br>
     <solid-map
       id="map-3"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       group-by="category"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
+    <br>
     <solid-map
       id="map-4"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       fields="infos(name, category)"
       group-by="category"
       class-name="test-class-name"
@@ -49,28 +48,35 @@
       editable-name
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
+    <br>
     <solid-form-search
       id="filter"
       fields="category"
     ></solid-form-search>
-
+    <br>
     <solid-map
       id="map-5"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       fields="name, category"
       filtered-by="filter"
       counter-template="<span id='counter'>${counter} results<span>"
       style="display: block; width: 800px; height: 600px;"
     ></solid-map>
-
+<br>
     <solid-map
       id="map-6"
-      data-src="../data/map/events.jsonld"
+      data-src="/examples/data/map/events.jsonld"
       fields="name, category"
       style="display: block; width: 800px; height: 600px;"
       clustering
     ></solid-map>
+    <br>
+    <solid-map
+      id="map-federated"
+      data-src="/examples/data/map/source.jsonld"
+      style="display: block; width: 800px; height: 600px;"
+    ></solid-map>
+
     <style>
       .group-meetup {
         border-color: coral;

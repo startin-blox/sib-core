@@ -9,12 +9,13 @@
   </head>
   <body>
     <script type="module">
-      import { newWidgetFactory } from '../../dist/new-widgets/new-widget-factory.js';
+      import { newWidgetFactory } from '../../dist/index.js';
 
       newWidgetFactory('solid-form-text');
       newWidgetFactory('solid-form-multiple');
       newWidgetFactory('solid-form-multipleselect');
       newWidgetFactory('solid-form-multipleselect-autocompletion');
+      newWidgetFactory('solid-form-multipleselect-autocompletion-placeholder');
       newWidgetFactory('solid-form-checkboxes');
     </script>
     <solid-form-multiple
@@ -24,33 +25,49 @@
     <solid-form-multiple
       id="test2"
       name="test"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
       widget="solid-form-dropdown"
     ></solid-form-multiple>
     <solid-form-multiple
       id="test3"
       name="test"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
       widget="solid-form-dropdown"
-      value="../data/list/user-1-skills.jsonld"
+      value="/examples/data/list/user-1-skills.jsonld"
       add-label="add"
       remove-label="remove"
+      add-class="class-addbutton"
+      remove-class="class-removebutton"
     ></solid-form-multiple>
     <solid-form-multipleselect
       name="test"
-      range="../data/list/skills.jsonld"
-      value="../data/list/user-1-skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
+      value="/examples/data/list/user-1-skills.jsonld"
     ></solid-form-multipleselect>
     <solid-form-multipleselect-autocompletion
       name="test1"
-      range="../data/list/skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
       order-asc="name"
     ></solid-form-multipleselect-autocompletion>
+    <solid-form-multipleselect-autocompletion-placeholder
+      id="search-attr"
+      name="test1"
+      range="/examples/data/list/skills.jsonld"
+      order-asc="name"
+      placeholder="Sélectionne une compétence"
+      search-placeholder="Rechercher par clavier"
+      search-text="Pas de concordance"
+    ></solid-form-multipleselect-autocompletion-placeholder>
     <solid-form-checkboxes
       id="test1"
       name="test1"
-      range="../data/list/skills.jsonld"
-      value="../data/list/user-1-skills.jsonld"
+      range="/examples/data/list/skills.jsonld"
+      value="/examples/data/list/user-1-skills.jsonld"
+    ></solid-form-checkboxes>
+    <solid-form-checkboxes
+      id="test2"
+      name="test2"
+      enum="html, css, javascript"
     ></solid-form-checkboxes>
   </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: server-search</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body>
+    <summary>Server Search only test</summary>
+    <solid-form-search
+      id="search-form-1"
+      fields="first_name"
+      autocomplete-first_name="off"
+      label-first_name="First Name"
+      submit-button="Search"
+      ></solid-form-search>
+      <solid-display
+      id="result1"
+      data-src="/mock/users.jsonld"
+      fields="@id, username, first_name, last_name, email"
+      filtered-by="search-form-1"
+      filtered-on="server"
+      ></solid-display>
+
+    <summary>Server Search with Server Pagination</summary>
+    <solid-form-search
+      id="search-form-2"
+      fields="first_name"
+      autocomplete-first_name="off"
+      label-first_name="First Name"
+      submit-button="Search"
+      ></solid-form-search>
+      <solid-display
+      id="result2"
+      data-src="/mock/users.jsonld"
+      fields="@id, username, first_name, last_name, email"
+      filtered-by="search-form-2"
+      filtered-on="server"
+      limit="5"
+      ></solid-display>
+    </body>
+</html>

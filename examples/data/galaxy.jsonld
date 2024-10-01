@@ -1,0 +1,189 @@
+{
+  "@graph": [
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy",
+      "@type": "http://www.w3.org/2002/07/owl#Class",
+      "http://www.w3.org/2002/07/owl#equivalentClass": {
+        "@id": "http://www.wikidata.org/entity/Q318"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": [
+        {
+          "@value": "gal\u00e1xia",
+          "@language": "pt"
+        },
+        {
+          "@value": "\u03b3\u03b1\u03bb\u03b1\u03be\u03af\u03b1\u03c2",
+          "@language": "el"
+        },
+        {
+          "@value": "r\u00e9altra",
+          "@language": "ga"
+        },
+        {
+          "@value": "\uc740\ud558",
+          "@language": "ko"
+        },
+        {
+          "@value": "melkwegstelsel",
+          "@language": "nl"
+        },
+        {
+          "@value": "galaxy",
+          "@language": "en"
+        },
+        {
+          "@value": "\u9280\u6cb3",
+          "@language": "ja"
+        },
+        {
+          "@value": "galaxie",
+          "@language": "fr"
+        },
+        {
+          "@value": "Galaxie",
+          "@language": "de"
+        },
+        {
+          "@value": "galaksi",
+          "@language": "tr"
+        }
+      ],
+      "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": {
+        "@id": "http://dbpedia.org/ontology/"
+      },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
+        "@id": "http://dbpedia.org/ontology/CelestialBody"
+      },
+      "http://www.w3.org/2007/05/powder-s#describedby": {
+        "@id": "http://dbpedia.org/ontology/data/definitions.ttl"
+      },
+      "http://www.w3.org/ns/prov#wasDerivedFrom": {
+        "@id": "http://mappings.dbpedia.org/index.php/OntologyClass:Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/apoapsis",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/averageSpeed",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/density",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/mass",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/maximumTemperature",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/meanRadius",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/meanTemperature",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/minimumTemperature",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/orbitalPeriod",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/periapsis",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/surfaceArea",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/temperature",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/Galaxy/volume",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/cluster",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/definition",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/explorer",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/notableFeatures",
+      "http://www.w3.org/2000/01/rdf-schema#domain": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/",
+      "http://open.vocab.org/terms/defines": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/ontology/data/definitions.ttl",
+      "http://open.vocab.org/terms/describes": {
+        "@id": "http://dbpedia.org/ontology/Galaxy"
+      }
+    }
+  ],
+  "permissions": [
+    "view",
+    "control",
+    "add",
+    "delete",
+    "change"
+  ]
+}

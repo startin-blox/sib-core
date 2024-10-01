@@ -1,9 +1,9 @@
 {
-  "@id": "event-1.jsonld",
+  "@id": "/examples/data/map/event-1.jsonld",
   "name": "Test",
   "category": "showcase event",
   "lat": "21.028511",
   "lng": "105.804817",
   "permissions": [],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

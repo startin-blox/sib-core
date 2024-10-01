@@ -1,19 +1,20 @@
 {
-  "@id": "project.jsonld",
-  "name": "Envoyer une fusée",
-  "description": "c'est très clair enfin",
+  "@id": "/examples/data/project.jsonld",
+  "name": "Envoyer une fus\u00e9e",
+  "description": "c'est tr\u00e8s clair enfin",
   "number": 1,
   "creationDate": "2019-03-25",
   "businessProvider": null,
   "businessProviderFee": 0,
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
-  "texte": "ceci est un texte avec du **markdown** à l'intérieur.",
+  "texte": "ceci est un texte avec du **markdown** \u00e0 l'int\u00e9rieur and a [link](https://startinblox.com).",
   "@type": "doap:project",
   "permissions": [
-    { "mode": { "@type": "change" } },
-    { "mode": { "@type": "control" } },
-    { "mode": { "@type": "delete" } }
+    "control",
+    "add",
+    "delete",
+    "change"
   ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,18 +1,18 @@
 {
-	"@id": "customer-invoice-1.jsonld",
+	"@id": "/examples/data/nested-forms/customer-invoice-1.jsonld",
 	"@type": "hd:customerinvoice",
 	"customer": {
-		"@id": "customer-1.jsonld"
+		"@id": "/examples/data/nested-forms/customer-1.jsonld"
 	},
 	"project": {
-		"@id": "project-1.jsonld"
+		"@id": "/examples/data/nested-forms/project-1.jsonld"
 	},
 	"batches": {
-		"@id": "customer-invoice-1-batches.jsonld",
+		"@id": "/examples/data/nested-forms/customer-invoice-1-batches.jsonld",
 		"@type": "ldp:Container",
 		"ldp:contains": [
-			{ "@id": "batch-1.jsonld" },
-			{ "@id": "batch-2.jsonld" }
+			{ "@id": "/examples/data/nested-forms/batch-1.jsonld" },
+			{ "@id": "/examples/data/nested-forms/batch-2.jsonld" }
 		]
 	},
 	"identifier": "F-202001",
@@ -27,5 +27,5 @@
 	"tvaAmount": 400,
 	"ttcAmount": 2400,
 	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,42 +1,45 @@
 import { Sib } from '../libs/Sib';
-import { base_context, store } from '../libs/store/store';
+import { store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit-html';
+import { ContextMixin } from '../mixins/contextMixin';
 
 export const SolidDelete = {
   name: 'solid-delete',
-  use: [NextMixin, ValidationMixin],
+  use: [NextMixin, ValidationMixin, AttributeBinderMixin, ContextMixin],
   attributes: {
     dataSrc: {
       type: String,
-      default: null
+      default: null,
+      callback: function () {
+       this.resourceId = this.dataSrc;
+      },
     },
     dataLabel: {
       type: String,
-      default: "Delete",
+      default: null,
       callback: function (newValue: string, oldValue: string) {
-        if (newValue !== oldValue) this.render();
+        if (newValue !== oldValue) this.planRender();
       },
-    },
-    extraContext: {
-      type: String,
-      default: null
     }
   },
-  created(): void {
-    this.render();
+  initialState: {
+    renderPlanned: false,
   },
-  get context(): object {
-    let extraContextElement = this.extraContext ?
-      document.getElementById(this.extraContext) : // take element extra context first
-      document.querySelector('[data-default-context]'); // ... or look for a default extra context
-
-    let extraContext = {};
-    if (extraContextElement) extraContext = JSON.parse(extraContextElement.textContent || "{}");
-
-    return { ...base_context, ...extraContext };
+  created(): void {
+    this.planRender();
+  },
+  planRender() {
+    if (!this.renderPlanned) {
+      this.renderPlanned = true;
+      setTimeout(() => {
+        this.render();
+        this.renderPlanned = false;
+      });
+    }
   },
   async delete(e: Event): Promise<void> {
     e.stopPropagation();
@@ -55,9 +58,13 @@ export const SolidDelete = {
   validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
-  render(): void {
+  update() {
+    this.render();
+  },
+  async render(): Promise<void> {
+    await this.replaceAttributesData(false);
     const button = html`
-      <button @click=${this.delete.bind(this)}>${this.dataLabel}</button>
+      <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
       ${this.getModalDialog()}
     `;
     render(button, this.element);

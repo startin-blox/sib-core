@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test:membership</title>
+    <script
+    type="module"
+    src="https://cdn.skypack.dev/@startinblox/router"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.skypack.dev/@startinblox/oidc"
+    ></script>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <sib-auth auto-login>
+      <sib-auth-provider
+        data-authority="https://api.tzcld-stg.startinblox.com/"
+      ></sib-auth-provider>
+    </sib-auth>
+
+    <h3>
+      Solid-membership component configured as join/leave for current user
+    </h3>
+    <solid-membership
+      id="your-membership"
+      data-src="https://api.tzcld-stg.startinblox.com/groups/33/"
+      data-join-label="Rejoindre ?"
+      data-leave-label="Quitter ?"
+      next="detail"
+    ></solid-membership>
+
+    <h3>
+      Solid-membership component configured as join/leave for given user (vitaliklitschko)
+    </h3>
+    <solid-membership
+      id="another-user-membership"
+      data-src="https://api.tzcld-stg.startinblox.com/groups/33/"
+      data-target-src="https://api.tzcld-stg.startinblox.com/users/vitaliklitschko/"
+      data-join-label="Ajouter ?"
+      data-leave-label="Enlever ?"
+      next="detail"
+    ></solid-membership>
+
+    <script>
+      document.querySelector('#your-membership').addEventListener('memberAdded', e => {
+        console.log("You joined the group: ", e.detail.resource);
+      });
+      document.querySelector('#your-membership').addEventListener('memberRemoved', e => {
+        console.log("You leaved the group: ", e.detail.resource);
+      });
+
+      document.querySelector('#another-user-membership').addEventListener('memberAdded', e => {
+        console.log("You added Vitali Klitschko to the group: ", e.detail.resource);
+      });
+      document.querySelector('#another-user-membership').addEventListener('memberRemoved', e => {
+        console.log("You removed Vitali Klitschko from the group: ", e.detail.resource);
+      });
+    </script>
+  </body>
+</html>
