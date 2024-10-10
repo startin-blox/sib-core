@@ -190,7 +190,8 @@ function compareTransform(str: string) {
     .replaceAll(/\p{Diacritic}/gu, '')
     .toLowerCase()
     .replaceAll('œ', 'oe')
-    .replaceAll('æ', 'ae');
+    .replaceAll('æ', 'ae')
+    .replaceAll(/[ ,.!?;:-]+/g, '-');
 }
 
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
