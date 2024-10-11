@@ -1,4 +1,4 @@
-import { fuzzyCompare, importInlineCSS } from '../../libs/helpers';
+import { asyncQuerySelector, fuzzyCompare, importInlineCSS } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
@@ -39,23 +39,7 @@ const AutocompletionMixin = {
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.slimSelect) return;
-    let select = this.element.querySelector('select');
-    if (select) {
-      this.initSlimSelect(select);
-    } else {
-      // if no select available, wait for one and init slimSelect
-      new MutationObserver((_m, observer) => {
-        const select = this.element.querySelector('select');
-        if (select) {
-          this.initSlimSelect(select);
-          observer.disconnect(); // then disconnect mutationObserver
-        }
-      }).observe(this.element, {
-        childList: true,
-        characterData: true,
-        subtree: true,
-      });
-    }
+    asyncQuerySelector('select', this.element).then(select => this.initSlimSelect(select))
     const nextProcessor = listCallbacks.shift();
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
