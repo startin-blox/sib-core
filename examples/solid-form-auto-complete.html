@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIB test: solid-form auto-complete</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h1>Auto complete</h1>
+    <h2>Single skill</h2>
+    <solid-form
+      data-src="/examples/data/list/user-1.jsonld"
+      fields="skills"
+      widget-skills="solid-form-dropdown-autocompletion"
+      range-skills="/examples/data/list/skills.jsonld"
+    ></solid-form>
+    <h2>Multiple skills</h2>
+    <solid-form
+      data-src="/examples/data/list/user-1.jsonld"
+      fields="skills"
+      range-skills="/examples/data/list/skills.jsonld"
+      multiple-skills="solid-form-multipleselect-autocompletion"
+    ></solid-form>
+  </body>
+</html>
