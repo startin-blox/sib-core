@@ -27,7 +27,8 @@ const AutocompletionMixin = {
     mutationObserver: null
   },
   created() {
-    importInlineCSS('slimselect', () => import('./slimselect.css?inline'))
+    importInlineCSS('slimselect-base', () => import('slim-select/styles?inline'));
+    importInlineCSS('slimselect-local', () => import('./slimselect.css?inline'));
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
@@ -48,7 +49,7 @@ const AutocompletionMixin = {
     this.slimSelect = slimSelect;
     select.addEventListener('change', () => {
       const slimSelect: SlimSelect = this.slimSelect;
-      slimSelect.render();
+      // slimSelect.render();
       this.element.dispatchEvent(new Event('input', { bubbles: true }));
     });
     this.element.addEventListener('input', (e:Event) => {
@@ -65,10 +66,14 @@ const AutocompletionMixin = {
       slimSelect.destroy();
       slimSelect = new SlimSelect({
         select,
-        placeholder: this.placeholder || this.t("autocompletion.placeholder"),
-        searchText: this.searchText || this.t("autocompletion.searchText"),
-        searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
-        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
+        settings: {
+          placeholderText: this.placeholder || this.t("autocompletion.placeholder"),
+          searchText: this.searchText || this.t("autocompletion.searchText"),
+          searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
+        },
+        events: {
+          searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
+        },
       });
       this.slimSelect = slimSelect;
     }).observe(select, {
