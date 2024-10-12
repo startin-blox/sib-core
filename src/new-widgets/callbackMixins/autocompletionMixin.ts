@@ -45,6 +45,11 @@ const AutocompletionMixin = {
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   initSlimSelect(select: Element) {
+    const change = (event: Event) => event.stopPropagation();
+    select.addEventListener("change", change, { capture: true });
+    setTimeout(() => {
+      select.removeEventListener("change", change, { capture: true });
+    }, 750);
     const slimSelect = new SlimSelect({ select });
     this.slimSelect = slimSelect;
     select.addEventListener('change', () => {
