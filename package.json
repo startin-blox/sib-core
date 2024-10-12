@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch",
+    "watch": "vite build --watch --sourcemap 'inline'",
     "serve": "node --watch server.js",
     "check-types": "tsc",
     "test": "node server.js --test",

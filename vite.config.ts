@@ -23,5 +23,6 @@ export default defineConfig({
     },
     outDir: 'dist',
     minify: false,
+    reportCompressedSize:false,
   },
 });
