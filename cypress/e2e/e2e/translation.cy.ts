@@ -34,12 +34,12 @@ describe('translation', function () {
 
     // french in autompletion multipleselect
     cy.get('solid-form-search#translation-autocomp')
-      .find('.ss-disabled').should('contain', 'Sélectionner une valeur')
+      .find('.ss-placeholder').should('contain', 'Sélectionner une valeur')
       .click();
-    cy.get('solid-form-search#translation-autocomp')
+    cy.get('.ss-content')
       .find('.ss-search').children().should('have.attr', 'placeholder', 'Rechercher')
       .wait(200).type('00');
-    cy.get('solid-form-search#translation-autocomp')
+    cy.get('.ss-content')
       .find('.ss-list').children().contains('Aucun résultat')
   });
 
@@ -69,12 +69,12 @@ describe('translation', function () {
 
     // english in autompletion multipleselect
     cy.get('solid-form-search#translation-autocomp')
-      .find('.ss-disabled').should('contain', 'Select a value')
+      .find('.ss-placeholder').should('contain', 'Select a value')
       .click();
-    cy.get('solid-form-search#translation-autocomp')
+    cy.get('.ss-content')
       .find('.ss-search').children().should('have.attr', 'placeholder', 'Search')
       .wait(200).type('00');
-    cy.get('solid-form-search#translation-autocomp')
+    cy.get('.ss-content')
       .find('.ss-list').children().contains('No result')
   });
 
