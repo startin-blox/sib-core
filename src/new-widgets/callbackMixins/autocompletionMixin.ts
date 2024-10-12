@@ -52,11 +52,6 @@ const AutocompletionMixin = {
     }, 750);
     const slimSelect = new SlimSelect({ select });
     this.slimSelect = slimSelect;
-    select.addEventListener('change', () => {
-      const slimSelect: SlimSelect = this.slimSelect;
-      // slimSelect.render();
-      this.element.dispatchEvent(new Event('input', { bubbles: true }));
-    });
     this.element.addEventListener('input', (e:Event) => {
       if(e.target !== this.element) {
         // avoid update search result when search in slimSelect suggestions
