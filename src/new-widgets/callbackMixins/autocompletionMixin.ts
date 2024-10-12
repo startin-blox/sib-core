@@ -47,7 +47,8 @@ const AutocompletionMixin = {
     const slimSelect = new SlimSelect({ select });
     this.slimSelect = slimSelect;
     select.addEventListener('change', () => {
-      this.slimSelect.render();
+      const slimSelect: SlimSelect = this.slimSelect;
+      slimSelect.render();
       this.element.dispatchEvent(new Event('input', { bubbles: true }));
     });
     this.element.addEventListener('input', (e:Event) => {
@@ -60,14 +61,16 @@ const AutocompletionMixin = {
     // when data changes, re-build slimSelect
     if (this.mutationObserver) this.mutationObserver.disconnect();
     this.mutationObserver = new MutationObserver(() => {
-      this.slimSelect.destroy();
-      this.slimSelect = new SlimSelect({
+      let slimSelect: SlimSelect = this.slimSelect;
+      slimSelect.destroy();
+      slimSelect = new SlimSelect({
         select,
         placeholder: this.placeholder || this.t("autocompletion.placeholder"),
         searchText: this.searchText || this.t("autocompletion.searchText"),
         searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
         searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
       });
+      this.slimSelect = slimSelect;
     }).observe(select, {
       childList: true,
       characterData: true,
