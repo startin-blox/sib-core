@@ -24,5 +24,19 @@
       range-skills="/examples/data/list/skills.jsonld"
       multiple-skills="solid-form-multipleselect-autocompletion"
     ></solid-form>
+   
+    <h2>New Widget Factory</h2>
+    <script type="module">
+      import { newWidgetFactory } from '../../dist/index.js';
+
+      newWidgetFactory('solid-form-dropdown-autocompletion-placeholder');
+    </script>
+
+    <solid-form-dropdown-autocompletion-placeholder
+      id="test9"
+      name="test9"
+      search-placeholder="Skills :"
+      range="/examples/data/list/skills.jsonld"
+    ></solid-form-dropdown-autocompletion-placeholder>
   </body>
 </html>

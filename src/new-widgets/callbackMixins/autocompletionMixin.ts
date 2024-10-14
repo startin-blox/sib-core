@@ -47,6 +47,7 @@ const AutocompletionMixin = {
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   async initSlimSelect(select: Element) {
+    await new Promise(resolve => setTimeout(resolve, 500))
     const slimSelect = new SlimSelect({
       select,
       settings: {
