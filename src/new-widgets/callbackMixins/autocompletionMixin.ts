@@ -40,46 +40,30 @@ const AutocompletionMixin = {
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.slimSelect) return;
-    asyncQuerySelector('select', this.element).then(select => this.initSlimSelect(select))
+    asyncQuerySelector('select:has(option)', this.element).then(select => {
+      this.initSlimSelect(select);
+    })
     const nextProcessor = listCallbacks.shift();
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
-  initSlimSelect(select: Element) {
-    const change = (event: Event) => event.stopPropagation();
-    select.addEventListener("change", change, { capture: true });
-    setTimeout(() => {
-      select.removeEventListener("change", change, { capture: true });
-    }, 750);
-    const slimSelect = new SlimSelect({ select });
+  async initSlimSelect(select: Element) {
+    const slimSelect = new SlimSelect({
+      select,
+      settings: {
+        placeholderText: this.placeholder || this.t("autocompletion.placeholder"),
+        searchText: this.searchText || this.t("autocompletion.searchText"),
+        searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
+      },
+      events: {
+        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
+      },
+    });
     this.slimSelect = slimSelect;
     this.element.addEventListener('input', (e:Event) => {
       if(e.target !== this.element) {
         // avoid update search result when search in slimSelect suggestions
         e.stopPropagation();
       }
-    });
-
-    // when data changes, re-build slimSelect
-    if (this.mutationObserver) this.mutationObserver.disconnect();
-    this.mutationObserver = new MutationObserver(() => {
-      let slimSelect: SlimSelect = this.slimSelect;
-      slimSelect.destroy();
-      slimSelect = new SlimSelect({
-        select,
-        settings: {
-          placeholderText: this.placeholder || this.t("autocompletion.placeholder"),
-          searchText: this.searchText || this.t("autocompletion.searchText"),
-          searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
-        },
-        events: {
-          searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
-        },
-      });
-      this.slimSelect = slimSelect;
-    }).observe(select, {
-      childList: true,
-      characterData: true,
-      subtree: true,
     });
   },
 };
