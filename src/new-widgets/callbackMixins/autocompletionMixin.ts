@@ -54,6 +54,7 @@ const AutocompletionMixin = {
         placeholderText: this.placeholder || this.t("autocompletion.placeholder"),
         searchText: this.searchText || this.t("autocompletion.searchText"),
         searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
+        contentLocation: this.element,
       },
       events: {
         searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),

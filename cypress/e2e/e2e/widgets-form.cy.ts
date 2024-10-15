@@ -347,11 +347,12 @@ describe('form widgets', { testIsolation: false }, function () {
       .children()
       .should('have.length', 8);
     cy.get('solid-form-dropdown-autocompletion-placeholder > div')
-      .find('div .ss-search').children()
+      .find('div.ss-search').children()
       .eq(0)
       .should('have.attr', 'placeholder', 'Skills :');
     cy.get('solid-form-dropdown-autocompletion-placeholder > div')
-      .find('div .ss-list')
+      .find('div.ss-list')
+      .first()
       .children()
       .should('have.length', 8)
       .should('not.contain', 'Skills :');
