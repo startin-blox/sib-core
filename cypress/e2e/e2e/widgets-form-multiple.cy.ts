@@ -168,8 +168,6 @@ describe('multiple widgets', { testIsolation: false }, function () {
 
   it('solid-form-multipleselect-autocompletion', () => {
     cy.get('solid-form-multipleselect-autocompletion')
-      .children().should('have.length', 1);
-    cy.get('solid-form-multipleselect-autocompletion')
       .find('solid-form-dropdown')
       .should('have.attr', 'data-holder', '')
       .and('have.attr', 'multiple', 'multiple')
@@ -178,38 +176,32 @@ describe('multiple widgets', { testIsolation: false }, function () {
       .and('have.attr', 'data-src', '/examples/data/list/skills.jsonld')
       .and('have.attr', 'order-asc', 'name');
     cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
-      .children().should('have.length', 2);
-    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
       .find('select')
       .should('have.attr', 'data-holder', '')
       .and('have.attr', 'multiple', 'multiple')
       .and('have.attr', 'name', 'test1')
       .and('have.attr', 'style', 'display: none;')
-      .and('have.attr', 'data-ssid');
-    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown')
-      .find('> div')
-      .children().should('have.length', 2);
-    cy.get('solid-form-multipleselect-autocompletion > solid-form-dropdown .ss-option').eq(0)
+      .and('have.attr', 'data-id');
+    cy.get('solid-form-multipleselect-autocompletion > div.ss-content > div.ss-list .ss-option').eq(0)
       .should('contain', 'CSS');
     // select values
-    cy.get('solid-form-multipleselect-autocompletion .ss-main').click();
-    cy.get('solid-form-multipleselect-autocompletion .ss-content.ss-open .ss-option').eq(1).click();
+    cy.get('solid-form-multipleselect-autocompletion .ss-main').filter(":visible").eq(0).click();
+    cy.get('solid-form-multipleselect-autocompletion .ss-content.ss-open-below .ss-option').eq(1).click();
     cy.get('solid-form-multipleselect-autocompletion .ss-option').eq(1)
-      .should('have.class', 'ss-option-selected');
-    cy.get('solid-form-multipleselect-autocompletion .ss-values')
+      .should('have.class', 'ss-selected');
+    cy.get('solid-form-multipleselect-autocompletion .ss-values').eq(1)
       .children().should('have.length', 1)
       .should('contain', 'DevOps');
-    cy.get('solid-form-multipleselect-autocompletion')
-      .find('.ss-add').click();
   });
 
   it('solid-form-autocompletion-placeholder & search attributes', () => {
     // attributes for placeholders and text displayed in SlimSelect
     cy.get('#search-attr')
-      .find('.ss-disabled').contains('Sélectionne une compétence')
+      .find('.ss-placeholder').filter(":visible").contains('Sélectionne une compétence')
       .click({force: true});
     cy.get('solid-form-multipleselect-autocompletion-placeholder')
-      .find('.ss-search').children().should('have.attr', 'placeholder', 'Rechercher par clavier')
+      .find('.ss-search').children().eq(0)
+      .should('have.attr', 'placeholder', 'Rechercher par clavier')
       .wait(200)
       .type('00');
     cy.get('#search-attr')
