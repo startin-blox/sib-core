@@ -34,10 +34,10 @@ describe('translation', function () {
 
     // french in autompletion multipleselect
     cy.get('solid-form-search#translation-autocomp')
-      .find('.ss-placeholder').should('contain', 'Sélectionner une valeur')
+      .find('.ss-placeholder').filter(":visible").should('contain', 'Sélectionner une valeur')
       .click();
     cy.get('.ss-content')
-      .find('.ss-search').children().should('have.attr', 'placeholder', 'Rechercher')
+      .find('.ss-search').filter(":visible").children().should('have.attr', 'placeholder', 'Rechercher')
       .wait(200).type('00');
     cy.get('.ss-content')
       .find('.ss-list').children().contains('Aucun résultat')
@@ -69,10 +69,10 @@ describe('translation', function () {
 
     // english in autompletion multipleselect
     cy.get('solid-form-search#translation-autocomp')
-      .find('.ss-placeholder').should('contain', 'Select a value')
+      .find('.ss-placeholder').filter(":visible").should('contain', 'Select a value')
       .click();
     cy.get('.ss-content')
-      .find('.ss-search').children().should('have.attr', 'placeholder', 'Search')
+      .find('.ss-search').filter(":visible").children().should('have.attr', 'placeholder', 'Search')
       .wait(200).type('00');
     cy.get('.ss-content')
       .find('.ss-list').children().contains('No result')
