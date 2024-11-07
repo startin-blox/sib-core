@@ -4,8 +4,8 @@ import { BaseWidgetMixin } from '../new-widgets/baseWidgetMixin';
 import { FormMixin } from '../new-widgets/templatesDependencies/formMixin';
 import { ActionMixin } from '../new-widgets/attributeMixins/actionMixin';
 import { evalTemplateString } from '../libs/helpers';
-import { html, render } from 'lit-html';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html, render } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 export const SolidWidget = {
   name: 'solid-widget',

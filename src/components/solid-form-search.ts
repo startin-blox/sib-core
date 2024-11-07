@@ -5,8 +5,8 @@ import { ContextMixin } from '../mixins/contextMixin';
 import type { WidgetInterface } from '../mixins/interfaces';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { uniqID } from '../libs/helpers';
 import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
 import { trackRenderAsync } from '../logger';
@@ -185,11 +185,8 @@ export const SolidFormSearch = {
   getSubmitTemplate() {
     return html`
       <div class=${ifDefined(this.classSubmitButton)}>
-        ${this.submitWidget === 'button' ? html`
-          <button type="submit">${this.submitButton || ''}</button>
-        ` : html`
-          <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-        `}
+        ${this.submitWidget === 'button' ? html`<button type="submit">${this.submitButton || ''}</button>` :
+          html`<input type="submit" value=${ifDefined(this.submitButton || undefined)}>`}
       </div>
     ` 
   },

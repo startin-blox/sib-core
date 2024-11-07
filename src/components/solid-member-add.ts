@@ -3,11 +3,11 @@ import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { ContextMixin } from '../mixins/contextMixin';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { StoreMixin } from '../mixins/storeMixin';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',

@@ -15,8 +15,8 @@ import { spread } from '../libs/lit-helpers';
 import L, { MarkerOptions } from 'https://cdn.skypack.dev/leaflet'; // TODO : revert to "leaflet" when apps up to date
 import 'https://cdn.skypack.dev/leaflet.markercluster'; // TODO : revert to "leaflet.markercluster" when apps up to date
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { trackRenderAsync } from '../logger';
 

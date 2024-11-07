@@ -13,8 +13,8 @@ import { FederationMixin } from '../mixins/federationMixin';
 import { HighlighterMixin } from '../mixins/highlighterMixin';
 import { RequiredMixin } from '../mixins/requiredMixin';
 
-import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until';
+import { html, render } from 'lit';
+import { until } from 'lit/directives/until.js';
 import { spread } from '../libs/lit-helpers';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { trackRenderAsync } from '../logger';
@@ -143,14 +143,8 @@ export const SolidTable = {
   getHeader(fields: string[]) {
     let template = html`
       <tr>
-        ${this.selectable !== null ? html`
-        <th>
-          <input type="checkbox" @change="${this.selectAll.bind(this)}" />
-        </th>` : ''}
-        ${fields.map((field: string) => html`
-          <th>
-            ${this.element.hasAttribute('label-'+field) ? this.element.getAttribute('label-'+field) : field}
-        </th>`)}
+        ${this.selectable !== null ? html`<th><input type="checkbox" @change="${this.selectAll.bind(this)}" /></th>` : ''}
+        ${fields.map((field: string) => html`<th>${this.element.hasAttribute('label-'+field) ? this.element.getAttribute('label-'+field) : field}</th>`)}
       </tr>
     `
     return template;
@@ -164,10 +158,7 @@ export const SolidTable = {
     const resource = await store.getData(resourceId, this.context);
     let template = html`
       <tr data-resource="${resourceId}">
-        ${this.selectable !== null ? html`
-        <td>
-          <input type="checkbox" data-selection />
-        </td>` : ''}
+        ${this.selectable !== null ? html`<td><input type="checkbox" data-selection /></td>` : ''}
         ${fields.map((field: string) => html`<td>${until(this.createCellWidget(field, resource))}</td>`)}
       </tr>
     `
@@ -181,10 +172,7 @@ export const SolidTable = {
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     const fields = await this.getFields();
 
-    const template = html`
-      ${this.header !== null ? this.getHeader(fields) : ''}
-      ${until(this.getChildTemplate(this.resource['@id'], fields))}
-    `;
+    const template = html`${this.header !== null ? this.getHeader(fields) : ''}${until(this.getChildTemplate(this.resource['@id'], fields))}`;
     render(template, parent);
   },
 
@@ -208,10 +196,7 @@ export const SolidTable = {
     const childTemplates = await Promise.all(
       resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)
     );
-    const template = html`
-      ${this.header !== null ? this.getHeader(fields) : ''}
-      ${childTemplates}
-    `; // create a child template for each resource
+    const template = html`${this.header !== null ? this.getHeader(fields) : ''}${childTemplates}`; // create a child template for each resource
     render(template, div);
 
     // Re-select the right lines

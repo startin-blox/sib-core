@@ -4,7 +4,7 @@ import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { ContextMixin } from '../mixins/contextMixin';
 import { trackRenderAsync } from '../logger';
 
@@ -65,10 +65,7 @@ export const SolidDelete = {
   render: trackRenderAsync(
     async function(): Promise<void> {
       await this.replaceAttributesData(false);
-      const button = html`
-        <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
-        ${this.getModalDialog()}
-      `;
+      const button = html`<button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>${this.getModalDialog()}`;
       render(button, this.element);
     },
     "SolidDelete:render"

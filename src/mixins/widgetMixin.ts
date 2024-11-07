@@ -2,8 +2,8 @@ import { spread, preHTML } from '../libs/lit-helpers';
 import { parseFieldsString, findClosingBracketMatchIndex } from '../libs/helpers';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 import { WidgetInterface, WidgetType, Resource } from './interfaces';
-import { html, render, TemplateResult } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -312,17 +312,12 @@ const WidgetMixin = {
     const escapedField = this.getEscapedField(field);
     const widgetMeta = this.multiple(escapedField) || this.getWidget(escapedField);
     let tagName = widgetMeta.tagName;
-    let widgetTemplate = html``;
+    let widgetTemplate: TemplateResult = html``;
 
     // Set attributes
     let value = await this.getValue(field, currentResource);
     if (widgetMeta.type === WidgetType.NATIVE) { // native widget (ie: h1)
-      widgetTemplate = preHTML`
-        <${tagName}
-          name="${ifDefined(attributes.name)}"
-          class="${ifDefined(attributes.class)}"
-        >${value}</${tagName}>
-      `;
+      widgetTemplate = preHTML`<${tagName} name="${ifDefined(attributes.name)}" class="${ifDefined(attributes.class)}">${value}</${tagName}>`;
     } else { // custom widget (ie: solid-display-value)
       // Check if value is defined, and if the default widget is needed
       if ((value === null || value === '') && this.element.hasAttribute('default-widget-' + field)) {
@@ -417,9 +412,7 @@ const WidgetMixin = {
     return widget;
   },
   createString(value: string): TemplateResult {
-    return html`
-      <span>${value.slice(1, -1).replace(/\\(['"])/g, '$1')}</span>
-    `;
+    return html`<span>${value.slice(1, -1).replace(/\\(['"])/g, '$1')}</span>`;
   },
   /**
    * Returns field name without starting "@"

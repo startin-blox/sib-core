@@ -1,6 +1,6 @@
 import dialogPolyfill from 'dialog-polyfill'
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { uniqID } from '../libs/helpers';
 import { TranslationMixin } from './translationMixin';
 import { preHTML } from '../libs/lit-helpers';
@@ -69,11 +69,8 @@ const ValidationMixin = {
       }
       return html`
         <dialog id="${this.dialogID}">
-        ${this.confirmationWidget ? preHTML`
-          <${this.confirmationWidget} value=${this.resourceId}></${this.confirmationWidget}>
-        ` : html`
-          <p>${this.confirmationMessage || this.t("validation.message")}</p>
-        `}
+        ${this.confirmationWidget ? preHTML`<${this.confirmationWidget} value=${this.resourceId}></${this.confirmationWidget}>` : 
+          html`<p>${this.confirmationMessage || this.t("validation.message")}</p>`}
           <div>
             <button
               @click=${confirmChoice} 

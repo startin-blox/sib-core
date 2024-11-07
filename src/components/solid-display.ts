@@ -13,8 +13,8 @@ import { NextMixin } from '../mixins/nextMixin';
 import { RequiredMixin } from '../mixins/requiredMixin';
 import { spread } from '../libs/lit-helpers';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { trackRenderAsync } from '../logger';
 

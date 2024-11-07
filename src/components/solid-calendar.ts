@@ -6,7 +6,7 @@ import { store } from '../libs/store/store';
 import { importInlineCSS, uniqID } from '../libs/helpers';
 
 import Calendar from 'tui-calendar';
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 
 export const SolidCalendar = {
   name: 'solid-calendar',
@@ -22,9 +22,7 @@ export const SolidCalendar = {
     importInlineCSS('tui-calendar', () => import('tui-calendar/dist/tui-calendar.css?inline'))
 
     const id = uniqID();
-    const template = html`
-      <div id=${id} style="width:100%;height:100%;"></div>
-    `;
+    const template = html`<div id=${id} style="width:100%;height:100%;"></div>`;
     render(template, this.element);
     this.calendar = new Calendar(this.element.querySelector(`#${id}`), { defaultView: 'month' });
     this.calendar.on('clickSchedule', this.dispatchSelect.bind(this));

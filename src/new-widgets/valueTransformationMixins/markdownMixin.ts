@@ -1,4 +1,4 @@
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import markdownit from 'markdown-it';
 import mila from 'markdown-it-link-attributes';

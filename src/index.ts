@@ -46,10 +46,10 @@ import { widgetFactory } from './widgets/widget-factory';
 import * as Helpers from './libs/helpers';
 
 // lit-html
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { until } from 'lit-html/directives/until';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { until } from 'lit/directives/until.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 export {
   // Components

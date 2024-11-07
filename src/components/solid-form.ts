@@ -7,8 +7,8 @@ import { store } from '../libs/store/store';
 import { setDeepProperty, transformArrayToContainer } from '../libs/helpers';
 import type { WidgetInterface } from '../mixins/interfaces';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { trackRenderAsync } from '../logger';
 
 export const SolidForm = {
@@ -234,9 +234,7 @@ export const SolidForm = {
   showError(e: object) {
     let errors = Object.entries(e).filter(field => !field[0].startsWith('@context'));
     this.displayErrorMessage(errors);
-    const errorTemplate = html`
-      <p>${this.t('solid-form.validation-error')}</p>
-    `;
+    const errorTemplate = html`<p>${this.t('solid-form.validation-error')}</p>`;
 
     // Validation message in english ?
     const parentElement = this.element.querySelector('[data-id=error]');
@@ -270,11 +268,8 @@ export const SolidForm = {
   getSubmitTemplate() {
     return html`
       <div class=${ifDefined(this.classSubmitButton)}>
-        ${this.submitWidget === 'button' ? html`
-          <button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>
-        ` : html`
-          <input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>
-        `}
+        ${this.submitWidget === 'button' ? html`<button type="submit">${this.submitButton || this.t("solid-form.submit-button")}</button>` :
+          html`<input type="submit" value=${this.submitButton || this.t("solid-form.submit-button")}>`}
       </div>
     `
   },
@@ -296,9 +291,7 @@ export const SolidForm = {
             ${this.element.hasAttribute('reset')
               ? html`<input type="reset" />` : ''}
           </form>
-        ` : html`
-          ${widgetTemplates}
-        `
+        ` : html`${widgetTemplates}`
         }
         ${this.getModalDialog()}
       `;

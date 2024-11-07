@@ -1,6 +1,6 @@
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { preHTML } from '../libs/lit-helpers';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const ListMixin = {
@@ -135,9 +135,7 @@ const ListMixin = {
     context: string,
   ) {
     if (this.emptyWidget) {
-      const emptyWidgetTemplate = preHTML`
-        <${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>
-      `
+      const emptyWidgetTemplate = preHTML`<${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>`
       if (!this.emptyWrapper) {
         this.emptyWrapper = document.createElement('span')
         this.element.appendChild(this.emptyWrapper)

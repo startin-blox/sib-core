@@ -1,7 +1,7 @@
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import type { Template } from './interfaces';
 
-import {render} from 'lit-html';
+import {render} from 'lit';
 
 const BaseWidgetMixin = {
   name: 'widget-mixin',

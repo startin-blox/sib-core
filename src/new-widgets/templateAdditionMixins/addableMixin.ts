@@ -1,7 +1,7 @@
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { spread } from '../../libs/lit-helpers';
 
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 const AddableMixin = {
   name: 'addable-mixin',

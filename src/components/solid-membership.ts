@@ -3,9 +3,9 @@ import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { ContextMixin } from '../mixins/contextMixin';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { trackRenderAsync } from '../logger';
 
 export const SolidMembership = {

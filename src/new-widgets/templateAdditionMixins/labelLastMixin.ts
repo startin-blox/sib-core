@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const LabelLastMixin = {
@@ -7,10 +7,7 @@ const LabelLastMixin = {
     this.listTemplateAdditions.attach(this.addLabelLast.bind(this), "LabelLastMixin:addLabelLast");
   },
   addLabelLast(template, listTemplateAdditions: PostProcessorRegistry) {
-    const newTemplate = html`
-      ${template}
-      <label>${this.label || this.name}</label>
-    `;
+    const newTemplate = html`${template}<label>${this.label || this.name}</label>`;
 
     const nextProcessor = listTemplateAdditions.shift();
     if (nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);

@@ -2,8 +2,8 @@ import { EditableMixin } from '../templatesDependencies/editableMixin';
 import { AltMixin } from '../templatesDependencies/altMixin';
 import { LinkTextMixin } from '../templatesDependencies/linkTextMixin';
 
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const displayTemplates = {
   value: {
@@ -11,14 +11,7 @@ export const displayTemplates = {
     dependencies: []
   },
   div: {
-    template: (value: string, attributes: any) => html`
-      <div
-        name=${ifDefined(attributes.name)}
-        ?data-editable=${attributes.editable}
-      >
-        ${value}
-      </div>
-    `,
+    template: (value: string, attributes: any) => html`<div name=${ifDefined(attributes.name)} ?data-editable=${attributes.editable}>${value}</div>`,
     dependencies: [ EditableMixin ]
   },
   link: {
@@ -48,9 +41,7 @@ export const displayTemplates = {
     dependencies: [AltMixin]
   },
   boolean: {
-    template: (value: string, attributes: any) => html`
-      ${value === 'true' ? html`<label>${attributes.label || attributes.name || ''}</label>` : ''}
-    `,
+    template: (value: string, attributes: any) => html`${value === 'true' ? html`<label>${attributes.label || attributes.name || ''}</label>` : ''}`,
     dependencies: []
   },
 }

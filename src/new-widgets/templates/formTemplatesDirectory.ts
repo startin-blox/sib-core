@@ -15,8 +15,8 @@ import { PatternMixin } from '../templatesDependencies/patternMixin';
 import { FormStepMixin } from '../templatesDependencies/formStepMixin';
 import { FormLengthMixin } from '../templatesDependencies/formLengthMixin';
 
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const formTemplates = {
   text: {

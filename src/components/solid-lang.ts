@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib';
 import { store } from '../libs/store/store';
 
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 
 export const SolidLang = {
   name: 'solid-lang',
@@ -27,13 +27,7 @@ export const SolidLang = {
   },
 
   render() {
-    let template = html`
-    <button
-      @click=${this.languageLoader.bind(this)}
-    >
-      ${this.dataLabel}
-    </button>
-    `;
+    let template = html`<button @click=${this.languageLoader.bind(this)}>${this.dataLabel}</button>`;
 
     render(template, this.element);
   }
