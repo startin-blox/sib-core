@@ -45,7 +45,7 @@ class SpreadDirective extends Directive {
     return noChange;
   }
 
-  update(part: SpreadPartType, [spreadData]: any) {
+  override update(part: SpreadPartType, [spreadData]: any) {
     const prevData = prevCache.get(part);
 
     if (prevData === spreadData) {

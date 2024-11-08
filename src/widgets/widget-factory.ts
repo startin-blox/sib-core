@@ -10,14 +10,14 @@ export const widgetFactory = (
   const registered = customElements.get(tagName);
   if (registered) return registered;
   const cls = class extends BaseWidget {
-    async render() {
+    override async render() {
       await super.render();
       if (callback) callback(this);
     }
-    get template(): string {
+    override get template(): string {
       return customTemplate;
     }
-    get childTemplate(): string {
+    override get childTemplate(): string {
       return childTemplate;
     }
   };
