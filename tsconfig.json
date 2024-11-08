@@ -18,6 +18,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
