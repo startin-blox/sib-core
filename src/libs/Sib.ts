@@ -14,22 +14,12 @@ export const Sib = {
   },
   toElement(component: ComponentConstructorInterface): typeof HTMLElement {
     return class extends HTMLElement {
-      private _component: ComponentInterface | null = null;
+      private component: ComponentInterface;
 
       constructor() {
         super();
         this.component = new component(this);
         this.component.created();
-      }
-
-      get component(): ComponentInterface {
-        if (this._component === null) {
-          throw new Error('No component found');
-        }
-        return this._component;
-      }
-      set component(component: ComponentInterface) {
-        this._component = component;
       }
 
       static get observedAttributes() {

@@ -27,5 +27,5 @@
     "skipLibCheck": true,
     "types": ["cypress"]
   },
-  "include": ["./src/**/*", "./cypress/**/*"],
+  "include": ["./src/**/*", "./cypress/**/*"]
 }

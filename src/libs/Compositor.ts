@@ -59,13 +59,12 @@ export const Compositor = {
 
     return attributes;
   },
-  mergeInitialState(mixins: MixinStaticInterface[]): any {
-    let initialState = {};
+  mergeInitialState(mixins: MixinStaticInterface[]) {
+    let initialState: any = {};
 
     for (const mixin of mixins) {
-      if (mixin.initialState) {
-        initialState = { ...mixin.initialState, ...initialState };
-      }
+      if (!mixin.initialState) continue;
+      initialState = { ...mixin.initialState, ...initialState };
     }
 
     return initialState;

@@ -1,1 +1,1 @@
-declare let solid: any;
+declare let solid: unknown;

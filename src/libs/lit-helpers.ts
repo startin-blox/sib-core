@@ -16,10 +16,10 @@ import {
 } from 'lit';
 
 import {
-  type PartInfo,
-  directive,
   Directive,
+  type PartInfo,
   PartType,
+  directive,
 } from 'lit/directive.js';
 
 type SpreadPartType =

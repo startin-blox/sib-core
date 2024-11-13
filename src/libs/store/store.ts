@@ -40,7 +40,7 @@ export const base_context = {
   control: 'acl:Control',
 };
 
-class Store {
+export class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource

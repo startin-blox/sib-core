@@ -1,4 +1,5 @@
 import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
+import type { Resource } from '../../mixins/interfaces.ts';
 import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 const MultipleselectFormMixin = {
@@ -9,7 +10,7 @@ const MultipleselectFormMixin = {
       // range attribute is passed to the solid-dropdown
       type: String,
       default: '',
-      callback: function (value) {
+      callback: function (value: string) {
         if (value && value !== this.listAttributes.range)
           this.listAttributes.range = value;
       },
@@ -18,7 +19,7 @@ const MultipleselectFormMixin = {
       // enum attribute is passed to the solid-dropdown
       type: String,
       default: '',
-      callback: function (value) {
+      callback: function (value: string) {
         if (value && value !== this.listAttributes.enum)
           this.listAttributes.enum = value;
       },
@@ -77,7 +78,7 @@ const MultipleselectFormMixin = {
 
     this.planRender();
   },
-  setValue(values: string[]) {
+  setValue(values: Resource[]) {
     // set the values to the dropdown
     this.listAttributes.values = JSON.stringify(values.map(r => r['@id']));
   },

@@ -1,7 +1,10 @@
+import type PubSubType from 'pubsub-js';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import type { Template } from './interfaces.ts';
 
 import { render } from 'lit';
+
+declare const PubSub: typeof PubSubType;
 
 const BaseWidgetMixin = {
   name: 'widget-mixin',
