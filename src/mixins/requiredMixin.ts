@@ -30,9 +30,9 @@ const RequiredMixin = {
         for (let field of requiredFields) {
           // Retrieve resource from store
           let res = await resource[field];
-          if (!res || res == null) {
+          if (!res) {
             hasProps = false;
-            continue;
+            break;
           }
         }
         if (hasProps) displays.push(resource);

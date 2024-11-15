@@ -458,12 +458,12 @@ const WidgetMixin = {
     // Catch widget for the set if all these fields are empty
     if (this.element.hasAttribute('empty-' + field)) {
       let hasOnlyEmpty = true;
-      for (let field of setFields) {
-        let value: string = await this.getValue(field, this.resource);
+      for (const field of setFields) {
+        const value: string = await this.getValue(field, this.resource);
         if (value !== '') {
           // if one not empty
           hasOnlyEmpty = false;
-          continue; // break loop
+          break;
         }
       }
       if (hasOnlyEmpty) {

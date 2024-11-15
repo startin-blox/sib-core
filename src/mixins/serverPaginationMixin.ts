@@ -113,7 +113,7 @@ const ServerPaginationMixin = {
   renderServerPaginationNav(resourceId: string, div: HTMLElement): void {
     if (this.limit) {
       const currentOffset = this.getCurrentOffset(resourceId, this.limit);
-      var currentPageNumber = this.getCurrentServedPage(resourceId, 1);
+      const currentPageNumber = this.getCurrentServedPage(resourceId, 1);
       const pageCount = Math.ceil(this.pageCount / this.limit);
 
       render(

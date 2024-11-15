@@ -26,7 +26,7 @@ const RichtextMixin = {
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.quill == null) {
-      var toolbarOptions = [
+      const toolbarOptions = [
         ['bold', 'italic'],
         ['blockquote'],
         [{ header: [1, 2, 3, 4, 5, 6, false] }],

@@ -16,11 +16,17 @@
     "enabled": false
   },
   "linter": {
-    "enabled": false,
+    "enabled": true,
     "rules": {
       "recommended": true,
+      "style": {
+        "all": false
+      },
       "complexity": {
-        "useLiteralKeys": "off"
+        "all": false
+      },
+      "suspicious": {
+        "all": false
       }
     }
   },

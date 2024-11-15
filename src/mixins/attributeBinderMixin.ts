@@ -25,21 +25,15 @@ const AttributeBinderMixin = {
   async replaceAttributesData(reset = true) {
     if (reset) this.resetAttributesData();
 
-    const oldAttributes: any = Array.from(this.element.attributes) // transform NamedNodeMap in object
-      .reduce((obj: any, attr: any) => {
-        // Keep only attributes starting with `store://...`
-        if (!attr.value.match(/^store:\/\/(resource|container|user)/))
-          return { ...obj };
+    const oldAttributes: Record<string, string> = {};
+    for (const attr of (this.element as Element).attributes) {
+      if (!attr.value.match(/^store:\/\/(resource|container|user)/)) continue;
 
-        // Save attr for reset later
-        if (!this.bindedAttributes[attr.name])
-          this.bindedAttributes[attr.name] = attr.value;
+      if (!this.bindedAttributes[attr.name])
+        this.bindedAttributes[attr.name] = attr.value;
 
-        return {
-          ...obj,
-          [attr.name]: attr.value, // add "key: value"
-        };
-      }, {});
+      oldAttributes[attr.name] = attr.value;
+    }
 
     const newAttributes = await this.transformAttributes(
       { ...oldAttributes },
