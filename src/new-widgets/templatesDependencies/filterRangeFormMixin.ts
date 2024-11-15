@@ -17,7 +17,7 @@ const FilterRangeFormMixin = {
     },
   },
   getDefaultValue(value) {
-    if (value == 'today') return new Date().toISOString().split('T')[0];
+    if (value === 'today') return new Date().toISOString().split('T')[0];
     return value;
   },
   getValue() {

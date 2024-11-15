@@ -56,17 +56,17 @@ const ValidationMixin = {
     // Data directly submitted OR confirm dialog modal displayed
     if (
       !this.confirmationType ||
-      (this.confirmationType == 'confirm' &&
+      (this.confirmationType === 'confirm' &&
         confirm(this.confirmationMessage || this.t('validation.message')))
     )
       this.validateModal();
     // Customisable dialog modal opened
-    if (this.confirmationType == 'dialog') {
+    if (this.confirmationType === 'dialog') {
       this.showModal();
     }
   },
   getModalDialog() {
-    if (this.confirmationType == 'dialog') {
+    if (this.confirmationType === 'dialog') {
       const quitDialog = () => {
         var dialog: any = document.getElementById(this.dialogID);
         if (dialog == null) return;

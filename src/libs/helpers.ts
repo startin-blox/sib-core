@@ -161,7 +161,7 @@ function parseFieldsString(fields: string): string[] {
 }
 
 function findClosingBracketMatchIndex(str: string, pos: number) {
-  if (str[pos] != '(') throw new Error("No '(' at index " + pos);
+  if (str[pos] !== '(') throw new Error("No '(' at index " + pos);
   let depth = 1;
   for (let i = pos + 1; i < str.length; i++) {
     switch (str[i]) {
@@ -169,7 +169,7 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
         depth++;
         break;
       case ')':
-        if (--depth == 0) return i;
+        if (--depth === 0) return i;
         break;
     }
   }

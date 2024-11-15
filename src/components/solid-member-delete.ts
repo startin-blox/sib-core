@@ -96,7 +96,7 @@ export const SolidMemberDelete = {
   async deleteMembership() {
     let userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
-      if (userId == this.dataTargetSrc) return false;
+      if (userId === this.dataTargetSrc) return false;
       else return true;
     });
 

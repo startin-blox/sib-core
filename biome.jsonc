@@ -27,7 +27,6 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noDoubleEquals": "off",
         "noAsyncPromiseExecutor": "off"
       }
     }

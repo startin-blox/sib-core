@@ -104,7 +104,7 @@ export const SolidForm = {
           object &&
           !object['@id'] &&
           Array.isArray(object) &&
-          value[predicate].length == 0 &&
+          value[predicate].length === 0 &&
           object.length > 0
         ) {
           value[predicate] = object;

@@ -88,7 +88,7 @@ const StoreMixin = {
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
-    if (!value || value == 'undefined') return;
+    if (!value || value === 'undefined') return;
 
     this.resourceId = value;
     if (this.nestedField) {

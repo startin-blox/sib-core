@@ -276,7 +276,7 @@ class Store {
       // We have to add the server search and pagination attributes again here to the resource cache key
       if (
         key === id &&
-        resource['@type'] ==
+        resource['@type'] ===
           this.getExpandedPredicate('ldp:Container', clientContext)
       ) {
         // Add only pagination and search params to the original resource

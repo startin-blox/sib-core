@@ -64,7 +64,7 @@ export class BaseWidget extends HTMLElement {
   get value() {
     if (this.dataHolder) {
       let values = this.dataHolder.map(element => {
-        if (element instanceof HTMLInputElement && element.type == 'checkbox')
+        if (element instanceof HTMLInputElement && element.type === 'checkbox')
           return element.checked;
         // if value is defined, push it in the array
         return this.getValueHolder(element).value;
@@ -76,12 +76,12 @@ export class BaseWidget extends HTMLElement {
   }
   set value(value) {
     this._value = value; // ... store `value` in the widget
-    if (this._value == null || this._value == undefined) return;
+    if (this._value == null) return;
 
     if (this.dataHolder && this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
       const element = this.getValueHolder(this.dataHolder[0]);
-      if (element.type == 'checkbox') {
+      if (element.type === 'checkbox') {
         element.checked = value;
       } else {
         element.value = value; // ... set `value` to the dataHolder element
@@ -92,7 +92,7 @@ export class BaseWidget extends HTMLElement {
       // if multiple dataHolder in the widget ...
       this.dataHolder.forEach((el, index) => {
         const element = this.getValueHolder(el);
-        if (element.type == 'checkbox') {
+        if (element.type === 'checkbox') {
           element.checked = value ? value[index] : '';
         } else {
           element.value = value ? value[index] : '';
@@ -212,14 +212,16 @@ export class BaseWidget extends HTMLElement {
           // selected options for multiple select
           selected = false;
           for await (let value of this._value['ldp:contains']) {
-            if (value['@id'] == element['@id']) {
+            if (value['@id'] === element['@id']) {
               selected = true;
               break;
             }
           }
         } else {
           // selected options for simple dropdowns
-          selected = this._value ? this._value['@id'] == element['@id'] : false;
+          selected = this._value
+            ? this._value['@id'] === element['@id']
+            : false;
         }
         htmlRange += await evalTemplateString(this.childTemplate, {
           name: await element.name,

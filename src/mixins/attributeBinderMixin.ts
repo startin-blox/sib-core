@@ -42,7 +42,7 @@ const AttributeBinderMixin = {
 
     for (let attr of Object.keys(newAttributes)) {
       // set attributes on element
-      if (oldAttributes[attr] == newAttributes[attr]) continue; // only if it changed
+      if (oldAttributes[attr] === newAttributes[attr]) continue; // only if it changed
       this.element.setAttribute(attr, newAttributes[attr]);
     }
   },
@@ -118,7 +118,7 @@ const AttributeBinderMixin = {
         .catch(() => {
           setTimeout(() => {
             ++retries;
-            if (retries == maxRetries) return reject();
+            if (retries >= maxRetries) return reject();
             this.retry(fn, ms).then(resolve);
           }, ms);
         });

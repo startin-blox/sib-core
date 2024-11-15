@@ -102,7 +102,7 @@ function uniqID() {
 }
 
 function handleUpdate(req, rep) {
-  if (req.headers['content-type'] != 'application/ld+json') {
+  if (req.headers['content-type'] !== 'application/ld+json') {
     rep.status(500).send('Content not JSON');
     return;
   }

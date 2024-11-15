@@ -121,7 +121,7 @@ export const SolidMembership = {
   async leaveGroup() {
     let userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
-      if (userId == this.userId) return false;
+      if (userId === this.userId) return false;
       else return true;
     });
 

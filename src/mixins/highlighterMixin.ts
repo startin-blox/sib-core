@@ -36,7 +36,7 @@ const HighlighterMixin = {
 
   sortHighlighted(resources, field, value) {
     for (let [index, res] of resources.entries()) {
-      if (res[field] && res[field] == value) {
+      if (res[field] && res[field] === value) {
         // put the current element at the beginning of the array
         resources.splice(0, 0, resources.splice(index, 1)[0]); // TODO : test with sort
       }

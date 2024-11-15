@@ -95,7 +95,7 @@ const SorterMixin = {
     // sorting data according to the defined value of sortingKey
     if (sortingKey) {
       let orderToSort = true; // set 'asc' by default
-      if (this.orderDesc || orderValueToSort == 'desc') orderToSort = false;
+      if (this.orderDesc || orderValueToSort === 'desc') orderToSort = false;
       resources = (
         await Promise.all(
           resources.map(async resource => ({

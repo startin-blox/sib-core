@@ -182,12 +182,12 @@ export const SolidDisplay = {
         attr.name.startsWith('link-text-') ||
         attr.name.startsWith('target-src-') ||
         attr.name.startsWith('data-label-') ||
-        attr.name == 'extra-context'
+        attr.name === 'extra-context'
       )
         attributes[attr.name] = attr.value;
       if (attr.name.startsWith('child-'))
         attributes[attr.name.replace(/^child-/, '')] = attr.value;
-      if (attr.name == 'next') {
+      if (attr.name === 'next') {
         attributes['role'] = 'button';
         attributes['tabindex'] = '0';
       }
