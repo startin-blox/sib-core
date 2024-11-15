@@ -1,21 +1,19 @@
 const FormMinMaxMixin = {
   name: 'form-min-max-mixin',
-  attributes : {
-    min : {
+  attributes: {
+    min: {
       type: Number,
       callback: function (newValue: number) {
         this.addToAttributes(newValue, 'min');
-      }
+      },
     },
-    max : {
+    max: {
       type: Number,
       callback: function (newValue: number) {
         this.addToAttributes(newValue, 'max');
-      }
+      },
     },
-  }
-}
+  },
+};
 
-export {
-  FormMinMaxMixin
-}
+export { FormMinMaxMixin };

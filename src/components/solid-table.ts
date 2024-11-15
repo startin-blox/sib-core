@@ -59,8 +59,11 @@ export const SolidTable = {
   },
   get selectedLines() {
     if (this.selectable === null) return [];
-    return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
-      .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
+    return (
+      Array.from(
+        this.element.querySelectorAll('input[data-selection]:checked'),
+      ) as Element[]
+    ).map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
   },
   /**
    * Select all lines
@@ -68,7 +71,11 @@ export const SolidTable = {
    */
   selectAll(e) {
     if (this.selectable === null) return;
-    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+    for (const checkbox of Array.from(
+      this.element.querySelectorAll(
+        'input[data-selection]',
+      ) as HTMLInputElement[],
+    )) {
       checkbox.checked = e.target.checked;
     }
   },
@@ -77,7 +84,11 @@ export const SolidTable = {
    */
   unselectAll(): void {
     if (this.selectable === null) return;
-    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+    for (const checkbox of Array.from(
+      this.element.querySelectorAll(
+        'input[data-selection]',
+      ) as HTMLInputElement[],
+    )) {
       checkbox.checked = false;
     }
   },
@@ -88,7 +99,9 @@ export const SolidTable = {
   selectLines(lines: string[]) {
     if (this.selectable === null || lines.length === 0) return;
     for (const line of lines) {
-      const checkbox = this.element.querySelector(`[data-resource="${line}"] input[data-selection]`);
+      const checkbox = this.element.querySelector(
+        `[data-resource="${line}"] input[data-selection]`,
+      );
       if (checkbox) checkbox.checked = true;
     }
   },
@@ -99,11 +112,13 @@ export const SolidTable = {
    */
   async createCellWidget(field: string, resource: Resource) {
     // if regular widget
-    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource, true);
+    if (!this.element.hasAttribute('editable-' + field))
+      return this.createWidgetTemplate(field, resource, true);
 
     // if editable widget
     const attributes = {};
-    const formWidgetAttributes = [ // attributes to give to the form widget
+    const formWidgetAttributes = [
+      // attributes to give to the form widget
       'range',
       'enum',
       'placeholder',
@@ -115,16 +130,19 @@ export const SolidTable = {
       'max',
       'pattern',
       'title',
-      'widget'
+      'widget',
     ];
-    for (let attr of formWidgetAttributes) this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`,  attributes)
+    for (let attr of formWidgetAttributes)
+      this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`, attributes);
 
-    const formAttributes = [ // attributes to give to the form
+    const formAttributes = [
+      // attributes to give to the form
       'class',
       'submit-button',
-      'next'
+      'next',
     ];
-    for (let attr of formAttributes) this.addToAttributes(`${attr}-${field}`, attr,  attributes)
+    for (let attr of formAttributes)
+      this.addToAttributes(`${attr}-${field}`, attr, attributes);
 
     return html`
       <solid-form
@@ -144,9 +162,9 @@ export const SolidTable = {
     let template = html`
       <tr>
         ${this.selectable !== null ? html`<th><input type="checkbox" @change="${this.selectAll.bind(this)}" /></th>` : ''}
-        ${fields.map((field: string) => html`<th>${this.element.hasAttribute('label-'+field) ? this.element.getAttribute('label-'+field) : field}</th>`)}
+        ${fields.map((field: string) => html`<th>${this.element.hasAttribute('label-' + field) ? this.element.getAttribute('label-' + field) : field}</th>`)}
       </tr>
-    `
+    `;
     return template;
   },
   /**
@@ -161,7 +179,7 @@ export const SolidTable = {
         ${this.selectable !== null ? html`<td><input type="checkbox" data-selection /></td>` : ''}
         ${fields.map((field: string) => html`<td>${until(this.createCellWidget(field, resource))}</td>`)}
       </tr>
-    `
+    `;
     return template;
   },
 
@@ -185,7 +203,7 @@ export const SolidTable = {
    * @param div
    * @param context
    */
-  renderDOM: trackRenderAsync(async function(
+  renderDOM: trackRenderAsync(async function (
     resources: object[],
     listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
@@ -194,7 +212,7 @@ export const SolidTable = {
     const selectedLines = [...this.selectedLines]; // save selected lines before moving them
     const fields = await this.getFields();
     const childTemplates = await Promise.all(
-      resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)
+      resources.map(r => (r ? this.getChildTemplate(r['@id'], fields) : null)),
     );
     const template = html`${this.header !== null ? this.getHeader(fields) : ''}${childTemplates}`; // create a child template for each resource
     render(template, div);
@@ -205,13 +223,8 @@ export const SolidTable = {
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
-      await nextProcessor(
-        resources,
-        listPostProcessors,
-        div,
-        context
-      );
-  }, "SolidTable:renderDom"),
+      await nextProcessor(resources, listPostProcessors, div, context);
+  }, 'SolidTable:renderDom'),
 };
 
 Sib.register(SolidTable);

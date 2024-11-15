@@ -12,15 +12,9 @@
         "name": "circle one"
       },
       "@type": "hd:circlemember",
-      "permissions": [
-        "view",
-        "delete"
-      ]
+      "permissions": ["view", "delete"]
     }
   ],
-  "permissions": [
-    "add",
-    "view"
-  ],
+  "permissions": ["add", "view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

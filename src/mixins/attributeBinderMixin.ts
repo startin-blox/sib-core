@@ -5,7 +5,7 @@ const AttributeBinderMixin = {
   name: 'attribute-binder-mixin',
   use: [],
   initialState: {
-    bindedAttributes: null
+    bindedAttributes: null,
   },
   created() {
     this.bindedAttributes = {};
@@ -27,12 +27,13 @@ const AttributeBinderMixin = {
 
     const oldAttributes: any = Array.from(this.element.attributes) // transform NamedNodeMap in object
       .reduce((obj: any, attr: any) => {
-        
         // Keep only attributes starting with `store://...`
-        if (!attr.value.match(/^store:\/\/(resource|container|user)/)) return { ...obj }
+        if (!attr.value.match(/^store:\/\/(resource|container|user)/))
+          return { ...obj };
 
         // Save attr for reset later
-        if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
+        if (!this.bindedAttributes[attr.name])
+          this.bindedAttributes[attr.name] = attr.value;
 
         return {
           ...obj,
@@ -40,9 +41,13 @@ const AttributeBinderMixin = {
         };
       }, {});
 
-    const newAttributes = await this.transformAttributes({ ...oldAttributes }, this.resource); // generate new attributes
+    const newAttributes = await this.transformAttributes(
+      { ...oldAttributes },
+      this.resource,
+    ); // generate new attributes
 
-    for (let attr of Object.keys(newAttributes)) { // set attributes on element
+    for (let attr of Object.keys(newAttributes)) {
+      // set attributes on element
       if (oldAttributes[attr] == newAttributes[attr]) continue; // only if it changed
       this.element.setAttribute(attr, newAttributes[attr]);
     }
@@ -62,17 +67,27 @@ const AttributeBinderMixin = {
       // Avoid error if value is a number
       if (typeof value === 'string') {
         // Replace attribute value
-        if (!isContainer && resource && value.startsWith('store://resource')) { // RESOURCE
+        if (!isContainer && resource && value.startsWith('store://resource')) {
+          // RESOURCE
           let path = value.replace('store://resource.', '');
           attributes[attr] = resource ? await resource[path] : '';
-        } else if (isContainer && resource && value.startsWith('store://container')) { // CONTAINER
+        } else if (
+          isContainer &&
+          resource &&
+          value.startsWith('store://container')
+        ) {
+          // CONTAINER
           let path = value.replace('store://container.', '');
           attributes[attr] = resource ? await resource[path] : '';
-        } else if (value.startsWith('store://user')) { // USER
+        } else if (value.startsWith('store://user')) {
+          // USER
           // retry until sibAuth is defined
           const userId = await this.retry(this.getUser.bind(this));
           // TODO: Using this.context makes no sense here. Use same-attribute-context="context-id" instead?
-          const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context || base_context) : null;
+          const user =
+            userId && userId['@id']
+              ? await store.getData(userId['@id'], this.context || base_context)
+              : null;
           if (!user) {
             attributes[attr] = '';
             continue;
@@ -104,17 +119,17 @@ const AttributeBinderMixin = {
   async retry(fn: Function, ms = 200, maxRetries = 5) {
     return new Promise((resolve, reject) => {
       let retries = 0;
-      fn().then(resolve).catch(() => {
-        setTimeout(() => {
-          ++retries;
-          if (retries == maxRetries) return reject();
-          this.retry(fn, ms).then(resolve);
-        }, ms);
-      });
+      fn()
+        .then(resolve)
+        .catch(() => {
+          setTimeout(() => {
+            ++retries;
+            if (retries == maxRetries) return reject();
+            this.retry(fn, ms).then(resolve);
+          }, ms);
+        });
     });
-  }
-}
+  },
+};
 
-export {
-  AttributeBinderMixin
-}
+export { AttributeBinderMixin };

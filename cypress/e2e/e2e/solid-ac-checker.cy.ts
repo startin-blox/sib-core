@@ -1,6 +1,6 @@
-describe('solid-ac-checker', function() {
+describe('solid-ac-checker', function () {
   this.beforeEach('visit', () => {
-    cy.visit('/examples/e2e/solid-ac-checker.html')
+    cy.visit('/examples/e2e/solid-ac-checker.html');
   });
 
   it('permission attribute', () => {
@@ -20,4 +20,4 @@ describe('solid-ac-checker', function() {
     cy.get('#ac-checker-3').should('not.have.attr', 'hidden');
     cy.get('#test3').should('be.visible');
   });
-})
+});

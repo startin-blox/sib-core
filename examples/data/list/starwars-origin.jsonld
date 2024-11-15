@@ -4,14 +4,18 @@
   "@type": "hd:film",
   "ebu:originalTitle": "Star Wars",
   "characters": {
-      "@id": "/examples/data/list/local.jsonld",
-      "@type": "ldp:Container",
-      "ldp:contains": [
-          { "@id": "/examples/data/list/examples/data/list/darth-vader.json" },
-          { "@id": "/examples/data/list/examples/data/list/chewbacca.jsonld", "name": "tata" },
-          {
-            "@id": "/examples/data/list/examples/data/list/hansolo.jsonld", "name": "trotro"
-          }
-      ]
+    "@id": "/examples/data/list/local.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      { "@id": "/examples/data/list/examples/data/list/darth-vader.json" },
+      {
+        "@id": "/examples/data/list/examples/data/list/chewbacca.jsonld",
+        "name": "tata"
+      },
+      {
+        "@id": "/examples/data/list/examples/data/list/hansolo.jsonld",
+        "name": "trotro"
+      }
+    ]
   }
 }

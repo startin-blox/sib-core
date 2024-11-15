@@ -92,7 +92,7 @@ const component = {
   },
 };
 
-describe('Mixin Compositor', function() {
+describe('Mixin Compositor', function () {
   it('merge mixin', () => {
     const result = Compositor.mergeMixin(component);
     expect(result.length).eq(2);

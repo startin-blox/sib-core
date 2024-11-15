@@ -6,22 +6,22 @@ const ContextMixin = {
   attributes: {
     extraContext: {
       type: String,
-      default: null
+      default: null,
     },
   },
   get context(): object {
     return { ...base_context, ...this.extra_context };
   },
   get extra_context(): object {
-    let extraContextElement = this.extraContext ?
-    document.getElementById(this.extraContext) : // take element extra context first
-    document.querySelector('[data-default-context]'); // ... or look for a default extra context
+    let extraContextElement = this.extraContext
+      ? document.getElementById(this.extraContext)
+      : // take element extra context first
+        document.querySelector('[data-default-context]'); // ... or look for a default extra context
 
-    if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
+    if (extraContextElement)
+      return JSON.parse(extraContextElement.textContent || '{}');
     return {};
   },
 };
 
-export {
-  ContextMixin
-}
+export { ContextMixin };

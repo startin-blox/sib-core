@@ -11,7 +11,7 @@ import {
 /**
  * uniqID
  */
-describe('uniqID', function() {
+describe('uniqID', function () {
   it('returns an id', () => {
     let test = uniqID();
     expect(test).to.match(/[_].{10}/g);
@@ -30,7 +30,7 @@ describe('uniqID', function() {
 /**
  * stringToDom
  */
-describe('stringToDom', function() {
+describe('stringToDom', function () {
   it('returns a fragment', () => {
     const fragment = stringToDom('<h1>Test element</h1>');
     expect(fragment.constructor.name).to.eq('DocumentFragment');
@@ -54,7 +54,7 @@ describe('stringToDom', function() {
 /**
  * setDeepProperty
  */
-describe('setDeepProperty', function() {
+describe('setDeepProperty', function () {
   it('set properties', () => {
     const object = {
       name: 'test',
@@ -91,7 +91,7 @@ describe('setDeepProperty', function() {
 /**
  * parseFieldsString
  */
-describe('parseFieldsString', function() {
+describe('parseFieldsString', function () {
   it('returns first level of fields', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -108,7 +108,7 @@ describe('parseFieldsString', function() {
 /**
  * findClosingBracketMatchIndex
  */
-describe('findClosingBracketMatchIndex', function() {
+describe('findClosingBracketMatchIndex', function () {
   it('throw error', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -140,7 +140,7 @@ describe('findClosingBracketMatchIndex', function() {
 /**
  * evalTemplateString
  */
-describe('evalTemplateString', function() {
+describe('evalTemplateString', function () {
   it('render template with values', async () => {
     const values = {
       val1: 'test 1',
@@ -177,9 +177,7 @@ describe('evalTemplateString', function() {
     </div>
     `;
     const promise = new Cypress.Promise((resolve, reject) => {
-      evalTemplateString(template, values)
-        .then(resolve)
-        .catch(reject);
+      evalTemplateString(template, values).then(resolve).catch(reject);
     });
     promise.finally(() => {
       expect(promise.isRejected).to.be.true;
@@ -265,7 +263,7 @@ describe('evalTemplateString', function() {
 //         }
 //       ]
 //     };
-    
+
 //     const newValue = transformArrayToContainer(value);
 //     expect(newValue).to.deep.equal({
 //       "@id": "myresource",
@@ -296,27 +294,27 @@ describe('evalTemplateString', function() {
 //     })
 //   })
 // })
-import sleep from '../sleep'
-describe('AsyncIterableBuilder',  () => {
+import sleep from '../sleep';
+describe('AsyncIterableBuilder', () => {
   it('create an asyncIterable', async () => {
-    const { iterable, next } = new AsyncIterableBuilder<number>()
-    next(1)
-    next(2)
-    const values: number[] = []
-    let done = false
-    ;(async () => {
+    const { iterable, next } = new AsyncIterableBuilder<number>();
+    next(1);
+    next(2);
+    const values: number[] = [];
+    let done = false;
+    (async () => {
       for await (const number of iterable) {
-        values.push(number)
+        values.push(number);
       }
-      done = true
-    })()
-    await sleep()
-    expect(values).to.deep.eq([1, 2])
-    expect(done).to.be.false
-    next(3)
-    next(4, true)
-    await sleep()
-    expect(values).to.deep.eq([1, 2, 3, 4])
-    expect(done).to.be.true
-  })
-})
+      done = true;
+    })();
+    await sleep();
+    expect(values).to.deep.eq([1, 2]);
+    expect(done).to.be.false;
+    next(3);
+    next(4, true);
+    await sleep();
+    expect(values).to.deep.eq([1, 2, 3, 4]);
+    expect(done).to.be.true;
+  });
+});

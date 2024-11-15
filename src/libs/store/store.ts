@@ -16,29 +16,29 @@ const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
 export const base_context = {
-  '@vocab': "https://cdn.startinblox.com/owl#",
-  foaf: "http://xmlns.com/foaf/0.1/",
-  doap: "http://usefulinc.com/ns/doap#",
-  ldp: "http://www.w3.org/ns/ldp#",
-  rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  xsd: "http://www.w3.org/2001/XMLSchema#",
-  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
-  acl: "http://www.w3.org/ns/auth/acl#",
-  hd: "http://cdn.startinblox.com/owl/ttl/vocab.ttl#",
-  sib: "http://cdn.startinblox.com/owl/ttl/vocab.ttl#",
-  name: "rdfs:label",
-  deadline: "xsd:dateTime",
-  lat: "geo:lat",
-  lng: "geo:long",
-  jabberID: "foaf:jabberID",
-  permissions: "acl:accessControl",
-  mode: "acl:mode",
-  view: "acl:Read",
-  change: "acl:Write",
-  add: "acl:Append",
-  delete: "acl:Delete",
-  control: "acl:Control"
+  '@vocab': 'https://cdn.startinblox.com/owl#',
+  foaf: 'http://xmlns.com/foaf/0.1/',
+  doap: 'http://usefulinc.com/ns/doap#',
+  ldp: 'http://www.w3.org/ns/ldp#',
+  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+  xsd: 'http://www.w3.org/2001/XMLSchema#',
+  geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+  acl: 'http://www.w3.org/ns/auth/acl#',
+  hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
+  sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
+  name: 'rdfs:label',
+  deadline: 'xsd:dateTime',
+  lat: 'geo:lat',
+  lng: 'geo:long',
+  jabberID: 'foaf:jabberID',
+  permissions: 'acl:accessControl',
+  mode: 'acl:mode',
+  view: 'acl:Read',
+  change: 'acl:Write',
+  add: 'acl:Append',
+  delete: 'acl:Delete',
+  control: 'acl:Control',
 };
 
 class Store {
@@ -55,7 +55,11 @@ class Store {
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
-    this.headers = {'Accept': 'application/ld+json', 'Content-Type': 'application/ld+json', 'Cache-Control': 'must-revalidate'};
+    this.headers = {
+      Accept: 'application/ld+json',
+      'Content-Type': 'application/ld+json',
+      'Cache-Control': 'must-revalidate',
+    };
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
   }
@@ -70,7 +74,7 @@ class Store {
    * @param serverPagination - Server pagination options
    * @param serverSearch - Server search options
    * @param predicateName - predicate name if we target a specific predicate from the resource, useful for arrays
-   * 
+   *
    * @returns The fetched resource
    *
    * @async
@@ -78,28 +82,36 @@ class Store {
   async getData(
     id: string,
     context: any = {},
-    parentId = "",
+    parentId = '',
     localData?: object,
     forceFetch: boolean = false,
     serverPagination?: ServerPaginationOptions,
-    serverSearch?: ServerSearchOptions
-  ): Promise<Resource|null> {
+    serverSearch?: ServerSearchOptions,
+  ): Promise<Resource | null> {
     let key = id;
     if (serverPagination) {
-      key = appendServerPaginationToIri(key, serverPagination)
+      key = appendServerPaginationToIri(key, serverPagination);
     }
 
     if (serverSearch) {
-      key = appendServerSearchToIri(key, serverSearch)
+      key = appendServerSearchToIri(key, serverSearch);
     }
 
-    if (localData == null && this.cache.has(key) && !this.loadingList.has(key)) {
+    if (
+      localData == null &&
+      this.cache.has(key) &&
+      !this.loadingList.has(key)
+    ) {
       const resource = this.get(key);
-      if (resource && resource.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
+      if (resource && resource.isFullResource?.() && !forceFetch)
+        return resource; // if resource is not complete, re-fetch it
     }
 
-    return new Promise(async (resolve) => {
-      document.addEventListener('resourceReady', this.resolveResource(key, resolve));
+    return new Promise(async resolve => {
+      document.addEventListener(
+        'resourceReady',
+        this.resolveResource(key, resolve),
+      );
 
       if (this.loadingList.has(key)) return;
       this.loadingList.add(key);
@@ -107,25 +119,57 @@ class Store {
       // Generate proxy
       const clientContext = await myParser.parse(context);
       let resource: any = null;
-      if(this._isLocalId(id)) {
-        if(localData == null) localData = {};
-        localData["@id"] = id;
+      if (this._isLocalId(id)) {
+        if (localData == null) localData = {};
+        localData['@id'] = id;
         resource = localData;
-      } else try {
-        resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination, serverSearch);
-      } catch (error) { console.error(error) }
+      } else
+        try {
+          resource =
+            localData ||
+            (await this.fetchData(
+              id,
+              clientContext,
+              parentId,
+              serverPagination,
+              serverSearch,
+            ));
+        } catch (error) {
+          console.error(error);
+        }
       if (!resource) {
         this.loadingList.delete(key);
-        document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: null, fetchedResource: null } }));
+        document.dispatchEvent(
+          new CustomEvent('resourceReady', {
+            detail: { id: key, resource: null, fetchedResource: null },
+          }),
+        );
         return;
       }
 
-      const serverContext = await myParser.parse([resource['@context'] || base_context]);
+      const serverContext = await myParser.parse([
+        resource['@context'] || base_context,
+      ]);
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
-      await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
+      await this.cacheGraph(
+        resource,
+        clientContext,
+        serverContext,
+        parentId ? parentId : key,
+        serverPagination,
+        serverSearch,
+      );
       this.loadingList.delete(key);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key), fetchedResource: resource } }));
+      document.dispatchEvent(
+        new CustomEvent('resourceReady', {
+          detail: {
+            id: key,
+            resource: this.get(key),
+            fetchedResource: resource,
+          },
+        }),
+      );
     });
   }
 
@@ -133,11 +177,14 @@ class Store {
     let authenticated = false;
     if (this.session) authenticated = await this.session;
 
-    if (this.fetch && authenticated) { // authenticated
-      return this.fetch.then(fn => fn(iri, options))
-    } else { // anonymous
-      if (options.headers) options.headers = this._convertHeaders(options.headers);
-      return fetch(iri, options).then(function(response) {
+    if (this.fetch && authenticated) {
+      // authenticated
+      return this.fetch.then(fn => fn(iri, options));
+    } else {
+      // anonymous
+      if (options.headers)
+        options.headers = this._convertHeaders(options.headers);
+      return fetch(iri, options).then(function (response) {
         return response;
       });
     }
@@ -155,20 +202,20 @@ class Store {
   async fetchData(
     id: string,
     context = {},
-    parentId = "",
+    parentId = '',
     serverPagination?: ServerPaginationOptions,
-    serverSearch?: ServerSearchOptions
+    serverSearch?: ServerSearchOptions,
   ) {
     let iri = this._getAbsoluteIri(id, context, parentId);
-    if (serverPagination) iri = appendServerPaginationToIri(iri, serverPagination);
+    if (serverPagination)
+      iri = appendServerPaginationToIri(iri, serverPagination);
     if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
     const headers = {
       ...this.headers,
-      'accept-language': this._getLanguage()
+      'accept-language': this._getLanguage(),
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
-
 
     /**
      * Fetch data with authentication if available (sib-auth)
@@ -179,14 +226,14 @@ class Store {
     return this.fetchAuthn(iri, {
       method: 'GET',
       headers: headers,
-      credentials: 'include'
-    }).then((response) => {
+      credentials: 'include',
+    }).then(response => {
       if (!response.ok) return;
       return response.json();
-    })
+    });
   }
 
-    /**
+  /**
    * Cache the whole graph
    * @param resource - graph fetched
    * @param clientContext - context of the client app
@@ -201,7 +248,7 @@ class Store {
     parentContext: object,
     parentId: string,
     serverPagination?: ServerPaginationOptions,
-    serverSearch?: ServerSearchOptions
+    serverSearch?: ServerSearchOptions,
   ) {
     // Flatten and compact the graph, which is an issue with large containers having child permissions serialized
     // Because
@@ -212,7 +259,9 @@ class Store {
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
     const flattenedResources = await jsonld.flatten(resource);
-    const compactedResources: any[] = await Promise.all(flattenedResources.map(r => jsonld.compact(r, {})))
+    const compactedResources: any[] = await Promise.all(
+      flattenedResources.map(r => jsonld.compact(r, {})),
+    );
     for (let resource of compactedResources) {
       let id = resource['@id'] || resource['id'];
       let key = resource['@id'] || resource['id'];
@@ -225,17 +274,34 @@ class Store {
       // Using a dedicated method in the custom-getter.
 
       // We have to add the server search and pagination attributes again here to the resource cache key
-      if (key === id && resource['@type'] == this.getExpandedPredicate("ldp:Container", clientContext)) { // Add only pagination and search params to the original resource
-        if (serverPagination) key = appendServerPaginationToIri(key, serverPagination);
+      if (
+        key === id &&
+        resource['@type'] ==
+          this.getExpandedPredicate('ldp:Container', clientContext)
+      ) {
+        // Add only pagination and search params to the original resource
+        if (serverPagination)
+          key = appendServerPaginationToIri(key, serverPagination);
         if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
       }
 
-      const resourceProxy = new CustomGetter(key, resource, clientContext, parentContext, parentId, serverPagination, serverSearch).getProxy();
-      if (resourceProxy.isContainer()) this.subscribeChildren(resourceProxy, id);
+      const resourceProxy = new CustomGetter(
+        key,
+        resource,
+        clientContext,
+        parentContext,
+        parentId,
+        serverPagination,
+        serverSearch,
+      ).getProxy();
+      if (resourceProxy.isContainer())
+        this.subscribeChildren(resourceProxy, id);
 
-      if (this.get(key)) { // if already cached, merge data
+      if (this.get(key)) {
+        // if already cached, merge data
         this.cache.get(key).merge(resourceProxy);
-      } else {  // else, put in cache
+      } else {
+        // else, put in cache
         this.cacheResource(key, resourceProxy);
       }
     }
@@ -263,14 +329,16 @@ class Store {
         method: method,
         headers: this.headers,
         body: JSON.stringify(resource),
-        credentials: 'include'
+        credentials: 'include',
       });
 
     const resourceProxy = store.get(id);
-    const clientContext = resourceProxy ? {...resourceProxy.clientContext, ...resource['@context']} : resource['@context']
+    const clientContext = resourceProxy
+      ? { ...resourceProxy.clientContext, ...resource['@context'] }
+      : resource['@context'];
     this.clearCache(id);
     await this.getData(id, clientContext, '', resource);
-    return {ok: true}
+    return { ok: true };
   }
 
   /**
@@ -283,7 +351,7 @@ class Store {
       this.subscribeResourceTo(containerId, res['@id'] || res['id']);
     }
   }
-  
+
   /**
    * Update a resource
    * @param method - can be POST, PUT or PATCH
@@ -292,22 +360,35 @@ class Store {
    * @returns void
    */
   async _updateResource(method: string, resource: object, id: string) {
-    if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method)) throw new Error('Error: method not allowed');
+    if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method))
+      throw new Error('Error: method not allowed');
 
     const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
-    return this._fetch(method, resource, id).then(async(response) => {
+    return this._fetch(method, resource, id).then(async response => {
       if (response.ok) {
-        if(method !== '_LOCAL') {
+        if (method !== '_LOCAL') {
           this.clearCache(expandedId);
         } // clear cache
-        this.getData(expandedId, resource['@context']).then(async () => { // re-fetch data
+        this.getData(expandedId, resource['@context']).then(async () => {
+          // re-fetch data
           const nestedResources = await this.getNestedResources(resource, id);
-          const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-          const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
+          const resourcesToRefresh =
+            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+          const resourcesToNotify =
+            this.subscriptionIndex.get(expandedId) || [];
 
-          return this.refreshResources([...nestedResources, ...resourcesToRefresh]) // refresh related resources
-            .then(resourceIds => this.notifyResources([expandedId, ...resourceIds, ...resourcesToNotify])); // notify components
+          return this.refreshResources([
+            ...nestedResources,
+            ...resourcesToRefresh,
+          ]) // refresh related resources
+            .then(resourceIds =>
+              this.notifyResources([
+                expandedId,
+                ...resourceIds,
+                ...resourcesToNotify,
+              ]),
+            ); // notify components
         });
         return response.headers?.get('Location') || null;
       } else {
@@ -323,11 +404,18 @@ class Store {
    */
   async refreshResources(resourceIds: string[]) {
     resourceIds = [...new Set(resourceIds.filter(id => this.cache.has(id)))]; // remove duplicates and not cached resources
-    const resourceWithContexts = resourceIds.map(resourceId => ({ "id": resourceId, "context": store.get(resourceId)?.clientContext }));
+    const resourceWithContexts = resourceIds.map(resourceId => ({
+      id: resourceId,
+      context: store.get(resourceId)?.clientContext,
+    }));
     for (const resource of resourceWithContexts) {
       if (!this._isLocalId(resource.id)) this.clearCache(resource.id);
     }
-    await Promise.all(resourceWithContexts.map(({ id, context }) => this.getData(id, context || base_context)))
+    await Promise.all(
+      resourceWithContexts.map(({ id, context }) =>
+        this.getData(id, context || base_context),
+      ),
+    );
     return resourceIds;
   }
   /**
@@ -347,13 +435,15 @@ class Store {
   async getNestedResources(resource: object, id: string) {
     const cachedResource = store.get(id);
     if (!cachedResource || cachedResource.isContainer?.()) return [];
-    let nestedProperties:any[] = [];
+    let nestedProperties: any[] = [];
     const excludeKeys = ['@context'];
     for (let p of Object.keys(resource)) {
-      if (resource[p]
-        && typeof resource[p] === 'object'
-        && !excludeKeys.includes(p)
-        && resource[p]['@id']) {
+      if (
+        resource[p] &&
+        typeof resource[p] === 'object' &&
+        !excludeKeys.includes(p) &&
+        resource[p]['@id']
+      ) {
         nestedProperties.push(resource[p]['@id']);
       }
     }
@@ -366,7 +456,11 @@ class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(id: string, serverPagination?: ServerPaginationOptions, serverSearch?: ServerSearchOptions): Resource | null {
+  get(
+    id: string,
+    serverPagination?: ServerPaginationOptions,
+    serverSearch?: ServerSearchOptions,
+  ): Resource | null {
     if (serverPagination) {
       id = appendServerPaginationToIri(id, serverPagination);
     }
@@ -378,7 +472,6 @@ class Store {
     return this.cache.get(id) || null;
   }
 
-
   /**
    * Removes a resource from the cache
    * @param id - id of the resource to remove from the cache
@@ -389,8 +482,9 @@ class Store {
       const resource = this.cache.get(id);
       if (resource['@type'] === 'ldp:Container') {
         resource['ldp:contains'].forEach((child: object) => {
-          if (child && child['@type'] === 'ldp:Container') this.cache.delete(child['@id'])
-        })
+          if (child && child['@type'] === 'ldp:Container')
+            this.cache.delete(child['@id']);
+        });
       }
 
       this.cache.delete(id);
@@ -453,14 +547,16 @@ class Store {
     const deleted = await this.fetchAuthn(expandedId, {
       method: 'DELETE',
       headers: this.headers,
-      credentials: 'include'
+      credentials: 'include',
     });
 
-    const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
-    const resourcesToRefresh = this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+    const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
+    const resourcesToRefresh =
+      this.subscriptionVirtualContainersIndex.get(expandedId) || [];
 
-    this.refreshResources([...resourcesToNotify, ...resourcesToRefresh])
-      .then(resourceIds => this.notifyResources(resourceIds));
+    this.refreshResources([...resourcesToNotify, ...resourcesToRefresh]).then(
+      resourceIds => this.notifyResources(resourceIds),
+    );
 
     return deleted;
   }
@@ -472,14 +568,16 @@ class Store {
    */
   _convertHeaders(headersObject: object): Headers {
     const headers = new Headers();
-    for (const [key, value] of Object.entries(headersObject)){
+    for (const [key, value] of Object.entries(headersObject)) {
       headers.set(key, value as string);
     }
     return headers;
   }
 
   _getExpandedId(id: string, context: object) {
-    return (context && Object.keys(context)) ? ContextParser.expandTerm(id, context) : id;
+    return context && Object.keys(context)
+      ? ContextParser.expandTerm(id, context)
+      : id;
   }
 
   /**
@@ -489,9 +587,8 @@ class Store {
    * @returns The fully expanded term
    */
   getExpandedPredicate(property: string, context: object | null) {
-    if (!context)
-      return ContextParser.expandTerm(property, base_context, true)
-    return ContextParser.expandTerm(property, context, true)
+    if (!context) return ContextParser.expandTerm(property, base_context, true);
+    return ContextParser.expandTerm(property, context, true);
   }
 
   /**
@@ -501,9 +598,8 @@ class Store {
    * @returns The compacted term
    */
   getCompactedIri(property: string, context: object | null) {
-    if (!context)
-      return ContextParser.compactIri(property, base_context, true)
-    return ContextParser.compactIri(property, context, true)
+    if (!context) return ContextParser.compactIri(property, base_context, true);
+    return ContextParser.compactIri(property, context, true);
   }
 
   /**
@@ -521,8 +617,11 @@ class Store {
    * @param nestedResourceId - id of the resource which will change
    */
   subscribeResourceTo(resourceId: string, nestedResourceId: string) {
-    const existingSubscriptions = this.subscriptionIndex.get(nestedResourceId) || [];
-    this.subscriptionIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, resourceId])])
+    const existingSubscriptions =
+      this.subscriptionIndex.get(nestedResourceId) || [];
+    this.subscriptionIndex.set(nestedResourceId, [
+      ...new Set([...existingSubscriptions, resourceId]),
+    ]);
   }
 
   /**
@@ -530,9 +629,15 @@ class Store {
    * @param virtualContainerId - id of the container which needs to be updated
    * @param nestedResourceId - id of the resource which will change
    */
-  subscribeVirtualContainerTo(virtualContainerId: string, nestedResourceId: string) {
-    const existingSubscriptions = this.subscriptionVirtualContainersIndex.get(nestedResourceId) || [];
-    this.subscriptionVirtualContainersIndex.set(nestedResourceId, [...new Set([...existingSubscriptions, virtualContainerId])])
+  subscribeVirtualContainerTo(
+    virtualContainerId: string,
+    nestedResourceId: string,
+  ) {
+    const existingSubscriptions =
+      this.subscriptionVirtualContainersIndex.get(nestedResourceId) || [];
+    this.subscriptionVirtualContainersIndex.set(nestedResourceId, [
+      ...new Set([...existingSubscriptions, virtualContainerId]),
+    ]);
   }
 
   /**
@@ -543,7 +648,8 @@ class Store {
    */
   _getAbsoluteIri(id: string, context: object, parentId: string): string {
     let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
-    if (parentId && !parentId.startsWith('store://local')) { // and get full URL from parent caller for local files
+    if (parentId && !parentId.startsWith('store://local')) {
+      // and get full URL from parent caller for local files
       let parentIri = new URL(parentId, document.location.href).href;
       iri = new URL(iri, parentIri).href;
     } else {
@@ -563,7 +669,9 @@ class Store {
    * Return language of the users
    */
   _getLanguage() {
-    return localStorage.getItem('language') || window.navigator.language.slice(0,2);
+    return (
+      localStorage.getItem('language') || window.navigator.language.slice(0, 2)
+    );
   }
 
   /**
@@ -574,10 +682,10 @@ class Store {
     localStorage.setItem('language', selectedLanguageCode);
   }
 
-  resolveResource = function(id: string, resolve) {
-    const handler = function(event) {
+  resolveResource = function (id: string, resolve) {
+    const handler = function (event) {
       if (event.detail.id === id) {
-        if(event.detail.resource) {
+        if (event.detail.resource) {
           resolve(event.detail.resource);
         } else {
           resolve(event.detail.fetchedResource);
@@ -595,18 +703,18 @@ if (window.sibStore) {
   store = window.sibStore;
 } else {
   const sibAuth = document.querySelector('sib-auth');
-  const storeOptions: StoreOptions = {}
+  const storeOptions: StoreOptions = {};
 
   if (sibAuth) {
     const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
-    storeOptions.session = sibAuthDefined.then(() => (sibAuth as any).session)
-    storeOptions.fetchMethod = sibAuthDefined.then(() => (sibAuth as any).getFetch())
+    storeOptions.session = sibAuthDefined.then(() => (sibAuth as any).session);
+    storeOptions.fetchMethod = sibAuthDefined.then(() =>
+      (sibAuth as any).getFetch(),
+    );
   }
 
   store = new Store(storeOptions);
   window.sibStore = store;
 }
 
-export {
-  store
-};
+export { store };

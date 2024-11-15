@@ -16,7 +16,7 @@ const attributeDirectory = {
   placeholder: PlaceholderMixin,
   bool: BooleanMixin,
   num: NumberMixin,
-}
+};
 
 export {
   attributeDirectory,
@@ -26,4 +26,4 @@ export {
   MailtoMixin,
   TelMixin,
   PlaceholderMixin,
-}
+};

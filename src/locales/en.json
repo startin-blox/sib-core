@@ -1,11 +1,11 @@
 {
-    "autocompletion.placeholder": "Select a value",
-    "autocompletion.searchPlaceholder": "Search",
-    "autocompletion.searchText": "No result",
-    "solid-delete.button": "Delete",
-    "solid-form.submit-button": "Submit",
-    "solid-form.validation-error": "A validation error occurred.",
-    "validation.message": "Please, confirm your choice",
-    "validation.submit-text": "Yes",
-    "validation.cancel-text": "Cancel"
+  "autocompletion.placeholder": "Select a value",
+  "autocompletion.searchPlaceholder": "Search",
+  "autocompletion.searchText": "No result",
+  "solid-delete.button": "Delete",
+  "solid-form.submit-button": "Submit",
+  "solid-form.validation-error": "A validation error occurred.",
+  "validation.message": "Please, confirm your choice",
+  "validation.submit-text": "Yes",
+  "validation.cancel-text": "Cancel"
 }

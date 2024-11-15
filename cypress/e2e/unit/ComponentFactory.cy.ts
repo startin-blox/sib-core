@@ -67,7 +67,7 @@ const Component = {
     myAttribute: {
       type: String,
       default: 'awesome',
-      callback: function() {
+      callback: function () {
         this.change = true;
       },
     },
@@ -112,7 +112,7 @@ const Component = {
   },
 };
 
-describe('Component factory', function() {
+describe('Component factory', function () {
   it('expose html element', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));

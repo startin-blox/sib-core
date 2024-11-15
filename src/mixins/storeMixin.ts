@@ -1,5 +1,8 @@
 import { store } from '../libs/store/store';
-import { formatAttributesToServerSearchOptions, mergeServerSearchOptions } from '../libs/store/server-search';
+import {
+  formatAttributesToServerSearchOptions,
+  mergeServerSearchOptions,
+} from '../libs/store/server-search';
 import { AttributeBinderMixin } from './attributeBinderMixin';
 import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
@@ -15,40 +18,45 @@ const StoreMixin = {
       default: null,
       callback: function (value: boolean) {
         if (value === null) this.fetchData(this.dataSrc);
-      }
+      },
     },
     dataSrc: {
       type: String,
       default: null,
       callback: async function (value: string) {
-        const filteredOnServer = this.element.attributes['filtered-on']?.value === 'server';
+        const filteredOnServer =
+          this.element.attributes['filtered-on']?.value === 'server';
         const limited = this.element.attributes['limit']?.value !== undefined;
-        
+
         if (this.noRender === null && !filteredOnServer && !limited) {
           await this.fetchData(value);
         } else if (this.noRender === null && !filteredOnServer) {
-          this.resourceId = value
+          this.resourceId = value;
         }
       },
     },
     loaderId: {
       type: String,
-      default: ''
+      default: '',
     },
     nestedField: {
       type: String,
-      default: null
+      default: null,
     },
     arrayField: {
       type: String,
       default: null,
       callback: function (value: boolean) {
-        if (value) this.predicateName = store.getExpandedPredicate(this.arrayField, this.context);
-      }
+        if (value)
+          this.predicateName = store.getExpandedPredicate(
+            this.arrayField,
+            this.context,
+          );
+      },
     },
     predicateName: {
       type: String,
-      default: null
+      default: null,
     },
   },
   initialState: {
@@ -61,12 +69,14 @@ const StoreMixin = {
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
-  get resource(): Resource|null{
+  get resource(): Resource | null {
     let id = this.resourceId;
-    const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes)
+    const serverPagination = formatAttributesToServerPaginationOptions(
+      this.element.attributes,
+    );
     const serverSearch = mergeServerSearchOptions(
       formatAttributesToServerSearchOptions(this.element.attributes),
-      this.getDynamicServerSearch?.() // from `filterMixin`
+      this.getDynamicServerSearch?.(), // from `filterMixin`
     );
 
     return id ? store.get(id, serverPagination, serverSearch) : null;
@@ -77,7 +87,7 @@ const StoreMixin = {
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
-    if (!value || value == "undefined") return;
+    if (!value || value == 'undefined') return;
 
     this.resourceId = value;
     if (this.nestedField) {
@@ -99,15 +109,28 @@ const StoreMixin = {
 
     this.updateNavigateSubscription();
 
-    this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    const serverPagination = formatAttributesToServerPaginationOptions(this.element.attributes);
+    this.subscription = PubSub.subscribe(
+      this.resourceId,
+      this.updateDOM.bind(this),
+    );
+    const serverPagination = formatAttributesToServerPaginationOptions(
+      this.element.attributes,
+    );
     const dynamicServerSearch = this.getDynamicServerSearch?.(); // from `filterMixin`
     const serverSearch = mergeServerSearchOptions(
       formatAttributesToServerSearchOptions(this.element.attributes),
-      dynamicServerSearch
+      dynamicServerSearch,
     );
     const forceRefetch = !!dynamicServerSearch;
-    await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
+    await store.getData(
+      this.resourceId,
+      this.context,
+      undefined,
+      undefined,
+      forceRefetch,
+      serverPagination,
+      serverSearch,
+    );
 
     this.updateDOM();
   },
@@ -115,24 +138,26 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  updateNavigateSubscription() { },
+  updateNavigateSubscription() {},
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.replaceAttributesData();
     await this.populate();
-    setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
+    setTimeout(() =>
+      // Brings the dispatchEvent at the end of the queue
+      this.element.dispatchEvent(
+        new CustomEvent('populate', {
+          detail: { resource: { '@id': this.dataSrc } },
+        }),
+      ),
     );
     this.toggleLoaderHidden(true);
   },
-  empty():void {
-  },
+  empty(): void {},
   update() {
     if (this.noRender === null) this.updateDOM();
-  }
+  },
 };
 
-export {
-  StoreMixin
-}
+export { StoreMixin };

@@ -1,4 +1,4 @@
-describe('Component factory', function() {
+describe('Component factory', function () {
   let Sib: typeof import('../../../src/libs/Sib').Sib;
   let win: Window;
   let doc: Document;

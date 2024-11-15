@@ -1,4 +1,4 @@
-import { html, render } from "lit";
+import { html, render } from 'lit';
 
 const ServerPaginationMixin = {
   name: 'server-pagination-mixin',
@@ -6,20 +6,20 @@ const ServerPaginationMixin = {
   attributes: {
     limit: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     offset: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     pageCount: {
       type: Number,
-      default: 1000
+      default: 1000,
     },
     pageNumber: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   initialState: {
     currentOffset: [],
@@ -29,20 +29,20 @@ const ServerPaginationMixin = {
     if (this.limit) {
       this.setCurrentOffset(this.resourceId, 0);
       const parentDiv = this.initServerPaginationDiv(this.div);
-    
+
       this.renderCallbacks.push({
         template: this.renderServerPaginationNav(this.resourceId, parentDiv),
-        parent: parentDiv
+        parent: parentDiv,
       });
     }
   },
 
   getCurrentOffset(resourceId: string, limit: number) {
-    return this.currentOffset[resourceId + "#p" + limit];
+    return this.currentOffset[resourceId + '#p' + limit];
   },
 
   async setCurrentOffset(resourceId: string, offset: number): Promise<void> {
-    let index = resourceId + "#p" + this.limit;
+    let index = resourceId + '#p' + this.limit;
     this.currentOffset[index] = this.offset = offset;
     this.pageNumber = Number(this.offset / this.limit);
     this.currentPage[resourceId] = this.pageNumber;
@@ -51,7 +51,7 @@ const ServerPaginationMixin = {
   },
 
   async decreaseCurrentOffset(resourceId: string): Promise<void> {
-    let index = resourceId + "#p" + this.limit;
+    let index = resourceId + '#p' + this.limit;
     this.currentOffset[index] = this.offset = this.offset - this.limit;
     this.currentPage[index] = this.offset / this.limit;
     this.pageNumber = this.offset / this.limit;
@@ -61,7 +61,7 @@ const ServerPaginationMixin = {
   },
 
   async increaseCurrentOffset(resourceId: string): Promise<void> {
-    let index = resourceId + "#p" + this.limit;
+    let index = resourceId + '#p' + this.limit;
     this.currentOffset[index] = this.offset = this.offset + this.limit;
     this.currentPage[index] = this.offset / this.limit;
 
@@ -70,14 +70,15 @@ const ServerPaginationMixin = {
   },
 
   async updateNavButtons(resourceId: string, index: string, variance: number) {
-    this.element.querySelector("[data-id='prev']").disabled = this.currentOffset[index] <= 0;
+    this.element.querySelector("[data-id='prev']").disabled =
+      this.currentOffset[index] <= 0;
     // this.element.querySelector("[data-id='next']").disabled = await this.resource['ldp:contains'].length == 0;
-    this.element.querySelector("[data-id='current']").innerText = this.getCurrentServedPage(resourceId, variance);
-
+    this.element.querySelector("[data-id='current']").innerText =
+      this.getCurrentServedPage(resourceId, variance);
   },
 
   getServerNavElement(div: HTMLElement) {
-    if(div) {
+    if (div) {
       const insertNode = div.parentNode || div;
       return insertNode.querySelector(`nav[data-id="nav"]`);
     }
@@ -95,7 +96,7 @@ const ServerPaginationMixin = {
    * Find nav element or create it if not existing
    * @param div - insert nav next to this div
    */
-   initServerPaginationDiv(div: HTMLElement) {
+  initServerPaginationDiv(div: HTMLElement) {
     let nav = this.getServerNavElement(div);
     if (!nav) {
       nav = document.createElement('nav');
@@ -115,7 +116,8 @@ const ServerPaginationMixin = {
       var currentPageNumber = this.getCurrentServedPage(resourceId, 1);
       const pageCount = Math.ceil(this.pageCount / this.limit);
 
-      render(html`
+      render(
+        html`
         <button
           data-id="prev"
           ?disabled=${currentOffset <= 0}
@@ -127,15 +129,15 @@ const ServerPaginationMixin = {
         <button
           data-id="next"
           ?disabled=${currentOffset >= (pageCount - 1) * this.limit}
-          @click=${ () => this.increaseCurrentOffset(resourceId)}
+          @click=${() => this.increaseCurrentOffset(resourceId)}
         >→</button>
         <span>
         </span>
-      `, div);
+      `,
+        div,
+      );
     }
   },
-}
+};
 
-export {
-  ServerPaginationMixin
-}
+export { ServerPaginationMixin };

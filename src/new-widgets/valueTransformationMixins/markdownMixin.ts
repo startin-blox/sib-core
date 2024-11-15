@@ -7,9 +7,15 @@ import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 const MarkdownMixin = {
   name: 'markdown-mixin',
   created() {
-    this.listValueTransformations.attach(this.transformValue.bind(this), "MarkdownMixin:transformValue");
+    this.listValueTransformations.attach(
+      this.transformValue.bind(this),
+      'MarkdownMixin:transformValue',
+    );
   },
-  transformValue(value: string, listValueTransformations: PostProcessorRegistry) {
+  transformValue(
+    value: string,
+    listValueTransformations: PostProcessorRegistry,
+  ) {
     let newValue: any = '';
     if (value) {
       const md = markdownit({
@@ -22,7 +28,7 @@ const MarkdownMixin = {
         attrs: {
           target: '_blank',
           rel: 'noopener',
-        }
+        },
       });
 
       const html = md.render(value);
@@ -31,9 +37,7 @@ const MarkdownMixin = {
 
     const nextProcessor = listValueTransformations.shift();
     if (nextProcessor) nextProcessor(newValue, listValueTransformations);
-  }
-}
+  },
+};
 
-export {
-  MarkdownMixin
-}
+export { MarkdownMixin };

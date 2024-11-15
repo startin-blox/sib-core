@@ -1,18 +1,11 @@
 {
   "@context": "https://colibris.social/context.json",
   "id": "/examples/data/list/universite.jsonld",
-  "type": [
-    "ldp:Container",
-    "ldp:BasicContainer"
-  ],
+  "type": ["ldp:Container", "ldp:BasicContainer"],
   "ldp:contains": [
     {
       "id": "/examples/data/list/universite/courses.jsonld",
-      "type": [
-        "ldp:Container",
-        "ldp:BasicContainer",
-        "ldp:Resource"
-      ]
+      "type": ["ldp:Container", "ldp:BasicContainer", "ldp:Resource"]
     }
   ]
 }

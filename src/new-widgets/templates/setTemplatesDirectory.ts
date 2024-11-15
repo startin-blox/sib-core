@@ -4,14 +4,14 @@ import { SetMixin } from '../templatesDependencies/setMixin';
 export const setTemplates = {
   default: {
     template: () => html``,
-    dependencies: [ SetMixin ]
+    dependencies: [SetMixin],
   },
   div: {
     template: () => html`<div data-content></div>`,
-    dependencies: [ SetMixin ]
+    dependencies: [SetMixin],
   },
   ul: {
     template: () => html`<ul data-content></ul>`,
-    dependencies: [ SetMixin ]
-  }
-}
+    dependencies: [SetMixin],
+  },
+};

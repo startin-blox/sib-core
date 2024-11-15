@@ -7,7 +7,7 @@ if (!('flat' in Array.prototype)) {
       if (depth === 0) return Array.prototype.slice.call(this);
       return Array.prototype.reduce.call<any, any[], any[]>(
         this,
-        function(acc:any[], cur: any) {
+        function (acc: any[], cur: any) {
           if (Array.isArray(cur)) {
             acc.push.apply(acc, flat.call(cur, depth - 1));
           } else {
@@ -24,7 +24,7 @@ if (!('flat' in Array.prototype)) {
 
 // Element.prototype.toggleAttribute
 if (!Element.prototype.toggleAttribute) {
-  Element.prototype.toggleAttribute = function(name, force = undefined) {
+  Element.prototype.toggleAttribute = function (name, force = undefined) {
     if (force !== undefined) force = !!force;
 
     if (this.hasAttribute(name)) {
@@ -40,4 +40,4 @@ if (!Element.prototype.toggleAttribute) {
   };
 }
 
-export {}
+export {};

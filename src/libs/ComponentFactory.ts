@@ -5,20 +5,38 @@ import type {
   AttributesDefinitionInterface,
   ComponentConstructorInterface,
   ArrayOfHooksInterface,
-  AccessorStaticInterface
+  AccessorStaticInterface,
 } from './interfaces';
 
 export class ComponentFactory {
-  public static build(component: MixinStaticInterface): ComponentConstructorInterface {
-    const { initialState, attributes, methods, hooks, accessors, name } = Compositor.merge(component, Compositor.mergeMixin(component));
+  public static build(
+    component: MixinStaticInterface,
+  ): ComponentConstructorInterface {
+    const { initialState, attributes, methods, hooks, accessors, name } =
+      Compositor.merge(component, Compositor.mergeMixin(component));
 
     let componentConstructor = class extends Component {};
 
-    componentConstructor = ComponentFactory.bindInitialState(componentConstructor, initialState);
-    componentConstructor = ComponentFactory.bindAttributes(componentConstructor, attributes);
-    componentConstructor = ComponentFactory.bindMethods(componentConstructor, methods);
-    componentConstructor = ComponentFactory.bindAccessors(componentConstructor, accessors);
-    componentConstructor = ComponentFactory.bindHooks(componentConstructor, hooks);
+    componentConstructor = ComponentFactory.bindInitialState(
+      componentConstructor,
+      initialState,
+    );
+    componentConstructor = ComponentFactory.bindAttributes(
+      componentConstructor,
+      attributes,
+    );
+    componentConstructor = ComponentFactory.bindMethods(
+      componentConstructor,
+      methods,
+    );
+    componentConstructor = ComponentFactory.bindAccessors(
+      componentConstructor,
+      accessors,
+    );
+    componentConstructor = ComponentFactory.bindHooks(
+      componentConstructor,
+      hooks,
+    );
 
     Reflect.defineProperty(componentConstructor, 'name', {
       value: name,
@@ -27,7 +45,10 @@ export class ComponentFactory {
     return componentConstructor;
   }
 
-  protected static bindInitialState(componentConstructor: ComponentConstructorInterface, initialState: object | undefined):any {
+  protected static bindInitialState(
+    componentConstructor: ComponentConstructorInterface,
+    initialState: object | undefined,
+  ): any {
     if (initialState) {
       Reflect.ownKeys(initialState).forEach(key => {
         Reflect.defineProperty(componentConstructor.prototype, key, {
@@ -41,9 +62,14 @@ export class ComponentFactory {
     return componentConstructor;
   }
 
-  protected static bindAttributes(componentConstructor: ComponentConstructorInterface, attributes: AttributesDefinitionInterface | undefined): ComponentConstructorInterface {
+  protected static bindAttributes(
+    componentConstructor: ComponentConstructorInterface,
+    attributes: AttributesDefinitionInterface | undefined,
+  ): ComponentConstructorInterface {
     if (attributes) {
-      const attributesList = Reflect.ownKeys(attributes).map(key => String(key));
+      const attributesList = Reflect.ownKeys(attributes).map(key =>
+        String(key),
+      );
       const attributesCallback = {};
 
       attributesList.forEach(key => {
@@ -75,7 +101,9 @@ export class ComponentFactory {
             break;
         }
 
-        const attribute = key.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase();
+        const attribute = key
+          .replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2')
+          .toLowerCase();
 
         Reflect.defineProperty(componentConstructor.prototype, key, {
           enumerable: true,
@@ -110,39 +138,59 @@ export class ComponentFactory {
       });
 
       Reflect.defineProperty(componentConstructor, 'observedAttributes', {
-        get: () => attributesList.map(attr => attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase()),
+        get: () =>
+          attributesList.map(attr =>
+            attr.replace(/([a-z0-9])([A-Z0-9])/g, '$1-$2').toLowerCase(),
+          ),
       });
 
-      Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', {
-        value: function(key, newValue, oldValue) {
-          if (key in attributesCallback) {
-            Reflect.apply(attributesCallback[key], this, [newValue, oldValue]);
-          }
-        }
-      });
+      Reflect.defineProperty(
+        componentConstructor.prototype,
+        'attributesCallback',
+        {
+          value: function (key, newValue, oldValue) {
+            if (key in attributesCallback) {
+              Reflect.apply(attributesCallback[key], this, [
+                newValue,
+                oldValue,
+              ]);
+            }
+          },
+        },
+      );
 
-      Reflect.defineProperty(componentConstructor.prototype, 'attributesCallback', attributesCallback);
+      Reflect.defineProperty(
+        componentConstructor.prototype,
+        'attributesCallback',
+        attributesCallback,
+      );
     }
     return componentConstructor;
   }
 
-  protected static bindAccessors(componentConstructor: ComponentConstructorInterface, accessors: AccessorStaticInterface): ComponentConstructorInterface {
+  protected static bindAccessors(
+    componentConstructor: ComponentConstructorInterface,
+    accessors: AccessorStaticInterface,
+  ): ComponentConstructorInterface {
     if (accessors) {
       Object.keys(accessors).forEach(property => {
         Reflect.defineProperty(componentConstructor.prototype, property, {
           get: function () {
-            return Reflect.apply(accessors[property].get, this, [])
+            return Reflect.apply(accessors[property].get, this, []);
           },
           set: function (value) {
-            return Reflect.apply(accessors[property].set, this, [value])
-          }
+            return Reflect.apply(accessors[property].set, this, [value]);
+          },
         });
       });
     }
     return componentConstructor;
   }
 
-  protected static bindMethods(componentConstructor: ComponentConstructorInterface, methods: Map<string, Function>): ComponentConstructorInterface {
+  protected static bindMethods(
+    componentConstructor: ComponentConstructorInterface,
+    methods: Map<string, Function>,
+  ): ComponentConstructorInterface {
     methods.forEach((method, methodName: string) => {
       Reflect.defineProperty(componentConstructor.prototype, methodName, {
         value: function (...args) {
@@ -153,9 +201,12 @@ export class ComponentFactory {
     return componentConstructor;
   }
 
-  protected static bindHooks(componentConstructor: ComponentConstructorInterface, hooks: ArrayOfHooksInterface): ComponentConstructorInterface {
+  protected static bindHooks(
+    componentConstructor: ComponentConstructorInterface,
+    hooks: ArrayOfHooksInterface,
+  ): ComponentConstructorInterface {
     Reflect.defineProperty(componentConstructor.prototype, 'created', {
-      value: function() {
+      value: function () {
         hooks.created.forEach(hook => {
           Reflect.apply(hook, this, []);
         });
@@ -163,7 +214,7 @@ export class ComponentFactory {
     });
 
     Reflect.defineProperty(componentConstructor.prototype, 'attached', {
-      value: function() {
+      value: function () {
         hooks.attached.forEach(hook => {
           Reflect.apply(hook, this, []);
         });
@@ -171,7 +222,7 @@ export class ComponentFactory {
     });
 
     Reflect.defineProperty(componentConstructor.prototype, 'detached', {
-      value: function() {
+      value: function () {
         hooks.detached.forEach(hook => {
           Reflect.apply(hook, this, []);
         });

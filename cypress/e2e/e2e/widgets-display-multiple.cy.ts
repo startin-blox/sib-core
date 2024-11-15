@@ -1,6 +1,6 @@
-describe('multiple widgets', function() {
+describe('multiple widgets', function () {
   this.beforeEach('visit', () => {
-    cy.visit('/examples/e2e/widgets-display-multiple.html')
+    cy.visit('/examples/e2e/widgets-display-multiple.html');
   });
 
   it('solid-display-multiple and empty widget', () => {
@@ -9,14 +9,17 @@ describe('multiple widgets', function() {
       .find('empty-skills')
       .should('contain', 'This username has no skills');
     cy.get('solid-multiple#noskill > solid-display > span')
-      .children().should('have.length', 1);
+      .children()
+      .should('have.length', 1);
 
     cy.get('solid-multiple#skills')
       .should('have.attr', 'empty-widget', 'empty-skills')
-      .find('solid-display-value')
+      .find('solid-display-value');
     cy.get('solid-multiple#skills > solid-display > div')
-      .children().should('have.length', 2);
+      .children()
+      .should('have.length', 2);
     cy.get('solid-multiple#skills > solid-display > span')
-      .children().should('not.exist')
+      .children()
+      .should('not.exist');
   });
-})
+});

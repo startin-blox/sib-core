@@ -1,5 +1,5 @@
-import { html, TemplateResult } from "lit";
-import { PostProcessorRegistry } from "../libs/PostProcessorRegistry";
+import { html, TemplateResult } from 'lit';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const PaginateMixin = {
   name: 'paginate-mixin',
@@ -7,12 +7,12 @@ const PaginateMixin = {
   attributes: {
     paginateBy: {
       type: Number,
-      default: 0
+      default: 0,
     },
     paginateLoop: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   initialState: {
     currentPage: [],
@@ -21,23 +21,40 @@ const PaginateMixin = {
     this.currentPage = [];
   },
   attached(): void {
-    this.listPostProcessors.attach(this.paginateCallback.bind(this), 'PaginateMixin:paginateCallback');
+    this.listPostProcessors.attach(
+      this.paginateCallback.bind(this),
+      'PaginateMixin:paginateCallback',
+    );
   },
-  async paginateCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
+  async paginateCallback(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ) {
     if (this.paginateBy > 0) {
       if (!this.currentPage[context]) this.currentPage[context] = 1;
       const parentDiv = this.initParentPaginationDiv(div, context);
       this.renderCallbacks.push({
-        template: this.renderPaginationNav(this.getPageCount(resources.length),context,div),
-        parent: parentDiv
+        template: this.renderPaginationNav(
+          this.getPageCount(resources.length),
+          context,
+          div,
+        ),
+        parent: parentDiv,
       });
 
-      const firstElementIndex = (this.getCurrentPage(context) - 1) * this.paginateBy;
-      resources = resources.slice(firstElementIndex, firstElementIndex + this.paginateBy);
+      const firstElementIndex =
+        (this.getCurrentPage(context) - 1) * this.paginateBy;
+      resources = resources.slice(
+        firstElementIndex,
+        firstElementIndex + this.paginateBy,
+      );
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div,context);
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
   getNavElement(div: HTMLElement) {
     const insertNode = div.parentNode || div;
@@ -79,7 +96,11 @@ const PaginateMixin = {
    * @param pageCount
    * @param context
    */
-  renderPaginationNav(pageCount: number, context: string, div: HTMLElement): TemplateResult {
+  renderPaginationNav(
+    pageCount: number,
+    context: string,
+    div: HTMLElement,
+  ): TemplateResult {
     this.getNavElement(div).toggleAttribute('hidden', pageCount <= 1);
     const currentPage = this.getCurrentPage(context);
 
@@ -92,15 +113,13 @@ const PaginateMixin = {
       <button
         data-id="next"
         ?disabled=${!this.shouldLoop() && currentPage >= pageCount}
-        @click=${ () => this.setCurrentPage(currentPage + 1, context, pageCount)}
+        @click=${() => this.setCurrentPage(currentPage + 1, context, pageCount)}
       >→</button>
       <span>
         <span data-id="current">${currentPage}</span> / <span data-id="count">${String(pageCount)}</span>
       </span>
     `;
   },
-}
+};
 
-export {
-  PaginateMixin
-}
+export { PaginateMixin };

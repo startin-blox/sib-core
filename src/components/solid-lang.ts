@@ -9,19 +9,19 @@ export const SolidLang = {
   attributes: {
     lang: {
       type: String,
-      default: null
+      default: null,
     },
     dataLabel: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
 
   created(): void {
     this.render();
   },
 
-  languageLoader () {
+  languageLoader() {
     store.selectLanguage(this.lang);
     location.reload();
   },
@@ -30,7 +30,7 @@ export const SolidLang = {
     let template = html`<button @click=${this.languageLoader.bind(this)}>${this.dataLabel}</button>`;
 
     render(template, this.element);
-  }
+  },
 };
 
 Sib.register(SolidLang);

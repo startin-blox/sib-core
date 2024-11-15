@@ -11,10 +11,10 @@ export const defaultTemplates = {
         id=${ifDefined(attributes.id)}
         link-text=${ifDefined(attributes.linkText)}
       >
-        ${attributes.linkText == null ? (attributes.name || '') : attributes.linkText}
+        ${attributes.linkText == null ? attributes.name || '' : attributes.linkText}
       </solid-link>
     `,
-    dependencies: [LinkTextMixin]
+    dependencies: [LinkTextMixin],
   },
   multiple: {
     template: (value: string, attributes: any) => html`
@@ -25,6 +25,6 @@ export const defaultTemplates = {
         empty-widget=${ifDefined(attributes.emptyWidget)}
       ></solid-display>
     `,
-    dependencies: []
+    dependencies: [],
   },
-}
+};

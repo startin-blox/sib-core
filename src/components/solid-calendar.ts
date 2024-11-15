@@ -10,26 +10,27 @@ import { html, render } from 'lit';
 
 export const SolidCalendar = {
   name: 'solid-calendar',
-  use: [
-    ListMixin,
-    StoreMixin,
-    NextMixin
-  ],
+  use: [ListMixin, StoreMixin, NextMixin],
   initialState: {
-    subscriptions: null
+    subscriptions: null,
   },
   created(): void {
-    importInlineCSS('tui-calendar', () => import('tui-calendar/dist/tui-calendar.css?inline'))
+    importInlineCSS(
+      'tui-calendar',
+      () => import('tui-calendar/dist/tui-calendar.css?inline'),
+    );
 
     const id = uniqID();
     const template = html`<div id=${id} style="width:100%;height:100%;"></div>`;
     render(template, this.element);
-    this.calendar = new Calendar(this.element.querySelector(`#${id}`), { defaultView: 'month' });
+    this.calendar = new Calendar(this.element.querySelector(`#${id}`), {
+      defaultView: 'month',
+    });
     this.calendar.on('clickSchedule', this.dispatchSelect.bind(this));
     this.subscriptions = new Map();
   },
   get extra_context(): object {
-    return { date: "http://www.w3.org/2001/XMLSchema#dateTime" }
+    return { date: 'http://www.w3.org/2001/XMLSchema#dateTime' };
   },
   dispatchSelect(event: Event): void {
     const resource = { '@id': event['schedule'].id };
@@ -40,9 +41,12 @@ export const SolidCalendar = {
   },
   async appendChildElt(resourceId: string) {
     const resource = await store.getData(resourceId, this.context);
-    if(!resource) return;
+    if (!resource) return;
     if (!this.subscriptions.get(resourceId)) {
-      this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
+      this.subscriptions.set(
+        resourceId,
+        PubSub.subscribe(resourceId, () => this.updateDOM()),
+      );
     } // TODO : mixin gestion des enfants
     const date = await resource['date'];
     const name = await resource['name'];
@@ -60,7 +64,7 @@ export const SolidCalendar = {
   },
   empty(): void {
     this.calendar.clear();
-  }
+  },
 };
 
 Sib.register(SolidCalendar);

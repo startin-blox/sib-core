@@ -1,5 +1,5 @@
-import { Profiler } from "../logger";
-import type { ComponentInterface } from "./interfaces.js";
+import { Profiler } from '../logger';
+import type { ComponentInterface } from './interfaces.js';
 
 export abstract class Component implements ComponentInterface {
   public element: HTMLElement;
@@ -14,5 +14,5 @@ export abstract class Component implements ComponentInterface {
   attached() {}
   detached() {}
 
-  attributesCallback(_key: string, _value: any, _oldValue: any):void {}
+  attributesCallback(_key: string, _value: any, _oldValue: any): void {}
 }

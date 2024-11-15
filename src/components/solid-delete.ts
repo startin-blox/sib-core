@@ -16,7 +16,7 @@ export const SolidDelete = {
       type: String,
       default: null,
       callback: function () {
-       this.resourceId = this.dataSrc;
+        this.resourceId = this.dataSrc;
       },
     },
     dataLabel: {
@@ -25,7 +25,7 @@ export const SolidDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
-    }
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -51,25 +51,26 @@ export const SolidDelete = {
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
   update() {
     this.render();
   },
-  render: trackRenderAsync(
-    async function(): Promise<void> {
-      await this.replaceAttributesData(false);
-      const button = html`<button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>${this.getModalDialog()}`;
-      render(button, this.element);
-    },
-    "SolidDelete:render"
-  )
+  render: trackRenderAsync(async function (): Promise<void> {
+    await this.replaceAttributesData(false);
+    const button = html`<button @click=${this.delete.bind(this)}>${this.dataLabel || this.t('solid-delete.button')}</button>${this.getModalDialog()}`;
+    render(button, this.element);
+  }, 'SolidDelete:render'),
 };
 
 Sib.register(SolidDelete);

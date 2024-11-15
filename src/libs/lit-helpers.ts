@@ -12,7 +12,7 @@ import {
   BooleanAttributePart,
   EventPart,
   PropertyPart,
-  ElementPart
+  ElementPart,
 } from 'lit';
 
 import { directive, Directive, PartInfo, PartType } from 'lit/directive.js';
@@ -24,7 +24,6 @@ type SpreadPartType =
   | EventPart
   | PropertyPart
   | ElementPart;
-
 
 const prevCache = new WeakMap();
 
@@ -54,7 +53,9 @@ class SpreadDirective extends Directive {
     if (part.type === PartType.ATTRIBUTE || part.type === PartType.PROPERTY) {
       element = part.element;
     } else {
-      console.warn('Unsupported part type or missing element, skipping update.');
+      console.warn(
+        'Unsupported part type or missing element, skipping update.',
+      );
       return noChange;
     }
 
@@ -147,13 +148,22 @@ interface CachedTemplateStrings {
   needlessValues: CachedNeedlessValue[];
 }
 
-const templateStringsCache = new WeakMap<TemplateStringsArray, CachedTemplateStrings[]>();
+const templateStringsCache = new WeakMap<
+  TemplateStringsArray,
+  CachedTemplateStrings[]
+>();
 
-function filterOutNeedlessValues(arr: any[], needlessValues: CachedNeedlessValue[]): any[] {
+function filterOutNeedlessValues(
+  arr: any[],
+  needlessValues: CachedNeedlessValue[],
+): any[] {
   return arr.filter((_, i) => !needlessValues.some(nv => nv.index === i));
 }
 
-export function preHTML(strings: TemplateStringsArray, ...values: any[]): TemplateResult {
+export function preHTML(
+  strings: TemplateStringsArray,
+  ...values: any[]
+): TemplateResult {
   let cachedStrings = templateStringsCache.get(strings);
 
   if (cachedStrings) {
@@ -163,7 +173,10 @@ export function preHTML(strings: TemplateStringsArray, ...values: any[]): Templa
 
       if (isSame) {
         // Return cached template result if values match
-        return html(cached.strings, ...filterOutNeedlessValues(values, needlessValues));
+        return html(
+          cached.strings,
+          ...filterOutNeedlessValues(values, needlessValues),
+        );
       }
     }
   }
@@ -196,5 +209,8 @@ export function preHTML(strings: TemplateStringsArray, ...values: any[]): Templa
     needlessValues,
   });
 
-  return html(finalStrings as TemplateStringsArray, ...filterOutNeedlessValues(values, needlessValues));
+  return html(
+    finalStrings as TemplateStringsArray,
+    ...filterOutNeedlessValues(values, needlessValues),
+  );
 }

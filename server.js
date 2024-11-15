@@ -37,11 +37,11 @@ app.use(cors());
 
       const jsonData = await fs.readFile(
         './examples/data/list/users-mocked.jsonld',
-        { encoding: 'utf8' }
+        { encoding: 'utf8' },
       );
       const data = JSON.parse(jsonData);
-      const list = data['ldp:contains'].filter((user) =>
-        user['first_name'].toLowerCase().includes(val.toLowerCase())
+      const list = data['ldp:contains'].filter(user =>
+        user['first_name'].toLowerCase().includes(val.toLowerCase()),
       );
       data['ldp:contains'] = limit ? list.slice(offset, offset + limit) : list;
 

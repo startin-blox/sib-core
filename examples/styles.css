@@ -44,7 +44,7 @@ solid-route[active] {
   background-color: #ccc;
 }
 
-[active]{
+[active] {
   outline: 2px dotted;
 }
 

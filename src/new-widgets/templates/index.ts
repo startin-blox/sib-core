@@ -9,5 +9,5 @@ export {
   displayTemplates,
   formTemplates,
   setTemplates,
-  groupTemplates
-}
+  groupTemplates,
+};

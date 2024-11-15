@@ -6,21 +6,15 @@
       "federation": "users",
       "@id": "https://ldp-server.test/users/",
       "@type": "sib:federatedContainer",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "federation": "users",
       "@id": "https://ldp-server2.test/users/",
       "@type": "sib:federatedContainer",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

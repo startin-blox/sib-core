@@ -11,8 +11,8 @@ const valueTransformationDirectory = {
   multiline: MultilineMixin,
   markdown: MarkdownMixin,
   oembed: OembedMixin,
-  autolink: AutolinkMixin
-}
+  autolink: AutolinkMixin,
+};
 
 export {
   valueTransformationDirectory,
@@ -21,5 +21,5 @@ export {
   MultilineMixin,
   MarkdownMixin,
   OembedMixin,
-  AutolinkMixin
-}
+  AutolinkMixin,
+};

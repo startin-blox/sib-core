@@ -10,8 +10,6 @@
   "city": "",
   "phone": "",
   "website": "[my site](http://drawing.garden/)",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

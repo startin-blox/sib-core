@@ -1,7 +1,7 @@
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import type { Template } from './interfaces';
 
-import {render} from 'lit';
+import { render } from 'lit';
 
 const BaseWidgetMixin = {
   name: 'widget-mixin',
@@ -12,21 +12,21 @@ const BaseWidgetMixin = {
       default: '',
       callback: function () {
         this.planRender();
-      }
+      },
     },
     name: {
       type: String,
       default: '',
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'name');
-      }
+      },
     },
     label: {
       type: String,
       default: null,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'label');
-      }
+      },
     },
     autoSubscribe: {
       type: String,
@@ -34,7 +34,7 @@ const BaseWidgetMixin = {
       callback: function (newValue: string) {
         if (this.subscription) PubSub.unsubscribe(this.subscription);
         this.subscribe(newValue);
-      }
+      },
     },
   },
   initialState: {
@@ -45,7 +45,7 @@ const BaseWidgetMixin = {
     renderPlanned: false,
   },
   get template() {
-    return null
+    return null;
   },
   created() {
     this.listValueTransformations = new PostProcessorRegistry();
@@ -70,8 +70,12 @@ const BaseWidgetMixin = {
     }
   },
   render() {
-    const listValueTransformationsCopy = this.listValueTransformations.deepCopy();
-    listValueTransformationsCopy.attach(this.renderTemplate.bind(this), "BaseWidgetMixin:renderTemplate");
+    const listValueTransformationsCopy =
+      this.listValueTransformations.deepCopy();
+    listValueTransformationsCopy.attach(
+      this.renderTemplate.bind(this),
+      'BaseWidgetMixin:renderTemplate',
+    );
     const nextProcessor = listValueTransformationsCopy.shift();
     nextProcessor(this.value, listValueTransformationsCopy);
 
@@ -82,12 +86,17 @@ const BaseWidgetMixin = {
       nextCallback(this.value, listCallbacksCopy);
     }
 
-    this.element.dispatchEvent(new CustomEvent('widgetRendered', { bubbles: true }));
+    this.element.dispatchEvent(
+      new CustomEvent('widgetRendered', { bubbles: true }),
+    );
   },
   renderTemplate(value: string) {
     const template: Template = this.template(value, { ...this.listAttributes });
     const listTemplateAdditionsCopy = this.listTemplateAdditions.deepCopy();
-    listTemplateAdditionsCopy.attach(this.templateToDOM.bind(this), "BaseWidgetMixin:templateToDOM");
+    listTemplateAdditionsCopy.attach(
+      this.templateToDOM.bind(this),
+      'BaseWidgetMixin:templateToDOM',
+    );
 
     const nextProcessor = listTemplateAdditionsCopy.shift();
     nextProcessor(template, listTemplateAdditionsCopy);
@@ -106,9 +115,7 @@ const BaseWidgetMixin = {
   },
   update() {
     this.planRender();
-  }
-}
+  },
+};
 
-export {
-  BaseWidgetMixin
-}
+export { BaseWidgetMixin };

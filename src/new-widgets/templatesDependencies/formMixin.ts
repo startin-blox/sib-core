@@ -6,14 +6,14 @@ const FormMixin = {
       default: false,
       callback: function () {
         this.listAttributes['required'] = true;
-      }
+      },
     },
     autocomplete: {
       type: String,
       default: '',
-      callback:function (value: string) {
-        this.addToAttributes(value, "autocomplete");
-      }
+      callback: function (value: string) {
+        this.addToAttributes(value, 'autocomplete');
+      },
     },
   },
   attached() {
@@ -26,7 +26,8 @@ const FormMixin = {
   },
   getValue() {
     if (!this.dataHolder || this.dataHolder.length === 0) return this.value;
-    if (this.dataHolder.length > 1) this.showDataHolderError(1, this.dataHolder.length);
+    if (this.dataHolder.length > 1)
+      this.showDataHolderError(1, this.dataHolder.length);
     return this.getValueFromElement(this.dataHolder[0]);
   },
   get type() {
@@ -36,11 +37,19 @@ const FormMixin = {
     return false;
   },
   get dataHolder(): Element[] | null {
-    const dataHolders = Array.from((this.element as Element).querySelectorAll('[data-holder]'));
+    const dataHolders = Array.from(
+      (this.element as Element).querySelectorAll('[data-holder]'),
+    );
     const widgetDataHolders = dataHolders.filter(element => {
-      const dataHolderAncestor = element.parentElement ? element.parentElement.closest('[data-holder]') : null;
+      const dataHolderAncestor = element.parentElement
+        ? element.parentElement.closest('[data-holder]')
+        : null;
       // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
-      return dataHolderAncestor === this.element || !dataHolderAncestor || !this.element.contains(dataHolderAncestor)
+      return (
+        dataHolderAncestor === this.element ||
+        !dataHolderAncestor ||
+        !this.element.contains(dataHolderAncestor)
+      );
     });
 
     return widgetDataHolders.length ? widgetDataHolders : null;
@@ -49,10 +58,10 @@ const FormMixin = {
     return element.component ? element.component.getValue() : element.value;
   },
   showDataHolderError(expected: number, found: number) {
-    console.warn(`Expected ${expected} data-holder element in ${this.element.tagName}. Found ${found}`);
-  }
-}
+    console.warn(
+      `Expected ${expected} data-holder element in ${this.element.tagName}. Found ${found}`,
+    );
+  },
+};
 
-export {
-  FormMixin
-}
+export { FormMixin };

@@ -19,29 +19,28 @@ import { RangeMixin } from './rangeMixin';
 import { SetMixin } from './setMixin';
 import { ValueRichtextMixin } from './valueRichtextMixin';
 
-
 /**
  * Template Depenedices Additions
  */
 export {
-    AltMixin,
-    EditableMixin,
-    FilterRangeFormMixin,
-    FormCheckboxesMixin,
-    FormCheckboxMixin,
-    FormDropdownMixin,
-    FormFileMixin,
-    FormLengthMixin,
-    FormMinMaxMixin,
-    FormMixin,
-    FormNumberMixin,
-    FormRadioMixin,
-    FormStepMixin,
-    LinkTextMixin,
-    MultipleFormMixin,
-    MultipleselectFormMixin,
-    PatternMixin,
-    RangeMixin,
-    SetMixin,
-    ValueRichtextMixin
-}
+  AltMixin,
+  EditableMixin,
+  FilterRangeFormMixin,
+  FormCheckboxesMixin,
+  FormCheckboxMixin,
+  FormDropdownMixin,
+  FormFileMixin,
+  FormLengthMixin,
+  FormMinMaxMixin,
+  FormMixin,
+  FormNumberMixin,
+  FormRadioMixin,
+  FormStepMixin,
+  LinkTextMixin,
+  MultipleFormMixin,
+  MultipleselectFormMixin,
+  PatternMixin,
+  RangeMixin,
+  SetMixin,
+  ValueRichtextMixin,
+};

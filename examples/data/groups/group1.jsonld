@@ -8,8 +8,6 @@
       "@id": "/examples/data/list/--user-2.jsonld"
     }
   ],
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

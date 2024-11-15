@@ -12,10 +12,7 @@ export default defineConfig({
     },
     rollupOptions: {
       preserveEntrySignatures: 'strict',
-      input: [
-        './src/index.ts',
-        './src/libs/helpers.ts',
-      ],
+      input: ['./src/index.ts', './src/libs/helpers.ts'],
       output: {
         dir: 'dist',
         entryFileNames: '[name].js',
@@ -23,6 +20,6 @@ export default defineConfig({
     },
     outDir: 'dist',
     minify: false,
-    reportCompressedSize:false,
+    reportCompressedSize: false,
   },
 });

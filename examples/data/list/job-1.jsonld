@@ -11,11 +11,9 @@
       },
       {
         "@id": "/examples/data/list/skill-4.jsonld"
-      }      
+      }
     ]
   },
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

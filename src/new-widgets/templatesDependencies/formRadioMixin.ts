@@ -6,11 +6,11 @@ const FormRadioMixin = {
     this.listAttributes['id'] = uniqID();
   },
   getValue() {
-    const checkedElement = this.element.querySelector('input[type=radio]:checked') as HTMLInputElement;
+    const checkedElement = this.element.querySelector(
+      'input[type=radio]:checked',
+    ) as HTMLInputElement;
     return checkedElement ? checkedElement.value : '';
   },
-}
+};
 
-export {
-  FormRadioMixin
-}
+export { FormRadioMixin };

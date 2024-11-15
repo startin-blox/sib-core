@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from "../libs/PostProcessorRegistry";
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const SorterMixin = {
   name: 'sorter-mixin',
@@ -6,37 +6,44 @@ const SorterMixin = {
   attributes: {
     orderBy: {
       type: String,
-      default: null
+      default: null,
     },
     orderAsc: {
       type: String,
-      default: null
+      default: null,
     },
     orderDesc: {
       type: String,
-      default: null
+      default: null,
     },
     orderByRandom: {
       type: String,
-      default: null
+      default: null,
     },
     sortedBy: {
-      type:String,
+      type: String,
       default: null,
       callback(newValue: string) {
         // if we change search form, re-populate
-        if (newValue && this.sortForm && newValue !== this.sortForm.getAttribute('id')) {
+        if (
+          newValue &&
+          this.sortForm &&
+          newValue !== this.sortForm.getAttribute('id')
+        ) {
           this.sortForm = null;
           this.populate();
         }
-      }
-    }
+      },
+    },
   },
   initialState: {
-    randomOrder: null
+    randomOrder: null,
   },
   attached(): void {
-    this.listPostProcessors.attach(this.orderCallback.bind(this), 'SorterMixin:orderCallback');
+    this.listPostProcessors.attach(
+      this.orderCallback.bind(this),
+      'SorterMixin:orderCallback',
+    );
   },
   created(): void {
     this.randomOrder = [];
@@ -52,7 +59,12 @@ const SorterMixin = {
     });
   },
 
-  async orderCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {    
+  async orderCallback(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ) {
     if (this.orderBy) this.orderAsc = this.orderBy; // retrocompatibility. remove in 0.15
     let sortingKey = '';
     let orderValueToSort = '';
@@ -67,28 +79,33 @@ const SorterMixin = {
       if (sortedBy != null) {
         if (!this.sortForm) {
           this.sortForm = document.getElementById(sortedBy);
-          if (!this.sortForm) throw `#${sortedBy} is not in DOM`; 
+          if (!this.sortForm) throw `#${sortedBy} is not in DOM`;
           this.linkSorterForm();
         }
         if (!this.sortForm.component.value.field) {
-          console.warn('The attribute field does not exist')
-        } else { 
+          console.warn('The attribute field does not exist');
+        } else {
           sortingKey = this.sortForm.component.value.field['value'];
         }
         const orderField = this.sortForm.component.value.order;
-        orderValueToSort = orderField && orderField.value ? orderField.value : 'asc';
+        orderValueToSort =
+          orderField && orderField.value ? orderField.value : 'asc';
       }
     }
     // sorting data according to the defined value of sortingKey
     if (sortingKey) {
       let orderToSort = true; // set 'asc' by default
-      if (this.orderDesc || orderValueToSort == "desc") orderToSort = false;
-      resources = (await Promise.all(resources.map(async (resource) => ({
-        sortingKey: await resource[sortingKey], // fetch sorting value
-        proxy: resource // and keep proxy
-      }))))
-      .sort(this.sortValuesByKey("sortingKey", orderToSort)) // sort this array
-      .map(r => r.proxy) // re-create array
+      if (this.orderDesc || orderValueToSort == 'desc') orderToSort = false;
+      resources = (
+        await Promise.all(
+          resources.map(async resource => ({
+            sortingKey: await resource[sortingKey], // fetch sorting value
+            proxy: resource, // and keep proxy
+          })),
+        )
+      )
+        .sort(this.sortValuesByKey('sortingKey', orderToSort)) // sort this array
+        .map(r => r.proxy); // re-create array
     }
     // if order-by-random attribute
     else if (this.isRandomSorted()) {
@@ -96,7 +113,8 @@ const SorterMixin = {
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if(nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
   isRandomSorted(): boolean {
     return this.orderByRandom !== null;
@@ -111,21 +129,24 @@ const SorterMixin = {
 
       let comparison = 0;
       if (typeof varA === 'string' && typeof varB === 'string') {
-        comparison = varA.localeCompare(varB, undefined, { sensitivity: 'base' });
+        comparison = varA.localeCompare(varB, undefined, {
+          sensitivity: 'base',
+        });
         comparison = asc ? comparison : -comparison;
       } else {
         if (varA > varB) comparison = asc ? 1 : -1;
         else if (varA < varB) comparison = asc ? -1 : 1;
       }
       return comparison;
-    }
+    };
   },
   shuffleResources(array: object[]): object[] {
     let currentIndex = array.length;
     let temporaryValue: object;
     let randomIndex: number;
-    if (this.randomOrder.length !== array.length) { // if no random order existing
-      this.randomOrder = [ ...Array(array.length).keys() ]; // generate array of indexes
+    if (this.randomOrder.length !== array.length) {
+      // if no random order existing
+      this.randomOrder = [...Array(array.length).keys()]; // generate array of indexes
       while (0 !== currentIndex) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -135,9 +156,7 @@ const SorterMixin = {
       }
     }
     return this.randomOrder.map((i: number) => array[i]); // rebuild array with random order
-  }
-}
+  },
+};
 
-export {
-  SorterMixin
-}
+export { SorterMixin };

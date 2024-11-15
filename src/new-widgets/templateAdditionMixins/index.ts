@@ -9,11 +9,6 @@ const templateAdditionDirectory = {
   label: LabelMixin,
   labellast: LabelLastMixin,
   addable: AddableMixin,
-}
+};
 
-export {
-  templateAdditionDirectory,
-  LabelMixin,
-  LabelLastMixin,
-  AddableMixin,
-}
+export { templateAdditionDirectory, LabelMixin, LabelLastMixin, AddableMixin };

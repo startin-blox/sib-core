@@ -13,35 +13,33 @@ export const SolidWidget = {
   attributes: {
     name: {
       type: String,
-      default: "",
-      required: true
-    }
+      default: '',
+      required: true,
+    },
   },
   attached(): void {
     if (!this.name) return;
     const template = this.template;
     const newWidget = {
       name: this.name,
-      use: [
-        BaseWidgetMixin,
-        StoreMixin,
-        FormMixin,
-        ActionMixin
-      ],
+      use: [BaseWidgetMixin, StoreMixin, FormMixin, ActionMixin],
       attributes: {
         label: {
           type: String,
           default: '',
           callback: function (newValue: string) {
             this.addToAttributes(newValue, 'label');
-          }
+          },
         },
       },
       get template() {
-        return () => this.evalTemplate(template).then((tpl: string) => html`${unsafeHTML(tpl)}`)
+        return () =>
+          this.evalTemplate(template).then(
+            (tpl: string) => html`${unsafeHTML(tpl)}`,
+          );
       },
       evalTemplate(template: string) {
-        const tpl =  evalTemplateString(template, {
+        const tpl = evalTemplateString(template, {
           name: this.name,
           value: this.value || this.resource || '',
           src: this.src,
@@ -55,13 +53,15 @@ export const SolidWidget = {
       },
       // For form widgets, handle nested solid-form
       getValueFromElement(element: any) {
-        if (element.tagName === "SOLID-FORM") return element.component.value; // nested solid-form
+        if (element.tagName === 'SOLID-FORM')
+          return element.component.value; // nested solid-form
         else if (element.component) return element.component.getValue(); // form widget
         return element.value; // input
       },
-      updateDOM() { // override StoreMixin method to launch render when resource fetched
+      updateDOM() {
+        // override StoreMixin method to launch render when resource fetched
         this.planRender();
-      }
+      },
     };
 
     Sib.register(newWidget); // and register component
@@ -72,7 +72,7 @@ export const SolidWidget = {
   get childTemplate(): string | null {
     const child = this.element.querySelector('template[data-range]');
     return child ? child.innerHTML : null;
-  }
+  },
 };
 
 Sib.register(SolidWidget);

@@ -6,26 +6,29 @@ import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const EditableMixin = {
   name: 'editable-mixin',
-  use: [ StoreMixin ], // used to get context
+  use: [StoreMixin], // used to get context
   attributes: {
     editable: {
       type: Boolean,
       default: null,
       callback: function (newValue: boolean) {
         if (newValue !== null) this.listAttributes['editable'] = true;
-      }
+      },
     },
     valueId: {
       type: String,
-      default: ''
+      default: '',
     },
     buttonLabel: {
       type: String,
-      default: 'Modifier'
-    }
+      default: 'Modifier',
+    },
   },
   created() {
-    this.listTemplateAdditions.attach(this.addEditButton.bind(this), "EditableMixin:addEditButton");
+    this.listTemplateAdditions.attach(
+      this.addEditButton.bind(this),
+      'EditableMixin:addEditButton',
+    );
   },
   addEditButton(template, listTemplateAdditions: PostProcessorRegistry) {
     let newTemplate: any = null;
@@ -33,7 +36,8 @@ const EditableMixin = {
       newTemplate = html`${template}<button @click=${this.activateEditableField.bind(this)}>${this.buttonLabel}</button>`;
     }
     const nextProcessor = listTemplateAdditions.shift();
-    if (nextProcessor) nextProcessor(newTemplate || template, listTemplateAdditions);
+    if (nextProcessor)
+      nextProcessor(newTemplate || template, listTemplateAdditions);
   },
   activateEditableField(e: Event): void {
     const editableField = this.element.querySelector('[data-editable]');
@@ -45,7 +49,9 @@ const EditableMixin = {
     editButton.toggleAttribute('disabled', true);
 
     // Save on focusout
-    editableField.addEventListener('focusout', () => this.save(editableField, editButton));
+    editableField.addEventListener('focusout', () =>
+      this.save(editableField, editButton),
+    );
   },
   save(editableField: HTMLElement, editButton: HTMLElement) {
     editableField.toggleAttribute('contenteditable', false);
@@ -61,8 +67,6 @@ const EditableMixin = {
 
     store.patch(resource, this.valueId);
   },
-}
+};
 
-export {
-  EditableMixin
-}
+export { EditableMixin };

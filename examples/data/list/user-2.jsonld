@@ -14,16 +14,12 @@
         "@id": "/examples/data/list/skill-1.jsonld"
       }
     ],
-    "permissions": [
-      "view"
-    ]
+    "permissions": ["view"]
   },
   "profile": {
     "@id": "/examples/data/list/profile-2.jsonld"
   },
   "@type": "foaf:user",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

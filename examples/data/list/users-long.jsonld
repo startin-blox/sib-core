@@ -1,9 +1,7 @@
 {
   "@id": "/examples/data/list/users-long.jsonld",
   "@type": "ldp:Container",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "ldp:contains": [
     {
@@ -14,9 +12,7 @@
       "username": "mayer.glenn",
       "email": "mayer.glenn@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-1.jsonld",
@@ -26,9 +22,7 @@
       "username": "santiago.fowler",
       "email": "santiago.fowler@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-2.jsonld",
@@ -38,9 +32,7 @@
       "username": "imelda.kemp",
       "email": "imelda.kemp@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-3.jsonld",
@@ -50,9 +42,7 @@
       "username": "tillman.mcmahon",
       "email": "tillman.mcmahon@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-4.jsonld",
@@ -62,9 +52,7 @@
       "username": "torres.henry",
       "email": "torres.henry@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-5.jsonld",
@@ -74,9 +62,7 @@
       "username": "ines.head",
       "email": "ines.head@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-6.jsonld",
@@ -86,9 +72,7 @@
       "username": "cotton.sullivan",
       "email": "cotton.sullivan@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-7.jsonld",
@@ -98,9 +82,7 @@
       "username": "nelda.armstrong",
       "email": "nelda.armstrong@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-8.jsonld",
@@ -110,9 +92,7 @@
       "username": "marianne.gentry",
       "email": "marianne.gentry@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-9.jsonld",
@@ -122,9 +102,7 @@
       "username": "sweet.petersen",
       "email": "sweet.petersen@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-10.jsonld",
@@ -134,9 +112,7 @@
       "username": "henry.noble",
       "email": "henry.noble@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-11.jsonld",
@@ -146,9 +122,7 @@
       "username": "rhodes.michael",
       "email": "rhodes.michael@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-12.jsonld",
@@ -158,9 +132,7 @@
       "username": "browning.sherman",
       "email": "browning.sherman@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-13.jsonld",
@@ -170,9 +142,7 @@
       "username": "ellen.walter",
       "email": "ellen.walter@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-14.jsonld",
@@ -182,9 +152,7 @@
       "username": "jolene.winters",
       "email": "jolene.winters@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-15.jsonld",
@@ -194,9 +162,7 @@
       "username": "benton.powell",
       "email": "benton.powell@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-16.jsonld",
@@ -206,9 +172,7 @@
       "username": "lott.franklin",
       "email": "lott.franklin@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-17.jsonld",
@@ -218,9 +182,7 @@
       "username": "noble.ramirez",
       "email": "noble.ramirez@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-18.jsonld",
@@ -230,9 +192,7 @@
       "username": "case.gillespie",
       "email": "case.gillespie@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-19.jsonld",
@@ -242,9 +202,7 @@
       "username": "oneill.frank",
       "email": "oneill.frank@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-20.jsonld",
@@ -254,9 +212,7 @@
       "username": "francesca.tanner",
       "email": "francesca.tanner@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-21.jsonld",
@@ -266,9 +222,7 @@
       "username": "shauna.floyd",
       "email": "shauna.floyd@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-22.jsonld",
@@ -278,9 +232,7 @@
       "username": "michelle.terrell",
       "email": "michelle.terrell@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-23.jsonld",
@@ -290,9 +242,7 @@
       "username": "carmella.bennett",
       "email": "carmella.bennett@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-24.jsonld",
@@ -302,9 +252,7 @@
       "username": "levine.morrison",
       "email": "levine.morrison@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-25.jsonld",
@@ -314,9 +262,7 @@
       "username": "janice.lane",
       "email": "janice.lane@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-26.jsonld",
@@ -326,9 +272,7 @@
       "username": "woods.clay",
       "email": "woods.clay@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-27.jsonld",
@@ -338,9 +282,7 @@
       "username": "anna.abbott",
       "email": "anna.abbott@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-28.jsonld",
@@ -350,9 +292,7 @@
       "username": "atkins.levine",
       "email": "atkins.levine@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-29.jsonld",
@@ -362,9 +302,7 @@
       "username": "tiffany.dunn",
       "email": "tiffany.dunn@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-30.jsonld",
@@ -374,9 +312,7 @@
       "username": "valarie.lindsay",
       "email": "valarie.lindsay@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-31.jsonld",
@@ -386,9 +322,7 @@
       "username": "finley.solis",
       "email": "finley.solis@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-32.jsonld",
@@ -398,9 +332,7 @@
       "username": "mclaughlin.wagner",
       "email": "mclaughlin.wagner@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-33.jsonld",
@@ -410,9 +342,7 @@
       "username": "roslyn.hyde",
       "email": "roslyn.hyde@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-34.jsonld",
@@ -422,9 +352,7 @@
       "username": "rosetta.craig",
       "email": "rosetta.craig@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-35.jsonld",
@@ -434,9 +362,7 @@
       "username": "geraldine.waters",
       "email": "geraldine.waters@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-36.jsonld",
@@ -446,9 +372,7 @@
       "username": "zamora.ellison",
       "email": "zamora.ellison@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-37.jsonld",
@@ -458,9 +382,7 @@
       "username": "eileen.cantu",
       "email": "eileen.cantu@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-38.jsonld",
@@ -470,9 +392,7 @@
       "username": "lynette.oconnor",
       "email": "lynette.oconnor@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-39.jsonld",
@@ -482,9 +402,7 @@
       "username": "maritza.middleton",
       "email": "maritza.middleton@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-40.jsonld",
@@ -494,9 +412,7 @@
       "username": "norman.peters",
       "email": "norman.peters@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-41.jsonld",
@@ -506,9 +422,7 @@
       "username": "lane.navarro",
       "email": "lane.navarro@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-42.jsonld",
@@ -518,9 +432,7 @@
       "username": "oliver.fulton",
       "email": "oliver.fulton@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-43.jsonld",
@@ -530,9 +442,7 @@
       "username": "dale.bishop",
       "email": "dale.bishop@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-44.jsonld",
@@ -542,9 +452,7 @@
       "username": "wise.vazquez",
       "email": "wise.vazquez@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-45.jsonld",
@@ -554,9 +462,7 @@
       "username": "gilliam.moran",
       "email": "gilliam.moran@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-46.jsonld",
@@ -566,9 +472,7 @@
       "username": "ellison.wilson",
       "email": "ellison.wilson@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-47.jsonld",
@@ -578,9 +482,7 @@
       "username": "fanny.sandoval",
       "email": "fanny.sandoval@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-48.jsonld",
@@ -590,9 +492,7 @@
       "username": "hale.macdonald",
       "email": "hale.macdonald@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-49.jsonld",
@@ -602,9 +502,7 @@
       "username": "riley.mcfarland",
       "email": "riley.mcfarland@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-50.jsonld",
@@ -614,9 +512,7 @@
       "username": "prince.wilkerson",
       "email": "prince.wilkerson@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-51.jsonld",
@@ -626,9 +522,7 @@
       "username": "barnett.klein",
       "email": "barnett.klein@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-52.jsonld",
@@ -638,9 +532,7 @@
       "username": "amy.collins",
       "email": "amy.collins@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-53.jsonld",
@@ -650,9 +542,7 @@
       "username": "wells.grant",
       "email": "wells.grant@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-54.jsonld",
@@ -662,9 +552,7 @@
       "username": "melton.peterson",
       "email": "melton.peterson@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-55.jsonld",
@@ -674,9 +562,7 @@
       "username": "davenport.townsend",
       "email": "davenport.townsend@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-56.jsonld",
@@ -686,9 +572,7 @@
       "username": "mayo.flynn",
       "email": "mayo.flynn@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-57.jsonld",
@@ -698,9 +582,7 @@
       "username": "latoya.haynes",
       "email": "latoya.haynes@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-58.jsonld",
@@ -710,9 +592,7 @@
       "username": "catherine.parrish",
       "email": "catherine.parrish@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-59.jsonld",
@@ -722,9 +602,7 @@
       "username": "bernadette.roman",
       "email": "bernadette.roman@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-60.jsonld",
@@ -734,9 +612,7 @@
       "username": "jeanne.rosa",
       "email": "jeanne.rosa@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-61.jsonld",
@@ -746,9 +622,7 @@
       "username": "ward.cunningham",
       "email": "ward.cunningham@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-62.jsonld",
@@ -758,9 +632,7 @@
       "username": "melba.nelson",
       "email": "melba.nelson@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-63.jsonld",
@@ -770,9 +642,7 @@
       "username": "johnston.ashley",
       "email": "johnston.ashley@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-64.jsonld",
@@ -782,9 +652,7 @@
       "username": "mavis.sellers",
       "email": "mavis.sellers@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-65.jsonld",
@@ -794,9 +662,7 @@
       "username": "veronica.rollins",
       "email": "veronica.rollins@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-66.jsonld",
@@ -806,9 +672,7 @@
       "username": "renee.melendez",
       "email": "renee.melendez@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-67.jsonld",
@@ -818,9 +682,7 @@
       "username": "mccarty.gates",
       "email": "mccarty.gates@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-68.jsonld",
@@ -830,9 +692,7 @@
       "username": "day.rios",
       "email": "day.rios@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-69.jsonld",
@@ -842,9 +702,7 @@
       "username": "frye.johns",
       "email": "frye.johns@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-70.jsonld",
@@ -854,9 +712,7 @@
       "username": "cheryl.wilkinson",
       "email": "cheryl.wilkinson@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-71.jsonld",
@@ -866,9 +722,7 @@
       "username": "munoz.douglas",
       "email": "munoz.douglas@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-72.jsonld",
@@ -878,9 +732,7 @@
       "username": "debra.cook",
       "email": "debra.cook@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-73.jsonld",
@@ -890,9 +742,7 @@
       "username": "schneider.villarreal",
       "email": "schneider.villarreal@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-74.jsonld",
@@ -902,9 +752,7 @@
       "username": "hayes.holloway",
       "email": "hayes.holloway@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-75.jsonld",
@@ -914,9 +762,7 @@
       "username": "buck.velazquez",
       "email": "buck.velazquez@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-76.jsonld",
@@ -926,9 +772,7 @@
       "username": "aida.pugh",
       "email": "aida.pugh@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-77.jsonld",
@@ -938,9 +782,7 @@
       "username": "pamela.olsen",
       "email": "pamela.olsen@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-78.jsonld",
@@ -950,9 +792,7 @@
       "username": "trudy.lucas",
       "email": "trudy.lucas@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-79.jsonld",
@@ -962,9 +802,7 @@
       "username": "madge.casey",
       "email": "madge.casey@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-80.jsonld",
@@ -974,9 +812,7 @@
       "username": "nicole.palmer",
       "email": "nicole.palmer@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-81.jsonld",
@@ -986,9 +822,7 @@
       "username": "hopper.harrell",
       "email": "hopper.harrell@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-82.jsonld",
@@ -998,9 +832,7 @@
       "username": "chelsea.kennedy",
       "email": "chelsea.kennedy@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-83.jsonld",
@@ -1010,9 +842,7 @@
       "username": "townsend.morin",
       "email": "townsend.morin@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-84.jsonld",
@@ -1022,9 +852,7 @@
       "username": "valenzuela.herring",
       "email": "valenzuela.herring@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-85.jsonld",
@@ -1034,9 +862,7 @@
       "username": "iris.durham",
       "email": "iris.durham@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/--user-86.jsonld",
@@ -1046,9 +872,7 @@
       "username": "guerrero.wooten",
       "email": "guerrero.wooten@example.com",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ]
 }

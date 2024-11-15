@@ -179,11 +179,5 @@
       }
     }
   ],
-  "permissions": [
-    "view",
-    "control",
-    "add",
-    "delete",
-    "change"
-  ]
+  "permissions": ["view", "control", "add", "delete", "change"]
 }

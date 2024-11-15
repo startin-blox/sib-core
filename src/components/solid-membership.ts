@@ -21,7 +21,7 @@ export const SolidMembership = {
     },
     dataTargetSrc: {
       type: String,
-      default: null
+      default: null,
     },
     dataLeaveLabel: {
       type: String,
@@ -40,7 +40,7 @@ export const SolidMembership = {
     classSubmitButton: {
       type: String,
       default: undefined,
-    }
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -55,10 +55,8 @@ export const SolidMembership = {
     let currentUserSession = await store.session;
     if (!currentUserSession) return;
 
-    if (!this.dataTargetSrc)
-      this.userId = await currentUserSession.webId;
-    else
-      this.userId = this.dataTargetSrc;
+    if (!this.dataTargetSrc) this.userId = await currentUserSession.webId;
+    else this.userId = this.dataTargetSrc;
 
     if (!this.userId) return;
 
@@ -74,11 +72,13 @@ export const SolidMembership = {
       this.currentMembers = [this.currentMembers];
     }
 
-    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
+    this.currentMembers = this.currentMembers.map(member => {
+      return { '@id': member['@id'] };
+    });
 
     // Check if current user is member of this group
     this.isMember = this.currentMembers
-      ? this.currentMembers.some((member) => member['@id'] === this.userId)
+      ? this.currentMembers.some(member => member['@id'] === this.userId)
       : false;
   },
   planRender() {
@@ -96,46 +96,55 @@ export const SolidMembership = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async joinGroup() {
-    this.currentMembers.push({"@id": this.userId});
+    this.currentMembers.push({ '@id': this.userId });
     let currentRes = {
-      "@context": this.context,
-      "user_set": this.currentMembers
-    }
+      '@context': this.context,
+      user_set: this.currentMembers,
+    };
     return store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
-        console.warn(`Error while joining group ${this.dataSrc} for user ${this.userId}`);
+        console.warn(
+          `Error while joining group ${this.dataSrc} for user ${this.userId}`,
+        );
         return;
       }
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberAdded', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
     });
   },
   async leaveGroup() {
-    let userSet = this.currentMembers.filter((value) => {
+    let userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
-      if (userId == this.userId) 
-        return false;
+      if (userId == this.userId) return false;
       else return true;
     });
 
     let currentRes = {
-      "@context": this.context,
-      "user_set": userSet
-    }
+      '@context': this.context,
+      user_set: userSet,
+    };
     return store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
-        console.warn(`Error while leaving group ${this.dataSrc} for user ${this.userId}`);
+        console.warn(
+          `Error while leaving group ${this.dataSrc} for user ${this.userId}`,
+        );
         return;
       }
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberRemoved', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
-    })
+    });
   },
   switchMembership() {
     if (this.isMember) {
@@ -144,40 +153,39 @@ export const SolidMembership = {
       return this.joinGroup();
     }
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.switchMembership();
   },
   update() {
     this.render();
   },
-  render: trackRenderAsync(
-    async function(): Promise<void> {
-      await this.populate();
-      let button = html``;
-      if (this.isMember) {
-        button = html`
+  render: trackRenderAsync(async function (): Promise<void> {
+    await this.populate();
+    let button = html``;
+    if (this.isMember) {
+      button = html`
           <solid-ac-checker data-src="${this.dataSrc}"
                 permission="acl:Read"
-                class=${ifDefined(`${this.classSubmitButton ?  'leave ' + this.classSubmitButton: 'leave'}`)}
+                class=${ifDefined(`${this.classSubmitButton ? 'leave ' + this.classSubmitButton : 'leave'}`)}
               >
-            <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t("solid-leave-group.button")}</button>
+            <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t('solid-leave-group.button')}</button>
             ${this.getModalDialog()}
           </solid-ac-checker>
           `;
-      } else {
-        button = html`
+    } else {
+      button = html`
           <solid-ac-checker data-src="${this.dataSrc}"
                 permission="acl:Read"
-                class=${ifDefined(`${this.classSubmitButton ?  'join ' + this.classSubmitButton: 'join'}`)}
+                class=${ifDefined(`${this.classSubmitButton ? 'join ' + this.classSubmitButton : 'join'}`)}
               >
-            <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t("solid-join-group.button")}</button>
+            <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t('solid-join-group.button')}</button>
             ${this.getModalDialog()}
           </solid-ac-checker>
           `;
-      }
-      render(button, this.element);
-    },
-    "SolidMembership:render")
+    }
+    render(button, this.element);
+  }, 'SolidMembership:render'),
 };
 
 Sib.register(SolidMembership);

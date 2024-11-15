@@ -2,7 +2,13 @@ import { Sib } from '../libs/Sib';
 import { BaseWidgetMixin } from './baseWidgetMixin';
 import type { Template, WidgetMixinsInterface } from './interfaces';
 import type { MixinStaticInterface } from '../libs/interfaces';
-import { defaultTemplates, displayTemplates, formTemplates, setTemplates, groupTemplates } from './templates/index';
+import {
+  defaultTemplates,
+  displayTemplates,
+  formTemplates,
+  setTemplates,
+  groupTemplates,
+} from './templates/index';
 import { valueTransformationDirectory } from './valueTransformationMixins/index';
 import { templateAdditionDirectory } from './templateAdditionMixins/index';
 import { attributeDirectory } from './attributeMixins/index';
@@ -19,13 +25,16 @@ const callbackKeys = Object.keys(callbackDirectory);
  */
 export const newWidgetFactory = (tagName: string) => {
   let widgetMixins: WidgetMixinsInterface;
-  try { widgetMixins = getWidgetMixins(tagName) } // get mixins and template
-  catch (e) {
+  try {
+    widgetMixins = getWidgetMixins(tagName);
+  } catch (e) {
+    // get mixins and template
     console.error(e);
     return;
   }
 
-  const newWidget = { // compose widget
+  const newWidget = {
+    // compose widget
     name: tagName,
     use: [
       ...widgetMixins.mixins,
@@ -93,8 +102,8 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
       ...templateAdditions,
       ...(template.dependencies || []),
       ...callbacks,
-    ]
-  }
+    ],
+  };
 }
 
 // create default widgets

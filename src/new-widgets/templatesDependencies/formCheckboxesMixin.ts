@@ -14,31 +14,33 @@ const FormCheckboxesMixin = {
         }
         this.render();
         this.element.dispatchEvent(new Event('change'));
-      }
+      },
     },
   },
   created() {
     this.listAttributes['values'] = [];
   },
   getValue() {
-    const options = Array.from(this.element.querySelectorAll('input')) as HTMLInputElement[];
+    const options = Array.from(
+      this.element.querySelectorAll('input'),
+    ) as HTMLInputElement[];
     return options
       .filter(el => el.checked)
       .map(el => {
         if (!el.value) return null;
         let value = el.value;
-        try { value = JSON.parse(el.value) } catch (e) { }
+        try {
+          value = JSON.parse(el.value);
+        } catch (e) {}
         return value;
-      })
+      });
   },
   get type() {
-    return  this.enum === ''? 'resource' : 'string';
+    return this.enum === '' ? 'resource' : 'string';
   },
   get multiple() {
     return true;
-  }
-}
+  },
+};
 
-export {
-  FormCheckboxesMixin
-}
+export { FormCheckboxesMixin };

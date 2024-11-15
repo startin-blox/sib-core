@@ -1,4 +1,4 @@
-import Fuse from "fuse.js";
+import Fuse from 'fuse.js';
 
 function uniqID(): string {
   return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
@@ -10,11 +10,16 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
-async function evalTemplateString(str: string, variables: {[key:string]:any} = {}) {
+async function evalTemplateString(
+  str: string,
+  variables: { [key: string]: any } = {},
+) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
+    const AsyncFunction = Object.getPrototypeOf(
+      async function () {},
+    ).constructor;
     const func = AsyncFunction.call(null, ...keys, 'return `' + str + '`');
     return await func(...values);
   } catch (e) {
@@ -24,8 +29,8 @@ async function evalTemplateString(str: string, variables: {[key:string]:any} = {
 }
 
 function importCSS(...stylesheets: string[]) {
-  const linksElements: HTMLLinkElement[] = []; 
-  for(let url of stylesheets) {
+  const linksElements: HTMLLinkElement[] = [];
+  for (let url of stylesheets) {
     url = relativeSource(url);
     let link = Array.from(document.head.querySelectorAll('link')).find(
       link => link.href === url,
@@ -36,38 +41,38 @@ function importCSS(...stylesheets: string[]) {
     link.href = url;
     document.head.appendChild(link);
     linksElements.push(link);
-  };
+  }
   return linksElements;
 }
 /**
  * @param id an uniq id to avoid import a style twice
  * @param importer a callback returning this `import()` promise
  * @returns the style element
- * 
+ *
  * typical use:
  * ```js
- * importInlineCSS('bootstrap', () => import('./css/bootstrap.css?inline')) 
+ * importInlineCSS('bootstrap', () => import('./css/bootstrap.css?inline'))
  * // adding '?inline' lets Vite convert css to js
  * ```
  */
 
 function importInlineCSS(
   id: string,
-  importer: string | (() => string | Promise<string | { default: string }>)
+  importer: string | (() => string | Promise<string | { default: string }>),
 ) {
   id = `sib-inline-css-${id}`;
   let style = document.head.querySelector<HTMLStyleElement>(`style#${id}`);
   if (style) return style;
-  style = document.createElement("style");
+  style = document.createElement('style');
   style.id = id;
   document.head.appendChild(style);
   (async () => {
     let textContent: string;
-    if (typeof importer === "string") textContent = importer;
+    if (typeof importer === 'string') textContent = importer;
     else {
       const imported = await importer();
-      if (typeof imported === "string") textContent = imported;
-      else textContent = imported.default || "";
+      if (typeof imported === 'string') textContent = imported;
+      else textContent = imported.default || '';
     }
     style.textContent = textContent;
   })();
@@ -91,11 +96,11 @@ function importJS(...plugins: string[]): HTMLScriptElement[] {
 function relativeSource(source: string) {
   if (!source.match(/^\..?\//)) return new URL(source, document.baseURI).href;
   const e = new Error();
-  if(!e.stack) return source;
+  if (!e.stack) return source;
   const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
   let line = f2.match(/[a-z]+:.*$/);
   if (!line) return source;
-  const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/,'');
+  const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/, '');
   source = new URL(source, calledFile).href;
   return source;
 }
@@ -108,12 +113,12 @@ function loadScript(source: string) {
     script.async = true;
     script.onload = () => setTimeout(resolve, 0);
     script.src = source;
-    if(head) head.appendChild(script);
+    if (head) head.appendChild(script);
   });
 }
 
 function domIsReady(): Promise<void> {
-  return new Promise(function(resolve) {
+  return new Promise(function (resolve) {
     if (document.readyState === 'complete') {
       resolve();
     } else {
@@ -122,7 +127,11 @@ function domIsReady(): Promise<void> {
   });
 }
 
-function setDeepProperty(obj: {[index:string]:any}, path: string[], value: any) {
+function setDeepProperty(
+  obj: { [index: string]: any },
+  path: string[],
+  value: any,
+) {
   const name = path.shift();
   if (name) {
     if (!(name in obj)) obj[name] = {};
@@ -135,16 +144,19 @@ function parseFieldsString(fields: string): string[] {
   let fieldsArray: string[];
 
   // remove all sets from fields
-  while(fields.indexOf('(') > 0){
+  while (fields.indexOf('(') > 0) {
     let firstBracket = fields.indexOf('(');
-    let noset = fields.substring(firstBracket, findClosingBracketMatchIndex(fields, firstBracket)+1)
-    fields = fields.replace(noset, '')
+    let noset = fields.substring(
+      firstBracket,
+      findClosingBracketMatchIndex(fields, firstBracket) + 1,
+    );
+    fields = fields.replace(noset, '');
   }
 
   const re = /((^\s*|,)\s*)(("(\\"|[^"])*")|('(\\'|[^'])*')|[^,]*)/gm; // match , not inside quotes
   fieldsArray = fields.match(re) || []; // separate fields
   if (!fieldsArray) return [];
-  return fieldsArray.map(a => a.replace(/^[\s,]+/, '')) // remove commas and spaces
+  return fieldsArray.map(a => a.replace(/^[\s,]+/, '')); // remove commas and spaces
 }
 
 function findClosingBracketMatchIndex(str: string, pos: number) {
@@ -152,12 +164,12 @@ function findClosingBracketMatchIndex(str: string, pos: number) {
   let depth = 1;
   for (let i = pos + 1; i < str.length; i++) {
     switch (str[i]) {
-    case '(':
-      depth++;
-      break;
-    case ')':
-      if (--depth == 0) return i;
-      break;
+      case '(':
+        depth++;
+        break;
+      case ')':
+        if (--depth == 0) return i;
+        break;
     }
   }
   return -1;
@@ -167,7 +179,9 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
   if (!customElements.get(tagName)) {
     customElements.define(tagName, componentClass);
   } else {
-    console.warn(`Warning: the component "${tagName}" has already been loaded in another version of sib-core.`)
+    console.warn(
+      `Warning: the component "${tagName}" has already been loaded in another version of sib-core.`,
+    );
   }
 }
 
@@ -181,8 +195,9 @@ function fuzzyCompare(subject: string, search: string) {
 
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
-    if(query === '') return true;
-    if(subject.toString().toLowerCase().includes(String(query).toLowerCase())) return true;
+    if (query === '') return true;
+    if (subject.toString().toLowerCase().includes(String(query).toLowerCase()))
+      return true;
     return fuzzyCompare(subject, query);
   },
   boolean(subject: boolean, query: boolean) {
@@ -203,46 +218,46 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   },
   resource(subject, query) {
     // dropdown default ' - ' option return an empty string
-    if(query === '') return true;
+    if (query === '') return true;
     if (!query['@id']) return false;
-    const ret = (subject['@id'] === query['@id']);
+    const ret = subject['@id'] === query['@id'];
     return ret;
-  }
+  },
 };
 
 function generalComparator(a, b, order = 'asc') {
   let comparison = 0;
 
   if (typeof a === 'boolean' && typeof b === 'boolean') {
-      comparison = (a === b) ? 0 : a ? 1 : -1;
+    comparison = a === b ? 0 : a ? 1 : -1;
   } else if (!isNaN(a) && !isNaN(b)) {
-      comparison = Number(a) - Number(b);
+    comparison = Number(a) - Number(b);
   } else if (Array.isArray(a) && Array.isArray(b)) {
     comparison = a.length - b.length;
-  }  else if (!isNaN(Date.parse(a)) && !isNaN(Date.parse(b))) {
-      const dateA = new Date(a);
-      const dateB = new Date(a);
-      comparison =  dateA.getTime() - dateB.getTime();
+  } else if (!isNaN(Date.parse(a)) && !isNaN(Date.parse(b))) {
+    const dateA = new Date(a);
+    const dateB = new Date(a);
+    comparison = dateA.getTime() - dateB.getTime();
   } else if (typeof a === 'object' && typeof b === 'object') {
-      const aKeys = Object.keys(a);
-      const bKeys = Object.keys(b);
-      comparison = aKeys.length - bKeys.length;
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    comparison = aKeys.length - bKeys.length;
   } else if (a == null || b == null) {
-      comparison = a == null ? (b == null ? 0 : -1) : (b == null ? 1 : 0);
+    comparison = a == null ? (b == null ? 0 : -1) : b == null ? 1 : 0;
   } else {
-      comparison = a.toString().localeCompare(b.toString());
+    comparison = a.toString().localeCompare(b.toString());
   }
 
   if (order === 'desc') {
-      comparison = comparison * -1;
+    comparison = comparison * -1;
   }
   return comparison;
-};
-
+}
 
 function transformArrayToContainer(resource: object) {
   const newValue = { ...resource };
-  for (let predicate of Object.keys(newValue)) { // iterate over all properties
+  for (let predicate of Object.keys(newValue)) {
+    // iterate over all properties
     const predicateValue = newValue[predicate];
     if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
     if (['permissions', '@context'].includes(predicate)) continue; // do not transform permissions and context
@@ -252,47 +267,52 @@ function transformArrayToContainer(resource: object) {
       newValue[predicate] = transformArrayToContainer(resource[predicate]);
     }
 
-    if (Array.isArray(predicateValue) && predicateValue['@id']) { // Do not systematically transform arrays to containers
+    if (Array.isArray(predicateValue) && predicateValue['@id']) {
+      // Do not systematically transform arrays to containers
       newValue[predicate] = {
         '@id': predicateValue['@id'],
-        'ldp:contains': [...predicateValue]
+        'ldp:contains': [...predicateValue],
       };
-      newValue[predicate]['ldp:contains'].forEach((childPredicate: any, index: number) => { // but check all nested resources
-        newValue[predicate]['ldp:contains'][index] = transformArrayToContainer(childPredicate);
-      });
+      newValue[predicate]['ldp:contains'].forEach(
+        (childPredicate: any, index: number) => {
+          // but check all nested resources
+          newValue[predicate]['ldp:contains'][index] =
+            transformArrayToContainer(childPredicate);
+        },
+      );
     }
   }
   return newValue;
 }
 
 export default class AsyncIterableBuilder<Type> {
-  readonly #values: Promise<{ value: Type; done: boolean }>[] = []
-  #resolve!: (value: { value: Type; done: boolean }) => void
-  readonly iterable: AsyncIterable<Type>
-  readonly next: (value: Type, done?: boolean) => void
+  readonly #values: Promise<{ value: Type; done: boolean }>[] = [];
+  #resolve!: (value: { value: Type; done: boolean }) => void;
+  readonly iterable: AsyncIterable<Type>;
+  readonly next: (value: Type, done?: boolean) => void;
 
   constructor() {
-    this.#nextPromise()
-    this.iterable = this.#createIterable()
-    this.next = this.#next.bind(this)
+    this.#nextPromise();
+    this.iterable = this.#createIterable();
+    this.next = this.#next.bind(this);
   }
 
   async *#createIterable() {
     for (let index = 0; ; index++) {
-      const { value, done } = await this.#values[index]
-      delete this.#values[index]
-      yield value
-      if (done) return
+      const { value, done } = await this.#values[index];
+      delete this.#values[index];
+      yield value;
+      if (done) return;
     }
   }
 
   #next(value: Type, done: boolean = false) {
-    this.#resolve({ value, done })
-    this.#nextPromise()
+    this.#resolve({ value, done });
+    this.#nextPromise();
   }
 
   #nextPromise() {
-    this.#values.push(new Promise(resolve => (this.#resolve = resolve)))
+    this.#values.push(new Promise(resolve => (this.#resolve = resolve)));
   }
 }
 
@@ -303,7 +323,7 @@ import {
 
 const asyncQuerySelector: AsyncQuerySelectorType = (
   selector: string,
-  parent: ParentNode = document
+  parent: ParentNode = document,
 ) =>
   new Promise<Element>(resolve => {
     const element = parent.querySelector(selector);
@@ -323,7 +343,7 @@ const asyncQuerySelector: AsyncQuerySelectorType = (
 
 const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
   selector: string,
-  parent: ParentNode = document
+  parent: ParentNode = document,
 ) => {
   const delivered = new WeakSet<Element>();
   const { next, iterable } = new AsyncIterableBuilder<Element>();

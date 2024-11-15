@@ -34,12 +34,12 @@ export const SolidMemberDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) {
           this.planRender();
-        } 
+        }
       },
     },
     dataUnknownMember: {
       type: String,
-      default: "Given user is not a member of this group",
+      default: 'Given user is not a member of this group',
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
@@ -70,13 +70,13 @@ export const SolidMemberDelete = {
       this.currentMembers = [this.currentMembers];
     }
 
-    this.currentMembers = this.currentMembers.map((member) => {
-      return { "@id": member['@id'] };
+    this.currentMembers = this.currentMembers.map(member => {
+      return { '@id': member['@id'] };
     });
 
     // Check if current user is member of this group
     this.isMember = this.currentMembers
-      ? this.currentMembers.some((member) => member['@id'] === this.dataTargetSrc)
+      ? this.currentMembers.some(member => member['@id'] === this.dataTargetSrc)
       : false;
   },
   planRender() {
@@ -94,40 +94,44 @@ export const SolidMemberDelete = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async deleteMembership() {
-    let userSet = this.currentMembers.filter((value) => {
+    let userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
-      if (userId == this.dataTargetSrc) 
-        return false;
+      if (userId == this.dataTargetSrc) return false;
       else return true;
     });
 
     let currentRes = {
-      "@context": this.context,
-      "user_set": userSet
-    }
+      '@context': this.context,
+      user_set: userSet,
+    };
     return store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
-        console.warn(`Error while removing user ${this.dataTargetSrc} from group ${this.dataSrc}`);
+        console.warn(
+          `Error while removing user ${this.dataTargetSrc} from group ${this.dataSrc}`,
+        );
         return;
       }
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberRemoved', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deleteMembership();
   },
   update() {
     this.render();
   },
-  render: trackRenderAsync(
-  async function(): Promise<void> {
+  render: trackRenderAsync(async function (): Promise<void> {
     // await this.replaceAttributesData(false);
     await this.populate();
-    let button = html``
+    let button = html``;
     if (this.isMember) {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
@@ -136,16 +140,16 @@ export const SolidMemberDelete = {
             >
           <button
             @click=${this.removeMember.bind(this)}>
-              ${this.dataLabel || this.t("solid-delete-member.button")}
+              ${this.dataLabel || this.t('solid-delete-member.button')}
           </button>
           ${this.getModalDialog()}
         </solid-ac-checker>
         `;
     } else {
-      button = html`<span>${this.dataUnknownMember || this.t("solid-member-unknown.span")}</span>`;
+      button = html`<span>${this.dataUnknownMember || this.t('solid-member-unknown.span')}</span>`;
     }
     render(button, this.element);
-  }, "SolidMemberDelete:render")
+  }, 'SolidMemberDelete:render'),
 };
 
 Sib.register(SolidMemberDelete);

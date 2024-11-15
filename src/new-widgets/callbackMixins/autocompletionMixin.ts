@@ -1,4 +1,8 @@
-import { asyncQuerySelector, fuzzyCompare, importInlineCSS } from '../../libs/helpers';
+import {
+  asyncQuerySelector,
+  fuzzyCompare,
+  importInlineCSS,
+} from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
@@ -12,27 +16,36 @@ const AutocompletionMixin = {
       default: null,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'searchText');
-      }
+      },
     },
     searchPlaceholder: {
       type: String,
       default: null,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'searchPlaceholder');
-      }
+      },
     },
   },
   initialState: {
     slimSelect: null,
-    mutationObserver: null
+    mutationObserver: null,
   },
   created() {
-    importInlineCSS('slimselect-base', () => import('slim-select/styles?inline'));
-    importInlineCSS('slimselect-local', () => import('./slimselect.css?inline'));
+    importInlineCSS(
+      'slimselect-base',
+      () => import('slim-select/styles?inline'),
+    );
+    importInlineCSS(
+      'slimselect-local',
+      () => import('./slimselect.css?inline'),
+    );
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
-    this.listCallbacks.attach(this.addCallback.bind(this), "AutocompletionMixin:addCallback");
+    this.listCallbacks.attach(
+      this.addCallback.bind(this),
+      'AutocompletionMixin:addCallback',
+    );
   },
   detached() {
     if (this.slimSelect) this.slimSelect.destroy();
@@ -42,27 +55,30 @@ const AutocompletionMixin = {
     if (this.slimSelect) return;
     asyncQuerySelector('select:has(option)', this.element).then(select => {
       this.initSlimSelect(select);
-    })
+    });
     const nextProcessor = listCallbacks.shift();
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   async initSlimSelect(select: Element) {
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 500));
     const slimSelect = new SlimSelect({
       select,
       settings: {
-        placeholderText: this.placeholder || this.t("autocompletion.placeholder"),
-        searchText: this.searchText || this.t("autocompletion.searchText"),
-        searchPlaceholder: this.searchPlaceholder || this.t("autocompletion.searchPlaceholder"),
+        placeholderText:
+          this.placeholder || this.t('autocompletion.placeholder'),
+        searchText: this.searchText || this.t('autocompletion.searchText'),
+        searchPlaceholder:
+          this.searchPlaceholder || this.t('autocompletion.searchPlaceholder'),
         contentLocation: this.element,
       },
       events: {
-        searchFilter: (option, filterValue) => fuzzyCompare(option.text, filterValue),
+        searchFilter: (option, filterValue) =>
+          fuzzyCompare(option.text, filterValue),
       },
     });
     this.slimSelect = slimSelect;
-    this.element.addEventListener('input', (e:Event) => {
-      if(e.target !== this.element) {
+    this.element.addEventListener('input', (e: Event) => {
+      if (e.target !== this.element) {
         // avoid update search result when search in slimSelect suggestions
         e.stopPropagation();
       }

@@ -16,10 +16,7 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        "view",
-        "change"
-      ]
+      "permissions": ["view", "change"]
     },
     {
       "@id": "https://ldp-server.test/users/jbpasquier/",
@@ -35,14 +32,9 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "add",
-    "view"
-  ],
+  "permissions": ["add", "view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

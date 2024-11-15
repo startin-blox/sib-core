@@ -30,14 +30,14 @@ const ListMixin = {
     this.appendChildElt(this.resource['@id'], parent);
   },
   setElementAttribute(attr: 'resource' | 'container') {
-    const containerAttribute = "solid-container";
-    const resourceAttribute = "solid-resource";
-    if (attr === "resource") {
+    const containerAttribute = 'solid-container';
+    const resourceAttribute = 'solid-resource';
+    if (attr === 'resource') {
       this.element.removeAttribute(containerAttribute);
-      this.element.setAttribute(resourceAttribute, "");
+      this.element.setAttribute(resourceAttribute, '');
     } else {
       this.element.removeAttribute(resourceAttribute);
-      this.element.setAttribute(containerAttribute, "")
+      this.element.setAttribute(containerAttribute, '');
     }
   },
   async populate(): Promise<void> {
@@ -46,32 +46,52 @@ const ListMixin = {
     if (!this.resource) return;
 
     // Not a container but a single resource
-    if (!this.resource.isContainer?.() && !this.arrayField && !this.predicateName) {
-      this.setElementAttribute("resource");
+    if (
+      !this.resource.isContainer?.() &&
+      !this.arrayField &&
+      !this.predicateName
+    ) {
+      this.setElementAttribute('resource');
       this.appendSingleElt(div);
       return;
     }
 
     if (this.resource.isContainer?.()) {
-      this.setElementAttribute("container");
+      this.setElementAttribute('container');
       this.renderCallbacks = [];
-      listPostProcessorsCopy.attach(this.renderDOM.bind(this), 'ListMixin:renderDOM');
-      listPostProcessorsCopy.attach(this.handleEmptyWidget.bind(this), 'ListMixin:handleEmptyWidget');
+      listPostProcessorsCopy.attach(
+        this.renderDOM.bind(this),
+        'ListMixin:renderDOM',
+      );
+      listPostProcessorsCopy.attach(
+        this.handleEmptyWidget.bind(this),
+        'ListMixin:handleEmptyWidget',
+      );
 
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
-    
+
       await nextProcessor(
         this.resource['ldp:contains'],
         listPostProcessorsCopy,
         div,
         this.dataSrc,
       );
-    } else if (this.arrayField && this.predicateName && this.resource[this.predicateName]) {
-      this.setElementAttribute("container");
+    } else if (
+      this.arrayField &&
+      this.predicateName &&
+      this.resource[this.predicateName]
+    ) {
+      this.setElementAttribute('container');
       this.renderCallbacks = [];
-      listPostProcessorsCopy.attach(this.renderDOM.bind(this), 'ListMixin:renderDOM');
-      listPostProcessorsCopy.attach(this.handleEmptyWidget.bind(this), 'ListMixin:handleEmptyWidget');
+      listPostProcessorsCopy.attach(
+        this.renderDOM.bind(this),
+        'ListMixin:renderDOM',
+      );
+      listPostProcessorsCopy.attach(
+        this.handleEmptyWidget.bind(this),
+        'ListMixin:handleEmptyWidget',
+      );
 
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
@@ -82,14 +102,12 @@ const ListMixin = {
         div,
         this.dataSrc,
       );
-
     }
     // Execute the render callbacks
     for (const renderCallback of this.renderCallbacks) {
       // Render the template in the given parent element
       render(renderCallback.template, renderCallback.parent);
     }
-
   },
 
   /**
@@ -113,12 +131,7 @@ const ListMixin = {
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
-      await nextProcessor(
-        resources,
-        listPostProcessors,
-        div,
-        context
-      );
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
 
   /**
@@ -135,23 +148,21 @@ const ListMixin = {
     context: string,
   ) {
     if (this.emptyWidget) {
-      const emptyWidgetTemplate = preHTML`<${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>`
+      const emptyWidgetTemplate = preHTML`<${this.emptyWidget} value=${ifDefined(this.emptyValue)}></${this.emptyWidget}>`;
       if (!this.emptyWrapper) {
-        this.emptyWrapper = document.createElement('span')
-        this.element.appendChild(this.emptyWrapper)
+        this.emptyWrapper = document.createElement('span');
+        this.element.appendChild(this.emptyWrapper);
       }
 
-      render(resources.length > 0 ? html`` : emptyWidgetTemplate, this.emptyWrapper);
+      render(
+        resources.length > 0 ? html`` : emptyWidgetTemplate,
+        this.emptyWrapper,
+      );
     }
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
-      await nextProcessor(
-        resources,
-        listPostProcessors,
-        div,
-        context
-      );
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
 };
 

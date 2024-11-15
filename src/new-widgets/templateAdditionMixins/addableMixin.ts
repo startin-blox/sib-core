@@ -6,16 +6,27 @@ import { html } from 'lit';
 const AddableMixin = {
   name: 'addable-mixin',
   created() {
-    this.listTemplateAdditions.attach(this.addableValue.bind(this), "AddableMixin:addableValue");
+    this.listTemplateAdditions.attach(
+      this.addableValue.bind(this),
+      'AddableMixin:addableValue',
+    );
   },
   getAddableAttributes() {
-    const addableAttr = (Array.from(this.element.attributes) as Attr[]).filter((a: Attr) => a.name.startsWith('addable-'));
+    const addableAttr = (Array.from(this.element.attributes) as Attr[]).filter(
+      (a: Attr) => a.name.startsWith('addable-'),
+    );
     const cleanAddableAttr: { [key: string]: string } = {};
-    for (let attr of addableAttr) cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
-    if (!cleanAddableAttr.hasOwnProperty('data-src')) cleanAddableAttr['data-src'] = this.range;
+    for (let attr of addableAttr)
+      cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
+    if (!cleanAddableAttr.hasOwnProperty('data-src'))
+      cleanAddableAttr['data-src'] = this.range;
     return cleanAddableAttr;
   },
-  addableValue(template, listTemplateAdditions: PostProcessorRegistry, attributes: object) {
+  addableValue(
+    template,
+    listTemplateAdditions: PostProcessorRegistry,
+    attributes: object,
+  ) {
     const addables = this.getAddableAttributes(attributes);
     const newTemplate = html`
       ${template}
@@ -25,9 +36,7 @@ const AddableMixin = {
 
     const nextProcessor = listTemplateAdditions.shift();
     if (nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);
-  }
-}
+  },
+};
 
-export {
-  AddableMixin
-}
+export { AddableMixin };

@@ -12,7 +12,7 @@
 }
 .sib-custom-marker::after {
   position: absolute;
-  content: '';
+  content: "";
   width: 0px;
   height: 0px;
   bottom: -30px;

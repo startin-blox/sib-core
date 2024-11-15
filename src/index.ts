@@ -1,4 +1,4 @@
-import "./libs/polyfills.js";
+import './libs/polyfills.js';
 // Components
 import { SolidDisplay } from './components/solid-display';
 import { SolidForm } from './components/solid-form';
@@ -65,7 +65,6 @@ export {
   SolidMembership,
   SolidMemberDelete,
   SolidMemberAdd,
-
   // Mixins
   CounterMixin,
   FederationMixin,
@@ -81,14 +80,12 @@ export {
   TranslationMixin,
   ValidationMixin,
   WidgetMixin,
-
   // New widgets system
   AttributeMixins,
   CallbackMixins,
   TemplateAdditionMixins,
   TemplatesDependenciesMixins,
   Templates,
-
   // Libs
   store,
   Sib,
@@ -98,11 +95,10 @@ export {
   BaseWidgetMixin,
   Helpers,
   baseContext,
-
   // lit-html
   html,
   render,
   ifDefined,
   until,
-  unsafeHTML
-}
+  unsafeHTML,
+};

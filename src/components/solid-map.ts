@@ -35,32 +35,44 @@ export const SolidMap = {
   attributes: {
     clustering: {
       type: Boolean,
-      default: null
-    }
+      default: null,
+    },
   },
   initialState: {
     markers: {
-      default: null
+      default: null,
     },
     subscriptions: null,
     resetPlanned: false,
-    hasBeenResetOnce: false
+    hasBeenResetOnce: false,
   },
   created(): void {
-    importInlineCSS('leaflet', () => import('leaflet/dist/leaflet.css?inline'))
-    importInlineCSS('default-theme', () => import('../style/default-theme.css?inline'))
-    importInlineCSS('marker-cluster', () => import('leaflet.markercluster/dist/MarkerCluster.css?inline'))
-    importInlineCSS('marker-cluster-default', () => import('leaflet.markercluster/dist/MarkerCluster.Default.css?inline'))
+    importInlineCSS('leaflet', () => import('leaflet/dist/leaflet.css?inline'));
+    importInlineCSS(
+      'default-theme',
+      () => import('../style/default-theme.css?inline'),
+    );
+    importInlineCSS(
+      'marker-cluster',
+      () => import('leaflet.markercluster/dist/MarkerCluster.css?inline'),
+    );
+    importInlineCSS(
+      'marker-cluster-default',
+      () =>
+        import('leaflet.markercluster/dist/MarkerCluster.Default.css?inline'),
+    );
 
     // reset when it becomes visible to prevent bug https://git.startinblox.com/framework/sib-core/issues/661
     document.body.addEventListener('navigate', () =>
-      setTimeout(() => this.isVisible && !this.hasBeenResetOnce && this.reset())
+      setTimeout(
+        () => this.isVisible && !this.hasBeenResetOnce && this.reset(),
+      ),
     );
     this.markers = [];
     this.subscriptions = new Map();
   },
   get isVisible() {
-    return this.element.offsetParent !== null
+    return this.element.offsetParent !== null;
   },
   attached(): void {
     const id = uniqID();
@@ -73,7 +85,7 @@ export const SolidMap = {
     this.map = L.map(div);
 
     L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
     ).addTo(this.map);
 
     if (this.clustering !== null) {
@@ -82,7 +94,8 @@ export const SolidMap = {
     }
   },
   reset() {
-    if (this.isVisible) { // reset only if visible
+    if (this.isVisible) {
+      // reset only if visible
       this.map.invalidateSize();
 
       if (this.markers.length) {
@@ -102,14 +115,14 @@ export const SolidMap = {
       setTimeout(() => {
         this.reset();
         this.resetPlanned = false;
-      })
+      });
     }
   },
   dispatchSelect(event: CustomEvent): void {
     const target = event.target as Element;
     const resource = target['options'].resource;
     this.element.dispatchEvent(
-      new CustomEvent('resourceSelect', { detail: { resource: resource } })
+      new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
     this.goToNext(resource);
   },
@@ -122,31 +135,38 @@ export const SolidMap = {
   async appendChildElt(resourceId: string, groupClass: string) {
     const resource = await store.getData(resourceId, this.context);
     if (!this.subscriptions.get(resourceId)) {
-      this.subscriptions.set(resourceId, PubSub.subscribe(resourceId, () => this.updateDOM()))
+      this.subscriptions.set(
+        resourceId,
+        PubSub.subscribe(resourceId, () => this.updateDOM()),
+      );
     }
     if (!resource) return;
     const lat = await resource['lat'];
     const lng = await resource['lng'];
 
     if (lat && lng) {
-      const icon = L.divIcon({ // create the icon, doc here: https://leafletjs.com/reference-1.6.0.html#icon
+      const icon = L.divIcon({
+        // create the icon, doc here: https://leafletjs.com/reference-1.6.0.html#icon
         className: 'sib-custom-marker ' + groupClass, // default class used for styling
         iconSize: [8, 8],
         iconAnchor: [12, 34],
-        popupAnchor: [0,-34]
+        popupAnchor: [0, -34],
       });
 
       // create a marker, doc here: https://leafletjs.com/reference-1.6.0.html#marker
-      const marker = L.marker(
-        [lat.toString(), lng.toString()], 
-        {resource, icon} as MarkerOptions
-      );
-      if(this.clustering === null) marker.addTo(this.map);
+      const marker = L.marker([lat.toString(), lng.toString()], {
+        resource,
+        icon,
+      } as MarkerOptions);
+      if (this.clustering === null) marker.addTo(this.map);
       else this.markersCluster.addLayer(marker);
       marker.on('click', this.dispatchSelect.bind(this));
 
-      if (this.fields !== null) { // show popups only if fields attribute
-        marker.bindPopup(() => this.getPopupContent(resourceId), { minWidth: 150 }) // re-generate popup solid-display
+      if (this.fields !== null) {
+        // show popups only if fields attribute
+        marker.bindPopup(() => this.getPopupContent(resourceId), {
+          minWidth: 150,
+        }); // re-generate popup solid-display
       }
 
       this.markers.push(marker);
@@ -157,7 +177,7 @@ export const SolidMap = {
    * @param resourceId: id of the popup clicked
    */
   getPopupContent(resourceId: string) {
-    const attributes:{[key:string]: string} = {};
+    const attributes: { [key: string]: string } = {};
 
     for (let attr of this.element.attributes) {
       //copy widget and value attributes
@@ -195,7 +215,7 @@ export const SolidMap = {
     if (!this.map) return;
     if (this.markersCluster) this.map.removeLayer(this.markersCluster);
     for (let marker of this.markers) this.map.removeLayer(marker);
-    if(this.clustering !== null) {
+    if (this.clustering !== null) {
       this.markersCluster = L.markerClusterGroup();
       this.map.addLayer(this.markersCluster);
     }
@@ -206,7 +226,9 @@ export const SolidMap = {
    * @param groupName: value of the group
    */
   renderGroup(groupName: string) {
-    const sanitizedGroupName = encodeURIComponent(groupName.toLowerCase()).replace(/%[0-9A-F]{2}/gi, '');
+    const sanitizedGroupName = encodeURIComponent(
+      groupName.toLowerCase(),
+    ).replace(/%[0-9A-F]{2}/gi, '');
     const div = document.createElement('div'); // used to pass group info to renderDOM
     div.dataset.groupClass = 'group-' + sanitizedGroupName;
     return div;
@@ -218,15 +240,24 @@ export const SolidMap = {
    * @param div
    * @param context
    */
-  renderDOM: trackRenderAsync(
-  async function(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
+  renderDOM: trackRenderAsync(async function (
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ) {
     const groupClass = div.dataset.groupClass || ''; // get the group class from the useless div element
-    await Promise.all(resources.map(resource => this.appendChildElt(resource['@id'], groupClass)))
+    await Promise.all(
+      resources.map(resource =>
+        this.appendChildElt(resource['@id'], groupClass),
+      ),
+    );
     this.planReset();
 
-    const nextProcessor = listPostProcessors.shift(); 
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
-  }, "SolidMap:renderDOM" )
+    const nextProcessor = listPostProcessors.shift();
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
+  }, 'SolidMap:renderDOM'),
 };
 
 Sib.register(SolidMap);

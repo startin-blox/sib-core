@@ -16,14 +16,9 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "add",
-    "view"
-  ],
+  "permissions": ["add", "view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

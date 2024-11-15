@@ -3,14 +3,13 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { evalTemplateString } from '../libs/helpers';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
-
 const CounterMixin = {
   name: 'counter-mixin',
   use: [],
   attributes: {
     counterTemplate: {
       type: String,
-      default: null
+      default: null,
     },
   },
   initialState: {
@@ -18,19 +17,29 @@ const CounterMixin = {
     parentCounterDiv: null,
   },
   attached() {
-    this.listPostProcessors.attach(this.countResources.bind(this), 'CounterMixin:countResources');
+    this.listPostProcessors.attach(
+      this.countResources.bind(this),
+      'CounterMixin:countResources',
+    );
   },
-  async countResources(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string) {
+  async countResources(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ) {
     if (this.counterTemplate) {
       this.initParentCounterDiv(div);
-      this.renderCallbacks.push({ // add counter template to render callback
+      this.renderCallbacks.push({
+        // add counter template to render callback
         template: await this.renderCounter(resources.length),
-        parent: this.parentCounterDiv
+        parent: this.parentCounterDiv,
       });
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
   /**
    * Create the parent div of the counter in the component.
@@ -52,9 +61,7 @@ const CounterMixin = {
       throw e;
     }
     return html`${unsafeHTML(htmlCounter)}`;
-  }
-}
+  },
+};
 
-export {
-  CounterMixin
-}
+export { CounterMixin };

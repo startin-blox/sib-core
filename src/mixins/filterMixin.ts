@@ -12,23 +12,27 @@ const FilterMixin = {
   attributes: {
     searchFields: {
       type: String,
-      default: null
+      default: null,
     },
     filteredBy: {
       type: String,
       default: null,
       callback(newValue: string) {
         // if we change search form, re-populate
-        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+        if (
+          newValue &&
+          this.searchForm &&
+          newValue !== this.searchForm.getAttribute('id')
+        ) {
           this.searchForm.component.detach(this);
           this.searchForm = null;
           this.populate();
         }
-      }
+      },
     },
     filteredOn: {
       type: String, // 'server' | 'client'
-      default: 'client'
+      default: 'client',
     },
   },
   created() {
@@ -36,17 +40,22 @@ const FilterMixin = {
     this.element.addEventListener('populate', () => {
       if (!window.document.contains(this.element)) return;
       this.searchForm?.component.updateAutoRanges();
-    })
+    });
   },
   attached(): void {
     const filteredBy = this.filteredBy;
     if (this.isFilteredOnServer() && filteredBy) {
-      this.searchForm = document.getElementById(filteredBy)
+      this.searchForm = document.getElementById(filteredBy);
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
-      this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
+      this.searchForm.addEventListener('formChange', () =>
+        this.onServerSearchChange(),
+      );
     } else {
-      this.listPostProcessors.attach(this.filterCallback.bind(this), 'FilterMixin:filterCallback');
+      this.listPostProcessors.attach(
+        this.filterCallback.bind(this),
+        'FilterMixin:filterCallback',
+      );
     }
   },
   get filters(): SearchQuery {
@@ -72,15 +81,21 @@ const FilterMixin = {
       const fields = Object.keys(filters);
       const value = (Object.values(filters) as { value: string }[])
         .map(({ value }) => value)
-        .filter((value) => !!value)
-        .join(' ').trim();
+        .filter(value => !!value)
+        .join(' ')
+        .trim();
       if (fields.length > 0 && value) {
         return { fields, value };
       }
     }
     return;
   },
-  async filterCallback(resources: object[], listPostProcessors: PostProcessorRegistry, div: HTMLElement, context: string): Promise<void> {
+  async filterCallback(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ): Promise<void> {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount.has(context)) this.searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
@@ -88,13 +103,19 @@ const FilterMixin = {
         resources,
         this.filters,
         this.fields,
-        this.searchForm
+        this.searchForm,
       );
       resources = resources.filter((_v, index) => filteredResources[index]);
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
+    if (nextProcessor)
+      await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context + (this.searchCount.get(context) || ''),
+      );
   },
   async filterList(context: string): Promise<void> {
     this.searchCount.set(context, this.searchCount.get(context) + 1);
@@ -110,8 +131,10 @@ const FilterMixin = {
       const nextArrayOfObjects = await obj[field];
       if (!nextArrayOfObjects) continue;
 
-      if (typeof nextArrayOfObjects !== "object") {
-        console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
+      if (typeof nextArrayOfObjects !== 'object') {
+        console.warn(
+          `The format value of ${field} is not suitable with auto-range-[field] attribute`,
+        );
         continue;
       }
 
@@ -131,7 +154,7 @@ const FilterMixin = {
   async createFilter(context: string): Promise<void> {
     const filteredBy = this.filteredBy;
     if (filteredBy != null) {
-      this.searchForm = document.getElementById(filteredBy)
+      this.searchForm = document.getElementById(filteredBy);
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
     } else {
       this.searchForm = document.createElement(`solid-form-search`);
@@ -159,8 +182,6 @@ const FilterMixin = {
     this.element.insertBefore(this.searchForm, this.element.firstChild);
     await this.searchForm.component.populate();
   },
-}
+};
 
-export {
-  FilterMixin
-}
+export { FilterMixin };

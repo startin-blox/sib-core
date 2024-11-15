@@ -30,11 +30,11 @@ export const SolidMemberAdd = {
     },
     classSubmitButton: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     orderAsc: {
       type: String,
-      default: undefined
+      default: undefined,
     },
   },
   initialState: {
@@ -61,31 +61,39 @@ export const SolidMemberAdd = {
   async addMembership() {
     this.currentMembers.push(JSON.parse(this.dataTargetSrc));
     let currentRes = {
-      "@context": this.context,
-      "user_set": this.currentMembers
-    }
+      '@context': this.context,
+      user_set: this.currentMembers,
+    };
 
     return store.patch(currentRes, this.resourceId).then(response => {
       if (!response) {
-        console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`);
+        console.warn(
+          `Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`,
+        );
         return;
       }
 
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberAdded', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.addMembership();
   },
   changeSelectedUser(e: Event) {
     if (!e.target || !(e.target as HTMLElement).firstElementChild) return;
 
     //FIXME: disgusting way to get the @id of the autocomplete slimselect widget value
-    this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
+    this.dataTargetSrc = (
+      (e.target as HTMLElement).firstElementChild as HTMLSelectElement
+    )?.value;
   },
   async populate(): Promise<void> {
     if (!this.resource) return;
@@ -99,7 +107,9 @@ export const SolidMemberAdd = {
       this.currentMembers = [this.currentMembers];
     }
     // In each item in this.currentMembers, I'd like to return only their @id and store it in this.currentMembers
-    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
+    this.currentMembers = this.currentMembers.map(member => {
+      return { '@id': member['@id'] };
+    });
 
     let button = html`
       <solid-ac-checker data-src="${this.dataSrc}"
@@ -127,7 +137,7 @@ export const SolidMemberAdd = {
       </solid-ac-checker>
       `;
     render(button, this.element);
-  }
+  },
 };
 
 Sib.register(SolidMemberAdd);

@@ -8,17 +8,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const displayTemplates = {
   value: {
     template: (value: string) => html`${value}`,
-    dependencies: []
+    dependencies: [],
   },
   div: {
-    template: (value: string, attributes: any) => html`<div name=${ifDefined(attributes.name)} ?data-editable=${attributes.editable}>${value}</div>`,
-    dependencies: [ EditableMixin ]
+    template: (value: string, attributes: any) =>
+      html`<div name=${ifDefined(attributes.name)} ?data-editable=${attributes.editable}>${value}</div>`,
+    dependencies: [EditableMixin],
   },
   link: {
     template: (value: string, attributes: any) => html`
       <a
         name=${ifDefined(attributes.name)}
-        href=${(attributes.mailto || attributes.tel || '')+(value || '#')}
+        href=${(attributes.mailto || attributes.tel || '') + (value || '#')}
         target=${ifDefined(attributes.target)}
         ?data-editable=${attributes.editable}
         id=${ifDefined(attributes.id)}
@@ -27,7 +28,7 @@ export const displayTemplates = {
         ${attributes.linkText || value || ''}
       </a>
     `,
-    dependencies: [ EditableMixin,  LinkTextMixin ]
+    dependencies: [EditableMixin, LinkTextMixin],
   },
   img: {
     template: (value: string, attributes: any) => html`
@@ -38,10 +39,11 @@ export const displayTemplates = {
         style="max-width: 100%; max-height: 100%;"
       />
     `,
-    dependencies: [AltMixin]
+    dependencies: [AltMixin],
   },
   boolean: {
-    template: (value: string, attributes: any) => html`${value === 'true' ? html`<label>${attributes.label || attributes.name || ''}</label>` : ''}`,
-    dependencies: []
+    template: (value: string, attributes: any) =>
+      html`${value === 'true' ? html`<label>${attributes.label || attributes.name || ''}</label>` : ''}`,
+    dependencies: [],
   },
-}
+};

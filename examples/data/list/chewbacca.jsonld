@@ -1,5 +1,5 @@
 {
-	"@id": "/examples/data/list/examples/data/list/chewbacca.jsonld",
-	"name": "Chewbacca",
-	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "@id": "/examples/data/list/examples/data/list/chewbacca.jsonld",
+  "name": "Chewbacca",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,15 +1,15 @@
-import { store } from "../../libs/store/store";
+import { store } from '../../libs/store/store';
 
 const FormFileMixin = {
   name: 'form-file-mixin',
   attributes: {
     uploadUrl: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   initialState: {
-    initialValue: ''
+    initialValue: '',
   },
   created() {
     this.listAttributes['output'] = '';
@@ -18,8 +18,12 @@ const FormFileMixin = {
     this.listAttributes['resetFile'] = this.resetFile.bind(this);
   },
   attached() {
-    this.element.closest('form').addEventListener('reset', this.resetFormFile.bind(this))
-    this.element.closest('solid-form').addEventListener('populate', this.onPopulate.bind(this))
+    this.element
+      .closest('form')
+      .addEventListener('reset', this.resetFormFile.bind(this));
+    this.element
+      .closest('solid-form')
+      .addEventListener('populate', this.onPopulate.bind(this));
   },
   onPopulate() {
     const dataHolder = this.element.querySelector('input[data-holder]');
@@ -28,7 +32,7 @@ const FormFileMixin = {
   },
   resetFormFile(e) {
     if (e.target && (e.target as HTMLElement).contains(this.element)) {
-      if (this.initialValue !== "")  {
+      if (this.initialValue !== '') {
         this.value = this.initialValue;
       }
       this.listAttributes['resetButtonHidden'] = true;
@@ -55,11 +59,12 @@ const FormFileMixin = {
     const file = filePicker.files![0];
     const formData = new FormData();
     formData.append('file', file);
-    store.fetchAuthn(this.uploadUrl, {
-      method: 'POST',
-      body: formData,
-    })
-      .then(response => this.updateFile(dataHolder, response) )
+    store
+      .fetchAuthn(this.uploadUrl, {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => this.updateFile(dataHolder, response))
       .catch(error => {
         this.listAttributes['fileValue'] = '';
         this.listAttributes['output'] = 'upload error';
@@ -90,7 +95,7 @@ const FormFileMixin = {
     const filePicker = this.element.querySelector('input[type="file"]');
     const dataHolder = this.element.querySelector('input[data-holder]');
 
-    if (filePicker && dataHolder ) {
+    if (filePicker && dataHolder) {
       filePicker.value = dataHolder.value = '';
     }
 
@@ -99,9 +104,7 @@ const FormFileMixin = {
     this.listAttributes['resetButtonHidden'] = true;
     dataHolder.dispatchEvent(new Event('change'));
     this.planRender();
-  }
-}
+  },
+};
 
-export {
-  FormFileMixin
-}
+export { FormFileMixin };
