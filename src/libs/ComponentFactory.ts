@@ -75,8 +75,8 @@ export class ComponentFactory {
       attributesList.forEach(key => {
         const { default: def, type, required, callback } = attributes[key];
 
-        let fromType;
-        let toType;
+        let fromType: (value: string) => unknown;
+        let toType: (value: unknown) => unknown;
 
         switch (type) {
           case String:

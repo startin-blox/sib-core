@@ -22,15 +22,13 @@ const RangeMixin = {
       callback: function (value: string) {
         if (value !== null) {
           const optional = value.trim().split(',');
-          let key;
-          let keyValue;
           const list = {};
 
           optional.forEach(element => {
             if (element.includes('=')) {
               const option = element.trim().split('=');
-              key = option[1].trim();
-              keyValue = option[0].trim();
+              const key = option[1].trim();
+              const keyValue = option[0].trim();
               list[key] = keyValue;
             } else {
               const elem = element.trim();

@@ -3,7 +3,7 @@ if (!('flat' in Array.prototype)) {
   Object.defineProperty(Array.prototype, 'flat', {
     configurable: true,
     value: function flat(this: any[], depth = 1) {
-      depth = isNaN(depth) ? 1 : Number(depth);
+      depth = Number.isNaN(depth) ? 1 : Number(depth);
       if (depth === 0) return Array.prototype.slice.call(this);
       return Array.prototype.reduce.call<any, any[], any[]>(
         this,

@@ -231,11 +231,11 @@ function generalComparator(a, b, order = 'asc') {
 
   if (typeof a === 'boolean' && typeof b === 'boolean') {
     comparison = a === b ? 0 : a ? 1 : -1;
-  } else if (!isNaN(a) && !isNaN(b)) {
+  } else if (!Number.isNaN(+a) && !Number.isNaN(+b)) {
     comparison = Number(a) - Number(b);
   } else if (Array.isArray(a) && Array.isArray(b)) {
     comparison = a.length - b.length;
-  } else if (!isNaN(Date.parse(a)) && !isNaN(Date.parse(b))) {
+  } else if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
     const dateA = new Date(a);
     const dateB = new Date(a);
     comparison = dateA.getTime() - dateB.getTime();
@@ -313,7 +313,11 @@ export default class AsyncIterableBuilder<Type> {
   }
 
   #nextPromise() {
-    this.#values.push(new Promise(resolve => (this.#resolve = resolve)));
+    this.#values.push(
+      new Promise(resolve => {
+        this.#resolve = resolve;
+      }),
+    );
   }
 }
 

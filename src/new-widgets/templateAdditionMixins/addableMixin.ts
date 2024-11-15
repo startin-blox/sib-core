@@ -18,7 +18,7 @@ const AddableMixin = {
     const cleanAddableAttr: { [key: string]: string } = {};
     for (let attr of addableAttr)
       cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
-    if (!cleanAddableAttr.hasOwnProperty('data-src'))
+    if (!Object.hasOwn(cleanAddableAttr, 'data-src'))
       cleanAddableAttr['data-src'] = this.range;
     return cleanAddableAttr;
   },

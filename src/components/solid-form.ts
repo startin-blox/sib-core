@@ -142,12 +142,12 @@ export const SolidForm = {
       }),
     );
   },
-  async save(): Promise<object> {
+  async save() {
     this.toggleLoaderHidden(false);
     this.hideError();
     const resource = await this.getFormValue();
     resource['@context'] = this.context;
-    let saved;
+    let saved: string | null | undefined = undefined;
     try {
       if (this.partial == null) {
         saved = resource['@id']

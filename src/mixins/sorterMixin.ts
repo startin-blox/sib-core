@@ -121,8 +121,8 @@ const SorterMixin = {
   },
   sortValuesByKey(key: string, asc: boolean): Function {
     return function (a: object, b: object): number {
-      if (!a.hasOwnProperty(key)) return 1;
-      if (!b.hasOwnProperty(key)) return -1;
+      if (!Object.hasOwn(a, key)) return 1;
+      if (!Object.hasOwn(b, key)) return -1;
 
       const varA = a[key];
       const varB = b[key];

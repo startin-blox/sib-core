@@ -47,7 +47,7 @@ class SpreadDirective extends Directive {
       return noChange;
     }
 
-    let element;
+    let element: HTMLElement;
     prevCache.set(part, spreadData);
 
     if (part.type === PartType.ATTRIBUTE || part.type === PartType.PROPERTY) {

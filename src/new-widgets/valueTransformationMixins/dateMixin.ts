@@ -26,7 +26,7 @@ const DateMixin = {
   },
   formatDateForInput(date: string) {
     let d = new Date(date);
-    if (isNaN(d.getTime())) throw new Error('Invalid date');
+    if (Number.isNaN(d.getTime())) throw new Error('Invalid date');
     let month = `${d.getMonth() + 1}`;
     let day = `${d.getDate()}`;
     let year = d.getFullYear();

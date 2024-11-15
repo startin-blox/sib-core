@@ -301,8 +301,8 @@ const WidgetMixin = {
       'label',
       'placeholder',
       'class',
-      ,
-      /* 'widget', */ 'required',
+      /* 'widget', */
+      'required',
       'editable',
       'autocomplete',
       'upload-url',

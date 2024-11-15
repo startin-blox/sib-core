@@ -156,10 +156,9 @@ export class BaseWidget extends HTMLElement {
   }
   set range(range) {
     (async () => {
-      this._listen(
-        range,
-        async () => (this._range = await store.getData(range, this.context)),
-      );
+      this._listen(range, async () => {
+        this._range = await store.getData(range, this.context);
+      });
       this._range = await store.getData(range, this.context);
       this.render();
     })();

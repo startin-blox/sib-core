@@ -5,7 +5,9 @@ describe('solid-lang', function () {
 
   it('test solid-lang', () => {
     // mark in window object to show reload
-    cy.window().then((w: any) => (w.beforeReload = true));
+    cy.window().then((w: any) => {
+      w.beforeReload = true;
+    });
 
     // initilization of a property
     cy.window().should('have.prop', 'beforeReload', true);
