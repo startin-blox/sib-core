@@ -1,5 +1,6 @@
 /node_modules
 /dist
+/cache
 coverage
 .nyc_output
 /cypress/screenshots
