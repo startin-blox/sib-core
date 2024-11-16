@@ -7,7 +7,7 @@ if (!('flat' in Array.prototype)) {
       if (depth === 0) return Array.prototype.slice.call(this);
       return Array.prototype.reduce.call<any, any[], any[]>(
         this,
-        function (acc: any[], cur: any) {
+        (acc: any[], cur: any) => {
           if (Array.isArray(cur)) {
             acc.push.apply(acc, flat.call(cur, depth - 1));
           } else {

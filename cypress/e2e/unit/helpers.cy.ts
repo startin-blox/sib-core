@@ -11,7 +11,7 @@ import {
 /**
  * uniqID
  */
-describe('uniqID', function () {
+describe('uniqID', () => {
   it('returns an id', () => {
     let test = uniqID();
     expect(test).to.match(/[_].{10}/g);
@@ -30,7 +30,7 @@ describe('uniqID', function () {
 /**
  * stringToDom
  */
-describe('stringToDom', function () {
+describe('stringToDom', () => {
   it('returns a fragment', () => {
     const fragment = stringToDom('<h1>Test element</h1>');
     expect(fragment.constructor.name).to.eq('DocumentFragment');
@@ -54,7 +54,7 @@ describe('stringToDom', function () {
 /**
  * setDeepProperty
  */
-describe('setDeepProperty', function () {
+describe('setDeepProperty', () => {
   it('set properties', () => {
     const object = {
       name: 'test',
@@ -91,7 +91,7 @@ describe('setDeepProperty', function () {
 /**
  * parseFieldsString
  */
-describe('parseFieldsString', function () {
+describe('parseFieldsString', () => {
   it('returns first level of fields', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -108,7 +108,7 @@ describe('parseFieldsString', function () {
 /**
  * findClosingBracketMatchIndex
  */
-describe('findClosingBracketMatchIndex', function () {
+describe('findClosingBracketMatchIndex', () => {
   it('throw error', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -140,7 +140,7 @@ describe('findClosingBracketMatchIndex', function () {
 /**
  * evalTemplateString
  */
-describe('evalTemplateString', function () {
+describe('evalTemplateString', () => {
   it('render template with values', async () => {
     const values = {
       val1: 'test 1',

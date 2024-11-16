@@ -45,7 +45,7 @@ class Store {
   cache: Map<string, any>;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
-  loadingList: Set<String>;
+  loadingList: Set<string>;
   headers: object;
   fetch: Promise<any> | undefined;
   session: Promise<any> | undefined;
@@ -184,9 +184,7 @@ class Store {
       // anonymous
       if (options.headers)
         options.headers = this._convertHeaders(options.headers);
-      return fetch(iri, options).then(function (response) {
-        return response;
-      });
+      return fetch(iri, options).then(response => response);
     }
   }
 
@@ -682,8 +680,8 @@ class Store {
     localStorage.setItem('language', selectedLanguageCode);
   }
 
-  resolveResource = function (id: string, resolve) {
-    const handler = function (event) {
+  resolveResource = (id: string, resolve) => {
+    const handler = event => {
       if (event.detail.id === id) {
         if (event.detail.resource) {
           resolve(event.detail.resource);

@@ -56,7 +56,7 @@ export class Compositor {
     let attributes = {};
 
     mixins.forEach(mixin => {
-      if (!!mixin.attributes) {
+      if (mixin.attributes) {
         attributes = { ...mixin.attributes, ...attributes };
       }
     });
@@ -68,7 +68,7 @@ export class Compositor {
     let initialState = {};
 
     mixins.forEach(mixin => {
-      if (!!mixin.initialState) {
+      if (mixin.initialState) {
         initialState = { ...mixin.initialState, ...initialState };
       }
     });

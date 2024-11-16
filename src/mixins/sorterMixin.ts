@@ -120,7 +120,7 @@ const SorterMixin = {
     return this.orderByRandom !== null;
   },
   sortValuesByKey(key: string, asc: boolean): Function {
-    return function (a: object, b: object): number {
+    return (a: object, b: object): number => {
       if (!Object.hasOwn(a, key)) return 1;
       if (!Object.hasOwn(b, key)) return -1;
 

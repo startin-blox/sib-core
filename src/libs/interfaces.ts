@@ -45,7 +45,7 @@ export interface ComponentInterface {
 export interface ComponentStaticInterface
   extends HasAttributesDefinitionInterface,
     HasInitialStateInterface {
-  name: String;
+  name: string;
 
   hooks: ArrayOfHooksInterface;
   methods: Map<string, Function>;
@@ -79,7 +79,7 @@ export interface MixinStaticInterface
     HasMixinsInterface,
     HasInitialStateInterface,
     HasHooksInterface {
-  name: String;
+  name: string;
 }
 
 export interface LocationResourceInterface {

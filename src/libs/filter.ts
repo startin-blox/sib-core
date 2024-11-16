@@ -240,7 +240,7 @@ const matchFilter = async (
         (targetIds.length === 0 && query.value !== '')
       ) {
         // console.log(`No targetIds found for ${resource['@id']} returning false`);
-        throw throwOn ? false : true;
+        throw !throwOn;
       }
 
       // console.log(`Do we have a match for ${resource['@id']} ?`, match);

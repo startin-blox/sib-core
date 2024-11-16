@@ -4,7 +4,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     cy.visit('/examples/e2e/solid-form-file.html');
   });
 
-  it('upload file with solid-form-file', function () {
+  it('upload file with solid-form-file', () => {
     cy.get('#form-file [name=picture] input[type=file]').uploadFile(
       '../../fake-image.svg',
     );
@@ -13,7 +13,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     });
   });
 
-  it('upload image with solid-form-file-image', function () {
+  it('upload image with solid-form-file-image', () => {
     cy.get('#form-image solid-form-image input[type=file]').uploadFile(
       '../../fake-image.svg',
     );
@@ -23,7 +23,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     });
   });
 
-  it('resets the file', function () {
+  it('resets the file', () => {
     cy.get('#reset-file solid-form-file input[type=file]').uploadFile(
       '../../fake-image.svg',
     );
@@ -40,7 +40,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     cy.get('#reset-file solid-form-file button').should('have.attr', 'hidden');
   });
 
-  it('resets the image', function () {
+  it('resets the image', () => {
     cy.get('#reset-image solid-form-image input[type=file]').uploadFile(
       '../../fake-image.svg',
     );
@@ -63,7 +63,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     );
   });
 
-  it('handles required', function () {
+  it('handles required', () => {
     cy.get('#form-required-image solid-form-image input[type=text]').should(
       'have.attr',
       'required',
@@ -82,7 +82,7 @@ describe('solid-form-file test', { testIsolation: false }, function () {
     );
   });
 
-  it('displays file name if source not empty', function () {
+  it('displays file name if source not empty', () => {
     cy.visit('/examples/e2e/solid-form-file.html'); // if not then page is not updated, and another file is uploaded from the prev test
     cy.get(
       '#form-file solid-form-file[name=picture] a[href="../../upload/fruits.jpg"]',

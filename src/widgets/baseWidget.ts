@@ -31,8 +31,8 @@ export class BaseWidget extends HTMLElement {
       escapedValue: this.escapedValue,
       range: await this.htmlRange,
       multiple: this.multiple,
-      editable: this.editable === '' ? true : false,
-      required: this.required === '' ? true : false,
+      editable: this.editable === '',
+      required: this.required === '',
     });
 
     this.addEditButtons();

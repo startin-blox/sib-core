@@ -23,7 +23,11 @@
         "all": false
       },
       "complexity": {
-        "all": false
+        "useLiteralKeys": "off",
+        "noForEach": "off",
+        "noBannedTypes": "off",
+        "useOptionalChain": "off",
+        "noStaticOnlyClass": "off"
       },
       "suspicious": {
         "noExplicitAny": "off",

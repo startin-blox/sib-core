@@ -159,7 +159,7 @@ describe('helpers', function () {
     });
   });
 
-  describe('defineComponent', function () {
+  describe('defineComponent', () => {
     it('define my-component', () => {
       expect(win.customElements.get('my-component')).to.be.undefined;
       helpers.defineComponent('my-component', class extends HTMLElement {});
@@ -174,7 +174,7 @@ describe('helpers', function () {
     });
   });
 
-  describe('asyncQuerySelector', function () {
+  describe('asyncQuerySelector', () => {
     it('select an element already in document', async () => {
       const list = doc.querySelector('#async-qs ul')!;
       const list2 = await helpers.asyncQuerySelector('#async-qs ul');

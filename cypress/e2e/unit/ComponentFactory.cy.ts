@@ -112,7 +112,7 @@ const Component = {
   },
 };
 
-describe('Component factory', function () {
+describe('Component factory', () => {
   it('expose html element', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));

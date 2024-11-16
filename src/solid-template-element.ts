@@ -11,7 +11,7 @@ export default class SolidTemplateElement extends HTMLElement {
     this.initProps();
   }
   static get observedAttributes() {
-    return Object.values(this.propsDefinition);
+    return Object.values(SolidTemplateElement.propsDefinition);
   }
 
   static get propsDefinition(): { [key: string]: any } {

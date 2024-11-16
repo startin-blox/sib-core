@@ -5,7 +5,7 @@ export enum WidgetType {
 }
 
 export interface WidgetInterface {
-  tagName: String;
+  tagName: string;
   type: WidgetType;
 }
 

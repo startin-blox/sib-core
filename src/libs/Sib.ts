@@ -9,7 +9,7 @@ import type {
 export class Sib {
   public static register(componentDefinition: MixinStaticInterface): void {
     const component = ComponentFactory.build(componentDefinition);
-    const cls = this.toElement(component);
+    const cls = Sib.toElement(component);
     defineComponent(component.name, cls);
   }
 

@@ -10,6 +10,7 @@ function stringToDom(html: string): DocumentFragment {
   return template.content;
 }
 
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 async function evalTemplateString(
   str: string,
   variables: { [key: string]: any } = {},
@@ -17,9 +18,6 @@ async function evalTemplateString(
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const AsyncFunction = Object.getPrototypeOf(
-      async function () {},
-    ).constructor;
     const func = AsyncFunction.call(null, ...keys, 'return `' + str + '`');
     return await func(...values);
   } catch (e) {
@@ -118,7 +116,7 @@ function loadScript(source: string) {
 }
 
 function domIsReady(): Promise<void> {
-  return new Promise(function (resolve) {
+  return new Promise(resolve => {
     if (document.readyState === 'complete') {
       resolve();
     } else {

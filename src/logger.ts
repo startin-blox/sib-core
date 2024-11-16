@@ -32,9 +32,9 @@ function formatMessage(level, messages) {
 
 var originalFactory = log.methodFactory;
 
-log.methodFactory = function (methodName, logLevel, loggerName) {
+log.methodFactory = (methodName, logLevel, loggerName) => {
   const rawMethod = originalFactory(methodName, logLevel, loggerName);
-  return function (...messages) {
+  return (...messages) => {
     rawMethod(formatMessage(methodName, messages));
   };
 };

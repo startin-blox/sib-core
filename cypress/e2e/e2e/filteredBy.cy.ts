@@ -1,4 +1,4 @@
-describe('simple Startin’blox e2e test', function () {
+describe('simple Startin’blox e2e test', () => {
   it('check children count', () => {
     cy.visit('/examples/filtered.html');
     cy.get('#filter1 input').type('ma#er'); // match "mayer"
