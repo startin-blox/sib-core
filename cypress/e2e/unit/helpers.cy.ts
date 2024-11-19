@@ -1,11 +1,11 @@
 import {
-  uniqID,
-  stringToDom,
-  setDeepProperty,
-  parseFieldsString,
-  findClosingBracketMatchIndex,
-  evalTemplateString,
   AsyncIterableBuilder,
+  evalTemplateString,
+  findClosingBracketMatchIndex,
+  parseFieldsString,
+  setDeepProperty,
+  stringToDom,
+  uniqID,
 } from '../../../src/libs/helpers';
 
 /**

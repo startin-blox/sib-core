@@ -4,9 +4,9 @@ import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 
 import { html, render } from 'lit';
-import { ContextMixin } from '../mixins/contextMixin';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { trackRenderAsync } from '../logger';
+import { ContextMixin } from '../mixins/contextMixin';
 
 export const SolidMembership = {
   name: 'solid-membership',

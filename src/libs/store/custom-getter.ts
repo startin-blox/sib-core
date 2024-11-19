@@ -1,6 +1,6 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-import { store } from './store';
 import type { Resource } from '../../mixins/interfaces';
+import { store } from './store';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 

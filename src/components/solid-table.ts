@@ -1,22 +1,22 @@
-import type { Resource } from '../mixins/interfaces';
 import { Sib } from '../libs/Sib';
 import { store } from '../libs/store/store';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { ListMixin } from '../mixins/listMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { PaginateMixin } from '../mixins/paginateMixin';
-import { FilterMixin } from '../mixins/filterMixin';
 import { CounterMixin } from '../mixins/counterMixin';
-import { SorterMixin } from '../mixins/sorterMixin';
-import { GrouperMixin } from '../mixins/grouperMixin';
 import { FederationMixin } from '../mixins/federationMixin';
+import { FilterMixin } from '../mixins/filterMixin';
+import { GrouperMixin } from '../mixins/grouperMixin';
 import { HighlighterMixin } from '../mixins/highlighterMixin';
+import type { Resource } from '../mixins/interfaces';
+import { ListMixin } from '../mixins/listMixin';
+import { PaginateMixin } from '../mixins/paginateMixin';
 import { RequiredMixin } from '../mixins/requiredMixin';
+import { SorterMixin } from '../mixins/sorterMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import { WidgetMixin } from '../mixins/widgetMixin';
 
 import { html, render } from 'lit';
 import { until } from 'lit/directives/until.js';
-import { spread } from '../libs/lit-helpers';
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { spread } from '../libs/lit-helpers';
 import { trackRenderAsync } from '../logger';
 
 export const SolidTable = {

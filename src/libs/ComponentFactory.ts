@@ -1,11 +1,11 @@
-import { Compositor } from './Compositor';
 import { Component } from './Component';
+import { Compositor } from './Compositor';
 import type {
-  MixinStaticInterface,
+  AccessorStaticInterface,
+  ArrayOfHooksInterface,
   AttributesDefinitionInterface,
   ComponentConstructorInterface,
-  ArrayOfHooksInterface,
-  AccessorStaticInterface,
+  MixinStaticInterface,
 } from './interfaces';
 
 export class ComponentFactory {

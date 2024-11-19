@@ -1,9 +1,9 @@
 import type {
-  MixinStaticInterface,
-  ComponentStaticInterface,
-  AttributesDefinitionInterface,
-  ArrayOfHooksInterface,
   AccessorStaticInterface,
+  ArrayOfHooksInterface,
+  AttributesDefinitionInterface,
+  ComponentStaticInterface,
+  MixinStaticInterface,
 } from './interfaces';
 
 const HOOKS = ['created', 'attached', 'detached'];

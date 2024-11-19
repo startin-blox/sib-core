@@ -1,7 +1,7 @@
 import {
-  parseFieldsString,
-  findClosingBracketMatchIndex,
   compare,
+  findClosingBracketMatchIndex,
+  parseFieldsString,
   uniqID,
 } from './helpers';
 import type { Query, SearchQuery } from './interfaces';

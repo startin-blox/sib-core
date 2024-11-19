@@ -1,8 +1,8 @@
 import { AltMixin } from './altMixin';
 import { EditableMixin } from './editableMixin';
 import { FilterRangeFormMixin } from './filterRangeFormMixin';
-import { FormCheckboxesMixin } from './formCheckboxesMixin';
 import { FormCheckboxMixin } from './formCheckboxMixin';
+import { FormCheckboxesMixin } from './formCheckboxesMixin';
 import { FormDropdownMixin } from './formDropdownMixin';
 import { FormFileMixin } from './formFileMixin';
 import { FormLengthMixin } from './formLengthMixin';

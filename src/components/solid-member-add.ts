@@ -4,10 +4,10 @@ import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
 
 import { html, render } from 'lit';
-import { ContextMixin } from '../mixins/contextMixin';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
-import { StoreMixin } from '../mixins/storeMixin';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ContextMixin } from '../mixins/contextMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',

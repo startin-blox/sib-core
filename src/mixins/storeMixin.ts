@@ -1,13 +1,13 @@
-import { store } from '../libs/store/store';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination';
 import {
   formatAttributesToServerSearchOptions,
   mergeServerSearchOptions,
 } from '../libs/store/server-search';
+import { store } from '../libs/store/store';
 import { AttributeBinderMixin } from './attributeBinderMixin';
-import type { Resource } from './interfaces';
 import { ContextMixin } from './contextMixin';
+import type { Resource } from './interfaces';
 import { ServerPaginationMixin } from './serverPaginationMixin';
-import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination';
 
 const StoreMixin = {
   name: 'store-mixin',

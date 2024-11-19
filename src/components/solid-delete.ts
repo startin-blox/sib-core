@@ -1,12 +1,12 @@
 import { Sib } from '../libs/Sib';
 import { store } from '../libs/store/store';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 
 import { html, render } from 'lit';
-import { ContextMixin } from '../mixins/contextMixin';
 import { trackRenderAsync } from '../logger';
+import { ContextMixin } from '../mixins/contextMixin';
 
 export const SolidDelete = {
   name: 'solid-delete',

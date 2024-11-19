@@ -1,14 +1,14 @@
 import { Sib } from '../libs/Sib';
-import { WidgetMixin } from '../mixins/widgetMixin';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
 import { ContextMixin } from '../mixins/contextMixin';
 import type { WidgetInterface } from '../mixins/interfaces';
+import { WidgetMixin } from '../mixins/widgetMixin';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { uniqID } from '../libs/helpers';
-import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
+import type { FilterEventOptions, SearchQuery } from '../libs/interfaces';
 import { trackRenderAsync } from '../logger';
 
 export const SolidFormSearch = {

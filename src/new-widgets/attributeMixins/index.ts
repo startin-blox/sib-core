@@ -1,11 +1,11 @@
-import { MultipleMixin } from './multipleMixin';
 import { ActionMixin } from './actionMixin';
 import { BlankMixin } from './blankMixin';
-import { MailtoMixin } from './mailtoMixin';
-import { TelMixin } from './telMixin';
-import { PlaceholderMixin } from './placeholderMixin';
 import { BooleanMixin } from './booleanMixin';
+import { MailtoMixin } from './mailtoMixin';
+import { MultipleMixin } from './multipleMixin';
 import { NumberMixin } from './numberMixin';
+import { PlaceholderMixin } from './placeholderMixin';
+import { TelMixin } from './telMixin';
 
 const attributeDirectory = {
   multiple: MultipleMixin,

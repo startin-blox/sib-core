@@ -1,12 +1,12 @@
-import { spread, preHTML } from '../libs/lit-helpers';
-import {
-  parseFieldsString,
-  findClosingBracketMatchIndex,
-} from '../libs/helpers';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
-import { type WidgetInterface, WidgetType, type Resource } from './interfaces';
-import { html, render, type TemplateResult } from 'lit';
+import { type TemplateResult, html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  findClosingBracketMatchIndex,
+  parseFieldsString,
+} from '../libs/helpers';
+import { preHTML, spread } from '../libs/lit-helpers';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { type Resource, type WidgetInterface, WidgetType } from './interfaces';
 
 const WidgetMixin = {
   name: 'widget-mixin',

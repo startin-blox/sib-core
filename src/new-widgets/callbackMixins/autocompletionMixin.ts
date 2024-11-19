@@ -1,11 +1,11 @@
+import SlimSelect from 'slim-select';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import {
   asyncQuerySelector,
   fuzzyCompare,
   importInlineCSS,
 } from '../../libs/helpers';
-import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',

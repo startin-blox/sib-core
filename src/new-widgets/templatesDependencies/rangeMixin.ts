@@ -1,9 +1,9 @@
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { base_context, store } from '../../libs/store/store';
-import { StoreMixin } from '../../mixins/storeMixin';
-import { SorterMixin } from '../../mixins/sorterMixin';
 import { FederationMixin } from '../../mixins/federationMixin';
 import type { Resource } from '../../mixins/interfaces';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import { SorterMixin } from '../../mixins/sorterMixin';
+import { StoreMixin } from '../../mixins/storeMixin';
 
 const RangeMixin = {
   name: 'range-mixin',

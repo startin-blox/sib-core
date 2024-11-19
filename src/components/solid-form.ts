@@ -1,11 +1,11 @@
 import { Sib } from '../libs/Sib';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { NextMixin } from '../mixins/nextMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
-import { store } from '../libs/store/store';
 import { setDeepProperty, transformArrayToContainer } from '../libs/helpers';
+import { store } from '../libs/store/store';
 import type { WidgetInterface } from '../mixins/interfaces';
+import { NextMixin } from '../mixins/nextMixin';
+import { StoreMixin } from '../mixins/storeMixin';
+import { ValidationMixin } from '../mixins/validationMixin';
+import { WidgetMixin } from '../mixins/widgetMixin';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';

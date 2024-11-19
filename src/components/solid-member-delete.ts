@@ -1,12 +1,12 @@
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Sib } from '../libs/Sib';
 import { base_context, store } from '../libs/store/store';
 import { NextMixin } from '../mixins/nextMixin';
 import { ValidationMixin } from '../mixins/validationMixin';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { html, render } from 'lit';
-import { ContextMixin } from '../mixins/contextMixin';
 import { trackRenderAsync } from '../logger';
+import { ContextMixin } from '../mixins/contextMixin';
 
 export const SolidMemberDelete = {
   name: 'solid-member-delete',

@@ -1,5 +1,5 @@
-import { EditableMixin } from '../templatesDependencies/editableMixin';
 import { AltMixin } from '../templatesDependencies/altMixin';
+import { EditableMixin } from '../templatesDependencies/editableMixin';
 import { LinkTextMixin } from '../templatesDependencies/linkTextMixin';
 
 import { html } from 'lit';

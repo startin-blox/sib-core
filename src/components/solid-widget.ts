@@ -1,11 +1,11 @@
-import { Sib } from '../libs/Sib';
-import { StoreMixin } from '../mixins/storeMixin';
-import { BaseWidgetMixin } from '../new-widgets/baseWidgetMixin';
-import { FormMixin } from '../new-widgets/templatesDependencies/formMixin';
-import { ActionMixin } from '../new-widgets/attributeMixins/actionMixin';
-import { evalTemplateString } from '../libs/helpers';
 import { html, render } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { Sib } from '../libs/Sib';
+import { evalTemplateString } from '../libs/helpers';
+import { StoreMixin } from '../mixins/storeMixin';
+import { ActionMixin } from '../new-widgets/attributeMixins/actionMixin';
+import { BaseWidgetMixin } from '../new-widgets/baseWidgetMixin';
+import { FormMixin } from '../new-widgets/templatesDependencies/formMixin';
 
 export const SolidWidget = {
   name: 'solid-widget',

@@ -4,22 +4,22 @@
  */
 
 import {
-  html,
-  type TemplateResult,
-  noChange,
-  type ChildPart,
   type AttributePart,
   type BooleanAttributePart,
+  type ChildPart,
+  type ElementPart,
   type EventPart,
   type PropertyPart,
-  type ElementPart,
+  type TemplateResult,
+  html,
+  noChange,
 } from 'lit';
 
 import {
-  directive,
   Directive,
   type PartInfo,
   PartType,
+  directive,
 } from 'lit/directive.js';
 
 type SpreadPartType =

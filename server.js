@@ -1,13 +1,13 @@
 // @ts-check
 
 import crypto from 'node:crypto';
-import cypress from 'cypress';
-import url from 'node:url';
+import fs from 'node:fs/promises';
 import path from 'node:path';
+import url from 'node:url';
+import cors from 'cors';
+import cypress from 'cypress';
 import express from 'express';
 import findFreePort from 'find-free-port';
-import fs from 'node:fs/promises';
-import cors from 'cors';
 const port = findFreePort(3000);
 const app = express();
 const distPath = '.';

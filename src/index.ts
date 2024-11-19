@@ -1,16 +1,16 @@
 import './libs/polyfills.js';
+import { SolidAcChecker } from './components/solid-ac-checker';
+import { SolidDelete } from './components/solid-delete';
 // Components
 import { SolidDisplay } from './components/solid-display';
 import { SolidForm } from './components/solid-form';
 import { SolidFormSearch } from './components/solid-form-search';
-import { SolidWidget } from './components/solid-widget';
-import { SolidAcChecker } from './components/solid-ac-checker';
-import { SolidDelete } from './components/solid-delete';
 import { SolidLang } from './components/solid-lang';
-import { SolidTable } from './components/solid-table';
-import { SolidMembership } from './components/solid-membership';
-import { SolidMemberDelete } from './components/solid-member-delete';
 import { SolidMemberAdd } from './components/solid-member-add';
+import { SolidMemberDelete } from './components/solid-member-delete';
+import { SolidMembership } from './components/solid-membership';
+import { SolidTable } from './components/solid-table';
+import { SolidWidget } from './components/solid-widget';
 
 // Mixins
 import { CounterMixin } from './mixins/counterMixin';
@@ -28,27 +28,27 @@ import { TranslationMixin } from './mixins/translationMixin';
 import { ValidationMixin } from './mixins/validationMixin';
 import { WidgetMixin } from './mixins/widgetMixin';
 
+import * as AttributeMixins from './new-widgets/attributeMixins';
+import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
+import * as CallbackMixins from './new-widgets/callbackMixins';
 // New widgets system
 import { newWidgetFactory } from './new-widgets/new-widget-factory';
-import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
-import * as AttributeMixins from './new-widgets/attributeMixins';
-import * as CallbackMixins from './new-widgets/callbackMixins';
 import * as TemplateAdditionMixins from './new-widgets/templateAdditionMixins';
 import * as Templates from './new-widgets/templates';
 import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies';
 
-// Libs
-import { store, base_context as baseContext } from './libs/store/store';
 import { Sib } from './libs/Sib';
+import * as Helpers from './libs/helpers';
+// Libs
+import { base_context as baseContext, store } from './libs/store/store';
 import SolidTemplateElement from './solid-template-element';
 import { widgetFactory } from './widgets/widget-factory';
-import * as Helpers from './libs/helpers';
 
 // lit-html
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { until } from 'lit/directives/until.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { until } from 'lit/directives/until.js';
 
 export {
   // Components

@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { type TemplateResult, html } from 'lit';
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const PaginateMixin = {

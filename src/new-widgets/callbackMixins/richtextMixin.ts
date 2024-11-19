@@ -1,8 +1,8 @@
 import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
-import { importInlineCSS } from '../../libs/helpers.js';
 import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
+import { importInlineCSS } from '../../libs/helpers.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',

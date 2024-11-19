@@ -1,7 +1,7 @@
 import { html, render } from 'lit';
-import { preHTML } from '../libs/lit-helpers';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { preHTML } from '../libs/lit-helpers';
 
 const ListMixin = {
   name: 'list-mixin',
