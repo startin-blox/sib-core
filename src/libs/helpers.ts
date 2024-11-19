@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 
 function uniqID(): string {
-  return '_' + (Math.random() * Math.pow(36, 20)).toString(36).slice(0, 10);
+  return '_' + (Math.random() * 36 ** 20).toString(36).slice(0, 10);
 }
 
 function stringToDom(html: string): DocumentFragment {
@@ -106,8 +106,8 @@ function relativeSource(source: string) {
 function loadScript(source: string) {
   source = relativeSource(source);
   return new Promise(resolve => {
-    var script = document.createElement('script');
-    var head = document.querySelector('head');
+    const script = document.createElement('script');
+    const head = document.querySelector('head');
     script.async = true;
     script.onload = () => setTimeout(resolve, 0);
     script.src = source;
@@ -140,8 +140,6 @@ function setDeepProperty(
 
 function parseFieldsString(fields: string): string[] {
   if (!fields) return [];
-  let fieldsArray: string[];
-
   // remove all sets from fields
   while (fields.indexOf('(') > 0) {
     const firstBracket = fields.indexOf('(');
@@ -153,7 +151,7 @@ function parseFieldsString(fields: string): string[] {
   }
 
   const re = /((^\s*|,)\s*)(("(\\"|[^"])*")|('(\\'|[^'])*')|[^,]*)/gm; // match , not inside quotes
-  fieldsArray = fields.match(re) || []; // separate fields
+  const fieldsArray = fields.match(re) || []; // separate fields
   if (!fieldsArray) return [];
   return fieldsArray.map(a => a.replace(/^[\s,]+/, '')); // remove commas and spaces
 }

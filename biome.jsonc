@@ -19,6 +19,12 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "style": {
+        "noUselessElse": "off",
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
+      },
       "complexity": {
         "useLiteralKeys": "off",
         "noForEach": "off",

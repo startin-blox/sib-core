@@ -1,1 +1,1 @@
-declare var solid: any;
+declare let solid: any;

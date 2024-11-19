@@ -248,7 +248,7 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
 
     // List solid-display & range
     const newSrc = 'https://ldp-server.test/users/alex/';
-    cy.get(`solid-display#users solid-display`).should('have.length', 3);
+    cy.get('solid-display#users solid-display').should('have.length', 3);
     cy.get(
       `solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="first_name"]`,
     ).should('contain', 'Alex');
@@ -258,7 +258,7 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.get(
       `solid-display#users solid-display[data-src="${newSrc}"] > div > solid-display-value[name="username"]`,
     ).should('contain', 'alex');
-    cy.get(`solid-form#range option`).should('have.length', 4);
+    cy.get('solid-form#range option').should('have.length', 4);
 
     // Federation
     cy.get(
@@ -276,8 +276,8 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
       fixture: 'users-paris.jsonld',
     });
     cy.get('solid-delete#delete-user > button').click();
-    cy.get(`solid-display#users solid-display`).should('have.length', 2);
-    cy.get(`solid-form#range option`).should('have.length', 3);
+    cy.get('solid-display#users solid-display').should('have.length', 2);
+    cy.get('solid-form#range option').should('have.length', 3);
     // cy.get(`solid-display#federation solid-display`).should('have.length', 3); NOT WORKING: should we loop on subscription index?
   });
 

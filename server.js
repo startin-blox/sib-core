@@ -1,12 +1,12 @@
 // @ts-check
 
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import cypress from 'cypress';
-import url from 'url';
-import path from 'path';
+import url from 'node:url';
+import path from 'node:path';
 import express from 'express';
 import findFreePort from 'find-free-port';
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 import cors from 'cors';
 const port = findFreePort(3000);
 const app = express();

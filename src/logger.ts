@@ -30,7 +30,7 @@ function formatMessage(level, messages) {
   return `${color}[${timestamp}] ${formattedMessages}${colors.reset}`;
 }
 
-var originalFactory = log.methodFactory;
+const originalFactory = log.methodFactory;
 
 log.methodFactory = (methodName, logLevel, loggerName) => {
   const rawMethod = originalFactory(methodName, logLevel, loggerName);

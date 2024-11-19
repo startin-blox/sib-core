@@ -1,6 +1,5 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-//@ts-ignore
-import PubSub from 'https://cdn.skypack.dev/pubsub-js';
+import PubSub from 'pubsub-js';
 
 import jsonld from 'jsonld';
 import { CustomGetter } from './custom-getter';

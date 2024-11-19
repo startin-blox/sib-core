@@ -1,4 +1,4 @@
-declare var sibStore: any;
+declare let sibStore: any;
 
 interface StoreOptions {
   fetchMethod?: Promise<any>;

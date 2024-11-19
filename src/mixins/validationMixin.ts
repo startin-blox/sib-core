@@ -42,7 +42,7 @@ const ValidationMixin = {
     this.dialogID = uniqID();
   },
   showModal() {
-    var dialog: any = document.getElementById(this.dialogID);
+    const dialog: any = document.getElementById(this.dialogID);
     dialogPolyfill.registerDialog(dialog);
     return dialog.showModal();
   },
@@ -68,7 +68,7 @@ const ValidationMixin = {
   getModalDialog() {
     if (this.confirmationType === 'dialog') {
       const quitDialog = () => {
-        var dialog: any = document.getElementById(this.dialogID);
+        const dialog: any = document.getElementById(this.dialogID);
         if (dialog == null) return;
         dialog.close();
       };
