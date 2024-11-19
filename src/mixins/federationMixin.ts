@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { store } from '../libs/store/store';
 import type { Resource } from './interfaces';
 

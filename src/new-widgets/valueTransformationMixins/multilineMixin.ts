@@ -1,5 +1,5 @@
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const MultilineMixin = {
   name: 'multiline-mixin',

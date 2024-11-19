@@ -16,7 +16,7 @@ import { RequiredMixin } from '../mixins/requiredMixin';
 import { html, render } from 'lit';
 import { until } from 'lit/directives/until.js';
 import { spread } from '../libs/lit-helpers';
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { trackRenderAsync } from '../logger';
 
 export const SolidTable = {
@@ -132,7 +132,7 @@ export const SolidTable = {
       'title',
       'widget',
     ];
-    for (let attr of formWidgetAttributes)
+    for (const attr of formWidgetAttributes)
       this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`, attributes);
 
     const formAttributes = [
@@ -141,7 +141,7 @@ export const SolidTable = {
       'submit-button',
       'next',
     ];
-    for (let attr of formAttributes)
+    for (const attr of formAttributes)
       this.addToAttributes(`${attr}-${field}`, attr, attributes);
 
     return html`
@@ -159,7 +159,7 @@ export const SolidTable = {
    * @param fields
    */
   getHeader(fields: string[]) {
-    let template = html`
+    const template = html`
       <tr>
         ${this.selectable !== null ? html`<th><input type="checkbox" @change="${this.selectAll.bind(this)}" /></th>` : ''}
         ${fields.map((field: string) => html`<th>${this.element.hasAttribute('label-' + field) ? this.element.getAttribute('label-' + field) : field}</th>`)}
@@ -174,7 +174,7 @@ export const SolidTable = {
    */
   async getChildTemplate(resourceId: string, fields) {
     const resource = await store.getData(resourceId, this.context);
-    let template = html`
+    const template = html`
       <tr data-resource="${resourceId}">
         ${this.selectable !== null ? html`<td><input type="checkbox" data-selection /></td>` : ''}
         ${fields.map((field: string) => html`<td>${until(this.createCellWidget(field, resource))}</td>`)}

@@ -13,7 +13,7 @@ const ContextMixin = {
     return { ...base_context, ...this.extra_context };
   },
   get extra_context(): object {
-    let extraContextElement = this.extraContext
+    const extraContextElement = this.extraContext
       ? document.getElementById(this.extraContext)
       : // take element extra context first
         document.querySelector('[data-default-context]'); // ... or look for a default extra context

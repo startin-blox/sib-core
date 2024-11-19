@@ -60,7 +60,7 @@ export const SolidMemberAdd = {
   },
   async addMembership() {
     this.currentMembers.push(JSON.parse(this.dataTargetSrc));
-    let currentRes = {
+    const currentRes = {
       '@context': this.context,
       user_set: this.currentMembers,
     };
@@ -99,7 +99,10 @@ export const SolidMemberAdd = {
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    const memberPredicate = store.getExpandedPredicate(
+      'user_set',
+      base_context,
+    );
     // Here we now retrieve an array of proxy, when we would like an array of @ids only
     this.currentMembers = await this.resource[memberPredicate];
 
@@ -111,7 +114,7 @@ export const SolidMemberAdd = {
       return { '@id': member['@id'] };
     });
 
-    let button = html`
+    const button = html`
       <solid-ac-checker data-src="${this.dataSrc}"
         permission="acl:Write"
       >

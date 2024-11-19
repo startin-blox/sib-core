@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { StoreMixin } from '../../mixins/storeMixin';
 
 const MultipleselectFormMixin = {
@@ -47,7 +47,7 @@ const MultipleselectFormMixin = {
   setDataSrc(value: string, listValueTransformations: PostProcessorRegistry) {
     if (value && value !== this.dataSrc) {
       try {
-        let values = JSON.parse(value);
+        const values = JSON.parse(value);
         if (values && Array.isArray(values)) {
           this.setValue(values);
         } else {

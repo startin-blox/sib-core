@@ -20,7 +20,7 @@ export default class SolidTemplateElement extends HTMLElement {
 
   initProps() {
     this.props = {};
-    for (let key in this.constructor.propsDefinition) {
+    for (const key in this.constructor.propsDefinition) {
       this.props[key] = undefined;
     }
   }
@@ -29,7 +29,7 @@ export default class SolidTemplateElement extends HTMLElement {
     const declaredAttributes: string[] = [];
 
     // Get props values
-    for (let key in this.constructor.propsDefinition) {
+    for (const key in this.constructor.propsDefinition) {
       const def = this.constructor.propsDefinition[key];
       if (typeof def === 'string') {
         this.props[key] = this.hasAttribute(def)
@@ -49,7 +49,7 @@ export default class SolidTemplateElement extends HTMLElement {
     }
 
     // Add attributes to props
-    for (let attr of this.attributes) {
+    for (const attr of this.attributes) {
       if (!declaredAttributes.includes(attr.name)) {
         // if attribute not in propsDefinition
         this.props[this._camelize(attr.name)] = attr.value || undefined; // add it to props

@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { spread } from '../../libs/lit-helpers';
 
 import { html } from 'lit';
@@ -16,7 +16,7 @@ const AddableMixin = {
       (a: Attr) => a.name.startsWith('addable-'),
     );
     const cleanAddableAttr: { [key: string]: string } = {};
-    for (let attr of addableAttr)
+    for (const attr of addableAttr)
       cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
     if (!Object.hasOwn(cleanAddableAttr, 'data-src'))
       cleanAddableAttr['data-src'] = this.range;

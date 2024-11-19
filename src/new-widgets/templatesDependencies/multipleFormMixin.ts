@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 import { StoreMixin } from '../../mixins/storeMixin';
 
 const MultipleFormMixin = {
@@ -93,13 +93,13 @@ const MultipleFormMixin = {
     this.listAttributes['children'] = []; // reset list
 
     // set value in form
-    for (let resource of this.resource['ldp:contains']) {
+    for (const resource of this.resource['ldp:contains']) {
       // for each resource
       this.insertWidget(resource['@id']); // create a widget
     }
     this.planRender();
   },
-  insertWidget(value: string = '') {
+  insertWidget(value = '') {
     if (!this.widget) return;
     const widget = document.createElement(this.widget);
     const attributes = {
@@ -108,7 +108,7 @@ const MultipleFormMixin = {
       value: value,
       range: this.range,
     };
-    for (let name of Object.keys(attributes)) {
+    for (const name of Object.keys(attributes)) {
       if (typeof attributes[name] === 'boolean')
         widget.toggleAttribute(name, attributes[name]);
       else widget.setAttribute(name, attributes[name]);
@@ -124,7 +124,7 @@ const MultipleFormMixin = {
     // Was returning an array of functions, now returns an array of values.
     // Not sure about the tests results in that context
     return Array.from(this.dataHolder).map((element: any) => {
-      let elValue = this.getValueFromElement(element);
+      const elValue = this.getValueFromElement(element);
       return elValue;
     });
   },

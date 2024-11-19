@@ -63,7 +63,10 @@ export const SolidMemberDelete = {
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    const memberPredicate = store.getExpandedPredicate(
+      'user_set',
+      base_context,
+    );
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
@@ -94,13 +97,13 @@ export const SolidMemberDelete = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async deleteMembership() {
-    let userSet = this.currentMembers.filter(value => {
+    const userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
       if (userId === this.dataTargetSrc) return false;
       else return true;
     });
 
-    let currentRes = {
+    const currentRes = {
       '@context': this.context,
       user_set: userSet,
     };

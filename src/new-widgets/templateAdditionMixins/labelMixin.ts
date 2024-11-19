@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { uniqID } from '../../libs/helpers';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const LabelMixin = {
   name: 'label-mixin',

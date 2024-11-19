@@ -14,7 +14,7 @@ const AttributeBinderMixin = {
    * Reset attributes values
    */
   resetAttributesData() {
-    for (let attr of Object.keys(this.bindedAttributes)) {
+    for (const attr of Object.keys(this.bindedAttributes)) {
       this.element.setAttribute(attr, this.bindedAttributes[attr]);
     }
   },
@@ -40,7 +40,7 @@ const AttributeBinderMixin = {
       this.resource,
     ); // generate new attributes
 
-    for (let attr of Object.keys(newAttributes)) {
+    for (const attr of Object.keys(newAttributes)) {
       // set attributes on element
       if (oldAttributes[attr] === newAttributes[attr]) continue; // only if it changed
       this.element.setAttribute(attr, newAttributes[attr]);
@@ -56,14 +56,14 @@ const AttributeBinderMixin = {
   async transformAttributes(attributes: object, resource: Resource) {
     const isContainer = resource && resource.isContainer?.();
 
-    for (let attr of Object.keys(attributes)) {
+    for (const attr of Object.keys(attributes)) {
       const value = attributes[attr];
       // Avoid error if value is a number
       if (typeof value === 'string') {
         // Replace attribute value
         if (!isContainer && resource && value.startsWith('store://resource')) {
           // RESOURCE
-          let path = value.replace('store://resource.', '');
+          const path = value.replace('store://resource.', '');
           attributes[attr] = resource ? await resource[path] : '';
         } else if (
           isContainer &&
@@ -71,7 +71,7 @@ const AttributeBinderMixin = {
           value.startsWith('store://container')
         ) {
           // CONTAINER
-          let path = value.replace('store://container.', '');
+          const path = value.replace('store://container.', '');
           attributes[attr] = resource ? await resource[path] : '';
         } else if (value.startsWith('store://user')) {
           // USER
@@ -86,7 +86,7 @@ const AttributeBinderMixin = {
             attributes[attr] = '';
             continue;
           }
-          let path = value.replace('store://user.', '');
+          const path = value.replace('store://user.', '');
           attributes[attr] = user ? await user[path] : '';
         }
       }

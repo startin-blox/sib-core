@@ -82,9 +82,9 @@ export const SolidForm = {
     return !('@id' in formValue);
   },
   async getFormValue() {
-    let value = this.value;
+    const value = this.value;
     if (this.resource && !this.resource.isContainer?.()) {
-      for (let predicate of Object.keys(this.value)) {
+      for (const predicate of Object.keys(this.value)) {
         // add @id for nested resources
         let object = await this.resource[predicate];
         // edge-case where object is null because predicate needs to be expanded manually (arrays)
@@ -113,7 +113,7 @@ export const SolidForm = {
     }
     return transformArrayToContainer(value);
   },
-  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+  getWidget(field: string, isSet = false): WidgetInterface {
     let tagName = '';
     const widgetAttribute = this.element.getAttribute('widget-' + field);
 
@@ -195,10 +195,10 @@ export const SolidForm = {
     if (!this.isCreationForm(formValue) && this.isSavingAutomatically)
       this.submitForm(); // if autosave, submitForm
   },
-  displayErrorMessage(errors: [string, any][], errorFullName: string = '') {
+  displayErrorMessage(errors: [string, any][], errorFullName = '') {
     errors.forEach((member: [string, any]) => {
-      let errorNextName: string = Object.values(member)[0];
-      let subErrorName =
+      const errorNextName: string = Object.values(member)[0];
+      const subErrorName =
         errorFullName === ''
           ? errorNextName
           : errorFullName.concat('.' + errorNextName);
@@ -209,15 +209,15 @@ export const SolidForm = {
       else errorFieldName = errorNextName;
 
       if (errorFieldName) {
-        let formField = this.element.querySelector(
+        const formField = this.element.querySelector(
           `[name="${errorFieldName}"]`,
         );
         if (formField) {
           formField.classList.add('error');
-          let errorParagraph = document.createElement('p');
+          const errorParagraph = document.createElement('p');
           if (Array.isArray(Object.values(member)[1]) === true) {
             Object.values(member)[1].forEach(error => {
-              let errorText = document.createElement('p');
+              const errorText = document.createElement('p');
               errorText.textContent = error;
               errorParagraph.appendChild(errorText);
             });
@@ -228,12 +228,12 @@ export const SolidForm = {
             )) {
               if (Array.isArray(value)) {
                 value.forEach(error => {
-                  let errorText = document.createElement('p');
+                  const errorText = document.createElement('p');
                   errorText.textContent = error;
                   errorParagraph.appendChild(errorText);
                 });
               } else if (typeof value === 'string') {
-                let errorText = document.createElement('p');
+                const errorText = document.createElement('p');
                 errorText.textContent = value;
                 errorParagraph.appendChild(errorText);
               }
@@ -247,15 +247,15 @@ export const SolidForm = {
       }
 
       if (!Array.isArray(Object.values(member)[1]) === true) {
-        let objectErrors = Object.values(member)[1];
-        let subErrors = Object.entries(objectErrors);
+        const objectErrors = Object.values(member)[1];
+        const subErrors = Object.entries(objectErrors);
         this.displayErrorMessage(subErrors, subErrorName);
       }
     });
   },
   empty(): void {},
   showError(e: object) {
-    let errors = Object.entries(e).filter(
+    const errors = Object.entries(e).filter(
       field => !field[0].startsWith('@context'),
     );
     this.displayErrorMessage(errors);
@@ -266,10 +266,10 @@ export const SolidForm = {
     if (parentElement) render(errorTemplate, parentElement);
   },
   hideError() {
-    let formErrors = this.element.querySelectorAll('.error-message');
+    const formErrors = this.element.querySelectorAll('.error-message');
     if (formErrors) formErrors.forEach(error => error.remove());
 
-    let errorFields = this.element.querySelectorAll('.error');
+    const errorFields = this.element.querySelectorAll('.error');
     if (errorFields)
       errorFields.forEach(errorField => errorField.classList.remove('error'));
 

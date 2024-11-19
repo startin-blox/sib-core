@@ -5,17 +5,22 @@
 
 import {
   html,
-  TemplateResult,
+  type TemplateResult,
   noChange,
-  ChildPart,
-  AttributePart,
-  BooleanAttributePart,
-  EventPart,
-  PropertyPart,
-  ElementPart,
+  type ChildPart,
+  type AttributePart,
+  type BooleanAttributePart,
+  type EventPart,
+  type PropertyPart,
+  type ElementPart,
 } from 'lit';
 
-import { directive, Directive, PartInfo, PartType } from 'lit/directive.js';
+import {
+  directive,
+  Directive,
+  type PartInfo,
+  PartType,
+} from 'lit/directive.js';
 
 type SpreadPartType =
   | ChildPart
@@ -167,7 +172,7 @@ export function preHTML(
   let cachedStrings = templateStringsCache.get(strings);
 
   if (cachedStrings) {
-    for (let cached of cachedStrings) {
+    for (const cached of cachedStrings) {
       const { needlessValues } = cached;
       const isSame = needlessValues.every(nv => values[nv.index] === nv.value);
 

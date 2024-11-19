@@ -82,7 +82,7 @@ export const SolidFormSearch = {
     });
     return values;
   },
-  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+  getWidget(field: string, isSet = false): WidgetInterface {
     let tagName = '';
     // If auto-range-[field] exists, create range-[field] and sets its value
     if (
@@ -128,7 +128,7 @@ export const SolidFormSearch = {
   async updateAutoRanges() {
     for (const attr of (this.element as Element).attributes) {
       if (!attr['name'].startsWith('auto-range-')) continue;
-      let fieldName =
+      const fieldName =
         attr.value !== ''
           ? attr.value
           : attr['name'].replace('auto-range-', '');
@@ -176,7 +176,7 @@ export const SolidFormSearch = {
   async inputChange(input: EventTarget): Promise<void> {
     // FIXME: Improve this as we need to support more than input and single select.
     // What about multiple select, checkboxes, radio buttons, etc?
-    let parentElementLabel = (
+    const parentElementLabel = (
       input as HTMLInputElement
     )?.parentElement?.getAttribute('label');
     try {

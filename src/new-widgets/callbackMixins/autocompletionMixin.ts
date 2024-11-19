@@ -5,7 +5,7 @@ import {
 } from '../../libs/helpers';
 import SlimSelect from 'slim-select';
 import { TranslationMixin } from '../../mixins/translationMixin';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const AutocompletionMixin = {
   name: 'autocompletion-mixin',

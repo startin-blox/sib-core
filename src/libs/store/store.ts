@@ -84,7 +84,7 @@ class Store {
     context: any = {},
     parentId = '',
     localData?: object,
-    forceFetch: boolean = false,
+    forceFetch = false,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
   ): Promise<Resource | null> {
@@ -260,8 +260,8 @@ class Store {
     const compactedResources: any[] = await Promise.all(
       flattenedResources.map(r => jsonld.compact(r, {})),
     );
-    for (let resource of compactedResources) {
-      let id = resource['@id'] || resource['id'];
+    for (const resource of compactedResources) {
+      const id = resource['@id'] || resource['id'];
       let key = resource['@id'] || resource['id'];
 
       if (!key) console.log('No key or id for resource:', resource);
@@ -345,7 +345,7 @@ class Store {
    */
   subscribeChildren(container: CustomGetter, containerId: string) {
     if (!container['ldp:contains']) return;
-    for (let res of container['ldp:contains']) {
+    for (const res of container['ldp:contains']) {
       this.subscribeResourceTo(containerId, res['@id'] || res['id']);
     }
   }
@@ -433,9 +433,9 @@ class Store {
   async getNestedResources(resource: object, id: string) {
     const cachedResource = store.get(id);
     if (!cachedResource || cachedResource.isContainer?.()) return [];
-    let nestedProperties: any[] = [];
+    const nestedProperties: any[] = [];
     const excludeKeys = ['@context'];
-    for (let p of Object.keys(resource)) {
+    for (const p of Object.keys(resource)) {
       if (
         resource[p] &&
         typeof resource[p] === 'object' &&
@@ -648,7 +648,7 @@ class Store {
     let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
     if (parentId && !parentId.startsWith('store://local')) {
       // and get full URL from parent caller for local files
-      let parentIri = new URL(parentId, document.location.href).href;
+      const parentIri = new URL(parentId, document.location.href).href;
       iri = new URL(iri, parentIri).href;
     } else {
       iri = new URL(iri, document.location.href).href;

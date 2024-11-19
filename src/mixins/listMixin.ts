@@ -124,7 +124,7 @@ const ListMixin = {
     context: string,
   ) {
     // Create child components
-    for (let resource of resources) {
+    for (const resource of resources) {
       if (!resource) continue;
       this.appendChildElt(resource['@id'], div);
     }

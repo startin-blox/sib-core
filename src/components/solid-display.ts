@@ -15,7 +15,7 @@ import { spread } from '../libs/lit-helpers';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 import { trackRenderAsync } from '../logger';
 
 export const SolidDisplay = {
@@ -111,7 +111,7 @@ export const SolidDisplay = {
    * @param attributes
    */
   getChildTemplate(resourceId: string, attributes: object) {
-    let template = html`
+    const template = html`
       <solid-display
         data-src=${resourceId}
         @click=${(event: Event) => this.dispatchSelect(event, resourceId)}
@@ -167,7 +167,7 @@ export const SolidDisplay = {
    */
   getChildAttributes() {
     const attributes: { [key: string]: string } = {};
-    for (let attr of this.element.attributes) {
+    for (const attr of this.element.attributes) {
       //copy widget and value attributes
       if (
         attr.name.startsWith('value-') ||

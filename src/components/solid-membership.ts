@@ -52,7 +52,7 @@ export const SolidMembership = {
     if (!store.session) return;
 
     // Retrieve the current user from the current store authenticated session
-    let currentUserSession = await store.session;
+    const currentUserSession = await store.session;
     if (!currentUserSession) return;
 
     if (!this.dataTargetSrc) this.userId = await currentUserSession.webId;
@@ -65,7 +65,10 @@ export const SolidMembership = {
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    const memberPredicate = store.getExpandedPredicate(
+      'user_set',
+      base_context,
+    );
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
@@ -97,7 +100,7 @@ export const SolidMembership = {
   },
   async joinGroup() {
     this.currentMembers.push({ '@id': this.userId });
-    let currentRes = {
+    const currentRes = {
       '@context': this.context,
       user_set: this.currentMembers,
     };
@@ -119,13 +122,13 @@ export const SolidMembership = {
     });
   },
   async leaveGroup() {
-    let userSet = this.currentMembers.filter(value => {
+    const userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
       if (userId === this.userId) return false;
       else return true;
     });
 
-    let currentRes = {
+    const currentRes = {
       '@context': this.context,
       user_set: userSet,
     };

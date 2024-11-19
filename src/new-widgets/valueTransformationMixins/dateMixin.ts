@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const DateMixin = {
   name: 'date-mixin',
@@ -25,11 +25,11 @@ const DateMixin = {
     if (nextProcessor) nextProcessor(newValue, listValueTransformations);
   },
   formatDateForInput(date: string) {
-    let d = new Date(date);
+    const d = new Date(date);
     if (Number.isNaN(d.getTime())) throw new Error('Invalid date');
     let month = `${d.getMonth() + 1}`;
     let day = `${d.getDate()}`;
-    let year = d.getFullYear();
+    const year = d.getFullYear();
 
     if (month.length < 2) month = `0${month}`;
     if (day.length < 2) day = `0${day}`;

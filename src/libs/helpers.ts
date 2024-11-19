@@ -96,7 +96,7 @@ function relativeSource(source: string) {
   const e = new Error();
   if (!e.stack) return source;
   const f2 = e.stack.split('\n').filter(l => l.includes(':'))[2];
-  let line = f2.match(/[a-z]+:.*$/);
+  const line = f2.match(/[a-z]+:.*$/);
   if (!line) return source;
   const calledFile = line[0].replace(/(\:[0-9]+){2}\)?$/, '');
   source = new URL(source, calledFile).href;
@@ -144,8 +144,8 @@ function parseFieldsString(fields: string): string[] {
 
   // remove all sets from fields
   while (fields.indexOf('(') > 0) {
-    let firstBracket = fields.indexOf('(');
-    let noset = fields.substring(
+    const firstBracket = fields.indexOf('(');
+    const noset = fields.substring(
       firstBracket,
       findClosingBracketMatchIndex(fields, firstBracket) + 1,
     );
@@ -255,7 +255,7 @@ function generalComparator(a, b, order = 'asc') {
 
 function transformArrayToContainer(resource: object) {
   const newValue = { ...resource };
-  for (let predicate of Object.keys(newValue)) {
+  for (const predicate of Object.keys(newValue)) {
     // iterate over all properties
     const predicateValue = newValue[predicate];
     if (!predicateValue || typeof predicateValue !== 'object') continue; // undefined or literal, do nothing
@@ -305,7 +305,7 @@ export default class AsyncIterableBuilder<Type> {
     }
   }
 
-  #next(value: Type, done: boolean = false) {
+  #next(value: Type, done = false) {
     this.#resolve({ value, done });
     this.#nextPromise();
   }
@@ -319,7 +319,7 @@ export default class AsyncIterableBuilder<Type> {
   }
 }
 
-import {
+import type {
   AsyncQuerySelectorAllType,
   AsyncQuerySelectorType,
 } from './async-query-selector-types';

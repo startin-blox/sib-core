@@ -95,7 +95,7 @@ const RangeMixin = {
               selectedValue; // literal
 
         //TODO: this splitting and expanding is disgusting, please find another solution !!
-        let labelProperty = this.optionLabel.split(/[.]+/).pop();
+        const labelProperty = this.optionLabel.split(/[.]+/).pop();
         const label = await res[labelProperty]; // label of the option
         return { value, label, selectedValue };
       };

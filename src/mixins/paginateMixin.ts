@@ -1,5 +1,5 @@
-import { html, TemplateResult } from 'lit';
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import { html, type TemplateResult } from 'lit';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const PaginateMixin = {
   name: 'paginate-mixin',

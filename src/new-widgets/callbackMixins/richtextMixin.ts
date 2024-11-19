@@ -2,7 +2,7 @@ import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
 import { importInlineCSS } from '../../libs/helpers.js';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
@@ -118,7 +118,7 @@ const RichtextMixin = {
   removeErrorMessageAndStyling() {
     // Remove any previously displayed error message and error styling
     const richtext = this.element.querySelector('[data-richtext]');
-    let errorMessageElement = richtext.querySelector(
+    const errorMessageElement = richtext.querySelector(
       '.required-error-message',
     ) as HTMLDivElement;
     if (errorMessageElement) errorMessageElement.remove();

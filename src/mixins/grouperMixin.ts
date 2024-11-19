@@ -1,5 +1,5 @@
 import { generalComparator } from '../libs/helpers';
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const GrouperMixin = {
   name: 'grouper-mixin',
@@ -40,8 +40,8 @@ const GrouperMixin = {
   ) {
     const nextProcessor = listPostProcessors.shift();
     if (this.groupBy) {
-      let groups = {};
-      for (let resource of resources) {
+      const groups = {};
+      for (const resource of resources) {
         const valueGroup = await resource[this.groupBy];
         if (valueGroup == null) continue;
         if (!groups[valueGroup]) groups[valueGroup] = { resources: [] }; // if no group yet, we create one...
@@ -61,7 +61,7 @@ const GrouperMixin = {
         group: g,
         parent: this.renderGroup(g, div),
       }));
-      for (let { group, parent } of parents) {
+      for (const { group, parent } of parents) {
         if (nextProcessor)
           await nextProcessor(
             groups[group].resources, // give only resources from group

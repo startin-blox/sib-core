@@ -27,7 +27,7 @@ export const SolidLang = {
   },
 
   render() {
-    let template = html`<button @click=${this.languageLoader.bind(this)}>${this.dataLabel}</button>`;
+    const template = html`<button @click=${this.languageLoader.bind(this)}>${this.dataLabel}</button>`;
 
     render(template, this.element);
   },

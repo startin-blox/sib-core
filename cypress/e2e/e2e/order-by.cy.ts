@@ -112,12 +112,14 @@ describe('order-by', { testIsolation: false }, function () {
     cy.get('@list')
       .find('> div > solid-display')
       .then($div => {
-        let currentOrder = Array.from($div.map((_index, el) => el.dataset.src));
+        const currentOrder = Array.from(
+          $div.map((_index, el) => el.dataset.src),
+        );
         cy.get('#reloadList').click();
         cy.get('@list')
           .find('> div > solid-display')
           .then($newDiv => {
-            let newOrder = Array.from(
+            const newOrder = Array.from(
               $newDiv.map((_index, el) => el.dataset.src),
             );
             expect(currentOrder).to.not.include.ordered.members(newOrder);

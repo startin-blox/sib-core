@@ -58,7 +58,7 @@ describe('store', { testIsolation: false }, function () {
         '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
       };
       await store.setLocalData(dataToSave1, url);
-      let dataRead1 = await store.getData(url);
+      const dataRead1 = await store.getData(url);
       expect(await dataRead1!['foo']).eq('bar');
       store.clearCache(url);
     });

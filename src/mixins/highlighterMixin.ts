@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const HighlighterMixin = {
   name: 'highlighter-mixin',
@@ -15,7 +15,7 @@ const HighlighterMixin = {
     div: HTMLElement,
     context: string,
   ): Promise<void> {
-    for (let attr of this.element.attributes) {
+    for (const attr of this.element.attributes) {
       if (attr.name.startsWith('highlight-')) {
         const field = attr.name.split('highlight-')[1];
         resources = await Promise.all(
@@ -35,7 +35,7 @@ const HighlighterMixin = {
   },
 
   sortHighlighted(resources, field, value) {
-    for (let [index, res] of resources.entries()) {
+    for (const [index, res] of resources.entries()) {
       if (res[field] && res[field] === value) {
         // put the current element at the beginning of the array
         resources.splice(0, 0, resources.splice(index, 1)[0]); // TODO : test with sort

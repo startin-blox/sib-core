@@ -19,7 +19,7 @@ export class CustomGetter {
     resource: object,
     clientContext: object,
     serverContext: object,
-    parentId: string = '',
+    parentId = '',
     serverPagination: object = {},
     serverSearch: object = {},
   ) {
@@ -51,7 +51,7 @@ export class CustomGetter {
 
     // Specific case where the predicates is a full IRI, avoid splitting it on the dot notation
     try {
-      let isUrl = new URL(path);
+      const isUrl = new URL(path);
       // My goal is to be able to solve user['circles.ldp:contains'] on the fly
       // If we do not check the url protocol, then it is considered valid
       if (!isUrl.protocol.startsWith('http'))
@@ -62,7 +62,7 @@ export class CustomGetter {
         if (!resources) return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
 
-        let result = resources
+        const result = resources
           ? resources.map((res: object) => {
               let resource: any = store.get(res['@id']);
               if (resource) return resource;
@@ -125,7 +125,7 @@ export class CustomGetter {
       }
       if (!value || !value['@id']) return undefined;
 
-      let resource = await this.getResource(
+      const resource = await this.getResource(
         value['@id'],
         { ...this.clientContext, ...this.serverContext },
         this.parentId || this.resourceId,
@@ -176,7 +176,7 @@ export class CustomGetter {
     id: string,
     context: object,
     iriParent: string,
-    forceFetch: boolean = false,
+    forceFetch = false,
   ): Promise<Resource | null> {
     if (id.startsWith('_:b')) return store.get(id + iriParent); // anonymous node = get from cache
     return store.getData(id, context, iriParent, undefined, forceFetch);
@@ -237,7 +237,7 @@ export class CustomGetter {
     if (!children) return null;
     if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
 
-    let result = children
+    const result = children
       ? children.map((res: object) => {
           let resource: any = store.get(res['@id']);
           if (resource) return resource;
@@ -274,7 +274,7 @@ export class CustomGetter {
    * @param prop
    */
   isFullResource(): boolean {
-    let propertiesKeys = Object.keys(this.resource).filter(
+    const propertiesKeys = Object.keys(this.resource).filter(
       p => !p.startsWith('@'),
     );
     if (this.resource['@id'].startsWith('_:b')) return true; // anonymous node = considered as always full

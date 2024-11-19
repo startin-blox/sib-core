@@ -63,7 +63,7 @@ export class BaseWidget extends HTMLElement {
   }
   get value() {
     if (this.dataHolder) {
-      let values = this.dataHolder.map(element => {
+      const values = this.dataHolder.map(element => {
         if (element instanceof HTMLInputElement && element.type === 'checkbox')
           return element.checked;
         // if value is defined, push it in the array
@@ -165,7 +165,7 @@ export class BaseWidget extends HTMLElement {
   }
   async fetchSources(resource: any) {
     if (!resource || !resource['ldp:contains']) return null;
-    let resources: any[] = [];
+    const resources: any[] = [];
     let index = 0;
     for (let res of resource['ldp:contains']) {
       if (!res) {
@@ -179,7 +179,7 @@ export class BaseWidget extends HTMLElement {
       }
       if (res.isContainer?.()) {
         // if nested container
-        let resourcesFromContainer = await store.getData(
+        const resourcesFromContainer = await store.getData(
           res['@id'],
           this.context,
         ); // fetch the datas
@@ -211,7 +211,7 @@ export class BaseWidget extends HTMLElement {
         ) {
           // selected options for multiple select
           selected = false;
-          for await (let value of this._value['ldp:contains']) {
+          for await (const value of this._value['ldp:contains']) {
             if (value['@id'] === element['@id']) {
               selected = true;
               break;

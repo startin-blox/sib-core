@@ -14,7 +14,7 @@ import type { Query, SearchQuery } from './interfaces';
  */
 const isSet = (field: string, fields: string): boolean => {
   if (!fields) return false;
-  let foundSets = fields.match(getSetRegexp(field));
+  const foundSets = fields.match(getSetRegexp(field));
   return foundSets ? foundSets.length > 0 : false;
 };
 /**
@@ -292,7 +292,7 @@ const matchFilters = async (
   try {
     await Promise.all(
       filterNames.map(async filter => {
-        let match = await matchFilter(
+        const match = await matchFilter(
           resource,
           filter,
           filters[filter],
@@ -330,7 +330,7 @@ const searchInResources = async (
   window.cachePropsSearchFilter = {};
   return Promise.all(
     resources.map(async resource => {
-      let match = await matchFilters(
+      const match = await matchFilters(
         resource,
         filters,
         filterNames,

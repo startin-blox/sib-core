@@ -2,7 +2,7 @@ import { StoreMixin } from '../../mixins/storeMixin';
 import { store } from '../../libs/store/store';
 
 import { html } from 'lit';
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
 
 const EditableMixin = {
   name: 'editable-mixin',

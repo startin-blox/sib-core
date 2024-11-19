@@ -138,7 +138,7 @@ export class Profiler {
         totalExecutionTime: 0,
         lastExecutionTime: 0,
         averageExecutionTime: 0,
-        minExecutionTime: Infinity,
+        minExecutionTime: Number.POSITIVE_INFINITY,
         maxExecutionTime: 0,
       };
     }

@@ -71,7 +71,7 @@ const StoreMixin = {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   get resource(): Resource | null {
-    let id = this.resourceId;
+    const id = this.resourceId;
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
     );

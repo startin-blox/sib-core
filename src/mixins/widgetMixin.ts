@@ -4,8 +4,8 @@ import {
   findClosingBracketMatchIndex,
 } from '../libs/helpers';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory';
-import { WidgetInterface, WidgetType, Resource } from './interfaces';
-import { html, render, TemplateResult } from 'lit';
+import { type WidgetInterface, WidgetType, type Resource } from './interfaces';
+import { html, render, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const WidgetMixin = {
@@ -57,13 +57,13 @@ const WidgetMixin = {
     let resource = this.resource as Resource;
     if (resource && resource.isContainer?.()) {
       // If container, keep the 1rst resource
-      for (let res of resource['ldp:contains']) {
+      for (const res of resource['ldp:contains']) {
         resource = res;
         break;
       }
     } else if (resource && this.arrayField && this.predicateName) {
       // if array, keep the 1rst resource
-      for (let res of resource[this.predicateName]) {
+      for (const res of resource[this.predicateName]) {
         resource = res;
         break;
       }
@@ -73,7 +73,7 @@ const WidgetMixin = {
       console.error(new Error('You must provide a "fields" attribute'));
     if (!resource) return [];
 
-    let fields: string[] = [];
+    const fields: string[] = [];
     for (const prop of resource.properties) {
       if (!prop.startsWith('@') && !(prop === 'permissions')) {
         if (!this.isAlias(prop) && (await resource[prop])) fields.push(prop);
@@ -126,7 +126,7 @@ const WidgetMixin = {
    */
   isSet(field: string): boolean {
     if (!this.fields) return false;
-    let foundSets = this.fields.match(this.getSetRegexp(field));
+    const foundSets = this.fields.match(this.getSetRegexp(field));
     return foundSets ? foundSets.length > 0 : false;
   },
   /**
@@ -157,7 +157,7 @@ const WidgetMixin = {
         fieldValue === undefined ||
         fieldValue === ''
       ) {
-        let expandedPredicate = sibStore.getExpandedPredicate(
+        const expandedPredicate = sibStore.getExpandedPredicate(
           field,
           this.context,
         );
@@ -200,7 +200,7 @@ const WidgetMixin = {
       return await this.fetchValue(alias[0], resource);
     }
 
-    let resourceValue = await this.fetchValue(field, resource);
+    const resourceValue = await this.fetchValue(field, resource);
     // Empty value
     if (
       resourceValue === undefined ||
@@ -236,7 +236,7 @@ const WidgetMixin = {
    * @param field - string
    * @param isSet - boolean
    */
-  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+  getWidget(field: string, isSet = false): WidgetInterface {
     if (this.isAlias(field)) field = field.split(' as ')[1];
     const widget = this.element.getAttribute('widget-' + field);
 
@@ -291,7 +291,7 @@ const WidgetMixin = {
       'add-class',
       'remove-class',
     ];
-    for (let attr of multipleAttributes)
+    for (const attr of multipleAttributes)
       this.addToAttributes(`multiple-${escapedField}-${attr}`, attr, attrs);
 
     // transfer all [attr]-[field] attributes as [attr] attribute for widget [field]
@@ -328,13 +328,13 @@ const WidgetMixin = {
       'target-src',
       'data-label',
     ];
-    for (let attr of defaultAttributes)
+    for (const attr of defaultAttributes)
       this.addToAttributes(`${attr}-${escapedField}`, attr, attrs);
 
     const addableAttributes: Attr[] = (
       Array.from(this.element.attributes) as Attr[]
     ).filter((a: Attr) => a.name.startsWith(`addable-${escapedField}`));
-    for (let attr of addableAttributes)
+    for (const attr of addableAttributes)
       this.addToAttributes(
         attr.name,
         attr.name.replace(`addable-${escapedField}`, 'addable'),
@@ -372,7 +372,7 @@ const WidgetMixin = {
     let widgetTemplate: TemplateResult = html``;
 
     // Set attributes
-    let value = await this.getValue(field, currentResource);
+    const value = await this.getValue(field, currentResource);
     if (widgetMeta.type === WidgetType.NATIVE) {
       // native widget (ie: h1)
       widgetTemplate = preHTML`<${tagName} name="${ifDefined(attributes.name)}" class="${ifDefined(attributes.class)}">${value}</${tagName}>`;
@@ -394,7 +394,7 @@ const WidgetMixin = {
           attributes['data-src'] = value['@id'];
         } else {
           try {
-            let isUrl = new URL(value);
+            const isUrl = new URL(value);
             if (isUrl) attributes['data-src'] = value;
           } catch (e) {}
 
@@ -438,7 +438,7 @@ const WidgetMixin = {
     // Get set attributes
     const attrs = { name: field };
     const setAttributes = ['class', 'label'];
-    for (let attr of setAttributes)
+    for (const attr of setAttributes)
       this.addToAttributes(`${attr}-${field}`, attr, attrs);
 
     // Create widget if not already existing
@@ -450,11 +450,11 @@ const WidgetMixin = {
       widget = document.createElement(setWidget.tagName);
       initializing = true;
     }
-    for (let name of Object.keys(attrs)) {
+    for (const name of Object.keys(attrs)) {
       this.defineAttribute(widget, name, attrs[name], setWidget.type);
     }
     if (widget.component && initializing) widget.component.render();
-    let setFields = this.getSet(field);
+    const setFields = this.getSet(field);
     // Catch widget for the set if all these fields are empty
     if (this.element.hasAttribute('empty-' + field)) {
       let hasOnlyEmpty = true;

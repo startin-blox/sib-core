@@ -13,16 +13,16 @@ import {
  */
 describe('uniqID', () => {
   it('returns an id', () => {
-    let test = uniqID();
+    const test = uniqID();
     expect(test).to.match(/[_].{10}/g);
   });
   it('returns a different id 50 times in a row', () => {
-    let ids: string[] = [];
+    const ids: string[] = [];
     const arraySize = 50;
     for (let index = 0; index < arraySize; index++) {
       ids.push(uniqID());
     }
-    let noDuplicates = [...new Set(ids)];
+    const noDuplicates = [...new Set(ids)];
     expect(noDuplicates.length).to.eq(arraySize);
   });
 });

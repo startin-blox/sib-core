@@ -1,4 +1,4 @@
-import { Profiler } from '../logger';
+import type { Profiler } from '../logger';
 
 export interface AccessorStaticInterface {
   [key: string]: {
@@ -13,9 +13,10 @@ export interface ArrayOfHooksInterface {
   detached: HookInterface[];
 }
 
-export interface AttributeChangedCallbackInterface {
-  (newValue: any, oldValue: any): void;
-}
+export type AttributeChangedCallbackInterface = (
+  newValue: any,
+  oldValue: any,
+) => void;
 
 export interface AttributeDefinitionInterface {
   type?: any;
@@ -70,9 +71,7 @@ export interface HasMixinsInterface {
   use?: MixinStaticInterface[] | undefined;
 }
 
-export interface HookInterface {
-  (): void;
-}
+export type HookInterface = () => void;
 
 export interface MixinStaticInterface
   extends HasAttributesDefinitionInterface,

@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const SorterMixin = {
   name: 'sorter-mixin',

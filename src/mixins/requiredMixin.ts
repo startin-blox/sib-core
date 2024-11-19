@@ -1,4 +1,4 @@
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
 
 const RequiredMixin = {
   name: 'required-mixin',
@@ -25,11 +25,11 @@ const RequiredMixin = {
       });
 
     if (requiredFields.length) {
-      for (let resource of resources) {
+      for (const resource of resources) {
         let hasProps = true;
-        for (let field of requiredFields) {
+        for (const field of requiredFields) {
           // Retrieve resource from store
-          let res = await resource[field];
+          const res = await resource[field];
           if (!res) {
             hasProps = false;
             break;
