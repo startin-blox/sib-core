@@ -69,7 +69,7 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
     }
     /** @type {Partial<CypressCommandLine.CypressOpenOptions>}) */
     const opt = {
-      testingType:'e2e',
+      testingType: 'e2e',
       browser: 'electron',
       config: {
         e2e: { baseUrl: addr },
