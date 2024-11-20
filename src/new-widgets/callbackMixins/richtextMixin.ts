@@ -1,8 +1,8 @@
 import Quill from 'quill';
 
-import deltaMd from 'delta-markdown-for-quill';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
+import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
 import { importInlineCSS } from '../../libs/helpers.js';
+import MarkdownIt from 'markdown-it';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
@@ -44,8 +44,15 @@ const RichtextMixin = {
       });
     }
 
-    const ops = deltaMd.toDelta(this.value);
-    this.quill.setContents(ops);
+    const mdParser = new MarkdownIt({
+      html: true,
+    });
+
+    const formattedValue = this.value.replace(/\r\n|\n/g, '<br>');
+    const html = mdParser.render(formattedValue); // Convert Markdown to HTML
+    const delta = this.quill.clipboard.convert({ html }); // Convert HTML to Delta
+
+    this.quill.setContents(delta);
     if (this.isRequired()) {
       this.createHiddenRequiredInput();
       this.quill.on('text-change', this.onTextChange.bind(this));

@@ -8,7 +8,10 @@
   "directories": {
     "example": "examples"
   },
-  "files": ["dist", "doc"],
+  "files": [
+    "dist",
+    "doc"
+  ],
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch --sourcemap 'inline'",
@@ -73,7 +76,6 @@
     "autolinker": "^4.0.0",
     "cypress": "^13.14.2",
     "cypress-plugin-tab": "^1.0.5",
-    "delta-markdown-for-quill": "0.0.9",
     "dialog-polyfill": "^0.5.6",
     "express": "^4.21.0",
     "find-free-port": "^2.0.0",
@@ -83,7 +85,7 @@
     "markdown-it": "^14.1.0",
     "markdown-it-link-attributes": "4.0.1",
     "pubsub-js": "^1.9.4",
-    "quill": "^2.0.2",
+    "quill": "^2.0.3",
     "quill-delta-to-markdown": "^0.6.0",
     "semver": "7.6.3",
     "slim-select": "^2.9.2",

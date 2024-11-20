@@ -111,4 +111,11 @@ describe('solid-form-richtext test', function () {
       .should('have.attr', 'href', 'http://drawing.garden/')
       .and('contain', 'my site');
   });
+
+  it('Editor displays correctly multiple new lines', () => {
+    cy.get('#form-5 div[data-richtext] [contenteditable]').should(
+      'have.html',
+      '<p>Première ligne</p><p><br></p><p><br></p><p><br></p><p>Seconde Ligne avec quatre sauts de ligne</p>',
+    );
+  });
 });
