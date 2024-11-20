@@ -1,3 +1,5 @@
+// @ts-check
+
 import crypto from 'crypto';
 import cypress from 'cypress';
 import url from 'url';
@@ -9,14 +11,15 @@ import cors from 'cors';
 const port = findFreePort(3000);
 const app = express();
 const distPath = '.';
-
 app.use(cors());
+// Set the browser language to English to ensure consistent test conditions.
+process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
 (async () => {
   const updateURLs = /.*jsonld/;
   const server = app
     .use(express.static(distPath))
     .use(express.json({ type: 'application/*+json' }))
-    .get('/favicon.ico', (req, rep) => rep.send())
+    .get('/favicon.ico', (_req, rep) => void rep.send())
     // Handle upload
     .post('/upload', (req, rep) => {
       const originalUrl = url.format({
@@ -33,7 +36,7 @@ app.use(cors());
     .get('/mock/users.jsonld', async (req, res) => {
       const limit = Number(req.query.limit);
       const offset = Number(req.query.offset);
-      const val = req.query['search-terms'] || '';
+      const val = String(req.query['search-terms'] || '');
 
       const jsonData = await fs.readFile(
         './examples/data/list/users-mocked.jsonld',
@@ -64,13 +67,17 @@ app.use(cors());
       console.log(addr);
       return;
     }
-    let test;
+    /** @type {Partial<CypressCommandLine.CypressOpenOptions>}) */
+    const opt = {
+      testingType:'e2e',
+      browser: 'electron',
+      config: {
+        e2e: { baseUrl: addr },
+      },
+    };
+    /** @type {void | CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult} */
+    let test = undefined;
     try {
-      const opt = {
-        config: {
-          baseUrl: addr,
-        },
-      };
       test = process.argv.includes('--test-ui')
         ? await cypress.open(opt)
         : await cypress.run(opt);
@@ -78,7 +85,7 @@ app.use(cors());
       console.error(error);
     } finally {
       server.close();
-      if (test.totalFailed) {
+      if (test && 'totalFailed' in test && test.totalFailed > 0) {
         process.exit(1);
       }
     }

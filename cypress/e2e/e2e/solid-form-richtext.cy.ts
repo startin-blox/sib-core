@@ -10,8 +10,8 @@ describe('solid-form-richtext test', function () {
         cy.get('#form-1 div[data-richtext] .error-border-richtext').should('not.exist');
     });
 
-    it('Submitting form with empty rich text input should display an error mesage', () => {
-        cy.get('#form-1 div[data-richtext] p').clear();
+    it('Submitting form with empty rich text input should display an error message', () => {
+        cy.get('#form-1 div[data-richtext] [contenteditable]').should('have.text', 'some description').clear();
         cy.get('#form-1 input[type="submit"]').click();
         cy.get('#form-1 div[data-richtext] .required-error-message').should('exist');
         cy.get('#form-1 div[data-richtext].error-border-richtext').should('exist');
@@ -19,12 +19,12 @@ describe('solid-form-richtext test', function () {
     
     it('Error message disappears when retyping in rich text input', () => {
         // Empty fields , error is shown
-        cy.get('#form-1 div[data-richtext] p').clear();
+        cy.get('#form-1 div[data-richtext] [contenteditable]').should('have.text', 'some description').clear();
         cy.get('#form-1 input[type="submit"]').click();
         cy.get('#form-1 div[data-richtext] .required-error-message').should('exist');
         cy.get('#form-1 div[data-richtext].error-border-richtext').should('exist');
 
-        // Retype text , error disapears
+        // Retype text , error disappears
         cy.get('#form-1 div[data-richtext] p').type('some text');
         cy.get('#form-1 input[type="submit"]').click();
         cy.get('#form-1 div[data-richtext] .required-error-message').should('not.exist');
