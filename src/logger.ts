@@ -162,9 +162,8 @@ export class Profiler {
   private formatTime(time: number): string {
     if (time >= 1000) {
       return `${(time / 1000).toFixed(2)} seconds`;
-    } else {
-      return `${time.toFixed(2)} ms`;
     }
+    return `${time.toFixed(2)} ms`;
   }
 
   private formatComponentStats(

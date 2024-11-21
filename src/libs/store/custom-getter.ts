@@ -141,29 +141,22 @@ export class CustomGetter {
    * @returns
    */
   getLiteralValue(value: any): string | string[] | null {
-    if (typeof value === 'object') {
-      // value object: https://www.w3.org/TR/json-ld11/#value-objects
-      if (value['@value']) {
-        // 1 language
-        return value['@value'];
-      } else if (Array.isArray(value)) {
-        if (value.length === 0) return null;
-        if (Array.isArray(value[0])) {
-          // multiple languages
-          const ln = store._getLanguage();
-          let translatedValue = value.find(
-            v => v['@language'] && v['@language'] === ln,
-          ); // find current language
-          if (!translatedValue)
-            translatedValue = value.find(
-              v => v['@language'] && v['@language'] === 'en',
-            ); // default to en
-          return translatedValue ? translatedValue['@value'] || null : null; // return value when no translated value is found
-        }
-        return value;
-      }
-    }
-    return value; // simple value
+    if (typeof value !== 'object') return value;
+    // value object: https://www.w3.org/TR/json-ld11/#value-objects
+    if (value['@value']) return value['@value']; // 1 language
+    if (!Array.isArray(value)) return value;
+    if (value.length === 0) return null;
+    if (!Array.isArray(value[0])) return value;
+    // multiple languages
+    const ln = store._getLanguage();
+    let translatedValue = value.find(
+      v => v['@language'] && v['@language'] === ln,
+    ); // find current language
+    if (!translatedValue)
+      translatedValue = value.find(
+        v => v['@language'] && v['@language'] === 'en',
+      ); // default to en
+    return translatedValue?.['@value'] ?? null; // return value when no translated value is found
   }
 
   /**
@@ -193,15 +186,14 @@ export class CustomGetter {
           this.resource['@type'].includes(type),
         );
       return this.containerTypes.includes(this.resource['@type']);
-    } else if (this.resource.type) {
-      if (Array.isArray(this.resource.type))
-        return this.containerTypes.some(type =>
-          this.resource.type.includes(type),
-        );
-      return this.containerTypes.includes(this.resource.type);
     }
+    if (!this.resource.type) return false;
 
-    return false;
+    if (Array.isArray(this.resource.type))
+      return this.containerTypes.some(type =>
+        this.resource.type.includes(type),
+      );
+    return this.containerTypes.includes(this.resource.type);
   }
 
   /**
@@ -283,8 +275,8 @@ export class CustomGetter {
       propertiesKeys.length === 1 &&
       propertiesKeys[0] === this.getExpandedPredicate('permissions')
     )
-      return false; // If only the permissions are present, then the resource is not complete
-    else if (propertiesKeys.length > 0) return true;
+      return false;
+    if (propertiesKeys.length > 0) return true;
 
     return false;
   }
@@ -368,8 +360,8 @@ export class CustomGetter {
         switch (property) {
           case '@id':
             if (this.resource['@id'])
-              return this.getCompactedIri(this.resource['@id']); // Compact @id if possible
-            else console.log(this.resource, this.resource['@id']);
+              return this.getCompactedIri(this.resource['@id']);
+            console.log(this.resource, this.resource['@id']);
             return;
           case '@type':
             return this.resource['@type']; // return synchronously

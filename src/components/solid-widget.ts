@@ -53,9 +53,8 @@ export const SolidWidget = {
       },
       // For form widgets, handle nested solid-form
       getValueFromElement(element: any) {
-        if (element.tagName === 'SOLID-FORM')
-          return element.component.value; // nested solid-form
-        else if (element.component) return element.component.getValue(); // form widget
+        if (element.tagName === 'SOLID-FORM') return element.component.value; // nested solid-form
+        if (element.component) return element.component.getValue(); // form widget
         return element.value; // input
       },
       updateDOM() {

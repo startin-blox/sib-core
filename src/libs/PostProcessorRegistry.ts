@@ -32,13 +32,12 @@ export class PostProcessorRegistry {
   public getFormattedCallbacks(): string {
     if (this.currentPostProcessors.length === 0) {
       return 'No post-processors registered.';
-    } else {
-      let formattedText = 'Registered post-processors:\n';
-      for (const postProcessor of this.currentPostProcessors) {
-        formattedText += `- ${postProcessor.name}\n`;
-      }
-      return formattedText.trim();
     }
+    let formattedText = 'Registered post-processors:\n';
+    for (const postProcessor of this.currentPostProcessors) {
+      formattedText += `- ${postProcessor.name}\n`;
+    }
+    return formattedText.trim();
   }
 
   static printFormattedCallbacks(
@@ -46,21 +45,19 @@ export class PostProcessorRegistry {
   ): string {
     if (currentPostProcessors.length === 0) {
       return 'No post-processors registered.';
-    } else {
-      let formattedText = 'Registered post-processors:\n';
-      for (const postProcessor of currentPostProcessors) {
-        formattedText += `- ${postProcessor.name}\n`;
-      }
-      return formattedText.trim();
     }
+    let formattedText = 'Registered post-processors:\n';
+    for (const postProcessor of currentPostProcessors) {
+      formattedText += `- ${postProcessor.name}\n`;
+    }
+    return formattedText.trim();
   }
 
   public whichCallbackExecutedNext(): string {
     if (this.currentPostProcessors.length === 0) {
       return 'No post-processors registered.';
-    } else {
-      return `Next post-processor to be executed is: ${this.currentPostProcessors[0].name}`;
     }
+    return `Next post-processor to be executed is: ${this.currentPostProcessors[0].name}`;
   }
 
   public deepCopy(): PostProcessorRegistry {

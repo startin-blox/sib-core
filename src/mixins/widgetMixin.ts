@@ -169,7 +169,8 @@ const WidgetMixin = {
       if (Array.isArray(fieldValue) && !fieldValue['ldp:contains']) {
         return JSON.stringify(fieldValue);
         // Dumb edge case because if the array bears only one item, when compacted the array translates into one object
-      } else if (
+      }
+      if (
         typeof fieldValue === 'object' &&
         fieldValue['@id'] &&
         1 === Object.keys(fieldValue).length

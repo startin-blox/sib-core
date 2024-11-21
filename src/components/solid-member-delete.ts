@@ -100,7 +100,7 @@ export const SolidMemberDelete = {
     const userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
       if (userId === this.dataTargetSrc) return false;
-      else return true;
+      return true;
     });
 
     const currentRes = {

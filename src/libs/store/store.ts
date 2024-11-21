@@ -179,12 +179,11 @@ class Store {
     if (this.fetch && authenticated) {
       // authenticated
       return this.fetch.then(fn => fn(iri, options));
-    } else {
-      // anonymous
-      if (options.headers)
-        options.headers = this._convertHeaders(options.headers);
-      return fetch(iri, options).then(response => response);
     }
+    // anonymous
+    if (options.headers)
+      options.headers = this._convertHeaders(options.headers);
+    return fetch(iri, options).then(response => response);
   }
 
   /**
@@ -388,9 +387,8 @@ class Store {
             ); // notify components
         });
         return response.headers?.get('Location') || null;
-      } else {
-        throw response;
       }
+      throw response;
     });
   }
 

@@ -66,40 +66,39 @@ const ValidationMixin = {
     }
   },
   getModalDialog() {
-    if (this.confirmationType === 'dialog') {
-      const quitDialog = () => {
-        const dialog: any = document.getElementById(this.dialogID);
-        if (dialog == null) return;
-        dialog.close();
-      };
-      const confirmChoice = () => {
-        this.validateModal();
-        quitDialog();
-      };
-      return html`
-        <dialog id="${this.dialogID}">
-        ${
-          this.confirmationWidget
-            ? preHTML`<${this.confirmationWidget} value=${this.resourceId}></${this.confirmationWidget}>`
-            : html`<p>${this.confirmationMessage || this.t('validation.message')}</p>`
-        }
-          <div>
-            <button
-              @click=${confirmChoice} 
-              class=${ifDefined(this.confirmationSubmitClass)}
-            >
-            ${this.confirmationSubmitText || this.t('validation.submit-text')}
-            </button>
-            <button
-              @click=${quitDialog}
-              class=${ifDefined(this.confirmationCancelClass)}
-            >
-            ${this.confirmationCancelText || this.t('validation.cancel-text')}
-            </button>
-          </div>
-        </dialog>
-      `;
-    } else return '';
+    if (this.confirmationType !== 'dialog') return '';
+    const quitDialog = () => {
+      const dialog: any = document.getElementById(this.dialogID);
+      if (dialog == null) return;
+      dialog.close();
+    };
+    const confirmChoice = () => {
+      this.validateModal();
+      quitDialog();
+    };
+    return html`
+      <dialog id="${this.dialogID}">
+      ${
+        this.confirmationWidget
+          ? preHTML`<${this.confirmationWidget} value=${this.resourceId}></${this.confirmationWidget}>`
+          : html`<p>${this.confirmationMessage || this.t('validation.message')}</p>`
+      }
+        <div>
+          <button
+            @click=${confirmChoice} 
+            class=${ifDefined(this.confirmationSubmitClass)}
+          >
+          ${this.confirmationSubmitText || this.t('validation.submit-text')}
+          </button>
+          <button
+            @click=${quitDialog}
+            class=${ifDefined(this.confirmationCancelClass)}
+          >
+          ${this.confirmationCancelText || this.t('validation.cancel-text')}
+          </button>
+        </div>
+      </dialog>
+    `;
   },
 };
 

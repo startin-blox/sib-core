@@ -125,7 +125,7 @@ export const SolidMembership = {
     const userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
       if (userId === this.userId) return false;
-      else return true;
+      return true;
     });
 
     const currentRes = {
@@ -152,9 +152,8 @@ export const SolidMembership = {
   switchMembership() {
     if (this.isMember) {
       return this.leaveGroup();
-    } else {
-      return this.joinGroup();
     }
+    return this.joinGroup();
   },
   validateModal() {
     // Send method to validationMixin, used by the dialog modal and performAction method

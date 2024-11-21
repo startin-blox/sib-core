@@ -101,7 +101,8 @@ const matchValue = async (
       if (ret) return orThrow(throwOn, true);
     }
     return orThrow(throwOn, await ret);
-  } else if (Array.isArray(subject)) {
+  }
+  if (Array.isArray(subject)) {
     let ret: any = Promise.resolve(query.value === ''); // if no query, return a match
     for (const value of subject) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
