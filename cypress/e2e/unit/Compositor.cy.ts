@@ -133,11 +133,11 @@ describe('Mixin Compositor', () => {
     const hookNames = Reflect.ownKeys(result);
 
     expect(hookNames.length).eq(3);
-    hookNames.forEach(hookName => {
-      result[hookName].forEach(hook => {
+    for (const hookName of hookNames) {
+      for (const hook of result[hookName]) {
         expect(typeof hook).eq('function');
-      });
-    });
+      }
+    }
 
     expect(result.created.length).eq(3);
     expect(result.attached.length).eq(2);
@@ -157,10 +157,10 @@ describe('Mixin Compositor', () => {
     const accessors = Object.keys(result);
 
     expect(accessors.length).eq(1);
-    accessors.forEach(accessorName => {
+    for (const accessorName of accessors) {
       expect(typeof result[accessorName].get).eq('function');
       expect(typeof result[accessorName].set).eq('function');
-    });
+    }
 
     expect(result.accessorTest.get.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
@@ -185,9 +185,9 @@ describe('Mixin Compositor', () => {
     const methodNames = Array.from(result.keys());
 
     expect(methodNames.length).eq(4);
-    methodNames.forEach(methodName => {
+    for (const methodName of methodNames) {
       expect(typeof result.get(methodName)).eq('function');
-    });
+    }
 
     expect(result.get('methodA').toString()).eq(
       MixinTestOne.methodA.toString(),

@@ -58,15 +58,15 @@ export const SolidForm = {
   },
   get value(): object {
     const values = {};
-    this.widgets.forEach(widget => {
+    for (const widget of this.widgets) {
       const name = (widget.component || widget).name;
-      if (name == null) return;
+      if (name == null) continue;
       let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
       } catch (e) {}
       setDeepProperty(values, name.split('.'), value);
-    });
+    }
     // add @id if edition
     if (this.resource && !this.resource.isContainer?.())
       values['@id'] = this.resourceId;
@@ -196,7 +196,7 @@ export const SolidForm = {
       this.submitForm(); // if autosave, submitForm
   },
   displayErrorMessage(errors: [string, any][], errorFullName = '') {
-    errors.forEach((member: [string, any]) => {
+    for (const member of errors) {
       const errorNextName: string = Object.values(member)[0];
       const subErrorName =
         errorFullName === ''
@@ -216,22 +216,19 @@ export const SolidForm = {
           formField.classList.add('error');
           const errorParagraph = document.createElement('p');
           if (Array.isArray(Object.values(member)[1]) === true) {
-            Object.values(member)[1].forEach(error => {
+            for (const error of Object.values(member)[1]) {
               const errorText = document.createElement('p');
               errorText.textContent = error;
               errorParagraph.appendChild(errorText);
-            });
+            }
           } else if (typeof Object.values(member)[1] === 'object') {
-            // @ts-ignore
-            for (const [key, value] of Object.entries(
-              Object.values(member)[1],
-            )) {
+            for (const value of Object.values(Object.values(member)[1])) {
               if (Array.isArray(value)) {
-                value.forEach(error => {
+                for (const error of value) {
                   const errorText = document.createElement('p');
                   errorText.textContent = error;
                   errorParagraph.appendChild(errorText);
-                });
+                }
               } else if (typeof value === 'string') {
                 const errorText = document.createElement('p');
                 errorText.textContent = value;
@@ -251,7 +248,7 @@ export const SolidForm = {
         const subErrors = Object.entries(objectErrors);
         this.displayErrorMessage(subErrors, subErrorName);
       }
-    });
+    }
   },
   empty(): void {},
   showError(e: object) {
@@ -267,11 +264,12 @@ export const SolidForm = {
   },
   hideError() {
     const formErrors = this.element.querySelectorAll('.error-message');
-    if (formErrors) formErrors.forEach(error => error.remove());
+    if (formErrors) for (const error of formErrors) error.remove();
 
     const errorFields = this.element.querySelectorAll('.error');
     if (errorFields)
-      errorFields.forEach(errorField => errorField.classList.remove('error'));
+      for (const errorField of errorFields)
+        errorField.classList.remove('error');
 
     const parentElement = this.element.querySelector('[data-id=error]');
     if (parentElement) render('', parentElement);

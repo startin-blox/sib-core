@@ -26,7 +26,6 @@
         "useTemplate": "off"
       },
       "complexity": {
-        "noForEach": "off",
         "noBannedTypes": "off",
         "useOptionalChain": "off",
         "noStaticOnlyClass": "off"

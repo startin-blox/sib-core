@@ -24,7 +24,7 @@ const RangeMixin = {
           const optional = value.trim().split(',');
           const list = {};
 
-          optional.forEach(element => {
+          for (const element of optional) {
             if (element.includes('=')) {
               const option = element.trim().split('=');
               const key = option[1].trim();
@@ -34,7 +34,7 @@ const RangeMixin = {
               const elem = element.trim();
               list[elem] = elem;
             }
-          });
+          }
           this.addToAttributes(list, 'enum');
         }
       },

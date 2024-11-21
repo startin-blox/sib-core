@@ -478,10 +478,10 @@ class Store {
       // For federation, clear each source
       const resource = this.cache.get(id);
       if (resource['@type'] === 'ldp:Container') {
-        resource['ldp:contains'].forEach((child: object) => {
+        for (const child of resource['ldp:contains']) {
           if (child && child['@type'] === 'ldp:Container')
             this.cache.delete(child['@id']);
-        });
+        }
       }
 
       this.cache.delete(id);

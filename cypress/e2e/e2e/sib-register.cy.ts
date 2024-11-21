@@ -11,9 +11,8 @@ describe('Component factory', function () {
       cnsl = (win as Window & typeof globalThis).console;
       ///@ts-ignore
       Sib = win.Sib;
-      win.document
-        .querySelectorAll('script')
-        .forEach(script => script.remove());
+      for (const script of win.document.querySelectorAll('script'))
+        script.remove();
     });
   });
 

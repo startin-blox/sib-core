@@ -23,9 +23,9 @@ export class PostProcessorRegistry {
       console.log('No post-processors registered.');
     } else {
       console.log('Registered post-processors:');
-      this.currentPostProcessors.forEach(proc => {
-        console.log(`- ${proc.name}`);
-      });
+      for (const postProcessor of this.currentPostProcessors) {
+        console.log(`- ${postProcessor.name}`);
+      }
     }
   }
 
@@ -34,9 +34,9 @@ export class PostProcessorRegistry {
       return 'No post-processors registered.';
     } else {
       let formattedText = 'Registered post-processors:\n';
-      this.currentPostProcessors.forEach(proc => {
-        formattedText += `- ${proc.name}\n`;
-      });
+      for (const postProcessor of this.currentPostProcessors) {
+        formattedText += `- ${postProcessor.name}\n`;
+      }
       return formattedText.trim();
     }
   }
@@ -48,9 +48,9 @@ export class PostProcessorRegistry {
       return 'No post-processors registered.';
     } else {
       let formattedText = 'Registered post-processors:\n';
-      currentPostProcessors.forEach(proc => {
-        formattedText += `- ${proc.name}\n`;
-      });
+      for (const postProcessor of currentPostProcessors) {
+        formattedText += `- ${postProcessor.name}\n`;
+      }
       return formattedText.trim();
     }
   }

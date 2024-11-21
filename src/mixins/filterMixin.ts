@@ -177,9 +177,9 @@ const FilterMixin = {
         value: attr.value,
       }));
 
-    searchAttributes.forEach(({ name, value }) => {
+    for (const { name, value } of searchAttributes) {
       this.searchForm.setAttribute(name, value);
-    });
+    }
 
     this.element.insertBefore(this.searchForm, this.element.firstChild);
     await this.searchForm.component.populate();

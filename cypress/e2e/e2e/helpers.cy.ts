@@ -11,7 +11,7 @@ describe('helpers', function () {
       doc = win.document;
       ///@ts-ignore
       helpers = win.helpers;
-      doc.querySelectorAll('script').forEach(script => script.remove());
+      for (const script of doc.querySelectorAll('script')) script.remove();
     });
   });
 

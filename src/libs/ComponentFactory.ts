@@ -50,13 +50,13 @@ export class ComponentFactory {
     initialState: object | undefined,
   ): any {
     if (initialState) {
-      Reflect.ownKeys(initialState).forEach(key => {
+      for (const key of Reflect.ownKeys(initialState)) {
         Reflect.defineProperty(componentConstructor.prototype, key, {
           enumerable: true,
           writable: true,
           value: initialState[key],
         });
-      });
+      }
     }
 
     return componentConstructor;
@@ -72,7 +72,7 @@ export class ComponentFactory {
       );
       const attributesCallback = {};
 
-      attributesList.forEach(key => {
+      for (const key of attributesList) {
         const { default: def, type, required, callback } = attributes[key];
 
         let fromType: (value: string) => unknown;
@@ -135,7 +135,7 @@ export class ComponentFactory {
         if (callback && typeof callback === 'function') {
           attributesCallback[key] = callback;
         }
-      });
+      }
 
       Reflect.defineProperty(componentConstructor, 'observedAttributes', {
         get: () =>
@@ -173,7 +173,7 @@ export class ComponentFactory {
     accessors: AccessorStaticInterface,
   ): ComponentConstructorInterface {
     if (accessors) {
-      Object.keys(accessors).forEach(property => {
+      for (const property of Object.keys(accessors)) {
         Reflect.defineProperty(componentConstructor.prototype, property, {
           get: function () {
             return Reflect.apply(accessors[property].get, this, []);
@@ -182,7 +182,7 @@ export class ComponentFactory {
             return Reflect.apply(accessors[property].set, this, [value]);
           },
         });
-      });
+      }
     }
     return componentConstructor;
   }
@@ -191,7 +191,7 @@ export class ComponentFactory {
     componentConstructor: ComponentConstructorInterface,
     methods: Map<string, Function>,
   ): ComponentConstructorInterface {
-    methods.forEach((method, methodName: string) => {
+    methods.forEach((method, methodName) => {
       Reflect.defineProperty(componentConstructor.prototype, methodName, {
         value: function (...args) {
           return Reflect.apply(method, this, args);
@@ -207,25 +207,25 @@ export class ComponentFactory {
   ): ComponentConstructorInterface {
     Reflect.defineProperty(componentConstructor.prototype, 'created', {
       value: function () {
-        hooks.created.forEach(hook => {
+        for (const hook of hooks.created) {
           Reflect.apply(hook, this, []);
-        });
+        }
       },
     });
 
     Reflect.defineProperty(componentConstructor.prototype, 'attached', {
       value: function () {
-        hooks.attached.forEach(hook => {
+        for (const hook of hooks.attached) {
           Reflect.apply(hook, this, []);
-        });
+        }
       },
     });
 
     Reflect.defineProperty(componentConstructor.prototype, 'detached', {
       value: function () {
-        hooks.detached.forEach(hook => {
+        for (const hook of hooks.detached) {
           Reflect.apply(hook, this, []);
-        });
+        }
       },
     });
     return componentConstructor;

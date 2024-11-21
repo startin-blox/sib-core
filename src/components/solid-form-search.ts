@@ -65,10 +65,10 @@ export const SolidFormSearch = {
 
   get value(): SearchQuery {
     const values: SearchQuery = {};
-    this.widgets.forEach(widget => {
-      if (widget == null) return;
+    for (const widget of this.widgets) {
+      if (widget == null) continue;
       const name = (widget.component || widget).name;
-      if (name == null) return;
+      if (name == null) continue;
       let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
@@ -79,7 +79,7 @@ export const SolidFormSearch = {
         value: value,
       };
       values[name] = value;
-    });
+    }
     return values;
   },
   getWidget(field: string, isSet = false): WidgetInterface {

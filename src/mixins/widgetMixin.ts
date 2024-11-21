@@ -275,7 +275,7 @@ const WidgetMixin = {
    * @param resource - Resource
    */
   widgetAttributes(field: string, resource: Resource): object {
-    const attrs = { name: field };
+    const attrs: Record<string, string> = { name: field };
     if (this.isAlias(field)) field = field.split(' as ')[1];
     const escapedField = this.getEscapedField(field);
 

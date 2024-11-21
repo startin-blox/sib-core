@@ -16,9 +16,9 @@ export class BaseWidget extends HTMLElement {
     this.render();
   }
   disconnectedCallback(): void {
-    this._subscriptions.forEach(subscription => {
+    for (const subscription of this._subscriptions.values()) {
       PubSub.unsubscribe(subscription);
-    });
+    }
   }
   async render() {
     this.innerHTML = await evalTemplateString(this.template, {
@@ -284,13 +284,13 @@ export class BaseWidget extends HTMLElement {
   initChangeEvents(): void {
     if (this.dataHolder) {
       const event = new Event('change', { bubbles: true });
-      this.dataHolder.forEach(element => {
+      for (const element of this.dataHolder) {
         element.addEventListener('change', e => {
           e.preventDefault();
           e.stopPropagation();
           this.dispatchEvent(event);
         });
-      });
+      }
     }
   }
   save(editableField: HTMLElement, editButton: HTMLButtonElement): void {

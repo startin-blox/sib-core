@@ -33,14 +33,14 @@ export class Compositor {
     ) {
       const { use: currentMixins } = currentMixin;
       if (currentMixins) {
-        currentMixins.forEach(mix => {
+        for (const mix of currentMixins) {
           if (!mixinAccumulator.has(mix)) {
             mixinAccumulator.set(mix, mix);
             deepMergeMixin(mixinAccumulator, mix);
           } else {
             console.warn(`Duplicate mixin import (${mix.name})`);
           }
-        });
+        }
       }
     }
 
@@ -55,11 +55,11 @@ export class Compositor {
   ): AttributesDefinitionInterface {
     let attributes = {};
 
-    mixins.forEach(mixin => {
+    for (const mixin of mixins) {
       if (mixin.attributes) {
         attributes = { ...mixin.attributes, ...attributes };
       }
-    });
+    }
 
     return attributes;
   }
@@ -67,11 +67,11 @@ export class Compositor {
   public static mergeInitialState(mixins: MixinStaticInterface[]): any {
     let initialState = {};
 
-    mixins.forEach(mixin => {
+    for (const mixin of mixins) {
       if (mixin.initialState) {
         initialState = { ...mixin.initialState, ...initialState };
       }
-    });
+    }
 
     return initialState;
   }
@@ -84,13 +84,13 @@ export class Compositor {
       attached: [],
       detached: [],
     };
-    mixins.reverse().forEach(mixin => {
-      HOOKS.forEach(hookName => {
+    for (const mixin of mixins.reverse()) {
+      for (const hookName of HOOKS) {
         if (!!mixin[hookName] && typeof mixin[hookName] === 'function') {
           hooks[hookName].push(mixin[hookName]);
         }
-      });
-    });
+      }
+    }
 
     return hooks;
   }
@@ -98,20 +98,16 @@ export class Compositor {
   public static mergeMethods(mixins: MixinStaticInterface[]): Map<any, any> {
     const methods = new Map();
 
-    mixins.reverse().forEach(mixin => {
-      const keys = Reflect.ownKeys(mixin).filter(
-        key =>
-          typeof key === 'string' &&
-          API.indexOf(key) < 0 &&
-          !Object.getOwnPropertyDescriptor(mixin, key)!.get &&
-          !Object.getOwnPropertyDescriptor(mixin, key)!.set &&
-          typeof mixin[key] === 'function',
-      );
-
-      keys.forEach(key => {
+    for (const mixin of mixins.reverse()) {
+      for (const key of Reflect.ownKeys(mixin)) {
+        if (typeof key !== 'string') continue;
+        if (API.includes(key)) continue;
+        const descriptor = Object.getOwnPropertyDescriptor(mixin, key);
+        if (descriptor?.get || descriptor?.set) continue;
+        if (typeof mixin[key] !== 'function') continue;
         methods.set(key, mixin[key]);
-      });
-    });
+      }
+    }
     return methods;
   }
 
@@ -119,29 +115,18 @@ export class Compositor {
     mixins: MixinStaticInterface[],
   ): AccessorStaticInterface {
     const accessors = {};
-    mixins.reverse().forEach(mixin => {
-      Reflect.ownKeys(mixin)
-        .filter(
-          key =>
-            typeof key === 'string' &&
-            API.indexOf(key) < 0 &&
-            (Object.getOwnPropertyDescriptor(mixin, key)!.get ||
-              Object.getOwnPropertyDescriptor(mixin, key)!.set),
-        )
-        .forEach(prop => {
-          accessors[prop] = { ...accessors[prop] };
-          if (Reflect.getOwnPropertyDescriptor(mixin, prop)!.get)
-            accessors[prop].get = Reflect.getOwnPropertyDescriptor(
-              mixin,
-              prop,
-            )!.get;
-          if (Reflect.getOwnPropertyDescriptor(mixin, prop)!.set)
-            accessors[prop].set = Reflect.getOwnPropertyDescriptor(
-              mixin,
-              prop,
-            )!.set;
-        });
-    });
+    for (const mixin of mixins.reverse()) {
+      for (const prop of Reflect.ownKeys(mixin)) {
+        if (typeof prop !== 'string') continue;
+        if (API.includes(prop)) continue;
+        const descriptor = Object.getOwnPropertyDescriptor(mixin, prop);
+        if (!descriptor) continue;
+        if (!descriptor.get && !descriptor.set) continue;
+        accessors[prop] = { ...accessors[prop] };
+        if (descriptor.get) accessors[prop].get = descriptor.get;
+        if (descriptor.set) accessors[prop].set = descriptor.set;
+      }
+    }
     return accessors;
   }
 }
