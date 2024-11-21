@@ -1,7 +1,7 @@
 const BlankMixin = {
   name: 'blank-mixin',
   created() {
-    this.listAttributes['target'] = '_blank';
+    this.listAttributes.target = '_blank';
   },
 };
 

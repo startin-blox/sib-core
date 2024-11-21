@@ -5,7 +5,7 @@ const FormMixin = {
       type: Boolean,
       default: false,
       callback: function () {
-        this.listAttributes['required'] = true;
+        this.listAttributes.required = true;
       },
     },
     autocomplete: {
@@ -17,7 +17,7 @@ const FormMixin = {
     },
   },
   attached() {
-    this.listAttributes['onChange'] = this.onChange.bind(this);
+    this.listAttributes.onChange = this.onChange.bind(this);
   },
   onChange(e: Event) {
     e.preventDefault();

@@ -21,7 +21,7 @@ const RequiredMixin = {
       .map(attr => {
         return attr.value !== ''
           ? attr.value
-          : attr['name'].replace('required-', '');
+          : attr.name.replace('required-', '');
       });
 
     if (requiredFields.length) {

@@ -26,7 +26,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-text').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('test value 1'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('test value 1'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('new value'); // form value
     });
 
@@ -80,7 +80,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-textarea').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('test value 1'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('test value 1'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('new value'); // form value
     });
 
@@ -107,7 +107,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-checkbox').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('true'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('true'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(true); // form value
     });
 
@@ -117,7 +117,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-checkbox').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('true'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('true'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(false); // form value
     });
   });
@@ -141,7 +141,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     // Check API
     cy.get('solid-form-date#test1').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal('2020-05-21'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('2020-05-21'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('2020-12-31'); // form value
     });
 
@@ -175,7 +175,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-number').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('5'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('5'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(8); // form value
     });
 
@@ -216,7 +216,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-email').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('test@test.com'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('test@test.com'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('new@example.com'); // form value
     });
   });
@@ -241,7 +241,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-hidden').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal('test value 1'); // value attribute
+      expect((<any>$el[0]).component.value).to.equal('test value 1'); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal('new value'); // form value
     });
   });
@@ -284,7 +284,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-dropdown#test1').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
+      expect((<any>$el[0]).component.value).to.equal(''); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(
         '{"@id": "/examples/data/list/skill-2.jsonld"}',
       ); // form value
@@ -298,7 +298,7 @@ describe('form widgets', { testIsolation: false }, function () {
       '{"@id": "/examples/data/list/skill-2.jsonld"}',
     );
     cy.get('solid-form-dropdown#test2').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal(
+      expect((<any>$el[0]).component.value).to.equal(
         '/examples/data/list/skill-2.jsonld',
       ); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(
@@ -465,7 +465,7 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-radio#test1').then($el => {
       // Check API
-      expect((<any>$el[0]).component['value']).to.equal(''); // value attribute
+      expect((<any>$el[0]).component.value).to.equal(''); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(
         '{"@id": "/examples/data/list/skill-2.jsonld"}',
       ); // form value
@@ -479,7 +479,7 @@ describe('form widgets', { testIsolation: false }, function () {
       .find('input')
       .should('have.attr', 'checked', 'checked');
     cy.get('solid-form-radio#test2').then($el => {
-      expect((<any>$el[0]).component['value']).to.equal(
+      expect((<any>$el[0]).component.value).to.equal(
         '/examples/data/list/skill-3.jsonld',
       ); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(

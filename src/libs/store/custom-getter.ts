@@ -193,12 +193,12 @@ export class CustomGetter {
           this.resource['@type'].includes(type),
         );
       return this.containerTypes.includes(this.resource['@type']);
-    } else if (this.resource['type']) {
-      if (Array.isArray(this.resource['type']))
+    } else if (this.resource.type) {
+      if (Array.isArray(this.resource.type))
         return this.containerTypes.some(type =>
-          this.resource['type'].includes(type),
+          this.resource.type.includes(type),
         );
-      return this.containerTypes.includes(this.resource['type']);
+      return this.containerTypes.includes(this.resource.type);
     }
 
     return false;

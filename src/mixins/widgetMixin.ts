@@ -343,9 +343,9 @@ const WidgetMixin = {
 
     const resourceId = resource ? resource!['@id'] : null;
     if (this.multiple(escapedField))
-      attrs['widget'] = this.getWidget(escapedField).tagName;
+      attrs.widget = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId)
-      attrs['src'] =
+      attrs.src =
         this.element.getAttribute('src-' + escapedField) || resourceId;
     if (this.editable(escapedField) && resourceId)
       attrs['value-id'] = resourceId;
@@ -399,11 +399,11 @@ const WidgetMixin = {
           } catch (e) {}
 
           // in any case, set value attribute
-          attributes['value'] = value;
+          attributes.value = value;
         }
       } else {
         // otherwise, set value attribute
-        attributes['value'] = value;
+        attributes.value = value;
       }
 
       // Subscribe widgets if they show a resource

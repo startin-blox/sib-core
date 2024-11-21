@@ -44,7 +44,7 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
       );
       const data = JSON.parse(jsonData);
       const list = data['ldp:contains'].filter(user =>
-        user['first_name'].toLowerCase().includes(val.toLowerCase()),
+        user.first_name.toLowerCase().includes(val.toLowerCase()),
       );
       data['ldp:contains'] = limit ? list.slice(offset, offset + limit) : list;
 

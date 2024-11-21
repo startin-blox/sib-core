@@ -7,10 +7,10 @@ const FormCheckboxesMixin = {
       callback: function (value: string) {
         if (!value) return;
         try {
-          this.listAttributes['values'] = JSON.parse(value);
+          this.listAttributes.values = JSON.parse(value);
         } catch (e) {
           console.error(e);
-          this.listAttributes['values'] = [];
+          this.listAttributes.values = [];
         }
         this.render();
         this.element.dispatchEvent(new Event('change'));
@@ -18,7 +18,7 @@ const FormCheckboxesMixin = {
     },
   },
   created() {
-    this.listAttributes['values'] = [];
+    this.listAttributes.values = [];
   },
   getValue() {
     const options = Array.from(

@@ -3,7 +3,7 @@ import { uniqID } from '../../libs/helpers';
 const FormRadioMixin = {
   name: 'form-radio-mixin',
   created() {
-    this.listAttributes['id'] = uniqID();
+    this.listAttributes.id = uniqID();
   },
   getValue() {
     const checkedElement = this.element.querySelector(

@@ -85,7 +85,7 @@ const SorterMixin = {
         if (!this.sortForm.component.value.field) {
           console.warn('The attribute field does not exist');
         } else {
-          sortingKey = this.sortForm.component.value.field['value'];
+          sortingKey = this.sortForm.component.value.field.value;
         }
         const orderField = this.sortForm.component.value.order;
         orderValueToSort =

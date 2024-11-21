@@ -26,7 +26,6 @@
         "useTemplate": "off"
       },
       "complexity": {
-        "useLiteralKeys": "off",
         "noForEach": "off",
         "noBannedTypes": "off",
         "useOptionalChain": "off",

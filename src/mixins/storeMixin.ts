@@ -26,7 +26,7 @@ const StoreMixin = {
       callback: async function (value: string) {
         const filteredOnServer =
           this.element.attributes['filtered-on']?.value === 'server';
-        const limited = this.element.attributes['limit']?.value !== undefined;
+        const limited = this.element.attributes.limit?.value !== undefined;
 
         if (this.noRender === null && !filteredOnServer && !limited) {
           await this.fetchData(value);

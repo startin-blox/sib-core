@@ -59,7 +59,7 @@ describe('store', { testIsolation: false }, function () {
       };
       await store.setLocalData(dataToSave1, url);
       const dataRead1 = await store.getData(url);
-      expect(await dataRead1!['foo']).eq('bar');
+      expect(await dataRead1!.foo).eq('bar');
       store.clearCache(url);
     });
   });
@@ -81,8 +81,8 @@ describe('store', { testIsolation: false }, function () {
         '/examples/data/list/user-1.jsonld',
       );
       const dataRead = store.get('/examples/data/list/user-1.jsonld');
-      expect(await dataRead['username']).eq('local user');
-      expect(await dataRead['email']).not.exist;
+      expect(await dataRead.username).eq('local user');
+      expect(await dataRead.email).not.exist;
       store.clearCache('/examples/data/list/user-1.jsonld');
     });
   });
@@ -644,7 +644,7 @@ describe('store', { testIsolation: false }, function () {
       cy.wait(100).then(async () => {
         const resource = store.get('store://local.2');
         expect(resource).to.exist;
-        const name = await resource['name'];
+        const name = await resource.name;
         expect(name).to.equal('ok');
       });
     });

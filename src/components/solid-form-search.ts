@@ -127,11 +127,9 @@ export const SolidFormSearch = {
   },
   async updateAutoRanges() {
     for (const attr of (this.element as Element).attributes) {
-      if (!attr['name'].startsWith('auto-range-')) continue;
+      if (!attr.name.startsWith('auto-range-')) continue;
       const fieldName =
-        attr.value !== ''
-          ? attr.value
-          : attr['name'].replace('auto-range-', '');
+        attr.value !== '' ? attr.value : attr.name.replace('auto-range-', '');
       const autoRangeValues = new Set();
       for (const elm of this.attachedElements) {
         for (const value of await elm.getValuesOfField(fieldName)) {

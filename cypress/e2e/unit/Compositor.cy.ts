@@ -162,13 +162,13 @@ describe('Mixin Compositor', () => {
       expect(typeof result[accessorName].set).eq('function');
     });
 
-    expect(result['accessorTest'].get.toString()).eq(
+    expect(result.accessorTest.get.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
         component,
         'accessorTest',
       )!.get!.toString(),
     );
-    expect(result['accessorTest'].set.toString()).eq(
+    expect(result.accessorTest.set.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
         MixinTestOne,
         'accessorTest',

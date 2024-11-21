@@ -49,7 +49,7 @@ export const SolidDisplay = {
     const route = document.querySelector('solid-route[active]') as any;
     if (!route) return;
     setTimeout(() => {
-      if (route['resourceId'] === this.resourceId) this.addActiveCallback();
+      if (route.resourceId === this.resourceId) this.addActiveCallback();
     });
   },
   detached(): void {
@@ -188,8 +188,8 @@ export const SolidDisplay = {
       if (attr.name.startsWith('child-'))
         attributes[attr.name.replace(/^child-/, '')] = attr.value;
       if (attr.name === 'next') {
-        attributes['role'] = 'button';
-        attributes['tabindex'] = '0';
+        attributes.role = 'button';
+        attributes.tabindex = '0';
       }
     }
     return attributes;

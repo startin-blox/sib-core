@@ -10,7 +10,7 @@ const PlaceholderMixin = {
     },
   },
   attached() {
-    this.listAttributes['placeholder'] =
+    this.listAttributes.placeholder =
       this.placeholder || this.label || this.name || '';
   },
 };

@@ -103,16 +103,16 @@ export class BaseWidget extends HTMLElement {
 
     this.render();
   }
-  get ['each-label'](): string {
+  get 'each-label'(): string {
     return this.getAttribute('each-label') || '';
   }
-  set ['each-label'](label: string) {
+  set 'each-label'(label: string) {
     this.setAttribute('each-label', label);
   }
-  set ['add-label'](label: string) {
+  set 'add-label'(label: string) {
     this.setAttribute('add-label', label);
   }
-  set ['remove-label'](label: string) {
+  set 'remove-label'(label: string) {
     this.setAttribute('remove-label', label);
   }
   get dataHolder(): Element[] | null {

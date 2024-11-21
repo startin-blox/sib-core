@@ -171,10 +171,10 @@ const FilterMixin = {
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
-      .filter(attr => attr['name'].startsWith('search-'))
+      .filter(attr => attr.name.startsWith('search-'))
       .map(attr => ({
-        name: attr['name'].replace('search-', ''),
-        value: attr['value'],
+        name: attr.name.replace('search-', ''),
+        value: attr.value,
       }));
 
     searchAttributes.forEach(({ name, value }) => {

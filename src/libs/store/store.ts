@@ -260,8 +260,8 @@ class Store {
       flattenedResources.map(r => jsonld.compact(r, {})),
     );
     for (const resource of compactedResources) {
-      const id = resource['@id'] || resource['id'];
-      let key = resource['@id'] || resource['id'];
+      const id = resource['@id'] || resource.id;
+      let key = resource['@id'] || resource.id;
 
       if (!key) console.log('No key or id for resource:', resource);
       if (key === '/') key = parentId;
@@ -345,7 +345,7 @@ class Store {
   subscribeChildren(container: CustomGetter, containerId: string) {
     if (!container['ldp:contains']) return;
     for (const res of container['ldp:contains']) {
-      this.subscribeResourceTo(containerId, res['@id'] || res['id']);
+      this.subscribeResourceTo(containerId, res['@id'] || res.id);
     }
   }
 

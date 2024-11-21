@@ -59,8 +59,8 @@ const RangeMixin = {
   },
   created() {
     this.listPostProcessors = new PostProcessorRegistry();
-    this.listAttributes['optionLabel'] = this.optionLabel;
-    this.listAttributes['optionValue'] = this.optionValue;
+    this.listAttributes.optionLabel = this.optionLabel;
+    this.listAttributes.optionValue = this.optionValue;
   },
   async populate() {
     const resources = this.resource ? this.resource['ldp:contains'] : [];
@@ -100,7 +100,7 @@ const RangeMixin = {
         return { value, label, selectedValue };
       };
 
-      this.listAttributes['range'] = await Promise.all(
+      this.listAttributes.range = await Promise.all(
         resources.filter(el => el !== null).map(r => getRangeValue(r)),
       );
     }
@@ -108,7 +108,7 @@ const RangeMixin = {
     this.planRender();
   },
   empty() {
-    this.listAttributes['range'] = [];
+    this.listAttributes.range = [];
     this.planRender();
   },
   get type() {

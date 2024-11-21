@@ -13,8 +13,8 @@ const MultipleFormMixin = {
       type: String,
       default: '+',
       callback: function (value) {
-        if (value !== this.listAttributes['addLabel'])
-          this.listAttributes['addLabel'] = value;
+        if (value !== this.listAttributes.addLabel)
+          this.listAttributes.addLabel = value;
         this.planRender();
       },
     },
@@ -22,8 +22,8 @@ const MultipleFormMixin = {
       type: String,
       default: '×',
       callback: function (value) {
-        if (value !== this.listAttributes['removeLabel'])
-          this.listAttributes['removeLabel'] = value;
+        if (value !== this.listAttributes.removeLabel)
+          this.listAttributes.removeLabel = value;
         this.planRender();
       },
     },
@@ -35,8 +35,8 @@ const MultipleFormMixin = {
       type: String,
       default: undefined,
       callback: function (value) {
-        if (value !== this.listAttributes['addClass'])
-          this.listAttributes['addClass'] = value;
+        if (value !== this.listAttributes.addClass)
+          this.listAttributes.addClass = value;
         this.planRender();
       },
     },
@@ -44,8 +44,8 @@ const MultipleFormMixin = {
       type: String,
       default: undefined,
       callback: function (value) {
-        if (value !== this.listAttributes['removeClass'])
-          this.listAttributes['removeClass'] = value;
+        if (value !== this.listAttributes.removeClass)
+          this.listAttributes.removeClass = value;
         this.planRender();
       },
     },
@@ -56,16 +56,16 @@ const MultipleFormMixin = {
       'MultipleFormMixin:setDataSrc',
     );
 
-    this.listAttributes['children'] = [];
-    this.listAttributes['addLabel'] = this.addLabel;
-    this.listAttributes['removeLabel'] = this.removeLabel;
-    this.listAttributes['addClass'] = this.addClass;
-    this.listAttributes['removeClass'] = this.removeClass;
-    this.listAttributes['addItem'] = () => {
+    this.listAttributes.children = [];
+    this.listAttributes.addLabel = this.addLabel;
+    this.listAttributes.removeLabel = this.removeLabel;
+    this.listAttributes.addClass = this.addClass;
+    this.listAttributes.removeClass = this.removeClass;
+    this.listAttributes.addItem = () => {
       this.insertWidget();
       this.planRender();
     };
-    this.listAttributes['removeItem'] = index => {
+    this.listAttributes.removeItem = index => {
       this.element
         .querySelector(`[data-index="${this.name + index}"]`)
         .remove();
@@ -90,7 +90,7 @@ const MultipleFormMixin = {
   populate() {
     if (!this.resource || !this.resource['ldp:contains']) return;
 
-    this.listAttributes['children'] = []; // reset list
+    this.listAttributes.children = []; // reset list
 
     // set value in form
     for (const resource of this.resource['ldp:contains']) {
@@ -113,10 +113,10 @@ const MultipleFormMixin = {
         widget.toggleAttribute(name, attributes[name]);
       else widget.setAttribute(name, attributes[name]);
     }
-    this.listAttributes['children'].push(widget);
+    this.listAttributes.children.push(widget);
   },
   empty() {
-    this.listAttributes['children'] = [];
+    this.listAttributes.children = [];
     this.planRender();
   },
   getValue() {

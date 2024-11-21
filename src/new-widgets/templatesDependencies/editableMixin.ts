@@ -12,7 +12,7 @@ const EditableMixin = {
       type: Boolean,
       default: null,
       callback: function (newValue: boolean) {
-        if (newValue !== null) this.listAttributes['editable'] = true;
+        if (newValue !== null) this.listAttributes.editable = true;
       },
     },
     valueId: {

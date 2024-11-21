@@ -8,10 +8,10 @@ const FormDropdownMixin = {
       callback: function (value) {
         if (value) {
           try {
-            this.listAttributes['values'] = JSON.parse(value);
+            this.listAttributes.values = JSON.parse(value);
           } catch (e) {
             console.error(e);
-            this.listAttributes['values'] = [];
+            this.listAttributes.values = [];
           }
           this.render(); // use render to make sure the dispatch always happen after
           this.dispatchChange();
@@ -27,15 +27,15 @@ const FormDropdownMixin = {
     },
   },
   created() {
-    this.listAttributes['values'] = [];
+    this.listAttributes.values = [];
     if (
-      this.listAttributes['value'] &&
-      !JSON.parse(this.listAttributes['value']['@id']) &&
-      Array.isArray(JSON.parse(this.listAttributes['value']))
+      this.listAttributes.value &&
+      !JSON.parse(this.listAttributes.value['@id']) &&
+      Array.isArray(JSON.parse(this.listAttributes.value))
     ) {
-      this.listAttributes['values'] = this.listAttributes['value'];
+      this.listAttributes.values = this.listAttributes.value;
     }
-    if (this.multiple) this.listAttributes['multiple'] = true;
+    if (this.multiple) this.listAttributes.multiple = true;
   },
   dispatchChange() {
     if (!this.element.querySelector('select')) return;

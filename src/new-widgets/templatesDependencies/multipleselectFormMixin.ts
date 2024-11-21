@@ -10,8 +10,8 @@ const MultipleselectFormMixin = {
       type: String,
       default: '',
       callback: function (value) {
-        if (value && value !== this.listAttributes['range'])
-          this.listAttributes['range'] = value;
+        if (value && value !== this.listAttributes.range)
+          this.listAttributes.range = value;
       },
     },
     enum: {
@@ -19,8 +19,8 @@ const MultipleselectFormMixin = {
       type: String,
       default: '',
       callback: function (value) {
-        if (value && value !== this.listAttributes['enum'])
-          this.listAttributes['enum'] = value;
+        if (value && value !== this.listAttributes.enum)
+          this.listAttributes.enum = value;
       },
     },
     orderAsc: {
@@ -79,10 +79,10 @@ const MultipleselectFormMixin = {
   },
   setValue(values: string[]) {
     // set the values to the dropdown
-    this.listAttributes['values'] = JSON.stringify(values.map(r => r['@id']));
+    this.listAttributes.values = JSON.stringify(values.map(r => r['@id']));
   },
   empty() {
-    this.listAttributes['values'] = [];
+    this.listAttributes.values = [];
     this.planRender();
   },
   get type() {

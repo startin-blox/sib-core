@@ -12,10 +12,10 @@ const FormFileMixin = {
     initialValue: '',
   },
   created() {
-    this.listAttributes['output'] = '';
-    this.listAttributes['resetButtonHidden'] = true;
-    this.listAttributes['selectFile'] = this.selectFile.bind(this);
-    this.listAttributes['resetFile'] = this.resetFile.bind(this);
+    this.listAttributes.output = '';
+    this.listAttributes.resetButtonHidden = true;
+    this.listAttributes.selectFile = this.selectFile.bind(this);
+    this.listAttributes.resetFile = this.resetFile.bind(this);
   },
   attached() {
     this.element
@@ -35,7 +35,7 @@ const FormFileMixin = {
       if (this.initialValue !== '') {
         this.value = this.initialValue;
       }
-      this.listAttributes['resetButtonHidden'] = true;
+      this.listAttributes.resetButtonHidden = true;
       this.planRender();
       const dataHolder = this.element.querySelector('input[data-holder]');
       dataHolder.value = this.value;
@@ -53,7 +53,7 @@ const FormFileMixin = {
     if (filePicker.files!.length < 1) return;
 
     const dataHolder = this.element.querySelector('input[data-holder]');
-    this.listAttributes['output'] = '⏳';
+    this.listAttributes.output = '⏳';
     this.planRender();
 
     const file = filePicker.files![0];
@@ -66,8 +66,8 @@ const FormFileMixin = {
       })
       .then(response => this.updateFile(dataHolder, response))
       .catch(error => {
-        this.listAttributes['fileValue'] = '';
-        this.listAttributes['output'] = 'upload error';
+        this.listAttributes.fileValue = '';
+        this.listAttributes.output = 'upload error';
         this.planRender();
         console.error(error);
       });
@@ -76,11 +76,11 @@ const FormFileMixin = {
   updateFile(dataHolder: HTMLInputElement, response: Response) {
     const location = response.headers.get('location');
     if (location == null) {
-      this.listAttributes['output'] = 'header location not found!';
+      this.listAttributes.output = 'header location not found!';
     } else {
       this.value = location;
-      this.listAttributes['output'] = '';
-      this.listAttributes['resetButtonHidden'] = false;
+      this.listAttributes.output = '';
+      this.listAttributes.resetButtonHidden = false;
 
       dataHolder.value = location;
       dataHolder.dispatchEvent(new Event('change'));
@@ -99,9 +99,9 @@ const FormFileMixin = {
       filePicker.value = dataHolder.value = '';
     }
 
-    this.listAttributes['fileValue'] = '';
-    this.listAttributes['output'] = '';
-    this.listAttributes['resetButtonHidden'] = true;
+    this.listAttributes.fileValue = '';
+    this.listAttributes.output = '';
+    this.listAttributes.resetButtonHidden = true;
     dataHolder.dispatchEvent(new Event('change'));
     this.planRender();
   },
