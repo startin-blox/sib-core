@@ -8,3 +8,4 @@ coverage
 cypress/downloads
 .vscode
 .DS_Store
+.npm
