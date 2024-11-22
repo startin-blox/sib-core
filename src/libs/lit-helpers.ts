@@ -73,7 +73,7 @@ class SpreadDirective extends Directive {
 
         // Handle event listeners (e.g., @click)
         if (prefix === '@') {
-          const prevHandler = prevData && prevData[key];
+          const prevHandler = prevData?.[key];
           if (!prevHandler || prevHandler !== value) {
             const name = key.slice(1); // Extract event name
             if (prevHandler) element.removeEventListener(name, prevHandler);

@@ -27,7 +27,7 @@ export class BaseWidget extends HTMLElement {
       label: this.label,
       placeholder: this.placeholder,
       value: this.value,
-      id: (this._value && this._value['@id']) || '',
+      id: this._value?.['@id'] || '',
       escapedValue: this.escapedValue,
       range: await this.htmlRange,
       multiple: this.multiple,
@@ -204,11 +204,7 @@ export class BaseWidget extends HTMLElement {
         this._listen(element['@id']);
 
         let selected: boolean;
-        if (
-          this._value &&
-          this._value.isContainer &&
-          this._value.isContainer()
-        ) {
+        if (this._value?.isContainer?.()) {
           // selected options for multiple select
           selected = false;
           for await (const value of this._value['ldp:contains']) {

@@ -96,7 +96,7 @@ export const SolidForm = {
         }
 
         // Nested containers
-        if (object && object['@id'] && !value[predicate]['@id'])
+        if (object?.['@id'] && !value[predicate]['@id'])
           value[predicate]['@id'] = object['@id'];
 
         //FIXME: Edge case of array support, ugly management

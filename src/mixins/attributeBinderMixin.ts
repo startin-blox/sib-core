@@ -54,7 +54,7 @@ const AttributeBinderMixin = {
    * @returns - object representing attributes of an element with resolved values
    */
   async transformAttributes(attributes: object, resource: Resource) {
-    const isContainer = resource && resource.isContainer?.();
+    const isContainer = resource?.isContainer?.();
 
     for (const attr of Object.keys(attributes)) {
       const value = attributes[attr];
@@ -78,10 +78,9 @@ const AttributeBinderMixin = {
           // retry until sibAuth is defined
           const userId = await this.retry(this.getUser.bind(this));
           // TODO: Using this.context makes no sense here. Use same-attribute-context="context-id" instead?
-          const user =
-            userId && userId['@id']
-              ? await store.getData(userId['@id'], this.context || base_context)
-              : null;
+          const user = userId?.['@id']
+            ? await store.getData(userId['@id'], this.context || base_context)
+            : null;
           if (!user) {
             attributes[attr] = '';
             continue;

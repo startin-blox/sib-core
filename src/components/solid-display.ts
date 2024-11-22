@@ -91,7 +91,7 @@ export const SolidDisplay = {
   // Here "even.target" points to the content of the widgets of the children of solid-display
   dispatchSelect(event: Event, resourceId: string): void {
     const linkTarget = (event?.target as Element).closest('a');
-    if (linkTarget && linkTarget.hasAttribute('href')) return;
+    if (linkTarget?.hasAttribute('href')) return;
     const resource = { '@id': resourceId };
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),

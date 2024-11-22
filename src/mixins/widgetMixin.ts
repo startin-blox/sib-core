@@ -55,7 +55,7 @@ const WidgetMixin = {
     if (attr) return parseFieldsString(attr);
 
     let resource = this.resource as Resource;
-    if (resource && resource.isContainer?.()) {
+    if (resource?.isContainer?.()) {
       // If container, keep the 1rst resource
       for (const res of resource['ldp:contains']) {
         resource = res;
@@ -408,7 +408,7 @@ const WidgetMixin = {
       }
 
       // Subscribe widgets if they show a resource
-      if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
+      if (value?.['@id']) attributes['auto-subscribe'] = value['@id'];
 
       // Transform store://XXX attributes
       if (transformAttributes)

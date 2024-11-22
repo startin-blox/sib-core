@@ -88,8 +88,7 @@ const SorterMixin = {
           sortingKey = this.sortForm.component.value.field.value;
         }
         const orderField = this.sortForm.component.value.order;
-        orderValueToSort =
-          orderField && orderField.value ? orderField.value : 'asc';
+        orderValueToSort = orderField?.value ? orderField.value : 'asc';
       }
     }
     // sorting data according to the defined value of sortingKey

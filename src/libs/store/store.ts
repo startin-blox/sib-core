@@ -102,8 +102,7 @@ class Store {
       !this.loadingList.has(key)
     ) {
       const resource = this.get(key);
-      if (resource && resource.isFullResource?.() && !forceFetch)
-        return resource; // if resource is not complete, re-fetch it
+      if (resource?.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async resolve => {
