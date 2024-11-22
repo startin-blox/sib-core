@@ -59,7 +59,7 @@ describe('store', { testIsolation: false }, function () {
       };
       await store.setLocalData(dataToSave1, url);
       const dataRead1 = await store.getData(url);
-      expect(await dataRead1!.foo).eq('bar');
+      expect(await dataRead1?.foo).eq('bar');
       store.clearCache(url);
     });
   });

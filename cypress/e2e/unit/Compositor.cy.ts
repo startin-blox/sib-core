@@ -166,13 +166,13 @@ describe('Mixin Compositor', () => {
       Reflect.getOwnPropertyDescriptor(
         component,
         'accessorTest',
-      )!.get!.toString(),
+      )?.get?.toString(),
     );
     expect(result.accessorTest.set.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
         MixinTestOne,
         'accessorTest',
-      )!.set!.toString(),
+      )?.set?.toString(),
     );
   });
 

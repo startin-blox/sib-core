@@ -342,7 +342,7 @@ const WidgetMixin = {
         attrs,
       );
 
-    const resourceId = resource ? resource!['@id'] : null;
+    const resourceId = resource?.['@id'] ?? null;
     if (this.multiple(escapedField))
       attrs.widget = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId)

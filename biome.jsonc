@@ -21,7 +21,6 @@
       "recommended": true,
       "style": {
         "noParameterAssign": "off",
-        "noNonNullAssertion": "off",
         "useTemplate": "off"
       },
       "complexity": {

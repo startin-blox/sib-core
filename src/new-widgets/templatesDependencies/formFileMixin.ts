@@ -50,13 +50,13 @@ const FormFileMixin = {
     }
 
     const filePicker = this.element.querySelector('input[type="file"]');
-    if (filePicker.files!.length < 1) return;
+    if (filePicker.files?.length < 1) return;
 
     const dataHolder = this.element.querySelector('input[data-holder]');
     this.listAttributes.output = '⏳';
     this.planRender();
 
-    const file = filePicker.files![0];
+    const file = filePicker.files?.[0];
     const formData = new FormData();
     formData.append('file', file);
     store
