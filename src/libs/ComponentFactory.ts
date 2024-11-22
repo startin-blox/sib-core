@@ -8,10 +8,8 @@ import type {
   MixinStaticInterface,
 } from './interfaces';
 
-export class ComponentFactory {
-  public static build(
-    component: MixinStaticInterface,
-  ): ComponentConstructorInterface {
+export const ComponentFactory = {
+  build(component: MixinStaticInterface): ComponentConstructorInterface {
     const { initialState, attributes, methods, hooks, accessors, name } =
       Compositor.merge(component, Compositor.mergeMixin(component));
 
@@ -43,9 +41,8 @@ export class ComponentFactory {
     });
 
     return componentConstructor;
-  }
-
-  protected static bindInitialState(
+  },
+  bindInitialState(
     componentConstructor: ComponentConstructorInterface,
     initialState: object | undefined,
   ): any {
@@ -60,9 +57,8 @@ export class ComponentFactory {
     }
 
     return componentConstructor;
-  }
-
-  protected static bindAttributes(
+  },
+  bindAttributes(
     componentConstructor: ComponentConstructorInterface,
     attributes: AttributesDefinitionInterface | undefined,
   ): ComponentConstructorInterface {
@@ -166,9 +162,8 @@ export class ComponentFactory {
       );
     }
     return componentConstructor;
-  }
-
-  protected static bindAccessors(
+  },
+  bindAccessors(
     componentConstructor: ComponentConstructorInterface,
     accessors: AccessorStaticInterface,
   ): ComponentConstructorInterface {
@@ -185,9 +180,8 @@ export class ComponentFactory {
       }
     }
     return componentConstructor;
-  }
-
-  protected static bindMethods(
+  },
+  bindMethods(
     componentConstructor: ComponentConstructorInterface,
     methods: Map<string, Function>,
   ): ComponentConstructorInterface {
@@ -199,9 +193,8 @@ export class ComponentFactory {
       });
     });
     return componentConstructor;
-  }
-
-  protected static bindHooks(
+  },
+  bindHooks(
     componentConstructor: ComponentConstructorInterface,
     hooks: ArrayOfHooksInterface,
   ): ComponentConstructorInterface {
@@ -229,5 +222,5 @@ export class ComponentFactory {
       },
     });
     return componentConstructor;
-  }
-}
+  },
+};

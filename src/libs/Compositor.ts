@@ -9,8 +9,8 @@ import type {
 const HOOKS = ['created', 'attached', 'detached'];
 const API = ['name', 'use', 'attributes', 'initialState', ...HOOKS];
 
-export class Compositor {
-  public static merge(
+export const Compositor = {
+  merge(
     component: MixinStaticInterface,
     mixins: MixinStaticInterface[],
   ): ComponentStaticInterface {
@@ -22,11 +22,8 @@ export class Compositor {
       accessors: Compositor.mergeAccessors([component, ...mixins]),
       hooks: Compositor.mergeHooks([component, ...mixins]),
     };
-  }
-
-  public static mergeMixin(
-    component: MixinStaticInterface,
-  ): MixinStaticInterface[] {
+  },
+  mergeMixin(component: MixinStaticInterface): MixinStaticInterface[] {
     function deepMergeMixin(
       mixinAccumulator: Map<MixinStaticInterface, MixinStaticInterface>,
       currentMixin: MixinStaticInterface,
@@ -48,9 +45,8 @@ export class Compositor {
     deepMergeMixin(mixins, component);
 
     return Array.from(mixins.values());
-  }
-
-  public static mergeAttributes(
+  },
+  mergeAttributes(
     mixins: MixinStaticInterface[],
   ): AttributesDefinitionInterface {
     let attributes = {};
@@ -62,9 +58,8 @@ export class Compositor {
     }
 
     return attributes;
-  }
-
-  public static mergeInitialState(mixins: MixinStaticInterface[]): any {
+  },
+  mergeInitialState(mixins: MixinStaticInterface[]): any {
     let initialState = {};
 
     for (const mixin of mixins) {
@@ -74,11 +69,8 @@ export class Compositor {
     }
 
     return initialState;
-  }
-
-  public static mergeHooks(
-    mixins: MixinStaticInterface[],
-  ): ArrayOfHooksInterface {
+  },
+  mergeHooks(mixins: MixinStaticInterface[]): ArrayOfHooksInterface {
     const hooks = {
       created: [],
       attached: [],
@@ -93,9 +85,8 @@ export class Compositor {
     }
 
     return hooks;
-  }
-
-  public static mergeMethods(mixins: MixinStaticInterface[]): Map<any, any> {
+  },
+  mergeMethods(mixins: MixinStaticInterface[]): Map<any, any> {
     const methods = new Map();
 
     for (const mixin of mixins.reverse()) {
@@ -109,11 +100,8 @@ export class Compositor {
       }
     }
     return methods;
-  }
-
-  public static mergeAccessors(
-    mixins: MixinStaticInterface[],
-  ): AccessorStaticInterface {
+  },
+  mergeAccessors(mixins: MixinStaticInterface[]): AccessorStaticInterface {
     const accessors = {};
     for (const mixin of mixins.reverse()) {
       for (const prop of Reflect.ownKeys(mixin)) {
@@ -128,5 +116,5 @@ export class Compositor {
       }
     }
     return accessors;
-  }
-}
+  },
+};

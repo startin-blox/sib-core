@@ -6,16 +6,13 @@ import type {
   MixinStaticInterface,
 } from './interfaces.js';
 
-export class Sib {
-  public static register(componentDefinition: MixinStaticInterface): void {
+export const Sib = {
+  register(componentDefinition: MixinStaticInterface): void {
     const component = ComponentFactory.build(componentDefinition);
     const cls = Sib.toElement(component);
     defineComponent(component.name, cls);
-  }
-
-  protected static toElement(
-    component: ComponentConstructorInterface,
-  ): typeof HTMLElement {
+  },
+  toElement(component: ComponentConstructorInterface): typeof HTMLElement {
     return class extends HTMLElement {
       private _component: ComponentInterface | null = null;
 
@@ -55,5 +52,5 @@ export class Sib {
         this.component.detached();
       }
     };
-  }
-}
+  },
+};
