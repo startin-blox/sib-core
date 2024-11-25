@@ -17,8 +17,6 @@ const FederationMixin = {
 
     const nextProcessor = listPostProcessors.shift();
     if(nextProcessor) await nextProcessor(newResources, listPostProcessors, div, context);
-    // else
-    //   this.resources = resources;
   },
   async getResources(resources: Resource[]): Promise<Resource[]> {
     if (!resources && this.resources) resources = this.resources;
