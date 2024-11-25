@@ -52,6 +52,7 @@ const StoreMixin = {
     },
   },
   initialState: {
+    resources: [],
     resourceId: null,
     subscription: null,
   },
@@ -107,7 +108,7 @@ const StoreMixin = {
       dynamicServerSearch
     );
     const forceRefetch = !!dynamicServerSearch;
-    await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
+    this.resources = await store.getData(this.resourceId, this.context, undefined, undefined, forceRefetch, serverPagination, serverSearch);
 
     this.updateDOM();
   },
