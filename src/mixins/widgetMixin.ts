@@ -476,7 +476,9 @@ const WidgetMixin = {
       }
     }
     if (!setFields.length) {
-      console.warn(`Set with name ${field} has not been generated due to being empty`)
+      console.warn(
+        `Set with name ${field} has not been generated due to being empty`,
+      );
     }
     // Render template
     const widgetsTemplate = await Promise.all(

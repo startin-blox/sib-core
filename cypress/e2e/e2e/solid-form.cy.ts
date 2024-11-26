@@ -27,8 +27,7 @@ describe('solid-form', { testIsolation: false }, function () {
       cy.get('input[type=text]').should('have.length', 2);
       cy.get('input[name=with]').should('exist');
       cy.get('input[name=field]').should('exist');
-    })
-    
+    });
   });
 
   it('edition form', () => {
