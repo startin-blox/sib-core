@@ -194,4 +194,11 @@ describe('solid-form-search widget', { testIsolation: false }, function() {
     input.type('hp')
     cy.get('#debounce>div>solid-display').should('have.length', 1)
   })
-})
+  
+  it('should prevent submit', () => {
+    const input = cy.get('#filter-debounce input');
+    input.clear().type('php{enter}');
+    cy.wait(200);
+    cy.get('#debounce>div>solid-display').should('have.length', 1);
+  });
+});
