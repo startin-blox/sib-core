@@ -210,11 +210,23 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
   });
 
   it('solid-form-search + debounce', () => {
-    const input = cy.get('#filter-debounce input');
-    input.type('p');
-    cy.wait(1000);
-    cy.get('#debounce>div>solid-display').should('not.have.length', 4);
-    input.type('hp');
-    cy.get('#debounce>div>solid-display').should('have.length', 1);
+    const input = cy.get('#filter-debounce input')
+    input.type('p')
+    cy.wait(1000)
+    cy.get('#debounce>div>solid-display').should('not.have.length', 4)
+    input.type('hp')
+    cy.get('#debounce>div>solid-display').should('have.length', 1)
+  });
+
+  it('solid-form-search + enter should not trigger default submit', () => {
+    const input = cy.get('#enter-submit input');
+    input.clear().type('php{enter}');
+    cy.wait(200);
+    cy.get('#enter>div>solid-display').should('have.length', 1);
+
+    const inputDebounced = cy.get('#enter-submit-debounce input');
+    inputDebounced.clear().type('php{enter}');
+    cy.wait(200);
+    cy.get('#enter-debounce>div>solid-display').should('have.length', 1);
   });
 });

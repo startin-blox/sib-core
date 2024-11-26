@@ -60,6 +60,7 @@ const StoreMixin = {
     },
   },
   initialState: {
+    resources: [],
     resourceId: null,
     subscription: null,
   },

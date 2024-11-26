@@ -29,6 +29,7 @@ const FederationMixin = {
       await nextProcessor(newResources, listPostProcessors, div, context);
   },
   async getResources(resources: Resource[]): Promise<Resource[]> {
+    if (!resources && this.resources) resources = this.resources;
     if (!resources) return [];
     const newResources: Resource[] = [];
 

@@ -141,6 +141,7 @@ function setDeepProperty(
 }
 
 function parseFieldsString(fields: string): string[] {
+  if (!fields) return [];
   let fieldsArray: string[];
 
   // remove all sets from fields

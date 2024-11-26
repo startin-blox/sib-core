@@ -22,6 +22,15 @@ describe('solid-form', { testIsolation: false }, function () {
     });
   });
 
+  it('form ignores empty set', () => {
+    cy.get('#form-0').within(() => {
+      cy.get('input[type=text]').should('have.length', 2);
+      cy.get('input[name=with]').should('exist');
+      cy.get('input[name=field]').should('exist');
+    })
+    
+  });
+
   it('edition form', () => {
     cy.get('#form-edition-1 input[type=text]').should('have.length', 2);
     cy.get('#form-edition-1 input[type=text][name=name]')

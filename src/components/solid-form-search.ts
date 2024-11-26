@@ -218,15 +218,14 @@ export const SolidFormSearch = {
   populate: trackRenderAsync(async function (): Promise<void> {
     await this.replaceAttributesData();
     if (this.submitButton == null) {
-      this.element.addEventListener('input', (e: Event) =>
-        this.debounceInput(e.target),
-      );
-    } else {
-      this.element.addEventListener('submit', (e: Event) => {
-        e.preventDefault();
-        this.inputChange(e.target);
+      this.element.addEventListener('input', (e: Event) => {
+        this.debounceInput(e.target);
       });
     }
+    this.element.addEventListener('submit', (e: Event) => {
+      e.preventDefault();
+      this.inputChange(e.target);
+    });
     const fields = await this.getFields();
     const widgetTemplates = await Promise.all(
       fields.map((field: string) => this.createWidgetTemplate(field)),
