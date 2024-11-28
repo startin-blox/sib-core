@@ -1,5 +1,5 @@
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
-import { spread } from '../../libs/lit-helpers';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
+import { spread } from '../../libs/lit-helpers.ts';
 
 import { html } from 'lit';
 

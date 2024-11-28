@@ -1,4 +1,4 @@
-import { base_context } from '../libs/store/store';
+import { base_context } from '../libs/store/store.ts';
 
 const ContextMixin = {
   name: 'store-mixin',

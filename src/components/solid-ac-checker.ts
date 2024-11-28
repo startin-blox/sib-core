@@ -1,7 +1,7 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-import { Sib } from '../libs/Sib';
-import { trackRenderAsync } from '../logger';
-import { StoreMixin } from '../mixins/storeMixin';
+import { Sib } from '../libs/Sib.ts';
+import { trackRenderAsync } from '../logger.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
 
 export const SolidAcChecker = {
   name: 'solid-ac-checker',

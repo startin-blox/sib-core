@@ -1,4 +1,4 @@
-import { store } from '../libs/store/store';
+import { store } from '../libs/store/store.ts';
 
 const TranslationMixin = {
   name: 'translation-mixin',

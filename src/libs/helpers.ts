@@ -320,7 +320,7 @@ export default class AsyncIterableBuilder<Type> {
 import type {
   AsyncQuerySelectorAllType,
   AsyncQuerySelectorType,
-} from './async-query-selector-types';
+} from './async-query-selector-types.ts';
 
 const asyncQuerySelector: AsyncQuerySelectorType = (
   selector: string,

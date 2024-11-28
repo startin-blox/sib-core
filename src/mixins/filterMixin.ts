@@ -1,7 +1,7 @@
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { searchInResources } from '../libs/filter';
-import type { SearchQuery } from '../libs/interfaces';
-import type { ServerSearchOptions } from '../libs/store/server-search';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { searchInResources } from '../libs/filter.ts';
+import type { SearchQuery } from '../libs/interfaces.ts';
+import type { ServerSearchOptions } from '../libs/store/server-search.ts';
 
 const FilterMixin = {
   name: 'filter-mixin',

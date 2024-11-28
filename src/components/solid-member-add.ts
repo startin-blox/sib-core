@@ -1,13 +1,13 @@
-import { Sib } from '../libs/Sib';
-import { base_context, store } from '../libs/store/store';
-import { NextMixin } from '../mixins/nextMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
+import { Sib } from '../libs/Sib.ts';
+import { base_context, store } from '../libs/store/store.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ContextMixin } from '../mixins/contextMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { ContextMixin } from '../mixins/contextMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',

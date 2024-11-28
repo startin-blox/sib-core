@@ -1,5 +1,5 @@
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const OembedMixin = {
   name: 'oembed-mixin',

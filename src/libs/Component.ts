@@ -1,4 +1,4 @@
-import { Profiler } from '../logger';
+import { Profiler } from '../logger.ts';
 import type { ComponentInterface } from './interfaces.js';
 
 export abstract class Component implements ComponentInterface {

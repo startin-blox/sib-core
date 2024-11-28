@@ -1,12 +1,12 @@
-import { Component } from './Component';
-import { Compositor } from './Compositor';
+import { Component } from './Component.ts';
+import { Compositor } from './Compositor.ts';
 import type {
   AccessorStaticInterface,
   ArrayOfHooksInterface,
   AttributesDefinitionInterface,
   ComponentConstructorInterface,
   MixinStaticInterface,
-} from './interfaces';
+} from './interfaces.ts';
 
 export const ComponentFactory = {
   build(component: MixinStaticInterface): ComponentConstructorInterface {

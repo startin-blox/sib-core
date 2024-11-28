@@ -3,8 +3,8 @@ import {
   findClosingBracketMatchIndex,
   parseFieldsString,
   uniqID,
-} from './helpers';
-import type { Query, SearchQuery } from './interfaces';
+} from './helpers.ts';
+import type { Query, SearchQuery } from './interfaces.ts';
 
 /**
  * Check if the field is a set

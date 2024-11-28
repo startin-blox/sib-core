@@ -1,9 +1,9 @@
 import dialogPolyfill from 'dialog-polyfill';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { uniqID } from '../libs/helpers';
-import { preHTML } from '../libs/lit-helpers';
-import { TranslationMixin } from './translationMixin';
+import { uniqID } from '../libs/helpers.ts';
+import { preHTML } from '../libs/lit-helpers.ts';
+import { TranslationMixin } from './translationMixin.ts';
 
 const ValidationMixin = {
   name: 'validation-mixin',

@@ -1,4 +1,4 @@
-import type { Profiler } from '../logger';
+import type { Profiler } from '../logger.ts';
 
 export interface AccessorStaticInterface {
   [key: string]: {

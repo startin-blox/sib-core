@@ -1,18 +1,18 @@
-import { Sib } from '../libs/Sib';
-import type { MixinStaticInterface } from '../libs/interfaces';
-import { attributeDirectory } from './attributeMixins/index';
-import { BaseWidgetMixin } from './baseWidgetMixin';
-import { callbackDirectory } from './callbackMixins/index';
-import type { Template, WidgetMixinsInterface } from './interfaces';
-import { templateAdditionDirectory } from './templateAdditionMixins/index';
+import { Sib } from '../libs/Sib.ts';
+import type { MixinStaticInterface } from '../libs/interfaces.ts';
+import { attributeDirectory } from './attributeMixins/index.ts';
+import { BaseWidgetMixin } from './baseWidgetMixin.ts';
+import { callbackDirectory } from './callbackMixins/index.ts';
+import type { Template, WidgetMixinsInterface } from './interfaces.ts';
+import { templateAdditionDirectory } from './templateAdditionMixins/index.ts';
 import {
   defaultTemplates,
   displayTemplates,
   formTemplates,
   groupTemplates,
   setTemplates,
-} from './templates/index';
-import { valueTransformationDirectory } from './valueTransformationMixins/index';
+} from './templates/index.ts';
+import { valueTransformationDirectory } from './valueTransformationMixins/index.ts';
 
 const valueTransformationKeys = Object.keys(valueTransformationDirectory);
 const attributeKeys = Object.keys(attributeDirectory);

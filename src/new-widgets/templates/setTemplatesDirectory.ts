@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { SetMixin } from '../templatesDependencies/setMixin';
+import { SetMixin } from '../templatesDependencies/setMixin.ts';
 
 export const setTemplates = {
   default: {

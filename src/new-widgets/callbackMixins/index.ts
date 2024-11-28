@@ -1,5 +1,5 @@
-import { AutocompletionMixin } from './autocompletionMixin';
-import { RichtextMixin } from './richtextMixin';
+import { AutocompletionMixin } from './autocompletionMixin.ts';
+import { RichtextMixin } from './richtextMixin.ts';
 
 const callbackDirectory = {
   autocompletion: AutocompletionMixin,

@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { evalTemplateString } from '../libs/helpers';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { evalTemplateString } from '../libs/helpers.ts';
 
 const CounterMixin = {
   name: 'counter-mixin',

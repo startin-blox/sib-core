@@ -1,4 +1,4 @@
-import { uniqID } from '../../libs/helpers';
+import { uniqID } from '../../libs/helpers.ts';
 
 const FormRadioMixin = {
   name: 'form-radio-mixin',

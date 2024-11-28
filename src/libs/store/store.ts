@@ -2,14 +2,14 @@ import JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
 
 import jsonld from 'jsonld';
-import { CustomGetter } from './custom-getter';
+import { CustomGetter } from './custom-getter.ts';
 
-import type { Resource } from '../../mixins/interfaces';
-import type { ServerSearchOptions } from './server-search';
-import { appendServerSearchToIri } from './server-search';
+import type { Resource } from '../../mixins/interfaces.ts';
+import type { ServerSearchOptions } from './server-search.ts';
+import { appendServerSearchToIri } from './server-search.ts';
 
-import type { ServerPaginationOptions } from './server-pagination';
-import { appendServerPaginationToIri } from './server-pagination';
+import type { ServerPaginationOptions } from './server-pagination.ts';
+import { appendServerPaginationToIri } from './server-pagination.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();

@@ -2,7 +2,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import markdownit from 'markdown-it';
 import mila from 'markdown-it-link-attributes';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const MarkdownMixin = {
   name: 'markdown-mixin',

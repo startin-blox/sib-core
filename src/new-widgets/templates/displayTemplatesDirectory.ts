@@ -1,6 +1,6 @@
-import { AltMixin } from '../templatesDependencies/altMixin';
-import { EditableMixin } from '../templatesDependencies/editableMixin';
-import { LinkTextMixin } from '../templatesDependencies/linkTextMixin';
+import { AltMixin } from '../templatesDependencies/altMixin.ts';
+import { EditableMixin } from '../templatesDependencies/editableMixin.ts';
+import { LinkTextMixin } from '../templatesDependencies/linkTextMixin.ts';
 
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';

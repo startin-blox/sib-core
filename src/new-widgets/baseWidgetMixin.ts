@@ -1,5 +1,5 @@
-import { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import type { Template } from './interfaces';
+import { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import type { Template } from './interfaces.ts';
 
 import { render } from 'lit';
 

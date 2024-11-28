@@ -1,8 +1,8 @@
-import { store } from '../../libs/store/store';
-import { StoreMixin } from '../../mixins/storeMixin';
+import { store } from '../../libs/store/store.ts';
+import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 import { html } from 'lit';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const EditableMixin = {
   name: 'editable-mixin',

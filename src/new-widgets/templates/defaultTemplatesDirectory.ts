@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LinkTextMixin } from '../templatesDependencies/linkTextMixin';
+import { LinkTextMixin } from '../templatesDependencies/linkTextMixin.ts';
 
 export const defaultTemplates = {
   action: {

@@ -4,7 +4,7 @@ import type {
   AttributesDefinitionInterface,
   ComponentStaticInterface,
   MixinStaticInterface,
-} from './interfaces';
+} from './interfaces.ts';
 
 const HOOKS = ['created', 'attached', 'detached'];
 const API = ['name', 'use', 'attributes', 'initialState', ...HOOKS];

@@ -6,6 +6,7 @@
     "allowJs": true,
     "jsx": "preserve",
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,

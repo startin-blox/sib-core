@@ -1,5 +1,5 @@
-import { base_context, store } from '../libs/store/store';
-import type { Resource } from './interfaces';
+import { base_context, store } from '../libs/store/store.ts';
+import type { Resource } from './interfaces.ts';
 
 const AttributeBinderMixin = {
   name: 'attribute-binder-mixin',

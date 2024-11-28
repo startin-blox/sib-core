@@ -1,5 +1,5 @@
 import { Autolinker } from 'autolinker';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const AutolinkMixin = {
   name: 'autolink-mixin',

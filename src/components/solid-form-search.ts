@@ -1,15 +1,15 @@
-import { Sib } from '../libs/Sib';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
-import { ContextMixin } from '../mixins/contextMixin';
-import type { WidgetInterface } from '../mixins/interfaces';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { Sib } from '../libs/Sib.ts';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
+import { ContextMixin } from '../mixins/contextMixin.ts';
+import type { WidgetInterface } from '../mixins/interfaces.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { uniqID } from '../libs/helpers';
-import type { FilterEventOptions, SearchQuery } from '../libs/interfaces';
-import { trackRenderAsync } from '../logger';
+import { uniqID } from '../libs/helpers.ts';
+import type { FilterEventOptions, SearchQuery } from '../libs/interfaces.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',

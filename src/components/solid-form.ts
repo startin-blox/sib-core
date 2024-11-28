@@ -1,15 +1,15 @@
-import { Sib } from '../libs/Sib';
-import { setDeepProperty, transformArrayToContainer } from '../libs/helpers';
-import { store } from '../libs/store/store';
-import type { WidgetInterface } from '../mixins/interfaces';
-import { NextMixin } from '../mixins/nextMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
-import { WidgetMixin } from '../mixins/widgetMixin';
+import { Sib } from '../libs/Sib.ts';
+import { setDeepProperty, transformArrayToContainer } from '../libs/helpers.ts';
+import { store } from '../libs/store/store.ts';
+import type { WidgetInterface } from '../mixins/interfaces.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { ValidationMixin } from '../mixins/validationMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { trackRenderAsync } from '../logger';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidForm = {
   name: 'solid-form',

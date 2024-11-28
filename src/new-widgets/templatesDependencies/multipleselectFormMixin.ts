@@ -1,5 +1,5 @@
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
-import { StoreMixin } from '../../mixins/storeMixin';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
+import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 const MultipleselectFormMixin = {
   name: 'multipleselect-form-mixin',

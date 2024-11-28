@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const LabelLastMixin = {
   name: 'label-last-mixin',

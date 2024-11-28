@@ -1,6 +1,6 @@
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { store } from '../libs/store/store';
-import type { Resource } from './interfaces';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { store } from '../libs/store/store.ts';
+import type { Resource } from './interfaces.ts';
 
 const FederationMixin = {
   name: 'federation-mixin',

@@ -1,5 +1,5 @@
-import { Sib } from '../libs/Sib';
-import { store } from '../libs/store/store';
+import { Sib } from '../libs/Sib.ts';
+import { store } from '../libs/store/store.ts';
 
 import { html, render } from 'lit';
 

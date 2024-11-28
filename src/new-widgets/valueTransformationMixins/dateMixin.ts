@@ -1,4 +1,4 @@
-import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const DateMixin = {
   name: 'date-mixin',

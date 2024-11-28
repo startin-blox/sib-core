@@ -1,6 +1,6 @@
-import { AddableMixin } from './addableMixin';
-import { LabelLastMixin } from './labelLastMixin';
-import { LabelMixin } from './labelMixin';
+import { AddableMixin } from './addableMixin.ts';
+import { LabelLastMixin } from './labelLastMixin.ts';
+import { LabelMixin } from './labelMixin.ts';
 
 /**
  * DOM Additions

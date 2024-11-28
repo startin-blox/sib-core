@@ -6,7 +6,7 @@ import {
   setDeepProperty,
   stringToDom,
   uniqID,
-} from '../../../src/libs/helpers';
+} from '../../../src/libs/helpers.ts';
 
 /**
  * uniqID
@@ -294,7 +294,7 @@ describe('evalTemplateString', () => {
 //     })
 //   })
 // })
-import sleep from '../sleep';
+import sleep from '../sleep.ts';
 describe('AsyncIterableBuilder', () => {
   it('create an asyncIterable', async () => {
     const { iterable, next } = new AsyncIterableBuilder<number>();

@@ -1,23 +1,23 @@
-import { Sib } from '../libs/Sib';
-import { store } from '../libs/store/store';
-import { CounterMixin } from '../mixins/counterMixin';
-import { FederationMixin } from '../mixins/federationMixin';
-import { FilterMixin } from '../mixins/filterMixin';
-import { GrouperMixin } from '../mixins/grouperMixin';
-import { HighlighterMixin } from '../mixins/highlighterMixin';
-import type { Resource } from '../mixins/interfaces';
-import { ListMixin } from '../mixins/listMixin';
-import { PaginateMixin } from '../mixins/paginateMixin';
-import { RequiredMixin } from '../mixins/requiredMixin';
-import { SorterMixin } from '../mixins/sorterMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { WidgetMixin } from '../mixins/widgetMixin';
+import { Sib } from '../libs/Sib.ts';
+import { store } from '../libs/store/store.ts';
+import { CounterMixin } from '../mixins/counterMixin.ts';
+import { FederationMixin } from '../mixins/federationMixin.ts';
+import { FilterMixin } from '../mixins/filterMixin.ts';
+import { GrouperMixin } from '../mixins/grouperMixin.ts';
+import { HighlighterMixin } from '../mixins/highlighterMixin.ts';
+import type { Resource } from '../mixins/interfaces.ts';
+import { ListMixin } from '../mixins/listMixin.ts';
+import { PaginateMixin } from '../mixins/paginateMixin.ts';
+import { RequiredMixin } from '../mixins/requiredMixin.ts';
+import { SorterMixin } from '../mixins/sorterMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
 import { html, render } from 'lit';
 import { until } from 'lit/directives/until.js';
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { spread } from '../libs/lit-helpers';
-import { trackRenderAsync } from '../logger';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { spread } from '../libs/lit-helpers.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidTable = {
   name: 'solid-table',

@@ -1,4 +1,4 @@
-import sleep from '../sleep';
+import sleep from '../sleep.ts';
 
 describe('helpers', function () {
   let helpers: typeof import('../../../src/libs/helpers');

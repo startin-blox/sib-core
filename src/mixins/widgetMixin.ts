@@ -3,10 +3,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   findClosingBracketMatchIndex,
   parseFieldsString,
-} from '../libs/helpers';
-import { preHTML, spread } from '../libs/lit-helpers';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
-import { type Resource, type WidgetInterface, WidgetType } from './interfaces';
+} from '../libs/helpers.ts';
+import { preHTML, spread } from '../libs/lit-helpers.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
+import {
+  type Resource,
+  type WidgetInterface,
+  WidgetType,
+} from './interfaces.ts';
 
 const WidgetMixin = {
   name: 'widget-mixin',

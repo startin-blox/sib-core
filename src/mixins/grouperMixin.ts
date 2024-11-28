@@ -1,5 +1,5 @@
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { generalComparator } from '../libs/helpers';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { generalComparator } from '../libs/helpers.ts';
 
 const GrouperMixin = {
   name: 'grouper-mixin',

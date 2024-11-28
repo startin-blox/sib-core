@@ -1,22 +1,22 @@
-import { Sib } from '../libs/Sib';
-import { spread } from '../libs/lit-helpers';
-import { CounterMixin } from '../mixins/counterMixin';
-import { FederationMixin } from '../mixins/federationMixin';
-import { FilterMixin } from '../mixins/filterMixin';
-import { GrouperMixin } from '../mixins/grouperMixin';
-import { HighlighterMixin } from '../mixins/highlighterMixin';
-import { ListMixin } from '../mixins/listMixin';
-import { NextMixin } from '../mixins/nextMixin';
-import { PaginateMixin } from '../mixins/paginateMixin';
-import { RequiredMixin } from '../mixins/requiredMixin';
-import { SorterMixin } from '../mixins/sorterMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { WidgetMixin } from '../mixins/widgetMixin';
+import { Sib } from '../libs/Sib.ts';
+import { spread } from '../libs/lit-helpers.ts';
+import { CounterMixin } from '../mixins/counterMixin.ts';
+import { FederationMixin } from '../mixins/federationMixin.ts';
+import { FilterMixin } from '../mixins/filterMixin.ts';
+import { GrouperMixin } from '../mixins/grouperMixin.ts';
+import { HighlighterMixin } from '../mixins/highlighterMixin.ts';
+import { ListMixin } from '../mixins/listMixin.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { PaginateMixin } from '../mixins/paginateMixin.ts';
+import { RequiredMixin } from '../mixins/requiredMixin.ts';
+import { SorterMixin } from '../mixins/sorterMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry';
-import { trackRenderAsync } from '../logger';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidDisplay = {
   name: 'solid-display',
