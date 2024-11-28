@@ -167,6 +167,6 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   _camelize(str) {
-    return str.replace(/\W+(.)/g, (match, chr) => chr.toUpperCase());
+    return str.replace(/\W+(.)/g, (_match, chr) => chr.toUpperCase());
   }
 }

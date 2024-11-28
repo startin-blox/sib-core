@@ -177,7 +177,7 @@ const WidgetMixin = {
       if (
         typeof fieldValue === 'object' &&
         fieldValue['@id'] &&
-        1 === Object.keys(fieldValue).length
+        Object.keys(fieldValue).length === 1
       ) {
         return JSON.stringify([fieldValue]);
       }

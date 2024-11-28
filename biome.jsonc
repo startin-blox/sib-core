@@ -20,7 +20,8 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noYodaExpression": "error"
       },
       "complexity": {
         "noBannedTypes": "off"
@@ -30,6 +31,7 @@
         "noAsyncPromiseExecutor": "off"
       },
       "correctness": {
+        "noUnusedFunctionParameters": "error",
         "useImportExtensions": "error"
       }
     }

@@ -30,7 +30,7 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
       rep.setHeader('location', `${originalUrl}/${uniqID()}.jpg`);
       setTimeout(() => rep.send(), 1200);
     })
-    .get(/^\/upload\/.+/, (req, rep) => {
+    .get(/^\/upload\/.+/, (_req, rep) => {
       rep.sendFile(path.resolve('./fake-image.svg'));
     })
     .get('/mock/users.jsonld', async (req, res) => {
@@ -51,7 +51,7 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
       res.send(data);
       res.end();
     })
-    .get('/examples/', (req, rep) => rep.redirect('/'))
+    .get('/examples/', (_req, rep) => rep.redirect('/'))
     // Listen for write requests
     .patch(updateURLs, handleUpdate)
     .post(updateURLs, handleUpdate)

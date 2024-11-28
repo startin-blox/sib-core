@@ -146,7 +146,7 @@ const SorterMixin = {
     if (this.randomOrder.length !== array.length) {
       // if no random order existing
       this.randomOrder = [...Array(array.length).keys()]; // generate array of indexes
-      while (0 !== currentIndex) {
+      while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
         temporaryValue = this.randomOrder[currentIndex];
