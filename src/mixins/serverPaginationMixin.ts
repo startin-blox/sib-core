@@ -38,11 +38,11 @@ const ServerPaginationMixin = {
   },
 
   getCurrentOffset(resourceId: string, limit: number) {
-    return this.currentOffset[resourceId + '#p' + limit];
+    return this.currentOffset[`${resourceId}#p${limit}`];
   },
 
   async setCurrentOffset(resourceId: string, offset: number): Promise<void> {
-    const index = resourceId + '#p' + this.limit;
+    const index = `${resourceId}#p${this.limit}`;
     this.currentOffset[index] = this.offset = offset;
     this.pageNumber = Number(this.offset / this.limit);
     this.currentPage[resourceId] = this.pageNumber;
@@ -51,7 +51,7 @@ const ServerPaginationMixin = {
   },
 
   async decreaseCurrentOffset(resourceId: string): Promise<void> {
-    const index = resourceId + '#p' + this.limit;
+    const index = `${resourceId}#p${this.limit}`;
     this.currentOffset[index] = this.offset = this.offset - this.limit;
     this.currentPage[index] = this.offset / this.limit;
     this.pageNumber = this.offset / this.limit;
@@ -61,7 +61,7 @@ const ServerPaginationMixin = {
   },
 
   async increaseCurrentOffset(resourceId: string): Promise<void> {
-    const index = resourceId + '#p' + this.limit;
+    const index = `${resourceId}#p${this.limit}`;
     this.currentOffset[index] = this.offset = this.offset + this.limit;
     this.currentPage[index] = this.offset / this.limit;
 

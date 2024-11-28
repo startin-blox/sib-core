@@ -139,7 +139,7 @@ export class BaseWidget extends HTMLElement {
     return '';
   }
   get escapedValue(): string {
-    return ('' + this.value)
+    return `${this.value}`
       .replace(/&/g, '&amp;')
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');

@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 
 function uniqID(): string {
-  return '_' + (Math.random() * 36 ** 20).toString(36).slice(0, 10);
+  return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
 }
 
 function stringToDom(html: string): DocumentFragment {
@@ -18,11 +18,11 @@ async function evalTemplateString(
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
   try {
-    const func = AsyncFunction.call(null, ...keys, 'return `' + str + '`');
+    const func = AsyncFunction.call(null, ...keys, `return \`${str}\``);
     return await func(...values);
   } catch (e) {
     console.log(e);
-    throw new SyntaxError('`' + str + '`');
+    throw new SyntaxError(`\`${str}\``);
   }
 }
 
@@ -157,7 +157,7 @@ function parseFieldsString(fields: string): string[] {
 }
 
 function findClosingBracketMatchIndex(str: string, pos: number) {
-  if (str[pos] !== '(') throw new Error("No '(' at index " + pos);
+  if (str[pos] !== '(') throw new Error(`No '(' at index ${pos}`);
   let depth = 1;
   for (let i = pos + 1; i < str.length; i++) {
     switch (str[i]) {

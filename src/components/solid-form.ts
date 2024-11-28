@@ -115,15 +115,15 @@ export const SolidForm = {
   },
   getWidget(field: string, isSet = false): WidgetInterface {
     let tagName = '';
-    const widgetAttribute = this.element.getAttribute('widget-' + field);
+    const widgetAttribute = this.element.getAttribute(`widget-${field}`);
 
     // Choose widget
-    if (!widgetAttribute && this.element.hasAttribute('upload-url-' + field)) {
+    if (!widgetAttribute && this.element.hasAttribute(`upload-url-${field}`)) {
       tagName = 'solid-form-file';
     } else if (
       !widgetAttribute &&
-      (this.element.hasAttribute('range-' + field) ||
-        this.element.hasAttribute('enum-' + field))
+      (this.element.hasAttribute(`range-${field}`) ||
+        this.element.hasAttribute(`enum-${field}`))
     ) {
       tagName = 'solid-form-dropdown';
     } else {
@@ -201,11 +201,10 @@ export const SolidForm = {
       const subErrorName =
         errorFullName === ''
           ? errorNextName
-          : errorFullName.concat('.' + errorNextName);
+          : `${errorFullName}.${errorNextName}`;
       let errorFieldName = '';
 
-      if (errorFullName)
-        errorFieldName = errorFullName.concat('.' + errorNextName);
+      if (errorFullName) errorFieldName = `${errorFullName}.${errorNextName}`;
       else errorFieldName = errorNextName;
 
       if (errorFieldName) {

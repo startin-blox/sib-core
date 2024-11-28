@@ -62,11 +62,11 @@ const RichtextMixin = {
   createHiddenRequiredInput() {
     const attributeName = this.getAttributeValue('name');
     this.hiddenInput = document.querySelector(
-      `input[name="${attributeName + '-hidden'}"]`,
+      `input[name="${`${attributeName}-hidden`}"]`,
     ) as HTMLInputElement;
 
     if (!this.hiddenInput) {
-      this.hiddenInput = this.createHiddenInput(attributeName + '-hidden');
+      this.hiddenInput = this.createHiddenInput(`${attributeName}-hidden`);
       this.element.appendChild(this.hiddenInput);
       this.addInvalidEventListener();
     }

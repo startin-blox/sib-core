@@ -87,7 +87,7 @@ const WidgetMixin = {
    * @param field - string
    */
   getAction(field: string): string {
-    const action = this.element.getAttribute('action-' + field);
+    const action = this.element.getAttribute(`action-${field}`);
     return action;
   },
   /**
@@ -95,7 +95,7 @@ const WidgetMixin = {
    * @param field - string
    */
   editable(field: string): string {
-    return this.element.hasAttribute('editable-' + field);
+    return this.element.hasAttribute(`editable-${field}`);
   },
   /**
    * Return regexp to check if "field" is a set
@@ -192,8 +192,8 @@ const WidgetMixin = {
       return this.getAction(escapedField);
     }
 
-    if (this.element.hasAttribute('value-' + field)) {
-      return this.element.getAttribute('value-' + field);
+    if (this.element.hasAttribute(`value-${field}`)) {
+      return this.element.getAttribute(`value-${field}`);
     }
 
     if (this.isAlias(field)) {
@@ -209,8 +209,8 @@ const WidgetMixin = {
       resourceValue === null
     )
       // If null or empty, return field default value
-      return this.element.hasAttribute('default-' + field)
-        ? this.element.getAttribute('default-' + field)
+      return this.element.hasAttribute(`default-${field}`)
+        ? this.element.getAttribute(`default-${field}`)
         : '';
 
     return resourceValue;
@@ -239,7 +239,7 @@ const WidgetMixin = {
    */
   getWidget(field: string, isSet = false): WidgetInterface {
     if (this.isAlias(field)) field = field.split(' as ')[1];
-    const widget = this.element.getAttribute('widget-' + field);
+    const widget = this.element.getAttribute(`widget-${field}`);
 
     if (widget) return this.widgetFromTagName(widget);
     if (this.getAction(field)) return this.widgetFromTagName('solid-action');
@@ -253,7 +253,7 @@ const WidgetMixin = {
    * @param field - string
    */
   multiple(field: string): WidgetInterface | null {
-    const attribute = 'multiple-' + field;
+    const attribute = `multiple-${field}`;
     if (!this.element.hasAttribute(attribute)) return null;
     const widget =
       this.element.getAttribute(attribute) || this.defaultMultipleWidget;
@@ -347,7 +347,7 @@ const WidgetMixin = {
       attrs.widget = this.getWidget(escapedField).tagName;
     if (this.getAction(escapedField) && resourceId)
       attrs.src =
-        this.element.getAttribute('src-' + escapedField) || resourceId;
+        this.element.getAttribute(`src-${escapedField}`) || resourceId;
     if (this.editable(escapedField) && resourceId)
       attrs['value-id'] = resourceId;
     return attrs;
@@ -382,9 +382,9 @@ const WidgetMixin = {
       // Check if value is defined, and if the default widget is needed
       if (
         (value === null || value === '') &&
-        this.element.hasAttribute('default-widget-' + field)
+        this.element.hasAttribute(`default-widget-${field}`)
       ) {
-        tagName = this.element.getAttribute('default-widget-' + field);
+        tagName = this.element.getAttribute(`default-widget-${field}`);
       }
       // Set attributes to the widget
       // setAttribute set a string. Make sure null values are empty
@@ -457,7 +457,7 @@ const WidgetMixin = {
     if (widget.component && initializing) widget.component.render();
     const setFields = this.getSet(field);
     // Catch widget for the set if all these fields are empty
-    if (this.element.hasAttribute('empty-' + field)) {
+    if (this.element.hasAttribute(`empty-${field}`)) {
       let hasOnlyEmpty = true;
       for (const field of setFields) {
         const value: string = await this.getValue(field, this.resource);

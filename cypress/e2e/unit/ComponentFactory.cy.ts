@@ -93,7 +93,7 @@ const Component = {
     message: '',
   },
   get accessorTest() {
-    return 'hello ' + this.accessorValue;
+    return `hello ${this.accessorValue}`;
   },
   created() {
     this.message += '!!';

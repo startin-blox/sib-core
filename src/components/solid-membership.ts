@@ -169,7 +169,7 @@ export const SolidMembership = {
       button = html`
           <solid-ac-checker data-src="${this.dataSrc}"
                 permission="acl:Read"
-                class=${ifDefined(`${this.classSubmitButton ? 'leave ' + this.classSubmitButton : 'leave'}`)}
+                class=${ifDefined(`${this.classSubmitButton ? `leave ${this.classSubmitButton}` : 'leave'}`)}
               >
             <button @click=${this.changeMembership.bind(this)}>${this.dataLeaveLabel || this.t('solid-leave-group.button')}</button>
             ${this.getModalDialog()}
@@ -179,7 +179,7 @@ export const SolidMembership = {
       button = html`
           <solid-ac-checker data-src="${this.dataSrc}"
                 permission="acl:Read"
-                class=${ifDefined(`${this.classSubmitButton ? 'join ' + this.classSubmitButton : 'join'}`)}
+                class=${ifDefined(`${this.classSubmitButton ? `join ${this.classSubmitButton}` : 'join'}`)}
               >
             <button @click=${this.changeMembership.bind(this)}>${this.dataJoinLabel || this.t('solid-join-group.button')}</button>
             ${this.getModalDialog()}

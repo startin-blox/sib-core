@@ -112,7 +112,7 @@ export const SolidTable = {
    */
   async createCellWidget(field: string, resource: Resource) {
     // if regular widget
-    if (!this.element.hasAttribute('editable-' + field))
+    if (!this.element.hasAttribute(`editable-${field}`))
       return this.createWidgetTemplate(field, resource, true);
 
     // if editable widget
@@ -162,7 +162,7 @@ export const SolidTable = {
     const template = html`
       <tr>
         ${this.selectable !== null ? html`<th><input type="checkbox" @change="${this.selectAll.bind(this)}" /></th>` : ''}
-        ${fields.map((field: string) => html`<th>${this.element.hasAttribute('label-' + field) ? this.element.getAttribute('label-' + field) : field}</th>`)}
+        ${fields.map((field: string) => html`<th>${this.element.hasAttribute(`label-${field}`) ? this.element.getAttribute(`label-${field}`) : field}</th>`)}
       </tr>
     `;
     return template;

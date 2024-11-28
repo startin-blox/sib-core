@@ -63,7 +63,7 @@ export const SolidDisplay = {
 
     if (this.resourceId) {
       this.activeSubscription = PubSub.subscribe(
-        'enterRoute.' + this.resourceId,
+        `enterRoute.${this.resourceId}`,
         this.addActiveCallback.bind(this),
       );
     }

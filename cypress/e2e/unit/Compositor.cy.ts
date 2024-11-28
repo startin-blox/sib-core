@@ -73,7 +73,7 @@ const component = {
     },
   },
   get accessorTest() {
-    return 'hello ' + this.accessorValue;
+    return `hello ${this.accessorValue}`;
   },
   created() {
     console.log('created3');

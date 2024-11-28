@@ -67,7 +67,7 @@ const GrouperMixin = {
             groups[group].resources, // give only resources from group
             listPostProcessors.deepCopy(), // copy post processors
             parent, // parent is group widget
-            context + '_' + group,
+            `${context}_${group}`,
           );
       }
     } else {

@@ -86,20 +86,20 @@ export const SolidFormSearch = {
     let tagName = '';
     // If auto-range-[field] exists, create range-[field] and sets its value
     if (
-      this.element.hasAttribute('auto-range-' + field) &&
-      !this.element.hasAttribute('range-' + field)
+      this.element.hasAttribute(`auto-range-${field}`) &&
+      !this.element.hasAttribute(`range-${field}`)
     ) {
       const idField = `${this.rangeId}_${field}`;
-      this.element.setAttribute('range-' + field, 'store://local.' + idField);
+      this.element.setAttribute(`range-${field}`, `store://local.${idField}`);
       this.populate();
     }
 
-    const widgetAttribute = this.element.getAttribute('widget-' + field);
+    const widgetAttribute = this.element.getAttribute(`widget-${field}`);
     // Choose widget
     if (
       !widgetAttribute &&
-      (this.element.hasAttribute('range-' + field) ||
-        this.element.hasAttribute('enum-' + field))
+      (this.element.hasAttribute(`range-${field}`) ||
+        this.element.hasAttribute(`enum-${field}`))
     ) {
       tagName = 'solid-form-dropdown';
     } else {

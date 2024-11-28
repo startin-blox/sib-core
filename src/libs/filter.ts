@@ -42,7 +42,7 @@ const getSetRegexp = (field: string) => {
  * @returns true if the field is a special search field
  */
 const isSearchField = (field: string, searchForm: any) => {
-  return searchForm.hasAttribute('search-' + field);
+  return searchForm.hasAttribute(`search-${field}`);
 };
 /**
  * Get the fields targetted by a search field
@@ -51,7 +51,7 @@ const isSearchField = (field: string, searchForm: any) => {
  * @returns a list of fields targetted by the current search field
  */
 const getSearchField = (field: string, searchForm: any): string[] => {
-  return parseFieldsString(searchForm.getAttribute('search-' + field));
+  return parseFieldsString(searchForm.getAttribute(`search-${field}`));
 };
 
 /**

@@ -20,8 +20,7 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noParameterAssign": "off",
-        "useTemplate": "off"
+        "noParameterAssign": "off"
       },
       "complexity": {
         "noBannedTypes": "off"
