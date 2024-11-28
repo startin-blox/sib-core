@@ -53,7 +53,7 @@ const MultipleselectFormMixin = {
         } else {
           this.setValue([value]);
         }
-      } catch (ex) {
+      } catch {
         this.dataSrc = value;
         this.setValue([{ '@id': value }]);
       }

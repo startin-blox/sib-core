@@ -98,14 +98,14 @@ export default class SolidTemplateElement extends HTMLElement {
         if (result.ok) {
           return result
             .json() // parse content
-            .catch(e =>
+            .catch(() =>
               console.error(
                 `Error while parsing the translation file: ${fullPath}`,
               ),
             );
         }
       })
-      .catch(e =>
+      .catch(() =>
         console.error(
           `Error while retrieving the translation file: ${fullPath}`,
         ),

@@ -31,7 +31,7 @@ const FormCheckboxesMixin = {
         let value = el.value;
         try {
           value = JSON.parse(el.value);
-        } catch (e) {}
+        } catch {}
         return value;
       });
   },

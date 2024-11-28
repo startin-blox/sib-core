@@ -78,7 +78,7 @@ const MultipleFormMixin = {
         if (Array.isArray(JSON.parse(value))) {
           this.setValue(JSON.parse(value));
         }
-      } catch (ex) {
+      } catch {
         //FIXME: Awful trick to handle both resource @ids as value and serialized arrays values
         this.dataSrc = value;
       }

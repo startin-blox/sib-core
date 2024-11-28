@@ -173,7 +173,7 @@ export class BaseWidget extends HTMLElement {
         try {
           const resourceId = resource.getChildren('ldp:contains')[index]['@id'];
           res = await store.getData(resourceId, this.context);
-        } catch (e) {
+        } catch {
           continue;
         }
       }

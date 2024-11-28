@@ -82,7 +82,7 @@ export class CustomGetter {
 
         return result;
       }
-    } catch (e) {
+    } catch {
       if (!path.split) return undefined;
 
       // Split the path on each dots

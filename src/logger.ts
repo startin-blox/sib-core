@@ -19,7 +19,7 @@ function formatMessage(level, messages) {
       if (typeof msg === 'object') {
         try {
           return JSON.stringify(msg, null, 2);
-        } catch (error) {
+        } catch {
           return String(msg);
         }
       }

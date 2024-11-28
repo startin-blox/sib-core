@@ -33,7 +33,8 @@
       },
       "correctness": {
         "noUnusedFunctionParameters": "error",
-        "useImportExtensions": "error"
+        "useImportExtensions": "error",
+        "noUnusedVariables": "error"
       }
     }
   },

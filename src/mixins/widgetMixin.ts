@@ -401,7 +401,7 @@ const WidgetMixin = {
           try {
             const isUrl = new URL(value);
             if (isUrl) attributes['data-src'] = value;
-          } catch (e) {}
+          } catch {}
 
           // in any case, set value attribute
           attributes.value = value;

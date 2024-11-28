@@ -15,7 +15,7 @@ const DateMixin = {
     try {
       // workaround for giving a specific-formatted value to the form widget
       this.listAttributes.originalValue = this.formatDateForInput(value);
-    } catch (e) {
+    } catch {
       console.warn('Invalid date format for widget', this.name);
       this.listAttributes.originalValue = '';
     }

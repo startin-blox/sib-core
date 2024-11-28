@@ -64,7 +64,7 @@ export const SolidForm = {
       let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
-      } catch (e) {}
+      } catch {}
       setDeepProperty(values, name.split('.'), value);
     }
     // add @id if edition
@@ -180,7 +180,7 @@ export const SolidForm = {
     let id: string;
     try {
       id = (await this.save()) || this.getFormValue()['@id'];
-    } catch (e) {
+    } catch (_e) {
       return;
     }
     this.reset();

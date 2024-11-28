@@ -265,7 +265,7 @@ const matchFilter = async (
         ),
       ),
     );
-  } catch (e) {
+  } catch {
     return true;
   }
   throw false;
@@ -305,7 +305,7 @@ const matchFilters = async (
         return match;
       }),
     );
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
   return true;
