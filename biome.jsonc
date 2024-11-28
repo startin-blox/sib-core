@@ -21,7 +21,8 @@
       "recommended": true,
       "style": {
         "noParameterAssign": "off",
-        "noYodaExpression": "error"
+        "noYodaExpression": "error",
+        "useExplicitLengthCheck": "error"
       },
       "complexity": {
         "noBannedTypes": "off"

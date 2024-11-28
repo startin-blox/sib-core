@@ -130,7 +130,7 @@ export class BaseWidget extends HTMLElement {
       );
     });
 
-    return widgetDataHolders.length ? widgetDataHolders : null;
+    return widgetDataHolders.length > 0 ? widgetDataHolders : null;
   }
   get template(): string {
     return '';

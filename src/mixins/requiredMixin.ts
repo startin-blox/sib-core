@@ -24,7 +24,7 @@ const RequiredMixin = {
           : attr.name.replace('required-', '');
       });
 
-    if (requiredFields.length) {
+    if (requiredFields.length > 0) {
       for (const resource of resources) {
         let hasProps = true;
         for (const field of requiredFields) {
@@ -41,7 +41,7 @@ const RequiredMixin = {
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(
-        requiredFields.length ? displays : resources,
+        requiredFields.length > 0 ? displays : resources,
         listPostProcessors,
         div,
         context,

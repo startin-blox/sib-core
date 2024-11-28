@@ -480,7 +480,7 @@ const WidgetMixin = {
         return preHTML`<${tagName} ...=${spread(attributes)}></${tagName}>`;
       }
     }
-    if (!setFields.length) {
+    if (setFields.length === 0) {
       console.warn(
         `Set with name ${field} has not been generated due to being empty`,
       );

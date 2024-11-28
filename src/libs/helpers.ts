@@ -133,7 +133,7 @@ function setDeepProperty(
   const name = path.shift();
   if (name) {
     if (!(name in obj)) obj[name] = {};
-    if (path.length) setDeepProperty(obj[name], path, value);
+    if (path.length > 0) setDeepProperty(obj[name], path, value);
     else obj[name] = value;
   }
 }

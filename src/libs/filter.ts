@@ -154,7 +154,7 @@ const traversePath = async (
   let result: object[] = [];
   let currentRes: any;
   let remainingPath: string[] = path;
-  if (!path.length) return [];
+  if (path.length === 0) return [];
 
   // Split and get first item
   try {

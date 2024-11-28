@@ -52,7 +52,7 @@ const FormMixin = {
       );
     });
 
-    return widgetDataHolders.length ? widgetDataHolders : null;
+    return widgetDataHolders.length > 0 ? widgetDataHolders : null;
   },
   getValueFromElement(element: any) {
     return element.component ? element.component.getValue() : element.value;
