@@ -99,7 +99,7 @@ const AttributeBinderMixin = {
    */
   async getUser() {
     const sibAuth: any = document.querySelector('sib-auth');
-    return sibAuth.getUser();
+    return await sibAuth.getUser();
   },
 
   /**

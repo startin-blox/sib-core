@@ -171,7 +171,7 @@ export class CustomGetter {
     iriParent: string,
     forceFetch = false,
   ): Promise<Resource | null> {
-    if (id.startsWith('_:b')) return store.get(id + iriParent); // anonymous node = get from cache
+    if (id.startsWith('_:b')) return await store.get(id + iriParent); // anonymous node = get from cache
     return store.getData(id, context, iriParent, undefined, forceFetch);
   }
 

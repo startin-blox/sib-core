@@ -82,7 +82,7 @@ export function trackRenderAsync(fn: Function, context?: string) {
 
 // HOF to log render times and time execution
 export function trackRender(fn: Function, context?: string) {
-  return async function (...args: any[]) {
+  return function (...args: any[]) {
     let componentName = context
       ? context
       : this.name

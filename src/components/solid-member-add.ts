@@ -53,7 +53,7 @@ export const SolidMemberAdd = {
       });
     }
   },
-  async addMember(e: Event): Promise<void> {
+  addMember(e: Event) {
     if (!this.dataSrc || !this.resourceId) return;
     e.preventDefault();
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes

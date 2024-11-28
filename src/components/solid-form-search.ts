@@ -171,7 +171,7 @@ export const SolidFormSearch = {
       }),
     );
   },
-  async inputChange(input: EventTarget): Promise<void> {
+  inputChange(input: EventTarget) {
     // FIXME: Improve this as we need to support more than input and single select.
     // What about multiple select, checkboxes, radio buttons, etc?
     const parentElementLabel = (

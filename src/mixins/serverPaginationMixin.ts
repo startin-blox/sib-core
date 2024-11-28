@@ -69,7 +69,7 @@ const ServerPaginationMixin = {
     await this.fetchData(this.dataSrc);
   },
 
-  async updateNavButtons(resourceId: string, index: string, variance: number) {
+  updateNavButtons(resourceId: string, index: string, variance: number) {
     this.element.querySelector("[data-id='prev']").disabled =
       this.currentOffset[index] <= 0;
     // this.element.querySelector("[data-id='next']").disabled = await this.resource['ldp:contains'].length === 0;

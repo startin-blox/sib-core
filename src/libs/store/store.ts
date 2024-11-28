@@ -102,7 +102,7 @@ class Store {
       !this.loadingList.has(key)
     ) {
       const resource = this.get(key);
-      if (resource?.isFullResource?.() && !forceFetch) return resource; // if resource is not complete, re-fetch it
+      if (resource?.isFullResource?.() && !forceFetch) return await resource; // if resource is not complete, re-fetch it
     }
 
     return new Promise(async resolve => {
@@ -416,7 +416,7 @@ class Store {
    * Notifies all components for a list of ids
    * @param resourceIds -
    */
-  async notifyResources(resourceIds: string[]) {
+  notifyResources(resourceIds: string[]) {
     resourceIds = [...new Set(resourceIds)]; // remove duplicates
     for (const id of resourceIds) PubSub.publish(id);
   }
@@ -426,7 +426,7 @@ class Store {
    * @param resource - object
    * @param id - string
    */
-  async getNestedResources(resource: object, id: string) {
+  getNestedResources(resource: object, id: string) {
     const cachedResource = store.get(id);
     if (!cachedResource || cachedResource.isContainer?.()) return [];
     const nestedProperties: any[] = [];
@@ -492,7 +492,7 @@ class Store {
    *
    * @returns id of the posted resource
    */
-  async setLocalData(resource: object, id: string): Promise<string | null> {
+  setLocalData(resource: object, id: string): Promise<string | null> {
     return this._updateResource('_LOCAL', resource, id);
   }
 
@@ -503,7 +503,7 @@ class Store {
    *
    * @returns id of the posted resource
    */
-  async post(resource: object, id: string): Promise<string | null> {
+  post(resource: object, id: string): Promise<string | null> {
     return this._updateResource('POST', resource, id);
   }
 
@@ -514,7 +514,7 @@ class Store {
    *
    * @returns id of the edited resource
    */
-  async put(resource: object, id: string): Promise<string | null> {
+  put(resource: object, id: string): Promise<string | null> {
     return this._updateResource('PUT', resource, id);
   }
 
@@ -525,7 +525,7 @@ class Store {
    *
    * @returns id of the edited resource
    */
-  async patch(resource: object, id: string): Promise<string | null> {
+  patch(resource: object, id: string): Promise<string | null> {
     return this._updateResource('PATCH', resource, id);
   }
 

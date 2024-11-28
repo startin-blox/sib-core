@@ -319,7 +319,7 @@ const matchFilters = async (
  * @param searchForm - searchForm component
  * @returns resources filtered
  */
-const searchInResources = async (
+const searchInResources = (
   resources: object[],
   filters: SearchQuery,
   fields: string,

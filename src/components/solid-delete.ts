@@ -42,7 +42,7 @@ export const SolidDelete = {
       });
     }
   },
-  async delete(e: Event): Promise<void> {
+  delete(e: Event) {
     e.stopPropagation();
     if (!this.dataSrc) return;
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
