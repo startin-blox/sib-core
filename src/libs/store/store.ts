@@ -253,7 +253,7 @@ class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    const flattenedResources = await jsonld.flatten(resource);
+    const flattenedResources: any = await jsonld.flatten(resource);
     const compactedResources: any[] = await Promise.all(
       flattenedResources.map(r => jsonld.compact(r, {})),
     );

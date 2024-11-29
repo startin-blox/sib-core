@@ -20,22 +20,25 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noParameterAssign": "off",
+        "noParameterAssign": "warn",
         "noYodaExpression": "error",
         "useExplicitLengthCheck": "error"
       },
       "complexity": {
-        "noBannedTypes": "off"
+        "noBannedTypes": "warn",
+        "noExcessiveCognitiveComplexity": "warn",
+        "noUselessUndefinedInitialization": "warn"
       },
       "suspicious": {
-        "noExplicitAny": "off",
-        "noAsyncPromiseExecutor": "off",
+        "noConsoleLog": "warn",
+        "noExplicitAny": "warn",
+        "noAsyncPromiseExecutor": "warn",
         "useAwait": "error"
       },
       "correctness": {
         "noUnusedFunctionParameters": "error",
-        "useImportExtensions": "error",
-        "noUnusedVariables": "error"
+        "noUnusedVariables": "error",
+        "useImportExtensions": "error"
       }
     }
   },
