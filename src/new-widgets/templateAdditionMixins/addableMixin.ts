@@ -1,20 +1,32 @@
-import { spread } from '../../libs/lit-helpers';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
+import { spread } from '../../libs/lit-helpers.ts';
 
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 const AddableMixin = {
   name: 'addable-mixin',
   created() {
-    this.listTemplateAdditions.push(this.addableValue.bind(this));
+    this.listTemplateAdditions.attach(
+      this.addableValue.bind(this),
+      'AddableMixin:addableValue',
+    );
   },
   getAddableAttributes() {
-    const addableAttr = (Array.from(this.element.attributes) as Attr[]).filter((a: Attr) => a.name.startsWith('addable-'));
+    const addableAttr = (Array.from(this.element.attributes) as Attr[]).filter(
+      (a: Attr) => a.name.startsWith('addable-'),
+    );
     const cleanAddableAttr: { [key: string]: string } = {};
-    for (let attr of addableAttr) cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
-    if (!cleanAddableAttr.hasOwnProperty('data-src')) cleanAddableAttr['data-src'] = this.range;
+    for (const attr of addableAttr)
+      cleanAddableAttr[attr.name.replace('addable-', '')] = attr.value;
+    if (!Object.hasOwn(cleanAddableAttr, 'data-src'))
+      cleanAddableAttr['data-src'] = this.range;
     return cleanAddableAttr;
   },
-  addableValue(template, listTemplateAdditions: Function[], attributes: object) {
+  addableValue(
+    template,
+    listTemplateAdditions: PostProcessorRegistry,
+    attributes: object,
+  ) {
     const addables = this.getAddableAttributes(attributes);
     const newTemplate = html`
       ${template}
@@ -24,9 +36,7 @@ const AddableMixin = {
 
     const nextProcessor = listTemplateAdditions.shift();
     if (nextProcessor) nextProcessor(newTemplate, listTemplateAdditions);
-  }
-}
+  },
+};
 
-export {
-  AddableMixin
-}
+export { AddableMixin };

@@ -10,22 +10,6 @@
     "@id": "https://ldp-server.test/users/matthieu/"
   },
   "@type": "hd:circle",
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    },
-    {
-      "mode": {
-        "@type": "change"
-      }
-    },
-    {
-      "mode": {
-        "@type": "delete"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view", "change", "delete"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -6,12 +6,6 @@
   "email": "test-user@example.com",
   "name": "Test User",
   "@type": "foaf:user",
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

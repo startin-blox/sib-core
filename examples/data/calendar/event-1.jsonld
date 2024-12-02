@@ -1,7 +1,0 @@
-{
-	"@id": "event-1.jsonld",
-	"name": "Test",
-	"deadline": "2019-09-09T19:55:44Z",
-	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
-}

@@ -1,0 +1,19 @@
+{
+  "@id": "https://ldp-server.test/users/alex/",
+  "first_name": "Alex",
+  "last_name": "Bourlier",
+  "username": "alex",
+  "email": "alex@startinblox.com",
+  "name": "Alex Bourlier",
+  "profile": {
+    "@id": "https://ldp-server.test/profiles/alex/"
+  },
+  "@type": "foaf:user",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "get_full_name": "rdfs:label"
+    }
+  ],
+  "permissions": ["view", "change"]
+}

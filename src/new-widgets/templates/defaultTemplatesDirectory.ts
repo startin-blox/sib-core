@@ -1,5 +1,6 @@
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LinkTextMixin } from '../templatesDependencies/linkTextMixin.ts';
 
 export const defaultTemplates = {
   action: {
@@ -7,11 +8,13 @@ export const defaultTemplates = {
       <solid-link
         data-src=${ifDefined(attributes.src)}
         next=${ifDefined(value)}
+        id=${ifDefined(attributes.id)}
+        link-text=${ifDefined(attributes.linkText)}
       >
-        ${(attributes.label == null ? (attributes.name || '') : attributes.label)}
+        ${attributes.linkText == null ? attributes.name || '' : attributes.linkText}
       </solid-link>
     `,
-    dependencies: []
+    dependencies: [LinkTextMixin],
   },
   multiple: {
     template: (value: string, attributes: any) => html`
@@ -22,6 +25,6 @@ export const defaultTemplates = {
         empty-widget=${ifDefined(attributes.emptyWidget)}
       ></solid-display>
     `,
-    dependencies: []
+    dependencies: [],
   },
-}
+};

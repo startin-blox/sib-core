@@ -13,21 +13,20 @@
     <div>
       <strong>Use case:</strong> Current user has no permission to view project
     </div>
-
     <div>
       <strong>1. Should not display</strong>
-      <solid-ac-checker permission="acl:Read" data-src="data/project.jsonld">
+      <solid-ac-checker permission="acl:Read" data-src="/examples/data/project.jsonld">
         <solid-display
-          data-src="data/project.jsonld"
+          data-src="/examples/data/project.jsonld"
           fields="name, description"
         ></solid-display>
       </solid-ac-checker>
     </div>
     <div>
         <strong>2. Should display</strong>
-        <solid-ac-checker no-permission="acl:Read" data-src="data/project.jsonld">
+        <solid-ac-checker no-permission="acl:Read" data-src="/examples/data/project.jsonld">
           <solid-display
-            data-src="data/project.jsonld"
+            data-src="/examples/data/project.jsonld"
             fields="name, description"
           ></solid-display>
         </solid-ac-checker>

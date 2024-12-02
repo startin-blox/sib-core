@@ -1,12 +1,12 @@
 {
-	"@id": "batch-1.jsonld",
-	"invoice": {
-		"@id": "customer-invoice-1.jsonld"
-	},
-	"title": "Développement",
-	"creationDate": "2020-10-02",
-	"modificationDate": "2020-10-04",
-	"htAmount": 1500,
-	"permissions": [],
-	"@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@id": "/examples/data/nested-forms/batch-1.jsonld",
+  "invoice": {
+    "@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
+  },
+  "title": "Développement",
+  "creationDate": "2020-10-02",
+  "modificationDate": "2020-10-04",
+  "htAmount": 1500,
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

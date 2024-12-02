@@ -1,0 +1,37 @@
+{
+  "name": "LDP_community_members_1",
+  "user_set": [
+    {
+      "@id": "/examples/data/list/users/balessan.jsonld",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    },
+    {
+      "@id": "/examples/data/list/users/blaisepascal.jsonld",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  ],
+  "community": {
+    "@id": "/examples/data/list/matthieu-empire/",
+    "@type": "sib:Community"
+  },
+  "admin_community": null,
+  "project": null,
+  "admin_project": null,
+  "circle": null,
+  "admin_circle": null,
+  "@id": "/examples/data/list/community-group.jsonld",
+  "@type": "foaf:Group",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "user_set": "foaf:member"
+    }
+  ],
+  "permissions": ["view"]
+}

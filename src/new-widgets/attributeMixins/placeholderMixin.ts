@@ -6,14 +6,13 @@ const PlaceholderMixin = {
       default: '',
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'placeholder');
-      }
+      },
     },
   },
   attached() {
-    this.listAttributes['placeholder'] = this.placeholder || this.label || this.name || '';
-  }
-}
+    this.listAttributes.placeholder =
+      this.placeholder || this.label || this.name || '';
+  },
+};
 
-export {
-  PlaceholderMixin
-}
+export { PlaceholderMixin };

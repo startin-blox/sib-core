@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local file</title>
+    <script
+        type="module"
+        src="https://cdn.skypack.dev/@startinblox/router@latest"
+    ></script>
+    <!-- <script
+        type="module"
+        src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+    ></script> -->
+    <script type="module" src="../dist/index.js"></script>
+  </head>
+
+  <!-- <sib-auth auto-login>
+    <sib-auth-provider
+      data-authority="http://localhost:8000/"
+    ></sib-auth-provider>
+  </sib-auth> -->
+  <body>
+    <!-- 
+        How to display the existing values of the user_set array field in that scenario ?
+        In the mulitpleselectFormMixin, the this.value and this.resource is striclty null
+        We should get it from the parentElement. So this.resource should be something like 
+        parentElement.resource.user_set
+        Go check the behaviour on skills
+    -->
+
+    <solid-form
+        class="form"
+        data-src="/examples/data/groups/group1.jsonld"
+        fields="segment(user_set)"
+        loader-id="loader-communities-add-member"
+        label-user_set="User"
+        class-user_set="segment margin-bottom-medium full text-small text-semibold text-uppercase text-color-heading"
+        widget-user_set="solid-form-multipleselect-autocompletion"
+        range-user_set="/examples/data/list/users-long.jsonld"
+        class-segment="segment full"
+        partial
+        submit-button="Add"
+        submit-widget="button"
+        class-submit-button="submit-button segment sm-full margin-top-xsmall text-xsmall children-link-button children-link-text-bold children-link-text-uppercase children-link-reversed color-secondary bordered children-button-icon children-icon-rocket children-icon-small children-icon-margin-right-xsmall">
+    </solid-form>
+
+  </body>
+</html>

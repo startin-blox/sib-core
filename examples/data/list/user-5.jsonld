@@ -1,0 +1,31 @@
+{
+  "@id": "/examples/data/list/user-5.jsonld",
+  "first_name": "Camille",
+  "last_name": "CharlyTango",
+  "username": "Camcam",
+  "email": "camille.ctango@happy-dev.fr",
+  "name": "Camille Charly T",
+  "available": false,
+  "skills": {
+    "@id": "/examples/data/list/user-5-skills.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/skill-1.jsonld"
+      },
+      {
+        "@id": "/examples/data/list/skill-4.jsonld"
+      },
+      {
+        "@id": "/examples/data/list/skill-8.jsonld"
+      }
+    ],
+    "permissions": ["view"]
+  },
+  "profile": {
+    "@id": "/examples/data/list/profile-5.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

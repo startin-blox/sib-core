@@ -9,12 +9,6 @@
   "user": {
     "@id": "https://ldp-server.test/users/alex/"
   },
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

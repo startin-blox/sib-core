@@ -1,12 +1,18 @@
-import { Sib } from '../libs/Sib';
-import { BaseWidgetMixin } from './baseWidgetMixin';
-import type { Template, WidgetMixinsInterface } from './interfaces';
-import type { MixinStaticInterface } from '../libs/interfaces';
-import { defaultTemplates, displayTemplates, formTemplates, setTemplates, groupTemplates } from './templates/index';
-import { valueTransformationDirectory } from './valueTransformationMixins/index';
-import { templateAdditionDirectory } from './templateAdditionMixins/index';
-import { attributeDirectory } from './attributeMixins/index';
-import { callbackDirectory } from './callbackMixins/index';
+import { Sib } from '../libs/Sib.ts';
+import type { MixinStaticInterface } from '../libs/interfaces.ts';
+import { attributeDirectory } from './attributeMixins/index.ts';
+import { BaseWidgetMixin } from './baseWidgetMixin.ts';
+import { callbackDirectory } from './callbackMixins/index.ts';
+import type { Template, WidgetMixinsInterface } from './interfaces.ts';
+import { templateAdditionDirectory } from './templateAdditionMixins/index.ts';
+import {
+  defaultTemplates,
+  displayTemplates,
+  formTemplates,
+  groupTemplates,
+  setTemplates,
+} from './templates/index.ts';
+import { valueTransformationDirectory } from './valueTransformationMixins/index.ts';
 
 const valueTransformationKeys = Object.keys(valueTransformationDirectory);
 const attributeKeys = Object.keys(attributeDirectory);
@@ -19,13 +25,16 @@ const callbackKeys = Object.keys(callbackDirectory);
  */
 export const newWidgetFactory = (tagName: string) => {
   let widgetMixins: WidgetMixinsInterface;
-  try { widgetMixins = getWidgetMixins(tagName) } // get mixins and template
-  catch (e) {
+  try {
+    widgetMixins = getWidgetMixins(tagName);
+  } catch (e) {
+    // get mixins and template
     console.error(e);
     return;
   }
 
-  const newWidget = { // compose widget
+  const newWidget = {
+    // compose widget
     name: tagName,
     use: [
       ...widgetMixins.mixins,
@@ -93,8 +102,8 @@ function getWidgetMixins(tagName: string): WidgetMixinsInterface {
       ...templateAdditions,
       ...(template.dependencies || []),
       ...callbacks,
-    ]
-  }
+    ],
+  };
 }
 
 // create default widgets

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: auto-range</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+
+    <h4>Simple auto-range-[field] attribute in solid-form-search</h4>
+    <solid-form-search
+      id="simple-auto-range"
+      fields="skills"
+      auto-range-skills
+    ></solid-form-search>
+    <solid-display
+      id="auto-range1"
+      data-src="/examples/data/list/users-group2.jsonld"
+      fields="username, skills, profile.name"
+      multiple-skills
+      filtered-by="simple-auto-range"
+    ></solid-display>
+
+    <h4>Several solid-display filtered by one solid-form-search with 2 auto-range-[field]</h4>
+    <solid-form-search
+      id="double-auto-range"
+      fields="profile, skills"
+      auto-range-profile
+      auto-range-skills
+    ></solid-form-search>
+
+    <solid-display
+      id="auto-range-double"
+      data-src="/examples/data/list/users-group1.jsonld"
+      fields="username, first_name, last_name, email, skills"
+      filtered-by="double-auto-range"
+    ></solid-display>
+
+    <solid-display
+      id="auto-range-double2"
+      data-src="/examples/data/list/users-group2.jsonld"
+      fields="username, first_name, last_name, email, skills"
+      filtered-by="double-auto-range"
+    ></solid-display>
+  </body>
+</html>

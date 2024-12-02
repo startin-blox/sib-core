@@ -6,33 +6,15 @@
       "federation": "users",
       "@id": "https://ldp-server.test/users/",
       "@type": "sib:federatedContainer",
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     },
     {
       "federation": "users",
       "@id": "https://ldp-server2.test/users/",
       "@type": "sib:federatedContainer",
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

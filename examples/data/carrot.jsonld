@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "dfc-b": "http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#"
+  },
+  "@id": "https://lecoqlibre.solidcommunity.net/datafoodconsortium/products/carrot.ttl",
+  "@type": "dfc-b:SuppliedProduct",
+  "dfc-b:description": "Carrot",
+  "dfc-b:hasCertification": {
+    "@id": "dfc-f:Organic-AB"
+  },
+  "dfc-b:hasType": {
+    "@id": "dfc-pt:carrot"
+  },
+  "permissions": ["view", "control", "add", "delete", "change"]
+}

@@ -12,7 +12,7 @@
     <h3>confirm popup</h3>
     <solid-delete
       id="confirm"
-      data-src="data/project.jsonld"
+      data-src="/examples/data/project.jsonld"
       data-label="Supprimer"
       next="detail"
       confirmation-type="confirm"
@@ -21,7 +21,7 @@
 
     <solid-form
       id="confirm"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name, contact.email"
       confirmation-type="confirm"
     ></solid-form>
@@ -29,14 +29,14 @@
     <h3>simple dialog popup</h3>
     <solid-form
       id="simple-dialog"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name"
       confirmation-type="dialog"
     ></solid-form>
 
     <solid-delete
       id="delete-data"
-      data-src="data/project.jsonld"
+      data-src="/examples/data/project.jsonld"
       data-label="Supprimer"
       confirmation-message="Confirm the delete action."
       confirmation-type="dialog"
@@ -45,7 +45,7 @@
     <h3>custom dialog popup</h3>
     <solid-form
       id="custom-dialog"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       confirmation-type="dialog"
       confirmation-message="Custom message : Are you sure ?"
@@ -58,7 +58,7 @@
     <h3>missing confirmation-type attribute</h3>
     <solid-delete
       id="missing-type"
-      data-src="../data/project.jsonld"
+      data-src="/examples/data/project.jsonld"
       data-label="Supprimer"
       confirmation-message="Confirm the delete action."
     ></solid-delete>
@@ -77,14 +77,14 @@
 
     <solid-form
       id="confirmation-widget"
-      data-src="../data/project.jsonld"
+      data-src="/examples/data/project.jsonld"
       confirmation-type="dialog"
       confirmation-widget="my-widget-confirm"
     ></solid-form>
 
     <solid-delete
       id="confirmation-widget"
-      data-src="../data/project.jsonld"
+      data-src="/examples/data/project.jsonld"
       confirmation-type="dialog"
       confirmation-widget="my-widget-confirm2"
     ></solid-delete>

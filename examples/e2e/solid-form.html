@@ -11,24 +11,37 @@
   <body>
     <h2>Solid Form</h2>
 
+    <h3>form with empty set</h3>
+    <solid-form 
+      id="form-0"
+      fields="aset(with, field, someotherset0()), someotherset()"
+    ></solid-form>
+    
     <h3>creation form</h3>
     <solid-form
       id="form-1"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name, contact.email"
     ></solid-form>
 
     <h3>edition form</h3>
     <solid-form
       id="form-edition-1"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name, contact.email"
     ></solid-form>
     <solid-form
       id="form-edition-2"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name, contact"
-      range-contact="../data/list/users.jsonld"
+      range-contact="/examples/data/list/users.jsonld"
+    ></solid-form>
+    <solid-form
+      id="form-edition-3"
+      data-src="/examples/data/list/user-1.jsonld"
+      fields="skills"
+      multiple-skills="solid-form-multipleselect"
+      range-skills="/examples/data/list/skills.jsonld"
     ></solid-form>
 
     <h3>widget creation, solid-form attributes </h3>
@@ -36,7 +49,7 @@
       id="form-3"
       fields="name, skills"
 
-      range-skills="../data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
       order-desc-skills="name"
 
       label-name="Test label"
@@ -45,30 +58,6 @@
       class-name="test-class"
       required-name
     ></solid-form>
-
-    <h3>solid-form-richtext</h3>
-    <solid-form
-      id="form-4"
-      data-src="../data/list/events.jsonld"
-      fields="name"
-      value-name="**Jean-Bernard**"
-      widget-name="solid-form-richtext"
-    ></solid-form>
-
-    <solid-form
-    id="form-4bis"
-    data-src="../data/list/events.jsonld"
-    fields="name"
-    value-name=""
-    widget-name="solid-form-richtext"
-  ></solid-form>
-
-  <solid-form
-    id="form-4ter"
-    data-src="../data/list/profile-5.jsonld"
-    fields="website"
-    widget-website="solid-form-richtext"
-  ></solid-form>
 
     <h3>pattern and title attributes</h3>
     <solid-form
@@ -81,28 +70,34 @@
     <h3>submit-button attribute</h3>
     <solid-form
       id="form-6"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       submit-button="Register"
     ></solid-form>
+    <solid-form-search
+      id="form-search-6"
+      data-src="/examples/data/list/events.jsonld"
+      fields="name"
+      submit-button="Register"
+    ></solid-form-search>
 
     <h3>Reset form on errors</h3>
     <solid-form
       id="form-7"
-      data-src="../data/list/events.jsonld"
-      fields="name"
+      data-src="/examples/data/list/events.jsonld"
+      fields="name, batches.title, batches.tasks"
     ></solid-form>
     <h3>Partial attribute</h3>
     <h4>without</h4>
     <solid-form
       id="form-8"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name, date"
     ></solid-form>
     <h4>with</h4>
     <solid-form
       id="form-9"
-      data-src="../data/list/event-1.jsonld"
+      data-src="/examples/data/list/event-1.jsonld"
       fields="name, date"
       partial
     ></solid-form>
@@ -110,7 +105,7 @@
     <h3>Naked attribute</h3>
     <solid-form
       id="form-10"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       naked
     ></solid-form>
 
@@ -120,26 +115,30 @@
     </div>
     <solid-form
       id="form-11"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="name"
       loader-id="form-loader"
     ></solid-form>
+
+    <h3>addable</h3>
     <solid-form
       id="form-addable"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="skills"
-      range-skills="../data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
 
       widget-skills="solid-form-dropdown-addable"
-      addable-skills-data-src="../data/list/users.jsonld"
+      addable-skills-data-src="/examples/data/list/users.jsonld"
       addable-skills-fields="name"
       addable-skills-widget-name="solid-form-text-placeholder-label"
-      addable-skills-placeholder-name="Enter your name"
+      addable-skills-placeholder-name="Enter skill name"
       addable-skills-submit-button="Send name"
     ></solid-form>
+
+    <h3>autocomplete</h3>
     <solid-form
       id="form-12"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="username, first_name, last_name"
       autocomplete-username="off"
     ></solid-form>
@@ -147,10 +146,10 @@
     <h3>autosave</h3>
     <solid-form
       id="form-autosave"
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username, skills"
       multiple-skills
-      range-skills="../data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
       autosave
       partial
     ></solid-form>
@@ -158,7 +157,7 @@
     <h3>submit-widget</h3>
     <solid-form
       id="form-submit-widget"
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username"
       submit-button="OK"
       submit-widget="button"
@@ -167,7 +166,7 @@
     <h3>solid-form-time widget</h3>
     <solid-form
       id="time-widget"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name, time"
       widget-time="solid-form-time-label"
       min-time="12:00"
@@ -178,7 +177,7 @@
     <h3>minlength-attribute</h3>
     <solid-form
       id="minlength"
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="name"
       minlength-name="8"
     ></solid-form>
@@ -186,13 +185,13 @@
     <h3>class-submit-button</h3>
     <solid-form
       id="class-submit-button"
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username"
       class-submit-button="submitB-class"
     ></solid-form>
     <solid-form
       id="class-submit-button2"
-      data-src="../data/list/user-1.jsonld"
+      data-src="/examples/data/list/user-1.jsonld"
       fields="username"
       submit-widget="button"
       submit-button="OK"

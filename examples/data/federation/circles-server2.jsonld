@@ -1,9 +1,9 @@
 {
-  "@id": "circles-server2.jsonld",
+  "@id": "/examples/data/federation/circles-server2.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "circles-3.jsonld",
+      "@id": "/examples/data/federation/circles-3.jsonld",
       "is_backlink": false,
       "allow_create_backlink": true,
       "name": "Circle from server 2",
@@ -13,16 +13,10 @@
       "jabberID": "3oa5aaaazee6@conference.test1.startinblox.com",
       "jabberRoom": true,
       "@type": "hd:circle",
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     },
     {
-      "@id": "circles-4.jsonld",
+      "@id": "/examples/data/federation/circles-4.jsonld",
       "is_backlink": false,
       "allow_create_backlink": true,
       "name": "Another circle from server 2",
@@ -32,26 +26,9 @@
       "jabberID": "3oa55lvwyqq6@conference.test1.startinblox.com",
       "jabberRoom": true,
       "@type": "hd:circle",
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "add"
-      }
-    },
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["add", "view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

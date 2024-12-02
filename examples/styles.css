@@ -44,6 +44,15 @@ solid-route[active] {
   background-color: #ccc;
 }
 
-[active]{
+[active] {
   outline: 2px dotted;
+}
+
+.required-error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.error-border-richtext {
+  border: 2px solid red !important;
 }

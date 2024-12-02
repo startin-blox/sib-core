@@ -1,17 +1,11 @@
 {
-  "@id": "user-2-skills.jsonld",
+  "@id": "/examples/data/list/user-2-skills.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
-      "@id": "skill-1.jsonld"
+      "@id": "/examples/data/list/skill-1.jsonld"
     }
   ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

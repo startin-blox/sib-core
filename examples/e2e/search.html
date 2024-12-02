@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="../styles.css">
   </head>
   <body>
-
+    <h3>solid-form-search</h3>
     <solid-form-search
       id="filter1"
       fields="username"
-      enum-username=" admin , paris , pierre, option4, not-member-paris"
+      enum-username="admin, paris, pierre, option4, not-member-paris"
     ></solid-form-search>
     <solid-display
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="username"
       filtered-by="filter1"
     ></solid-display>
@@ -24,27 +24,29 @@
     <solid-form-search
       id="filter2"
       fields="last_name"
-      enum-last_name=" User = a , Hilton = b , DLC = c, Paris Member = d"
+      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields='last_name'
       filtered-by="filter2"
     ></solid-display>
 
+    <h3>solid-form-search + submit-button</h3>
     <solid-form-search
       id="filter3"
       submit-button="update result"
       fields="last_name"
-      enum-last_name=" User = a , Hilton = b , DLC = c, Paris Member = d"
+      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
       id="display3"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields='last_name'
       filtered-by="filter3"
     ></solid-display>
 
+    <h3>solid-form-search + start-value & end-value</h3>
     <solid-form-search
       id="filter4"
       fields="date"
@@ -54,7 +56,7 @@
     ></solid-form-search>
     <solid-display
       id="display4"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       filtered-by="filter4"
     ></solid-display>
@@ -68,11 +70,12 @@
     ></solid-form-search>
     <solid-display
       id="display5"
-      data-src="../data/list/skills.jsonld"
+      data-src="/examples/data/list/skills.jsonld"
       fields="name"
       filtered-by="filter5"
     ></solid-display>
 
+    <h3>solid-form-search + search-[field]</h3>
     <solid-form-search
       id="filter-search-field"
       fields="global_name"
@@ -80,17 +83,18 @@
     ></solid-form-search>
     <solid-display
       id="display-search-field-1"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="username"
       filtered-by="filter-search-field"
     ></solid-display>
     <solid-display
       id="display-search-field-2"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       filtered-by="filter-search-field"
     ></solid-display>
 
+    <h3>solid-form-search + submit-widget</h3>
     <solid-form-search
       id="filter-submit-widget"
       fields="username"
@@ -105,6 +109,7 @@
       class-submit-button="button-class"
     ></solid-form-search>
 
+    <h3>solid-form-search + solid-form-hidden</h3>
     <solid-form-search
       id="filter-hidden"
       fields="name"
@@ -114,7 +119,7 @@
 
     <solid-display
       id="display-filter-hidden"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="name, available"
       filtered-by="filter-hidden"
     ></solid-display>
@@ -128,7 +133,7 @@
 
     <solid-display
       id="display-filter-hidden-bool"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="name, available"
       filtered-by="filter-hidden-bool"
     ></solid-display>
@@ -142,60 +147,138 @@
 
     <solid-display
       id="display-filter-hidden-num"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="name, available, years_experience"
       filtered-by="filter-hidden-num"
     ></solid-display>
 
+    <h3>solid-form-search + fakeField</h3>
     <solid-form-search
       id="filter-fake-field"
       fields="fakeField"
     ></solid-form-search>
     <solid-display
       id="display-fake-field"
-      data-src="../data/list/events.jsonld"
+      data-src="/examples/data/list/events.jsonld"
       fields="name"
       filtered-by="filter-fake-field"
     ></solid-display>
 
+    <h3>solid-form-search + container</h3>
     <solid-form-search
       id="skill-search"
       fields="skills"
-      range-skills="../data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills.jsonld"
       widget-skills="solid-form-placeholder-dropdown"
     ></solid-form-search>
     <solid-display
       id="filter-container"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="username"
       filtered-by="skill-search"
     ></solid-display>
 
+    <h3>solid-form-search + subject=null</h3>
     <solid-form-search
       id="filter-null-subject"
       fields="profile.available"
     ></solid-form-search>
     <solid-display
       id="display-null-subject"
-      data-src="../data/list/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields="name, profile.available"
       filtered-by="filter-null-subject"
   ></solid-display>
 
-  <solid-widget name="my-empty-widget">
-    <template>No name found</template>
-  </solid-widget>
   <solid-form-search
-      id="filter-with-empty-widget"
-      fields="name"
+    id="profile-search"
+    fields="profile"
+    value-profile="/examples/data/list/profile-1.jsonld"
   ></solid-form-search>
   <solid-display
-    id="span-empty-widget"
-    data-src="../data/list/users.jsonld"
-    fields="name"
-    filtered-by="filter-with-empty-widget"
-    empty-widget="my-empty-widget"
+    id="display-profile-search"
+    data-src="/examples/data/list/users.jsonld"
+    fields="username"
+    filtered-by="profile-search"
   ></solid-display>
 
+  <solid-form-search
+    id="number-search"
+    fields="username"
+  ></solid-form-search>
+  <solid-display
+    id="display-number-search"
+    data-src="/examples/data/list/users.jsonld"
+    fields="username"
+    filtered-by="number-search"
+  ></solid-display>
+
+    <h3>solid-form-search + empty-widget</h3>
+    <solid-widget name="my-empty-widget">
+      <template>No name found</template>
+    </solid-widget>
+    <solid-form-search
+        id="filter-with-empty-widget"
+        fields="name"
+    ></solid-form-search>
+    <solid-display
+      id="span-empty-widget"
+      data-src="/examples/data/list/users.jsonld"
+      fields="name"
+      filtered-by="filter-with-empty-widget"
+      empty-widget="my-empty-widget"
+    ></solid-display>
+
+    <h3>solid-form-search + checkboxes</h3>
+    <solid-form-search
+      id="enum-checkboxes"
+      fields="name"
+      enum-name="HTML, CSS"
+      widget-name="solid-form-checkboxes"
+    ></solid-form-search>
+    <solid-display
+      id="enum-checkboxes-display"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="enum-checkboxes"
+    ></solid-display>
+
+    <h3>solid-form-search + debounce 2s</h3>
+    <solid-form-search
+      id="filter-debounce"
+      fields="name"
+      debounce="2000"
+    ></solid-form-search>
+    <solid-display
+      id="debounce"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="filter-debounce"
+    ></solid-display>
+
+    <h3>solid-form-search + enter should not trigger submit</h3>
+    <solid-form-search
+      id="enter-submit"
+      fields="name"
+      debounce="2000"
+    ></solid-form-search>
+    <solid-display
+      id="enter"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="enter-submit"
+    ></solid-display>
+
+    <solid-form-search
+      id="enter-submit-debounce"
+      fields="name"
+      debounce="2000"
+    ></solid-form-search>
+    <solid-display
+      id="enter-debounce"
+      data-src="/examples/data/list/skills.jsonld"
+      fields="name"
+      filtered-by="enter-submit-debounce"
+    ></solid-display>
   </body>
 </html>

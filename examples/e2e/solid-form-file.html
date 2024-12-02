@@ -9,19 +9,59 @@
   </head>
 
   <body>
+    <h2>form-file</h2>
     <solid-form
       id="form-file"
-      data-src="../data/image.jsonld"
+      data-src="/examples/data/image.jsonld"
       fields="name, description, picture"
       upload-url-picture="/upload"
     ></solid-form>
 
+    <h2>form-image</h2>
     <solid-form
       id="form-image"
-      data-src="../data/image.jsonld"
+      data-src="/examples/data/image.jsonld"
       fields="name, description, picture"
       upload-url-picture="/upload"
       widget-picture="solid-form-image"
+    ></solid-form>
+
+    <h2>reset-file</h2>
+    <solid-form
+      id="reset-file"
+      data-src="/examples/data/image.jsonld"
+      fields="name, description, picture"
+      upload-url-picture="/upload"
+      reset
+    ></solid-form>
+
+    <h2>reset-image</h2>
+    <solid-form
+      id="reset-image"
+      data-src="/examples/data/image.jsonld"
+      fields="name, description, picture"
+      upload-url-picture="/upload"
+      widget-picture="solid-form-image"
+      reset
+    ></solid-form>
+
+  <h2>required-file</h2>
+  <solid-form
+      id="form-required-file"
+      data-src="/examples/data/image.jsonld"
+      fields="picture"
+      upload-url-picture="/upload"
+      required-picture
+    ></solid-form>
+
+    <h2>required-image</h2>
+    <solid-form
+      id="form-required-image"
+      data-src="/examples/data/image.jsonld"
+      fields="picture"
+      upload-url-picture="/upload"
+      widget-picture="solid-form-image"
+      required-picture
     ></solid-form>
   </body>
 </html>

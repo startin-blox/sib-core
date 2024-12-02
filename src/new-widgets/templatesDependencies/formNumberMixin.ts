@@ -3,11 +3,9 @@ const FormNumberMixin = {
   getValueFromElement(element: any) {
     return element.value ? Number(element.value) : '';
   },
-  get type () {
-    return 'number'
+  get type() {
+    return 'number';
   },
-}
+};
 
-export {
-  FormNumberMixin
-}
+export { FormNumberMixin };

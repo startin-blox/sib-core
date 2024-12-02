@@ -1,18 +1,23 @@
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const MultilineMixin = {
   name: 'multiline-mixin',
   created() {
-    this.listValueTransformations.push(this.transformValue.bind(this));
+    this.listValueTransformations.attach(
+      this.transformValue.bind(this),
+      'MultilineMixin:transformValue',
+    );
   },
-  transformValue(value: string, listValueTransformations: Function[]) {
-    const newValue = value ? unsafeHTML(value.replace(/\n/g, "<br/>")) : value;
+  transformValue(
+    value: string,
+    listValueTransformations: PostProcessorRegistry,
+  ) {
+    const newValue = value ? unsafeHTML(value.replace(/\n/g, '<br/>')) : value;
 
     const nextProcessor = listValueTransformations.shift();
-    if(nextProcessor) nextProcessor(newValue, listValueTransformations);
-  }
-}
+    if (nextProcessor) nextProcessor(newValue, listValueTransformations);
+  },
+};
 
-export {
-  MultilineMixin
-}
+export { MultilineMixin };

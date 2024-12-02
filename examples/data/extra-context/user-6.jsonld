@@ -1,24 +1,18 @@
 {
-  "@id": "user-6.jsonld",
+  "@id": "/examples/data/extra-context/user-6.jsonld",
   "first_name": "Test",
   "last_name": "User",
   "username": "admin",
   "email": "test-user@example.com",
   "name": "Test User",
   "profile": {
-    "@id": "profile-6.jsonld",
+    "@id": "/examples/data/extra-context/profile-6.jsonld",
     "@context": {
       "picture": "foaf:depiction"
     },
     "picture": "my-avatar.png"
   },
   "@type": "foaf:user",
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

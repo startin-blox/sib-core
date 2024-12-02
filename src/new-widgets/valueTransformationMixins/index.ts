@@ -1,16 +1,18 @@
-import { DateMixin } from './dateMixin';
-import { DateTimeMixin } from './dateTimeMixin';
-import { MultilineMixin } from './multilineMixin';
+import { AutolinkMixin } from './autolinkMixin.ts';
+import { DateMixin } from './dateMixin.ts';
+import { DateTimeMixin } from './dateTimeMixin.ts';
 import { MarkdownMixin } from './markdownMixin.js';
-import { OembedMixin } from './oembedMixin';
+import { MultilineMixin } from './multilineMixin.ts';
+import { OembedMixin } from './oembedMixin.ts';
 
 const valueTransformationDirectory = {
   date: DateMixin,
   datetime: DateTimeMixin,
   multiline: MultilineMixin,
   markdown: MarkdownMixin,
-  oembed:OembedMixin,
-}
+  oembed: OembedMixin,
+  autolink: AutolinkMixin,
+};
 
 export {
   valueTransformationDirectory,
@@ -19,4 +21,5 @@ export {
   MultilineMixin,
   MarkdownMixin,
   OembedMixin,
-}
+  AutolinkMixin,
+};

@@ -1,7 +1,8 @@
 {
   "@id": "",
   "name": "fruit basket",
-  "description": "basket containing apples, oranges, kiwis, bananas, pineapples…",
+  "description": "basket containing apples, oranges, kiwis, bananas, pineapples\u2026",
   "picture": "../../upload/fruits.jpg",
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
+  "permissions": ["view", "control", "add", "delete", "change"]
 }

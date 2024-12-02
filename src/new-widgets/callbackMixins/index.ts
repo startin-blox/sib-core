@@ -1,16 +1,9 @@
-import { AutolinkMixin } from './autolinkMixin';
-import { AutocompletionMixin } from './autocompletionMixin';
-import { RichtextMixin } from './richtextMixin';
+import { AutocompletionMixin } from './autocompletionMixin.ts';
+import { RichtextMixin } from './richtextMixin.ts';
 
 const callbackDirectory = {
-  autolink: AutolinkMixin,
   autocompletion: AutocompletionMixin,
-  richtext: RichtextMixin
-}
+  richtext: RichtextMixin,
+};
 
-export {
-  callbackDirectory,
-  AutolinkMixin,
-  AutocompletionMixin,
-  RichtextMixin
-}
+export { callbackDirectory, AutocompletionMixin, RichtextMixin };

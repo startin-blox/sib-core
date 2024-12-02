@@ -1,6 +1,7 @@
 import JSONLDContextParser from 'jsonld-context-parser';
-import { Sib } from '../libs/Sib';
-import { StoreMixin } from '../mixins/storeMixin';
+import { Sib } from '../libs/Sib.ts';
+import { trackRenderAsync } from '../logger.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
 
 export const SolidAcChecker = {
   name: 'solid-ac-checker',
@@ -13,42 +14,40 @@ export const SolidAcChecker = {
     noPermission: {
       type: String,
       default: '',
-    }
+    },
   },
-
-  async populate(): Promise<void> {
+  populate: trackRenderAsync(async function (): Promise<void> {
     if (!this.resource) return;
     let displayElement: boolean;
     const ContextParser = JSONLDContextParser.ContextParser;
-    const myParser = new ContextParser();
-    const context = await myParser.parse(this.context);
-
-    if (this.permission) { // User has permission of ...
-      displayElement = this.resource.permissions.some((p:any) => {
-        return ContextParser.compactIri(p, context) === this.permission;
+    const permissions = await this.resource.permissions;
+    if (this.permission) {
+      // User has permission of ...
+      displayElement = permissions.some((p: any) => {
+        return (
+          ContextParser.expandTerm(p, this.context, true) === this.permission
+        );
       });
-      /* displayElement = await asyncSome(
-        (permission: object) => ContextParser.compactIri(permission.toString(), context) === this.permission,
-        this.resource.permissions.mode['@type']
-      )*/
-    } else if (this.noPermission) { // User has no permission of ...
-      displayElement = this.resource.permissions.every((p:any) => {
-        return ContextParser.compactIri(p, context) !== this.noPermission;
+    } else if (this.noPermission) {
+      // User has no permission of ...
+      displayElement = permissions.every((p: any) => {
+        return (
+          ContextParser.expandTerm(p, this.context, true) !== this.noPermission
+        );
       });
-      /*displayElement = await asyncEvery(
-        (permission: object) => ContextParser.compactIri(permission.toString(), context) !== this.noPermission,
-        this.resource.permissions.mode['@type']
-      )*/
-    } else { // No parameter provided
-      console.warn('solid-ac-checker: you should define at least one of "permission" or "no-permission" attribute.');
+    } else {
+      // No parameter provided
+      console.warn(
+        'solid-ac-checker: you should define at least one of "permission" or "no-permission" attribute.',
+      );
       return;
     }
 
     if (displayElement) this.element.removeAttribute('hidden');
-  },
+  }, 'SolidAcChecker:populate'),
   empty(): void {
     this.element.setAttribute('hidden', '');
-  }
+  },
 };
 
 Sib.register(SolidAcChecker);

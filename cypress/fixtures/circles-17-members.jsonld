@@ -1,19 +1,7 @@
 {
   "@id": "https://ldp-server.test/circles/17/members/",
   "@type": "ldp:Container",
-  "ldp:contains": [
-  ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "add"
-      }
-    },
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "ldp:contains": [],
+  "permissions": ["add", "view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

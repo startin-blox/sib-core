@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local-data</title>
+    <script type="module" src="../dist/index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <style></style>
+
+    <script type="module">
+      function sleep(time = 0) {
+        return new Promise(ok => setTimeout(ok, time));
+      }
+      (async () => {
+        const urlFoo = `store://local.foo`;
+        const urlBar = `store://local.bar`;
+        const data1 = await fetch('data/list/skills.jsonld').then(r =>r.json());
+        delete data1['@context'];
+        data1['@id'] = urlFoo;
+        // data['ldp:contains'] = data['ldp:contains'].map(a=>({'$id': a['$id']}));
+        const data2 = {
+          '@type': 'ldp:Container',
+          'ldp:contains': [
+            { name: 'opt 1', '@id': '1' },
+            { name: 'opt 2', '@id': '2' },
+          ],
+        };
+
+        const data3 = {
+          '@type': 'ldp:Container',
+          'ldp:contains': [
+            { name: 'opt 3', '@id': '3' },
+            { name: 'opt 4', '@id': '4' },
+            { name: 'opt 5', '@id': '5' },
+          ],
+        };
+        await sibStore.setLocalData(data3, urlBar);
+        await sleep(2500);
+        await sibStore.setLocalData(data1, urlFoo);
+        await sleep(2500);
+        await sibStore.setLocalData(data2, urlFoo);
+        await sleep(2500);
+        document.getElementById('d0').setAttribute('data-src', urlBar);
+      })();
+    </script>
+  </head>
+  <body>
+    <h2><pre>&lt;solid-display data-src="store://local.foo"></pre></h2>
+    <solid-display
+      id="d0"
+      fields="name"
+      data-src="store://local.foo"
+    ></solid-display>
+
+    <h2><pre>&lt;solid-form-radio range="store://local.foo"></pre></h2>
+    <solid-form-radio range="store://local.bar"></solid-form-radio>
+
+    <h2><pre>&lt;solid-form-search range-skills="store://local.foo"></pre></h2>
+    <solid-form-search
+      id="filter-dropdown"
+      fields="skills"
+      range-skills="store://local.foo"
+      widget-skills="solid-form-radio"
+    ></solid-form-search>
+  </body>
+</html>

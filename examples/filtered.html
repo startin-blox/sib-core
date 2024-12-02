@@ -29,16 +29,17 @@
       function change(input) {
         if (!(input instanceof HTMLInputElement)) return;
         const value = input.value;
-        const elm = input.closest('form').nextElementSibling;
+        const elm = input.closest("form").nextElementSibling;
         elm.component.filteredBy = value;
       }
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('main').addEventListener('change', ({ target }) =>
-          change(target),
-        );
-        [...document.querySelectorAll('input[type=radio]')]
-          .filter((elm) => elm.checked)
-          .forEach(change);
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelector("main")
+          .addEventListener("change", ({ target }) => change(target));
+        for (const input of document.querySelectorAll("input[type=radio]")) {
+          if (!input.checked) continue;
+          change(input);
+        }
       });
     </script>
   </head>
@@ -61,7 +62,7 @@
       <div>
         <h3>solid-display 1</h3>
         <form>
-          filteredBy: 
+          filteredBy:
           <label
             ><input type="radio" name="filterBy" value="filter1" checked />
             filter1</label
@@ -72,7 +73,7 @@
           >
         </form>
         <solid-display
-          data-src="data/list/users-long.jsonld"
+          data-src="/examples/data/list/users-long.jsonld"
           fields="username, last_name, email"
           filtered-by="filter1"
         ></solid-display>
@@ -80,7 +81,7 @@
       <div>
         <h3>solid-display 2</h3>
         <form>
-          filteredBy: 
+          filteredBy:
           <label
             ><input type="radio" name="filterBy" value="filter1" checked />
             filter1</label
@@ -91,7 +92,7 @@
           >
         </form>
         <solid-display
-          data-src="data/list/users-long.jsonld"
+          data-src="/examples/data/list/users-long.jsonld"
           fields="username, first_name, last_name"
           filtered-by="filter1"
         ></solid-display>

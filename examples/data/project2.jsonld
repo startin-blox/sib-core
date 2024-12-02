@@ -1,0 +1,14 @@
+{
+  "@id": "project2.jsonld",
+  "name": "**Second project**",
+  "description": "###### this is content\n**gras, _gras italique,_** _italique_\n\n> citation\nliste \u00e0 puces:\n\n- a\n- b\n\nliste num\u00e9rot\u00e9e:\n\n1. 1\n2. 2\n\n[Lien](http://corndog.io/)\n",
+  "number": 1,
+  "creationDate": "2019-03-25",
+  "businessProvider": null,
+  "businessProviderFee": 0,
+  "jabberID": "fusee@conference.happy-dev.fr",
+  "jabberRoom": true,
+  "@type": "doap:project",
+  "permissions": ["view", "control", "add", "delete", "change"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

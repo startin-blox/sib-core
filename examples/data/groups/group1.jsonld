@@ -1,0 +1,13 @@
+{
+  "@id": "/examples/data/groups/group1.jsonld",
+  "user_set": [
+    {
+      "@id": "/examples/data/list/--user-1.jsonld"
+    },
+    {
+      "@id": "/examples/data/list/--user-2.jsonld"
+    }
+  ],
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

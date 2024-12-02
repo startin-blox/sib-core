@@ -5,23 +5,22 @@ export default class SolidTemplateElement extends HTMLElement {
   strings = {};
   translationsPath = null;
   translationsFetched = false;
-  props : {[key:string]:any} = {}
+  props: { [key: string]: any } = {};
   constructor() {
     super();
     this.initProps();
   }
   static get observedAttributes() {
-    return Object.values(this.propsDefinition);
+    return Object.values(SolidTemplateElement.propsDefinition);
   }
 
-  static get propsDefinition():{[key:string]:any} {
-    return {
-    };
+  static get propsDefinition(): { [key: string]: any } {
+    return {};
   }
 
   initProps() {
-    this.props = {}
-    for(let key in this.constructor.propsDefinition) {
+    this.props = {};
+    for (const key in this.constructor.propsDefinition) {
       this.props[key] = undefined;
     }
   }
@@ -30,20 +29,29 @@ export default class SolidTemplateElement extends HTMLElement {
     const declaredAttributes: string[] = [];
 
     // Get props values
-    for(let key in this.constructor.propsDefinition) {
+    for (const key in this.constructor.propsDefinition) {
       const def = this.constructor.propsDefinition[key];
-      if (typeof def === "string") {
-        this.props[key] = this.hasAttribute(def) ? this.getAttribute(def) : undefined;
+      if (typeof def === 'string') {
+        this.props[key] = this.hasAttribute(def)
+          ? this.getAttribute(def)
+          : undefined;
         declaredAttributes.push(def);
-      } else if (typeof def === "object" && def.attribute && typeof def.attribute === "string") {
-        this.props[key] = this.hasAttribute(def.attribute) ? this.getAttribute(def.attribute) : def.default || undefined;
+      } else if (
+        typeof def === 'object' &&
+        def.attribute &&
+        typeof def.attribute === 'string'
+      ) {
+        this.props[key] = this.hasAttribute(def.attribute)
+          ? this.getAttribute(def.attribute)
+          : def.default || undefined;
         declaredAttributes.push(def.attribute);
       }
     }
 
     // Add attributes to props
-    for (let attr of this.attributes) {
-      if (!declaredAttributes.includes(attr.name)) { // if attribute not in propsDefinition
+    for (const attr of this.attributes) {
+      if (!declaredAttributes.includes(attr.name)) {
+        // if attribute not in propsDefinition
         this.props[this._camelize(attr.name)] = attr.value || undefined; // add it to props
       }
     }
@@ -62,19 +70,21 @@ export default class SolidTemplateElement extends HTMLElement {
    */
   async fetchLocaleStrings() {
     if (this.translationsFetched) return;
-    const filesToFetch:any[] = [];
-    if (this.translationsPath) // fetch component translations
+    const filesToFetch: any[] = [];
+    if (this.translationsPath)
+      // fetch component translations
       filesToFetch.push(this.fetchTranslationFile(this.translationsPath));
 
     const extraTranslationsPath = this.getAttribute('extra-translations-path');
-    if (extraTranslationsPath) // fetch developer translations
+    if (extraTranslationsPath)
+      // fetch developer translations
       filesToFetch.push(this.fetchTranslationFile(extraTranslationsPath));
 
     // merge all translations
     return Promise.all(filesToFetch).then(res => {
       this.translationsFetched = true;
       this.strings = Object.assign({}, ...res);
-    })
+    });
   }
 
   /**
@@ -84,19 +94,31 @@ export default class SolidTemplateElement extends HTMLElement {
     const ln = this.getLocale();
     const fullPath = `${path}/${ln}.json`;
     return fetch(fullPath)
-      .then((result) => {
+      .then(result => {
         if (result.ok) {
-          return result.json() // parse content
-            .catch(e => console.error(`Error while parsing the translation file: ${fullPath}`));
+          return result
+            .json() // parse content
+            .catch(() =>
+              console.error(
+                `Error while parsing the translation file: ${fullPath}`,
+              ),
+            );
         }
-      }).catch(e => console.error(`Error while retrieving the translation file: ${fullPath}`));
+      })
+      .catch(() =>
+        console.error(
+          `Error while retrieving the translation file: ${fullPath}`,
+        ),
+      );
   }
 
   /**
    * Returns current locale of app
    */
   getLocale() {
-    return localStorage.getItem('language') || window.navigator.language.slice(0, 2);
+    return (
+      localStorage.getItem('language') || window.navigator.language.slice(0, 2)
+    );
   }
 
   /**
@@ -107,8 +129,7 @@ export default class SolidTemplateElement extends HTMLElement {
     return this.strings[key] || key;
   }
 
-  attributeChangedCallback()
-  {
+  attributeChangedCallback() {
     this.updateProps();
     this.planRender();
   }
@@ -131,10 +152,11 @@ export default class SolidTemplateElement extends HTMLElement {
     }
   }
 
-  renderCallback() { }
+  renderCallback() {}
 
   render() {
-    this.fetchLocaleStrings().finally(() => { // render even if some errors occured
+    this.fetchLocaleStrings().finally(() => {
+      // render even if some errors occurred
       this.innerHTML = this.template(this.props);
       this.renderCallback();
     });
@@ -145,6 +167,6 @@ export default class SolidTemplateElement extends HTMLElement {
   }
 
   _camelize(str) {
-    return str.replace(/\W+(.)/g, (match, chr) => chr.toUpperCase());
+    return str.replace(/\W+(.)/g, (_match, chr) => chr.toUpperCase());
   }
 }

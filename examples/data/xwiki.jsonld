@@ -1,0 +1,120 @@
+{
+  "@context": "https://schema.org/docs/jsonldcontext.jsonld",
+  "@type": "schema:CreativeWork",
+  "@id": "xwiki.jsonld",
+  "CreativeWork:name": "WebHome",
+  "headline": "Sandbox 2",
+  "schema:name": "Totoro",
+  "dateCreated": "2023-07-31T11:36:51+0000",
+  "creator": "XWiki.superadmin",
+  "version": "5.1",
+  "encodingFormat": "xwiki/2.1",
+  "text": "**The sandbox is a part of your wiki that you can freely modify. It's meant to let you practice editing. You will discover how page editing works and create new pages. Simply click on Edit to get started!**\n\n{{info}}\nDon't worry about overwriting or losing stuff when editing the page, you can always roll back to the first version of the page from the \"History\" tab at the bottom of the page.\n{{/info}}\n\nIf you want to give a look to the underlying [[XWiki Syntax>>XWiki.XWikiSyntax]], you can click on \"Wiki code\" in the \"Show\" menu or click on the \"Source\" tab when editing the page.\n\nHere are a number of test pages you can play with:\n\n* [[Sandbox Test Page 1>>Sandbox.TestPage1]]\n* [[Sandbox Test Page 2>>Sandbox.TestPage2]]\n* [[Sandbox Test Page 3>>Sandbox.TestPage3]]\n* Toto\n\nBelow is a demonstration of the [[XWiki Syntax>>XWiki.XWikiSyntax]] you can use in wiki pages (headings, images, tables).\n\n= Headings 2 =\n\nXWiki offers 6 levels of headings. You can use them to structure your pages.\n\n== Level 2 Heading ==\n\n=== Level 3 Heading ===\n\n==== Level 4 Heading 4 ====\n\n===== Level 5 Heading 5 =====\n\n====== Level 6 Heading 6 ======\n\n= Styles =\n\nBasic styles are supported in XWiki:\n\n* **Text in Bold**\n* //Text in Italics//\n* __Text in Underline__\n* --Text in Strikethrough--\n* Text in ,,subscript,,\n* Text in ^^superscript^^\n\n= Lists =\n\nYou can create various types of lists in your wiki pages:\n\n== Unordered list ==\n\n* Level 1\n** Level 2\n*** Level 3\n** Level 2\n* Level 1\n\n== Numbered list ==\n\n1. Item\n11. Subitem\n111. Item\n1. Subitem\n\n== Mixed list ==\n\n1. Item 1\n11. Item 2\n11*. Item 3\n11*. Item 4\n1. Item 5\n\n= Tables =\n\nYou can create tables right into wiki pages:\n\n== Table with headers in the top row ==\n\n|= table header |= table header |= table header\n| cell | cell | cell\n| cell | cell | cell\n\n== Table with headers in the top row and left column ==\n\n|= table header |= table header |= table header\n|= table header | cell | cell\n|= table header | cell | cell\n\n= Links =\n\nXWiki allows you to create links to other pages in your wiki or on the web:\n\n* [[WebHome]] -> links to the homepage of the current space\n* [[Sandbox Home>>WebHome]] -> links can have labels\n* [[Wiki Home>>Main.WebHome]] -> a link can use the SpaceName.PageName format to link to a page located in another space\n* [[http://www.xwiki.org]] -> you can link to wiki pages or to external websites\n* [[XWiki.org Website>>http://www.xwiki.org]] -> link labels work for exernal links too\n\nYou can also create links to attachments:\n\nattach:XWikiLogo.png\n\n= Images =\n\nYou can insert images in your wiki pages:\n\n[[image:XWikiLogo.png]]\n\n= Macros =\n\nMacros allow you to make wiki content look better and to add additional features to your wiki. Here are 2 examples of how macros can be used in wiki pages:\n\n== Warning Macro ==\n\nThis macro allows you to draw users' attention to a specific piece of information:\n\n{{warning}}\nHello World\n{{/warning}}\n\n== Table of Contents ==\n\nThis macro automatically generates a table of contents of your wiki page based on headings:\n\n{{toc/}}",
+  "html": "<p><strong>The sandbox is a part of your wiki that you can freely modify. It's meant to let you practice editing. You will discover how page editing works and create new pages. Simply click on Edit to get started!</strong></p><div class=\"box infomessage\"><p>Don't worry about overwriting or losing stuff when editing the page, you can always roll back to the first version of the page from the \"History\" tab at the bottom of the page.</p></div><p>If you want to give a look to the underlying <span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/XWiki/XWikiSyntax\">XWiki Syntax</a></span>, you can click on \"Wiki code\" in the \"Show\" menu or click on the \"Source\" tab when editing the page.</p><p>Here are a number of test pages you can play with:</p><ul><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Sandbox/TestPage1\">Sandbox Test Page 1</a></span></li><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Sandbox/TestPage2\">Sandbox Test Page 2</a></span></li><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Sandbox/TestPage3\">Sandbox Test Page 3</a></span></li><li>Toto</li></ul><p>Below is a demonstration of the <span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/XWiki/XWikiSyntax\">XWiki Syntax</a></span> you can use in wiki pages (headings, images, tables).</p><h1 id=\"HHeadings2\" class=\"wikigeneratedid\"><span>Headings 2</span></h1><p>XWiki offers 6 levels of headings. You can use them to structure your pages.</p><h2 id=\"HLevel2Heading\" class=\"wikigeneratedid\"><span>Level 2 Heading</span></h2><h3 id=\"HLevel3Heading\" class=\"wikigeneratedid\"><span>Level 3 Heading</span></h3><h4 id=\"HLevel4Heading4\" class=\"wikigeneratedid\"><span>Level 4 Heading 4</span></h4><h5 id=\"HLevel5Heading5\" class=\"wikigeneratedid\"><span>Level 5 Heading 5</span></h5><h6 id=\"HLevel6Heading6\" class=\"wikigeneratedid\"><span>Level 6 Heading 6</span></h6><h1 id=\"HStyles\" class=\"wikigeneratedid\"><span>Styles</span></h1><p>Basic styles are supported in XWiki:</p><ul><li><strong>Text in Bold</strong></li><li><em>Text in Italics</em></li><li><ins>Text in Underline</ins></li><li><del>Text in Strikethrough</del></li><li>Text in <sub>subscript</sub></li><li>Text in <sup>superscript</sup></li></ul><h1 id=\"HLists\" class=\"wikigeneratedid\"><span>Lists</span></h1><p>You can create various types of lists in your wiki pages:</p><h2 id=\"HUnorderedlist\" class=\"wikigeneratedid\"><span>Unordered list</span></h2><ul><li>Level 1<ul><li>Level 2<ul><li>Level 3</li></ul></li><li>Level 2</li></ul></li><li>Level 1</li></ul><h2 id=\"HNumberedlist\" class=\"wikigeneratedid\"><span>Numbered list</span></h2><ol><li>Item<ol><li>Subitem<ol><li>Item</li></ol></li></ol></li><li>Subitem</li></ol><h2 id=\"HMixedlist\" class=\"wikigeneratedid\"><span>Mixed list</span></h2><ol><li>Item 1<ol><li>Item 2<ul><li>Item 3</li><li>Item 4</li></ul></li></ol></li><li>Item 5</li></ol><h1 id=\"HTables\" class=\"wikigeneratedid\"><span>Tables</span></h1><p>You can create tables right into wiki pages:</p><h2 id=\"HTablewithheadersinthetoprow\" class=\"wikigeneratedid\"><span>Table with headers in the top row</span></h2><table><tr><th scope=\"col\">&nbsp;table header&nbsp;</th><th scope=\"col\">&nbsp;table header&nbsp;</th><th scope=\"col\">&nbsp;table header</th></tr><tr><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell</td></tr><tr><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell</td></tr></table><h2 id=\"HTablewithheadersinthetoprowandleftcolumn\" class=\"wikigeneratedid\"><span>Table with headers in the top row and left column</span></h2><table><tr><th scope=\"col\">&nbsp;table header&nbsp;</th><th scope=\"col\">&nbsp;table header&nbsp;</th><th scope=\"col\">&nbsp;table header</th></tr><tr><th scope=\"row\">&nbsp;table header&nbsp;</th><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell</td></tr><tr><th scope=\"row\">&nbsp;table header&nbsp;</th><td>&nbsp;cell&nbsp;</td><td>&nbsp;cell</td></tr></table><h1 id=\"HLinks\" class=\"wikigeneratedid\"><span>Links</span></h1><p>XWiki allows you to create links to other pages in your wiki or on the web:</p><ul><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Sandbox/\"><span class=\"wikigeneratedlinkcontent\">Sandbox</span></a></span> -&gt; links to the homepage of the current space</li><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Sandbox/\">Sandbox Home</a></span> -&gt; links can have labels</li><li><span class=\"wikilink\"><a href=\"http://localhost:15680/xwiki/bin/view/Main/\">Wiki Home</a></span> -&gt; a link can use the SpaceName.PageName format to link to a page located in another space</li><li><span class=\"wikiexternallink\"><a href=\"http://www.xwiki.org\"><span class=\"wikigeneratedlinkcontent\">http://www.xwiki.org</span></a></span> -&gt; you can link to wiki pages or to external websites</li><li><span class=\"wikiexternallink\"><a href=\"http://www.xwiki.org\">XWiki.org Website</a></span> -&gt; link labels work for exernal links too</li></ul><p>You can also create links to attachments:</p><p><span class=\"wikiattachmentlink\"><a class=\"wikimodel-freestanding\" href=\"http://localhost:15680/xwiki/bin/download/Sandbox/WebHome/XWikiLogo.png?rev=1.1\"><span class=\"wikigeneratedlinkcontent\">XWikiLogo.png</span></a></span></p><h1 id=\"HImages\" class=\"wikigeneratedid\"><span>Images</span></h1><p>You can insert images in your wiki pages:</p><p><img src=\"http://localhost:15680/xwiki/bin/download/Sandbox/WebHome/XWikiLogo.png?rev=1.1\" id=\"IXWikiLogo.png\" class=\"wikigeneratedid\" alt=\"XWikiLogo.png\"/></p><h1 id=\"HMacros\" class=\"wikigeneratedid\"><span>Macros</span></h1><p>Macros allow you to make wiki content look better and to add additional features to your wiki. Here are 2 examples of how macros can be used in wiki pages:</p><h2 id=\"HWarningMacro\" class=\"wikigeneratedid\"><span>Warning Macro</span></h2><p>This macro allows you to draw users' attention to a specific piece of information:</p><div class=\"box warningmessage\"><p>Hello World</p></div><h2 id=\"HTableofContents\" class=\"wikigeneratedid\"><span>Table of Contents</span></h2><p>This macro automatically generates a table of contents of your wiki page based on headings:</p><ul class=\"wikitoc\"><li><span class=\"wikilink\"><a href=\"#HHeadings2\">Headings 2</a></span><ul><li><span class=\"wikilink\"><a href=\"#HLevel2Heading\">Level 2 Heading</a></span><ul><li><span class=\"wikilink\"><a href=\"#HLevel3Heading\">Level 3 Heading</a></span><ul><li><span class=\"wikilink\"><a href=\"#HLevel4Heading4\">Level 4 Heading 4</a></span><ul><li><span class=\"wikilink\"><a href=\"#HLevel5Heading5\">Level 5 Heading 5</a></span><ul><li><span class=\"wikilink\"><a href=\"#HLevel6Heading6\">Level 6 Heading 6</a></span></li></ul></li></ul></li></ul></li></ul></li></ul></li><li><span class=\"wikilink\"><a href=\"#HStyles\">Styles</a></span></li><li><span class=\"wikilink\"><a href=\"#HLists\">Lists</a></span><ul><li><span class=\"wikilink\"><a href=\"#HUnorderedlist\">Unordered list</a></span></li><li><span class=\"wikilink\"><a href=\"#HNumberedlist\">Numbered list</a></span></li><li><span class=\"wikilink\"><a href=\"#HMixedlist\">Mixed list</a></span></li></ul></li><li><span class=\"wikilink\"><a href=\"#HTables\">Tables</a></span><ul><li><span class=\"wikilink\"><a href=\"#HTablewithheadersinthetoprow\">Table with headers in the top row</a></span></li><li><span class=\"wikilink\"><a href=\"#HTablewithheadersinthetoprowandleftcolumn\">Table with headers in the top row and left column</a></span></li></ul></li><li><span class=\"wikilink\"><a href=\"#HLinks\">Links</a></span></li><li><span class=\"wikilink\"><a href=\"#HImages\">Images</a></span></li><li><span class=\"wikilink\"><a href=\"#HMacros\">Macros</a></span><ul><li><span class=\"wikilink\"><a href=\"#HWarningMacro\">Warning Macro</a></span></li><li><span class=\"wikilink\"><a href=\"#HTableofContents\">Table of Contents</a></span></li></ul></li></ul>",
+  "xwikiMapping": {
+    "identifier": {
+      "type": "document",
+      "fieldName": "fullName"
+    },
+    "url": {
+      "type": "document",
+      "fieldName": "url"
+    },
+    "name": {
+      "type": "document",
+      "fieldName": "name"
+    },
+    "headline": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "title1"
+    },
+    "breadcrumb": {
+      "type": "document",
+      "fieldName": "breadcrumb"
+    },
+    "inLanguage": {
+      "type": "document",
+      "fieldName": "language"
+    },
+    "dateCreated": {
+      "type": "document",
+      "fieldName": "creationDate"
+    },
+    "dateModified": {
+      "type": "document",
+      "fieldName": "lastUpdateData"
+    },
+    "creator": {
+      "type": "document",
+      "fieldName": "creator"
+    },
+    "editor": {
+      "type": "document",
+      "fieldName": "lastAuthor"
+    },
+    "version": {
+      "type": "document",
+      "fieldName": "version"
+    },
+    "encodingFormat": {
+      "type": "document",
+      "fieldName": "syntaxId"
+    },
+    "text": {
+      "type": "object",
+      "className": "Blog.BlogPostClass",
+      "fieldName": "extract"
+    },
+    "html": {
+      "type": "document",
+      "fieldName": "content"
+    },
+    "creativeWorkStatus": {
+      "type": "object",
+      "className": "Blog.BlogPostClass",
+      "fieldName": "published"
+    },
+    "datePublished": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "date1"
+    },
+    "thumbnail": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "longText1"
+    },
+    "genre": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "staticList1"
+    },
+    "runtime": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "number1"
+    },
+    "seen": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "boolean1"
+    },
+    "director": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "databaseList1"
+    },
+    "storyline": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "content1"
+    },
+    "wysiwyg": {
+      "type": "object",
+      "className": "Help.Applications.Movies.Code.MoviesClass",
+      "fieldName": "wysiwyg"
+    }
+  },
+  "permissions": ["view", "control", "add", "delete", "change"]
+}

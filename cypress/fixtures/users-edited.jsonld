@@ -16,18 +16,7 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        },
-        {
-          "mode": {
-            "@type": "change"
-          }
-        }
-      ]
+      "permissions": ["view", "change"]
     },
     {
       "@id": "https://ldp-server.test/users/jbpasquier/",
@@ -43,13 +32,7 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "https://ldp-server.test/users/alex/",
@@ -65,26 +48,9 @@
       "@context": {
         "get_full_name": "rdfs:label"
       },
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "add"
-      }
-    },
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["add", "view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

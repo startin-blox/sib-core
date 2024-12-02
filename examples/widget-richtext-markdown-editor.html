@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: richtext widgets</title>
+    <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h3>Form with richtext widget:</h3>
+    <solid-form
+      data-src="/examples/data/project.jsonld"
+      fields="name, description"
+      widget-description="solid-form-richtext"
+    ></solid-form>
+
+    <h3>Solid-display using markdown widget:</h3>
+    <solid-display
+      data-src="/examples/data/project.jsonld"
+      fields="texte"
+      widget-texte="solid-display-value-markdown"
+    ></solid-display>
+
+    <h3>Form with editor widget:</h3>
+    <solid-form
+      data-src="/examples/data/project2.jsonld"
+      fields="description"
+      widget-description="solid-form-editor"
+    ></solid-form>
+
+    <h3>Solid-display using markdown widget:</h3>
+    <solid-display
+    data-src="/examples/data/project2.jsonld"
+    fields="description"
+    widget-description="solid-display-value-markdown"
+  ></solid-display>
+  </body>
+</html>

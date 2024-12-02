@@ -1,62 +1,86 @@
-import { base_context, store } from '../libs/store/store';
-import type { Resource } from './interfaces';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination.ts';
+import {
+  formatAttributesToServerSearchOptions,
+  mergeServerSearchOptions,
+} from '../libs/store/server-search.ts';
+import { store } from '../libs/store/store.ts';
+import { AttributeBinderMixin } from './attributeBinderMixin.ts';
+import { ContextMixin } from './contextMixin.ts';
+import type { Resource } from './interfaces.ts';
+import { ServerPaginationMixin } from './serverPaginationMixin.ts';
 
 const StoreMixin = {
   name: 'store-mixin',
-  use: [],
+  use: [AttributeBinderMixin, ContextMixin, ServerPaginationMixin],
   attributes: {
     noRender: {
       type: String,
       default: null,
       callback: function (value: boolean) {
         if (value === null) this.fetchData(this.dataSrc);
-      }
+      },
     },
     dataSrc: {
       type: String,
       default: null,
       callback: async function (value: string) {
-        if (this.noRender === null) await this.fetchData(value);
+        const filteredOnServer =
+          this.element.attributes['filtered-on']?.value === 'server';
+        const limited = this.element.attributes.limit?.value !== undefined;
+
+        if (this.noRender === null && !filteredOnServer && !limited) {
+          await this.fetchData(value);
+        } else if (this.noRender === null && !filteredOnServer) {
+          this.resourceId = value;
+        }
       },
-    },
-    extraContext: {
-      type: String,
-      default: null
     },
     loaderId: {
       type: String,
-      default: ''
+      default: '',
     },
     nestedField: {
       type: String,
-      default: null
+      default: null,
+    },
+    arrayField: {
+      type: String,
+      default: null,
+      callback: function (value: boolean) {
+        if (value)
+          this.predicateName = store.getExpandedPredicate(
+            this.arrayField,
+            this.context,
+          );
+      },
+    },
+    predicateName: {
+      type: String,
+      default: null,
     },
   },
   initialState: {
+    resources: [],
     resourceId: null,
     subscription: null,
-    bindedAttributes: null
   },
   created() {
-    this.bindedAttributes = {};
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
   },
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
-  get context(): object {
-    return { ...base_context, ...this.extra_context };
-  },
-  get extra_context(): object {
-    let extraContextElement = this.extraContext ?
-    document.getElementById(this.extraContext) : // take element extra context first
-    document.querySelector('[data-default-context]'); // ... or look for a default extra context
+  get resource(): Resource | null {
+    const id = this.resourceId;
+    const serverPagination = formatAttributesToServerPaginationOptions(
+      this.element.attributes,
+    );
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      this.getDynamicServerSearch?.(), // from `filterMixin`
+    );
 
-    if (extraContextElement) return JSON.parse(extraContextElement.textContent || "{}");
-    return {}
-  },
-  get resource(): Resource|null{
-    return this.resourceId ? store.get(this.resourceId) : null;
+    return id ? store.get(id, serverPagination, serverSearch) : null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
@@ -64,85 +88,77 @@ const StoreMixin = {
   async fetchData(value: string) {
     this.empty();
     if (this.subscription) PubSub.unsubscribe(this.subscription);
-    if (!value || value == "undefined") return;
+    if (!value || value === 'undefined') return;
 
     this.resourceId = value;
-
     if (this.nestedField) {
+      // First step: store.getData
       const resource = await store.getData(value, this.context);
+      // Which internally triggers store.fetchData -> Fine
+      // Which triggers store.fetchAuthn -> Fine
+      // Once done it calls store.cacheGraph
       const nestedResource = resource ? await resource[this.nestedField] : null;
-      this.resourceId = nestedResource ? nestedResource['@id'] : null;
-      if (!this.resourceId) throw `Error: the key "${this.nestedField}" does not exist on the resource`
+      this.resourceId = nestedResource ? await nestedResource['@id'] : null;
+
+      if (resource && !this.resourceId && !nestedResource) {
+        for (const property in await resource) {
+          console.log(`${property}: ${await resource[property]}`);
+        }
+        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
+      }
     }
+
     this.updateNavigateSubscription();
 
-    this.subscription = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
-    await store.getData(this.resourceId, this.context);
+    this.subscription = PubSub.subscribe(
+      this.resourceId,
+      this.updateDOM.bind(this),
+    );
+    const serverPagination = formatAttributesToServerPaginationOptions(
+      this.element.attributes,
+    );
+    const dynamicServerSearch = this.getDynamicServerSearch?.(); // from `filterMixin`
+    const serverSearch = mergeServerSearchOptions(
+      formatAttributesToServerSearchOptions(this.element.attributes),
+      dynamicServerSearch,
+    );
+    const forceRefetch = !!dynamicServerSearch;
+    await store.getData(
+      this.resourceId,
+      this.context,
+      undefined,
+      undefined,
+      forceRefetch,
+      serverPagination,
+      serverSearch,
+    );
+
     this.updateDOM();
   },
+
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  updateNavigateSubscription() { },
+  updateNavigateSubscription() {},
   async updateDOM(): Promise<void> {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
-    await this.getAttributesData();
+    await this.replaceAttributesData();
     await this.populate();
-    setTimeout(() => ( // Brings the dispatchEvent at the end of the queue
-      this.element.dispatchEvent(new CustomEvent('populate', { detail: { resource: {"@id": this.dataSrc} } })))
+    setTimeout(() =>
+      // Brings the dispatchEvent at the end of the queue
+      this.element.dispatchEvent(
+        new CustomEvent('populate', {
+          detail: { resource: { '@id': this.dataSrc } },
+        }),
+      ),
     );
     this.toggleLoaderHidden(true);
   },
-  /**
-   * Replace store://XXX attributes by corresponding data
-   */
-  async getAttributesData() {
-    this.resetAttributesData();
-    const isContainer = this.resource && this.resource.isContainer();
-
-    for (let attr of this.element.attributes) {
-      if (!attr.value.startsWith('store://')) continue;
-
-      // Save attr for reset later
-      if (!this.bindedAttributes[attr.name]) this.bindedAttributes[attr.name] = attr.value;
-
-      // Replace attribute value
-      if (!isContainer && attr.value.startsWith('store://resource')) { // resource
-        let path = attr.value.replace('store://resource.', '');
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (isContainer && attr.value.startsWith('store://container')) { // container
-        let path = attr.value.replace('store://container.', '');
-        console.log(path, this.resource, this.resource[path]);
-        attr.value = this.resource ? await this.resource[path] : '';
-      } else if (attr.value.startsWith('store://user')) { // user
-        const sibAuth = document.querySelector('sib-auth');
-        const userId = await (sibAuth as any)?.getUser();
-        const user = userId && userId['@id'] ? await store.getData(userId['@id'], this.context) : null;
-        if (!user)  {
-          attr.value = '';
-          continue;
-        }
-        let path = attr.value.replace('store://user.', '');
-        attr.value = user ? await user[path] : '';
-      }
-    }
-  },
-  /**
-   * Reset attributes values
-   */
-  resetAttributesData() {
-    for (let attr of Object.keys(this.bindedAttributes)) {
-      this.element.setAttribute(attr, this.bindedAttributes[attr]);
-    }
-  },
-  empty():void {
-  },
+  empty(): void {},
   update() {
     if (this.noRender === null) this.updateDOM();
-  }
+  },
 };
 
-export {
-  StoreMixin
-}
+export { StoreMixin };

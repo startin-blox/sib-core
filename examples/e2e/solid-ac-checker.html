@@ -10,28 +10,62 @@
 
   <body>
     <em>
-      Current user has no permission to view project
+      Use case: Current user has no permission to view project
     </em>
 
     <div>
       <h3>Permission attribute</h3>
-      <solid-ac-checker id="ac-checker-1" permission="acl:Read" data-src="../data/project.jsonld">
+      <solid-ac-checker id="ac-checker-1" permission="acl:Read" data-src="/examples/data/project.jsonld">
         <solid-display
           id="test1"
-          data-src="../data/project.jsonld"
+          data-src="/examples/data/project.jsonld"
           fields="name, description"
         ></solid-display>
       </solid-ac-checker>
     </div>
     <div>
       <h3>No-permission attribute</h3>
-      <solid-ac-checker id="ac-checker-2" no-permission="acl:Read" data-src="../data/project.jsonld">
+      <solid-ac-checker id="ac-checker-2" no-permission="acl:Read" data-src="/examples/data/project.jsonld">
         <solid-display
           id="test2"
-          data-src="../data/project.jsonld"
+          data-src="/examples/data/project.jsonld"
           fields="name, description"
         ></solid-display>
       </solid-ac-checker>
     </div>
+    <div>
+      <h3>Fetch permissions</h3>
+      <solid-display
+        data-src="/examples/data/list/skills.jsonld"
+        fields="name"
+      ></solid-display>
+      <button id="load">Load data</button>
+      <solid-ac-checker id="ac-checker-3" permission="acl:Read" data-src>
+        <div id="test3">OK</div>
+      </solid-ac-checker>
+    </div>
+
+    <div>
+      <h3>Fetch permissions unitary</h3>
+      <solid-widget name="ac-checker-widget">
+        <template>
+          <solid-ac-checker permission="acl:Write" data-src="${value}">
+            <button>Edit</button>
+          </solid-ac-checker>
+        </template>
+      </solid-widget>
+
+      <solid-display
+        data-src="/examples/data/list/skills.jsonld"
+        fields="name, @id"
+        widget-id="ac-checker-widget"
+      ></solid-display>
+    </div>
+
+    <script>
+      load.onclick= () => {
+        document.querySelector('#ac-checker-3').dataset.src = "/examples/data/list/skill-2.jsonld";
+      }
+    </script>
   </body>
 </html>

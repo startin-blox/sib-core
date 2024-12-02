@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>SIB test: solid-display</title>
+  <script type="module" src="../../dist/index.js"></script>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+  <h2>Reproducing "required" issue</h2>
+
+  <solid-form
+    id="form-1"
+    data-src="/examples/data/list/event-1.jsonld"
+    fields="description,name"
+    widget-description="solid-form-richtext"
+    required-description
+    placeholder-description="some placeholder"
+    required-name>
+  </solid-form>
+
+  <h3>solid-form-richtext</h3>
+  <solid-form
+    id="form-2"
+    data-src="/examples/data/list/events.jsonld"
+    fields="name"
+    value-name="**Jean-Bernard**"
+    widget-name="solid-form-richtext"
+  ></solid-form>
+
+  <solid-form
+    id="form-3"
+    data-src="/examples/data/list/events.jsonld"
+    fields="name"
+    value-name=""
+    widget-name="solid-form-richtext"
+  ></solid-form>
+
+  <solid-form
+    id="form-4"
+    data-src="/examples/data/list/profile-5.jsonld"
+    fields="website"
+    widget-website="solid-form-richtext"
+  ></solid-form>
+
+  <style>
+    .id {
+      font-family: monospace;
+      color: blue;
+    }
+
+    .name {
+      font-family: cursive;
+      color: green;
+    }
+  </style>
+</body>
+
+</html>

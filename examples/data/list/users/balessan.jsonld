@@ -1,0 +1,265 @@
+{
+  "@id": "/examples/data/list/users/balessan.jsonld",
+  "first_name": "Benito",
+  "groups": [
+    {
+      "@id": "/examples/data/list/users/groups/1/",
+      "name": "LDP_community_members_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        },
+        {
+          "@id": "/examples/data/list/users/blaisepascal/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": {
+        "@id": "/examples/data/list/users/communities/matthieu-empire/",
+        "@type": "sib:Community"
+      },
+      "admin_community": null,
+      "project": null,
+      "admin_project": null,
+      "circle": null,
+      "admin_circle": null,
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    },
+    {
+      "@id": "/examples/data/list/users/groups/2/",
+      "name": "LDP_community_admins_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": null,
+      "admin_community": {
+        "@id": "/examples/data/list/users/communities/matthieu-empire/",
+        "@type": "sib:Community"
+      },
+      "project": null,
+      "admin_project": null,
+      "circle": null,
+      "admin_circle": null,
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    },
+    {
+      "@id": "/examples/data/list/users/groups/3/",
+      "name": "LDP_circle_members_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        },
+        {
+          "@id": "/examples/data/list/users/blaisepascal/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": null,
+      "admin_community": null,
+      "project": null,
+      "admin_project": null,
+      "circle": {
+        "@id": "/examples/data/list/users/circles/1/",
+        "@type": "hd:circle"
+      },
+      "admin_circle": null,
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    },
+    {
+      "@id": "/examples/data/list/users/groups/4/",
+      "name": "LDP_circle_admins_1",
+      "user_set": [
+        {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        }
+      ],
+      "community": null,
+      "admin_community": null,
+      "project": null,
+      "admin_project": null,
+      "circle": null,
+      "admin_circle": {
+        "@id": "/examples/data/list/users/circles/1/",
+        "@type": "hd:circle"
+      },
+      "@type": "foaf:Group",
+      "@context": {
+        "user_set": "foaf:member"
+      }
+    }
+  ],
+  "last_name": "Alessandroni",
+  "username": "balessan",
+  "email": "benoit@startinblox.com",
+  "account": {
+    "@id": "/examples/data/list/users/accounts/balessan/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "balessan",
+    "picture": null,
+    "issuer": null,
+    "user": {
+      "@id": "/examples/data/list/users/balessan/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "chatProfile": {
+    "@id": "/examples/data/list/users/chatprofiles/balessan/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "balessan",
+    "jabberID": "balessan@test5.startinblox.com",
+    "user": {
+      "@id": "/examples/data/list/users/balessan/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "name": "Benito Alessandroni",
+  "uploadURL": {
+    "@id": "/examples/data/list/users/upload/"
+  },
+  "inbox": {
+    "@id": "/examples/data/list/users/balessan/inbox"
+  },
+  "settings": {
+    "@id": "/examples/data/list/users/settings/1/",
+    "receiveMail": true,
+    "@type": "sib:usersettings"
+  },
+  "profile": {
+    "@id": "/examples/data/list/users/profiles/balessan/",
+    "is_backlink": false,
+    "allow_create_backlink": true,
+    "slug": "balessan",
+    "available": null,
+    "job": "",
+    "city": "",
+    "phone": "",
+    "website": "",
+    "user": {
+      "@id": "/examples/data/list/users/balessan/",
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
+  },
+  "jobOffers": {
+    "@id": "/examples/data/list/users/balessan/jobOffers"
+  },
+  "projects": {
+    "@id": "/examples/data/list/users/balessan/projects",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "contacts": {
+    "@id": "/examples/data/list/users/balessan/contacts",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "skills": {
+    "@id": "/examples/data/list/users/balessan/skills",
+    "@type": "ldp:Container",
+    "ldp:contains": []
+  },
+  "communityContainer": {
+    "@id": "/examples/data/list/users/balessan/communities/"
+  },
+  "projectContainer": {
+    "@id": "/examples/data/list/users/balessan/projects/"
+  },
+  "circleContainer": {
+    "@id": "/examples/data/list/users/balessan/circles/"
+  },
+  "owned_circles": {
+    "@id": "/examples/data/list/users/balessan/owned_circles",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/users/circles/1/",
+        "name": "Cercle Test",
+        "subtitle": "This is a test",
+        "description": "",
+        "creationDate": "2023-10-15",
+        "public": false,
+        "owner": {
+          "@id": "/examples/data/list/users/balessan/",
+          "@type": "foaf:user",
+          "@context": {
+            "get_full_name": "rdfs:label"
+          }
+        },
+        "jabberID": "6wl0frypyjq5@conference.test5.startinblox.com",
+        "jabberRoom": true,
+        "members": {
+          "@id": "/examples/data/list/users/groups/3/",
+          "@type": "foaf:Group",
+          "@context": {
+            "user_set": "foaf:member"
+          }
+        },
+        "admins": {
+          "@id": "/examples/data/list/users/groups/4/",
+          "@type": "foaf:Group",
+          "@context": {
+            "user_set": "foaf:member"
+          }
+        },
+        "parentCircle": null,
+        "children": [],
+        "community": {
+          "@id": "/examples/data/list/users/communities/matthieu-empire/",
+          "@type": "sib:Community"
+        },
+        "@type": "hd:circle"
+      }
+    ]
+  },
+  "@type": "foaf:user",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "get_full_name": "rdfs:label"
+    }
+  ],
+  "permissions": ["change", "control", "view", "delete", "add"]
+}

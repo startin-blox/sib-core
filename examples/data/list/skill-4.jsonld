@@ -1,12 +1,7 @@
 {
-  "@id": "skill-4.jsonld",
+  "@id": "/examples/data/list/skill-4.jsonld",
   "name": "DevOps",
   "@type": "hd:skill",
-  "permissions": [
-    { "mode": { "@type": "view" }},
-    { "mode": { "@type": "change" }},
-    { "mode": { "@type": "control" }},
-    { "mode": { "@type": "delete" }}
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view", "change", "control", "delete"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

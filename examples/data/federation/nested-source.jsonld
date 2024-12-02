@@ -1,38 +1,26 @@
 {
-  "@id": "",
+  "@id": "/examples/data/federation/nested-source.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [
     {
       "federation": "circles",
-      "@id": "circles-server1.jsonld",
+      "@id": "/examples/data/federation/circles-server1.jsonld",
       "@type": "sib:federatedContainer",
-      "permissions": [
-        {
-          "mode": {
-            "@type": "view"
-          }
-        }
-      ]
+      "permissions": ["view"]
     },
     {
-      "@id": "circles-server2.jsonld",
+      "@id": "/examples/data/federation/circles-server2.jsonld",
       "@type": "sib:federatedContainer"
     },
     {
-      "@id": "circles-server3.jsonld",
+      "@id": "/examples/data/federation/circles-server3.jsonld",
       "@type": "sib:federatedContainer"
     },
     {
-      "@id": "source2.jsonld",
+      "@id": "/examples/data/federation/source2.jsonld",
       "@type": "sib:federatedContainer"
     }
   ],
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

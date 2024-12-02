@@ -1,7 +1,7 @@
-import { Sib } from '../libs/Sib';
-import { store } from '../libs/store/store';
+import { Sib } from '../libs/Sib.ts';
+import { store } from '../libs/store/store.ts';
 
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 
 export const SolidLang = {
   name: 'solid-lang',
@@ -9,34 +9,28 @@ export const SolidLang = {
   attributes: {
     lang: {
       type: String,
-      default: null
+      default: null,
     },
     dataLabel: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
 
   created(): void {
     this.render();
   },
 
-  languageLoader () {
+  languageLoader() {
     store.selectLanguage(this.lang);
     location.reload();
   },
 
   render() {
-    let template = html`
-    <button
-      @click=${this.languageLoader.bind(this)}
-    >
-      ${this.dataLabel}
-    </button>
-    `;
+    const template = html`<button @click=${this.languageLoader.bind(this)}>${this.dataLabel}</button>`;
 
     render(template, this.element);
-  }
+  },
 };
 
 Sib.register(SolidLang);

@@ -1,5 +1,5 @@
 {
-  "@id": "user-1.jsonld",
+  "@id": "/examples/data/list/user-1.jsonld",
   "first_name": "Test",
   "last_name": "User",
   "username": "admin",
@@ -7,34 +7,25 @@
   "name": "Test User",
   "available": true,
   "skills": {
-    "@id": "user-1-skills.jsonld",
+    "@id": "/examples/data/list/user-1-skills.jsonld",
     "@type": "ldp:Container",
     "ldp:contains": [
       {
-        "@id": "skill-2.jsonld"
+        "@id": "/examples/data/list/skill-2.jsonld"
       },
       {
-        "@id": "skill-3.jsonld"
+        "@id": "/examples/data/list/skill-3.jsonld"
       }
     ],
-    "permissions": [
-      {
-        "mode": {
-          "@type": "view"
-        }
-      }
-    ]
+    "permissions": ["view"]
+  },
+  "job": {
+    "@id": "/examples/data/list/job-1.jsonld"
   },
   "profile": {
-    "@id": "profile-1.jsonld"
+    "@id": "/examples/data/list/profile-1.jsonld"
   },
   "@type": "foaf:user",
-  "permissions": [
-    {
-      "mode": {
-        "@type": "view"
-      }
-    }
-  ],
-  "@context": "https://cdn.happy-dev.fr/owl/hdcontext.jsonld"
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }
