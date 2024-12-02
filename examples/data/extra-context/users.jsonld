@@ -10,9 +10,7 @@
       "email": "test-user@example.com",
       "name": "Test User",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "http://localhost:3000/examples/data/extra-context/user-2.jsonld",
@@ -22,13 +20,9 @@
       "email": "paris@hilton.hi",
       "name": "Paris Hilton",
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

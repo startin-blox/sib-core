@@ -1,11 +1,11 @@
-import { MultipleMixin } from './multipleMixin';
-import { ActionMixin } from './actionMixin';
-import { BlankMixin } from './blankMixin';
-import { MailtoMixin } from './mailtoMixin';
-import { TelMixin } from './telMixin';
-import { PlaceholderMixin } from './placeholderMixin';
-import { BooleanMixin } from './booleanMixin';
-import { NumberMixin } from './numberMixin';
+import { ActionMixin } from './actionMixin.ts';
+import { BlankMixin } from './blankMixin.ts';
+import { BooleanMixin } from './booleanMixin.ts';
+import { MailtoMixin } from './mailtoMixin.ts';
+import { MultipleMixin } from './multipleMixin.ts';
+import { NumberMixin } from './numberMixin.ts';
+import { PlaceholderMixin } from './placeholderMixin.ts';
+import { TelMixin } from './telMixin.ts';
 
 const attributeDirectory = {
   multiple: MultipleMixin,
@@ -16,7 +16,7 @@ const attributeDirectory = {
   placeholder: PlaceholderMixin,
   bool: BooleanMixin,
   num: NumberMixin,
-}
+};
 
 export {
   attributeDirectory,
@@ -26,4 +26,4 @@ export {
   MailtoMixin,
   TelMixin,
   PlaceholderMixin,
-}
+};

@@ -1,11 +1,7 @@
 {
   "@id": "https://ldp-server.test/circles/17/members/",
   "@type": "ldp:Container",
-  "ldp:contains": [
-  ],
-  "permissions": [
-    "add",
-    "view"
-  ],
+  "ldp:contains": [],
+  "permissions": ["add", "view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

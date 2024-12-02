@@ -1,50 +1,50 @@
 {
   "name": "LDP_circle_members_1",
   "members": [
-      {
-        "@id": "/examples/data/list/user-2.jsonld",
-        "@type": "foaf:user",
-        "name": "Benoit Alessandroni",
-        "email": "benoit@toto.com",
-        "last_name": "Alessandroni",
-        "first_name": "Benoit",
-        "@context": {
-          "get_full_name": "rdfs:label"
-        }
-      },
-      {
-        "@id": "/examples/data/list/user-1.jsonld",
-        "@type": "foaf:user",
-        "name": "Blaise Pascal",
-        "email": "blaise@toto.com",
-        "last_name": "Pascal",
-        "first_name": "Blaise",
-        "@context": {
-          "get_full_name": "rdfs:label"
-        }
-      },
-      {
-        "@id": "/examples/data/list/user-3.jsonld",
-        "@type": "foaf:user",
-        "name": "Vitali Klitschko",
-        "email": "blaise@toto.com",
-        "last_name": "Klitschko",
-        "first_name": "Vitali",
-        "@context": {
-          "get_full_name": "rdfs:label"
-        }
-      },
-      {
-        "@id": "/examples/data/list/user-4.jsonld",
-        "@type": "foaf:user",
-        "name": "Eric Cantona",
-        "email": "cantona@toto.com",
-        "last_name": "Cantona",
-        "first_name": "Eric",
-        "@context": {
-          "get_full_name": "rdfs:label"
-        }
+    {
+      "@id": "/examples/data/list/user-2.jsonld",
+      "@type": "foaf:user",
+      "name": "Benoit Alessandroni",
+      "email": "benoit@toto.com",
+      "last_name": "Alessandroni",
+      "first_name": "Benoit",
+      "@context": {
+        "get_full_name": "rdfs:label"
       }
+    },
+    {
+      "@id": "/examples/data/list/user-1.jsonld",
+      "@type": "foaf:user",
+      "name": "Blaise Pascal",
+      "email": "blaise@toto.com",
+      "last_name": "Pascal",
+      "first_name": "Blaise",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    },
+    {
+      "@id": "/examples/data/list/user-3.jsonld",
+      "@type": "foaf:user",
+      "name": "Vitali Klitschko",
+      "email": "blaise@toto.com",
+      "last_name": "Klitschko",
+      "first_name": "Vitali",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    },
+    {
+      "@id": "/examples/data/list/user-4.jsonld",
+      "@type": "foaf:user",
+      "name": "Eric Cantona",
+      "email": "cantona@toto.com",
+      "last_name": "Cantona",
+      "first_name": "Eric",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      }
+    }
   ],
   "events": {
     "@type": "ldp:Container",
@@ -55,8 +55,8 @@
         "name": "Coliving",
         "date": "2020-07-09",
         "seats": 12,
-        "place":"",
-        "city":"",
+        "place": "",
+        "city": "",
         "permissions": []
       },
       {
@@ -64,8 +64,8 @@
         "name": "Workshop",
         "date": "2020-05-10",
         "seats": 2,
-        "place":"Opéra",
-        "city":"",
+        "place": "Opéra",
+        "city": "",
         "permissions": []
       }
     ]
@@ -77,7 +77,5 @@
   "admin_circle": null,
   "@id": "/examples/data/list/group-3.jsonld",
   "@type": "foaf:Group",
-  "@context": [
-    "https://cdn.startinblox.com/owl/context.jsonld"
-  ]
+  "@context": ["https://cdn.startinblox.com/owl/context.jsonld"]
 }

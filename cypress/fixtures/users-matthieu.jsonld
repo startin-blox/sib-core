@@ -15,8 +15,5 @@
       "get_full_name": "rdfs:label"
     }
   ],
-  "permissions": [
-    "view",
-    "change"
-  ]
+  "permissions": ["view", "change"]
 }

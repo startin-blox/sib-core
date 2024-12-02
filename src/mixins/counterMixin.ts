@@ -1,6 +1,7 @@
-import { html } from 'lit-html';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { evalTemplateString } from '../libs/helpers';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { evalTemplateString } from '../libs/helpers.ts';
 
 const CounterMixin = {
   name: 'counter-mixin',
@@ -8,7 +9,7 @@ const CounterMixin = {
   attributes: {
     counterTemplate: {
       type: String,
-      default: null
+      default: null,
     },
   },
   initialState: {
@@ -16,19 +17,29 @@ const CounterMixin = {
     parentCounterDiv: null,
   },
   attached() {
-    this.listPostProcessors.push(this.countResources.bind(this));
+    this.listPostProcessors.attach(
+      this.countResources.bind(this),
+      'CounterMixin:countResources',
+    );
   },
-  async countResources(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string) {
+  async countResources(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ) {
     if (this.counterTemplate) {
       this.initParentCounterDiv(div);
-      this.renderCallbacks.push({ // add counter template to render callback
+      this.renderCallbacks.push({
+        // add counter template to render callback
         template: await this.renderCounter(resources.length),
-        parent: this.parentCounterDiv
+        parent: this.parentCounterDiv,
       });
     }
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
   /**
    * Create the parent div of the counter in the component.
@@ -50,9 +61,7 @@ const CounterMixin = {
       throw e;
     }
     return html`${unsafeHTML(htmlCounter)}`;
-  }
-}
+  },
+};
 
-export {
-  CounterMixin
-}
+export { CounterMixin };

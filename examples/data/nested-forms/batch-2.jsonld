@@ -1,12 +1,12 @@
 {
-	"@id": "/examples/data/nested-forms/batch-2.jsonld",
-	"invoice": {
-		"@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
-	},
-	"title": "Déploiement",
-	"creationDate": "2020-10-02",
-	"modificationDate": "2020-10-04",
-	"htAmount": 500,
-	"permissions": [],
-	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "@id": "/examples/data/nested-forms/batch-2.jsonld",
+  "invoice": {
+    "@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
+  },
+  "title": "Déploiement",
+  "creationDate": "2020-10-02",
+  "modificationDate": "2020-10-04",
+  "htAmount": 500,
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

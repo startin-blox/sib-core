@@ -1,10 +1,8 @@
 const TelMixin = {
   name: 'tel-mixin',
   created() {
-    this.listAttributes['tel'] = 'tel:';
-  }
-}
+    this.listAttributes.tel = 'tel:';
+  },
+};
 
-export {
-  TelMixin
-}
+export { TelMixin };

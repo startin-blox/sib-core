@@ -1,10 +1,7 @@
 {
   "@context": "https://colibris.social/context.json",
   "id": "https://colibris.social/types",
-  "type": [
-    "ldp:Container",
-    "ldp:BasicContainer"
-  ],
+  "type": ["ldp:Container", "ldp:BasicContainer"],
   "ldp:contains": [
     {
       "id": "https://colibris.social/types/camping",

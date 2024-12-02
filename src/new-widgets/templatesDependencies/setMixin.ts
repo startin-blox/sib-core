@@ -4,9 +4,7 @@ const SetMixin = {
    * For sets and group widgets, remove auto rendering
    * function to allow only manual renders
    */
-  planRender() { },
-}
+  planRender() {},
+};
 
-export {
-  SetMixin
-}
+export { SetMixin };

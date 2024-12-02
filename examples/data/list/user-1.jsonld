@@ -17,9 +17,7 @@
         "@id": "/examples/data/list/skill-3.jsonld"
       }
     ],
-    "permissions": [
-      "view"
-    ]
+    "permissions": ["view"]
   },
   "job": {
     "@id": "/examples/data/list/job-1.jsonld"
@@ -28,8 +26,6 @@
     "@id": "/examples/data/list/profile-1.jsonld"
   },
   "@type": "foaf:user",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,10 +1,8 @@
 const MailtoMixin = {
   name: 'mailto-mixin',
   created() {
-    this.listAttributes['mailto'] = 'mailto:';
-  }
-}
+    this.listAttributes.mailto = 'mailto:';
+  },
+};
 
-export {
-  MailtoMixin
-}
+export { MailtoMixin };

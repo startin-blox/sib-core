@@ -1,21 +1,23 @@
-import type { Resource } from '../mixins/interfaces';
-import { Sib } from '../libs/Sib';
-import { store } from '../libs/store/store';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { ListMixin } from '../mixins/listMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { PaginateMixin } from '../mixins/paginateMixin';
-import { FilterMixin } from '../mixins/filterMixin';
-import { CounterMixin } from '../mixins/counterMixin';
-import { SorterMixin } from '../mixins/sorterMixin';
-import { GrouperMixin } from '../mixins/grouperMixin';
-import { FederationMixin } from '../mixins/federationMixin';
-import { HighlighterMixin } from '../mixins/highlighterMixin';
-import { RequiredMixin } from '../mixins/requiredMixin';
+import { Sib } from '../libs/Sib.ts';
+import { store } from '../libs/store/store.ts';
+import { CounterMixin } from '../mixins/counterMixin.ts';
+import { FederationMixin } from '../mixins/federationMixin.ts';
+import { FilterMixin } from '../mixins/filterMixin.ts';
+import { GrouperMixin } from '../mixins/grouperMixin.ts';
+import { HighlighterMixin } from '../mixins/highlighterMixin.ts';
+import type { Resource } from '../mixins/interfaces.ts';
+import { ListMixin } from '../mixins/listMixin.ts';
+import { PaginateMixin } from '../mixins/paginateMixin.ts';
+import { RequiredMixin } from '../mixins/requiredMixin.ts';
+import { SorterMixin } from '../mixins/sorterMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
-import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until';
-import { spread } from '../libs/lit-helpers';
+import { html, render } from 'lit';
+import { until } from 'lit/directives/until.js';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { spread } from '../libs/lit-helpers.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidTable = {
   name: 'solid-table',
@@ -46,6 +48,9 @@ export const SolidTable = {
       default: null,
     },
   },
+  initialState: {
+    resources: [],
+  },
   get parentElement(): string {
     return 'table';
   },
@@ -57,8 +62,11 @@ export const SolidTable = {
   },
   get selectedLines() {
     if (this.selectable === null) return [];
-    return (Array.from(this.element.querySelectorAll('input[data-selection]:checked')) as Element[])
-      .map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
+    return (
+      Array.from(
+        this.element.querySelectorAll('input[data-selection]:checked'),
+      ) as Element[]
+    ).map(e => e?.closest('[data-resource]')?.getAttribute('data-resource'));
   },
   /**
    * Select all lines
@@ -66,7 +74,11 @@ export const SolidTable = {
    */
   selectAll(e) {
     if (this.selectable === null) return;
-    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+    for (const checkbox of Array.from(
+      this.element.querySelectorAll(
+        'input[data-selection]',
+      ) as HTMLInputElement[],
+    )) {
       checkbox.checked = e.target.checked;
     }
   },
@@ -75,7 +87,11 @@ export const SolidTable = {
    */
   unselectAll(): void {
     if (this.selectable === null) return;
-    for (const checkbox of Array.from(this.element.querySelectorAll('input[data-selection]') as HTMLInputElement[])) {
+    for (const checkbox of Array.from(
+      this.element.querySelectorAll(
+        'input[data-selection]',
+      ) as HTMLInputElement[],
+    )) {
       checkbox.checked = false;
     }
   },
@@ -86,7 +102,9 @@ export const SolidTable = {
   selectLines(lines: string[]) {
     if (this.selectable === null || lines.length === 0) return;
     for (const line of lines) {
-      const checkbox = this.element.querySelector(`[data-resource="${line}"] input[data-selection]`);
+      const checkbox = this.element.querySelector(
+        `[data-resource="${line}"] input[data-selection]`,
+      );
       if (checkbox) checkbox.checked = true;
     }
   },
@@ -95,13 +113,15 @@ export const SolidTable = {
    * @param field
    * @param resource
    */
-  async createCellWidget(field: string, resource: Resource) {
+  createCellWidget(field: string, resource: Resource) {
     // if regular widget
-    if (!this.element.hasAttribute('editable-' + field)) return this.createWidgetTemplate(field, resource, true);
+    if (!this.element.hasAttribute(`editable-${field}`))
+      return this.createWidgetTemplate(field, resource, true);
 
     // if editable widget
     const attributes = {};
-    const formWidgetAttributes = [ // attributes to give to the form widget
+    const formWidgetAttributes = [
+      // attributes to give to the form widget
       'range',
       'enum',
       'placeholder',
@@ -113,16 +133,19 @@ export const SolidTable = {
       'max',
       'pattern',
       'title',
-      'widget'
+      'widget',
     ];
-    for (let attr of formWidgetAttributes) this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`,  attributes)
+    for (const attr of formWidgetAttributes)
+      this.addToAttributes(`${attr}-${field}`, `${attr}-${field}`, attributes);
 
-    const formAttributes = [ // attributes to give to the form
+    const formAttributes = [
+      // attributes to give to the form
       'class',
       'submit-button',
-      'next'
+      'next',
     ];
-    for (let attr of formAttributes) this.addToAttributes(`${attr}-${field}`, attr,  attributes)
+    for (const attr of formAttributes)
+      this.addToAttributes(`${attr}-${field}`, attr, attributes);
 
     return html`
       <solid-form
@@ -139,18 +162,12 @@ export const SolidTable = {
    * @param fields
    */
   getHeader(fields: string[]) {
-    let template = html`
+    const template = html`
       <tr>
-        ${this.selectable !== null ? html`
-        <th>
-          <input type="checkbox" @change="${this.selectAll.bind(this)}" />
-        </th>` : ''}
-        ${fields.map((field: string) => html`
-          <th>
-            ${this.element.hasAttribute('label-'+field) ? this.element.getAttribute('label-'+field) : field}
-        </th>`)}
+        ${this.selectable !== null ? html`<th><input type="checkbox" @change="${this.selectAll.bind(this)}" /></th>` : ''}
+        ${fields.map((field: string) => html`<th>${this.element.hasAttribute(`label-${field}`) ? this.element.getAttribute(`label-${field}`) : field}</th>`)}
       </tr>
-    `
+    `;
     return template;
   },
   /**
@@ -160,15 +177,12 @@ export const SolidTable = {
    */
   async getChildTemplate(resourceId: string, fields) {
     const resource = await store.getData(resourceId, this.context);
-    let template = html`
+    const template = html`
       <tr data-resource="${resourceId}">
-        ${this.selectable !== null ? html`
-        <td>
-          <input type="checkbox" data-selection />
-        </td>` : ''}
+        ${this.selectable !== null ? html`<td><input type="checkbox" data-selection /></td>` : ''}
         ${fields.map((field: string) => html`<td>${until(this.createCellWidget(field, resource))}</td>`)}
       </tr>
-    `
+    `;
     return template;
   },
 
@@ -179,10 +193,7 @@ export const SolidTable = {
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     const fields = await this.getFields();
 
-    const template = html`
-      ${this.header !== null ? this.getHeader(fields) : ''}
-      ${until(this.getChildTemplate(this.resource['@id'], fields))}
-    `;
+    const template = html`${this.header !== null ? this.getHeader(fields) : ''}${until(this.getChildTemplate(this.resource['@id'], fields))}`;
     render(template, parent);
   },
 
@@ -195,21 +206,18 @@ export const SolidTable = {
    * @param div
    * @param context
    */
-  async renderDOM(
+  renderDOM: trackRenderAsync(async function (
     resources: object[],
-    listPostProcessors: Function[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
     const selectedLines = [...this.selectedLines]; // save selected lines before moving them
     const fields = await this.getFields();
     const childTemplates = await Promise.all(
-      resources.map(r => r ? this.getChildTemplate(r['@id'], fields) : null)
+      resources.map(r => (r ? this.getChildTemplate(r['@id'], fields) : null)),
     );
-    const template = html`
-      ${this.header !== null ? this.getHeader(fields) : ''}
-      ${childTemplates}
-    `; // create a child template for each resource
+    const template = html`${this.header !== null ? this.getHeader(fields) : ''}${childTemplates}`; // create a child template for each resource
     render(template, div);
 
     // Re-select the right lines
@@ -218,13 +226,8 @@ export const SolidTable = {
 
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
-      await nextProcessor(
-        resources,
-        listPostProcessors,
-        div,
-        context
-      );
-  },
+      await nextProcessor(resources, listPostProcessors, div, context);
+  }, 'SolidTable:renderDom'),
 };
 
 Sib.register(SolidTable);

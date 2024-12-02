@@ -1,4 +1,4 @@
-describe('Component factory', function() {
+describe('Component factory', function () {
   let Sib: typeof import('../../../src/libs/Sib').Sib;
   let win: Window;
   let doc: Document;
@@ -11,9 +11,8 @@ describe('Component factory', function() {
       cnsl = (win as Window & typeof globalThis).console;
       ///@ts-ignore
       Sib = win.Sib;
-      win.document
-        .querySelectorAll('script')
-        .forEach(script => script.remove());
+      for (const script of win.document.querySelectorAll('script'))
+        script.remove();
     });
   });
 

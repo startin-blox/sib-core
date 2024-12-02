@@ -1,67 +1,76 @@
 import Quill from 'quill';
 
 import deltaMd from 'delta-markdown-for-quill';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
 import { importInlineCSS } from '../../libs/helpers.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',
-  initialState:{
+  initialState: {
     quill: null,
   },
 
   created() {
-    importInlineCSS('quill', () => import('quill/dist/quill.snow.css?inline'))
-    
+    importInlineCSS('quill', () => import('quill/dist/quill.snow.css?inline'));
+
     this.quill = null;
-    this.listCallbacks.push(this.addCallback.bind(this));
+    this.listCallbacks.attach(
+      this.addCallback.bind(this),
+      'RichtextMixin:addCallback',
+    );
   },
   getPlaceHolderValue() {
-    return this.element.hasAttribute('placeholder') ? this.element.getAttribute('placeholder') : '';
+    return this.element.hasAttribute('placeholder')
+      ? this.element.getAttribute('placeholder')
+      : '';
   },
-  addCallback(value: string, listCallbacks: Function[]) {
+  addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.quill == null) {
-      var toolbarOptions = [
+      const toolbarOptions = [
         ['bold', 'italic'],
         ['blockquote'],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false]}],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
         ['link'],
-        ['clean']
+        ['clean'],
       ];
-      const richtext = this.element.querySelector('[data-richtext]') as HTMLElement;
-      this.quill = new Quill(
-        richtext,
-        {
-          modules: {toolbar: toolbarOptions},
-          placeholder: this.getPlaceHolderValue(),
-          theme: 'snow'
-        }
-      );
+      const richtext = this.element.querySelector(
+        '[data-richtext]',
+      ) as HTMLElement;
+      this.quill = new Quill(richtext, {
+        modules: { toolbar: toolbarOptions },
+        placeholder: this.getPlaceHolderValue(),
+        theme: 'snow',
+      });
     }
 
     const ops = deltaMd.toDelta(this.value);
     this.quill.setContents(ops);
     if (this.isRequired()) {
-      this.createHiddenRequiredInput()
-      this.quill.on('text-change', this.onTextChange.bind(this))
+      this.createHiddenRequiredInput();
+      this.quill.on('text-change', this.onTextChange.bind(this));
     }
 
     const nextProcessor = listCallbacks.shift();
-    if (nextProcessor) nextProcessor(value, listCallbacks); 
+    if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   isRequired() {
-    return Array.from(this.element.attributes).some(attr => (attr as Attr).name === 'required')
+    return Array.from(this.element.attributes).some(
+      attr => (attr as Attr).name === 'required',
+    );
   },
   createHiddenRequiredInput() {
     const attributeName = this.getAttributeValue('name');
-    this.hiddenInput = document.querySelector(`input[name="${attributeName + '-hidden'}"]`) as HTMLInputElement;
+    this.hiddenInput = document.querySelector(
+      `input[name="${`${attributeName}-hidden`}"]`,
+    ) as HTMLInputElement;
 
     if (!this.hiddenInput) {
-      this.hiddenInput = this.createHiddenInput(attributeName + '-hidden');
+      this.hiddenInput = this.createHiddenInput(`${attributeName}-hidden`);
       this.element.appendChild(this.hiddenInput);
       this.addInvalidEventListener();
     }
-    this.hiddenInput.value=this.quill.getText();
+    this.hiddenInput.value = this.quill.getText();
   },
   createHiddenInput(attributeName: string): HTMLInputElement {
     const input = document.createElement('input');
@@ -73,15 +82,19 @@ const RichtextMixin = {
     return input;
   },
   getAttributeValue(attributeName: string): string {
-    const attribute = Array.from(this.element.attributes).find(attr => (attr as Attr).name === attributeName) as Attr;
+    const attribute = Array.from(this.element.attributes).find(
+      attr => (attr as Attr).name === attributeName,
+    ) as Attr;
     return attribute ? attribute.value : '';
   },
   displayCustomErrorMessage(message: string) {
-    const richtext = this.element.querySelector('[data-richtext]'); 
-  
+    const richtext = this.element.querySelector('[data-richtext]');
+
     if (richtext) {
-      let errorMessageElement = richtext.querySelector('.required-error-message') as HTMLDivElement;
-      
+      let errorMessageElement = richtext.querySelector(
+        '.required-error-message',
+      ) as HTMLDivElement;
+
       if (!errorMessageElement) {
         errorMessageElement = document.createElement('div');
         errorMessageElement.className = 'required-error-message';
@@ -93,25 +106,24 @@ const RichtextMixin = {
     }
   },
   addInvalidEventListener() {
-    this.hiddenInput.addEventListener("invalid", (e) => {
+    this.hiddenInput.addEventListener('invalid', e => {
       e.preventDefault();
       this.displayCustomErrorMessage('Please fill out this field.');
     });
   },
   onTextChange() {
-    this.hiddenInput.value=this.quill.getText();
+    this.hiddenInput.value = this.quill.getText();
     this.removeErrorMessageAndStyling();
   },
   removeErrorMessageAndStyling() {
     // Remove any previously displayed error message and error styling
     const richtext = this.element.querySelector('[data-richtext]');
-    let errorMessageElement = richtext.querySelector('.required-error-message') as HTMLDivElement;
-    if (errorMessageElement)
-      errorMessageElement.remove()
+    const errorMessageElement = richtext.querySelector(
+      '.required-error-message',
+    ) as HTMLDivElement;
+    if (errorMessageElement) errorMessageElement.remove();
     richtext.classList.remove('error-border-richtext');
   },
-}
+};
 
-export {
-  RichtextMixin
-}
+export { RichtextMixin };

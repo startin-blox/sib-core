@@ -5,22 +5,27 @@ export interface ServerSearchOptions {
 }
 
 export function formatAttributesToServerSearchOptions(
-  elementAttributes: Iterable<Attr>
+  elementAttributes: Iterable<Attr>,
 ): Partial<ServerSearchOptions> {
-  const attributes = new Map(Array.from(elementAttributes).map(({ name, value }) => [name, value]));
-  const fields = attributes.get('server-search-fields')?.split(",").map((field) => field.trim());
+  const attributes = new Map(
+    Array.from(elementAttributes).map(({ name, value }) => [name, value]),
+  );
+  const fields = attributes
+    .get('server-search-fields')
+    ?.split(',')
+    .map(field => field.trim());
   const value = attributes.get('server-search-value')?.trim();
   const method = attributes.get('server-search-method')?.trim();
   return {
     fields: fields && fields.length > 0 ? fields : undefined,
     value: value ? value : undefined,
-    method: method ? method : undefined
-  }
+    method: method ? method : undefined,
+  };
 }
 
 export function mergeServerSearchOptions(
   attributesOptions?: Partial<ServerSearchOptions>,
-  dynamicOptions?: Partial<ServerSearchOptions>
+  dynamicOptions?: Partial<ServerSearchOptions>,
 ): ServerSearchOptions | undefined {
   const fields = attributesOptions?.fields ?? dynamicOptions?.fields;
   const value = dynamicOptions?.value ?? attributesOptions?.value;
@@ -29,7 +34,10 @@ export function mergeServerSearchOptions(
   return { fields, value, method };
 }
 
-export function appendServerSearchToIri(iri: string, options: ServerSearchOptions): string {
+export function appendServerSearchToIri(
+  iri: string,
+  options: ServerSearchOptions,
+): string {
   const first = iri.includes('?') ? '&' : '?';
   const fields = options.fields.map(encodeURIComponent).join(',');
   const value = encodeURIComponent(options.value);

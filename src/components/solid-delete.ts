@@ -1,11 +1,12 @@
-import { Sib } from '../libs/Sib';
-import { store } from '../libs/store/store';
-import { NextMixin } from '../mixins/nextMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
+import { Sib } from '../libs/Sib.ts';
+import { store } from '../libs/store/store.ts';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { ValidationMixin } from '../mixins/validationMixin.ts';
 
-import { html, render } from 'lit-html';
-import { ContextMixin } from '../mixins/contextMixin';
+import { html, render } from 'lit';
+import { trackRenderAsync } from '../logger.ts';
+import { ContextMixin } from '../mixins/contextMixin.ts';
 
 export const SolidDelete = {
   name: 'solid-delete',
@@ -15,7 +16,7 @@ export const SolidDelete = {
       type: String,
       default: null,
       callback: function () {
-       this.resourceId = this.dataSrc;
+        this.resourceId = this.dataSrc;
       },
     },
     dataLabel: {
@@ -24,7 +25,7 @@ export const SolidDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
-    }
+    },
   },
   initialState: {
     renderPlanned: false,
@@ -41,7 +42,7 @@ export const SolidDelete = {
       });
     }
   },
-  async delete(e: Event): Promise<void> {
+  delete(e: Event) {
     e.stopPropagation();
     if (!this.dataSrc) return;
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
@@ -50,25 +51,26 @@ export const SolidDelete = {
     return store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('resourceDeleted', eventData)); // Deprecated. To remove in 0.15
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deletion();
   },
   update() {
     this.render();
   },
-  async render(): Promise<void> {
+  render: trackRenderAsync(async function (): Promise<void> {
     await this.replaceAttributesData(false);
-    const button = html`
-      <button @click=${this.delete.bind(this)}>${this.dataLabel || this.t("solid-delete.button")}</button>
-      ${this.getModalDialog()}
-    `;
+    const button = html`<button @click=${this.delete.bind(this)}>${this.dataLabel || this.t('solid-delete.button')}</button>${this.getModalDialog()}`;
     render(button, this.element);
-  }
+  }, 'SolidDelete:render'),
 };
 
 Sib.register(SolidDelete);

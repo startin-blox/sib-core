@@ -5,17 +5,15 @@ const FormLengthMixin = {
       type: Number,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'maxlength');
-      }
+      },
     },
     minlength: {
       type: Number,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'minlength');
-      }
+      },
     },
   },
-}
+};
 
-export {
-  FormLengthMixin
-}
+export { FormLengthMixin };

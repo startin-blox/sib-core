@@ -1,13 +1,13 @@
-import { defaultTemplates } from './defaultTemplatesDirectory';
-import { displayTemplates } from './displayTemplatesDirectory';
-import { formTemplates } from './formTemplatesDirectory';
-import { setTemplates } from './setTemplatesDirectory';
+import { defaultTemplates } from './defaultTemplatesDirectory.ts';
+import { displayTemplates } from './displayTemplatesDirectory.ts';
+import { formTemplates } from './formTemplatesDirectory.ts';
 import { groupTemplates } from './groupTemplatesDirectory.js';
+import { setTemplates } from './setTemplatesDirectory.ts';
 
 export {
   defaultTemplates,
   displayTemplates,
   formTemplates,
   setTemplates,
-  groupTemplates
-}
+  groupTemplates,
+};

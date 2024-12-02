@@ -1,4 +1,4 @@
-import type { Resource } from "./interfaces.js";
+import type { Resource } from './interfaces.js';
 
 const NextMixin = {
   name: 'next-mixin',
@@ -6,7 +6,7 @@ const NextMixin = {
   attributes: {
     next: {
       type: String,
-      default:''
+      default: '',
     },
   },
 
@@ -20,9 +20,7 @@ const NextMixin = {
         }),
       );
     }
-  }
-}
+  },
+};
 
-export {
-  NextMixin
-}
+export { NextMixin };

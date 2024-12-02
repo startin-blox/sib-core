@@ -1,43 +1,43 @@
 {
-	"@type": "ldp:Container",
-	"ldp:contains": [
-		{
-			"@id": "/examples/data/list/event-1.jsonld",
-			"name": "Coliving",
-			"date": "2020-07-09",
-			"seats": 12,
-			"place":"",
-			"city":"",
-			"permissions": []
-		},
-		{
-			"@id": "/examples/data/list/event-2.jsonld",
-			"name": "Workshop",
-			"date": "2020-05-10",
-			"seats": 2,
-			"place":"Opéra",
-			"city":"",
-			"permissions": []
-		},
-		{
-			"@id": "/examples/data/list/event-3.jsonld",
-			"name": "Réunion d'information",
-			"date": "2020-07-10",
-			"seats": 36,
-			"place":"Couvent des jacobins",
-			"city":"Rennes",
-			"permissions": []
-		},
-		{
-			"@id": "/examples/data/list/event-4.jsonld",
-			"name": "Assemblée générale",
-			"date": "2020-05-10",
-			"seats": 5,
-			"place":"",
-			"city":"Marseille",
-			"permissions": []
-		}
-	],
-	"@id": "/examples/data/list/events.jsonld",
-	"@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/list/event-1.jsonld",
+      "name": "Coliving",
+      "date": "2020-07-09",
+      "seats": 12,
+      "place": "",
+      "city": "",
+      "permissions": []
+    },
+    {
+      "@id": "/examples/data/list/event-2.jsonld",
+      "name": "Workshop",
+      "date": "2020-05-10",
+      "seats": 2,
+      "place": "Opéra",
+      "city": "",
+      "permissions": []
+    },
+    {
+      "@id": "/examples/data/list/event-3.jsonld",
+      "name": "Réunion d'information",
+      "date": "2020-07-10",
+      "seats": 36,
+      "place": "Couvent des jacobins",
+      "city": "Rennes",
+      "permissions": []
+    },
+    {
+      "@id": "/examples/data/list/event-4.jsonld",
+      "name": "Assemblée générale",
+      "date": "2020-05-10",
+      "seats": 5,
+      "place": "",
+      "city": "Marseille",
+      "permissions": []
+    }
+  ],
+  "@id": "/examples/data/list/events.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

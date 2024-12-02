@@ -33,7 +33,5 @@
       "user_set": "foaf:member"
     }
   ],
-  "permissions": [
-    "view"
-  ]
+  "permissions": ["view"]
 }

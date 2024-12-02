@@ -14,7 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands.js';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -25,5 +25,5 @@ import '@rckeller/cypress-unfetch';
 import 'cypress-plugin-tab';
 
 Cypress.on('uncaught:exception', () => {
-  return false
-})
+  return false;
+});

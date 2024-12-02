@@ -9,19 +9,13 @@
   "skills": {
     "@id": "/examples/data/list/user-3-skills.jsonld",
     "@type": "ldp:Container",
-    "ldp:contains": [
-
-    ],
-    "permissions": [
-      "view"
-    ]
+    "ldp:contains": [],
+    "permissions": ["view"]
   },
   "profile": {
     "@id": "/examples/data/list/profile-3.jsonld"
   },
   "@type": "foaf:user",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

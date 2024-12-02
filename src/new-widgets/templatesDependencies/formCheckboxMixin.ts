@@ -6,8 +6,6 @@ const FormCheckboxMixin = {
   get type() {
     return 'boolean';
   },
-}
+};
 
-export {
-  FormCheckboxMixin
-}
+export { FormCheckboxMixin };

@@ -6,11 +6,9 @@ const LinkTextMixin = {
       default: '',
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'linkText');
-      }
+      },
     },
   },
-}
+};
 
-export {
-  LinkTextMixin
-}
+export { LinkTextMixin };

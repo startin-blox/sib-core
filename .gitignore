@@ -1,5 +1,6 @@
 /node_modules
 /dist
+/cache
 coverage
 .nyc_output
 /cypress/screenshots
@@ -7,3 +8,4 @@ coverage
 cypress/downloads
 .vscode
 .DS_Store
+.npm

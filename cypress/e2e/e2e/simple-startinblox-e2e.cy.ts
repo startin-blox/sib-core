@@ -1,15 +1,17 @@
-describe('simple Startin’blox e2e test', function() {
+describe('simple Startin’blox e2e test', function () {
   this.beforeEach('visit', () => {
-    cy.visit('/examples/e2e/simple-startinblox-e2e-test.html')
-  })
+    cy.visit('/examples/e2e/simple-startinblox-e2e-test.html');
+  });
 
   it('check children count', () => {
-    cy.get('body > solid-display > div').children().should('have.length', 4)
-  })
+    cy.get('body > solid-display > div').children().should('have.length', 4);
+  });
 
   it('check first children content', () => {
-    cy.get('body > solid-display > div > solid-display:first-child > div > solid-display-value:first-child')
+    cy.get(
+      'body > solid-display > div > solid-display:first-child > div > solid-display-value:first-child',
+    )
       .should('have.attr', 'name', 'first_name')
-      .should('contain', 'Test')
-  })
-})
+      .should('contain', 'Test');
+  });
+});
