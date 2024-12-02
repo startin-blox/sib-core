@@ -95,7 +95,6 @@ const ListMixin = {
 
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
-
       await nextProcessor(
         await this.resource[this.predicateName],
         listPostProcessorsCopy,

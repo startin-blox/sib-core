@@ -43,6 +43,7 @@ export const SolidDisplay = {
   initialState: {
     activeSubscription: null,
     removeActiveSubscription: null,
+    resources: [],
   },
   created(): void {
     // Set route active at initialization

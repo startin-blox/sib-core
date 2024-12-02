@@ -24,6 +24,7 @@ const FederationMixin = {
     let newResources: Resource[] = await this.getResources(resources);
     newResources = [...new Set(newResources)]; // remove possible duplicates
 
+    this.resources = [...newResources]; // Create a new array to avoid unintended reference issues
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(newResources, listPostProcessors, div, context);

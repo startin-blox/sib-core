@@ -48,6 +48,9 @@ export const SolidTable = {
       default: null,
     },
   },
+  initialState: {
+    resources: [],
+  },
   get parentElement(): string {
     return 'table';
   },

@@ -111,6 +111,7 @@ const SorterMixin = {
       resources = this.shuffleResources(resources); // shuffle resources
     }
 
+    this.resources = [...resources];
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(resources, listPostProcessors, div, context);

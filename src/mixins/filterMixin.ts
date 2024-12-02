@@ -105,11 +105,9 @@ const FilterMixin = {
         this.fields,
         this.searchForm,
       );
-      this.resources = resources = resources.filter(
-        (_v, index) => filteredResources[index],
-      );
+      resources = resources.filter((_v, index) => filteredResources[index]);
+      this.resources = [...resources];
     }
-
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(

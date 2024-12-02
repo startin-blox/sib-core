@@ -28,7 +28,7 @@ const HighlighterMixin = {
         resources = resources.map(resource => (<any>resource).proxy); // and re-transform in arra of resources
       }
     }
-
+    this.resources = [...resources];
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(resources, listPostProcessors, div, context);
