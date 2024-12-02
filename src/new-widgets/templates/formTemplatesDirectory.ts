@@ -230,7 +230,8 @@ export const formTemplates = {
             ?checked=${value === key}
           > <span>${val}</span>
         </label>
-      `)}
+      `,
+      )}
     </fieldset>
     `,
     dependencies: [FormRadioMixin, FormMixin, RangeMixin],
@@ -260,7 +261,8 @@ export const formTemplates = {
               value="${key}"
             /> <span>${val}</span>
           </label>
-        `)}
+        `,
+        )}
       </fieldset>
     `,
     dependencies: [FormCheckboxesMixin, FormMixin, RangeMixin],
