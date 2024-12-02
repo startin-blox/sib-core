@@ -375,7 +375,7 @@ const WidgetMixin = {
       this.multiple(escapedField) || this.getWidget(escapedField);
     let tagName = widgetMeta.tagName;
     let widgetTemplate: TemplateResult = html``;
-    let classAttr = attributes.class;
+    const classAttr = attributes.class;
 
     // Set attributes
     const value = await this.getValue(field, currentResource);
@@ -422,11 +422,11 @@ const WidgetMixin = {
           currentResource,
         );
 
-      if (value && value['@id']) attributes['auto-subscribe'] = value['@id'];
+      if (value?.['@id']) attributes['auto-subscribe'] = value['@id'];
       widgetTemplate = preHTML`
         <${tagName}
           ...=${spread(attributes)}
-          class="${classAttr !== undefined ? tagName.concat(' ',classAttr) : tagName}"
+          class="${classAttr !== undefined ? tagName.concat(' ', classAttr) : tagName}"
         ></${tagName}>`;
     }
 
@@ -447,17 +447,14 @@ const WidgetMixin = {
     const setWidget = this.getWidget(field, true);
 
     // Get set attributes
-    const attrs = { name: field };
-    const setAttributes = [
-      'class',
-      'label'
-    ];
+    const attrs = { name: field, class: setWidget.tagName };
+    const setAttributes = ['class', 'label'];
     for (const attr of setAttributes)
       this.addToAttributes(`${attr}-${field}`, attr, attrs);
     // Reset class attribute if a class is specified for the set
-    if (attrs['class'] !== undefined) {
-      attrs['class'] = setWidget.tagName.concat(' ', attrs['class']);
-    } else attrs['class'] = setWidget.tagName;    
+    if (attrs.class !== undefined) {
+      attrs.class = setWidget.tagName.concat(' ', attrs.class);
+    } else attrs.class = setWidget.tagName;
 
     // Create widget if not already existing
     let widget = this.element.querySelector(
@@ -495,7 +492,7 @@ const WidgetMixin = {
           ...=${spread(attributes)}
           class="${tagName}"
         ></${tagName}>`;
-      };
+      }
     }
     // Render template
     const widgetsTemplate = await Promise.all(
