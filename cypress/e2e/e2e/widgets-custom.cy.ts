@@ -16,6 +16,6 @@ describe('custom widgets', function () {
     cy.get('solid-display#test2')
       .find('custom-widget')
       .should('have.length', 1)
-      .and('have.attr', 'class', 'custom-widget test-class')
+      .and('have.attr', 'class', 'custom-widget test-class');
   });
 });
