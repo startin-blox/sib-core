@@ -214,9 +214,7 @@ export class BaseWidget extends HTMLElement {
         }
       } else {
         // selected options for simple dropdowns
-        selected = this._value
-          ? this._value['@id'] === element['@id']
-          : false;
+        selected = this._value ? this._value['@id'] === element['@id'] : false;
       }
       htmlRange += await evalTemplateString(this.childTemplate, {
         name: await element.name,

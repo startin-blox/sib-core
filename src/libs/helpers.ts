@@ -227,7 +227,9 @@ function generalComparator(
   b: unknown,
   order: 'asc' | 'desc' = 'asc',
 ): number {
-  if (order === 'desc') return -generalComparator(a, b);
+  if (order === 'desc') return generalComparator(b, a);
+  if (a == null && b == null) return 0;
+  if (a === b || Object.is(a, b)) return 0;
   if (typeof a === 'boolean' && typeof b === 'boolean') {
     return a === b ? 0 : a ? 1 : -1;
   }
@@ -242,14 +244,13 @@ function generalComparator(
   if (!Number.isNaN(dateA) && !Number.isNaN(dateB)) {
     return dateA - dateB;
   }
-  if (a instanceof Object && b instanceof Object) {
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
     return aKeys.length - bKeys.length;
   }
-  if (a == null || b == null) {
-    return a == null ? (b == null ? 0 : -1) : b == null ? 1 : 0;
-  }
+  if (a == null) return -1;
+  if (b == null) return 1;
   return String(a).localeCompare(String(b));
 }
 
