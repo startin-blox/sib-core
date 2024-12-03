@@ -1,8 +1,8 @@
 import Quill from 'quill';
 
-import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
-import { importInlineCSS } from '../../libs/helpers.js';
 import MarkdownIt from 'markdown-it';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.js';
+import { importInlineCSS } from '../../libs/helpers.js';
 
 const RichtextMixin = {
   name: 'richtext-mixin',

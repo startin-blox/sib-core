@@ -147,7 +147,7 @@ export const SolidForm = {
     this.hideError();
     const resource = await this.getFormValue();
     resource['@context'] = this.context;
-    let saved: string | null | undefined = undefined;
+    let saved: string | null | undefined;
     try {
       if (this.partial == null) {
         saved = resource['@id']

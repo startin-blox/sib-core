@@ -75,8 +75,8 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
         e2e: { baseUrl: addr },
       },
     };
-    /** @type {void | CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult} */
-    let test = undefined;
+    /** @type {null | void | CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult} */
+    let test = null;
     try {
       test = process.argv.includes('--test-ui')
         ? await cypress.open(opt)
