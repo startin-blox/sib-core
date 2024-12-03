@@ -299,9 +299,9 @@ describe('multiple widgets', { testIsolation: false }, function () {
 
   it('solid-form-checkboxes', () => {
     cy.get('solid-form-checkboxes#test1')
-      .find('solid-form-multicheckbox > div[name=test1]')
+      .find('solid-form-multicheckbox > fieldset')
       .children()
-      .should('have.length', 8);
+      .should('have.length', 9);
     cy.get('solid-form-checkboxes#test1 input[type=checkbox]')
       .eq(0)
       .should('not.have.attr', 'checked');

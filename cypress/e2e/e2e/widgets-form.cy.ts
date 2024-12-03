@@ -439,12 +439,11 @@ describe('form widgets', { testIsolation: false }, function () {
       .should('have.length', 1);
 
     cy.get('solid-form-radio#test1') // check attributes
-      .find('> div')
-      .and('have.attr', 'name', 'test1')
+      .find('> fieldset')
       .children()
-      .and('have.length', 8);
+      .and('have.length', 9);
 
-    cy.get('solid-form-radio#test1 > div > label')
+    cy.get('solid-form-radio#test1 > fieldset > label')
       .eq(0) // check options
       .contains('HTML')
       .parent()
@@ -461,7 +460,7 @@ describe('form widgets', { testIsolation: false }, function () {
       expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
     });
 
-    cy.get('solid-form-radio#test1 > div > label').eq(1).click(); // test change value
+    cy.get('solid-form-radio#test1 > fieldset > label').eq(1).click(); // test change value
 
     cy.get('solid-form-radio#test1').then($el => {
       // Check API
@@ -488,12 +487,11 @@ describe('form widgets', { testIsolation: false }, function () {
     });
 
     cy.get('solid-form-radio#test3')
-      .find('> div')
-      .and('have.attr', 'name', 'test3')
+      .find('> fieldset')
       .children()
-      .and('have.length', '3');
+      .and('have.length', '4');
 
-    cy.get('solid-form-radio#test3 > div > label')
+    cy.get('solid-form-radio#test3 > fieldset > label')
       .eq(0)
       .contains('option1')
       .parent()
@@ -523,12 +521,11 @@ describe('form widgets', { testIsolation: false }, function () {
     );
 
     cy.get('solid-form-radio#test4')
-      .find('> div')
-      .and('have.attr', 'name', 'test4')
+      .find('> fieldset')
       .children()
-      .and('have.length', '4');
+      .and('have.length', '5');
 
-    cy.get('solid-form-radio#test4 > div > label')
+    cy.get('solid-form-radio#test4 > fieldset > label')
       .eq(0)
       .contains('option1')
       .parent()
@@ -544,9 +541,9 @@ describe('form widgets', { testIsolation: false }, function () {
     cy.get('#test-checkboxes').then(async ($el: any) => {
       const values = await $el[0].component.getValue();
       expect(values).to.deep.equal([
-        { '@id': '/examples/data/list/skill-2.jsonld' },
-        { '@id': '/examples/data/list/skill-4.jsonld' },
-        { '@id': '/examples/data/list/skill-6.jsonld' },
+        { '@id': '/examples/data/list/skill-1.jsonld' },
+        { '@id': '/examples/data/list/skill-3.jsonld' },
+        { '@id': '/examples/data/list/skill-5.jsonld' },
       ]);
     });
   });
