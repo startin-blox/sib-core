@@ -200,43 +200,49 @@ export const formTemplates = {
   },
   radio: {
     template: (value: string, attributes: any) => html`
-      <div
+    <fieldset>
+      <legend
         name=${ifDefined(attributes.name)}
       >
-        ${(attributes.range || []).map(
-          el => html`
-          <label>
-            <input
-              type="radio"
-              name=${ifDefined(attributes.id)}
-              value=${el.value}
-              ?required=${attributes.required}
-              ?checked=${value === el.selectedValue}
-            > <span>${el.label}</span>
-          </label>
-        `,
-        )}
-        ${Object.entries(attributes.enum || []).map(
-          ([key, val]) => html`
-          <label>
-            <input
-              type="radio"
-              value="${key}"
-              name=${ifDefined(attributes.id)}
-              ?required=${attributes.required}
-              ?checked=${value === key}
-            > <span>${val}</span>
-          </label>
-        `,
-        )}
+        ${attributes.label}
+      </legend>
+      ${(attributes.range || []).map(
+        el => html`
+        <label>
+          <input
+            type="radio"
+            name=${ifDefined(attributes.id)}
+            value=${el.value}
+            ?required=${attributes.required}
+            ?checked=${value === el.selectedValue}
+          > <span>${el.label}</span>
+        </label>
+      `,
+      )}
+      ${Object.entries(attributes.enum || []).map(
+        ([key, val]) => html`
+        <label>
+          <input
+            type="radio"
+            value="${key}"
+            name=${ifDefined(attributes.id)}
+            ?required=${attributes.required}
+            ?checked=${value === key}
+          > <span>${val}</span>
+        </label>
+      `,
+      )}
+    </fieldset>
     `,
     dependencies: [FormRadioMixin, FormMixin, RangeMixin],
   },
   multicheckbox: {
     template: (_value: string, attributes: any) => html`
-      <div
-        name=${ifDefined(attributes.name)}
-      >
+      <fieldset>
+        <legend 
+          name=${ifDefined(attributes.name)}>
+            ${attributes.label}
+        </legend>
         ${(attributes.range || []).map(
           el => html`
           <label>
@@ -257,7 +263,7 @@ export const formTemplates = {
           </label>
         `,
         )}
-      </select>
+      </fieldset>
     `,
     dependencies: [FormCheckboxesMixin, FormMixin, RangeMixin],
   },
@@ -274,6 +280,7 @@ export const formTemplates = {
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
+        label=${ifDefined(attributes.label)} 
       ></solid-form-multicheckbox>
     `,
     dependencies: [MultipleselectFormMixin, FormMixin, RangeMixin],
