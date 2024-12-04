@@ -5,7 +5,7 @@ export default class SolidTemplateElement extends HTMLElement {
   strings = {};
   translationsPath = null;
   translationsFetched = false;
-  props: { [key: string]: any } = {};
+  props: { [key: string]: unknown } = {};
   constructor() {
     super();
     this.initProps();
@@ -14,7 +14,7 @@ export default class SolidTemplateElement extends HTMLElement {
     return Object.values(SolidTemplateElement.propsDefinition);
   }
 
-  static get propsDefinition(): { [key: string]: any } {
+  static get propsDefinition(): { [key: string]: unknown } {
     return {};
   }
 
@@ -70,7 +70,7 @@ export default class SolidTemplateElement extends HTMLElement {
    */
   async fetchLocaleStrings() {
     if (this.translationsFetched) return;
-    const filesToFetch: any[] = [];
+    const filesToFetch: unknown[] = [];
     if (this.translationsPath)
       // fetch component translations
       filesToFetch.push(this.fetchTranslationFile(this.translationsPath));

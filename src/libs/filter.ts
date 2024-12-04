@@ -41,7 +41,7 @@ const getSetRegexp = (field: string) => {
  * @param searchForm - current search form
  * @returns true if the field is a special search field
  */
-const isSearchField = (field: string, searchForm: any) => {
+const isSearchField = (field: string, searchForm: Element) => {
   return searchForm.hasAttribute(`search-${field}`);
 };
 /**
@@ -50,8 +50,8 @@ const isSearchField = (field: string, searchForm: any) => {
  * @param searchForm - current search form
  * @returns a list of fields targetted by the current search field
  */
-const getSearchField = (field: string, searchForm: any): string[] => {
-  return parseFieldsString(searchForm.getAttribute(`search-${field}`));
+const getSearchField = (field: string, searchForm: Element): string[] => {
+  return parseFieldsString(searchForm.getAttribute(`search-${field}`) || '');
 };
 
 /**
@@ -95,7 +95,7 @@ const matchValue = async (
     return orThrow(throwOn, false);
   }
   if (subject.isContainer?.()) {
-    let ret: any = Promise.resolve(query.value === ''); // if no query, return a match
+    let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
     for (const value of subject['ldp:contains']) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) return orThrow(throwOn, true);
@@ -103,7 +103,7 @@ const matchValue = async (
     return orThrow(throwOn, await ret);
   }
   if (Array.isArray(subject)) {
-    let ret: any = Promise.resolve(query.value === ''); // if no query, return a match
+    let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
     for (const value of subject) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) {

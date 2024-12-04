@@ -194,39 +194,35 @@ export class BaseWidget extends HTMLElement {
     return resources;
   }
 
-  get htmlRange(): Promise<string | undefined> {
-    return (async () => {
-      let htmlRange = '';
-      const rangeResources = await this.range;
-      if (!rangeResources) return;
-      for await (let element of rangeResources) {
-        element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
-        this._listen(element['@id']);
+  async htmlRange(): Promise<string | undefined> {
+    let htmlRange = '';
+    const rangeResources = await this.range;
+    if (!rangeResources) return;
+    for await (let element of rangeResources) {
+      element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
+      this._listen(element['@id']);
 
-        let selected: boolean;
-        if (this._value?.isContainer?.()) {
-          // selected options for multiple select
-          selected = false;
-          for await (const value of this._value['ldp:contains']) {
-            if (value['@id'] === element['@id']) {
-              selected = true;
-              break;
-            }
+      let selected: boolean;
+      if (this._value?.isContainer?.()) {
+        // selected options for multiple select
+        selected = false;
+        for await (const value of this._value['ldp:contains']) {
+          if (value['@id'] === element['@id']) {
+            selected = true;
+            break;
           }
-        } else {
-          // selected options for simple dropdowns
-          selected = this._value
-            ? this._value['@id'] === element['@id']
-            : false;
         }
-        htmlRange += await evalTemplateString(this.childTemplate, {
-          name: await element.name,
-          id: element['@id'],
-          selected: selected,
-        });
+      } else {
+        // selected options for simple dropdowns
+        selected = this._value ? this._value['@id'] === element['@id'] : false;
       }
-      return htmlRange || '';
-    })();
+      htmlRange += await evalTemplateString(this.childTemplate, {
+        name: await element.name,
+        id: element['@id'],
+        selected: selected,
+      });
+    }
+    return htmlRange || '';
   }
   getValueHolder(element) {
     return element.component ? element.component : element;

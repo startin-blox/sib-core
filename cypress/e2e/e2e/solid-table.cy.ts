@@ -329,7 +329,7 @@ describe('solid-table', { testIsolation: false }, function () {
       });
     });
 
-    cy.get('#grouped-table-date-asc').within(() => {
+    cy.get('#grouped-table-date-desc').within(() => {
       cy.get('solid-group-default').should('have.length', 4);
       cy.get('solid-group-default').each((item, index) => {
         if (index === 0) {
@@ -343,6 +343,24 @@ describe('solid-table', { testIsolation: false }, function () {
         }
         if (index === 3) {
           cy.wrap(item).find('span').contains('2015-05-10');
+        }
+      });
+    });
+
+    cy.get('#grouped-table-date-asc').within(() => {
+      cy.get('solid-group-default').should('have.length', 4);
+      cy.get('solid-group-default').each((item, index) => {
+        if (index === 0) {
+          cy.wrap(item).find('span').contains('2015-05-10');
+        }
+        if (index === 1) {
+          cy.wrap(item).find('span').contains('2017-05-10');
+        }
+        if (index === 2) {
+          cy.wrap(item).find('span').contains('2020-05-10');
+        }
+        if (index === 3) {
+          cy.wrap(item).find('span').contains('2020-07-09');
         }
       });
     });

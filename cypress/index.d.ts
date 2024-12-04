@@ -9,5 +9,5 @@ declare namespace Cypress {
 }
 
 interface Window {
-  sibStore: any;
+  sibStore: import('../src/libs/store/store').Store;
 }

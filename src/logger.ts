@@ -9,7 +9,7 @@ const colors = {
   error: '\x1b[38;2;255;0;0m', // Red
 };
 
-function formatMessage(level, messages) {
+function formatMessage(level: log.LogLevelNames, messages: unknown[]) {
   const timestamp = new Date().toISOString();
   const color = colors[level] || colors.reset;
 
@@ -48,7 +48,7 @@ if (import.meta.env?.VITE_DEBUG === 'True') {
 
 // Async HOF to log render times and time execution
 export function trackRenderAsync(fn: Function, context?: string) {
-  return async function (...args: any[]) {
+  return async function (...args: unknown[]) {
     let componentName = context
       ? context
       : this.name
@@ -82,7 +82,7 @@ export function trackRenderAsync(fn: Function, context?: string) {
 
 // HOF to log render times and time execution
 export function trackRender(fn: Function, context?: string) {
-  return function (...args: any[]) {
+  return function (...args: unknown[]) {
     let componentName = context
       ? context
       : this.name

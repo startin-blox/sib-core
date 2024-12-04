@@ -53,6 +53,7 @@ export const SolidWidget = {
         render(await template, this.element);
       },
       // For form widgets, handle nested solid-form
+      // TODO: type custom elements
       getValueFromElement(element: any) {
         if (element.tagName === 'SOLID-FORM') return element.component.value; // nested solid-form
         if (element.component) return element.component.getValue(); // form widget
