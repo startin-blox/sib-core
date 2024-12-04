@@ -2,22 +2,23 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
     "allowJs": true,
-    "jsx": "preserve",
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "declaration": false,
-    "declarationMap": false,
     "esModuleInterop": true,
     "composite": false,
     "strict": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
+    "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
@@ -26,6 +27,5 @@
     "skipLibCheck": true,
     "types": ["cypress"]
   },
-  "include": ["./src/**/*", "./cypress/**/*"],
-  "exclude": ["./node_modules/", "./cypress.config.ts"]
+  "include": ["./src/**/*", "./cypress/**/*"]
 }

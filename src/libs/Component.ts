@@ -14,5 +14,5 @@ export abstract class Component implements ComponentInterface {
   attached() {}
   detached() {}
 
-  attributesCallback(_key: string, _value: any, _oldValue: any): void {}
+  attributesCallback(_key: string, _value: unknown, _oldValue: unknown): void {}
 }

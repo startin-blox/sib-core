@@ -1,4 +1,4 @@
-declare let sibStore: any;
+declare let sibStore: import('./libs/store/store').Store;
 
 interface StoreOptions {
   fetchMethod?: Promise<any>;

@@ -13,7 +13,7 @@ function stringToDom(html: string): DocumentFragment {
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 async function evalTemplateString(
   str: string,
-  variables: { [key: string]: any } = {},
+  variables: { [key: string]: unknown } = {},
 ) {
   const keys = Object.keys(variables);
   const values = keys.map(key => variables[key]);
@@ -222,33 +222,36 @@ const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   },
 };
 
-function generalComparator(a, b, order = 'asc') {
-  let comparison = 0;
-
+function generalComparator(
+  a: unknown,
+  b: unknown,
+  order: 'asc' | 'desc' = 'asc',
+): number {
+  if (order === 'desc') return generalComparator(b, a);
+  if (a == null && b == null) return 0;
+  if (a === b || Object.is(a, b)) return 0;
   if (typeof a === 'boolean' && typeof b === 'boolean') {
-    comparison = a === b ? 0 : a ? 1 : -1;
-  } else if (!Number.isNaN(+a) && !Number.isNaN(+b)) {
-    comparison = Number(a) - Number(b);
-  } else if (Array.isArray(a) && Array.isArray(b)) {
-    comparison = a.length - b.length;
-  } else if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
-    const dateA = new Date(a);
-    const dateB = new Date(a);
-    comparison = dateA.getTime() - dateB.getTime();
-  } else if (typeof a === 'object' && typeof b === 'object') {
+    return a === b ? 0 : a ? 1 : -1;
+  }
+  if (!Number.isNaN(Number(a)) && !Number.isNaN(Number(b))) {
+    return Number(a) - Number(b);
+  }
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length - b.length;
+  }
+  const dateA = Date.parse(String(a));
+  const dateB = Date.parse(String(b));
+  if (!Number.isNaN(dateA) && !Number.isNaN(dateB)) {
+    return dateA - dateB;
+  }
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
-    comparison = aKeys.length - bKeys.length;
-  } else if (a == null || b == null) {
-    comparison = a == null ? (b == null ? 0 : -1) : b == null ? 1 : 0;
-  } else {
-    comparison = a.toString().localeCompare(b.toString());
+    return aKeys.length - bKeys.length;
   }
-
-  if (order === 'desc') {
-    comparison = comparison * -1;
-  }
-  return comparison;
+  if (a == null) return -1;
+  if (b == null) return 1;
+  return String(a).localeCompare(String(b));
 }
 
 function transformArrayToContainer(resource: object) {

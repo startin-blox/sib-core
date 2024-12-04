@@ -44,8 +44,8 @@ export const ComponentFactory = {
   },
   bindInitialState(
     componentConstructor: ComponentConstructorInterface,
-    initialState: object | undefined,
-  ): any {
+    initialState?: object,
+  ): ComponentConstructorInterface {
     if (initialState) {
       for (const key of Reflect.ownKeys(initialState)) {
         Reflect.defineProperty(componentConstructor.prototype, key, {
@@ -60,7 +60,7 @@ export const ComponentFactory = {
   },
   bindAttributes(
     componentConstructor: ComponentConstructorInterface,
-    attributes: AttributesDefinitionInterface | undefined,
+    attributes?: AttributesDefinitionInterface,
   ): ComponentConstructorInterface {
     if (attributes) {
       const attributesList = Reflect.ownKeys(attributes).map(key =>
@@ -165,7 +165,7 @@ export const ComponentFactory = {
   },
   bindAccessors(
     componentConstructor: ComponentConstructorInterface,
-    accessors: AccessorStaticInterface,
+    accessors?: AccessorStaticInterface,
   ): ComponentConstructorInterface {
     if (accessors) {
       for (const property of Object.keys(accessors)) {
