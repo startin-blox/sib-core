@@ -3,10 +3,10 @@
   "name": "HTML",
   "@type": "hd:skill",
   "permissions": [
-    { "mode": { "@type": "view" }},
-    { "mode": { "@type": "change" }},
-    { "mode": { "@type": "control" }},
-    { "mode": { "@type": "delete" }}
+    { "mode": { "@type": "view" } },
+    { "mode": { "@type": "change" } },
+    { "mode": { "@type": "control" } },
+    { "mode": { "@type": "delete" } }
   ],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

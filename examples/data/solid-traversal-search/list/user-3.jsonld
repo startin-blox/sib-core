@@ -9,9 +9,7 @@
   "skills": {
     "@id": "http://localhost:3000/examples/data/solid-traversal-search/list/user-3-skills.jsonld",
     "@type": "ldp:Container",
-    "ldp:contains": [
-
-    ],
+    "ldp:contains": [],
     "permissions": [
       {
         "mode": {

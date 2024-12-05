@@ -2,10 +2,10 @@ import { Sib } from '../libs/Sib.ts';
 
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
-import { TraversalSearchMixin } from '../mixins/traversalSearchMixin.ts';
 import type { WidgetInterface } from '../mixins/interfaces.ts';
+import { TraversalSearchMixin } from '../mixins/traversalSearchMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -24,7 +24,7 @@ export const SolidTraversalSearch = {
     },
     submitWidget: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     classSubmitButton: {
       type: String,
@@ -34,8 +34,8 @@ export const SolidTraversalSearch = {
       type: String,
       default: null,
       callback: function (value: boolean) {
-        if (value === null) this.populate()
-      }
+        if (value === null) this.populate();
+      },
     },
   },
   initialState: {
@@ -52,7 +52,7 @@ export const SolidTraversalSearch = {
   async inputChange(): Promise<void> {
     this.change(this.value);
   },
-  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+  getWidget(field: string, isSet = false): WidgetInterface {
     let tagName = '';
 
     // If auto-range-[field] exists, create range-[field] and sets its value
@@ -64,13 +64,20 @@ export const SolidTraversalSearch = {
 
     const widgetAttribute = this.element.getAttribute('widget-' + field);
     // Choose widget
-    if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
-      tagName = 'solid-form-dropdown'
+    if (
+      !widgetAttribute &&
+      (this.element.hasAttribute('range-' + field) ||
+        this.element.hasAttribute('enum-' + field))
+    ) {
+      tagName = 'solid-form-dropdown';
     } else {
-      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
+      tagName =
+        widgetAttribute ||
+        (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
-    if (!customElements.get(tagName)) { // component does not exist
+    if (!customElements.get(tagName)) {
+      // component does not exist
       if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
     }
 
@@ -79,13 +86,17 @@ export const SolidTraversalSearch = {
   getSubmitTemplate() {
     return html`
         <div class=${ifDefined(this.classSubmitButton)}>
-          ${this.submitWidget === 'button' ? html`
+          ${
+            this.submitWidget === 'button'
+              ? html`
             <button type="submit">${this.submitButton || ''}</button>
-          ` : html`
+          `
+              : html`
             <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-          `}
+          `
+          }
         </div>
-      `
+      `;
   },
   async attach(elm: any) {
     if (this.attachedElements.has(elm)) return;
@@ -98,16 +109,18 @@ export const SolidTraversalSearch = {
   getResultsTemplate() {
     return html`
       <div class="results">
-        ${this.results.map((result: any) => html`
+        ${this.results.map(
+          (result: any) => html`
           <div class="result">
             <div class="result-title">${result.first_name}</div>
             <div class="result-description">${result.last_name}</div>
           </div>
-        `)}
+        `,
+        )}
       </div>
-    `
+    `;
   },
-  empty(): void { },
+  empty(): void {},
   async populate(): Promise<void> {
     console.log('Triggerring populate ??', this.results);
     if (this.submitButton == null) {
@@ -119,10 +132,12 @@ export const SolidTraversalSearch = {
       });
     }
     const fields = await this.getFields();
-    const widgetTemplates = await Promise.all(fields.map((field: string) => {
-      return this.createWidgetTemplate(field);
-    }));
-    let template = html`
+    const widgetTemplates = await Promise.all(
+      fields.map((field: string) => {
+        return this.createWidgetTemplate(field);
+      }),
+    );
+    const template = html`
       <form>
           ${widgetTemplates}
           ${this.submitButton == null ? '' : this.getSubmitTemplate()}
@@ -131,6 +146,6 @@ export const SolidTraversalSearch = {
     `;
 
     render(template, this.element);
-  }
+  },
 };
 Sib.register(SolidTraversalSearch);

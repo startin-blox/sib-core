@@ -86,7 +86,7 @@ export class Store {
     forceFetch = false,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-    bypassLoadingList: boolean = false
+    bypassLoadingList = false,
   ): Promise<Resource | null> {
     let key = id;
     if (serverPagination) {
@@ -321,7 +321,12 @@ export class Store {
    * @param id - uri to update
    * @returns - object
    */
-  async _fetch(method: string, resource: object, id: string, bypassLoadingList: boolean = false): Promise<any> {
+  async _fetch(
+    method: string,
+    resource: object,
+    id: string,
+    bypassLoadingList = false,
+  ): Promise<any> {
     // console.log('from _fetch', method, resource, id);
     if (method !== '_LOCAL')
       return this.fetchAuthn(id, {
@@ -332,8 +337,8 @@ export class Store {
       });
 
     const resourceProxy = store.get(id);
-    const clientContext = resourceProxy 
-      ? {...resourceProxy.clientContext, ...resource['@context']}
+    const clientContext = resourceProxy
+      ? { ...resourceProxy.clientContext, ...resource['@context'] }
       : resource['@context'];
     this.clearCache(id);
 
@@ -346,11 +351,10 @@ export class Store {
         false,
         undefined,
         undefined,
-        bypassLoadingList
+        bypassLoadingList,
       );
-    else
-      await this.getData(id, clientContext, '', resource);
-    return {ok: true};
+    else await this.getData(id, clientContext, '', resource);
+    return { ok: true };
   }
 
   /**
@@ -371,41 +375,48 @@ export class Store {
    * @param id - id of the resource to update
    * @returns void
    */
-  async _updateResource(method: string, resource: object, id: string, bypassLoadingList: boolean = false) {
+  async _updateResource(
+    method: string,
+    resource: object,
+    id: string,
+    bypassLoadingList = false,
+  ) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method))
       throw new Error('Error: method not allowed');
 
     const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
-    return this._fetch(method, resource, id, bypassLoadingList).then(async(response) => {
-      if (response.ok) {
-        if (method !== '_LOCAL') {
-          this.clearCache(expandedId);
-        } // clear cache
-        this.getData(expandedId, resource['@context']).then(async () => {
-          // re-fetch data
-          const nestedResources = await this.getNestedResources(resource, id);
-          const resourcesToRefresh =
-            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-          const resourcesToNotify =
-            this.subscriptionIndex.get(expandedId) || [];
+    return this._fetch(method, resource, id, bypassLoadingList).then(
+      async response => {
+        if (response.ok) {
+          if (method !== '_LOCAL') {
+            this.clearCache(expandedId);
+          } // clear cache
+          this.getData(expandedId, resource['@context']).then(async () => {
+            // re-fetch data
+            const nestedResources = await this.getNestedResources(resource, id);
+            const resourcesToRefresh =
+              this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+            const resourcesToNotify =
+              this.subscriptionIndex.get(expandedId) || [];
 
-          return this.refreshResources([
-            ...nestedResources,
-            ...resourcesToRefresh,
-          ]) // refresh related resources
-            .then(resourceIds =>
-              this.notifyResources([
-                expandedId,
-                ...resourceIds,
-                ...resourcesToNotify,
-              ]),
-            ); // notify components
-        });
-        return response.headers?.get('Location') || null;
-      }
-      throw response;
-    });
+            return this.refreshResources([
+              ...nestedResources,
+              ...resourcesToRefresh,
+            ]) // refresh related resources
+              .then(resourceIds =>
+                this.notifyResources([
+                  expandedId,
+                  ...resourceIds,
+                  ...resourcesToNotify,
+                ]),
+              ); // notify components
+          });
+          return response.headers?.get('Location') || null;
+        }
+        throw response;
+      },
+    );
   }
 
   /**
@@ -509,7 +520,11 @@ export class Store {
    *
    * @returns id of the posted resource
    */
-  async setLocalData(resource: object, id: string, bypassLoadingList: boolean = false): Promise<string | null> {
+  async setLocalData(
+    resource: object,
+    id: string,
+    bypassLoadingList = false,
+  ): Promise<string | null> {
     return this._updateResource('_LOCAL', resource, id, bypassLoadingList);
   }
 

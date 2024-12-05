@@ -19,12 +19,12 @@ const TraversalSearchMixin = {
       default: [],
       callback(newValue: []) {
         // if results are refreshed, re-populate
-        console.log("Results changed, repopulate");
+        console.log('Results changed, repopulate');
         if (newValue) {
-          console.log("Results changed, repopulate");
+          console.log('Results changed, repopulate');
           this.populate();
         }
-      }
+      },
     },
   },
   created() {
@@ -36,20 +36,24 @@ const TraversalSearchMixin = {
   },
   async triggerTraversalSearch(): Promise<void> {
     console.log(this.element);
-    console.log("Fields", this.fields);
+    console.log('Fields', this.fields);
     // Get all values from all fields in the form
     // Add that to a values[] arrayconst fields = Object.keys(filters);
-    let fields = parseFieldsString(this.fields);
-    fields.forEach((field) => {
-      console.log(field, this.element.querySelector('[name="'+field+'"] input').value);
+    const fields = parseFieldsString(this.fields);
+    fields.forEach(field => {
+      console.log(
+        field,
+        this.element.querySelector('[name="' + field + '"] input').value,
+      );
       this.values[field] = [];
 
-      let valuesArray = parseFieldsString(this.element.querySelector('[name="'+field+'"] input').value);
-      valuesArray.forEach((value) => {
+      const valuesArray = parseFieldsString(
+        this.element.querySelector('[name="' + field + '"] input').value,
+      );
+      valuesArray.forEach(value => {
         this.values[field].push(value);
       });
     });
-
 
     const query = `SELECT DISTINCT ?user ?first_name ?last_name WHERE {
       ?skillIndex a <https://cdn.startinblox.com/owl#PropertyIndex>;
@@ -60,25 +64,26 @@ const TraversalSearchMixin = {
     } LIMIT 100`;
 
     // TODO: check the URL is a container.
-    const indexDirectory = this.element.attributes["data-src"].value; // data-src value
+    const indexDirectory = this.element.attributes['data-src'].value; // data-src value
 
-    const makeSources = (indexes: string[]) => indexes.map(index => `${indexDirectory}${index}.jsonld`);
+    const makeSources = (indexes: string[]) =>
+      indexes.map(index => `${indexDirectory}${index}.jsonld`);
 
     const bindingsStream = await this.engine.queryBindings(query, {
       lenient: true, // ignore HTTP fails
       sources: makeSources(this.values['skills']),
     });
 
-    console.log("Start querying...");
+    console.log('Start querying...');
 
     bindingsStream.on('data', (binding: any) => {
       const user = {
         '@id': binding.get('user').value,
         first_name: binding.get('first_name').value,
-        last_name: binding.get('last_name').value
-      }
+        last_name: binding.get('last_name').value,
+      };
 
-      console.log("Found new user", user);
+      console.log('Found new user', user);
 
       this.results.push(user);
       console.log(this.results);
@@ -86,7 +91,7 @@ const TraversalSearchMixin = {
     });
 
     bindingsStream.on('end', () => {
-      console.log("Query terminated");
+      console.log('Query terminated');
       console.log(this.results);
     });
 
@@ -95,13 +100,10 @@ const TraversalSearchMixin = {
     });
   },
   attached(): void {
-    this.element.addEventListener(
-        'formChange',
-        () => this.triggerTraversalSearch()
+    this.element.addEventListener('formChange', () =>
+      this.triggerTraversalSearch(),
     );
   },
-}
+};
 
-export {
-    TraversalSearchMixin
-}
+export { TraversalSearchMixin };

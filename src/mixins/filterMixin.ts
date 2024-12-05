@@ -1,14 +1,14 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
-import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 
-const enum FilterMode {
+enum FilterMode {
   Server = 'server',
   Client = 'client',
-  Index = 'index'
-};
+  Index = 'index',
+}
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -24,9 +24,9 @@ const FilterMixin = {
     dataSrcIndex: {
       type: String,
       default: null,
-      callback: async function (value: string) {
-        console.log("Set index src", value);
-      }
+      callback: async (value: string) => {
+        console.log('Set index src', value);
+      },
     },
     filteredBy: {
       type: String,
@@ -46,7 +46,7 @@ const FilterMixin = {
     },
     filteredOn: {
       type: String, // 'server' | 'client' | 'index'
-      default: FilterMode.Client // 'client'
+      default: FilterMode.Client, // 'client'
     },
   },
   created() {
@@ -60,23 +60,23 @@ const FilterMixin = {
     const filteredBy = this.filteredBy;
     this.searchForm = document.getElementById(filteredBy);
 
-    if (this.dataSrcIndex && this.dataSrcIndex !== "") {
+    if (this.dataSrcIndex && this.dataSrcIndex !== '') {
       this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw `#Missing filtered-by attribute`;
       //this.listPostProcessors.push(this.filterCallback.bind(this));
-      
+
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
 
       const update = async (id: string): Promise<void> => {
-        console.log("Update user", id, this.resources);
+        console.log('Update user', id, this.resources);
         this.resources['ldp:contains'].push({
-          "@id": id,
-          "@type": "foaf:user"
+          '@id': id,
+          '@type': 'foaf:user',
         });
         sibStore.clearCache(this.dataSrc);
         this.element.dataset.src = this.dataSrc;
-        console.log("Update user after setLocalData etc", id, this.resources);
+        console.log('Update user after setLocalData etc', id, this.resources);
 
         await sibStore.setLocalData(this.resources, this.dataSrc, true);
         this.populate();
@@ -88,17 +88,27 @@ const FilterMixin = {
         //   }
         //   reRender = false;
         // }, 2000);
-      }
+      };
 
       const reset = (): void => {
         this.empty();
         this.resources['ldp:contains'] = [];
         sibStore.setLocalData(this.resources, this.dataSrc, true);
-      }
+      };
 
-      this.comunicaEngine = new SparqlQueryEngineComunica(this.dataSrcIndex, update, reset);
+      this.comunicaEngine = new SparqlQueryEngineComunica(
+        this.dataSrcIndex,
+        update,
+        reset,
+      );
       this.comunicaEngine.searchFromSearchForm(); // no filter = default case
-      console.log("Search by location for Paris", this.dataSrcIndex, this.dataSrc, this.resources, this);
+      console.log(
+        'Search by location for Paris',
+        this.dataSrcIndex,
+        this.dataSrc,
+        this.resources,
+        this,
+      );
 
       this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
 
@@ -106,7 +116,7 @@ const FilterMixin = {
     } else if (this.isFilteredOnServer() && filteredBy) {
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
-      this.searchForm.addEventListener('formChange', () => 
+      this.searchForm.addEventListener('formChange', () =>
         this.onServerSearchChange(),
       );
     } else {
@@ -119,11 +129,11 @@ const FilterMixin = {
   isIndexBasedSearch(): boolean {
     return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
   },
-  async onIndexSearch(submitEvent: any) : Promise<void> {
+  async onIndexSearch(submitEvent: any): Promise<void> {
     this.resources['ldp:contains'] = []; // empty the previous results
     sibStore.setLocalData(this.resources, this.dataSrc, true);
     if (this.loader) {
-      console.log("Toggle loader hidden", this.loader);
+      console.log('Toggle loader hidden', this.loader);
       this.loader.toggleAttribute('hidden', false);
     }
     const filterValues = submitEvent.target.parentElement.component.value;
@@ -139,18 +149,18 @@ const FilterMixin = {
     }
   },
   async initLocalDataSourceContainerForSearchResults(): Promise<any> {
-    const idField = Array.from(Array(20), () => Math.floor(Math.random() * 36).toString(36)).join('');
+    const idField = Array.from(Array(20), () =>
+      Math.floor(Math.random() * 36).toString(36),
+    ).join('');
     // const id = `store://local.${idField}`;
-    console.log("Init local data source container for search results", idField);
+    console.log('Init local data source container for search results', idField);
     this.dataSrc = `store://local.${idField}/dataSrc/`;
     this.resources = {
-      "@context": "https://cdn.startinblox.com/owl/context.jsonld",
-      "@type": "ldp:Container",
-      "@id": this.dataSrc,
-      "ldp:contains": new Array<any>(),
-      "permissions": [
-        "view"
-      ]
+      '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
+      '@type': 'ldp:Container',
+      '@id': this.dataSrc,
+      'ldp:contains': new Array<any>(),
+      permissions: ['view'],
     };
     await sibStore.setLocalData(this.resources, this.dataSrc);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
@@ -178,12 +188,18 @@ const FilterMixin = {
     }
     return;
   },
-  async applyPostProcessors(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
-    console.log("Applying other post processors", resources);
+  async applyPostProcessors(
+    resources: object[],
+    listPostProcessors: Function[],
+    div: HTMLElement,
+    context: string,
+  ): Promise<void> {
+    console.log('Applying other post processors', resources);
     //TODO: Reorder by "pertinence" ??
 
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
+    if (nextProcessor)
+      await nextProcessor(resources, listPostProcessors, div, context);
   },
   async filterCallback(
     resources: object[],
