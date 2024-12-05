@@ -1,21 +1,19 @@
 const PatternMixin = {
   name: 'pattern-mixin',
-  attributes : {
-    pattern : {
+  attributes: {
+    pattern: {
       type: String,
       callback: function (newValue: string) {
-        this.addToAttributes(newValue, 'pattern')
-      }
+        this.addToAttributes(newValue, 'pattern');
+      },
     },
-    title : {
+    title: {
       type: String,
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'title');
-      }
+      },
     },
   },
-}
+};
 
-export {
-  PatternMixin
-}
+export { PatternMixin };

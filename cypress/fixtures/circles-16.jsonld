@@ -10,10 +10,6 @@
     "@id": "https://ldp-server.test/users/matthieu/"
   },
   "@type": "hd:circle",
-  "permissions": [
-    "view",
-    "change",
-    "delete"
-  ],
+  "permissions": ["view", "change", "delete"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

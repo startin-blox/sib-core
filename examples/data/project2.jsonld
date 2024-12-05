@@ -9,12 +9,6 @@
   "jabberID": "fusee@conference.happy-dev.fr",
   "jabberRoom": true,
   "@type": "doap:project",
-  "permissions": [
-    "view",
-    "control",
-    "add",
-    "delete",
-    "change"
-  ],
+  "permissions": ["view", "control", "add", "delete", "change"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

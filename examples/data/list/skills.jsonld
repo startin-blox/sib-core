@@ -7,8 +7,7 @@
       "name": "HTML",
       "order": 1,
       "@type": "hd:skill",
-      "permissions": [
-      ]
+      "permissions": []
     },
     {
       "@id": "/examples/data/list/skill-2.jsonld",
@@ -21,69 +20,44 @@
       "name": "Javascript",
       "order": 2,
       "@type": "hd:skill",
-      "permissions": [
-      ]
+      "permissions": []
     },
     {
       "@id": "/examples/data/list/skill-4.jsonld",
       "name": "DevOps",
       "order": 10,
       "@type": "hd:skill",
-      "permissions": [
-        "view",
-        "change",
-        "control",
-        "delete"
-      ]
+      "permissions": ["view", "change", "control", "delete"]
     },
     {
       "@id": "/examples/data/list/skill-5.jsonld",
       "name": "PHP",
       "order": 15,
       "@type": "hd:skill",
-      "permissions": [
-      ]
+      "permissions": []
     },
     {
       "@id": "/examples/data/list/skill-6.jsonld",
       "name": "Git",
       "order": 20,
       "@type": "hd:skill",
-      "permissions": [
-        "view",
-        "change",
-        "control",
-        "delete"
-      ]
+      "permissions": ["view", "change", "control", "delete"]
     },
     {
       "@id": "/examples/data/list/skill-7.jsonld",
       "name": "Python",
       "order": 27,
       "@type": "hd:skill",
-      "permissions": [
-        "view",
-        "change",
-        "control",
-        "delete"
-      ]
+      "permissions": ["view", "change", "control", "delete"]
     },
     {
       "@id": "/examples/data/list/skill-8.jsonld",
       "name": "Node",
       "order": 30,
       "@type": "hd:skill",
-      "permissions": [
-        "view",
-        "change",
-        "control",
-        "delete"
-      ]
+      "permissions": ["view", "change", "control", "delete"]
     }
   ],
-  "permissions": [
-    "view",
-    "add"
-  ],
+  "permissions": ["view", "add"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

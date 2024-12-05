@@ -1,10 +1,7 @@
 {
   "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "id": "/examples/data/list/universite/courses.jsonld",
-  "type": [
-    "ldp:Container",
-    "ldp:BasicContainer"
-  ],
+  "type": ["ldp:Container", "ldp:BasicContainer"],
   "ldp:contains": [
     {
       "id": "universite/courses/concevoir-une-oasis-partie-2-la-creation-du-collectif-0",

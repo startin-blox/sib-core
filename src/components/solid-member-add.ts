@@ -1,13 +1,13 @@
-import { Sib } from '../libs/Sib';
-import { base_context, store } from '../libs/store/store';
-import { NextMixin } from '../mixins/nextMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
+import { Sib } from '../libs/Sib.ts';
+import { base_context, store } from '../libs/store/store.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { ValidationMixin } from '../mixins/validationMixin.ts';
 
-import { html, render } from 'lit-html';
-import { ContextMixin } from '../mixins/contextMixin';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
-import { StoreMixin } from '../mixins/storeMixin';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { ContextMixin } from '../mixins/contextMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
 export const SolidMemberAdd = {
   name: 'solid-member-add',
@@ -30,11 +30,11 @@ export const SolidMemberAdd = {
     },
     classSubmitButton: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     orderAsc: {
       type: String,
-      default: undefined
+      default: undefined,
     },
   },
   initialState: {
@@ -53,45 +53,56 @@ export const SolidMemberAdd = {
       });
     }
   },
-  async addMember(e: Event): Promise<void> {
+  addMember(e: Event) {
     if (!this.dataSrc || !this.resourceId) return;
     e.preventDefault();
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async addMembership() {
     this.currentMembers.push(JSON.parse(this.dataTargetSrc));
-    let currentRes = {
-      "@context": this.context,
-      "user_set": this.currentMembers
-    }
+    const currentRes = {
+      '@context': this.context,
+      user_set: this.currentMembers,
+    };
 
     return store.patch(currentRes, this.resourceId).then(response => {
       if (!response) {
-        console.warn(`Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`);
+        console.warn(
+          `Error while adding user ${this.dataTargetSrc} to group ${this.resourceId}`,
+        );
         return;
       }
 
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberAdded', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.addMembership();
   },
   changeSelectedUser(e: Event) {
     if (!e.target || !(e.target as HTMLElement).firstElementChild) return;
 
     //FIXME: disgusting way to get the @id of the autocomplete slimselect widget value
-    this.dataTargetSrc = ((e.target as HTMLElement).firstElementChild as HTMLSelectElement)?.value;
+    this.dataTargetSrc = (
+      (e.target as HTMLElement).firstElementChild as HTMLSelectElement
+    )?.value;
   },
   async populate(): Promise<void> {
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    const memberPredicate = store.getExpandedPredicate(
+      'user_set',
+      base_context,
+    );
     // Here we now retrieve an array of proxy, when we would like an array of @ids only
     this.currentMembers = await this.resource[memberPredicate];
 
@@ -99,9 +110,11 @@ export const SolidMemberAdd = {
       this.currentMembers = [this.currentMembers];
     }
     // In each item in this.currentMembers, I'd like to return only their @id and store it in this.currentMembers
-    this.currentMembers = this.currentMembers.map(member => { return {"@id": member['@id'] } });
+    this.currentMembers = this.currentMembers.map(member => {
+      return { '@id': member['@id'] };
+    });
 
-    let button = html`
+    const button = html`
       <solid-ac-checker data-src="${this.dataSrc}"
         permission="acl:Write"
       >
@@ -127,7 +140,7 @@ export const SolidMemberAdd = {
       </solid-ac-checker>
       `;
     render(button, this.element);
-  }
+  },
 };
 
 Sib.register(SolidMemberAdd);

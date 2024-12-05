@@ -2,167 +2,220 @@
  * Spread function from open-wc/lit-helpers
  * More informations here: https://open-wc.org/developing/lit-helpers.html
  */
-import {html, TemplateResult, directive, noChange } from 'lit-html';
+
+import {
+  type AttributePart,
+  type BooleanAttributePart,
+  type ChildPart,
+  type ElementPart,
+  type EventPart,
+  type PropertyPart,
+  type TemplateResult,
+  html,
+  noChange,
+} from 'lit';
+
+import {
+  Directive,
+  type PartInfo,
+  PartType,
+  directive,
+} from 'lit/directive.js';
+
+type SpreadPartType =
+  | ChildPart
+  | AttributePart
+  | BooleanAttributePart
+  | EventPart
+  | PropertyPart
+  | ElementPart;
 
 const prevCache = new WeakMap();
-export const spread = directive((spreadData) => (part) => {
-  const prevData = prevCache.get(part);
-  if (prevData === spreadData) {
-    return;
+
+class SpreadDirective extends Directive {
+  spreadData: any;
+
+  constructor(partInfo: PartInfo) {
+    super(partInfo);
+    this.spreadData = null;
   }
-  prevCache.set(part, spreadData);
 
-  if (spreadData) {
-    for (const key in spreadData) {
-      const value = spreadData[key];
-      if (value === noChange) continue;
+  render(spreadData: any) {
+    this.spreadData = spreadData;
+    return noChange;
+  }
 
-      const prefix = key[0];
-      const { element } = part.committer;
+  override update(part: SpreadPartType, [spreadData]: any) {
+    const prevData = prevCache.get(part);
 
-      if (prefix === '@') {
-        const prevHandler = prevData && prevData[key];
-        if (!prevHandler || prevHandler !== value) {
-          const name = key.slice(1);
-          if (prevHandler) element.removeEventListener(name, prevHandler);
-          element.addEventListener(name, value);
+    if (prevData === spreadData) {
+      return noChange;
+    }
+
+    let element: HTMLElement;
+    prevCache.set(part, spreadData);
+
+    if (part.type === PartType.ATTRIBUTE || part.type === PartType.PROPERTY) {
+      element = part.element;
+    } else {
+      console.warn(
+        'Unsupported part type or missing element, skipping update.',
+      );
+      return noChange;
+    }
+
+    if (spreadData) {
+      for (const key in spreadData) {
+        const value = spreadData[key];
+        if (value === noChange) continue;
+
+        const prefix = key[0];
+
+        // Handle event listeners (e.g., @click)
+        if (prefix === '@') {
+          const prevHandler = prevData?.[key];
+          if (!prevHandler || prevHandler !== value) {
+            const name = key.slice(1); // Extract event name
+            if (prevHandler) element.removeEventListener(name, prevHandler);
+            element.addEventListener(name, value);
+          }
+          continue;
         }
-        continue;
-      }
-      if (prefix === '.') {
-        if (!prevData || prevData[key] !== value) {
-          element[key.slice(1)] = value;
+
+        // Handle properties (e.g., .value)
+        if (prefix === '.') {
+          if (!prevData || prevData[key] !== value) {
+            element[key.slice(1)] = value;
+          }
+          continue;
         }
-        continue;
-      }
-      if (prefix === '?') {
+
+        // Handle boolean attributes (e.g., ?disabled)
+        if (prefix === '?') {
+          const attrName = key.slice(1); // Extract attribute name
+          if (!prevData || prevData[key] !== value) {
+            if (value) {
+              element.setAttribute(attrName, '');
+            } else {
+              element.removeAttribute(attrName);
+            }
+          }
+          continue;
+        }
+
+        // Handle regular attributes (e.g., class, id)
         if (!prevData || prevData[key] !== value) {
-          const name = key.slice(1);
-          if (value) {
-            element.setAttribute(name, '');
+          if (value != null) {
+            element.setAttribute(key, String(value));
           } else {
-            element.removeAttribute(name);
+            element.removeAttribute(key);
           }
         }
-        continue;
       }
-      if (!prevData || prevData[key] !== value) {
-        if (value != null) {
-          element.setAttribute(key, String(value));
-        } else {
+    }
+
+    // Remove any old attributes or event listeners no longer in spreadData
+    if (prevData) {
+      for (const key in prevData) {
+        if (!spreadData || !(key in spreadData)) {
+          const prefix = key[0];
+
+          if (prefix === '@') {
+            element.removeEventListener(key.slice(1), prevData[key]);
+            continue;
+          }
+          if (prefix === '.') {
+            element[key.slice(1)] = undefined;
+            continue;
+          }
+          if (prefix === '?') {
+            element.removeAttribute(key.slice(1));
+            continue;
+          }
           element.removeAttribute(key);
         }
       }
     }
+
+    return noChange;
   }
+}
 
-  if (prevData) {
-    for (const key in prevData) {
-      if (!spreadData || !(key in spreadData)) {
-        const prefix = key[0];
-        const { element } = part.committer;
-
-        if (prefix === '@') {
-          element.removeEventListener(key.slice(1), prevData[key]);
-          continue;
-        }
-        if (prefix === '.') {
-          element[key.slice(1)] = undefined;
-          continue;
-        }
-        if (prefix === '?') {
-          element.removeAttribute(key.slice(1));
-          continue;
-        }
-        element.removeAttribute(key);
-      }
-    }
-  }
-});
-
+export const spread = directive(SpreadDirective);
 
 interface CachedNeedlessValue {
-    value: any;
-    index: number;
+  value: any;
+  index: number;
 }
 
 interface CachedTemplateStrings {
-    strings: string[];
-    needlessValues: CachedNeedlessValue[];
+  strings: TemplateStringsArray;
+  needlessValues: CachedNeedlessValue[];
 }
 
-function dropIndices(arr: any[], needlessValues: CachedNeedlessValue[]): any[] {
-    const newArr: any[] = [];
-    let j = 0;
+const templateStringsCache = new WeakMap<
+  TemplateStringsArray,
+  CachedTemplateStrings[]
+>();
 
-    for (let i = 0, n = arr.length; i < n; ++i) {
-        if (needlessValues[j].index === i) {
-            ++j;
-        } else {
-            newArr.push(arr[i]);
-        }
-    }
-
-    return newArr;
+function filterOutNeedlessValues(
+  arr: any[],
+  needlessValues: CachedNeedlessValue[],
+): any[] {
+  return arr.filter((_, i) => !needlessValues.some(nv => nv.index === i));
 }
 
-const templateStringsCache = new WeakMap<TemplateStringsArray, CachedTemplateStrings[]>();
+export function preHTML(
+  strings: TemplateStringsArray,
+  ...values: any[]
+): TemplateResult {
+  let cachedStrings = templateStringsCache.get(strings);
 
-// Convert dynamic tags to template strings
-// example: <${'div'}>${'this is example'}</${'div'}> => <div>${'this is example'}</div>
-export function preHTML(strings: TemplateStringsArray, ...values: any[]): TemplateResult {
-    // check cache !important return equal link at first argument
-    let cachedStrings = templateStringsCache.get(strings) as CachedTemplateStrings[];
-    if (cachedStrings) {
-        for (let i = 0, n = cachedStrings.length; i < n; ++i) {
-            const needlessValues = cachedStrings[i].needlessValues;
-            let isSame = true;
-            for (let ii = 0, nn = needlessValues.length; ii < nn; ++ii) {
-                if (values[needlessValues[ii].index] !== needlessValues[ii].value) {
-                    isSame = false;
-                    break;
-                }
-            }
+  if (cachedStrings) {
+    for (const cached of cachedStrings) {
+      const { needlessValues } = cached;
+      const isSame = needlessValues.every(nv => values[nv.index] === nv.value);
 
-            if (isSame) {
-                return html(
-                    cachedStrings[i].strings as any,
-                    ...dropIndices(values, needlessValues)
-                );
-            }
-        }
+      if (isSame) {
+        // Return cached template result if values match
+        return html(
+          cached.strings,
+          ...filterOutNeedlessValues(values, needlessValues),
+        );
+      }
+    }
+  }
+
+  // No match found, so we need to create new template strings and cache them
+  const needlessValues: CachedNeedlessValue[] = [];
+  const newStrings: string[] = [];
+
+  for (let i = 0; i < strings.length; i++) {
+    let str = strings[i];
+
+    while (str.endsWith('<') || (str.length >= 2 && str.endsWith('</'))) {
+      needlessValues.push({ value: values[i], index: i });
+      str += values[i] + strings[++i];
     }
 
-    const needlessValues: CachedNeedlessValue[] = [];
-    const newStrings: string[] = [];
+    newStrings.push(str);
+  }
 
-    let str: string;
-    for (let i = 0, n = strings.length; i < n; ++i) {
-        str = strings[i];
+  // Convert newStrings back to TemplateStringsArray type
+  const finalStrings = Object.assign([...newStrings], { raw: strings.raw });
 
-        while (
-            str[str.length - 1] === '<' // open tag
-            || (str[str.length - 2] === '<' && str[str.length - 1] === '/') // close tag
-        ) {
-            needlessValues.push({
-                value: values[i],
-                index: i,
-            });
-            str += values[i] + strings[++i];
-        }
+  if (!cachedStrings) {
+    cachedStrings = [];
+    templateStringsCache.set(strings, cachedStrings);
+  }
 
-        newStrings.push(str);
-    }
+  cachedStrings.push({
+    strings: finalStrings as TemplateStringsArray,
+    needlessValues,
+  });
 
-    if (!cachedStrings) {
-        cachedStrings = [];
-        templateStringsCache.set(strings, cachedStrings);
-    }
-
-    cachedStrings.push({
-        strings: newStrings,
-        needlessValues,
-    });
-
-    return html(newStrings as any, ...dropIndices(values, needlessValues));
+  return html(
+    finalStrings as TemplateStringsArray,
+    ...filterOutNeedlessValues(values, needlessValues),
+  );
 }

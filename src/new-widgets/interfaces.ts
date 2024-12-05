@@ -1,11 +1,11 @@
-import type { MixinStaticInterface } from '../libs/interfaces';
+import type { MixinStaticInterface } from '../libs/interfaces.ts';
 
 export interface Template {
-  template: Function
-  dependencies: MixinStaticInterface[]
+  template: Function;
+  dependencies: MixinStaticInterface[];
 }
 
 export interface WidgetMixinsInterface {
-  templateMixin: Template
-  mixins: MixinStaticInterface[]
+  templateMixin: Template;
+  mixins: MixinStaticInterface[];
 }

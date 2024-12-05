@@ -1,11 +1,12 @@
-import { Sib } from '../libs/Sib';
-import { base_context, store } from '../libs/store/store';
-import { NextMixin } from '../mixins/nextMixin';
-import { ValidationMixin } from '../mixins/validationMixin';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { Sib } from '../libs/Sib.ts';
+import { base_context, store } from '../libs/store/store.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { ValidationMixin } from '../mixins/validationMixin.ts';
 
-import { html, render } from 'lit-html';
-import { ContextMixin } from '../mixins/contextMixin';
+import { html, render } from 'lit';
+import { trackRenderAsync } from '../logger.ts';
+import { ContextMixin } from '../mixins/contextMixin.ts';
 
 export const SolidMemberDelete = {
   name: 'solid-member-delete',
@@ -33,12 +34,12 @@ export const SolidMemberDelete = {
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) {
           this.planRender();
-        } 
+        }
       },
     },
     dataUnknownMember: {
       type: String,
-      default: "Given user is not a member of this group",
+      default: 'Given user is not a member of this group',
       callback: function (newValue: string, oldValue: string) {
         if (newValue !== oldValue) this.planRender();
       },
@@ -62,20 +63,23 @@ export const SolidMemberDelete = {
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    let memberPredicate = store.getExpandedPredicate('user_set', base_context);
+    const memberPredicate = store.getExpandedPredicate(
+      'user_set',
+      base_context,
+    );
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
       this.currentMembers = [this.currentMembers];
     }
 
-    this.currentMembers = this.currentMembers.map((member) => {
-      return { "@id": member['@id'] };
+    this.currentMembers = this.currentMembers.map(member => {
+      return { '@id': member['@id'] };
     });
 
     // Check if current user is member of this group
     this.isMember = this.currentMembers
-      ? this.currentMembers.some((member) => member['@id'] === this.dataTargetSrc)
+      ? this.currentMembers.some(member => member['@id'] === this.dataTargetSrc)
       : false;
   },
   planRender() {
@@ -87,45 +91,50 @@ export const SolidMemberDelete = {
       });
     }
   },
-  async removeMember(e: Event): Promise<void> {
+  removeMember(e: Event) {
     e.stopPropagation();
     if (!this.dataSrc) return;
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   async deleteMembership() {
-    let userSet = this.currentMembers.filter((value) => {
+    const userSet = this.currentMembers.filter(value => {
       const userId = value['@id'];
-      if (userId == this.dataTargetSrc) 
-        return false;
-      else return true;
+      if (userId === this.dataTargetSrc) return false;
+      return true;
     });
 
-    let currentRes = {
-      "@context": this.context,
-      "user_set": userSet
-    }
+    const currentRes = {
+      '@context': this.context,
+      user_set: userSet,
+    };
     return store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
-        console.warn(`Error while removing user ${this.dataTargetSrc} from group ${this.dataSrc}`);
+        console.warn(
+          `Error while removing user ${this.dataTargetSrc} from group ${this.dataSrc}`,
+        );
         return;
       }
       this.goToNext(null);
-      const eventData = { detail: { resource: { "@id": this.dataSrc } }, bubbles: true };
+      const eventData = {
+        detail: { resource: { '@id': this.dataSrc } },
+        bubbles: true,
+      };
       this.element.dispatchEvent(new CustomEvent('save', eventData));
       this.element.dispatchEvent(new CustomEvent('memberRemoved', eventData)); // Deprecated. To remove in 0.15
       this.planRender();
-    })
+    });
   },
-  validateModal() { // Send method to validationMixin, used by the dialog modal and performAction method
+  validateModal() {
+    // Send method to validationMixin, used by the dialog modal and performAction method
     return this.deleteMembership();
   },
   update() {
     this.render();
   },
-  async render(): Promise<void> {
+  render: trackRenderAsync(async function (): Promise<void> {
     // await this.replaceAttributesData(false);
     await this.populate();
-    let button = html``
+    let button = html``;
     if (this.isMember) {
       button = html`
         <solid-ac-checker data-src="${this.dataSrc}"
@@ -134,18 +143,16 @@ export const SolidMemberDelete = {
             >
           <button
             @click=${this.removeMember.bind(this)}>
-              ${this.dataLabel || this.t("solid-delete-member.button")}
+              ${this.dataLabel || this.t('solid-delete-member.button')}
           </button>
           ${this.getModalDialog()}
         </solid-ac-checker>
         `;
     } else {
-      button = html`
-        <span>${this.dataUnknownMember || this.t("solid-member-unknown.span")}</span>
-      `;
+      button = html`<span>${this.dataUnknownMember || this.t('solid-member-unknown.span')}</span>`;
     }
     render(button, this.element);
-  }
+  }, 'SolidMemberDelete:render'),
 };
 
 Sib.register(SolidMemberDelete);

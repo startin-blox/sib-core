@@ -1,37 +1,43 @@
-import { StoreMixin } from '../../mixins/storeMixin';
-import { store } from '../../libs/store/store';
+import { store } from '../../libs/store/store.ts';
+import { StoreMixin } from '../../mixins/storeMixin.ts';
 
-import { html } from 'lit-html';
+import { html } from 'lit';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
 
 const EditableMixin = {
   name: 'editable-mixin',
-  use: [ StoreMixin ], // used to get context
+  use: [StoreMixin], // used to get context
   attributes: {
     editable: {
       type: Boolean,
       default: null,
       callback: function (newValue: boolean) {
-        if (newValue !== null) this.listAttributes['editable'] = true;
-      }
+        if (newValue !== null) this.listAttributes.editable = true;
+      },
     },
     valueId: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
+    buttonLabel: {
+      type: String,
+      default: 'Modifier',
+    },
   },
   created() {
-    this.listTemplateAdditions.push(this.addEditButton.bind(this));
+    this.listTemplateAdditions.attach(
+      this.addEditButton.bind(this),
+      'EditableMixin:addEditButton',
+    );
   },
-  addEditButton(template, listTemplateAdditions: Function[]) {
+  addEditButton(template, listTemplateAdditions: PostProcessorRegistry) {
     let newTemplate: any = null;
     if (this.editable !== null) {
-      newTemplate = html`
-        ${template}
-        <button @click=${this.activateEditableField.bind(this)}>Modifier</button>
-      `;
+      newTemplate = html`${template}<button @click=${this.activateEditableField.bind(this)}>${this.buttonLabel}</button>`;
     }
     const nextProcessor = listTemplateAdditions.shift();
-    if(nextProcessor) nextProcessor(newTemplate || template, listTemplateAdditions);
+    if (nextProcessor)
+      nextProcessor(newTemplate || template, listTemplateAdditions);
   },
   activateEditableField(e: Event): void {
     const editableField = this.element.querySelector('[data-editable]');
@@ -43,7 +49,9 @@ const EditableMixin = {
     editButton.toggleAttribute('disabled', true);
 
     // Save on focusout
-    editableField.addEventListener('focusout', () => this.save(editableField, editButton));
+    editableField.addEventListener('focusout', () =>
+      this.save(editableField, editButton),
+    );
   },
   save(editableField: HTMLElement, editButton: HTMLElement) {
     editableField.toggleAttribute('contenteditable', false);
@@ -59,8 +67,6 @@ const EditableMixin = {
 
     store.patch(resource, this.valueId);
   },
-}
+};
 
-export {
-  EditableMixin
-}
+export { EditableMixin };

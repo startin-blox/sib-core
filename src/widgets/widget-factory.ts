@@ -1,23 +1,23 @@
-import { BaseWidget } from './baseWidget';
-import { defineComponent } from '../libs/helpers';
+import { defineComponent } from '../libs/helpers.ts';
+import { BaseWidget } from './baseWidget.ts';
 
 export const widgetFactory = (
   tagName: string,
   customTemplate: string,
-  childTemplate: string = '',
+  childTemplate = '',
   callback?: (element: Element) => void,
 ) => {
   const registered = customElements.get(tagName);
   if (registered) return registered;
   const cls = class extends BaseWidget {
-    async render() {
+    override async render() {
       await super.render();
       if (callback) callback(this);
     }
-    get template(): string {
+    override get template(): string {
       return customTemplate;
     }
-    get childTemplate(): string {
+    override get childTemplate(): string {
       return childTemplate;
     }
   };

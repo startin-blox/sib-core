@@ -1,4 +1,4 @@
-import { Compositor } from '../../../src/libs/Compositor';
+import { Compositor } from '../../../src/libs/Compositor.ts';
 
 const MixinTestTwo = {
   name: 'mixin2',
@@ -73,7 +73,7 @@ const component = {
     },
   },
   get accessorTest() {
-    return 'hello ' + this.accessorValue;
+    return `hello ${this.accessorValue}`;
   },
   created() {
     console.log('created3');
@@ -92,7 +92,7 @@ const component = {
   },
 };
 
-describe('Mixin Compositor', function() {
+describe('Mixin Compositor', () => {
   it('merge mixin', () => {
     const result = Compositor.mergeMixin(component);
     expect(result.length).eq(2);
@@ -133,11 +133,11 @@ describe('Mixin Compositor', function() {
     const hookNames = Reflect.ownKeys(result);
 
     expect(hookNames.length).eq(3);
-    hookNames.forEach(hookName => {
-      result[hookName].forEach(hook => {
+    for (const hookName of hookNames) {
+      for (const hook of result[hookName]) {
         expect(typeof hook).eq('function');
-      });
-    });
+      }
+    }
 
     expect(result.created.length).eq(3);
     expect(result.attached.length).eq(2);
@@ -157,22 +157,22 @@ describe('Mixin Compositor', function() {
     const accessors = Object.keys(result);
 
     expect(accessors.length).eq(1);
-    accessors.forEach(accessorName => {
+    for (const accessorName of accessors) {
       expect(typeof result[accessorName].get).eq('function');
       expect(typeof result[accessorName].set).eq('function');
-    });
+    }
 
-    expect(result['accessorTest'].get.toString()).eq(
+    expect(result.accessorTest.get.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
         component,
         'accessorTest',
-      )!.get!.toString(),
+      )?.get?.toString(),
     );
-    expect(result['accessorTest'].set.toString()).eq(
+    expect(result.accessorTest.set.toString()).eq(
       Reflect.getOwnPropertyDescriptor(
         MixinTestOne,
         'accessorTest',
-      )!.set!.toString(),
+      )?.set?.toString(),
     );
   });
 
@@ -185,9 +185,9 @@ describe('Mixin Compositor', function() {
     const methodNames = Array.from(result.keys());
 
     expect(methodNames.length).eq(4);
-    methodNames.forEach(methodName => {
+    for (const methodName of methodNames) {
       expect(typeof result.get(methodName)).eq('function');
-    });
+    }
 
     expect(result.get('methodA').toString()).eq(
       MixinTestOne.methodA.toString(),

@@ -1,28 +1,28 @@
 import {
-  uniqID,
-  stringToDom,
-  setDeepProperty,
-  parseFieldsString,
-  findClosingBracketMatchIndex,
-  evalTemplateString,
   AsyncIterableBuilder,
-} from '../../../src/libs/helpers';
+  evalTemplateString,
+  findClosingBracketMatchIndex,
+  parseFieldsString,
+  setDeepProperty,
+  stringToDom,
+  uniqID,
+} from '../../../src/libs/helpers.ts';
 
 /**
  * uniqID
  */
-describe('uniqID', function() {
+describe('uniqID', () => {
   it('returns an id', () => {
-    let test = uniqID();
+    const test = uniqID();
     expect(test).to.match(/[_].{10}/g);
   });
   it('returns a different id 50 times in a row', () => {
-    let ids: string[] = [];
+    const ids: string[] = [];
     const arraySize = 50;
     for (let index = 0; index < arraySize; index++) {
       ids.push(uniqID());
     }
-    let noDuplicates = [...new Set(ids)];
+    const noDuplicates = [...new Set(ids)];
     expect(noDuplicates.length).to.eq(arraySize);
   });
 });
@@ -30,7 +30,7 @@ describe('uniqID', function() {
 /**
  * stringToDom
  */
-describe('stringToDom', function() {
+describe('stringToDom', () => {
   it('returns a fragment', () => {
     const fragment = stringToDom('<h1>Test element</h1>');
     expect(fragment.constructor.name).to.eq('DocumentFragment');
@@ -54,7 +54,7 @@ describe('stringToDom', function() {
 /**
  * setDeepProperty
  */
-describe('setDeepProperty', function() {
+describe('setDeepProperty', () => {
   it('set properties', () => {
     const object = {
       name: 'test',
@@ -91,7 +91,7 @@ describe('setDeepProperty', function() {
 /**
  * parseFieldsString
  */
-describe('parseFieldsString', function() {
+describe('parseFieldsString', () => {
   it('returns first level of fields', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -108,7 +108,7 @@ describe('parseFieldsString', function() {
 /**
  * findClosingBracketMatchIndex
  */
-describe('findClosingBracketMatchIndex', function() {
+describe('findClosingBracketMatchIndex', () => {
   it('throw error', () => {
     const fields =
       'field1, field2(field3,field4, field5( field6, field7) ),  field8,field9';
@@ -140,7 +140,7 @@ describe('findClosingBracketMatchIndex', function() {
 /**
  * evalTemplateString
  */
-describe('evalTemplateString', function() {
+describe('evalTemplateString', () => {
   it('render template with values', async () => {
     const values = {
       val1: 'test 1',
@@ -177,9 +177,7 @@ describe('evalTemplateString', function() {
     </div>
     `;
     const promise = new Cypress.Promise((resolve, reject) => {
-      evalTemplateString(template, values)
-        .then(resolve)
-        .catch(reject);
+      evalTemplateString(template, values).then(resolve).catch(reject);
     });
     promise.finally(() => {
       expect(promise.isRejected).to.be.true;
@@ -265,7 +263,7 @@ describe('evalTemplateString', function() {
 //         }
 //       ]
 //     };
-    
+
 //     const newValue = transformArrayToContainer(value);
 //     expect(newValue).to.deep.equal({
 //       "@id": "myresource",
@@ -296,27 +294,27 @@ describe('evalTemplateString', function() {
 //     })
 //   })
 // })
-import sleep from '../sleep'
-describe('AsyncIterableBuilder',  () => {
+import sleep from '../sleep.ts';
+describe('AsyncIterableBuilder', () => {
   it('create an asyncIterable', async () => {
-    const { iterable, next } = new AsyncIterableBuilder<number>()
-    next(1)
-    next(2)
-    const values: number[] = []
-    let done = false
-    ;(async () => {
+    const { iterable, next } = new AsyncIterableBuilder<number>();
+    next(1);
+    next(2);
+    const values: number[] = [];
+    let done = false;
+    (async () => {
       for await (const number of iterable) {
-        values.push(number)
+        values.push(number);
       }
-      done = true
-    })()
-    await sleep()
-    expect(values).to.deep.eq([1, 2])
-    expect(done).to.be.false
-    next(3)
-    next(4, true)
-    await sleep()
-    expect(values).to.deep.eq([1, 2, 3, 4])
-    expect(done).to.be.true
-  })
-})
+      done = true;
+    })();
+    await sleep();
+    expect(values).to.deep.eq([1, 2]);
+    expect(done).to.be.false;
+    next(3);
+    next(4, true);
+    await sleep();
+    expect(values).to.deep.eq([1, 2, 3, 4]);
+    expect(done).to.be.true;
+  });
+});

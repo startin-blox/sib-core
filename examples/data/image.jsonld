@@ -4,11 +4,5 @@
   "description": "basket containing apples, oranges, kiwis, bananas, pineapples\u2026",
   "picture": "../../upload/fruits.jpg",
   "@context": "https://cdn.startinblox.com/owl/context.jsonld",
-  "permissions": [
-    "view",
-    "control",
-    "add",
-    "delete",
-    "change"
-  ]
+  "permissions": ["view", "control", "add", "delete", "change"]
 }

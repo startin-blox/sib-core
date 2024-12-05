@@ -170,11 +170,5 @@
       "get_full_name": "rdfs:label"
     }
   ],
-  "permissions": [
-    "change",
-    "control",
-    "view",
-    "delete",
-    "add"
-  ]
+  "permissions": ["change", "control", "view", "delete", "add"]
 }

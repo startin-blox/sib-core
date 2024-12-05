@@ -1,7 +1,7 @@
 // TODO: We should make tests run independently of one another
 describe('solid-widget', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
-    cy.visit('/examples/e2e/solid-widget.html')
+    cy.visit('/examples/e2e/solid-widget.html');
   });
 
   // Display
@@ -45,7 +45,6 @@ describe('solid-widget', { testIsolation: false }, function () {
     cy.get('#display-5')
       .find('custom-widget-5 span[name=value]')
       .should('have.text', 'next-view');
-
   });
 
   // Form
@@ -57,36 +56,45 @@ describe('solid-widget', { testIsolation: false }, function () {
     cy.get('#form-1').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
-          "email": "new-email@example.com"
-        })
-      })
+          email: 'new-email@example.com',
+        });
+      });
     });
   });
 
   it('form edition', () => {
-    cy.get('#form-2')
-      .find('custom-form-widget-2 input');
+    cy.get('#form-2').find('custom-form-widget-2 input');
 
     cy.get('#form-2').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
-          "email": "test-user@example.com",
-          "@id": "/examples/data/list/user-1.jsonld",
-        })
-      })
+          email: 'test-user@example.com',
+          '@id': '/examples/data/list/user-1.jsonld',
+        });
+      });
     });
   });
 
   it('form nested', () => {
     cy.get('#form-3')
-      .find('custom-form-widget-3').eq(0)
+      .find('custom-form-widget-3')
+      .eq(0)
       .find('solid-form')
-      .should('have.attr', 'data-src', '/examples/data/nested-forms/batch-1.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/nested-forms/batch-1.jsonld',
+      );
 
     cy.get('#form-3')
-      .find('custom-form-widget-3').eq(1)
+      .find('custom-form-widget-3')
+      .eq(1)
       .find('solid-form')
-      .should('have.attr', 'data-src', '/examples/data/nested-forms/batch-2.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/nested-forms/batch-2.jsonld',
+      )
       .find('input[name=title]')
       .type(' automatique');
 
@@ -94,21 +102,22 @@ describe('solid-widget', { testIsolation: false }, function () {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
           batches: {
-            "ldp:contains": [
+            'ldp:contains': [
               {
-                title: "Développement",
-                "@id": "/examples/data/nested-forms/batch-1.jsonld"
+                title: 'Développement',
+                '@id': '/examples/data/nested-forms/batch-1.jsonld',
               },
               {
-                title: "Déploiement automatique",
-                "@id": "/examples/data/nested-forms/batch-2.jsonld"
-              }
+                title: 'Déploiement automatique',
+                '@id': '/examples/data/nested-forms/batch-2.jsonld',
+              },
             ],
-            "@id": "/examples/data/nested-forms/customer-invoice-1-batches.jsonld",
+            '@id':
+              '/examples/data/nested-forms/customer-invoice-1-batches.jsonld',
           },
-          "@id": "/examples/data/nested-forms/customer-invoice-1.jsonld"
-        })
-      })
+          '@id': '/examples/data/nested-forms/customer-invoice-1.jsonld',
+        });
+      });
     });
   });
 

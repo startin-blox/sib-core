@@ -1,19 +1,20 @@
-import { Sib } from '../libs/Sib';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
-import { ContextMixin } from '../mixins/contextMixin';
-import type { WidgetInterface } from '../mixins/interfaces';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { Sib } from '../libs/Sib.ts';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
+import { ContextMixin } from '../mixins/contextMixin.ts';
+import type { WidgetInterface } from '../mixins/interfaces.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { uniqID } from '../libs/helpers';
-import type { SearchQuery, FilterEventOptions } from '../libs/interfaces';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { uniqID } from '../libs/helpers.ts';
+import type { FilterEventOptions, SearchQuery } from '../libs/interfaces.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidFormSearch = {
   name: 'solid-form-search',
   use: [WidgetMixin, AttributeBinderMixin, ContextMixin],
-  debounceTimeout: undefined as (number | undefined),
+  debounceTimeout: undefined as number | undefined,
   attributes: {
     defaultWidget: {
       type: String,
@@ -28,7 +29,7 @@ export const SolidFormSearch = {
     },
     submitWidget: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     classSubmitButton: {
       type: String,
@@ -38,13 +39,13 @@ export const SolidFormSearch = {
       type: String,
       default: null,
       callback: function (value: boolean) {
-        if (value === null) this.populate()
-      }
+        if (value === null) this.populate();
+      },
     },
     debounce: {
       type: Number,
-      default: 0 // Avoiding blink effect with static values
-    }
+      default: 0, // Avoiding blink effect with static values
+    },
   },
   initialState: {
     error: '',
@@ -63,10 +64,10 @@ export const SolidFormSearch = {
   },
   get value(): SearchQuery {
     const values: SearchQuery = {};
-    this.widgets.forEach((widget) => {
-      if (widget == null) return;
+    for (const widget of this.widgets) {
+      if (widget == null) continue;
       const name = (widget.component || widget).name;
-      if (name == null) return;
+      if (name == null) continue;
       let value = widget.component ? widget.component.getValue() : widget.value;
       try {
         value = JSON.parse(value);
@@ -75,62 +76,75 @@ export const SolidFormSearch = {
         type: widget.component.type,
         list: !!widget.component.multiple,
         value: value,
-      }
+      };
       values[name] = value;
-    });
+    }
     return values;
   },
-  getWidget(field: string, isSet: boolean = false): WidgetInterface {
+  getWidget(field: string, isSet = false): WidgetInterface {
     let tagName = '';
     // If auto-range-[field] exists, create range-[field] and sets its value
-    if(this.element.hasAttribute('auto-range-' + field) && !this.element.hasAttribute('range-' + field)) {
+    if (
+      this.element.hasAttribute(`auto-range-${field}`) &&
+      !this.element.hasAttribute(`range-${field}`)
+    ) {
       const idField = `${this.rangeId}_${field}`;
-      this.element.setAttribute('range-' + field, 'store://local.' + idField);
+      this.element.setAttribute(`range-${field}`, `store://local.${idField}`);
       this.populate();
     }
-    
-    const widgetAttribute = this.element.getAttribute('widget-' + field);
+
+    const widgetAttribute = this.element.getAttribute(`widget-${field}`);
     // Choose widget
-    if (!widgetAttribute && (this.element.hasAttribute('range-' + field) || this.element.hasAttribute('enum-' + field))) {
-      tagName = 'solid-form-dropdown'
+    if (
+      !widgetAttribute &&
+      (this.element.hasAttribute(`range-${field}`) ||
+        this.element.hasAttribute(`enum-${field}`))
+    ) {
+      tagName = 'solid-form-dropdown';
     } else {
-      tagName = widgetAttribute || (!isSet ? this.defaultWidget : this.defaultSetWidget);
+      tagName =
+        widgetAttribute ||
+        (!isSet ? this.defaultWidget : this.defaultSetWidget);
     }
     // Create widget
-    if (!customElements.get(tagName)) { // component does not exist
+    if (!customElements.get(tagName)) {
+      // component does not exist
       if (tagName.startsWith('solid')) newWidgetFactory(tagName); // solid- -> create it
     }
 
     return this.widgetFromTagName(tagName);
   },
-  async attach(elm: any) {
-    if(this.attachedElements.has(elm)) return;
+  async attach(elm: unknown) {
+    if (this.attachedElements.has(elm)) return;
     this.attachedElements.add(elm);
     await this.updateAutoRanges();
   },
-  async detach(elm: any) {
-    if(!this.attachedElements.has(elm)) return;
+  async detach(elm: unknown) {
+    if (!this.attachedElements.has(elm)) return;
     this.attachedElements.delete(elm);
     await this.updateAutoRanges();
   },
   async updateAutoRanges() {
-    for(const attr of (this.element as Element).attributes) {
-      if (!attr['name'].startsWith('auto-range-')) continue;
-      let fieldName = attr.value !== '' ? attr.value : attr['name'].replace('auto-range-', '');
+    for (const attr of (this.element as Element).attributes) {
+      if (!attr.name.startsWith('auto-range-')) continue;
+      const fieldName =
+        attr.value !== '' ? attr.value : attr.name.replace('auto-range-', '');
       const autoRangeValues = new Set();
-      for(const elm of this.attachedElements) {
-        for(const value of await elm.getValuesOfField(fieldName)) {
+      for (const elm of this.attachedElements) {
+        for (const value of await elm.getValuesOfField(fieldName)) {
           autoRangeValues.add(value);
         }
       }
 
       const idField = `${this.rangeId}_${fieldName}`;
       const id = `store://local.${idField}`;
-      const ldpContains = Array.from(autoRangeValues).map(id => ({'@id' : id}));
+      const ldpContains = Array.from(autoRangeValues).map(id => ({
+        '@id': id,
+      }));
       const data = {
-        "@type": "ldp:Container",
-        "@context": this.context,
-        "ldp:contains" : ldpContains,
+        '@type': 'ldp:Container',
+        '@context': this.context,
+        'ldp:contains': ldpContains,
       };
       // @ts-ignore
       sibStore.setLocalData(data, id);
@@ -152,45 +166,44 @@ export const SolidFormSearch = {
         detail: {
           value: eventOptions.value,
           inputLabel: eventOptions.inputLabel,
-          type: eventOptions.type
-        }
+          type: eventOptions.type,
+        },
       }),
     );
   },
-  async inputChange(input: EventTarget): Promise<void> {
+  inputChange(input: EventTarget) {
     // FIXME: Improve this as we need to support more than input and single select.
     // What about multiple select, checkboxes, radio buttons, etc?
-    let parentElementLabel = (input as HTMLInputElement)?.parentElement?.getAttribute('label');
+    const parentElementLabel = (
+      input as HTMLInputElement
+    )?.parentElement?.getAttribute('label');
     try {
-      const selectedLabel = (input as HTMLSelectElement).selectedOptions[0].textContent?.trim();
-      this.change(
-        this.value,
-        {
-          value: selectedLabel,
-          inputLabel: parentElementLabel,
-          type: 'select'
-        }
-      );
+      const selectedLabel = (
+        input as HTMLSelectElement
+      ).selectedOptions[0].textContent?.trim();
+      this.change(this.value, {
+        value: selectedLabel,
+        inputLabel: parentElementLabel,
+        type: 'select',
+      });
     } catch {
-      this.change(this.value,
-        {
-          value: (input as HTMLInputElement).value,
-          inputLabel: parentElementLabel,
-          type: 'input'
-        }
-      );
+      this.change(this.value, {
+        value: (input as HTMLInputElement).value,
+        inputLabel: parentElementLabel,
+        type: 'input',
+      });
     }
   },
   getSubmitTemplate() {
     return html`
       <div class=${ifDefined(this.classSubmitButton)}>
-        ${this.submitWidget === 'button' ? html`
-          <button type="submit">${this.submitButton || ''}</button>
-        ` : html`
-          <input type="submit" value=${ifDefined(this.submitButton || undefined)}>
-        `}
+        ${
+          this.submitWidget === 'button'
+            ? html`<button type="submit">${this.submitButton || ''}</button>`
+            : html`<input type="submit" value=${ifDefined(this.submitButton || undefined)}>`
+        }
       </div>
-    ` 
+    `;
   },
   empty(): void {},
   debounceInput(input: EventTarget | null) {
@@ -200,26 +213,29 @@ export const SolidFormSearch = {
       this.inputChange(input);
     }, this.debounce);
   },
-  async populate(): Promise<void> {
+  populate: trackRenderAsync(async function (): Promise<void> {
     await this.replaceAttributesData();
-    if(this.submitButton == null) {
-      this.element.addEventListener('input', (e: Event) => this.debounceInput(e.target));
-    } else {
-      this.element.addEventListener('submit', (e: Event) => {
-        e.preventDefault();
-        this.inputChange(e.target);
+    if (this.submitButton == null) {
+      this.element.addEventListener('input', (e: Event) => {
+        this.debounceInput(e.target);
       });
     }
+    this.element.addEventListener('submit', (e: Event) => {
+      e.preventDefault();
+      this.inputChange(e.target);
+    });
     const fields = await this.getFields();
-    const widgetTemplates = await Promise.all(fields.map((field: string) => this.createWidgetTemplate(field)));
+    const widgetTemplates = await Promise.all(
+      fields.map((field: string) => this.createWidgetTemplate(field)),
+    );
     const template = html`
-      <form>
-        ${widgetTemplates}
-        ${this.submitButton == null ? '' : this.getSubmitTemplate()}
-      </form>
-    `;
+        <form>
+          ${widgetTemplates}
+          ${this.submitButton == null ? '' : this.getSubmitTemplate()}
+        </form>
+      `;
     render(template, this.element);
-  }
+  }, 'SolidFormSearch:populate'),
 };
 
 Sib.register(SolidFormSearch);

@@ -19,17 +19,13 @@
             "@id": "/examples/data/list/skill-1.jsonld"
           }
         ],
-        "permissions": [
-          "view"
-        ]
+        "permissions": ["view"]
       },
       "profile": {
         "@id": "/examples/data/list/profile-2.jsonld"
       },
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/user-4.jsonld",
@@ -54,17 +50,13 @@
             "@id": "/examples/data/list/skill-4.jsonld"
           }
         ],
-        "permissions": [
-          "view"
-        ]
+        "permissions": ["view"]
       },
       "profile": {
         "@id": "/examples/data/list/profile-4.jsonld"
       },
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     },
     {
       "@id": "/examples/data/list/user-5.jsonld",
@@ -88,21 +80,15 @@
             "@id": "/examples/data/list/skill-8.jsonld"
           }
         ],
-        "permissions": [
-          "view"
-        ]
+        "permissions": ["view"]
       },
       "profile": {
         "@id": "/examples/data/list/profile-5.jsonld"
       },
       "@type": "foaf:user",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

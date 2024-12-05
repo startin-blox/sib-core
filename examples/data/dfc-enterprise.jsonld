@@ -52,11 +52,5 @@
       "dfc-b:offeredThrough": "http://test.host/api/dfc/enterprises/10000/offers/10001"
     }
   ],
-  "permissions": [
-    "view",
-    "control",
-    "add",
-    "delete",
-    "change"
-  ]
+  "permissions": ["view", "control", "add", "delete", "change"]
 }

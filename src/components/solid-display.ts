@@ -1,20 +1,22 @@
-import { Sib } from '../libs/Sib';
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { ListMixin } from '../mixins/listMixin';
-import { StoreMixin } from '../mixins/storeMixin';
-import { PaginateMixin } from '../mixins/paginateMixin';
-import { FilterMixin } from '../mixins/filterMixin';
-import { CounterMixin } from '../mixins/counterMixin';
-import { SorterMixin } from '../mixins/sorterMixin';
-import { GrouperMixin } from '../mixins/grouperMixin';
-import { FederationMixin } from '../mixins/federationMixin';
-import { HighlighterMixin } from '../mixins/highlighterMixin';
-import { NextMixin } from '../mixins/nextMixin';
-import { RequiredMixin } from '../mixins/requiredMixin';
-import { spread } from '../libs/lit-helpers';
+import { Sib } from '../libs/Sib.ts';
+import { spread } from '../libs/lit-helpers.ts';
+import { CounterMixin } from '../mixins/counterMixin.ts';
+import { FederationMixin } from '../mixins/federationMixin.ts';
+import { FilterMixin } from '../mixins/filterMixin.ts';
+import { GrouperMixin } from '../mixins/grouperMixin.ts';
+import { HighlighterMixin } from '../mixins/highlighterMixin.ts';
+import { ListMixin } from '../mixins/listMixin.ts';
+import { NextMixin } from '../mixins/nextMixin.ts';
+import { PaginateMixin } from '../mixins/paginateMixin.ts';
+import { RequiredMixin } from '../mixins/requiredMixin.ts';
+import { SorterMixin } from '../mixins/sorterMixin.ts';
+import { StoreMixin } from '../mixins/storeMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidDisplay = {
   name: 'solid-display',
@@ -41,18 +43,20 @@ export const SolidDisplay = {
   initialState: {
     activeSubscription: null,
     removeActiveSubscription: null,
+    resources: [],
   },
   created(): void {
     // Set route active at initialization
     const route = document.querySelector('solid-route[active]') as any;
     if (!route) return;
     setTimeout(() => {
-      if (route['resourceId'] === this.resourceId) this.addActiveCallback();
+      if (route.resourceId === this.resourceId) this.addActiveCallback();
     });
   },
   detached(): void {
     if (this.activeSubscription) PubSub.unsubscribe(this.activeSubscription);
-    if (this.removeActiveSubscription) PubSub.unsubscribe(this.removeActiveSubscription);
+    if (this.removeActiveSubscription)
+      PubSub.unsubscribe(this.removeActiveSubscription);
   },
   // Update subscription when id changes
   updateNavigateSubscription() {
@@ -60,8 +64,8 @@ export const SolidDisplay = {
 
     if (this.resourceId) {
       this.activeSubscription = PubSub.subscribe(
-        'enterRoute.' + this.resourceId,
-        this.addActiveCallback.bind(this)
+        `enterRoute.${this.resourceId}`,
+        this.addActiveCallback.bind(this),
       );
     }
   },
@@ -69,7 +73,7 @@ export const SolidDisplay = {
     this.element.setAttribute('active', '');
     this.removeActiveSubscription = PubSub.subscribe(
       'leaveRoute',
-      this.removeActiveCallback.bind(this)
+      this.removeActiveCallback.bind(this),
     );
   },
   removeActiveCallback() {
@@ -87,18 +91,18 @@ export const SolidDisplay = {
   },
   // Here "even.target" points to the content of the widgets of the children of solid-display
   dispatchSelect(event: Event, resourceId: string): void {
-    const linkTarget = (event!.target as Element).closest('a');
-    if (linkTarget && linkTarget.hasAttribute('href')) return;
-    const resource = { "@id": resourceId };
+    const linkTarget = (event?.target as Element).closest('a');
+    if (linkTarget?.hasAttribute('href')) return;
+    const resource = { '@id': resourceId };
     this.element.dispatchEvent(
       new CustomEvent('resourceSelect', { detail: { resource: resource } }),
     );
     this.goToNext(resource);
   },
-  
-  enterKeydownAction (event, resourceId: string): void {
+
+  enterKeydownAction(event, resourceId: string): void {
     if (event.keyCode === 13) {
-      const resource = { "@id" : resourceId };
+      const resource = { '@id': resourceId };
       this.goToNext(resource);
     }
   },
@@ -108,7 +112,7 @@ export const SolidDisplay = {
    * @param attributes
    */
   getChildTemplate(resourceId: string, attributes: object) {
-    let template = html`
+    const template = html`
       <solid-display
         data-src=${resourceId}
         @click=${(event: Event) => this.dispatchSelect(event, resourceId)}
@@ -116,7 +120,7 @@ export const SolidDisplay = {
         fields=${ifDefined(this.fields)}
         ...=${spread(attributes)}
       ></solid-display>
-    `
+    `;
     return template;
   },
 
@@ -126,8 +130,9 @@ export const SolidDisplay = {
    */
   async appendSingleElt(parent: HTMLElement): Promise<void> {
     const fields = await this.getFields();
-    const widgetTemplates = await Promise.all( // generate all widget templates
-      fields.map((field: string) => this.createWidgetTemplate(field))
+    const widgetTemplates = await Promise.all(
+      // generate all widget templates
+      fields.map((field: string) => this.createWidgetTemplate(field)),
     );
     render(html`${widgetTemplates}`, parent);
   },
@@ -141,59 +146,55 @@ export const SolidDisplay = {
    * @param div
    * @param context
    */
-  async renderDOM(
+  renderDOM: trackRenderAsync(async function (
     resources: object[],
-    listPostProcessors: Function[],
+    listPostProcessors: PostProcessorRegistry,
     div: HTMLElement,
     context: string,
   ) {
     const attributes = this.getChildAttributes(); // get attributes of children only once
     // and create a child template for each resource
-    const template = html`${resources.map(r => r ? this.getChildTemplate(r['@id'], attributes) : null)}`;
+    const template = html`${resources.map(r => (r ? this.getChildTemplate(r['@id'], attributes) : null))}`;
     render(template, div);
 
     const nextProcessor = listPostProcessors.shift();
+
     if (nextProcessor)
-      await nextProcessor(
-        resources,
-        listPostProcessors,
-        div,
-        context
-      );
-  },
+      await nextProcessor(resources, listPostProcessors, div, context);
+  }, 'SolidDisplay:renderDom'),
 
   /**
    * Get attributes to dispatch to children from current element
    */
   getChildAttributes() {
-    const attributes:{[key:string]: string} = {};
-    for (let attr of this.element.attributes) {
+    const attributes: { [key: string]: string } = {};
+    for (const attr of this.element.attributes) {
       //copy widget and value attributes
       if (
-        attr.name.startsWith('value-')        ||
-        attr.name.startsWith('label-')        ||
-        attr.name.startsWith('placeholder-')  ||
-        attr.name.startsWith('widget-')       ||
-        attr.name.startsWith('class-')        ||
-        attr.name.startsWith('multiple-')     ||
-        attr.name.startsWith('editable-')     ||
-        attr.name.startsWith('action-')       ||
-        attr.name.startsWith('default-')      ||
-        attr.name.startsWith('link-text-')    ||
-        attr.name.startsWith('target-src-')   ||
-        attr.name.startsWith('data-label-')   ||
-        attr.name == 'extra-context'
+        attr.name.startsWith('value-') ||
+        attr.name.startsWith('label-') ||
+        attr.name.startsWith('placeholder-') ||
+        attr.name.startsWith('widget-') ||
+        attr.name.startsWith('class-') ||
+        attr.name.startsWith('multiple-') ||
+        attr.name.startsWith('editable-') ||
+        attr.name.startsWith('action-') ||
+        attr.name.startsWith('default-') ||
+        attr.name.startsWith('link-text-') ||
+        attr.name.startsWith('target-src-') ||
+        attr.name.startsWith('data-label-') ||
+        attr.name === 'extra-context'
       )
         attributes[attr.name] = attr.value;
       if (attr.name.startsWith('child-'))
         attributes[attr.name.replace(/^child-/, '')] = attr.value;
-      if (attr.name == 'next') {
-        attributes['role'] = 'button';
-        attributes['tabindex'] = '0';
+      if (attr.name === 'next') {
+        attributes.role = 'button';
+        attributes.tabindex = '0';
       }
     }
     return attributes;
-  }
+  },
 };
 
 Sib.register(SolidDisplay);

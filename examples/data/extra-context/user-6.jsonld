@@ -13,8 +13,6 @@
     "picture": "my-avatar.png"
   },
   "@type": "foaf:user",
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

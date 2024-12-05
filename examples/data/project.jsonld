@@ -10,11 +10,6 @@
   "jabberRoom": true,
   "texte": "ceci est un texte avec du **markdown** \u00e0 l'int\u00e9rieur and a [link](https://startinblox.com).",
   "@type": "doap:project",
-  "permissions": [
-    "control",
-    "add",
-    "delete",
-    "change"
-  ],
+  "permissions": ["control", "add", "delete", "change"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

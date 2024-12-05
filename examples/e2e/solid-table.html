@@ -63,5 +63,53 @@
       selectable
       sorted-by="sorter"
     ></solid-table>
+
+    <h3>grouped ordered tables</h3>
+
+    <h4>Table grouped by place</h4>
+    <solid-table
+      id="grouped-table"
+      data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place"
+      group-by="place"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by desc year</h4>
+    <solid-table
+      id="grouped-table-year-desc"
+      data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place, year"
+      group-by="year"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by asc year</h4>
+    <solid-table
+      id="grouped-table-year-asc"
+      data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place, year"
+      group-by="year"
+      order-group-asc
+    ></solid-table>
+
+    <h4>Table grouped by desc date</h4>
+    <solid-table
+      id="grouped-table-date-desc"
+      data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place, year"
+      group-by="date"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by asc date</h4>
+    <solid-table
+      id="grouped-table-date-asc"
+      data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place, year"
+      group-by="date"
+      order-group-asc
+    ></solid-table>
+
   </body>
 </html>

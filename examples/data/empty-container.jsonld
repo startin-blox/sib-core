@@ -2,12 +2,6 @@
   "@id": "/examples/data/empty-container.jsonld",
   "@type": "ldp:Container",
   "ldp:contains": [],
-  "permissions": [
-    "view",
-    "control",
-    "add",
-    "delete",
-    "change"
-  ],
+  "permissions": ["view", "control", "add", "delete", "change"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

@@ -1,5 +1,5 @@
-import { evalTemplateString } from '../libs/helpers';
-import { store } from '../libs/store/store';
+import { evalTemplateString } from '../libs/helpers.ts';
+import { store } from '../libs/store/store.ts';
 
 export class BaseWidget extends HTMLElement {
   private src: string | undefined;
@@ -16,9 +16,9 @@ export class BaseWidget extends HTMLElement {
     this.render();
   }
   disconnectedCallback(): void {
-    this._subscriptions.forEach((subscription) => {
+    for (const subscription of this._subscriptions.values()) {
       PubSub.unsubscribe(subscription);
-    })
+    }
   }
   async render() {
     this.innerHTML = await evalTemplateString(this.template, {
@@ -27,12 +27,12 @@ export class BaseWidget extends HTMLElement {
       label: this.label,
       placeholder: this.placeholder,
       value: this.value,
-      id: (this._value && this._value['@id']) || '',
+      id: this._value?.['@id'] || '',
       escapedValue: this.escapedValue,
       range: await this.htmlRange,
       multiple: this.multiple,
-      editable: this.editable === '' ? true : false,
-      required: this.required === '' ? true : false
+      editable: this.editable === '',
+      required: this.required === '',
     });
 
     this.addEditButtons();
@@ -42,27 +42,30 @@ export class BaseWidget extends HTMLElement {
     return this.hasAttribute('label') ? this.getAttribute('label') : this.name;
   }
   set label(label: string | null) {
-    if(label != null) this.setAttribute('label', label);
+    if (label != null) this.setAttribute('label', label);
     this.render();
   }
   get placeholder(): string | null {
-    return this.hasAttribute('placeholder') ? this.getAttribute('placeholder') : this.label;
+    return this.hasAttribute('placeholder')
+      ? this.getAttribute('placeholder')
+      : this.label;
   }
   set placeholder(placeholder: string | null) {
-    if(placeholder != null) this.setAttribute('placeholder', placeholder);
+    if (placeholder != null) this.setAttribute('placeholder', placeholder);
     this.render();
   }
   get name(): string | null {
     return this.getAttribute('name');
   }
   set name(name: string | null) {
-    if(name) this.setAttribute('name', name);
+    if (name) this.setAttribute('name', name);
     this.render();
   }
   get value() {
     if (this.dataHolder) {
-      let values = this.dataHolder.map(element => {
-        if (element instanceof HTMLInputElement && element.type == "checkbox") return element.checked;
+      const values = this.dataHolder.map(element => {
+        if (element instanceof HTMLInputElement && element.type === 'checkbox')
+          return element.checked;
         // if value is defined, push it in the array
         return this.getValueHolder(element).value;
       });
@@ -73,12 +76,12 @@ export class BaseWidget extends HTMLElement {
   }
   set value(value) {
     this._value = value; // ... store `value` in the widget
-    if (this._value == null || this._value == undefined) return;
+    if (this._value == null) return;
 
     if (this.dataHolder && this.dataHolder.length === 1) {
       // if one dataHolder in the widget...
       const element = this.getValueHolder(this.dataHolder[0]);
-      if (element.type == "checkbox") {
+      if (element.type === 'checkbox') {
         element.checked = value;
       } else {
         element.value = value; // ... set `value` to the dataHolder element
@@ -87,41 +90,47 @@ export class BaseWidget extends HTMLElement {
       if (element.dispatchEvent) element.dispatchEvent(new Event('change')); // trigger change manually
     } else if (this.dataHolder && this.dataHolder.length > 1) {
       // if multiple dataHolder in the widget ...
-      this.dataHolder.forEach(
-        (el, index) => {
-          const element = this.getValueHolder(el);
-          if (element.type == "checkbox") {
-            element.checked = value ? value[index] : ''
-          } else {
-            element.value = value ? value[index] : ''
-          }
-          element.dispatchEvent(new Event('change')); // trigger change manually
-        },
-      ); // ... set each `value` to each dataHolder element
+      this.dataHolder.forEach((el, index) => {
+        const element = this.getValueHolder(el);
+        if (element.type === 'checkbox') {
+          element.checked = value ? value[index] : '';
+        } else {
+          element.value = value ? value[index] : '';
+        }
+        element.dispatchEvent(new Event('change')); // trigger change manually
+      }); // ... set each `value` to each dataHolder element
     }
 
     this.render();
   }
-  get ['each-label'](): string{
+  get 'each-label'(): string {
     return this.getAttribute('each-label') || '';
   }
-  set ['each-label'](label: string) {
+  set 'each-label'(label: string) {
     this.setAttribute('each-label', label);
   }
-  set ['add-label'](label: string) {
+  set 'add-label'(label: string) {
     this.setAttribute('add-label', label);
   }
-  set ['remove-label'](label: string) {
+  set 'remove-label'(label: string) {
     this.setAttribute('remove-label', label);
   }
   get dataHolder(): Element[] | null {
-    const widgetDataHolders = Array.from(this.querySelectorAll('[data-holder]')).filter(element => {
-      const dataHolderAncestor = element.parentElement ? element.parentElement.closest('[data-holder]') : null;
+    const widgetDataHolders = Array.from(
+      this.querySelectorAll('[data-holder]'),
+    ).filter(element => {
+      const dataHolderAncestor = element.parentElement
+        ? element.parentElement.closest('[data-holder]')
+        : null;
       // get the dataHolder of the widget only if no dataHolder ancestor in the current widget
-      return dataHolderAncestor === this || !dataHolderAncestor || !this.contains(dataHolderAncestor)
+      return (
+        dataHolderAncestor === this ||
+        !dataHolderAncestor ||
+        !this.contains(dataHolderAncestor)
+      );
     });
 
-    return widgetDataHolders.length ? widgetDataHolders : null;
+    return widgetDataHolders.length > 0 ? widgetDataHolders : null;
   }
   get template(): string {
     return '';
@@ -130,7 +139,7 @@ export class BaseWidget extends HTMLElement {
     return '';
   }
   get escapedValue(): string {
-    return ('' + this.value)
+    return `${this.value}`
       .replace(/&/g, '&amp;')
       .replace(/'/g, '&apos;')
       .replace(/"/g, '&quot;');
@@ -147,26 +156,36 @@ export class BaseWidget extends HTMLElement {
   }
   set range(range) {
     (async () => {
-      this._listen(range, async () => this._range = await store.getData(range, this.context));
+      this._listen(range, async () => {
+        this._range = await store.getData(range, this.context);
+      });
       this._range = await store.getData(range, this.context);
       this.render();
     })();
   }
   async fetchSources(resource: any) {
     if (!resource || !resource['ldp:contains']) return null;
-    let resources: any[] = [];
+    const resources: any[] = [];
     let index = 0;
     for (let res of resource['ldp:contains']) {
-      if (!res) { // child not in cache yet
+      if (!res) {
+        // child not in cache yet
         try {
           const resourceId = resource.getChildren('ldp:contains')[index]['@id'];
-          res = await store.getData(resourceId, this.context)
-        } catch (e) { continue; }
+          res = await store.getData(resourceId, this.context);
+        } catch {
+          continue;
+        }
       }
-      if (res.isContainer?.()) { // if nested container
-        let resourcesFromContainer = await store.getData(res['@id'], this.context); // fetch the datas
+      if (res.isContainer?.()) {
+        // if nested container
+        const resourcesFromContainer = await store.getData(
+          res['@id'],
+          this.context,
+        ); // fetch the datas
         this._listen(res['@id']);
-        if (resourcesFromContainer) resources.push(...resourcesFromContainer['ldp:contains']);
+        if (resourcesFromContainer)
+          resources.push(...resourcesFromContainer['ldp:contains']);
       } else {
         resources.push(res);
       }
@@ -175,35 +194,35 @@ export class BaseWidget extends HTMLElement {
     return resources;
   }
 
-  get htmlRange(): Promise<string | undefined> {
-    return (async () => {
-      let htmlRange = '';
-      const rangeResources = await this.range;
-      if (!rangeResources) return;
-      for await (let element of rangeResources) {
-        element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
-        this._listen(element['@id']);
+  async htmlRange(): Promise<string | undefined> {
+    let htmlRange = '';
+    const rangeResources = await this.range;
+    if (!rangeResources) return;
+    for await (let element of rangeResources) {
+      element = await store.getData(element['@id'], this.context); // fetch the resource to display the name
+      this._listen(element['@id']);
 
-        let selected: boolean;
-        if (this._value && this._value.isContainer && this._value.isContainer()) { // selected options for multiple select
-          selected = false;
-          for await (let value of this._value["ldp:contains"]) {
-            if (value['@id'] == element['@id']) {
-              selected = true;
-              break;
-            }
+      let selected: boolean;
+      if (this._value?.isContainer?.()) {
+        // selected options for multiple select
+        selected = false;
+        for await (const value of this._value['ldp:contains']) {
+          if (value['@id'] === element['@id']) {
+            selected = true;
+            break;
           }
-        } else { // selected options for simple dropdowns
-          selected = this._value ? this._value['@id'] == element['@id'] : false;
         }
-        htmlRange += await evalTemplateString(this.childTemplate, {
-          name: await element.name,
-          id: element['@id'],
-          selected: selected
-        });
+      } else {
+        // selected options for simple dropdowns
+        selected = this._value ? this._value['@id'] === element['@id'] : false;
       }
-      return htmlRange || '';
-    })();
+      htmlRange += await evalTemplateString(this.childTemplate, {
+        name: await element.name,
+        id: element['@id'],
+        selected: selected,
+      });
+    }
+    return htmlRange || '';
   }
   getValueHolder(element) {
     return element.component ? element.component : element;
@@ -215,10 +234,13 @@ export class BaseWidget extends HTMLElement {
 
   _listen(id: string, callback: Function = () => {}) {
     if (!this._subscriptions.get(id)) {
-      this._subscriptions.set(id, PubSub.subscribe(id, async () => {
-        await callback();
-        this.render();
-      }))
+      this._subscriptions.set(
+        id,
+        PubSub.subscribe(id, async () => {
+          await callback();
+          this.render();
+        }),
+      );
     }
   }
 
@@ -229,18 +251,24 @@ export class BaseWidget extends HTMLElement {
     if (editableField) {
       // Add edit button
       const editButton = document.createElement('button');
-      editButton.innerText = "Modifier";
-      editButton.onclick = () => this.activateEditableField(editableField, editButton);
+      editButton.innerText = 'Modifier';
+      editButton.onclick = () =>
+        this.activateEditableField(editableField, editButton);
       editableField.insertAdjacentElement('afterend', editButton);
 
       // Save on focusout
-      editableField.addEventListener('focusout', () => this.save(editableField, editButton));
+      editableField.addEventListener('focusout', () =>
+        this.save(editableField, editButton),
+      );
     }
   }
-  activateEditableField(editableField: HTMLElement, editButton: HTMLButtonElement): void {
+  activateEditableField(
+    editableField: HTMLElement,
+    editButton: HTMLButtonElement,
+  ): void {
     editableField.setAttribute('contenteditable', 'true');
     editableField.focus();
-    editButton.setAttribute("disabled", "disabled");
+    editButton.setAttribute('disabled', 'disabled');
   }
   /**
    * Dispatch change events of data holders from the current widget
@@ -248,24 +276,24 @@ export class BaseWidget extends HTMLElement {
   initChangeEvents(): void {
     if (this.dataHolder) {
       const event = new Event('change', { bubbles: true });
-      this.dataHolder.forEach(element => {
+      for (const element of this.dataHolder) {
         element.addEventListener('change', e => {
           e.preventDefault();
           e.stopPropagation();
           this.dispatchEvent(event);
         });
-      });
+      }
     }
   }
   save(editableField: HTMLElement, editButton: HTMLButtonElement): void {
     editableField.setAttribute('contenteditable', 'false');
-    editButton.removeAttribute("disabled");
+    editButton.removeAttribute('disabled');
 
     if (!this.name) return;
     const resource = {};
     resource[this.name] = editableField.innerText;
     resource['@context'] = this.context;
 
-    if(this.resourceId && resource) store.patch(resource, this.resourceId)
+    if (this.resourceId && resource) store.patch(resource, this.resourceId);
   }
 }

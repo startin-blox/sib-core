@@ -1,7 +1,8 @@
-import type { SearchQuery } from '../libs/interfaces';
-import { searchInResources } from '../libs/filter';
-import type { ServerSearchOptions } from '../libs/store/server-search';
-import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica';
+import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import { searchInResources } from '../libs/filter.ts';
+import type { SearchQuery } from '../libs/interfaces.ts';
+import type { ServerSearchOptions } from '../libs/store/server-search.ts';
+import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 
 const enum FilterMode {
   Server = 'server',
@@ -18,7 +19,7 @@ const FilterMixin = {
   attributes: {
     searchFields: {
       type: String,
-      default: null
+      default: null,
     },
     dataSrcIndex: {
       type: String,
@@ -32,12 +33,16 @@ const FilterMixin = {
       default: null,
       callback(newValue: string) {
         // if we change search form, re-populate
-        if (newValue && this.searchForm && newValue !== this.searchForm.getAttribute('id')) {
+        if (
+          newValue &&
+          this.searchForm &&
+          newValue !== this.searchForm.getAttribute('id')
+        ) {
           this.searchForm.component.detach(this);
           this.searchForm = null;
           this.populate();
         }
-      }
+      },
     },
     filteredOn: {
       type: String, // 'server' | 'client' | 'index'
@@ -49,7 +54,7 @@ const FilterMixin = {
     this.element.addEventListener('populate', () => {
       if (!window.document.contains(this.element)) return;
       this.searchForm?.component.updateAutoRanges();
-    })
+    });
   },
   async attached(): Promise<void> {
     const filteredBy = this.filteredBy;
@@ -98,16 +103,17 @@ const FilterMixin = {
       this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
 
       this.listPostProcessors.push(this.applyPostProcessors.bind(this));
-    }
-
-    else if (this.isFilteredOnServer() && filteredBy) {
+    } else if (this.isFilteredOnServer() && filteredBy) {
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
-      this.searchForm.addEventListener('formChange', () => this.onServerSearchChange());
-    }
-
-    else {
-      this.listPostProcessors.push(this.filterCallback.bind(this));
+      this.searchForm.addEventListener('formChange', () => 
+        this.onServerSearchChange(),
+      );
+    } else {
+      this.listPostProcessors.attach(
+        this.filterCallback.bind(this),
+        'FilterMixin:filterCallback',
+      );
     }
   },
   isIndexBasedSearch(): boolean {
@@ -163,8 +169,9 @@ const FilterMixin = {
       const fields = Object.keys(filters);
       const value = (Object.values(filters) as { value: string }[])
         .map(({ value }) => value)
-        .filter((value) => !!value)
-        .join(' ').trim();
+        .filter(value => !!value)
+        .join(' ')
+        .trim();
       if (fields.length > 0 && value) {
         return { fields, value };
       }
@@ -178,7 +185,12 @@ const FilterMixin = {
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context);
   },
-  async filterCallback(resources: object[], listPostProcessors: Function[], div: HTMLElement, context: string): Promise<void> {
+  async filterCallback(
+    resources: object[],
+    listPostProcessors: PostProcessorRegistry,
+    div: HTMLElement,
+    context: string,
+  ): Promise<void> {
     if (this.filteredBy || this.searchFields) {
       if (!this.searchCount.has(context)) this.searchCount.set(context, 1);
       if (!this.searchForm) await this.createFilter(context);
@@ -186,13 +198,19 @@ const FilterMixin = {
         resources,
         this.filters,
         this.fields,
-        this.searchForm
+        this.searchForm,
       );
       resources = resources.filter((_v, index) => filteredResources[index]);
+      this.resources = [...resources];
     }
-
     const nextProcessor = listPostProcessors.shift();
-    if (nextProcessor) await nextProcessor(resources, listPostProcessors, div, context + (this.searchCount.get(context) || ''));
+    if (nextProcessor)
+      await nextProcessor(
+        resources,
+        listPostProcessors,
+        div,
+        context + (this.searchCount.get(context) || ''),
+      );
   },
   async filterList(context: string): Promise<void> {
     this.searchCount.set(context, this.searchCount.get(context) + 1);
@@ -208,8 +226,10 @@ const FilterMixin = {
       const nextArrayOfObjects = await obj[field];
       if (!nextArrayOfObjects) continue;
 
-      if (typeof nextArrayOfObjects !== "object") {
-        console.warn(`The format value of ${field} is not suitable with auto-range-[field] attribute`);
+      if (typeof nextArrayOfObjects !== 'object') {
+        console.warn(
+          `The format value of ${field} is not suitable with auto-range-[field] attribute`,
+        );
         continue;
       }
 
@@ -229,10 +249,10 @@ const FilterMixin = {
   async createFilter(context: string): Promise<void> {
     const filteredBy = this.filteredBy;
     if (filteredBy != null) {
-      this.searchForm = document.getElementById(filteredBy)
+      this.searchForm = document.getElementById(filteredBy);
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
     } else {
-      this.searchForm = document.createElement(`solid-form-search`);
+      this.searchForm = document.createElement('solid-form-search');
     }
     this.searchForm.component.attach(this);
     this.searchForm.addEventListener('formChange', () => {
@@ -244,21 +264,19 @@ const FilterMixin = {
 
     //pass attributes to search form
     const searchAttributes = Array.from((this.element as Element).attributes)
-      .filter(attr => attr['name'].startsWith('search-'))
+      .filter(attr => attr.name.startsWith('search-'))
       .map(attr => ({
-        name: attr['name'].replace('search-', ''),
-        value: attr['value'],
+        name: attr.name.replace('search-', ''),
+        value: attr.value,
       }));
 
-    searchAttributes.forEach(({ name, value }) => {
+    for (const { name, value } of searchAttributes) {
       this.searchForm.setAttribute(name, value);
-    });
+    }
 
     this.element.insertBefore(this.searchForm, this.element.firstChild);
     await this.searchForm.component.populate();
   },
-}
+};
 
-export {
-  FilterMixin
-}
+export { FilterMixin };

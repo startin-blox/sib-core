@@ -1,4 +1,4 @@
-import { ComponentFactory } from '../../../src/libs/ComponentFactory';
+import { ComponentFactory } from '../../../src/libs/ComponentFactory.ts';
 
 const MixinTestTwo = {
   name: 'mixin2',
@@ -67,7 +67,7 @@ const Component = {
     myAttribute: {
       type: String,
       default: 'awesome',
-      callback: function() {
+      callback: function () {
         this.change = true;
       },
     },
@@ -93,7 +93,7 @@ const Component = {
     message: '',
   },
   get accessorTest() {
-    return 'hello ' + this.accessorValue;
+    return `hello ${this.accessorValue}`;
   },
   created() {
     this.message += '!!';
@@ -112,7 +112,7 @@ const Component = {
   },
 };
 
-describe('Component factory', function() {
+describe('Component factory', () => {
   it('expose html element', () => {
     const ComponentConstructor = ComponentFactory.build(Component);
     const component = new ComponentConstructor(document.createElement('p'));

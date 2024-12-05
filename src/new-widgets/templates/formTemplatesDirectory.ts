@@ -1,22 +1,22 @@
-import { FormMixin } from '../templatesDependencies/formMixin';
-import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin';
-import { FormMinMaxMixin } from '../templatesDependencies/formMinMaxMixin';
-import { FormNumberMixin } from '../templatesDependencies/formNumberMixin';
-import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin';
-import { FormCheckboxesMixin } from '../templatesDependencies/formCheckboxesMixin';
-import { FormRadioMixin } from '../templatesDependencies/formRadioMixin';
-import { FormFileMixin } from '../templatesDependencies/formFileMixin';
-import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin';
-import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin';
-import { RangeMixin } from '../templatesDependencies/rangeMixin';
-import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin';
-import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin';
-import { PatternMixin } from '../templatesDependencies/patternMixin';
-import { FormStepMixin } from '../templatesDependencies/formStepMixin';
-import { FormLengthMixin } from '../templatesDependencies/formLengthMixin';
+import { FilterRangeFormMixin } from '../templatesDependencies/filterRangeFormMixin.ts';
+import { FormCheckboxMixin } from '../templatesDependencies/formCheckboxMixin.ts';
+import { FormCheckboxesMixin } from '../templatesDependencies/formCheckboxesMixin.ts';
+import { FormDropdownMixin } from '../templatesDependencies/formDropdownMixin.ts';
+import { FormFileMixin } from '../templatesDependencies/formFileMixin.ts';
+import { FormLengthMixin } from '../templatesDependencies/formLengthMixin.ts';
+import { FormMinMaxMixin } from '../templatesDependencies/formMinMaxMixin.ts';
+import { FormMixin } from '../templatesDependencies/formMixin.ts';
+import { FormNumberMixin } from '../templatesDependencies/formNumberMixin.ts';
+import { FormRadioMixin } from '../templatesDependencies/formRadioMixin.ts';
+import { FormStepMixin } from '../templatesDependencies/formStepMixin.ts';
+import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.ts';
+import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.ts';
+import { PatternMixin } from '../templatesDependencies/patternMixin.ts';
+import { RangeMixin } from '../templatesDependencies/rangeMixin.ts';
+import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin.ts';
 
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const formTemplates = {
   text: {
@@ -37,7 +37,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, PatternMixin, FormLengthMixin ]
+    dependencies: [FormMixin, PatternMixin, FormLengthMixin],
   },
   textarea: {
     template: (value: string, attributes: any) => html`
@@ -53,7 +53,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       >${value}</textarea>
     `,
-    dependencies: [ FormMixin, FormLengthMixin ]
+    dependencies: [FormMixin, FormLengthMixin],
   },
   checkbox: {
     template: (value: string, attributes: any) => html`
@@ -69,7 +69,7 @@ export const formTemplates = {
         <div>${attributes.label || attributes.name}</div>
       </label>
     `,
-    dependencies: [ FormCheckboxMixin, FormMixin ]
+    dependencies: [FormCheckboxMixin, FormMixin],
   },
   date: {
     template: (_value: string, attributes: any) => html`
@@ -84,7 +84,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [FormMixin],
   },
   rangedate: {
     template: (_value: string, attributes: any) => html`
@@ -103,7 +103,7 @@ export const formTemplates = {
         value=${ifDefined(attributes.endValue)}
       />
     `,
-    dependencies: [ FilterRangeFormMixin, FormMixin ]
+    dependencies: [FilterRangeFormMixin, FormMixin],
   },
   number: {
     template: (value: string, attributes: any) => html`
@@ -121,7 +121,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormNumberMixin, FormMinMaxMixin, FormMixin, FormStepMixin ]
+    dependencies: [FormNumberMixin, FormMinMaxMixin, FormMixin, FormStepMixin],
   },
   rangenumber: {
     template: (_value: string, attributes: any) => html`
@@ -140,7 +140,7 @@ export const formTemplates = {
         value=${ifDefined(attributes.endValue)}
       />
     `,
-    dependencies: [ FilterRangeFormMixin, FormNumberMixin, FormMixin ]
+    dependencies: [FilterRangeFormMixin, FormNumberMixin, FormMixin],
   },
   hidden: {
     template: (value: string, attributes: any) => html`
@@ -152,7 +152,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [FormMixin],
   },
   dropdown: {
     template: (value: string, attributes: any) => html`
@@ -165,67 +165,86 @@ export const formTemplates = {
         autocomplete=${ifDefined(attributes.autocomplete)}
         @change=${attributes.onChange}
       >
-        ${!(attributes.multiple || attributes.autocomplete) ? html`
-        <option value="" ?selected=${value === ""}>
+        ${
+          !(attributes.multiple || attributes.autocomplete)
+            ? html`
+        <option value="" ?selected=${value === ''}>
           ${attributes.placeholder || '-'}
         </option>
-        ` : ''}
-        ${(attributes.range || []).map(el => html`
+        `
+            : ''
+        }
+        ${(attributes.range || []).map(
+          el => html`
           <option
             value=${el.value}
             ?selected=${!attributes.multiple ? value === el.selectedValue : attributes.values.includes(el.selectedValue)}
           >
             ${el.label}
           </option>
-        `)}
-        ${Object.entries(attributes.enum || []).map(([key, val]) => html`
+        `,
+        )}
+        ${Object.entries(attributes.enum || []).map(
+          ([key, val]) => html`
           <option
             value="${key}"
             ?selected=${!attributes.multiple ? value === key : attributes.values.includes(key)}
           >
             ${val}
           </option>
-        `)}
+        `,
+        )}
       </select>
     `,
-    dependencies: [ FormDropdownMixin, FormMixin, RangeMixin ]
+    dependencies: [FormDropdownMixin, FormMixin, RangeMixin],
   },
   radio: {
     template: (value: string, attributes: any) => html`
-      <div
+    <fieldset>
+      <legend
         name=${ifDefined(attributes.name)}
       >
-        ${(attributes.range || []).map(el => html`
-          <label>
-            <input
-              type="radio"
-              name=${ifDefined(attributes.id)}
-              value=${el.value}
-              ?required=${attributes.required}
-              ?checked=${value === el.selectedValue}
-            > <span>${el.label}</span>
-          </label>
-        `)}
-        ${Object.entries(attributes.enum || []).map(([key, val]) => html`
-          <label>
-            <input
-              type="radio"
-              value="${key}"
-              name=${ifDefined(attributes.id)}
-              ?required=${attributes.required}
-              ?checked=${value === key}
-            > <span>${val}</span>
-          </label>
-        `)}
+        ${attributes.label}
+      </legend>
+      ${(attributes.range || []).map(
+        el => html`
+        <label>
+          <input
+            type="radio"
+            name=${ifDefined(attributes.id)}
+            value=${el.value}
+            ?required=${attributes.required}
+            ?checked=${value === el.selectedValue}
+          > <span>${el.label}</span>
+        </label>
+      `,
+      )}
+      ${Object.entries(attributes.enum || []).map(
+        ([key, val]) => html`
+        <label>
+          <input
+            type="radio"
+            value="${key}"
+            name=${ifDefined(attributes.id)}
+            ?required=${attributes.required}
+            ?checked=${value === key}
+          > <span>${val}</span>
+        </label>
+      `,
+      )}
+    </fieldset>
     `,
-    dependencies: [ FormRadioMixin, FormMixin, RangeMixin ]
+    dependencies: [FormRadioMixin, FormMixin, RangeMixin],
   },
   multicheckbox: {
     template: (_value: string, attributes: any) => html`
-      <div
-        name=${ifDefined(attributes.name)}
-      >
-        ${(attributes.range || []).map(el => html`
+      <fieldset>
+        <legend 
+          name=${ifDefined(attributes.name)}>
+            ${attributes.label}
+        </legend>
+        ${(attributes.range || []).map(
+          el => html`
           <label>
             <input
               type="checkbox"
@@ -233,18 +252,20 @@ export const formTemplates = {
               ?checked=${attributes.values.includes(el.selectedValue)}
             /> <span>${el.label}</span>
           </label>
-        `)}
-        ${Object.entries(attributes.enum || [])
-          .map(([key, val]) => html`
+        `,
+        )}
+        ${Object.entries(attributes.enum || []).map(
+          ([key, val]) => html`
           <label>
             <input type="checkbox"
               value="${key}"
             /> <span>${val}</span>
           </label>
-        `)}
-      </select>
+        `,
+        )}
+      </fieldset>
     `,
-    dependencies: [ FormCheckboxesMixin, FormMixin, RangeMixin ]
+    dependencies: [FormCheckboxesMixin, FormMixin, RangeMixin],
   },
   checkboxes: {
     template: (_value: string, attributes: any) => html`
@@ -259,26 +280,30 @@ export const formTemplates = {
         order-asc=${ifDefined(attributes.orderAsc)}
         order-desc=${ifDefined(attributes.orderDesc)}
         ?required=${attributes.required}
+        label=${ifDefined(attributes.label)} 
       ></solid-form-multicheckbox>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
+    dependencies: [MultipleselectFormMixin, FormMixin, RangeMixin],
   },
   multiple: {
     template: (_value: string, attributes: any) => html`
-      ${(attributes.children || []).map((child, index) => html`
+      ${(attributes.children || []).map(
+        (child, index) => html`
         <div data-index=${attributes.name + index}>
           ${child}
           <button type="button" class=${ifDefined(attributes.removeClass)} @click=${() => attributes.removeItem(index)}>${attributes.removeLabel}</button>
         </div>
-      `)}
+      `,
+      )}
       <button type="button" class=${ifDefined(attributes.addClass)} @click=${attributes.addItem}>${attributes.addLabel}</button>
     `,
-    dependencies: [ MultipleFormMixin, FormMixin ]
+    dependencies: [MultipleFormMixin, FormMixin],
   },
   multipleselect: {
     template: (_value: string, attributes: any) => html`
       <solid-form-dropdown
         data-holder
+        class="solid-form-dropdown"
         name=${ifDefined(attributes.name)}
         data-id=${ifDefined(attributes.id)}
         range=${ifDefined(attributes.range)}
@@ -291,7 +316,7 @@ export const formTemplates = {
         multiple
       ></solid-form-dropdown>
     `,
-    dependencies: [ MultipleselectFormMixin, FormMixin, RangeMixin ]
+    dependencies: [MultipleselectFormMixin, FormMixin, RangeMixin],
   },
   file: {
     template: (value: string, attributes: any) => html`
@@ -303,6 +328,11 @@ export const formTemplates = {
           name=${ifDefined(attributes.name)}
           value=${value || ''}
         >
+        <a
+          href=${value || ''}
+          ?hidden=${value === ''}
+        >${value !== '' ? decodeURI(value.split('/').pop() as string) : ''}</a>
+
         <input
           type="file"
           id=${ifDefined(attributes.id)}
@@ -316,7 +346,7 @@ export const formTemplates = {
         <span>${attributes.output}</span>
       </div>
     `,
-    dependencies: [ FormFileMixin, FormMixin ]
+    dependencies: [FormFileMixin, FormMixin],
   },
   image: {
     template: (value: string, attributes: any) => html`
@@ -346,7 +376,7 @@ export const formTemplates = {
         <span>${attributes.output}</span>
       </div>
     `,
-    dependencies: [ FormFileMixin, FormMixin ]
+    dependencies: [FormFileMixin, FormMixin],
   },
   richtext: {
     template: (_value: string, attributes: any) => html`
@@ -356,7 +386,7 @@ export const formTemplates = {
         data-holder
       ></div>
     `,
-    dependencies: [ ValueRichtextMixin, FormMixin ]
+    dependencies: [ValueRichtextMixin, FormMixin],
   },
   color: {
     template: (_value: string, attributes: any) => html`
@@ -371,7 +401,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin ]
+    dependencies: [FormMixin],
   },
   email: {
     template: (value: string, attributes: any) => html`
@@ -380,7 +410,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         id=${ifDefined(attributes.id)}
         name=${ifDefined(attributes.name)}
-        value=${value || ''}
+        value=${value || ''}
         ?required=${attributes.required}
         data-holder
         maxlength=${ifDefined(attributes.maxlength)}
@@ -388,7 +418,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, FormLengthMixin ]
+    dependencies: [FormMixin, FormLengthMixin],
   },
   password: {
     template: (value: string, attributes: any) => html`
@@ -397,7 +427,7 @@ export const formTemplates = {
         placeholder=${ifDefined(attributes.placeholder)}
         id=${ifDefined(attributes.id)}
         name=${ifDefined(attributes.name)}
-        value=${value || ''}
+        value=${value || ''}
         ?required=${attributes.required}
         pattern=${ifDefined(attributes.pattern)}
         title=${ifDefined(attributes.title)}
@@ -407,7 +437,7 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, PatternMixin, FormLengthMixin ]
+    dependencies: [FormMixin, PatternMixin, FormLengthMixin],
   },
   time: {
     template: (value: string, attributes: any) => html`
@@ -425,6 +455,6 @@ export const formTemplates = {
         @change=${attributes.onChange}
       />
     `,
-    dependencies: [ FormMixin, FormMinMaxMixin, FormStepMixin ]
+    dependencies: [FormMixin, FormMinMaxMixin, FormStepMixin],
   },
-}
+};

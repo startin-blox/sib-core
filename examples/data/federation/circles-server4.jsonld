@@ -13,14 +13,9 @@
       "jabberID": "3oa5aaaazee6@conference.test1.startinblox.com",
       "jabberRoom": true,
       "@type": "hd:circle",
-      "permissions": [
-        "view"
-      ]
+      "permissions": ["view"]
     }
   ],
-  "permissions": [
-    "add",
-    "view"
-  ],
+  "permissions": ["add", "view"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }

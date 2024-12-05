@@ -1,61 +1,74 @@
-import { StoreMixin } from '../../mixins/storeMixin';
+import type { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
+import type { Resource } from '../../mixins/interfaces.ts';
+import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 const MultipleselectFormMixin = {
   name: 'multipleselect-form-mixin',
-  use: [ StoreMixin ],
+  use: [StoreMixin],
   attributes: {
-    range: { // range attribute is passed to the solid-dropdown
+    range: {
+      // range attribute is passed to the solid-dropdown
       type: String,
       default: '',
-      callback: function(value) {
-        if (value && value !== this.listAttributes['range']) this.listAttributes['range'] = value;
-      }
+      callback: function (value: string) {
+        if (value && value !== this.listAttributes.range)
+          this.listAttributes.range = value;
+      },
     },
-    enum: { // enum attribute is passed to the solid-dropdown
+    enum: {
+      // enum attribute is passed to the solid-dropdown
       type: String,
       default: '',
-      callback: function (value) {
-        if (value && value !== this.listAttributes['enum']) this.listAttributes['enum'] = value;
-      }
+      callback: function (value: string) {
+        if (value && value !== this.listAttributes.enum)
+          this.listAttributes.enum = value;
+      },
     },
     orderAsc: {
       type: String,
       default: 'name',
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'orderAsc');
-      }
+      },
     },
     orderDesc: {
       type: String,
       default: 'name',
       callback: function (newValue: string) {
         this.addToAttributes(newValue, 'orderDesc');
-      }
-    }
+      },
+    },
   },
   created() {
-    this.listValueTransformations.push(this.setDataSrc.bind(this));
+    this.listValueTransformations.attach(
+      this.setDataSrc.bind(this),
+      'MultipleselectFormMixin:setDataSrc',
+    );
   },
-  setDataSrc(value: string, listValueTransformations: Function[]) {
+  setDataSrc(value: string, listValueTransformations: PostProcessorRegistry) {
     if (value && value !== this.dataSrc) {
       try {
-        let values = JSON.parse(value);
+        const values = JSON.parse(value);
         if (values && Array.isArray(values)) {
           this.setValue(values);
         } else {
           this.setValue([value]);
         }
-      } catch (ex) {
+      } catch {
         this.dataSrc = value;
-        this.setValue([ {"@id": value}]);
+        this.setValue([{ '@id': value }]);
       }
     }
 
     const nextProcessor = listValueTransformations.shift();
-    if(nextProcessor) nextProcessor(value, listValueTransformations);
+    if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    if (!this.resource || (!this.resource['ldp:contains'] && !Array.isArray(this.resource))) return;
+    if (
+      !this.resource ||
+      (!this.resource['ldp:contains'] && !Array.isArray(this.resource))
+    )
+      return;
     this.setValue(this.resource['ldp:contains']);
 
     // TODO: Rationalize or clean this commented code
@@ -65,11 +78,12 @@ const MultipleselectFormMixin = {
 
     this.planRender();
   },
-  setValue(values: string[]) { // set the values to the dropdown
-    this.listAttributes['values'] = JSON.stringify(values.map(r => r['@id']));
+  setValue(values: Resource[]) {
+    // set the values to the dropdown
+    this.listAttributes.values = JSON.stringify(values.map(r => r['@id']));
   },
   empty() {
-    this.listAttributes['values'] = [];
+    this.listAttributes.values = [];
     this.planRender();
   },
   get type() {
@@ -78,8 +92,6 @@ const MultipleselectFormMixin = {
   get multiple() {
     return true;
   },
-}
+};
 
-export {
-  MultipleselectFormMixin
-}
+export { MultipleselectFormMixin };

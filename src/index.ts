@@ -1,56 +1,55 @@
-import "./libs/polyfills.js";
+import './libs/polyfills.js';
+import { SolidAcChecker } from './components/solid-ac-checker.ts';
+import { SolidDelete } from './components/solid-delete.ts';
 // Components
-import { SolidDisplay } from './components/solid-display';
-import { SolidForm } from './components/solid-form';
-import { SolidFormSearch } from './components/solid-form-search';
-import { SolidTraversalSearch } from './components/solid-traversal-search';
-import { SolidWidget } from './components/solid-widget';
-import { SolidAcChecker } from './components/solid-ac-checker';
-import { SolidDelete } from './components/solid-delete';
-import { SolidLang } from './components/solid-lang';
-import { SolidTable } from './components/solid-table';
-import { SolidMap } from './components/solid-map';
-import { SolidMembership } from './components/solid-membership';
-import { SolidMemberDelete } from './components/solid-member-delete';
-import { SolidMemberAdd } from './components/solid-member-add';
+import { SolidDisplay } from './components/solid-display.ts';
+import { SolidFormSearch } from './components/solid-form-search.ts';
+import { SolidForm } from './components/solid-form.ts';
+import { SolidLang } from './components/solid-lang.ts';
+import { SolidMemberAdd } from './components/solid-member-add.ts';
+import { SolidMemberDelete } from './components/solid-member-delete.ts';
+import { SolidMembership } from './components/solid-membership.ts';
+import { SolidTable } from './components/solid-table.ts';
+import { SolidTraversalSearch } from './components/solid-traversal-search.ts';
+import { SolidWidget } from './components/solid-widget.ts';
 
 // Mixins
-import { CounterMixin } from './mixins/counterMixin';
-import { FederationMixin } from './mixins/federationMixin';
-import { FilterMixin } from './mixins/filterMixin';
-import { GrouperMixin } from './mixins/grouperMixin';
-import { HighlighterMixin } from './mixins/highlighterMixin';
-import { ListMixin } from './mixins/listMixin';
-import { NextMixin } from './mixins/nextMixin';
-import { PaginateMixin } from './mixins/paginateMixin';
-import { RequiredMixin } from './mixins/requiredMixin';
-import { SorterMixin } from './mixins/sorterMixin';
-import { StoreMixin } from './mixins/storeMixin';
-import { TranslationMixin } from './mixins/translationMixin';
-import { ValidationMixin } from './mixins/validationMixin';
-import { WidgetMixin } from './mixins/widgetMixin';
+import { CounterMixin } from './mixins/counterMixin.ts';
+import { FederationMixin } from './mixins/federationMixin.ts';
+import { FilterMixin } from './mixins/filterMixin.ts';
+import { GrouperMixin } from './mixins/grouperMixin.ts';
+import { HighlighterMixin } from './mixins/highlighterMixin.ts';
+import { ListMixin } from './mixins/listMixin.ts';
+import { NextMixin } from './mixins/nextMixin.ts';
+import { PaginateMixin } from './mixins/paginateMixin.ts';
+import { RequiredMixin } from './mixins/requiredMixin.ts';
+import { SorterMixin } from './mixins/sorterMixin.ts';
+import { StoreMixin } from './mixins/storeMixin.ts';
+import { TranslationMixin } from './mixins/translationMixin.ts';
+import { ValidationMixin } from './mixins/validationMixin.ts';
+import { WidgetMixin } from './mixins/widgetMixin.ts';
 
+import * as AttributeMixins from './new-widgets/attributeMixins/index.ts';
+import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin.ts';
+import * as CallbackMixins from './new-widgets/callbackMixins/index.ts';
 // New widgets system
-import { newWidgetFactory } from './new-widgets/new-widget-factory';
-import { BaseWidgetMixin } from './new-widgets/baseWidgetMixin';
-import * as AttributeMixins from './new-widgets/attributeMixins';
-import * as CallbackMixins from './new-widgets/callbackMixins';
-import * as TemplateAdditionMixins from './new-widgets/templateAdditionMixins';
-import * as Templates from './new-widgets/templates';
-import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies';
+import { newWidgetFactory } from './new-widgets/new-widget-factory.ts';
+import * as TemplateAdditionMixins from './new-widgets/templateAdditionMixins/index.ts';
+import * as Templates from './new-widgets/templates/index.ts';
+import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencies/index.ts';
 
+import { Sib } from './libs/Sib.ts';
+import * as Helpers from './libs/helpers.ts';
 // Libs
-import { store, base_context as baseContext } from './libs/store/store';
-import { Sib } from './libs/Sib';
-import SolidTemplateElement from './solid-template-element';
-import { widgetFactory } from './widgets/widget-factory';
-import * as Helpers from './libs/helpers';
+import { base_context as baseContext, store } from './libs/store/store.ts';
+import SolidTemplateElement from './solid-template-element.ts';
+import { widgetFactory } from './widgets/widget-factory.ts';
 
 // lit-html
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { until } from 'lit-html/directives/until';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { until } from 'lit/directives/until.js';
 
 export {
   // Components
@@ -63,11 +62,9 @@ export {
   SolidDelete,
   SolidLang,
   SolidTable,
-  SolidMap,
   SolidMembership,
   SolidMemberDelete,
   SolidMemberAdd,
-
   // Mixins
   CounterMixin,
   FederationMixin,
@@ -83,14 +80,12 @@ export {
   TranslationMixin,
   ValidationMixin,
   WidgetMixin,
-
   // New widgets system
   AttributeMixins,
   CallbackMixins,
   TemplateAdditionMixins,
   TemplatesDependenciesMixins,
   Templates,
-
   // Libs
   store,
   Sib,
@@ -100,11 +95,10 @@ export {
   BaseWidgetMixin,
   Helpers,
   baseContext,
-
   // lit-html
   html,
   render,
   ifDefined,
   until,
-  unsafeHTML
-}
+  unsafeHTML,
+};

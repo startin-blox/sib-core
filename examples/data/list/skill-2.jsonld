@@ -20,11 +20,6 @@
       }
     ]
   },
-  "permissions": [
-    "view",
-    "change",
-    "control",
-    "delete"
-  ],
+  "permissions": ["view", "change", "control", "delete"],
   "@context": "https://cdn.startinblox.com/owl/context.jsonld"
 }
