@@ -1,15 +1,14 @@
-import { Sib } from '../libs/Sib';
+import { Sib } from '../libs/Sib.ts';
 
-import { WidgetMixin } from '../mixins/widgetMixin';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin';
-import { TraversalSearchMixin } from '../mixins/traversalSearchMixin';
-import { ContextMixin } from '../mixins/contextMixin';
-import type { WidgetInterface } from '../mixins/interfaces';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
+import { ContextMixin } from '../mixins/contextMixin.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
+import { TraversalSearchMixin } from '../mixins/traversalSearchMixin.ts';
+import type { WidgetInterface } from '../mixins/interfaces.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
-import { html, render } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined';
-// import type { SearchQuery } from '../libs/interfaces';
+import { html, render } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const SolidTraversalSearch = {
   name: 'solid-traversal-search',
