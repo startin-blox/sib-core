@@ -15,31 +15,6 @@ const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
 
 export const base_context = {
-<<<<<<< HEAD
-  '@vocab': "https://cdn.startinblox.com/owl#",
-  foaf: "http://xmlns.com/foaf/0.1/",
-  doap: "http://usefulinc.com/ns/doap#",
-  ldp: "http://www.w3.org/ns/ldp#",
-  rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  xsd: "http://www.w3.org/2001/XMLSchema#",
-  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#",
-  acl: "http://www.w3.org/ns/auth/acl#",
-  hd: "http://happy-dev.fr/owl/#",
-  sib: "https://cdn.startinblox.com/owl#",
-  name: "rdfs:label",
-  deadline: "xsd:dateTime",
-  lat: "geo:lat",
-  lng: "geo:long",
-  jabberID: "foaf:jabberID",
-  permissions: "acl:accessControl",
-  mode: "acl:mode",
-  view: "acl:Read",
-  change: "acl:Write",
-  add: "acl:Append",
-  delete: "acl:Delete",
-  control: "acl:Control"
-=======
   '@vocab': 'https://cdn.startinblox.com/owl#',
   foaf: 'http://xmlns.com/foaf/0.1/',
   doap: 'http://usefulinc.com/ns/doap#',
@@ -63,7 +38,6 @@ export const base_context = {
   add: 'acl:Append',
   delete: 'acl:Delete',
   control: 'acl:Control',
->>>>>>> beta
 };
 
 export class Store {
@@ -112,12 +86,8 @@ export class Store {
     forceFetch = false,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-<<<<<<< HEAD
     bypassLoadingList: boolean = false
-  ): Promise<Resource|null> {
-=======
   ): Promise<Resource | null> {
->>>>>>> beta
     let key = id;
     if (serverPagination) {
       key = appendServerPaginationToIri(key, serverPagination);
@@ -154,17 +124,6 @@ export class Store {
         if (localData == null) localData = {};
         localData['@id'] = id;
         resource = localData;
-<<<<<<< HEAD
-        console.log("From get Data Local data", localData);
-      } else try {
-        resource = localData || await this.fetchData(id, clientContext, parentId, serverPagination, serverSearch);
-      } catch (error) { console.error(error) }
-      if (!resource) {
-        if (!bypassLoadingList)
-          this.loadingList.delete(key);
-        resolve(null);
-        document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: null, fetchedResource: null } }));
-=======
       } else
         try {
           resource =
@@ -186,7 +145,6 @@ export class Store {
             detail: { id: key, resource: null, fetchedResource: null },
           }),
         );
->>>>>>> beta
         return;
       }
 
@@ -195,12 +153,6 @@ export class Store {
       ]);
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
       // Cache proxy
-<<<<<<< HEAD
-      await this.cacheGraph(resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch);
-      if (!bypassLoadingList)
-        this.loadingList.delete(key);
-      document.dispatchEvent(new CustomEvent('resourceReady', { detail: { id: key, resource: this.get(key), fetchedResource: resource } }));
-=======
       await this.cacheGraph(
         resource,
         clientContext,
@@ -219,7 +171,6 @@ export class Store {
           },
         }),
       );
->>>>>>> beta
     });
   }
 
