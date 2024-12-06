@@ -129,7 +129,7 @@ const FilterMixin = {
   isIndexBasedSearch(): boolean {
     return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
   },
-  onIndexSearch(submitEvent: any): Promise<void> {
+  onIndexSearch(submitEvent: any): void {
     this.resources['ldp:contains'] = []; // empty the previous results
     sibStore.setLocalData(this.resources, this.dataSrc, true);
     if (this.loader) {
