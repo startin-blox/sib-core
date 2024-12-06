@@ -520,7 +520,7 @@ export class Store {
    *
    * @returns id of the posted resource
    */
-  async setLocalData(
+  setLocalData(
     resource: object,
     id: string,
     bypassLoadingList = false,

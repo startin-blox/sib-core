@@ -1,4 +1,4 @@
-import { parseFieldsString } from '../libs/helpers';
+import { parseFieldsString } from '../libs/helpers.ts';
 //import { QueryEngine } from '@comunica/query-sparql-link-traversal';
 
 const TraversalSearchMixin = {
@@ -40,20 +40,20 @@ const TraversalSearchMixin = {
     // Get all values from all fields in the form
     // Add that to a values[] arrayconst fields = Object.keys(filters);
     const fields = parseFieldsString(this.fields);
-    fields.forEach(field => {
+    for (const field of fields) {
       console.log(
         field,
-        this.element.querySelector('[name="' + field + '"] input').value,
+        this.element.querySelector(`[name="${field}"] input`).value,
       );
       this.values[field] = [];
 
       const valuesArray = parseFieldsString(
-        this.element.querySelector('[name="' + field + '"] input').value,
+        this.element.querySelector(`[name="${field}"] input`).value,
       );
-      valuesArray.forEach(value => {
+      for (const value of valuesArray) {
         this.values[field].push(value);
-      });
-    });
+      }
+    }
 
     const query = `SELECT DISTINCT ?user ?first_name ?last_name WHERE {
       ?skillIndex a <https://cdn.startinblox.com/owl#PropertyIndex>;
@@ -71,7 +71,7 @@ const TraversalSearchMixin = {
 
     const bindingsStream = await this.engine.queryBindings(query, {
       lenient: true, // ignore HTTP fails
-      sources: makeSources(this.values['skills']),
+      sources: makeSources(this.values.skills),
     });
 
     console.log('Start querying...');

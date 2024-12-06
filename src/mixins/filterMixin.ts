@@ -24,7 +24,7 @@ const FilterMixin = {
     dataSrcIndex: {
       type: String,
       default: null,
-      callback: async (value: string) => {
+      callback: (value: string) => {
         console.log('Set index src', value);
       },
     },
@@ -62,7 +62,7 @@ const FilterMixin = {
 
     if (this.dataSrcIndex && this.dataSrcIndex !== '') {
       this.filteredOn = FilterMode.Index;
-      if (!filteredBy) throw `#Missing filtered-by attribute`;
+      if (!filteredBy) throw '#Missing filtered-by attribute';
       //this.listPostProcessors.push(this.filterCallback.bind(this));
 
       // Create the local container to store search results
@@ -129,7 +129,7 @@ const FilterMixin = {
   isIndexBasedSearch(): boolean {
     return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
   },
-  async onIndexSearch(submitEvent: any): Promise<void> {
+  onIndexSearch(submitEvent: any): Promise<void> {
     this.resources['ldp:contains'] = []; // empty the previous results
     sibStore.setLocalData(this.resources, this.dataSrc, true);
     if (this.loader) {

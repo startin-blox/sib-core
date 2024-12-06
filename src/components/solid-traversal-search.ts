@@ -49,7 +49,7 @@ export const SolidTraversalSearch = {
       }),
     );
   },
-  async inputChange(): Promise<void> {
+  inputChange(): void {
     this.change(this.value);
   },
   getWidget(field: string, isSet = false): WidgetInterface {
@@ -62,12 +62,12 @@ export const SolidTraversalSearch = {
     //   this.populate();
     // }
 
-    const widgetAttribute = this.element.getAttribute('widget-' + field);
+    const widgetAttribute = this.element.getAttribute(`widget-${field}`);
     // Choose widget
     if (
       !widgetAttribute &&
-      (this.element.hasAttribute('range-' + field) ||
-        this.element.hasAttribute('enum-' + field))
+      (this.element.hasAttribute(`range-${field}`) ||
+        this.element.hasAttribute(`enum-${field}`))
     ) {
       tagName = 'solid-form-dropdown';
     } else {
@@ -98,11 +98,11 @@ export const SolidTraversalSearch = {
         </div>
       `;
   },
-  async attach(elm: any) {
+  attach(elm: any) {
     if (this.attachedElements.has(elm)) return;
     this.attachedElements.add(elm);
   },
-  async detach(elm: any) {
+  detach(elm: any) {
     if (!this.attachedElements.has(elm)) return;
     this.attachedElements.delete(elm);
   },

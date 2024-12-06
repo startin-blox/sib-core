@@ -1,7 +1,7 @@
 import sleep from '../sleep.ts';
 
 describe('helpers', function () {
-  let helpers: typeof import('../../../src/libs/helpers');
+  let helpers: typeof import('../../../src/libs/helpers.ts');
   let win: Window;
   let doc: Document;
   this.beforeEach('get dom', () => {

@@ -1,5 +1,5 @@
 import { QueryEngine } from '@comunica/query-sparql';
-import { SparqlQueryFactory } from '../libs/SparqlQueryFactory';
+import { SparqlQueryFactory } from '../libs/SparqlQueryFactory.ts';
 
 export type SparqlQueryEngineComunicaUpdateCallback = (
   user: string,
@@ -13,7 +13,7 @@ export class SparqlQueryEngineComunica {
   private resetCallback: SparqlQueryEngineComunicaResetCallback;
 
   public constructor(
-    metaMetaIndex: string,
+    _metaMetaIndex: string,
     updateCallback: SparqlQueryEngineComunicaUpdateCallback,
     resetCallback: SparqlQueryEngineComunicaResetCallback,
   ) {
@@ -45,10 +45,10 @@ export class SparqlQueryEngineComunica {
     bindingsStream: any,
   ): Promise<string> {
     let result = '';
-    bindingsStream.on(
-      'data',
-      (binding: any) => (result = binding.get('result').value),
-    );
+    bindingsStream.on('data', (binding: any) => {
+      result = binding.get('result').value;
+      return result;
+    });
     await this.makeBindingsStreamPromise(bindingsStream);
     return result;
   }
@@ -319,15 +319,15 @@ export class SparqlQueryEngineComunica {
     this.engine.invalidateHttpCache();
 
     const hasSkill: boolean =
-      searchForm['skills'] && searchForm['skills'].value.length > 0;
+      searchForm.skills && searchForm.skills.value.length > 0;
     const hasCity: boolean =
       searchForm['profile.city'] && searchForm['profile.city'].value.length > 0;
     const hasName: boolean =
-      searchForm['name'] && searchForm['name'].value.length > 0;
+      searchForm.name && searchForm.name.value.length > 0;
 
     // search by skill
     if (hasSkill && !hasCity && !hasName) {
-      const skills = searchForm['skills'].value.map(s => s['@id']);
+      const skills = searchForm.skills.value.map(s => s['@id']);
       this.searchBySkill(skills);
     }
 
@@ -338,35 +338,35 @@ export class SparqlQueryEngineComunica {
 
     // search by name
     else if (hasName && !hasSkill && !hasCity) {
-      this.searchByName(searchForm['name'].value);
+      this.searchByName(searchForm.name.value);
     }
 
     // search by skill and location
     else if (hasSkill && hasCity && !hasName) {
-      const skills = searchForm['skills'].value.map(s => s['@id']);
+      const skills = searchForm.skills.value.map(s => s['@id']);
       const city = searchForm['profile.city'].value;
       this.searchBySkillAndLocation(skills, city);
     }
 
     // search by skill and name
     else if (hasSkill && hasName && !hasCity) {
-      const skills = searchForm['skills'].value.map(s => s['@id']);
-      const name = searchForm['name'].value;
+      const skills = searchForm.skills.value.map(s => s['@id']);
+      const name = searchForm.name.value;
       this.searchBySkillAndName(skills, name);
     }
 
     // search by city and name
     else if (hasCity && hasName && !hasSkill) {
       const location = searchForm['profile.city'].value;
-      const name = searchForm['name'].value;
+      const name = searchForm.name.value;
       this.searchByLocationAndName(location, name);
     }
 
     // search by skill, city and name
     else if (hasSkill && hasName && hasCity) {
-      const skills = searchForm['skills'].value.map(s => s['@id']);
+      const skills = searchForm.skills.value.map(s => s['@id']);
       const location = searchForm['profile.city'].value;
-      const name = searchForm['name'].value;
+      const name = searchForm.name.value;
       this.searchBySkillAndLocationAndName(skills, location, name);
     }
   }
