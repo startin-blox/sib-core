@@ -23,7 +23,11 @@ import '@rckeller/cypress-unfetch';
 
 // Plugin to use tab key for testing
 import 'cypress-plugin-tab';
+// Plugin to test editorMixin (tinyMce in iframe)
+import 'cypress-iframe';
 
 Cypress.on('uncaught:exception', () => {
+  // returning false here prevents Cypress from
+  // failing the test
   return false;
 });

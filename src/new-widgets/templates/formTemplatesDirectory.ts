@@ -13,6 +13,7 @@ import { MultipleFormMixin } from '../templatesDependencies/multipleFormMixin.ts
 import { MultipleselectFormMixin } from '../templatesDependencies/multipleselectFormMixin.ts';
 import { PatternMixin } from '../templatesDependencies/patternMixin.ts';
 import { RangeMixin } from '../templatesDependencies/rangeMixin.ts';
+import { ValueEditorMixin } from '../templatesDependencies/valueEditorMixin.ts';
 import { ValueRichtextMixin } from '../templatesDependencies/valueRichtextMixin.ts';
 
 import { html } from 'lit';
@@ -387,6 +388,17 @@ export const formTemplates = {
       ></div>
     `,
     dependencies: [ValueRichtextMixin, FormMixin],
+  },
+  editor: {
+    template: (_value: string, attributes: any) => html`
+      <textarea
+        id=${attributes.id}
+        data-editor
+        name=${ifDefined(attributes.name)}
+        data-holder
+      ></textarea>
+    `,
+    dependencies: [ValueEditorMixin, FormMixin],
   },
   color: {
     template: (_value: string, attributes: any) => html`
