@@ -58,7 +58,6 @@ const FilterMixin = {
   },
   async attached(): Promise<void> {
     const filteredBy = this.filteredBy;
-    this.searchForm = document.getElementById(filteredBy);
 
     if (this.dataSrcIndex && this.dataSrcIndex !== '') {
       this.filteredOn = FilterMode.Index;
@@ -114,6 +113,8 @@ const FilterMixin = {
 
       this.listPostProcessors.push(this.applyPostProcessors.bind(this));
     } else if (this.isFilteredOnServer() && filteredBy) {
+      this.searchForm = document.getElementById(filteredBy);
+
       if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
       // this.searchForm.component.attach(this); // is it necessary?
       this.searchForm.addEventListener('formChange', () =>
