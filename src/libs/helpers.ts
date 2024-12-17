@@ -191,11 +191,14 @@ function compareTransform(str: string) {
     .toLowerCase()
     .replaceAll('œ', 'oe')
     .replaceAll('æ', 'ae')
-    .replaceAll(/[ ,.!?;:-]+/g, '-');
+    .replaceAll(/[ ,.!?;:-`"]+/g, ' ')
+    .trim();
 }
 
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
+    if (typeof subject !== 'string' || typeof query !== 'string')
+      throw new TypeError('not a string');
     if (query === '') return true;
     return fuzzyCompare(subject, String(query));
   },
