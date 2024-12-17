@@ -56,6 +56,9 @@ prepare:
     paths:
       - dist
     expire_in: 1 day
+  only:
+    - master
+    - beta
   tags:
     - test
     - publish
