@@ -1,5 +1,3 @@
-import Fuse from 'fuse.js';
-
 function uniqID(): string {
   return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
 }
@@ -183,19 +181,26 @@ function defineComponent(tagName: string, componentClass: typeof HTMLElement) {
 }
 
 function fuzzyCompare(subject: string, search: string) {
-  const fuse = new Fuse([subject], {
-    shouldSort: false,
-    threshold: 0.37,
-  }).search(search);
-  return fuse.length > 0;
+  return compareTransform(subject).includes(compareTransform(String(search)));
+}
+
+function compareTransform(str: string) {
+  return str
+    .normalize('NFD')
+    .replaceAll(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replaceAll('œ', 'oe')
+    .replaceAll('æ', 'ae')
+    .replaceAll(/[ ,.!?;:-`"]+/g, ' ')
+    .trim();
 }
 
 const compare: { [k: string]: (subject: any, query: any) => boolean } = {
   string(subject: string, query: string) {
+    if (typeof subject !== 'string' || typeof query !== 'string')
+      throw new TypeError('not a string');
     if (query === '') return true;
-    if (subject.toString().toLowerCase().includes(String(query).toLowerCase()))
-      return true;
-    return fuzzyCompare(subject, query);
+    return fuzzyCompare(subject, String(query));
   },
   boolean(subject: boolean, query: boolean) {
     if (!query) return true;

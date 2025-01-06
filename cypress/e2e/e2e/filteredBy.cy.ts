@@ -1,8 +1,8 @@
 describe('simple Startin’blox e2e test', () => {
   it('check children count', () => {
     cy.visit('/examples/filtered.html');
-    cy.get('#filter1 input').type('ma#er'); // match "mayer"
-    cy.get('#filter2 input').type('linds'); // match "lindsay", "collins" & "rollins"
+    cy.get('#filter1 input').type('MâÿèR'); // match "mayer"
+    cy.get('#filter2 input').type('lin'); // match "lindsay", "collins" & "rollins"
     cy.get('main > div:nth-child(1) > solid-display > div > solid-display')
       .its('length')
       .should('eq', 1);
@@ -18,6 +18,6 @@ describe('simple Startin’blox e2e test', () => {
     });
     cy.get('main > div:nth-child(2) > solid-display > div > solid-display')
       .its('length')
-      .should('eq', 3);
+      .should('eq', 5);
   });
 });

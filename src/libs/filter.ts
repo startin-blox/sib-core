@@ -113,6 +113,8 @@ const matchValue = async (
     return orThrow(throwOn, await ret);
   }
 
+  if (query.type === 'string' && typeof subject !== 'string')
+    return orThrow(throwOn, compare.string(subject['@id'], query.value));
   return orThrow(throwOn, compare[query.type](subject, query.value));
 };
 

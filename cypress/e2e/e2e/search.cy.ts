@@ -170,7 +170,7 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
 
   it('solid-form-search + empty-widget', () => {
     cy.get('#span-empty-widget > div').children().should('have.length', 4);
-    cy.get('#filter-with-empty-widget').find('input').type('rrr');
+    cy.get('#filter-with-empty-widget').find('input').type('rr');
     cy.get('#span-empty-widget > div')
       .children()
       .should('have.length', 1)
