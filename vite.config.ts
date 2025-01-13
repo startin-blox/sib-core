@@ -1,9 +1,26 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 export default defineConfig({
   root: './',
   base: './',
+  resolve: {
+    preserveSymlinks: true,
+    alias: {
+      stream: 'stream-browserify'
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+          process: true,
+        }),
+      ],
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),

@@ -1,13 +1,28 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
+// import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
+import process from 'process';
+
+import semantizer from "@semantizer/default";
+import type { DatasetSemantizer } from "@semantizer/types";
+import { solidWebIdProfileFactory } from "@semantizer/mixin-solid-webid";
+import indexFactory, { indexShapeFactory } from "@semantizer/mixin-index";
+
+// The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
+import IndexStrategyConjunction from "@semantizer/mixin-index-strategy-conjunction";
+// import IndexStrategySparqlComunica from "@semantizer/mixin-index-strategy-sparql-comunica";
+
 
 enum FilterMode {
   Server = 'server',
   Client = 'client',
   Index = 'index',
+}
+
+enum IndexType {
+  Index = 'https://ns.inria.fr/idx/terms#Index'
 }
 
 const FilterMixin = {
@@ -95,12 +110,72 @@ const FilterMixin = {
         sibStore.setLocalData(this.resources, this.dataSrc, true);
       };
 
-      this.comunicaEngine = new SparqlQueryEngineComunica(
-        this.dataSrcIndex,
-        update,
-        reset,
+      console.log('Init index based search', this.dataSrcIndex);
+      console.log("process", process);
+      console.log("process.nextTick", process.nextTick);
+      const webIdUri = `${this.dataSrcIndex}`;
+
+      // // 1. Load the WebId of the instance
+      const appIdProfile = await semantizer.load(webIdUri, solidWebIdProfileFactory);
+      // await appIdProfile.loadExtendedProfile();
+      const appId = appIdProfile.getPrimaryTopic();
+
+      // 2. Get the public type index
+      const publicTypeIndex = appId.getPublicTypeIndex();
+
+      if (!publicTypeIndex) {
+          throw new Error("The TypeIndex was not found.");
+      }
+
+      await publicTypeIndex.load();
+
+      // 3. Find the index from the TypeIndex
+      const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(IndexType.Index);
+
+      if (!indexDataset) {
+          throw new Error("The meta-meta index was not found.");
+      }
+      console.log('Index dataset', indexDataset);
+
+      // 4. Build the index mixin
+      const index = semantizer.build(indexFactory, indexDataset);
+
+      // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
+      // and get the associated filter values for each of them and add them as pattern
+      // How to differentiate between pattern and value properties?
+
+      const shape = semantizer.build(indexShapeFactory);
+      const dataFactory = semantizer.getConfiguration().getRdfDataModelFactory();
+      shape.addTargetRdfType(dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#User"));
+
+      shape.addPatternProperty(
+          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#firstName"),
+          dataFactory.literal("adr.*")
       );
-      this.comunicaEngine.searchFromSearchForm(); // no filter = default case
+
+      shape.addValueProperty(
+          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#city"),
+          dataFactory.literal("paris")
+      );
+
+      shape.addValueProperty(
+          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#skills"),
+          dataFactory.namedNode("https://api.test-inria2.startinblox.com/skills/2/")
+      );
+
+      console.log('Shape', shape);
+      const strategy = new IndexStrategyConjunction(shape);
+      const resultCallback = (user: DatasetSemantizer) => console.log("!!! RESULT !!! ", user.getOrigin()?.value);
+      console.log('Strategy', strategy);
+      const result = await index.findTargetsRecursively(strategy, resultCallback, 5);
+      console.log('Strategy', result);
+
+      // this.comunicaEngine = new SparqlQueryEngineComunica(
+      //   this.dataSrcIndex,
+      //   update,
+      //   reset,
+      // );
+      // this.comunicaEngine.searchFromSearchForm(); // no filter = default case
       console.log(
         'Search by location for Paris',
         this.dataSrcIndex,

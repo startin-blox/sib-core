@@ -8,7 +8,10 @@
   "directories": {
     "example": "examples"
   },
-  "files": ["dist", "doc"],
+  "files": [
+    "dist",
+    "doc"
+  ],
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch --sourcemap 'inline'",
@@ -84,6 +87,7 @@
     "jsonld-context-parser": "^1.3.4",
     "markdown-it": "^14.1.0",
     "markdown-it-link-attributes": "4.0.1",
+    "process": "^0.11.10",
     "pubsub-js": "^1.9.4",
     "quill": "^2.0.3",
     "quill-delta-to-markdown": "^0.6.0",
@@ -94,10 +98,23 @@
   },
   "dependencies": {
     "@comunica/query-sparql": "^2.10.2",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@rdfjs/data-model": "2.0.2",
+    "@rdfjs/fetch": "^3.1.1",
+    "@semantizer/core": "beta",
+    "@semantizer/default": "beta",
+    "@semantizer/loader-quad-stream-rdfjs": "beta",
+    "@semantizer/mixin-index": "beta",
+    "@semantizer/mixin-index-strategy-conjunction": "beta",
+    "@semantizer/mixin-index-strategy-sparql-comunica": "beta",
+    "@semantizer/mixin-solid-webid": "beta",
+    "@semantizer/types": "beta",
     "cors": "^2.8.5",
     "lit": "^3.2.1",
     "loglevel": "^1.9.1",
+    "process": "0.11.10",
     "showdown": "^2.1.0",
+    "stream-browserify": "^3.0.0",
     "tinymce": "^6.0.2"
   }
 }
