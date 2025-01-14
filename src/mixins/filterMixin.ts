@@ -77,6 +77,7 @@ const FilterMixin = {
     const filteredBy = this.filteredBy;
 
     if (this.dataSrcIndex && this.dataSrcIndex !== '') {
+      this.searchForm = document.getElementById(filteredBy);
       this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw '#Missing filtered-by attribute';
       //this.listPostProcessors.push(this.filterCallback.bind(this));
@@ -156,6 +157,7 @@ const FilterMixin = {
       console.log('Toggle loader hidden', this.loader);
       this.loader.toggleAttribute('hidden', false);
     }
+
     const filterValues = submitEvent.target.parentElement.component.value;
     console.log('Filter values', filterValues);
 
