@@ -12,6 +12,9 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    include: [
+      'stream-browserify',
+    ],
     esbuildOptions: {
       plugins: [
         NodeGlobalsPolyfillPlugin({

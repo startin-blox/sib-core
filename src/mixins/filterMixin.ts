@@ -3,6 +3,8 @@ import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
+import { parseFieldsString } from '../libs/helpers.ts';
+
 import process from 'process';
 
 import semantizer from "@semantizer/default";
@@ -146,17 +148,41 @@ const FilterMixin = {
 
       const shape = semantizer.build(indexShapeFactory);
       const dataFactory = semantizer.getConfiguration().getRdfDataModelFactory();
+
+      // How can we know the type of the shape from the component configuration ?
+      // Or should actually the shape be a static configuration object for the component itself ?
       shape.addTargetRdfType(dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#User"));
 
-      shape.addPatternProperty(
-          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#firstName"),
-          dataFactory.literal("adr.*")
-      );
+      console.log('Fields', this.fields);
+      const fields = parseFieldsString(this.searchFields);
+      console.log('Fields after parsing', fields);
+      for (const field of fields) {
+        console.log(
+          field,
+          this.element.querySelector(`[name="${field}"] input`).value,
+        );
+        const valuesArray = parseFieldsString(
+          this.element.querySelector(`[name="${field}"] input`).value,
+        );
+        for (const value of valuesArray) {
+          if (value) {
+            shape.addPatternProperty(
+              dataFactory.namedNode(`http://cdn.startinblox.com/owl/ttl/vocab.ttl#${field}`),
+              dataFactory.literal(value)
+            );
+          }
+        }
+      }
+      console.log('Shape after iterating on the fields', shape);
+      // shape.addPatternProperty(
+      //     dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#firstName"),
+      //     dataFactory.literal("adr.*")
+      // );
 
-      shape.addValueProperty(
-          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#city"),
-          dataFactory.literal("paris")
-      );
+      // shape.addValueProperty(
+      //     dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#city"),
+      //     dataFactory.literal("paris")
+      // );
 
       shape.addValueProperty(
           dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#skills"),
