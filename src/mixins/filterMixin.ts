@@ -84,41 +84,88 @@ const FilterMixin = {
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
 
+      // this.updateContainer = this.updateContainer.bind(this);
       const update = async (id: string): Promise<void> => {
-        console.log('Update user', id, this.resources);
-        this.resources['ldp:contains'].push({
+        console.log('Update user', id, this.localResources);
+        this.localResources['ldp:contains'].push({
           '@id': id,
           '@type': 'foaf:user',
         });
         sibStore.clearCache(this.dataSrc);
         this.element.dataset.src = this.dataSrc;
-        console.log('Update user after setLocalData etc', id, this.resources);
+        console.log('Update user after setLocalData etc', id, this.localResources);
 
-        await sibStore.setLocalData(this.resources, this.dataSrc, true);
+        await sibStore.setLocalData(this.localResources, this.dataSrc, true);
         this.populate();
-
-        //FIXME: Find a way to no re-execute all post-processors after each update
-        // var reRender = true;
-        // setTimeout(async () => {
-        //   if (reRender) {
-        //   }
-        //   reRender = false;
-        // }, 2000);
       };
 
       const reset = (): void => {
         this.empty();
-        this.resources['ldp:contains'] = [];
-        sibStore.setLocalData(this.resources, this.dataSrc, true);
+        this.localResources['ldp:contains'] = [];
+        sibStore.setLocalData(this.localResources, this.dataSrc, true);
       };
 
       console.log('Init index based search', this.dataSrcIndex);
-      console.log("process", process);
-      console.log("process.nextTick", process.nextTick);
-      const webIdUri = `${this.dataSrcIndex}`;
+      this.buildShape([]);
+      // .then((result) => {
+      //   console.log('Result', result);
+      //   this.localResources['ldp:contains'] = result;
+      //   sibStore.setLocalData(this.localResources, this.dataSrc, true);
+      //   this.populate();
+      // });
 
+      // this.comunicaEngine = new SparqlQueryEngineComunica(
+      //   this.dataSrcIndex,
+      //   update,
+      //   reset,
+      // );
+      // this.comunicaEngine.searchFromSearchForm(); // no filter = default case
+      console.log(
+        'Search by location for Paris',
+        this.dataSrcIndex,
+        this.dataSrc,
+        this.localResources,
+        this,
+      );
+
+      this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
+      this.listPostProcessors.push(this.applyPostProcessors.bind(this));
+    } else if (this.isFilteredOnServer() && filteredBy) {
+      this.searchForm = document.getElementById(filteredBy);
+
+      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
+      // this.searchForm.component.attach(this); // is it necessary?
+      this.searchForm.addEventListener('formChange', () =>
+        this.onServerSearchChange(),
+      );
+    } else {
+      this.listPostProcessors.attach(
+        this.filterCallback.bind(this),
+        'FilterMixin:filterCallback',
+      );
+    }
+  },
+  isIndexBasedSearch(): boolean {
+    return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
+  },
+  onIndexSearch(submitEvent: any): void {
+    this.localResources['ldp:contains'] = []; // empty the previous results
+    console.log('Index search', submitEvent);
+    sibStore.setLocalData(this.localResources, this.dataSrc, true);
+    if (this.loader) {
+      console.log('Toggle loader hidden', this.loader);
+      this.loader.toggleAttribute('hidden', false);
+    }
+    const filterValues = submitEvent.target.parentElement.component.value;
+    console.log('Filter values', filterValues);
+
+    // this.comunicaEngine.searchFromSearchForm(filterValues);
+    this.buildShape(filterValues);
+  },
+  async buildShape(filterValues: []) {
+      console.log('Build shape', filterValues);
       // // 1. Load the WebId of the instance
-      const appIdProfile = await semantizer.load(webIdUri, solidWebIdProfileFactory);
+      const appIdProfile = await semantizer.load(this.dataSrcIndex, solidWebIdProfileFactory);
       // await appIdProfile.loadExtendedProfile();
       const appId = appIdProfile.getPrimaryTopic();
 
@@ -153,21 +200,21 @@ const FilterMixin = {
       // Or should actually the shape be a static configuration object for the component itself ?
       shape.addTargetRdfType(dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#User"));
 
-      console.log('Fields', this.fields);
-      const fields = parseFieldsString(this.searchFields);
-      console.log('Fields after parsing', fields);
-      for (const field of fields) {
+      // console.log('Fields', this.fields);
+      // const fields = parseFieldsString(this.searchFields);
+      console.log('Fields after parsing', filterValues);
+      for (const filter of filterValues) {
         console.log(
-          field,
-          this.element.querySelector(`[name="${field}"] input`).value,
+          filter,
+          this.element.querySelector(`[name="${filter}"] input`).value,
         );
         const valuesArray = parseFieldsString(
-          this.element.querySelector(`[name="${field}"] input`).value,
+          this.element.querySelector(`[name="${filter}"] input`).value,
         );
         for (const value of valuesArray) {
           if (value) {
             shape.addPatternProperty(
-              dataFactory.namedNode(`http://cdn.startinblox.com/owl/ttl/vocab.ttl#${field}`),
+              dataFactory.namedNode(`http://cdn.startinblox.com/owl/ttl/vocab.ttl#${filter}`),
               dataFactory.literal(value)
             );
           }
@@ -191,55 +238,34 @@ const FilterMixin = {
 
       console.log('Shape', shape);
       const strategy = new IndexStrategyConjunction(shape);
-      const resultCallback = (user: DatasetSemantizer) => console.log("!!! RESULT !!! ", user.getOrigin()?.value);
+      // const resultCallback = ((user: DatasetSemantizer) => {
+      //   console.log("!!! RESULT !!! ", user.getOrigin()?.value);
+      //   if (user.getOrigin()?.value)
+      //     result.push(user.getOrigin()?.value!);
+
+      //   console.log('Result', result);
+      //   this.localResources['ldp:contains'] = result;
+      //   sibStore.setLocalData(this.localResources, this.dataSrc, true);
+      //   this.populate();
+      // });
       console.log('Strategy', strategy);
-      const result = await index.findTargetsRecursively(strategy, resultCallback, 5);
-      console.log('Strategy', result);
-
-      // this.comunicaEngine = new SparqlQueryEngineComunica(
-      //   this.dataSrcIndex,
-      //   update,
-      //   reset,
-      // );
-      // this.comunicaEngine.searchFromSearchForm(); // no filter = default case
-      console.log(
-        'Search by location for Paris',
-        this.dataSrcIndex,
-        this.dataSrc,
-        this.resources,
-        this,
-      );
-
-      this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
-
-      this.listPostProcessors.push(this.applyPostProcessors.bind(this));
-    } else if (this.isFilteredOnServer() && filteredBy) {
-      this.searchForm = document.getElementById(filteredBy);
-
-      if (!this.searchForm) throw `#${filteredBy} is not in DOM`;
-      // this.searchForm.component.attach(this); // is it necessary?
-      this.searchForm.addEventListener('formChange', () =>
-        this.onServerSearchChange(),
-      );
-    } else {
-      this.listPostProcessors.attach(
-        this.filterCallback.bind(this),
-        'FilterMixin:filterCallback',
-      );
-    }
+      await index.findTargetsRecursively(strategy, (...args) => this.updateContainer(...args), 30);
   },
-  isIndexBasedSearch(): boolean {
-    return this.filteredOn === FilterMode.Index && this.dataSrcIndex;
-  },
-  onIndexSearch(submitEvent: any): void {
-    this.resources['ldp:contains'] = []; // empty the previous results
-    sibStore.setLocalData(this.resources, this.dataSrc, true);
-    if (this.loader) {
-      console.log('Toggle loader hidden', this.loader);
-      this.loader.toggleAttribute('hidden', false);
+  async updateContainer(user: DatasetSemantizer) {
+    console.log('Update container', user, this.localResources);
+    // this.localResources['ldp:contains'] = [];
+    console.log("!!! RESULT !!! ", user.getOrigin()?.value);
+    console.log('Result this in callback function', this);
+    if (user.getOrigin()?.value) {
+      this.localResources['ldp:contains'].push({
+        '@id': user.getOrigin()?.value!,
+        '@type': 'foaf:user',
+      });
     }
-    const filterValues = submitEvent.target.parentElement.component.value;
-    this.comunicaEngine.searchFromSearchForm(filterValues);
+
+    console.log('Result', this.localResources);
+    sibStore.setLocalData(this.localResources, this.dataSrc, true);
+    this.populate();
   },
   get filters(): SearchQuery {
     return this.searchForm?.component?.value ?? {};
@@ -257,14 +283,15 @@ const FilterMixin = {
     // const id = `store://local.${idField}`;
     console.log('Init local data source container for search results', idField);
     this.dataSrc = `store://local.${idField}/dataSrc/`;
-    this.resources = {
+    this.localResources = {
       '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
       '@type': 'ldp:Container',
       '@id': this.dataSrc,
       'ldp:contains': new Array<any>(),
       permissions: ['view'],
     };
-    await sibStore.setLocalData(this.resources, this.dataSrc);
+    console.log('Resources right after initialization', this.localResources);
+    await sibStore.setLocalData(this.localResources, this.dataSrc);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
   },
   isFilteredOnServer() {
@@ -319,7 +346,7 @@ const FilterMixin = {
         this.searchForm,
       );
       resources = resources.filter((_v, index) => filteredResources[index]);
-      this.resources = [...resources];
+      this.localResources = [...resources];
     }
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
