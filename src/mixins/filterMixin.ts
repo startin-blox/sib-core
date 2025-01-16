@@ -130,7 +130,7 @@ const FilterMixin = {
       );
 
       this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
-      this.listPostProcessors.push(this.applyPostProcessors.bind(this));
+      this.listPostProcessors.attach(this.applyPostProcessors.bind(this));
     } else if (this.isFilteredOnServer() && filteredBy) {
       this.searchForm = document.getElementById(filteredBy);
 
@@ -325,9 +325,7 @@ const FilterMixin = {
     div: HTMLElement,
     context: string,
   ): Promise<void> {
-    console.log('Applying other post processors', resources);
     //TODO: Reorder by "pertinence" ??
-
     const nextProcessor = listPostProcessors.shift();
     if (nextProcessor)
       await nextProcessor(resources, listPostProcessors, div, context);
