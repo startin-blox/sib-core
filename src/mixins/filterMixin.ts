@@ -3,6 +3,7 @@ import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
+import { base_context, store } from '../libs/store/store.ts';
 import { parseFieldsString } from '../libs/helpers.ts';
 
 import process from 'process';
@@ -15,7 +16,6 @@ import indexFactory, { indexShapeFactory } from "@semantizer/mixin-index";
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 import IndexStrategyConjunction from "@semantizer/mixin-index-strategy-conjunction";
 // import IndexStrategySparqlComunica from "@semantizer/mixin-index-strategy-sparql-comunica";
-
 
 enum FilterMode {
   Server = 'server',
@@ -34,7 +34,7 @@ const FilterMixin = {
     searchCount: null,
   },
   attributes: {
-    searchFields: {
+    dataRdfType: {
       type: String,
       default: null,
     },
@@ -65,6 +65,10 @@ const FilterMixin = {
       type: String, // 'server' | 'client' | 'index'
       default: FilterMode.Client, // 'client'
     },
+    searchFields: {
+      type: String,
+      default: null,
+    },
   },
   created() {
     this.searchCount = new Map();
@@ -80,40 +84,14 @@ const FilterMixin = {
       this.searchForm = document.getElementById(filteredBy);
       this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw '#Missing filtered-by attribute';
-      //this.listPostProcessors.push(this.filterCallback.bind(this));
 
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
-
-      // this.updateContainer = this.updateContainer.bind(this);
-      const update = async (id: string): Promise<void> => {
-        console.log('Update user', id, this.localResources);
-        this.localResources['ldp:contains'].push({
-          '@id': id,
-          '@type': 'foaf:user',
-        });
-        sibStore.clearCache(this.dataSrc);
-        this.element.dataset.src = this.dataSrc;
-        console.log('Update user after setLocalData etc', id, this.localResources);
-
-        await sibStore.setLocalData(this.localResources, this.dataSrc, true);
-        this.populate();
-      };
-
-      const reset = (): void => {
-        this.empty();
-        this.localResources['ldp:contains'] = [];
-        sibStore.setLocalData(this.localResources, this.dataSrc, true);
-      };
-
       console.log('Init index based search', this.dataSrcIndex);
-      this.buildShape([]);
-      // .then((result) => {
-      //   console.log('Result', result);
-      //   this.localResources['ldp:contains'] = result;
-      //   sibStore.setLocalData(this.localResources, this.dataSrc, true);
-      //   this.populate();
-      // });
+
+      const filterValues = this.searchForm.component.value;
+      console.log('Filter values', filterValues);
+      this.triggerIndexSearch(filterValues);
 
       // this.comunicaEngine = new SparqlQueryEngineComunica(
       //   this.dataSrcIndex,
@@ -121,13 +99,6 @@ const FilterMixin = {
       //   reset,
       // );
       // this.comunicaEngine.searchFromSearchForm(); // no filter = default case
-      console.log(
-        'Search by location for Paris',
-        this.dataSrcIndex,
-        this.dataSrc,
-        this.localResources,
-        this,
-      );
 
       this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
       this.listPostProcessors.attach(this.applyPostProcessors.bind(this));
@@ -162,102 +133,131 @@ const FilterMixin = {
     console.log('Filter values', filterValues);
 
     // this.comunicaEngine.searchFromSearchForm(filterValues);
-    this.buildShape(filterValues);
+    this.triggerIndexSearch(filterValues);
   },
-  async buildShape(filterValues: []) {
-      console.log('Build shape', filterValues);
-      // // 1. Load the WebId of the instance
-      const appIdProfile = await semantizer.load(this.dataSrcIndex, solidWebIdProfileFactory);
-      // await appIdProfile.loadExtendedProfile();
-      const appId = appIdProfile.getPrimaryTopic();
+  async triggerIndexSearch(filterValues: []) {
+    console.log('Trigger index-based search', filterValues);
 
-      // 2. Get the public type index
-      const publicTypeIndex = appId.getPublicTypeIndex();
+    // // 1. Load the WebId of the instance
+    const appIdProfile = await semantizer.load(this.dataSrcIndex, solidWebIdProfileFactory);
+    // await appIdProfile.loadExtendedProfile();
+    const appId = appIdProfile.getPrimaryTopic();
 
-      if (!publicTypeIndex) {
-          throw new Error("The TypeIndex was not found.");
-      }
+    // 2. Get the public type index
+    const publicTypeIndex = appId.getPublicTypeIndex();
 
-      await publicTypeIndex.load();
+    if (!publicTypeIndex) {
+      throw new Error("The TypeIndex was not found.");
+    }
 
-      // 3. Find the index from the TypeIndex
-      const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(IndexType.Index);
+    await publicTypeIndex.load();
 
-      if (!indexDataset) {
-          throw new Error("The meta-meta index was not found.");
-      }
-      console.log('Index dataset', indexDataset);
+    // 3. Find the index from the TypeIndex
+    const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(IndexType.Index);
 
-      // 4. Build the index mixin
-      const index = semantizer.build(indexFactory, indexDataset);
+    if (!indexDataset) {
+      throw new Error("The meta-meta index was not found.");
+    }
 
-      // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
-      // and get the associated filter values for each of them and add them as pattern
-      // How to differentiate between pattern and value properties?
+    console.log('Index dataset', indexDataset);
+    // 4. Build the index mixin
+    const index = semantizer.build(indexFactory, indexDataset);
 
-      const shape = semantizer.build(indexShapeFactory);
-      const dataFactory = semantizer.getConfiguration().getRdfDataModelFactory();
+    // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
+    // and get the associated filter values for each of them and add them as pattern
+    // How to differentiate between pattern and value properties?
+    const shape = semantizer.build(indexShapeFactory);
+    const dataFactory = semantizer.getConfiguration().getRdfDataModelFactory();
 
-      // How can we know the type of the shape from the component configuration ?
-      // Or should actually the shape be a static configuration object for the component itself ?
-      shape.addTargetRdfType(dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#User"));
+    // How can we know the type of the shape from the component configuration ?
+    // Or should actually the shape be a static configuration object for the component itself ?
+    // We could look at a new attribute data-rdf-type on the component to know the type of the shape
+    // this.element.component.dataRdfType = "https://cdn.startinblox.com/owl#User";
+    console.log('Data RDF type', this.dataRdfType);
+    shape.addTargetRdfType(dataFactory.namedNode(this.dataRdfType));
 
-      // console.log('Fields', this.fields);
-      // const fields = parseFieldsString(this.searchFields);
-      console.log('Fields after parsing', filterValues);
-      for (const filter of filterValues) {
-        console.log(
-          filter,
-          this.element.querySelector(`[name="${filter}"] input`).value,
-        );
-        const valuesArray = parseFieldsString(
-          this.element.querySelector(`[name="${filter}"] input`).value,
-        );
-        for (const value of valuesArray) {
-          if (value) {
-            shape.addPatternProperty(
-              dataFactory.namedNode(`http://cdn.startinblox.com/owl/ttl/vocab.ttl#${filter}`),
-              dataFactory.literal(value)
-            );
-          }
-        }
-      }
-      console.log('Shape after iterating on the fields', shape);
-      // shape.addPatternProperty(
-      //     dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#firstName"),
-      //     dataFactory.literal("adr.*")
-      // );
+    // How to get the proper predicates from the fields attribute of the component ?
+    // We need to parse the fields attribute to get the predicates
+    // const fields = this.searchFields;
+    // const filterValues = parseFieldsString(fields);
 
-      // shape.addValueProperty(
-      //     dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#city"),
-      //     dataFactory.literal("paris")
-      // );
+    // But, there are limitations with this parseFieldsString function:
+    // - There are fields which have multiple values, like skills, which values are an array of resources (with @ids)
+    // - Deal with that later !!
 
-      shape.addValueProperty(
-          dataFactory.namedNode("http://cdn.startinblox.com/owl/ttl/vocab.ttl#skills"),
-          dataFactory.namedNode("https://api.test-inria2.startinblox.com/skills/2/")
+    // - There are fields which are sets, which means a combination of two actual predicates, like name(firstName, lastName)
+    // - Deal with that later !!
+
+    // - There are fields which are predicates from a linked object, like profile.city on the user, which is a reference to a "city" literal value
+    console.log('Fields after parsing', filterValues);
+    for (const [field, fieldValue] of Object.entries(filterValues)) {
+      console.log(
+        "Field, fieldValue, fieldValue['value']",
+        field,
+        fieldValue,
+        fieldValue['value'],
       );
 
-      console.log('Shape', shape);
-      const strategy = new IndexStrategyConjunction(shape);
-      // const resultCallback = ((user: DatasetSemantizer) => {
-      //   console.log("!!! RESULT !!! ", user.getOrigin()?.value);
-      //   if (user.getOrigin()?.value)
-      //     result.push(user.getOrigin()?.value!);
+      let path = field;
+      if (field.includes('.')) {
+        // Split the path on each dots
+        const fieldPath: string[] = field.split('.');
 
-      //   console.log('Result', result);
-      //   this.localResources['ldp:contains'] = result;
-      //   sibStore.setLocalData(this.localResources, this.dataSrc, true);
-      //   this.populate();
-      // });
-      console.log('Strategy', strategy);
-      await index.findTargetsRecursively(strategy, (...args) => this.updateContainer(...args), 30);
+        // Get last path
+        path = fieldPath.pop() as string;
+      }
+
+      // Arbitrarily format the field name to match the predicate name
+      // we need to convert the _*char* to *Char* to match the predicate name
+      const fieldName = path.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+      console.log('Field name', fieldName);
+      let actualPredicate = store.getExpandedPredicate(
+        fieldName,
+        base_context,
+      );
+
+      // actualPredicate = actualPredicate.replace('https', 'http');
+      console.log('Actual predicate', actualPredicate);
+      // Check that value is not empty and that it is not an empty array
+      if (fieldValue['value']) {
+        if (Array.isArray(fieldValue['value']) && (fieldValue['value'] as Array<string>).length > 0) {
+          // We need to handle the case where the field is an array of resources
+          // We need to add a pattern property for each of the resources in the array
+          for (const value of (fieldValue['value'] as Array<string>)) {
+            shape.addPatternProperty(
+              dataFactory.namedNode(actualPredicate),
+              dataFactory.namedNode(value)
+            );
+          }
+        } else if (typeof fieldValue['value'] === 'string') {
+          // @ts-ignore
+          shape.addPatternProperty(
+            dataFactory.namedNode(actualPredicate),
+            dataFactory.literal(fieldValue['value'] + ".*")
+          );
+        }
+      }
+    }
+
+    // How to know what filters are present in the shape ?
+    console.log('Shape filter properties', shape.getFilterProperties());
+    // if shape does not contains any pattern property, we add a default one
+    if (shape.getFilterProperties().length === 0) {
+      shape.addPatternProperty(
+        dataFactory.namedNode("https://cdn.startinblox.com/owl#firstName"),
+        dataFactory.literal("adr.*")
+      );
+    }
+
+    console.log('Shape filter properties', shape.getFilterProperties());
+    console.log('Shape after iterating on the fields', shape);
+
+    const strategy = new IndexStrategyConjunction(shape);
+    console.log('Strategy', strategy);
+    await index.findTargetsRecursively(strategy, (...args) => this.updateContainer(...args), 9);
   },
   async updateContainer(user: DatasetSemantizer) {
-    console.log('Update container', user, this.localResources);
-    // this.localResources['ldp:contains'] = [];
-    console.log("!!! RESULT !!! ", user.getOrigin()?.value);
-    console.log('Result this in callback function', this);
+    // console.log('Update container', user, this.localResources);
     if (user.getOrigin()?.value) {
       this.localResources['ldp:contains'].push({
         '@id': user.getOrigin()?.value!,
@@ -265,7 +265,6 @@ const FilterMixin = {
       });
     }
 
-    console.log('Result', this.localResources);
     sibStore.setLocalData(this.localResources, this.dataSrc, true);
     this.populate();
   },
@@ -282,9 +281,8 @@ const FilterMixin = {
     const idField = Array.from(Array(20), () =>
       Math.floor(Math.random() * 36).toString(36),
     ).join('');
-    // const id = `store://local.${idField}`;
-    console.log('Init local data source container for search results', idField);
-    this.dataSrc = `store://local.${idField}/dataSrc/`;
+    // console.log('Init local data source container for search results', idField);
+    this.dataSrc = `store://local.${idField}/`;
     this.localResources = {
       '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
       '@type': 'ldp:Container',
@@ -292,7 +290,7 @@ const FilterMixin = {
       'ldp:contains': new Array<any>(),
       permissions: ['view'],
     };
-    console.log('Resources right after initialization', this.localResources);
+    // console.log('Resources right after initialization', this.localResources);
     await sibStore.setLocalData(this.localResources, this.dataSrc);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
   },

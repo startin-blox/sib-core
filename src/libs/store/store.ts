@@ -25,7 +25,7 @@ export const base_context = {
   geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
   acl: 'http://www.w3.org/ns/auth/acl#',
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
-  sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
+  sib: 'https://cdn.startinblox.com/owl#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
   lat: 'geo:lat',
