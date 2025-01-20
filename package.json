@@ -8,10 +8,7 @@
   "directories": {
     "example": "examples"
   },
-  "files": [
-    "dist",
-    "doc"
-  ],
+  "files": ["dist", "doc"],
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch --sourcemap 'inline'",

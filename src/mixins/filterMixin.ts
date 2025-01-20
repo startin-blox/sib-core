@@ -1,20 +1,20 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 // import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 import { searchInResources } from '../libs/filter.ts';
+import { parseFieldsString } from '../libs/helpers.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
 import { base_context, store } from '../libs/store/store.ts';
-import { parseFieldsString } from '../libs/helpers.ts';
 
 import process from 'process';
 
-import semantizer from "@semantizer/default";
-import type { DatasetSemantizer } from "@semantizer/types";
-import { solidWebIdProfileFactory } from "@semantizer/mixin-solid-webid";
-import indexFactory, { indexShapeFactory } from "@semantizer/mixin-index";
+import semantizer from '@semantizer/default';
+import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
+import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
+import type { DatasetSemantizer } from '@semantizer/types';
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
-import IndexStrategyConjunction from "@semantizer/mixin-index-strategy-conjunction";
+import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
 // import IndexStrategySparqlComunica from "@semantizer/mixin-index-strategy-sparql-comunica";
 
 enum FilterMode {
@@ -24,7 +24,7 @@ enum FilterMode {
 }
 
 enum IndexType {
-  Index = 'https://ns.inria.fr/idx/terms#Index'
+  Index = 'https://ns.inria.fr/idx/terms#Index',
 }
 
 const FilterMixin = {
@@ -139,7 +139,10 @@ const FilterMixin = {
     console.log('Trigger index-based search', filterValues);
 
     // // 1. Load the WebId of the instance
-    const appIdProfile = await semantizer.load(this.dataSrcIndex, solidWebIdProfileFactory);
+    const appIdProfile = await semantizer.load(
+      this.dataSrcIndex,
+      solidWebIdProfileFactory,
+    );
     // await appIdProfile.loadExtendedProfile();
     const appId = appIdProfile.getPrimaryTopic();
 
@@ -147,16 +150,18 @@ const FilterMixin = {
     const publicTypeIndex = appId.getPublicTypeIndex();
 
     if (!publicTypeIndex) {
-      throw new Error("The TypeIndex was not found.");
+      throw new Error('The TypeIndex was not found.');
     }
 
     await publicTypeIndex.load();
 
     // 3. Find the index from the TypeIndex
-    const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(IndexType.Index);
+    const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
+      IndexType.Index,
+    );
 
     if (!indexDataset) {
-      throw new Error("The meta-meta index was not found.");
+      throw new Error('The meta-meta index was not found.');
     }
 
     console.log('Index dataset', indexDataset);
@@ -209,9 +214,9 @@ const FilterMixin = {
 
       // Arbitrarily format the field name to match the predicate name
       // we need to convert the _*char* to *Char* to match the predicate name
-      const fieldName = path.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+      const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
       console.log('Field name', fieldName);
-      let actualPredicate = store.getExpandedPredicate(
+      const actualPredicate = store.getExpandedPredicate(
         fieldName,
         base_context,
       );
@@ -220,20 +225,23 @@ const FilterMixin = {
       console.log('Actual predicate', actualPredicate);
       // Check that value is not empty and that it is not an empty array
       if (fieldValue['value']) {
-        if (Array.isArray(fieldValue['value']) && (fieldValue['value'] as Array<string>).length > 0) {
+        if (
+          Array.isArray(fieldValue['value']) &&
+          (fieldValue['value'] as Array<string>).length > 0
+        ) {
           // We need to handle the case where the field is an array of resources
           // We need to add a pattern property for each of the resources in the array
-          for (const value of (fieldValue['value'] as Array<string>)) {
+          for (const value of fieldValue['value'] as Array<string>) {
             shape.addPatternProperty(
               dataFactory.namedNode(actualPredicate),
-              dataFactory.namedNode(value)
+              dataFactory.namedNode(value),
             );
           }
         } else if (typeof fieldValue['value'] === 'string') {
           // @ts-ignore
           shape.addPatternProperty(
             dataFactory.namedNode(actualPredicate),
-            dataFactory.literal(fieldValue['value'] + ".*")
+            dataFactory.literal(fieldValue['value'] + '.*'),
           );
         }
       }
@@ -244,8 +252,8 @@ const FilterMixin = {
     // if shape does not contains any pattern property, we add a default one
     if (shape.getFilterProperties().length === 0) {
       shape.addPatternProperty(
-        dataFactory.namedNode("https://cdn.startinblox.com/owl#firstName"),
-        dataFactory.literal("adr.*")
+        dataFactory.namedNode('https://cdn.startinblox.com/owl#firstName'),
+        dataFactory.literal('adr.*'),
       );
     }
 
@@ -254,7 +262,11 @@ const FilterMixin = {
 
     const strategy = new IndexStrategyConjunction(shape);
     console.log('Strategy', strategy);
-    await index.findTargetsRecursively(strategy, (...args) => this.updateContainer(...args), 9);
+    await index.findTargetsRecursively(
+      strategy,
+      (...args) => this.updateContainer(...args),
+      9,
+    );
   },
   async updateContainer(user: DatasetSemantizer) {
     // console.log('Update container', user, this.localResources);

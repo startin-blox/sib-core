@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
-import { defineConfig } from 'vite';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: './',
@@ -8,13 +8,11 @@ export default defineConfig({
   resolve: {
     preserveSymlinks: true,
     alias: {
-      stream: 'stream-browserify'
+      stream: 'stream-browserify',
     },
   },
   optimizeDeps: {
-    include: [
-      'stream-browserify',
-    ],
+    include: ['stream-browserify'],
     esbuildOptions: {
       plugins: [
         NodeGlobalsPolyfillPlugin({
