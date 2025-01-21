@@ -137,6 +137,7 @@ const FilterMixin = {
   },
   async triggerIndexSearch(filterValues: []) {
     console.log('Trigger index-based search', filterValues);
+    console.log('This', this.filters, this.searchFields);
 
     // // 1. Load the WebId of the instance
     const appIdProfile = await semantizer.load(
@@ -197,10 +198,10 @@ const FilterMixin = {
     console.log('Fields after parsing', filterValues);
     for (const [field, fieldValue] of Object.entries(filterValues)) {
       console.log(
-        "Field, fieldValue, fieldValue['value']",
+        'Field, fieldValue, fieldValue.value',
         field,
         fieldValue,
-        fieldValue['value'],
+        fieldValue.value,
       );
 
       let path = field;
@@ -224,24 +225,24 @@ const FilterMixin = {
       // actualPredicate = actualPredicate.replace('https', 'http');
       console.log('Actual predicate', actualPredicate);
       // Check that value is not empty and that it is not an empty array
-      if (fieldValue['value']) {
+      if (fieldValue.value) {
         if (
-          Array.isArray(fieldValue['value']) &&
-          (fieldValue['value'] as Array<string>).length > 0
+          Array.isArray(fieldValue.value) &&
+          (fieldValue.value as Array<string>).length > 0
         ) {
           // We need to handle the case where the field is an array of resources
           // We need to add a pattern property for each of the resources in the array
-          for (const value of fieldValue['value'] as Array<string>) {
+          for (const value of fieldValue.value as Array<string>) {
             shape.addPatternProperty(
               dataFactory.namedNode(actualPredicate),
               dataFactory.namedNode(value),
             );
           }
-        } else if (typeof fieldValue['value'] === 'string') {
+        } else if (typeof fieldValue.value === 'string') {
           // @ts-ignore
           shape.addPatternProperty(
             dataFactory.namedNode(actualPredicate),
-            dataFactory.literal(fieldValue['value'] + '.*'),
+            dataFactory.literal(`${fieldValue.value}.*`),
           );
         }
       }
@@ -268,12 +269,12 @@ const FilterMixin = {
       9,
     );
   },
-  async updateContainer(user: DatasetSemantizer) {
+  updateContainer(user: DatasetSemantizer) {
     // console.log('Update container', user, this.localResources);
     if (user.getOrigin()?.value) {
       this.localResources['ldp:contains'].push({
-        '@id': user.getOrigin()?.value!,
-        '@type': 'foaf:user',
+        '@id': user.getOrigin()?.value || '',
+        '@type': this.dataRdfType,
       });
     }
 
