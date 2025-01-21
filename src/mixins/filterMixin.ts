@@ -199,57 +199,53 @@ const FilterMixin = {
     // - There are fields which are predicates from a linked object, like profile.city on the user, which is a reference to a "city" literal value
     console.log('Fields after parsing', filterValues);
     for (const [field, fieldValue] of Object.entries(filterValues)) {
-      if (typeof fieldValue === "object" && fieldValue !== null && "value" in fieldValue) {
-        const value = fieldValue as FilterValue;
-        console.log(
-          'Field, fieldValue, fieldValue!.value',
-          field,
-          fieldValue,
-          value.value,
-        );
+      const value = fieldValue as FilterValue;
+      console.log(
+        'Field, fieldValue, fieldValue!.value',
+        field,
+        fieldValue,
+        value.value,
+      );
 
-        let path = field;
-        if (field.includes('.')) {
-          // Split the path on each dots
-          const fieldPath: string[] = field.split('.');
+      let path = field;
+      if (field.includes('.')) {
+        // Split the path on each dots
+        const fieldPath: string[] = field.split('.');
 
-          // Get last path
-          path = fieldPath.pop() as string;
+        // Get last path
+        path = fieldPath.pop() as string;
+      }
+
+      // Arbitrarily format the field name to match the predicate name
+      // we need to convert the _*char* to *Char* to match the predicate name
+      const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
+      console.log('Field name', fieldName);
+      const actualPredicate = store.getExpandedPredicate(
+        fieldName,
+        base_context,
+      );
+
+      // actualPredicate = actualPredicate.replace('https', 'http');
+      console.log('Actual predicate', actualPredicate);
+      // Check that value is not empty and that it is not an empty array
+      if (
+        Array.isArray(value.value) &&
+        (value.value as Array<string>).length > 0
+      ) {
+        // We need to handle the case where the field is an array of resources
+        // We need to add a pattern property for each of the resources in the array
+        for (const unitValue of value.value as Array<string>) {
+          shape.addPatternProperty(
+            dataFactory.namedNode(actualPredicate),
+            dataFactory.namedNode(unitValue),
+          );
         }
-
-        // Arbitrarily format the field name to match the predicate name
-        // we need to convert the _*char* to *Char* to match the predicate name
-        const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
-        console.log('Field name', fieldName);
-        const actualPredicate = store.getExpandedPredicate(
-          fieldName,
-          base_context,
+      } else if (typeof value.value === 'string') {
+        // @ts-ignore
+        shape.addPatternProperty(
+          dataFactory.namedNode(actualPredicate),
+          dataFactory.literal(`${value.value}.*`),
         );
-
-        // actualPredicate = actualPredicate.replace('https', 'http');
-        console.log('Actual predicate', actualPredicate);
-        // Check that value is not empty and that it is not an empty array
-        if (typeof fieldValue === 'object' && fieldValue !== null && 'value' in fieldValue) {
-          if (
-            Array.isArray(value.value) &&
-            (value.value as Array<string>).length > 0
-          ) {
-            // We need to handle the case where the field is an array of resources
-            // We need to add a pattern property for each of the resources in the array
-            for (const unitValue of value.value as Array<string>) {
-              shape.addPatternProperty(
-                dataFactory.namedNode(actualPredicate),
-                dataFactory.namedNode(unitValue),
-              );
-            }
-          } else if (typeof value.value === 'string') {
-            // @ts-ignore
-            shape.addPatternProperty(
-              dataFactory.namedNode(actualPredicate),
-              dataFactory.literal(`${value.value}.*`),
-            );
-          }
-        }
       }
     }
 
