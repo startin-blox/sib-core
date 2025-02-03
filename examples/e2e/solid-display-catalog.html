@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-display</title>
+    <script type="module" src="../../dist/index.js"></script>
+  </head>
+
+  <body>
+    <h2>Solid Display</h2>
+
+    <h3>diplay-1</h3>
+    <solid-display
+      id="display-1"
+      data-src="/examples/data/catalog/services.jsonld"
+      fields="title, description"
+      widget-title="h2"
+      widget-description="p"
+    ></solid-display>
+
+    <style>
+      .presentationEvent {
+        color: crimson;
+      }
+      .nameEvent {
+        font-weight: bolder;
+        margin: 0.5em;
+      }
+      .completeName {
+        text-decoration: underline dotted purple;
+      }
+      .completeEmail {
+        text-shadow: 2px 5px #558abb;
+        margin: 0.5em;
+      }
+
+      #display-6 > div, 
+      #widget-empty-set1 > div, 
+      #widget-empty-set2 > div, 
+      #widget-empty-set3 > div {
+        border: darkcyan 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
+      }
+      #display-7 > div, #widget-empty-set3 > div > empty-set-value {
+        border: darkgreen 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
+      }
+      #display-8 > div, 
+      #widget-empty-set1 > div > solid-display-value, 
+      #widget-empty-set2 > div > solid-display-value, 
+      #widget-empty-set3 > div > solid-display-value {
+        border: darkmagenta 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
+      }
+      #display-9 > div, #widget-empty-set2 > div > solid-set-default {
+        border: darkorange 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
+      }
+      #display-10 > div, #widget-empty-set1 > div > widget-empty-set {
+        border: darkslateblue 1px solid;
+        display: block;
+        padding: 0.1em;
+        margin: 0.1em;
+      }
+    </style>
+  </body>
+</html>
