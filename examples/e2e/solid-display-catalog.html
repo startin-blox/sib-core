@@ -11,10 +11,20 @@
   <body>
     <h2>Solid Display</h2>
 
-    <h3>diplay-1</h3>
+    <h3>Display with DCAT context</h3>
     <solid-display
       id="display-1"
       data-src="/examples/data/catalog/services.jsonld"
+      fields="title, description"
+      widget-title="h2"
+      widget-description="p"
+    ></solid-display>
+
+
+    <h3>Display with SIB context, including DCAT</h3>
+    <solid-display
+      id="display-1"
+      data-src="/examples/data/catalog/services-sib.jsonld"
       fields="title, description"
       widget-title="h2"
       widget-description="p"
