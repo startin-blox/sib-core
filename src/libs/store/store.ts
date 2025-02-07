@@ -26,6 +26,7 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
   sib: 'https://cdn.startinblox.com/owl#',
+  tems: 'https://tems-dataspace.eu/owl#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
   lat: 'geo:lat',

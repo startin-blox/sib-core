@@ -10,9 +10,11 @@ import semantizer from '@semantizer/default';
 import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
 import type { DatasetSemantizer } from '@semantizer/types';
+import { indexEntryFactory } from "@semantizer/mixin-index/lib/IndexEntryMixin.js";
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
+// import { DatasetBaseFactoryImpl } from '@semantizer/core';
 // import IndexStrategySparqlComunica from "@semantizer/mixin-index-strategy-sparql-comunica";
 
 enum FilterMode {
@@ -40,10 +42,19 @@ const FilterMixin = {
       type: String,
       default: null,
     },
+    dataSrcProfile: {
+      type: String,
+      default: null,
+      callback(value: string) {
+        this.filteredOn = FilterMode.Index;
+        console.log('Set instance profile src', value);
+      },
+    },
     dataSrcIndex: {
       type: String,
       default: null,
-      callback: (value: string) => {
+      callback(value: string) {
+        this.filteredOn = FilterMode.Index;
         console.log('Set index src', value);
       },
     },
@@ -82,14 +93,13 @@ const FilterMixin = {
   async attached(): Promise<void> {
     const filteredBy = this.filteredBy;
 
-    if (this.dataSrcIndex && this.dataSrcIndex !== '') {
+    if (this.isFilteredByIndex() && filteredBy) {
       this.searchForm = document.getElementById(filteredBy);
-      this.filteredOn = FilterMode.Index;
       if (!filteredBy) throw '#Missing filtered-by attribute';
 
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
-      console.log('Init index based search', this.dataSrcIndex);
+      console.log('Init index based search', this.dataSrcIndex, this.dataSrcProfile);
 
       const filterValues = this.searchForm.component.value;
       console.log('Filter values', filterValues);
@@ -124,51 +134,56 @@ const FilterMixin = {
   },
   onIndexSearch(submitEvent: any): void {
     this.localResources['ldp:contains'] = []; // empty the previous results
-    console.log('Index search', submitEvent);
     sibStore.setLocalData(this.localResources, this.dataSrc, true);
     if (this.loader) {
-      console.log('Toggle loader hidden', this.loader);
       this.loader.toggleAttribute('hidden', false);
     }
 
     const filterValues = submitEvent.target.parentElement.component.value;
     console.log('Filter values', filterValues);
-
-    // this.comunicaEngine.searchFromSearchForm(filterValues);
     this.triggerIndexSearch(filterValues);
   },
   async triggerIndexSearch(filterValues: []) {
     console.log('Trigger index-based search', filterValues);
     console.log('This', this.filters, this.searchFields);
+    let indexDataset: DatasetSemantizer | undefined;
 
-    // // 1. Load the WebId of the instance
-    const appIdProfile = await semantizer.load(
-      this.dataSrcIndex,
-      solidWebIdProfileFactory,
-    );
-    // await appIdProfile.loadExtendedProfile();
-    const appId = appIdProfile.getPrimaryTopic();
+    // 0. Load the instance profile if defined
+    if (this.dataSrcProfile) {
+      // // 1. Load the WebId of the instance
+      const appIdProfile = await semantizer.load(
+        this.dataSrcProfile,
+        solidWebIdProfileFactory,
+      );
+      // await appIdProfile.loadExtendedProfile();
+      const appId = appIdProfile.getPrimaryTopic();
+      if (!appId) {
+        throw new Error('The WebId was not found.');
+      } else {
+        // 2. Get the public type index
+        const publicTypeIndex = appId.getPublicTypeIndex();
 
-    // 2. Get the public type index
-    const publicTypeIndex = appId.getPublicTypeIndex();
+        if (!publicTypeIndex) {
+          throw new Error('The TypeIndex was not found.');
+        }
 
-    if (!publicTypeIndex) {
-      throw new Error('The TypeIndex was not found.');
+        await publicTypeIndex.load();
+
+        // 3. Find the index from the TypeIndex
+        indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
+          IndexType.Index,
+        ) as DatasetSemantizer;
+
+        if (!indexDataset) {
+          throw new Error('The meta-meta index was not found.');
+        }
+      }
+    } else if (this.dataSrcIndex) {
+      indexDataset = await semantizer.load(this.dataSrcIndex, indexEntryFactory);
     }
 
-    await publicTypeIndex.load();
-
-    // 3. Find the index from the TypeIndex
-    const indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
-      IndexType.Index,
-    );
-
-    if (!indexDataset) {
-      throw new Error('The meta-meta index was not found.');
-    }
-
-    console.log('Index dataset', indexDataset);
     // 4. Build the index mixin
+    console.log('Index dataset', indexDataset);
     const index = semantizer.build(indexFactory, indexDataset);
 
     // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
@@ -182,7 +197,9 @@ const FilterMixin = {
     // We could look at a new attribute data-rdf-type on the component to know the type of the shape
     // this.element.component.dataRdfType = "https://cdn.startinblox.com/owl#User";
     console.log('Data RDF type', this.dataRdfType);
-    shape.addTargetRdfType(dataFactory.namedNode(this.dataRdfType));
+    const dataRdfTypeNode = dataFactory.namedNode(this.dataRdfType);
+    console.log('Data RDF type node', dataRdfTypeNode);
+    shape.addTargetRdfType(dataRdfTypeNode);
 
     // How to get the proper predicates from the fields attribute of the component ?
     // We need to parse the fields attribute to get the predicates
@@ -240,7 +257,7 @@ const FilterMixin = {
             dataFactory.namedNode(unitValue),
           );
         }
-      } else if (typeof value.value === 'string') {
+      } else if (typeof value.value === 'string' && value.value.length > 0) {
         // @ts-ignore
         shape.addPatternProperty(
           dataFactory.namedNode(actualPredicate),
@@ -254,8 +271,8 @@ const FilterMixin = {
     // if shape does not contains any pattern property, we add a default one
     if (shape.getFilterProperties().length === 0) {
       shape.addPatternProperty(
-        dataFactory.namedNode('https://cdn.startinblox.com/owl#firstName'),
-        dataFactory.literal('adr.*'),
+        dataFactory.namedNode('https://cdn.startinblox.com/owl#description'),
+        dataFactory.literal('lor.*'),
       );
     }
 
@@ -310,6 +327,9 @@ const FilterMixin = {
   },
   isFilteredOnServer() {
     return this.filteredOn === FilterMode.Server && !!this.fetchData;
+  },
+  isFilteredByIndex() {
+    return this.filteredOn === FilterMode.Index;
   },
   async onServerSearchChange() {
     await this.fetchData(this.dataSrc);

@@ -41,45 +41,46 @@
   <body class="segment full">
     <sib-auth auto-login="true">
       <sib-auth-provider
-        data-authority="https://api.test-inria-index.startinblox.com/"
+        data-authority="http://localhost:8000/"
       ></sib-auth-provider>
     </sib-auth>
 
     <h1>
-      Startin'Blox demo: search for distributed data efficiently with indexes
+      Startin'Blox demo: search for distributed data efficiently with indexes on tems object
     </h1>
 
     <div class="segment full">
       <div id="directory-list" data-view="directory-list">
         <h2 class="margin-left-xsmall sm-margin-none text-xlarge text-bold text-color-heading text-uppercase">
-          Members directory
+          Tems 3D Objects
         </h2>
         <solid-form-search
           id="solid-directory-listing-search"
           class="segment block padding-top-large padding-bottom-large whitespace-normal form search-form"
-          fields="profile.city, skills, first_name, last_name"
-          class-first_name="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
-          label-first_name="Search by firstname"
-          widget-first_name="solid-form-placeholder-text"
-          class-last_name="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
-          label-last_name="Search by lastname"
-          widget-last_name="solid-form-placeholder-text"
-          class-profile.job="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
-          label-profile.job="Search by job"
-          widget-profile.job="solid-form-placeholder-text"
-          class-profile.city="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
-          label-profile.city="Search by city"
-          widget-profile.city="solid-form-placeholder-text"
+          fields="title, description"
+          class-title="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+          label-title="Search by title"
+          widget-title="solid-form-placeholder-text"
+          class-description="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+          label-description="Search by description"
+          widget-description="solid-form-placeholder-text"
           submit-button="GO"
           submit-widget="button"
-          class-submit-button="search-button segment sm-full text-xsmall children-link-button children-link-text-bold children-link-text-uppercase children-link-reversed color-secondary bordered children-button-icon children-icon-arrow-right-circle children-icon-small children-icon-margin-right-xsmall"
-          range-skills="https://api.test-inria2.startinblox.com/skills/"
-          order-asc-skills="name"
-          class-skills="search-skills segment margin-bottom-small two-third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small select-shadow select-bg-white"
-          label-skills="Add a skill filter"
-          widget-skills="solid-form-multipleselect-autocompletion"
           naked=""
         ></solid-form-search>
+
+        <!-- class-profile.job="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+        label-profile.job="Search by job"
+        widget-profile.job="solid-form-placeholder-text"
+        class-profile.city="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+        label-profile.city="Search by city"
+        widget-profile.city="solid-form-placeholder-text"
+        class-submit-button="search-button segment sm-full text-xsmall children-link-button children-link-text-bold children-link-text-uppercase children-link-reversed color-secondary bordered children-button-icon children-icon-arrow-right-circle children-icon-small children-icon-margin-right-xsmall"
+        range-skills="https://api.test-inria2.startinblox.com/skills/"
+        order-asc-skills="name"
+        class-skills="search-skills segment margin-bottom-small two-third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small select-shadow select-bg-white"
+        label-skills="Add a skill filter"
+        widget-skills="solid-form-multipleselect-autocompletion" -->
 
         <div id="loader-members-list" class="loader loader-top" hidden>
           <div></div>
@@ -100,33 +101,26 @@
             />
           </template>
         </solid-widget>
-
+<!-- data-src-index="http://localhost:8000/fedex/tems-3dobject/index" -->
         <solid-display
           filtered-by="solid-directory-listing-search"
-          data-src-profile="https://api.test-inria-index.startinblox.com/fedex/profile"
-          data-rdf-type="https://cdn.startinblox.com/owl#User"
+          data-src-profile="http://localhost:8000/profile"
+          data-rdf-type="https://cdn.startinblox.com/owl#3DObject"
           class="main-block segment full children children-third sm-children-full children-margin-bottom-medium sm-children-margin-bottom-xsmall children-padding-right-xsmall children-padding-left-xsmall sm-children-padding-none sm-whitespace-normal masonry"
-          fields="segment1(segment2(member-picture(account.picture), segment3(name, member-pseudo(username), profile.job)), segment4(profile.city, skills))"
+          fields="segment1(segment2(member-picture(picture), segment3(title, description)))"
           loader-id="loader-members-list"
           class-member-picture="segment avatar-wrapper"
-          class-account-picture="avatar large"
-          class-name="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
+          class-title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
           class-member-pseudo="segment block"
-          class-username="text-small"
+          class-description="text-small"
           class-segment1="segment hover bg-color-white shadow full text-top whitespace-normal"
           class-segment2="segment full padding-medium text-center whitespace-normal"
           class-segment3="segment three-quarter whitespace-normal"
           class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
           class-member-picture="segment avatar-wrapper"
-          class-profile.job="segment block margin-top-xsmall whitespace-normal"
           class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
-          class-communities="segment block margin-bottom-xsmall"
-          widget-account.picture="orbit-user-avatar"
-          widget-profile.city="directory-city"
-          class-skills="skills segment block children-tag whitespace-normal"
-          multiple-skills=""
-          multiple-skills-fields="name"
-          order-asc="name"
+          widget-picture="orbit-user-avatar"
+          order-asc="title"
         >
         </solid-display>
       </div>
