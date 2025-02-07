@@ -1,7 +1,7 @@
 {
   "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "@type": "dcat:Catalog",
-  "@id": "/examples/data/catalog/services.jsonld",
+  "@id": "/examples/data/catalog/services-sib.jsonld",
   "title": "Cloud Services Catalog",
   "description": "A catalog of cloud services offered by Startin'blox.",
   "publisher": {
@@ -12,7 +12,7 @@
   "dcat:dataset": [
     {
       "@type": "dcat:Dataset",
-      "@id": "/examples/data/catalog/services.jsonld#compute",
+      "@id": "/examples/data/catalog/services-sib.jsonld#compute",
       "title": "Compute Services",
       "description": "Virtual machines, containers, and serverless computing services.",
       "keyword": ["compute", "virtual machines", "serverless"],
@@ -33,7 +33,7 @@
     },
     {
       "@type": "dcat:Dataset",
-      "@id": "/examples/data/catalog/services.jsonld#storage",
+      "@id": "/examples/data/catalog/services-sib.jsonld#storage",
       "title": "Storage Services",
       "description": "Block storage, object storage, and archival storage solutions.",
       "keyword": ["storage", "block storage", "object storage"],
@@ -54,7 +54,7 @@
     },
     {
       "@type": "dcat:Dataset",
-      "@id": "/examples/data/catalog/services.jsonld#networking",
+      "@id": "/examples/data/catalog/services-sib.jsonld#networking",
       "title": "Networking Services",
       "description": "Virtual networks, load balancers, and VPNs.",
       "keyword": ["networking", "load balancing", "VPN"],
