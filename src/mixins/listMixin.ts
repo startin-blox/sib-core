@@ -70,7 +70,7 @@ const ListMixin = {
 
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
-      
+
       await nextProcessor(
         this.resource.getContainerPredicate(),
         listPostProcessorsCopy,

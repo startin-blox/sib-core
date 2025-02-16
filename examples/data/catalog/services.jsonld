@@ -5,7 +5,7 @@
   "title": "Cloud Services Catalog",
   "description": "A catalog of cloud services offered by Startin'blox.",
   "publisher": {
-    "@type": "Organization", 
+    "@type": "Organization",
     "name": "Startin'blox",
     "url": "https://startinblox.com"
   },

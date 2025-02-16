@@ -98,7 +98,7 @@ const matchValue = async (
   }
   if (subject.isContainer?.()) {
     let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
-    const resources = subject.getContainerPredicate()
+    const resources = subject.getContainerPredicate();
     for (const value of resources) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) return orThrow(throwOn, true);
@@ -230,7 +230,13 @@ const matchFilter = async (
   } else {
     // search on 1 field
     //FIXME: Better assumption that just using ldp:contains does the job ?
-    if (!(await resource[filter]) && doesStringContainPredicate(filter, {...(resource as Resource).clientContext, ...(resource as Resource).serverContext})) {
+    if (
+      !(await resource[filter]) &&
+      doesStringContainPredicate(filter, {
+        ...(resource as Resource).clientContext,
+        ...(resource as Resource).serverContext,
+      })
+    ) {
       // nested field
       // console.log(`No ${filter} found for ${resource['@id']} and ${filter} is a nested field. Trying to traverse path.`);
       const path1: string[] = filter.split('.');

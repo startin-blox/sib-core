@@ -8,9 +8,9 @@ import type { Resource } from '../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from './server-search.ts';
 import { appendServerSearchToIri } from './server-search.ts';
 
+import { doesStringContainPredicate } from '../helpers.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
-import { doesStringContainPredicate } from '../helpers.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -274,7 +274,7 @@ export class Store {
       if (
         key === id &&
         resource['@type'] ===
-        this.getExpandedPredicate('ldp:Container', clientContext)
+          this.getExpandedPredicate('ldp:Container', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -345,11 +345,11 @@ export class Store {
   subscribeChildren(container: CustomGetter, containerId: string) {
     if (!container.hasContainerPredicate()) return;
 
-    container.getContainerPredicate()?.forEach(res =>
-      this.subscribeResourceTo(containerId, res['@id'] || (res as any).id)
-    );
-
-
+    container
+      .getContainerPredicate()
+      ?.forEach(res =>
+        this.subscribeResourceTo(containerId, res['@id'] || (res as any).id),
+      );
   }
 
   /**
@@ -482,7 +482,13 @@ export class Store {
       if (resource.hasContainerPredicate()) {
         const resources = resource.getContainerPredicate();
         for (const child of resources) {
-          if (child && (doesStringContainPredicate(child['@type'], {...resource.clientContext, ...resource.serverContext})))
+          if (
+            child &&
+            doesStringContainPredicate(child['@type'], {
+              ...resource.clientContext,
+              ...resource.serverContext,
+            })
+          )
             this.cache.delete(child['@id']);
         }
       }

@@ -1,7 +1,7 @@
 import JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
-import { store } from './store.ts';
 import { doesResourceContainPredicate } from '../helpers.ts';
+import { store } from './store.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 
@@ -66,20 +66,20 @@ export class CustomGetter {
 
         const result = resources
           ? resources.map((res: object) => {
-            let resource: any = store.get(res['@id']);
-            if (resource) return resource;
+              let resource: any = store.get(res['@id']);
+              if (resource) return resource;
 
-            // if not in cache, generate the basic resource
-            resource = new CustomGetter(
-              res['@id'],
-              { '@id': res['@id'] },
-              this.clientContext,
-              this.serverContext,
-              this.parentId,
-            ).getProxy();
-            store.cacheResource(res['@id'], resource); // put it in cache
-            return resource; // and return it
-          })
+              // if not in cache, generate the basic resource
+              resource = new CustomGetter(
+                res['@id'],
+                { '@id': res['@id'] },
+                this.clientContext,
+                this.serverContext,
+                this.parentId,
+              ).getProxy();
+              store.cacheResource(res['@id'], resource); // put it in cache
+              return resource; // and return it
+            })
           : [];
 
         return result;
@@ -231,34 +231,34 @@ export class CustomGetter {
 
     const result = children
       ? children.map((res: object) => {
-        let resource: any = store.get(res['@id']);
-        if (resource) return resource;
+          let resource: any = store.get(res['@id']);
+          if (resource) return resource;
 
-        // if not in cache, generate the basic resource
-        resource = new CustomGetter(
-          res['@id'],
-          { '@id': res['@id'] },
-          this.clientContext,
-          this.serverContext,
-          this.parentId,
-        ).getProxy();
-        store.cacheResource(res['@id'], resource); // put it in cache
-        return resource; // and return it
-      })
+          // if not in cache, generate the basic resource
+          resource = new CustomGetter(
+            res['@id'],
+            { '@id': res['@id'] },
+            this.clientContext,
+            this.serverContext,
+            this.parentId,
+          ).getProxy();
+          store.cacheResource(res['@id'], resource); // put it in cache
+          return resource; // and return it
+        })
       : [];
 
     return result;
   }
 
   getDcatDataset(): CustomGetter[] | null {
-    return this.getChildrenAndCache('dcat:dataset');;
+    return this.getChildrenAndCache('dcat:dataset');
   }
 
   /**
    * Get children of container as Proxys
    */
   getLdpContains(): CustomGetter[] | null {
-    return this.getChildrenAndCache('ldp:contains')
+    return this.getChildrenAndCache('ldp:contains');
   }
 
   merge(resource: CustomGetter) {
@@ -285,7 +285,9 @@ export class CustomGetter {
     };
 
     const expandedType = this.getExpandedPredicate(this.resource['@type']);
-    return predicates[expandedType] ? this.getChildren(predicates[expandedType]) : null;
+    return predicates[expandedType]
+      ? this.getChildren(predicates[expandedType])
+      : null;
   }
 
   /**
@@ -324,7 +326,7 @@ export class CustomGetter {
         this.parentId,
         true,
       );
-      permissions = this.getChildren('permissions').map(p => String(p));;
+      permissions = this.getChildren('permissions').map(p => String(p));
     }
 
     if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource

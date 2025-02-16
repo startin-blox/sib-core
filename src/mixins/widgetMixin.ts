@@ -173,7 +173,10 @@ const WidgetMixin = {
       if (fieldValue === null || fieldValue === undefined || fieldValue === '')
         return undefined;
 
-      if (Array.isArray(fieldValue) && !doesResourceContainPredicate(fieldValue, this.context)) {
+      if (
+        Array.isArray(fieldValue) &&
+        !doesResourceContainPredicate(fieldValue, this.context)
+      ) {
         return JSON.stringify(fieldValue);
         // Dumb edge case because if the array bears only one item, when compacted the array translates into one object
       }

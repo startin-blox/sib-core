@@ -65,8 +65,7 @@ const MultipleselectFormMixin = {
   },
   populate() {
     const resources = this.resource?.getContainerPredicate();
-    if (!this.resource || (!resources && !Array.isArray(this.resource))) 
-      return;
+    if (!this.resource || (!resources && !Array.isArray(this.resource))) return;
     this.setValue(resources);
 
     // TODO: Rationalize or clean this commented code

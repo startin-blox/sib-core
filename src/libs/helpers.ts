@@ -293,21 +293,48 @@ function transformArrayToContainer(resource: object) {
   return newValue;
 }
 
-export function doesStringContainPredicate(filter: string, context: object): boolean {
-  const predicates = ['ldp:contains', 'dcat:dataset', 'ldp:Container', 'dcat:Catalog'];
-  const expandedPredicates = predicates.map(p => ContextParser.expandTerm(p, context, true));
+export function doesStringContainPredicate(
+  filter: string,
+  context: object,
+): boolean {
+  const predicates = [
+    'ldp:contains',
+    'dcat:dataset',
+    'ldp:Container',
+    'dcat:Catalog',
+  ];
+  const expandedPredicates = predicates.map(p =>
+    ContextParser.expandTerm(p, context, true),
+  );
 
-  return [...predicates, ...expandedPredicates].some(predicate => filter.includes(predicate));
+  return [...predicates, ...expandedPredicates].some(predicate =>
+    filter.includes(predicate),
+  );
 }
 import type { Resource } from '../mixins/interfaces.ts';
 
-export function doesResourceContainPredicate(resource: object, context?: object): boolean {
-  const predicates = ['ldp:contains', 'dcat:dataset', 'ldp:Container', 'dcat:Catalog'];
+export function doesResourceContainPredicate(
+  resource: object,
+  context?: object,
+): boolean {
+  const predicates = [
+    'ldp:contains',
+    'dcat:dataset',
+    'ldp:Container',
+    'dcat:Catalog',
+  ];
   if (context === undefined) {
-    context = {...(resource as Resource).clientContext, ...(resource as Resource).serverContext}
+    context = {
+      ...(resource as Resource).clientContext,
+      ...(resource as Resource).serverContext,
+    };
   }
-  const expandedPredicates = predicates.map(p => ContextParser.expandTerm(p, context!, true));
-  return [...predicates, ...expandedPredicates].some(predicate => predicate in resource);
+  const expandedPredicates = predicates.map(p =>
+    ContextParser.expandTerm(p, context!, true),
+  );
+  return [...predicates, ...expandedPredicates].some(
+    predicate => predicate in resource,
+  );
 }
 
 export default class AsyncIterableBuilder<Type> {

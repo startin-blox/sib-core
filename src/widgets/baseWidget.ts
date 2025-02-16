@@ -186,7 +186,6 @@ export class BaseWidget extends HTMLElement {
         ); // fetch the datas
         this._listen(res['@id']);
         if (resourcesFromContainer) {
-          
           resources.push(...resourcesFromContainer.getContainerPredicate());
         }
       } else {
@@ -210,7 +209,7 @@ export class BaseWidget extends HTMLElement {
         // selected options for multiple select
         selected = false;
         const values = this._value.getContainerPredicate();
-        for await (const value of values ) {
+        for await (const value of values) {
           if (value['@id'] === element['@id']) {
             selected = true;
             break;

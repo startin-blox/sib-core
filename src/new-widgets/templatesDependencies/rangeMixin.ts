@@ -63,7 +63,9 @@ const RangeMixin = {
     this.listAttributes.optionValue = this.optionValue;
   },
   async populate() {
-    const resources = this.resource ? this.resource.getContainerPredicate() : [];
+    const resources = this.resource
+      ? this.resource.getContainerPredicate()
+      : [];
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     listPostProcessorsCopy.attach(
       this.setRangeAttribute.bind(this),
