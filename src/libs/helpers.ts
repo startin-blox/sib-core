@@ -1,5 +1,4 @@
-import JSONLDContextParser from 'jsonld-context-parser';
-const ContextParser = JSONLDContextParser.ContextParser;
+import { ContextParser } from 'jsonld-context-parser';
 
 function uniqID(): string {
   return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
