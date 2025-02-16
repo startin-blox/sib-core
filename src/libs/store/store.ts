@@ -345,11 +345,12 @@ export class Store {
   subscribeChildren(container: CustomGetter, containerId: string) {
     if (!container.hasContainerPredicate()) return;
 
-    container
-      .getContainerPredicate()
-      ?.forEach(res =>
-        this.subscribeResourceTo(containerId, res['@id'] || (res as any).id),
-      );
+    const children = container.getContainerPredicate();
+    if (!children) return;
+
+    for (const res of children) {
+      this.subscribeResourceTo(containerId, res['@id'] || (res as any).id);
+    }
   }
 
   /**

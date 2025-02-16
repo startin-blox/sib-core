@@ -323,14 +323,14 @@ export function doesResourceContainPredicate(
     'ldp:Container',
     'dcat:Catalog',
   ];
-  if (context === undefined) {
-    context = {
-      ...(resource as Resource).clientContext,
-      ...(resource as Resource).serverContext,
-    };
-  }
+
+  const resolvedContext = context ?? {
+    ...(resource as Resource).clientContext,
+    ...(resource as Resource).serverContext,
+  };
+
   const expandedPredicates = predicates.map(p =>
-    ContextParser.expandTerm(p, context!, true),
+    ContextParser.expandTerm(p, resolvedContext, true),
   );
   return [...predicates, ...expandedPredicates].some(
     predicate => predicate in resource,
