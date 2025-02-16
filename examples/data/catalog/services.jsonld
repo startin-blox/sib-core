@@ -1,15 +1,15 @@
 {
   "@context": "https://www.w3.org/ns/dcat#",
-  "@type": "Catalog",
+  "@type": "dcat:Catalog",
   "@id": "/examples/data/catalog/services.jsonld",
   "title": "Cloud Services Catalog",
   "description": "A catalog of cloud services offered by Startin'blox.",
   "publisher": {
-    "@type": "Organization",
+    "@type": "Organization", 
     "name": "Startin'blox",
     "url": "https://startinblox.com"
   },
-  "dataset": [
+  "dcat:dataset": [
     {
       "@type": "Dataset",
       "@id": "/examples/data/catalog/services.jsonld#compute",

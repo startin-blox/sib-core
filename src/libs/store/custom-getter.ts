@@ -1,6 +1,7 @@
 import JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { store } from './store.ts';
+import { doesResourceContainPredicate } from '../helpers.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 
@@ -33,6 +34,7 @@ export class CustomGetter {
 
     this.containerTypes = [
       this.getExpandedPredicate('ldp:Container'),
+      this.getExpandedPredicate('dcat:Catalog'),
       this.getExpandedPredicate('ldp:BasicContainer'),
       this.getExpandedPredicate('ldp:DirectContainer'),
       this.getExpandedPredicate('ldp:IndirectContainer'),
@@ -58,26 +60,26 @@ export class CustomGetter {
         throw new Error('Not a valid HTTP url');
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
-        let resources = this.resource[this.getExpandedPredicate(path)];
+        let resources = this.getChildren(path);
         if (!resources) return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
 
         const result = resources
           ? resources.map((res: object) => {
-              let resource: any = store.get(res['@id']);
-              if (resource) return resource;
+            let resource: any = store.get(res['@id']);
+            if (resource) return resource;
 
-              // if not in cache, generate the basic resource
-              resource = new CustomGetter(
-                res['@id'],
-                { '@id': res['@id'] },
-                this.clientContext,
-                this.serverContext,
-                this.parentId,
-              ).getProxy();
-              store.cacheResource(res['@id'], resource); // put it in cache
-              return resource; // and return it
-            })
+            // if not in cache, generate the basic resource
+            resource = new CustomGetter(
+              res['@id'],
+              { '@id': res['@id'] },
+              this.clientContext,
+              this.serverContext,
+              this.parentId,
+            ).getProxy();
+            store.cacheResource(res['@id'], resource); // put it in cache
+            return resource; // and return it
+          })
           : [];
 
         return result;
@@ -107,7 +109,7 @@ export class CustomGetter {
       // We do that by poping one element from path1 at each step and affecting it to path2
       // Trying to get the value from it
       while (true) {
-        value = await this.resource[this.getExpandedPredicate(path1[0])];
+        value = await this.getChildren(path1[0]);
 
         if (path1.length <= 1) break; // no dot path
         const lastPath1El = path1.pop();
@@ -221,33 +223,42 @@ export class CustomGetter {
     return this.resource[this.getExpandedPredicate(predicateName)] || [];
   }
 
+  getChildrenAndCache(predicate: string): CustomGetter[] | null {
+    let children = this.getChildren(predicate);
+    if (!children) return null;
+
+    if (!Array.isArray(children)) children = [children]; // Ensure array format
+
+    const result = children
+      ? children.map((res: object) => {
+        let resource: any = store.get(res['@id']);
+        if (resource) return resource;
+
+        // if not in cache, generate the basic resource
+        resource = new CustomGetter(
+          res['@id'],
+          { '@id': res['@id'] },
+          this.clientContext,
+          this.serverContext,
+          this.parentId,
+        ).getProxy();
+        store.cacheResource(res['@id'], resource); // put it in cache
+        return resource; // and return it
+      })
+      : [];
+
+    return result;
+  }
+
+  getDcatDataset(): CustomGetter[] | null {
+    return this.getChildrenAndCache('dcat:dataset');;
+  }
+
   /**
    * Get children of container as Proxys
    */
   getLdpContains(): CustomGetter[] | null {
-    let children = this.resource[this.getExpandedPredicate('ldp:contains')];
-    if (!children) return null;
-    if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
-
-    const result = children
-      ? children.map((res: object) => {
-          let resource: any = store.get(res['@id']);
-          if (resource) return resource;
-
-          // if not in cache, generate the basic resource
-          resource = new CustomGetter(
-            res['@id'],
-            { '@id': res['@id'] },
-            this.clientContext,
-            this.serverContext,
-            this.parentId,
-          ).getProxy();
-          store.cacheResource(res['@id'], resource); // put it in cache
-          return resource; // and return it
-        })
-      : [];
-
-    return result;
+    return this.getChildrenAndCache('ldp:contains')
   }
 
   merge(resource: CustomGetter) {
@@ -259,6 +270,22 @@ export class CustomGetter {
 
   getResourceData(): object {
     return this.resource;
+  }
+
+  hasContainerPredicate(): boolean {
+    return doesResourceContainPredicate(this.resource);
+  }
+
+  getContainerPredicate(): object[] | null {
+    const predicates: Record<string, string> = {
+      'dcat:Catalog': 'dcat:dataset',
+      [this.getExpandedPredicate('dcat:Catalog')]: 'dcat:dataset',
+      'ldp:Container': 'ldp:contains',
+      [this.getExpandedPredicate('ldp:Container')]: 'ldp:contains',
+    };
+
+    const expandedType = this.getExpandedPredicate(this.resource['@type']);
+    return predicates[expandedType] ? this.getChildren(predicates[expandedType]) : null;
   }
 
   /**
@@ -287,7 +314,8 @@ export class CustomGetter {
    * @returns
    */
   async getPermissions(): Promise<string[]> {
-    let permissions = this.resource[this.getExpandedPredicate('permissions')];
+    let permissions = this.getChildren('permissions').map(p => String(p));
+
     if (!permissions) {
       // if no permission, re-fetch data from store
       await this.getResource(
@@ -296,7 +324,7 @@ export class CustomGetter {
         this.parentId,
         true,
       );
-      permissions = this.resource[this.getExpandedPredicate('permissions')];
+      permissions = this.getChildren('permissions').map(p => String(p));;
     }
 
     if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
@@ -369,6 +397,8 @@ export class CustomGetter {
             return this.getProperties();
           case 'ldp:contains':
             return this.getLdpContains(); // returns standard arrays synchronously
+          case 'dcat:dataset':
+            return this.getDcatDataset(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':

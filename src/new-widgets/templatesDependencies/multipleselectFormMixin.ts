@@ -64,12 +64,10 @@ const MultipleselectFormMixin = {
     if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    if (
-      !this.resource ||
-      (!this.resource['ldp:contains'] && !Array.isArray(this.resource))
-    )
+    const resources = this.resource?.getContainerPredicate();
+    if (!this.resource || (!resources && !Array.isArray(this.resource))) 
       return;
-    this.setValue(this.resource['ldp:contains']);
+    this.setValue(resources);
 
     // TODO: Rationalize or clean this commented code
     // console.log("Populate of multipleselectformmixin", this.dataSrc, this.resource, this.resourceId, this.resource['ldp:contains'])

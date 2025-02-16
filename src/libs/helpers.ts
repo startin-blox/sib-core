@@ -1,3 +1,6 @@
+import JSONLDContextParser from 'jsonld-context-parser';
+const ContextParser = JSONLDContextParser.ContextParser;
+
 function uniqID(): string {
   return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
 }
@@ -276,7 +279,7 @@ function transformArrayToContainer(resource: object) {
       // Do not systematically transform arrays to containers
       newValue[predicate] = {
         '@id': predicateValue['@id'],
-        'ldp:contains': [...predicateValue],
+        'ldp:contains': [...predicateValue], // ???? why only ldp:contains?
       };
       newValue[predicate]['ldp:contains'].forEach(
         (childPredicate: any, index: number) => {
@@ -288,6 +291,23 @@ function transformArrayToContainer(resource: object) {
     }
   }
   return newValue;
+}
+
+export function doesStringContainPredicate(filter: string, context: object): boolean {
+  const predicates = ['ldp:contains', 'dcat:dataset', 'ldp:Container', 'dcat:Catalog'];
+  const expandedPredicates = predicates.map(p => ContextParser.expandTerm(p, context, true));
+
+  return [...predicates, ...expandedPredicates].some(predicate => filter.includes(predicate));
+}
+import type { Resource } from '../mixins/interfaces.ts';
+
+export function doesResourceContainPredicate(resource: object, context?: object): boolean {
+  const predicates = ['ldp:contains', 'dcat:dataset', 'ldp:Container', 'dcat:Catalog'];
+  if (context === undefined) {
+    context = {...(resource as Resource).clientContext, ...(resource as Resource).serverContext}
+  }
+  const expandedPredicates = predicates.map(p => ContextParser.expandTerm(p, context!, true));
+  return [...predicates, ...expandedPredicates].some(predicate => predicate in resource);
 }
 
 export default class AsyncIterableBuilder<Type> {

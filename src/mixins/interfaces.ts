@@ -12,7 +12,10 @@ export interface WidgetInterface {
 export interface Resource {
   '@id': string;
   clientContext: object;
+  serverContext: object;
   isContainer: Function;
+  getContainerPredicate: Function;
+  hasContainerPredicate: Function;
   isArray: Function;
   isFullResource: Function;
   properties: string[];

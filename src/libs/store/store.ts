@@ -10,6 +10,7 @@ import { appendServerSearchToIri } from './server-search.ts';
 
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
+import { doesStringContainPredicate } from '../helpers.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -273,7 +274,7 @@ export class Store {
       if (
         key === id &&
         resource['@type'] ===
-          this.getExpandedPredicate('ldp:Container', clientContext)
+        this.getExpandedPredicate('ldp:Container', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -342,10 +343,13 @@ export class Store {
    * @param container
    */
   subscribeChildren(container: CustomGetter, containerId: string) {
-    if (!container['ldp:contains']) return;
-    for (const res of container['ldp:contains']) {
-      this.subscribeResourceTo(containerId, res['@id'] || res.id);
-    }
+    if (!container.hasContainerPredicate()) return;
+
+    container.getContainerPredicate()?.forEach(res =>
+      this.subscribeResourceTo(containerId, res['@id'] || (res as any).id)
+    );
+
+
   }
 
   /**
@@ -475,9 +479,10 @@ export class Store {
     if (this.cache.has(id)) {
       // For federation, clear each source
       const resource = this.cache.get(id);
-      if (resource['@type'] === 'ldp:Container') {
-        for (const child of resource['ldp:contains']) {
-          if (child && child['@type'] === 'ldp:Container')
+      if (resource.hasContainerPredicate()) {
+        const resources = resource.getContainerPredicate();
+        for (const child of resources) {
+          if (child && (doesStringContainPredicate(child['@type'], {...resource.clientContext, ...resource.serverContext})))
             this.cache.delete(child['@id']);
         }
       }
