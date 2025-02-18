@@ -86,14 +86,7 @@ export const SolidForm = {
     if (this.resource && !this.resource.isContainer?.()) {
       for (const predicate of Object.keys(this.value)) {
         // add @id for nested resources
-        let object = await this.resource[predicate];
-        // edge-case where object is null because predicate needs to be expanded manually (arrays)
-        if (!object) {
-          object =
-            await this.resource[
-              store.getExpandedPredicate(predicate, this.context)
-            ];
-        }
+        const object = await this.resource.getChildren(predicate);
 
         // Nested containers
         if (object?.['@id'] && !value[predicate]['@id'])

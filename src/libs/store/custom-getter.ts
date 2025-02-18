@@ -223,7 +223,7 @@ export class CustomGetter {
   getChildren(predicateName: string): object[] {
     let value = this.resource[predicateName];
 
-    if (!value){ 
+    if (!value) {
       value = this.resource[this.getExpandedPredicate(predicateName)];
     }
 
