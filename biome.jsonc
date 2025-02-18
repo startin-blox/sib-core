@@ -27,7 +27,8 @@
       "complexity": {
         "noBannedTypes": "warn",
         "noExcessiveCognitiveComplexity": "warn",
-        "noUselessUndefinedInitialization": "warn"
+        "noUselessUndefinedInitialization": "warn",
+        "useLiteralKeys": "warn"
       },
       "suspicious": {
         "noConsoleLog": "warn",
