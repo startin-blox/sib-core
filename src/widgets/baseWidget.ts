@@ -208,8 +208,7 @@ export class BaseWidget extends HTMLElement {
       if (this._value?.isContainer?.()) {
         // selected options for multiple select
         selected = false;
-        const values = this._value['predicate'];
-        for await (const value of values) {
+        for await (const value of this._value['predicate']) {
           if (value['@id'] === element['@id']) {
             selected = true;
             break;
