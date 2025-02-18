@@ -313,8 +313,10 @@ export function doesResourceContainPredicate(
   const expandedPredicates = predicates.map(p =>
     ContextParser.expandTerm(p, resolvedContext, true),
   );
-  return [...predicates, ...expandedPredicates].some(
-    predicate => typeof resource === "object" ? predicate in resource : typeof resource === "string" && resource.includes(predicate),
+  return [...predicates, ...expandedPredicates].some(predicate =>
+    typeof resource === 'object'
+      ? predicate in resource
+      : typeof resource === 'string' && resource.includes(predicate),
   );
 }
 
