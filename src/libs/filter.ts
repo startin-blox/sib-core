@@ -1,7 +1,7 @@
 import type { Resource } from '../mixins/interfaces.ts';
 import {
   compare,
-  doesStringContainPredicate,
+  doesResourceContainPredicate,
   findClosingBracketMatchIndex,
   parseFieldsString,
   uniqID,
@@ -231,7 +231,7 @@ const matchFilter = async (
     //FIXME: Better assumption that just using ldp:contains does the job ?
     if (
       !(await resource[filter]) &&
-      doesStringContainPredicate(filter, {
+      doesResourceContainPredicate(filter, {
         ...(resource as Resource).clientContext,
         ...(resource as Resource).serverContext,
       })

@@ -292,28 +292,10 @@ function transformArrayToContainer(resource: object) {
   return newValue;
 }
 
-export function doesStringContainPredicate(
-  filter: string,
-  context: object,
-): boolean {
-  const predicates = [
-    'ldp:contains',
-    'dcat:dataset',
-    'ldp:Container',
-    'dcat:Catalog',
-  ];
-  const expandedPredicates = predicates.map(p =>
-    ContextParser.expandTerm(p, context, true),
-  );
-
-  return [...predicates, ...expandedPredicates].some(predicate =>
-    filter.includes(predicate),
-  );
-}
 import type { Resource } from '../mixins/interfaces.ts';
 
 export function doesResourceContainPredicate(
-  resource: object,
+  resource: object | string,
   context?: object,
 ): boolean {
   const predicates = [
@@ -332,7 +314,7 @@ export function doesResourceContainPredicate(
     ContextParser.expandTerm(p, resolvedContext, true),
   );
   return [...predicates, ...expandedPredicates].some(
-    predicate => predicate in resource,
+    predicate => typeof resource === "object" ? predicate in resource : typeof resource === "string" && resource.includes(predicate),
   );
 }
 

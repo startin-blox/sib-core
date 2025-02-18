@@ -8,7 +8,7 @@ import type { Resource } from '../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from './server-search.ts';
 import { appendServerSearchToIri } from './server-search.ts';
 
-import { doesStringContainPredicate } from '../helpers.ts';
+import { doesResourceContainPredicate } from '../helpers.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
 
@@ -483,7 +483,7 @@ export class Store {
         for (const child of predicate) {
           if (
             child?.['@type'] &&
-            doesStringContainPredicate(child['@type'], {
+            doesResourceContainPredicate(child['@type'], {
               ...resource.clientContext,
               ...resource.serverContext,
             })
