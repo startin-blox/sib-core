@@ -65,7 +65,7 @@ const FederationMixin = {
       store.clearCache(containerId); // empty cache
     }
     const container = await store.getData(containerId, this.context); // and fetch it
-    return container?.getContainerPredicate();
+    return container?.['predicate'];
   },
 };
 

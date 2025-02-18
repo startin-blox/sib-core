@@ -98,8 +98,7 @@ const matchValue = async (
   }
   if (subject.isContainer?.()) {
     let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
-    const resources = subject.getContainerPredicate();
-    for (const value of resources) {
+    for (const value of subject['predicate']) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) return orThrow(throwOn, true);
     }
@@ -178,7 +177,7 @@ const traversePath = async (
           let targetsRes = await res[remainingPath[0]];
           if (!targetsRes) return [];
           if (targetsRes.isContainer?.()) {
-            targetsRes = targetsRes.getContainerPredicate();
+            targetsRes = targetsRes['predicate'];
           }
           if (!Array.isArray(targetsRes)) targetsRes = [targetsRes];
 

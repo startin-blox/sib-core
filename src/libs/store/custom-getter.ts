@@ -61,7 +61,8 @@ export class CustomGetter {
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
         let resources = this.getChildren(path);
-        if (!resources) return undefined;
+        if (!resources || (Array.isArray(resources) && resources.length === 0))
+          return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
 
         const result = resources
@@ -220,7 +221,12 @@ export class CustomGetter {
    * Get children of container as objects
    */
   getChildren(predicateName: string): object[] {
-    return this.resource[this.getExpandedPredicate(predicateName)] || [];
+    const value = this.resource[this.getExpandedPredicate(predicateName)];
+
+    if (value === undefined || value === null) {
+      return [];
+    }
+    return value;
   }
 
   getChildrenAndCache(predicate: string): CustomGetter[] | null {
@@ -273,21 +279,22 @@ export class CustomGetter {
   }
 
   hasContainerPredicate(): boolean {
-    return doesResourceContainPredicate(this.resource);
+    return doesResourceContainPredicate(this.resource, {
+      ...this.clientContext,
+      ...this.serverContext,
+    });
   }
 
   getContainerPredicate(): object[] | null {
-    const predicates: Record<string, string> = {
-      'dcat:Catalog': 'dcat:dataset',
-      [this.getExpandedPredicate('dcat:Catalog')]: 'dcat:dataset',
-      'ldp:Container': 'ldp:contains',
-      [this.getExpandedPredicate('ldp:Container')]: 'ldp:contains',
-    };
+    if (this.getType() === 'ldp:Container') {
+      return this.getLdpContains();
+    }
 
-    const expandedType = this.getExpandedPredicate(this.resource['@type']);
-    return predicates[expandedType]
-      ? this.getChildren(predicates[expandedType])
-      : null;
+    if (this.getType() === 'dcat:Catalog') {
+      return this.getDcatDataset();
+    }
+
+    return [];
   }
 
   /**
@@ -397,10 +404,8 @@ export class CustomGetter {
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
-          case 'ldp:contains':
-            return this.getLdpContains(); // returns standard arrays synchronously
-          case 'dcat:dataset':
-            return this.getDcatDataset(); // returns standard arrays synchronously
+          case 'predicate':
+            return this.getContainerPredicate(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':

@@ -124,7 +124,7 @@ const FilterMixin = {
     await this.populate();
   },
   async getValuesOfField(field: string) {
-    const arrayOfDataObjects = this.resource.getContainerPredicate();
+    const arrayOfDataObjects = this.resource['predicate'];
     if (!arrayOfDataObjects) return [];
     const arrayOfDataIds: string[] = [];
     for (const obj of arrayOfDataObjects) {
@@ -146,7 +146,7 @@ const FilterMixin = {
         continue;
       }
       // If it's a container, fetch its children
-      const children = this.resource.getContainerPredicate();
+      const children = nextArrayOfObjects['predicate'];
       if (!children) continue;
       arrayOfDataIds.push(...children.map(child => child['@id']));
     }

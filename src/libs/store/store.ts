@@ -343,9 +343,7 @@ export class Store {
    * @param container
    */
   subscribeChildren(container: CustomGetter, containerId: string) {
-    if (!container.hasContainerPredicate()) return;
-
-    const children = container.getContainerPredicate();
+    const children = container['predicate'];
     if (!children) return;
 
     for (const res of children) {
@@ -480,11 +478,11 @@ export class Store {
     if (this.cache.has(id)) {
       // For federation, clear each source
       const resource = this.cache.get(id);
-      if (resource.hasContainerPredicate()) {
-        const resources = resource.getContainerPredicate();
-        for (const child of resources) {
+      const predicate = resource['predicate'];
+      if (predicate) {
+        for (const child of predicate) {
           if (
-            child &&
+            child?.['@type'] &&
             doesStringContainPredicate(child['@type'], {
               ...resource.clientContext,
               ...resource.serverContext,
