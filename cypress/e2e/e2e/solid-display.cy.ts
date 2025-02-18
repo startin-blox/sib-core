@@ -348,4 +348,18 @@ describe('solid-display', function () {
       .find('solid-display-value-label')
       .should('have.class', 'solid-display-value-label emailClass');
   });
+
+
+  it("should display content correctly from DCAT context", () => {
+
+    cy.get("#display-dcat h5").eq(0).should("have.text", "Compute Services");
+    cy.get("#display-dcat h5").eq(1).should("have.text", "Storage Services");
+    cy.get("#display-dcat h5").eq(2).should("have.text", "Networking Services");
+
+    cy.get("#display-dcat p").should("have.length", 3);
+
+    cy.get("#display-dcat p").eq(0).should("contain.text", "Virtual machines, containers, and serverless computing services.");
+    cy.get("#display-dcat p").eq(1).should("contain.text", "Block storage, object storage, and archival storage solutions.");
+    cy.get("#display-dcat p").eq(2).should("contain.text", "Virtual networks, load balancers, and VPNs.");
+  });
 });

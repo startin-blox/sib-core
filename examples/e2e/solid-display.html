@@ -328,6 +328,15 @@
       widget-email="solid-display-value-label"
   ></solid-display>
 
+    <h3>Display with DCAT context</h3>
+    <solid-display
+      id="display-dcat"
+      data-src="/examples/data/catalog/services.jsonld"
+      fields="title, description"
+      widget-title="h5"
+      widget-description="p"
+    ></solid-display>
+
     <script>
       const log = document.getElementById('log-event');
       document.getElementById('display-event').addEventListener('widgetRendered', (e) => {
