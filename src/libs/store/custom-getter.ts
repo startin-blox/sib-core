@@ -221,7 +221,11 @@ export class CustomGetter {
    * Get children of container as objects
    */
   getChildren(predicateName: string): object[] {
-    const value = this.resource[this.getExpandedPredicate(predicateName)];
+    let value = this.resource[predicateName];
+
+    if (!value){ 
+      value = this.resource[this.getExpandedPredicate(predicateName)];
+    }
 
     if (value === undefined || value === null) {
       return [];
