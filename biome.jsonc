@@ -28,7 +28,8 @@
         "noBannedTypes": "warn",
         "noExcessiveCognitiveComplexity": "warn",
         "noUselessUndefinedInitialization": "warn",
-        "useLiteralKeys": "warn"
+        "useLiteralKeys": "warn",
+        "noForEach": "error"
       },
       "suspicious": {
         "noConsoleLog": "warn",
@@ -43,6 +44,18 @@
       }
     }
   },
+  "overrides": [
+    {
+      "include": ["cypress/**/*.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noForEach": "off"
+          }
+        }
+      }
+    }
+  ],
   "javascript": {
     "formatter": {
       "arrowParentheses": "asNeeded",

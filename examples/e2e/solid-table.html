@@ -24,6 +24,19 @@
       order-by="first_name"
     ></solid-table>
 
+    <h3>table-users (dcat)</h3>
+    <solid-table
+      id="dcat-table-users"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="first_name, last_name, email, username"
+      label-first_name="First Name"
+      class-last_name="sib-last-name"
+      widget-email="solid-display-link-mailto"
+      header
+      selectable
+      order-by="first_name"
+    ></solid-table>
+
     <h3>table-user-1</h3>
     <solid-table
       id="table-user-1"
@@ -32,10 +45,35 @@
       label-first_name="First Name"
     ></solid-table>
 
+    <h3>table-user-1 Dcat Case</h3>
+    <solid-table
+      id="dcat-table-user-1"
+      data-src="/examples/data/catalog/user-1.jsonld"
+      fields="first_name, last_name, email, username"
+      label-first_name="First Name"
+    ></solid-table>
+
     <h3>table-users-editable</h3>
     <solid-table
       id="table-users-editable"
       data-src="/examples/data/list/users.jsonld"
+      fields="first_name, last_name, email, username"
+
+      editable-first_name
+
+      editable-last_name
+      enum-last_name="Smith, Williams, Anderson"
+
+      editable-email
+      widget-email="solid-form-email-label"
+      class-email="email-input"
+      submit-button-email="Validate modifications"
+    ></solid-table>
+
+    <h3>table-users-editable Dcat Case</h3>
+    <solid-table
+      id="dcat-table-users-editable"
+      data-src="/examples/data/catalog/users.jsonld"
       fields="first_name, last_name, email, username"
 
       editable-first_name
@@ -62,6 +100,21 @@
       fields="name, order"
       selectable
       sorted-by="sorter"
+    ></solid-table>
+
+    <h3>table with sorter Dcat Case</h3>
+    <solid-form-search
+      id="dcat-sorter"
+      fields="field"
+      enum-field="Skill name = name, Skill number = order"
+    ></solid-form-search>
+
+    <solid-table
+      id="dcat-table-skills"
+      data-src="/examples/data/catalog/skills.jsonld"
+      fields="name, order"
+      selectable
+      sorted-by="dcat-sorter"
     ></solid-table>
 
     <h3>grouped ordered tables</h3>
@@ -106,6 +159,54 @@
     <solid-table
       id="grouped-table-date-asc"
       data-src="/examples/data/list/event-5.jsonld"
+      fields="name, date, place, year"
+      group-by="date"
+      order-group-asc
+    ></solid-table>
+
+
+    <h3>grouped ordered tables (Dcat Catalog case)</h3>
+
+    <h4>Table grouped by place</h4>
+    <solid-table
+      id="dcat-grouped-table"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name, date, place"
+      group-by="place"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by desc year</h4>
+    <solid-table
+      id="dcat-grouped-table-year-desc"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name, date, place, year"
+      group-by="year"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by asc year</h4>
+    <solid-table
+      id="dcat-grouped-table-year-asc"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name, date, place, year"
+      group-by="year"
+      order-group-asc
+    ></solid-table>
+
+    <h4>Table grouped by desc date</h4>
+    <solid-table
+      id="dcat-grouped-table-date-desc"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name, date, place, year"
+      group-by="date"
+      order-group-desc
+    ></solid-table>
+
+    <h4>Table grouped by asc date</h4>
+    <solid-table
+      id="dcat-grouped-table-date-asc"
+      data-src="/examples/data/catalog/events.jsonld"
       fields="name, date, place, year"
       group-by="date"
       order-group-asc
