@@ -144,12 +144,13 @@ export class CustomGetter {
    * @returns
    */
   getLiteralValue(value: any): string | string[] | null {
-    if (typeof value !== 'object') return value;
+    if (typeof value !== 'object' || value === null) return value;
     // value object: https://www.w3.org/TR/json-ld11/#value-objects
     if (value['@value']) return value['@value']; // 1 language
     if (!Array.isArray(value)) return value;
     if (value.length === 0) return null;
     if (!Array.isArray(value[0])) return value;
+
     // multiple languages
     const ln = store._getLanguage();
     let translatedValue = value.find(
