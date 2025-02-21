@@ -6,7 +6,6 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('display users (+dcat)', () => {
-
     ['#table-users', '#dcat-table-users'].forEach(tableId => {
       cy.get(tableId) // CHECK DATA
         // 1 child and <table> element
@@ -289,7 +288,6 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('grouped ordered tables (+dcat)', () => {
-
     cy.get('#grouped-table, #dcat-grouped-table').each($table => {
       cy.wrap($table).within(() => {
         cy.get('solid-group-default').should('have.length', 4);
