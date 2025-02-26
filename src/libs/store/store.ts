@@ -272,11 +272,11 @@ export class Store {
 
       // We have to add the server search and pagination attributes again here to the resource cache key
       if (
-        key === id &&
+        (key === id &&
+          resource['@type'] ===
+            this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-        this.getExpandedPredicate('ldp:Container', clientContext) ||
-        resource['@type'] ===
-        this.getExpandedPredicate('dcat:Catalog', clientContext)
+          this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)

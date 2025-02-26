@@ -5,7 +5,7 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
   });
 
   it('solid-form-search (+dcat)', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`solid-form-search${prefix}filter1`)
         .find('select')
         .should('have.attr', 'name', 'username')
@@ -41,18 +41,29 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
   });
 
   it('solid-form-search + submit-button (+dcat)', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}filter3`)
         .find('input[type=submit]')
         .as('btn')
         .should('have.attr', 'value', 'update result');
-      cy.get(`${prefix}filter3 > form`).find('div').children('input[type="submit"]');
-      cy.get(`${prefix}display3 > div > solid-display`).should('have.length', 4);
+      cy.get(`${prefix}filter3 > form`)
+        .find('div')
+        .children('input[type="submit"]');
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        4,
+      );
       cy.get(`${prefix}filter3 select`).select('User');
-      cy.get(`${prefix}display3 > div > solid-display`).should('have.length', 4);
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        4,
+      );
       cy.get('@btn').click();
-      cy.get(`${prefix}display3 > div > solid-display`).should('have.length', 1);
-    })
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        1,
+      );
+    });
   });
 
   it('solid-form-search + submit-widget', () => {
@@ -74,7 +85,7 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
   });
 
   it('solid-form-search + start-value & end-value (+dcat)', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}filter4 > form`)
         .find('solid-form-rangedate')
         .should('have.attr', 'start-value', '2020-06-01')
@@ -86,28 +97,26 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
         .should('have.attr', 'start-value', '2')
         .and('have.attr', 'end-value', '10');
       cy.get(`${prefix}display5 > div `).children().should('have.length', 3);
-    })
-
+    });
   });
 
   it('solid-form-search + search-[field] (+dcat)', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}filter-search-field > form`)
-      .find('solid-form-label-text')
-      .should('have.attr', 'name', 'global_name')
-      .find('input')
-      .type('em');
+        .find('solid-form-label-text')
+        .should('have.attr', 'name', 'global_name')
+        .find('input')
+        .type('em');
 
-    cy.get(`${prefix}display-search-field-1 > div`)
-      .children()
-      .should('have.length', 1)
-      .filter('solid-display[data-src="/examples/data/list/user-3.jsonld"]');
-    cy.get(`${prefix}display-search-field-2 > div`)
-      .children()
-      .should('have.length', 1)
-      .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
+      cy.get(`${prefix}display-search-field-1 > div`)
+        .children()
+        .should('have.length', 1)
+        .filter('solid-display[data-src="/examples/data/list/user-3.jsonld"]');
+      cy.get(`${prefix}display-search-field-2 > div`)
+        .children()
+        .should('have.length', 1)
+        .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
     });
-   
   });
 
   it('solid-form-search + solid-form-hidden', () => {

@@ -19,53 +19,53 @@ describe('solid-display', function () {
   });
 
   it('handle fields attribute', () => {
-      // all fields
-      cy.get('#display-3>div').children().eq(0).should('not.have.attr', 'fields');
-      cy.get('#display-3>div')
-        .children()
-        .eq(0)
-        .find('>div')
-        .children()
-        .should('have.length', 10);
+    // all fields
+    cy.get('#display-3>div').children().eq(0).should('not.have.attr', 'fields');
+    cy.get('#display-3>div')
+      .children()
+      .eq(0)
+      .find('>div')
+      .children()
+      .should('have.length', 10);
     cy.get('#display-3 > div ').find('[name=permissions]').should('not.exist');
 
-      // child-[field] attribute
-      cy.get('#display-3 > div')
-        .children()
-        .eq(0)
-        .should('have.attr', 'attribute-child', 'child-value');
-      cy.get('#display-3 > div')
-        .children()
-        .eq(1)
-        .should('have.attr', 'attribute-child', 'child-value');
-      cy.get('#display-3 > div')
-        .children()
-        .eq(2)
-        .should('have.attr', 'attribute-chIld', 'child-value');
-      cy.get('#display-3 > div')
-        .children()
-        .eq(3)
-        .should('have.attr', 'attribute-child', 'child-value');
+    // child-[field] attribute
+    cy.get('#display-3 > div')
+      .children()
+      .eq(0)
+      .should('have.attr', 'attribute-child', 'child-value');
+    cy.get('#display-3 > div')
+      .children()
+      .eq(1)
+      .should('have.attr', 'attribute-child', 'child-value');
+    cy.get('#display-3 > div')
+      .children()
+      .eq(2)
+      .should('have.attr', 'attribute-chIld', 'child-value');
+    cy.get('#display-3 > div')
+      .children()
+      .eq(3)
+      .should('have.attr', 'attribute-child', 'child-value');
 
-      // no fields
-      cy.get('#display-4>div').children().should('have.attr', 'fields', '');
-      cy.get('#display-4>div')
-        .children()
-        .eq(0)
-        .find('>div')
-        .children()
-        .should('have.length', 0);
+    // no fields
+    cy.get('#display-4>div').children().should('have.attr', 'fields', '');
+    cy.get('#display-4>div')
+      .children()
+      .eq(0)
+      .find('>div')
+      .children()
+      .should('have.length', 0);
   });
 
   it('handle native HTML tags', () => {
     cy.get('#display-5 > div > h2')
-        .should('have.attr', 'name', 'name')
-        .and('have.class', 'custom-class')
-        .and('have.text', 'Coliving');
+      .should('have.attr', 'name', 'name')
+      .and('have.class', 'custom-class')
+      .and('have.text', 'Coliving');
   });
 
   it('required mixin', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-6 > div`).children().should('have.length', 4);
 
       cy.get(`${prefix}display-7`).should('have.attr', 'required-ocean');
@@ -101,7 +101,7 @@ describe('solid-display', function () {
         'data-src',
         '/examples/data/list/event-3.jsonld',
       );
-    })
+    });
   });
 
   it('list-mixin : solid-container & solid-resource attributes', () => {
@@ -119,37 +119,37 @@ describe('solid-display', function () {
 
   it('define src attribute of solid-link by action', () => {
     cy.get('#display-14 > div > solid-action').should(
-        'have.attr',
-        'src',
-        '/examples/data/list/user-1.jsonld',
-      );
+      'have.attr',
+      'src',
+      '/examples/data/list/user-1.jsonld',
+    );
     cy.get('#display-14 > div > solid-action > solid-link').should(
-        'have.attr',
-        'data-src',
-        '/examples/data/list/user-1.jsonld',
-      );
+      'have.attr',
+      'data-src',
+      '/examples/data/list/user-1.jsonld',
+    );
 
     cy.get('#display-15 > div > solid-action').should(
-        'have.attr',
-        'src',
-        'other-resource',
-      );
+      'have.attr',
+      'src',
+      'other-resource',
+    );
     cy.get('#display-15 > div > solid-action > solid-link').should(
-        'have.attr',
-        'data-src',
-        'other-resource',
-      );
+      'have.attr',
+      'data-src',
+      'other-resource',
+    );
   });
 
   it('handle default-[field] attribute', () => {
     cy.get('#default-field > div solid-display-value').should(
-        'have.text',
-        'not defined',
-      );
+      'have.text',
+      'not defined',
+    );
   });
 
   it('counter mixin', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-16`)
         .children()
         .eq(0)
@@ -163,7 +163,7 @@ describe('solid-display', function () {
   });
 
   it('highlighter-mixin', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-17 > div`)
         .children()
         .eq(0)
@@ -174,7 +174,7 @@ describe('solid-display', function () {
 
   it('nested-[field]', () => {
     // data-src in solid-display pointed on skill-*.jsonld
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-18 > div`)
         .children()
         .eq(0)
@@ -210,7 +210,7 @@ describe('solid-display', function () {
 
   it('default-widget', () => {
     // default-widget applied to every child
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-19 > div`)
         .find('solid-display-link')
         .eq(0)
@@ -240,7 +240,7 @@ describe('solid-display', function () {
   });
 
   it('oembed template', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
+    ['#', '#dcat-'].forEach(prefix => {
       cy.get(`${prefix}display-21 > div`)
         .find('solid-display-value-oembed')
         .should(
@@ -255,21 +255,21 @@ describe('solid-display', function () {
     cy.get('#display-22 > div').children().should('have.length', 4);
     cy.get('#display-22 > div').children().eq(1).should('contain', 'Rennes');
     cy.get('#display-22 > div > custom-default-widget').should(
-        'contain',
-        'Field empty',
-      );
+      'contain',
+      'Field empty',
+    );
     cy.get('#display-22 > div')
-        .children()
-        .eq(0)
-        .should('contain', 'Field empty');
+      .children()
+      .eq(0)
+      .should('contain', 'Field empty');
     cy.get('#display-22 > div')
-        .children()
-        .eq(2)
-        .should('contain', 'Field empty');
+      .children()
+      .eq(2)
+      .should('contain', 'Field empty');
     cy.get('#display-22 > div > custom-default-widget-website').should(
-        'contain',
-        'No website',
-      );
+      'contain',
+      'No website',
+    );
   });
 
   it('dispatch event when widget rendered', () => {
@@ -277,45 +277,47 @@ describe('solid-display', function () {
   });
 
   it('widget for empty set', () => {
-      // empty set widget displayed
+    // empty set widget displayed
     cy.get('#widget-empty-set1 > div').children().should('have.length', 2);
     cy.get('#widget-empty-set1 > div')
-        .children()
-        .eq(1)
-        .children()
-        .should('have.length', 1);
+      .children()
+      .eq(1)
+      .children()
+      .should('have.length', 1);
     cy.get('#widget-empty-set1 > div')
-        .children()
-        .eq(1)
-        .should('contain', 'set empty');
-      // empty set widget not displayed
+      .children()
+      .eq(1)
+      .should('contain', 'set empty');
+    // empty set widget not displayed
     cy.get('#widget-empty-set2 > div').children().should('have.length', 2);
     cy.get('#widget-empty-set2 > div')
-        .children()
-        .eq(1)
-        .children()
-        .should('have.length', 3);
+      .children()
+      .eq(1)
+      .children()
+      .should('have.length', 3);
     cy.get('#widget-empty-set2 > div')
-        .children()
-        .eq(1)
-        .should('contain', 'Paris')
-        .and('not.contain', 'set empty');
-      // empty set with value attribute displayed
+      .children()
+      .eq(1)
+      .should('contain', 'Paris')
+      .and('not.contain', 'set empty');
+    // empty set with value attribute displayed
     cy.get('#widget-empty-set3 > div').children().should('have.length', 2);
     cy.get('#widget-empty-set3 > div')
-        .children()
-        .eq(1)
-        .should('have.attr', 'value', 'empty set value');
+      .children()
+      .eq(1)
+      .should('have.attr', 'value', 'empty set value');
     cy.get('#widget-empty-set3 > div')
-        .children()
-        .eq(1)
-        .should('contain', 'empty set value')
-        .and('not.contain', 'set empty');
+      .children()
+      .eq(1)
+      .should('contain', 'empty set value')
+      .and('not.contain', 'set empty');
   });
 
   it('solid-set-div-label', () => {
-    ['#', '#dcat-'].forEach((prefix) => {
-      cy.get(`${prefix}solid-set-div-label > div`).children().should('have.length', 4);
+    ['#', '#dcat-'].forEach(prefix => {
+      cy.get(`${prefix}solid-set-div-label > div`)
+        .children()
+        .should('have.length', 4);
       cy.get(`${prefix}solid-set-div-label > div`)
         .children()
         .eq(0)
@@ -347,43 +349,49 @@ describe('solid-display', function () {
 
   it('class for solid-* elements', () => {
     cy.get('solid-display#display-class')
-        .find('solid-set-ul')
-        .should('have.class', 'solid-set-ul');
+      .find('solid-set-ul')
+      .should('have.class', 'solid-set-ul');
     cy.get('solid-display#display-class')
-        .find('solid-display-value-label')
-        .should('have.class', 'solid-display-value-label');
+      .find('solid-display-value-label')
+      .should('have.class', 'solid-display-value-label');
     cy.get('solid-display#display-class2')
-        .find('solid-set-ul')
-        .should('have.class', 'solid-set-ul fullnameClass');
+      .find('solid-set-ul')
+      .should('have.class', 'solid-set-ul fullnameClass');
     cy.get('solid-display#display-class2')
-        .find('solid-display-value')
-        .should('have.class', 'solid-display-value fnameClass');
+      .find('solid-display-value')
+      .should('have.class', 'solid-display-value fnameClass');
     cy.get('solid-display#display-class2')
-        .find('solid-display-value-label')
-        .should('have.class', 'solid-display-value-label emailClass');
+      .find('solid-display-value-label')
+      .should('have.class', 'solid-display-value-label emailClass');
   });
 
   it('should display content correctly from DCAT context', () => {
-    cy.get('#dcat-display-services h5').eq(0).should('have.text', 'Compute Services');
-    cy.get('#dcat-display-services h5').eq(1).should('have.text', 'Storage Services');
-    cy.get('#dcat-display-services h5').eq(2).should('have.text', 'Networking Services');
+    cy.get('#dcat-display-services h5')
+      .eq(0)
+      .should('have.text', 'Compute Services');
+    cy.get('#dcat-display-services h5')
+      .eq(1)
+      .should('have.text', 'Storage Services');
+    cy.get('#dcat-display-services h5')
+      .eq(2)
+      .should('have.text', 'Networking Services');
 
     cy.get('#dcat-display-services p').should('have.length', 3);
 
     cy.get('#dcat-display-services p')
-        .eq(0)
-        .should(
-          'contain.text',
-          'Virtual machines, containers, and serverless computing services.',
-        );
+      .eq(0)
+      .should(
+        'contain.text',
+        'Virtual machines, containers, and serverless computing services.',
+      );
     cy.get('#dcat-display-services p')
-        .eq(1)
-        .should(
-          'contain.text',
-          'Block storage, object storage, and archival storage solutions.',
-        );
+      .eq(1)
+      .should(
+        'contain.text',
+        'Block storage, object storage, and archival storage solutions.',
+      );
     cy.get('#dcat-display-services p')
-        .eq(2)
-        .should('contain.text', 'Virtual networks, load balancers, and VPNs.');
+      .eq(2)
+      .should('contain.text', 'Virtual networks, load balancers, and VPNs.');
   });
 });
