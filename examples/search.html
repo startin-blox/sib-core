@@ -33,6 +33,30 @@
         counter-template="${counter} users here"
       ></solid-display>
     </details>
+
+    <details>
+      <summary>One field & label (+dcat):</summary>
+      <solid-display
+        data-src="/examples/data/catalog/users-long.jsonld"
+        fields="username, first_name, last_name, email"
+        search-fields="email"
+        search-label-email="mail"
+        counter-template="${counter} users here"
+      ></solid-display>
+
+      <h4>with solid-form-search (+dcat)</h4>
+      <solid-form-search
+        id="filter-label"
+        fields="email"
+        label-email="mail"
+      ></solid-form-search>
+      <solid-display
+        data-src="/examples/data/catalog/users-long.jsonld"
+        fields="username, first_name, last_name, email"
+        filtered-by="filter-label"
+        counter-template="${counter} users here"
+      ></solid-display>
+    </details>
     
     <details>
       <summary>One field & value:</summary>
@@ -46,14 +70,14 @@
       
       <h4>with solid-form-search</h4>
       <solid-form-search
-        id="filter-value"
+        id="dcat-filter-value"
         fields="email"
         value-email="happy"
       ></solid-form-search>
       <solid-display
         data-src="/examples/data/list/users-long.jsonld"
         fields="username, first_name, last_name, email"
-        filtered-by="filter-value"
+        filtered-by="dcat-filter-value"
         counter-template="${counter} users here"
       ></solid-display>
     </details>

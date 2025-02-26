@@ -1,5 +1,7 @@
 {
   "@type": "ldp:Container",
+  "@id": "/examples/data/list/events.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
   "ldp:contains": [
     {
       "@id": "/examples/data/list/event-1.jsonld",
@@ -37,7 +39,5 @@
       "city": "Marseille",
       "permissions": []
     }
-  ],
-  "@id": "/examples/data/list/events.jsonld",
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  ]
 }

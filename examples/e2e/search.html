@@ -21,15 +21,38 @@
       filtered-by="filter1"
     ></solid-display>
 
+    <h3>solid-form-search (+dcat)</h3>
+    <solid-form-search
+      id="dcat-filter1"
+      fields="username"
+      enum-username="admin, paris, pierre, option4, not-member-paris"
+    ></solid-form-search>
+    <solid-display
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="username"
+      filtered-by="dcat-filter1"
+    ></solid-display>
+
     <solid-form-search
       id="filter2"
       fields="last_name"
       enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/catalog/users.jsonld"
       fields='last_name'
       filtered-by="filter2"
+    ></solid-display>
+
+    <solid-form-search
+      id="dcat-filter2"
+      fields="last_name"
+      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
+    ></solid-form-search>
+    <solid-display
+      data-src="/examples/data/catalog/users.jsonld"
+      fields='last_name'
+      filtered-by="dcat-filter2"
     ></solid-display>
 
     <h3>solid-form-search + submit-button</h3>
@@ -45,6 +68,21 @@
       fields='last_name'
       filtered-by="filter3"
     ></solid-display>
+
+    <h3>solid-form-search + submit-button (+dcat)</h3>
+    <solid-form-search
+      id="dcat-filter3"
+      submit-button="update result"
+      fields="last_name"
+      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
+    ></solid-form-search>
+    <solid-display
+      id="dcat-display3"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields='last_name'
+      filtered-by="dcat-filter3"
+    ></solid-display>
+
 
     <h3>solid-form-search + start-value & end-value</h3>
     <solid-form-search
@@ -75,6 +113,35 @@
       filtered-by="filter5"
     ></solid-display>
 
+    <h3>solid-form-search + start-value & end-value (+dcat)</h3>
+    <solid-form-search
+      id="dcat-filter4"
+      fields="date"
+      widget-date="solid-form-rangedate"
+      start-value-date="2020-06-01"
+      end-value-date="2021-01-12"
+    ></solid-form-search>
+    <solid-display
+      id="dcat-display4"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name"
+      filtered-by="dcat-filter4"
+    ></solid-display>
+
+    <solid-form-search
+      id="dcat-filter5"
+      fields="order"
+      widget-order="solid-form-rangenumber"
+      start-value-order="2"
+      end-value-order="10"
+    ></solid-form-search>
+    <solid-display
+      id="dcat-display5"
+      data-src="/examples/data/catalog/skills.jsonld"
+      fields="name"
+      filtered-by="dcat-filter5"
+    ></solid-display>
+    
     <h3>solid-form-search + search-[field]</h3>
     <solid-form-search
       id="filter-search-field"
@@ -92,6 +159,25 @@
       data-src="/examples/data/list/events.jsonld"
       fields="name"
       filtered-by="filter-search-field"
+    ></solid-display> 
+
+    <h3>solid-form-search + search-[field] (+dcat)</h3>
+    <solid-form-search
+      id="dcat-filter-search-field"
+      fields="global_name"
+      search-global_name="first_name, last_name, name"
+    ></solid-form-search>
+    <solid-display
+      id="dcat-display-search-field-1"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="name"
+      filtered-by="dcat-filter-search-field"
+    ></solid-display>
+    <solid-display
+      id="dcat-display-search-field-2"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="name"
+      filtered-by="dcat-filter-search-field"
     ></solid-display>
 
     <h3>solid-form-search + submit-widget</h3>

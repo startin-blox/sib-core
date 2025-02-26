@@ -274,7 +274,9 @@ export class Store {
       if (
         key === id &&
         resource['@type'] ===
-          this.getExpandedPredicate('ldp:Container', clientContext)
+        this.getExpandedPredicate('ldp:Container', clientContext) ||
+        resource['@type'] ===
+        this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -613,7 +615,7 @@ export class Store {
    * @returns boolean
    */
   _isLocalId(id: string) {
-    return id.startsWith('store://local.');
+    return id?.startsWith('store://local.');
   }
 
   /**
