@@ -13,7 +13,7 @@
       "email": "test-user@example.com",
       "available": true,
       "years_experience": 3,
-      "skills": {
+      "domain": {
         "@id": "/examples/data/list/user-1-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
@@ -41,7 +41,7 @@
       "email": "paris@hilton.hi",
       "available": true,
       "years_experience": 5,
-      "skills": {
+      "domain": {
         "@id": "/examples/data/list/user-2-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
@@ -66,7 +66,7 @@
       "email": "pierredelacroix@happy-dev.fr",
       "available": false,
       "years_experience": 5,
-      "skills": {
+      "domain": {
         "@id": "/examples/data/list/user-4-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
@@ -97,7 +97,7 @@
       "email": "not-a@paris.members",
       "available": false,
       "years_experience": 7,
-      "skills": {
+      "domain": {
         "@id": "/examples/data/list/user-3-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [],
