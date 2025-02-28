@@ -1,0 +1,7 @@
+{
+  "@context": "https://www.w3.org/ns/dcat#",
+  "@id": "/examples/data/catalog/user-3-skills.jsonld",
+  "@type": "dcat:Catalog",
+  "dcat:dataset": [],
+  "permissions": ["view"]
+}

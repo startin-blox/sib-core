@@ -1,0 +1,34 @@
+{
+  "@id": "/examples/data/catalog/user-4.jsonld",
+  "first_name": "Pierre",
+  "description": "Pierre",
+  "last_name": "DLC",
+  "title": "DLC",
+  "username": "pierre",
+  "email": "pierredelacroix@happy-dev.fr",
+  "name": "Pierre DLC",
+  "available": false,
+  "domain": {
+    "@context": "https://www.w3.org/ns/dcat#",
+    "@id": "/examples/data/catalog/user-4-skills.jsonld",
+    "@type": "dcat:Catalog",
+    "dcat:dataset": [
+      {
+        "@id": "/examples/data/list/skill-1.jsonld"
+      },
+      {
+        "@id": "/examples/data/list/skill-2.jsonld"
+      },
+      {
+        "@id": "/examples/data/list/skill-4.jsonld"
+      }
+    ],
+    "permissions": ["view"]
+  },
+  "profile": {
+    "@id": "/examples/data/list/profile-4.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

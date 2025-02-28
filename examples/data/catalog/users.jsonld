@@ -5,16 +5,18 @@
   "permissions": ["view"],
   "dcat:dataset": [
     {
-      "@id": "/examples/data/list/user-1.jsonld",
+      "@id": "/examples/data/catalog/user-1.jsonld",
       "first_name": "Test",
+      "description": "Test",
       "last_name": "User",
+      "title": "User",
       "name": "Test User",
       "username": "admin",
       "email": "test-user@example.com",
       "available": true,
       "years_experience": 3,
       "domain": {
-        "@id": "/examples/data/list/user-1-skills.jsonld",
+        "@id": "/examples/data/catalog/user-1-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
@@ -33,16 +35,18 @@
       "permissions": ["view"]
     },
     {
-      "@id": "/examples/data/list/user-2.jsonld",
+      "@id": "/examples/data/catalog/user-2.jsonld",
       "first_name": "Paris",
+      "description": "Paris",
       "last_name": "Hilton",
+      "title": "Hilton",
       "name": "Paris Hilton",
       "username": "paris",
       "email": "paris@hilton.hi",
       "available": true,
       "years_experience": 5,
       "domain": {
-        "@id": "/examples/data/list/user-2-skills.jsonld",
+        "@id": "/examples/data/catalog/user-2-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
@@ -58,16 +62,18 @@
       "permissions": ["view"]
     },
     {
-      "@id": "/examples/data/list/user-4.jsonld",
+      "@id": "/examples/data/catalog/user-4.jsonld",
       "first_name": "Pierre",
+      "description": "Pierre",
       "last_name": "DLC",
+      "title": "DLC",
       "name": "Pierre DLC",
       "username": "pierre",
       "email": "pierredelacroix@happy-dev.fr",
       "available": false,
       "years_experience": 5,
       "domain": {
-        "@id": "/examples/data/list/user-4-skills.jsonld",
+        "@id": "/examples/data/catalog/user-4-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
@@ -89,16 +95,18 @@
       "permissions": ["view"]
     },
     {
-      "@id": "/examples/data/list/user-3.jsonld",
+      "@id": "/examples/data/catalog/user-3.jsonld",
       "first_name": "Not A",
+      "description": "Not A",
       "last_name": "Paris Member",
+      "title": "Paris Member",
       "name": "Not A Paris Member",
       "username": "not-member-paris",
       "email": "not-a@paris.members",
       "available": false,
       "years_experience": 7,
       "domain": {
-        "@id": "/examples/data/list/user-3-skills.jsonld",
+        "@id": "/examples/data/catalog/user-3-skills.jsonld",
         "@type": "dcat:Catalog",
         "dcat:dataset": [],
         "permissions": ["view"]

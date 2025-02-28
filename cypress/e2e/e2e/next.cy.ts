@@ -1,7 +1,10 @@
 // TODO: We should make tests run independently of one another
-const testFiles = ['next', 'next-dcat'];
+const testFiles = [
+  { file: 'next', type: 'list' },
+  { file: 'next-dcat', type: 'catalog' },
+];
 
-testFiles.forEach(file => {
+testFiles.forEach(({ file, type }) => {
   describe(file, { testIsolation: false }, function () {
     this.beforeAll('visit', () => {
       cy.visit(`/examples/e2e/${file}.html`);
@@ -31,10 +34,10 @@ testFiles.forEach(file => {
       cy.get('@list').contains('CSS').click();
       cy.get('#user-detail > div')
         .should('be.visible')
-        .should('contain', '/examples/data/list/user-1.jsonld');
+        .should('contain', `/examples/data/${type}/user-1.jsonld`);
       cy.location().should(loc => {
         expect(loc.hash).to.eq(
-          '#user/@%2Fexamples%2Fdata%2Flist%2Fuser-1.jsonld@',
+          `#user/@%2Fexamples%2Fdata%2F${type}%2Fuser-1.jsonld@`,
         );
       });
     });

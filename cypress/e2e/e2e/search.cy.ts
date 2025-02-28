@@ -4,40 +4,72 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
     cy.visit('/examples/e2e/search.html');
   });
 
-  it('solid-form-search (+dcat)', () => {
-    ['#', '#dcat-'].forEach(prefix => {
-      cy.get(`solid-form-search${prefix}filter1`)
-        .find('select')
-        .should('have.attr', 'name', 'username')
-        .children()
-        .and('have.length', 6);
-      cy.get(`solid-form-search${prefix}filter1`)
-        .find('option')
-        .eq(0)
-        .should('have.attr', 'value', '')
-        .contains('-');
-      cy.get(`solid-form-search${prefix}filter1`)
-        .find('option')
-        .eq(1)
-        .should('have.attr', 'value', 'admin')
-        .contains('admin');
+  it('solid-form-search', () => {
+    cy.get('solid-form-search#filter1')
+      .find('select')
+      .should('have.attr', 'name', 'username')
+      .children()
+      .and('have.length', 6);
+    cy.get('solid-form-search#filter1')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#filter1')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'admin')
+      .contains('admin');
 
-      cy.get(`solid-form-search${prefix}filter2`)
-        .find('select')
-        .should('have.attr', 'name', 'last_name')
-        .children()
-        .and('have.length', 5);
-      cy.get(`solid-form-search${prefix}filter2`)
-        .find('option')
-        .eq(0)
-        .should('have.attr', 'value', '')
-        .contains('-');
-      cy.get(`solid-form-search${prefix}filter2`)
-        .find('option')
-        .eq(1)
-        .should('have.attr', 'value', 'a')
-        .contains('User');
-    });
+    cy.get('solid-form-search#filter2')
+      .find('select')
+      .should('have.attr', 'name', 'last_name')
+      .children()
+      .and('have.length', 5);
+    cy.get('solid-form-search#filter2')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#filter2')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'a')
+      .contains('User');
+  });
+
+  it('solid-form-search (+dcat)', () => {
+    cy.get('solid-form-search#dcat-filter1')
+      .find('select')
+      .should('have.attr', 'name', 'name')
+      .children()
+      .and('have.length', 6);
+    cy.get('solid-form-search#dcat-filter1')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#dcat-filter1')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'admin')
+      .contains('admin');
+
+    cy.get('solid-form-search#dcat-filter2')
+      .find('select')
+      .should('have.attr', 'name', 'name')
+      .children()
+      .and('have.length', 5);
+    cy.get('solid-form-search#dcat-filter2')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#dcat-filter2')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'a')
+      .contains('User');
   });
 
   it('solid-form-search + submit-button (+dcat)', () => {
@@ -101,22 +133,39 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
   });
 
   it('solid-form-search + search-[field] (+dcat)', () => {
-    ['#', '#dcat-'].forEach(prefix => {
-      cy.get(`${prefix}filter-search-field > form`)
-        .find('solid-form-label-text')
-        .should('have.attr', 'name', 'global_name')
-        .find('input')
-        .type('em');
+    cy.get('#filter-search-field > form')
+      .find('solid-form-label-text')
+      .should('have.attr', 'name', 'global_name')
+      .find('input')
+      .type('em');
 
-      cy.get(`${prefix}display-search-field-1 > div`)
-        .children()
-        .should('have.length', 1)
-        .filter('solid-display[data-src="/examples/data/list/user-3.jsonld"]');
-      cy.get(`${prefix}display-search-field-2 > div`)
-        .children()
-        .should('have.length', 1)
-        .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
-    });
+    cy.get('#display-search-field-1 > div')
+      .children()
+      .should('have.length', 1)
+      .filter('solid-display[data-src="/examples/data/list/user-3.jsonld"]');
+    cy.get('#display-search-field-2 > div')
+      .children()
+      .should('have.length', 1)
+      .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
+  });
+
+  it('solid-form-search + search-[field] (+dcat)', () => {
+    cy.get('#dcat-filter-search-field > form')
+      .find('solid-form-label-text')
+      .should('have.attr', 'name', 'global_name')
+      .find('input')
+      .type('em');
+
+    cy.get('#dcat-display-search-field-1 > div')
+      .children()
+      .should('have.length', 1)
+      .filter('solid-display[data-src="/examples/data/catalog/user-3.jsonld"]');
+    cy.get('#dcat-display-search-field-2 > div')
+      .children()
+      .should('have.length', 1)
+      .filter(
+        'solid-display[data-src="/examples/data/catalog/event-4.jsonld"]',
+      );
   });
 
   it('solid-form-search + solid-form-hidden', () => {

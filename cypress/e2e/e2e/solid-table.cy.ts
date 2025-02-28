@@ -6,7 +6,10 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('display users (+dcat)', () => {
-    ['#table-users', '#dcat-table-users'].forEach(tableId => {
+    [
+      { tableId: '#table-users', path: 'list' },
+      { tableId: '#dcat-table-users', path: 'catalog' },
+    ].forEach(({ tableId, path }) => {
       cy.get(tableId) // CHECK DATA
         // 1 child and <table> element
         .children()
@@ -50,7 +53,7 @@ describe('solid-table', { testIsolation: false }, function () {
         .should(
           'have.attr',
           'data-resource',
-          '/examples/data/list/user-3.jsonld',
+          `/examples/data/${path}/user-3.jsonld`,
         )
         .children('td')
         .should('have.length', 5)
@@ -78,7 +81,10 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('select lines (+dcat)', () => {
-    ['#table-users', '#dcat-table-users'].forEach(tableId => {
+    [
+      { tableId: '#table-users', path: 'list' },
+      { tableId: '#dcat-table-users', path: 'catalog' },
+    ].forEach(({ tableId, path }) => {
       cy.get(tableId)
 
         // Line 2
@@ -95,8 +101,8 @@ describe('solid-table', { testIsolation: false }, function () {
       // Check data
       cy.get(tableId).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          '/examples/data/list/user-2.jsonld',
-          '/examples/data/list/user-4.jsonld',
+          `/examples/data/${path}/user-2.jsonld`,
+          `/examples/data/${path}/user-4.jsonld`,
         ]);
       });
 
@@ -104,10 +110,10 @@ describe('solid-table', { testIsolation: false }, function () {
       cy.get(tableId).find('input[type="checkbox"]').eq(0).check();
       cy.get(tableId).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          '/examples/data/list/user-3.jsonld',
-          '/examples/data/list/user-2.jsonld',
-          '/examples/data/list/user-4.jsonld',
-          '/examples/data/list/user-1.jsonld',
+          `/examples/data/${path}/user-3.jsonld`,
+          `/examples/data/${path}/user-2.jsonld`,
+          `/examples/data/${path}/user-4.jsonld`,
+          `/examples/data/${path}/user-1.jsonld`,
         ]);
       });
 
@@ -120,20 +126,25 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('orders lines (+dcat)', () => {
-    cy.get('#table-users, #dcat-table-users').each($table => {
-      cy.wrap($table).within(() => {
-        cy.get(`solid-display-value[name="first_name"]`)
-          .eq(0)
-          .should('have.text', 'Not A');
-        cy.get(`solid-display-value[name="first_name"]`)
-          .eq(1)
-          .should('have.text', 'Paris');
-        cy.get(`solid-display-value[name="first_name"]`)
-          .eq(2)
-          .should('have.text', 'Pierre');
-        cy.get(`solid-display-value[name="first_name"]`)
-          .eq(3)
-          .should('have.text', 'Test');
+    [
+      { tableId: '#table-users', field: 'first_name' },
+      { tableId: '#dcat-table-users', field: 'description' },
+    ].forEach(({ tableId, field }) => {
+      cy.get(tableId).each($table => {
+        cy.wrap($table).within(() => {
+          cy.get(`solid-display-value[name="${field}"]`)
+            .eq(0)
+            .should('have.text', 'Not A');
+          cy.get(`solid-display-value[name="${field}"]`)
+            .eq(1)
+            .should('have.text', 'Paris');
+          cy.get(`solid-display-value[name="${field}"]`)
+            .eq(2)
+            .should('have.text', 'Pierre');
+          cy.get(`solid-display-value[name="${field}"]`)
+            .eq(3)
+            .should('have.text', 'Test');
+        });
       });
     });
   });
@@ -173,45 +184,72 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('makes cells editable (+dcat)', () => {
-    cy.get('#table-users-editable, #dcat-table-users-editable').each($table => {
-      cy.wrap($table).within(() => {
-        cy.get('table')
-          .find('tr')
-          .eq(0)
+    [
+      {
+        tableId: '#table-users-editable',
+        path: 'list',
+        field1: 'first_name',
+        field2: 'last_name',
+      },
+      {
+        tableId: '#dcat-table-users-editable',
+        path: 'catalog',
+        field1: 'description',
+        field2: 'title',
+      },
+    ].forEach(({ tableId, path, field1, field2 }) => {
+      cy.get(tableId).each($table => {
+        cy.wrap($table).within(() => {
+          cy.get('table')
+            .find('tr')
+            .eq(0)
 
-          // first_name
-          .find('td')
-          .eq(0)
-          .find('solid-form')
-          .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
-          .and('have.attr', 'fields', 'first_name')
-          .and('have.attr', 'partial', '')
-          .find('solid-form-label-text input[type="text"]')
-          .should('have.value', 'Test')
+            // first_name
+            .find('td')
+            .eq(0)
+            .find('solid-form')
+            .should(
+              'have.attr',
+              'data-src',
+              `/examples/data/${path}/user-1.jsonld`,
+            )
+            .and('have.attr', 'fields', field1)
+            .and('have.attr', 'partial', '')
+            .find('solid-form-label-text input[type="text"]')
+            .should('have.value', 'Test')
 
-          // last_name
-          .parents('tr')
-          .eq(0)
-          .find('td')
-          .eq(1)
-          .find('solid-form')
-          .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
-          .and('have.attr', 'fields', 'last_name')
-          .and('have.attr', 'enum-last_name', 'Smith, Williams, Anderson')
-          .and('have.attr', 'partial', '')
+            // last_name
+            .parents('tr')
+            .eq(0)
+            .find('td')
+            .eq(1)
+            .find('solid-form')
+            .should(
+              'have.attr',
+              'data-src',
+              `/examples/data/${path}/user-1.jsonld`,
+            )
+            .and('have.attr', 'fields', field2)
+            .and('have.attr', `enum-${field2}`, 'Smith, Williams, Anderson')
+            .and('have.attr', 'partial', '')
 
-          // email
-          .parents('tr')
-          .eq(0)
-          .find('td')
-          .eq(2)
-          .find('solid-form')
-          .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld')
-          .and('have.attr', 'fields', 'email')
-          .and('have.attr', 'widget-email', 'solid-form-email-label')
-          .and('have.attr', 'class', 'email-input')
-          .and('have.attr', 'submit-button', 'Validate modifications')
-          .and('have.attr', 'partial', '');
+            // email
+            .parents('tr')
+            .eq(0)
+            .find('td')
+            .eq(2)
+            .find('solid-form')
+            .should(
+              'have.attr',
+              'data-src',
+              `/examples/data/${path}/user-1.jsonld`,
+            )
+            .and('have.attr', 'fields', 'email')
+            .and('have.attr', 'widget-email', 'solid-form-email-label')
+            .and('have.attr', 'class', 'email-input')
+            .and('have.attr', 'submit-button', 'Validate modifications')
+            .and('have.attr', 'partial', '');
+        });
       });
     });
   });
@@ -254,6 +292,8 @@ describe('solid-table', { testIsolation: false }, function () {
         // Line 1 (CSS)
         .find('input[type="checkbox"][data-selection]')
         .eq(0)
+        .should('exist')
+        .and('be.visible')
         .should('be.checked')
 
         // Line 2 (DevOps)
@@ -290,16 +330,22 @@ describe('solid-table', { testIsolation: false }, function () {
   it('grouped ordered tables (+dcat)', () => {
     cy.get('#grouped-table, #dcat-grouped-table').each($table => {
       cy.wrap($table).within(() => {
-        cy.get('solid-group-default').should('have.length', 4);
+        cy.get('solid-group-default').should('have.length', 3);
         cy.get('solid-group-default').each((item, index) => {
           if (index === 0) {
-            cy.wrap(item).find('span').contains('Opéra3');
+            cy.wrap(item).find('span').contains('Opéra');
           }
           if (index === 1) {
-            cy.wrap(item).find('span').contains('Opéra2');
+            cy.wrap(item).find('span').contains('Couvent des jacobins');
           }
           if (index === 2) {
-            cy.wrap(item).find('span').contains('Opéra');
+            cy.wrap(item)
+              .find('span')
+              .should('exist')
+              .invoke('attr', 'value')
+              .should(value => {
+                expect(value).to.be.oneOf([undefined, '']);
+              });
           }
         });
       });
@@ -352,19 +398,16 @@ describe('solid-table', { testIsolation: false }, function () {
     cy.get('#grouped-table-date-desc, #dcat-grouped-table-date-desc').each(
       $table => {
         cy.wrap($table).within(() => {
-          cy.get('solid-group-default').should('have.length', 4);
+          cy.get('solid-group-default').should('have.length', 3);
           cy.get('solid-group-default').each((item, index) => {
             if (index === 0) {
-              cy.wrap(item).find('span').contains('2020-07-09');
+              cy.wrap(item).find('span').contains('2020-07-10');
             }
             if (index === 1) {
-              cy.wrap(item).find('span').contains('2020-05-10');
+              cy.wrap(item).find('span').contains('2020-07-09');
             }
             if (index === 2) {
-              cy.wrap(item).find('span').contains('2017-05-10');
-            }
-            if (index === 3) {
-              cy.wrap(item).find('span').contains('2015-05-10');
+              cy.wrap(item).find('span').contains('2020-05-10');
             }
           });
         });
@@ -374,19 +417,16 @@ describe('solid-table', { testIsolation: false }, function () {
     cy.get('#grouped-table-date-asc, #dcat-grouped-table-date-asc').each(
       $table => {
         cy.wrap($table).within(() => {
-          cy.get('solid-group-default').should('have.length', 4);
+          cy.get('solid-group-default').should('have.length', 3);
           cy.get('solid-group-default').each((item, index) => {
             if (index === 0) {
-              cy.wrap(item).find('span').contains('2015-05-10');
-            }
-            if (index === 1) {
-              cy.wrap(item).find('span').contains('2017-05-10');
-            }
-            if (index === 2) {
               cy.wrap(item).find('span').contains('2020-05-10');
             }
-            if (index === 3) {
+            if (index === 1) {
               cy.wrap(item).find('span').contains('2020-07-09');
+            }
+            if (index === 2) {
+              cy.wrap(item).find('span').contains('2020-07-10');
             }
           });
         });

@@ -7,6 +7,7 @@
       "@id": "/examples/data/list/event-1.jsonld",
       "name": "Coliving",
       "date": "2020-07-09",
+      "year": 2020,
       "seats": 12,
       "place": "",
       "city": "",
@@ -16,6 +17,7 @@
       "@id": "/examples/data/list/event-2.jsonld",
       "name": "Workshop",
       "date": "2020-05-10",
+      "year": 2015,
       "seats": 2,
       "place": "Opéra",
       "city": "",
@@ -26,6 +28,7 @@
       "name": "Réunion d'information",
       "date": "2020-07-10",
       "seats": 36,
+      "year": 2017,
       "place": "Couvent des jacobins",
       "city": "Rennes",
       "permissions": []
@@ -35,6 +38,7 @@
       "name": "Assemblée générale",
       "date": "2020-05-10",
       "seats": 5,
+      "year": 2019,
       "place": "",
       "city": "Marseille",
       "permissions": []

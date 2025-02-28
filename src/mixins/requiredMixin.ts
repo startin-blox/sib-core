@@ -30,7 +30,10 @@ const RequiredMixin = {
         for (const field of requiredFields) {
           // Retrieve resource from store
           const res = await resource[field];
-          if (!res) {
+          if (
+            !res ||
+            (typeof res === 'object' && '@value' in res && !res['@value'])
+          ) {
             hasProps = false;
             break;
           }

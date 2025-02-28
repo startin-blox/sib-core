@@ -24,12 +24,12 @@
     <h3>solid-form-search (+dcat)</h3>
     <solid-form-search
       id="dcat-filter1"
-      fields="username"
-      enum-username="admin, paris, pierre, option4, not-member-paris"
+      fields="name"
+      enum-name="admin, paris, pierre, option4, not-member-paris"
     ></solid-form-search>
     <solid-display
       data-src="/examples/data/catalog/users.jsonld"
-      fields="username"
+      fields="name"
       filtered-by="dcat-filter1"
     ></solid-display>
 
@@ -39,19 +39,19 @@
       enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/list/users.jsonld"
       fields='last_name'
       filtered-by="filter2"
     ></solid-display>
 
     <solid-form-search
       id="dcat-filter2"
-      fields="last_name"
-      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
+      fields="name"
+      enum-name="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
       data-src="/examples/data/catalog/users.jsonld"
-      fields='last_name'
+      fields='name'
       filtered-by="dcat-filter2"
     ></solid-display>
 
@@ -73,13 +73,13 @@
     <solid-form-search
       id="dcat-filter3"
       submit-button="update result"
-      fields="last_name"
-      enum-last_name="User = a , Hilton = b , DLC = c, Paris Member = d"
+      fields="title"
+      enum-title="User = a , Hilton = b , DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
       id="dcat-display3"
       data-src="/examples/data/catalog/users.jsonld"
-      fields='last_name'
+      fields='title'
       filtered-by="dcat-filter3"
     ></solid-display>
 
@@ -116,10 +116,10 @@
     <h3>solid-form-search + start-value & end-value (+dcat)</h3>
     <solid-form-search
       id="dcat-filter4"
-      fields="date"
-      widget-date="solid-form-rangedate"
-      start-value-date="2020-06-01"
-      end-value-date="2021-01-12"
+      fields="created"
+      widget-created="solid-form-rangedate"
+      start-value-created="2020-06-01"
+      end-value-created="2021-01-12"
     ></solid-form-search>
     <solid-display
       id="dcat-display4"
@@ -223,7 +223,6 @@
       fields="name, available"
       filtered-by="filter-hidden-bool"
     ></solid-display>
-
     <solid-form-search
       id="filter-hidden-num"
       fields="years_experience"
@@ -248,7 +247,7 @@
       data-src="/examples/data/list/events.jsonld"
       fields="name"
       filtered-by="filter-fake-field"
-    ></solid-display>
+    ></solid-display> 
 
     <h3>solid-form-search + container</h3>
     <solid-form-search

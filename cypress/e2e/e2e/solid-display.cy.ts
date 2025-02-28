@@ -65,41 +65,65 @@ describe('solid-display', function () {
   });
 
   it('required mixin', () => {
-    ['#', '#dcat-'].forEach(prefix => {
+    [
+      { prefix: '#', field1: 'city', field2: 'place', path: 'list' },
+      {
+        prefix: '#dcat-',
+        field1: 'comment',
+        field2: 'definition',
+        path: 'catalog',
+      },
+    ].forEach(({ prefix, field1, field2, path }) => {
       cy.get(`${prefix}display-6 > div`).children().should('have.length', 4);
 
       cy.get(`${prefix}display-7`).should('have.attr', 'required-ocean');
       cy.get(`${prefix}display-7 > div`).children().should('have.length', 0);
 
-      cy.get(`${prefix}display-8`).should('have.attr', 'required-city');
+      cy.get(`${prefix}display-8`).should('have.attr', `required-${field1}`);
       cy.get(`${prefix}display-8 > div`).children().should('have.length', 2);
       cy.get(`${prefix}display-8 > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', '/examples/data/list/event-3.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/event-3.jsonld`,
+        );
       cy.get(`${prefix}display-8 > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', '/examples/data/list/event-4.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/event-4.jsonld`,
+        );
 
-      cy.get(`${prefix}display-9`).should('have.attr', 'required-place');
+      cy.get(`${prefix}display-9`).should('have.attr', `required-${field2}`);
       cy.get(`${prefix}display-9 > div`).children().should('have.length', 2);
       cy.get(`${prefix}display-9 > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', '/examples/data/list/event-2.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/event-2.jsonld`,
+        );
       cy.get(`${prefix}display-9 > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', '/examples/data/list/event-3.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/event-3.jsonld`,
+        );
 
-      cy.get(`${prefix}display-10`).should('have.attr', 'required-city');
-      cy.get(`${prefix}display-10`).should('have.attr', 'required-place');
+      cy.get(`${prefix}display-10`).should('have.attr', `required-${field1}`);
+      cy.get(`${prefix}display-10`).should('have.attr', `required-${field2}`);
       cy.get(`${prefix}display-10 > div`).children().should('have.length', 1);
       cy.get(`${prefix}display-10 > div > solid-display`).should(
         'have.attr',
         'data-src',
-        '/examples/data/list/event-3.jsonld',
+        `/examples/data/${path}/event-3.jsonld`,
       );
     });
   });
@@ -168,6 +192,8 @@ describe('solid-display', function () {
         .children()
         .eq(0)
         .find('solid-display-value')
+        .should('exist')
+        .and('be.visible')
         .should('contain', 'Javascript');
     });
   });
@@ -199,6 +225,8 @@ describe('solid-display', function () {
         .children()
         .eq(0)
         .find('solid-display-value')
+        .should('exist')
+        .and('be.visible')
         .should('have.attr', 'value', 'CSS');
       cy.get(`${prefix}display-18 > div`)
         .children()
