@@ -299,9 +299,7 @@ export function doesResourceContainPredicate(
 ): boolean {
   const predicates = [
     'ldp:contains',
-    'dcat:dataset',
-    'ldp:Container',
-    'dcat:Catalog',
+    'dcat:dataset'
   ];
 
   const resolvedContext = context ?? {
