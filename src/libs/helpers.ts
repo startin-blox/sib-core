@@ -297,10 +297,7 @@ export function doesResourceContainPredicate(
   resource: object | string,
   context?: object,
 ): boolean {
-  const predicates = [
-    'ldp:contains',
-    'dcat:dataset'
-  ];
+  const predicates = ['ldp:contains', 'dcat:dataset'];
 
   const resolvedContext = context ?? {
     ...(resource as Resource).clientContext,
