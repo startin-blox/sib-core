@@ -88,7 +88,7 @@ const MultipleFormMixin = {
     if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    const resources = this.resource?.['predicate'];
+    const resources = this.resource?.['listPredicate'];
     if (!resources) return;
 
     this.listAttributes.children = []; // reset list

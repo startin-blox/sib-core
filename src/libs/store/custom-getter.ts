@@ -409,7 +409,7 @@ export class CustomGetter {
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
-          case 'predicate':
+          case 'listPredicate':
             return this.getContainerPredicate(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions

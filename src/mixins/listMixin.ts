@@ -72,7 +72,7 @@ const ListMixin = {
       const nextProcessor = listPostProcessorsCopy.shift();
 
       await nextProcessor(
-        this.resource['predicate'],
+        this.resource['listPredicate'],
         listPostProcessorsCopy,
         div,
         this.dataSrc,

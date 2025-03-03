@@ -62,7 +62,7 @@ const WidgetMixin = {
     let resource = this.resource as Resource;
     if (resource?.isContainer?.()) {
       // If container, keep the 1rst resource
-      const resources = resource['predicate'];
+      const resources = resource['listPredicate'];
       for (const res of resources) {
         resource = res;
         break;
