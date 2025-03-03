@@ -194,9 +194,7 @@ export class CustomGetter {
     if (!this.resource.type) return false;
 
     if (Array.isArray(this.resource.type))
-      return this.listTypes.some(type =>
-        this.resource.type.includes(type),
-      );
+      return this.listTypes.some(type => this.resource.type.includes(type));
     return this.listTypes.includes(this.resource.type);
   }
 
