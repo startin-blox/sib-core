@@ -238,7 +238,7 @@ export class CustomGetter {
     let children = this.getChildren(predicate);
     if (!children) return null;
 
-    if (!Array.isArray(children)) children = [children]; // Ensure array format
+    if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
 
     const result = children
       ? children.map((res: object) => {
