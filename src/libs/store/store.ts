@@ -483,13 +483,7 @@ export class Store {
       const predicate = resource['listPredicate'];
       if (predicate) {
         for (const child of predicate) {
-          if (
-            child?.['@type'] &&
-            doesResourceContainPredicate(child['@type'], {
-              ...resource.clientContext,
-              ...resource.serverContext,
-            })
-          )
+          if (child?.['@type'] && doesResourceContainPredicate(child))
             this.cache.delete(child['@id']);
         }
       }

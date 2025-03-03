@@ -293,21 +293,20 @@ function transformArrayToContainer(resource: object) {
   return newValue;
 }
 
+/**
+ * Checks whether a given resource contains one of the predefined predicates (`ldp:contains` or `dcat:dataset`).
+ * This list can be exetnded if needed
+ *
+ * @param {object | string} resource - The resource in which to check for the predicates.
+ *      It can be either an object (a JSON-LD resource) or a string (a resource identifier).
+ * @returns {boolean} - Returns `true` if the resource contains at least one of the predicates, otherwise `false`.
+ */
 export function doesResourceContainPredicate(
   resource: object | string,
-  context?: object,
 ): boolean {
   const predicates = ['ldp:contains', 'dcat:dataset'];
 
-  const resolvedContext = context ?? {
-    ...(resource as Resource).clientContext,
-    ...(resource as Resource).serverContext,
-  };
-
-  const expandedPredicates = predicates.map(p =>
-    ContextParser.expandTerm(p, resolvedContext, true),
-  );
-  return [...predicates, ...expandedPredicates].some(predicate =>
+  return predicates.some(predicate =>
     typeof resource === 'object'
       ? predicate in resource
       : typeof resource === 'string' && resource.includes(predicate),

@@ -282,10 +282,7 @@ export class CustomGetter {
   }
 
   hasContainerPredicate(): boolean {
-    return doesResourceContainPredicate(this.resource, {
-      ...this.clientContext,
-      ...this.serverContext,
-    });
+    return doesResourceContainPredicate(this.resource);
   }
 
   getContainerPredicate(): object[] | null {
