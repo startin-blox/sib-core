@@ -11,7 +11,7 @@ export class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
-  containerTypes: string[]; // types of resources interpreted as containers
+  listTypes: string[]; // types of resources interpreted as containers
   serverPagination: object; // pagination attributes to give to server
   serverSearch: object; // search attributes to give to server
 
@@ -32,7 +32,7 @@ export class CustomGetter {
     this.serverPagination = serverPagination;
     this.serverSearch = serverSearch;
 
-    this.containerTypes = [
+    this.listTypes = [
       this.getExpandedPredicate('ldp:Container'),
       this.getExpandedPredicate('dcat:Catalog'),
       this.getExpandedPredicate('ldp:BasicContainer'),
@@ -186,18 +186,18 @@ export class CustomGetter {
     if (this.resource['@type']) {
       // @type is an array
       if (Array.isArray(this.resource['@type']))
-        return this.containerTypes.some(type =>
+        return this.listTypes.some(type =>
           this.resource['@type'].includes(type),
         );
-      return this.containerTypes.includes(this.resource['@type']);
+      return this.listTypes.includes(this.resource['@type']);
     }
     if (!this.resource.type) return false;
 
     if (Array.isArray(this.resource.type))
-      return this.containerTypes.some(type =>
+      return this.listTypes.some(type =>
         this.resource.type.includes(type),
       );
-    return this.containerTypes.includes(this.resource.type);
+    return this.listTypes.includes(this.resource.type);
   }
 
   /**
