@@ -1,6 +1,3 @@
-import { ContextParser } from 'jsonld-context-parser';
-import type { Resource } from '../mixins/interfaces.ts';
-
 function uniqID(): string {
   return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
 }

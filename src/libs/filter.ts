@@ -1,4 +1,3 @@
-import type { Resource } from '../mixins/interfaces.ts';
 import {
   compare,
   doesResourceContainPredicate,
