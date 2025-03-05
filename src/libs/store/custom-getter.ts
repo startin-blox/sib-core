@@ -1,6 +1,5 @@
 import JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
-import { doesResourceContainList } from '../helpers.ts';
 import { store } from './store.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
@@ -281,11 +280,7 @@ export class CustomGetter {
     return this.resource;
   }
 
-  hasContainerPredicate(): boolean {
-    return doesResourceContainList(this.resource);
-  }
-
-  getContainerPredicate(): object[] | null {
+  getContainerList(): object[] | null {
     if (this.getType() === 'ldp:Container') {
       return this.getLdpContains();
     }
@@ -294,7 +289,7 @@ export class CustomGetter {
       return this.getDcatDataset();
     }
 
-    return [];
+    return null;
   }
 
   /**
@@ -405,7 +400,7 @@ export class CustomGetter {
           case 'properties':
             return this.getProperties();
           case 'listPredicate':
-            return this.getContainerPredicate(); // returns standard arrays synchronously
+            return this.getContainerList(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':
