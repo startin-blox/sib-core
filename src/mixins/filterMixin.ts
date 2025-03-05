@@ -125,7 +125,6 @@ const FilterMixin = {
   },
   async getValuesOfField(field: string) {
     const arrayOfDataObjects = this.resource['listPredicate'];
-    if (!arrayOfDataObjects) return [];
     const arrayOfDataIds: string[] = [];
     for (const obj of arrayOfDataObjects) {
       // for each element, if it's an object, catch all elements in 'ldp:contains' key
@@ -140,7 +139,6 @@ const FilterMixin = {
       }
 
       if (!nextArrayOfObjects.isContainer()) {
-        // if no element in 'ldp:contains'/'dcat:dataset, catch object id
         // If it's not a container, store its ID
         arrayOfDataIds.push(nextArrayOfObjects['@id']);
         continue;
