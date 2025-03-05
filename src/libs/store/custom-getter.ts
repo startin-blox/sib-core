@@ -1,6 +1,6 @@
 import JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
-import { doesResourceContainPredicate } from '../helpers.ts';
+import { doesResourceContainList } from '../helpers.ts';
 import { store } from './store.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
@@ -282,7 +282,7 @@ export class CustomGetter {
   }
 
   hasContainerPredicate(): boolean {
-    return doesResourceContainPredicate(this.resource);
+    return doesResourceContainList(this.resource);
   }
 
   getContainerPredicate(): object[] | null {

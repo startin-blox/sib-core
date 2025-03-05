@@ -1,6 +1,6 @@
 import {
   compare,
-  doesResourceContainPredicate,
+  doesResourceContainList,
   findClosingBracketMatchIndex,
   parseFieldsString,
   uniqID,
@@ -227,7 +227,7 @@ const matchFilter = async (
     fields = window.cachePropsSearchFilter[cacheKey].setSearchFields;
   } else {
     // search on 1 field
-    if (!(await resource[filter]) && doesResourceContainPredicate(filter)) {
+    if (!(await resource[filter]) && doesResourceContainList(filter)) {
       // nested field
       // console.log(`No ${filter} found for ${resource['@id']} and ${filter} is a nested field. Trying to traverse path.`);
       const path1: string[] = filter.split('.');

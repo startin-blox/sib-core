@@ -298,9 +298,7 @@ function transformArrayToContainer(resource: object) {
  *      It can be either an object (a JSON-LD resource) or a string (a resource identifier).
  * @returns {boolean} - Returns `true` if the resource contains at least one of the predicates, otherwise `false`.
  */
-export function doesResourceContainPredicate(
-  resource: object | string,
-): boolean {
+export function doesResourceContainList(resource: object | string): boolean {
   const predicates = ['ldp:contains', 'dcat:dataset'];
 
   return predicates.some(predicate =>
