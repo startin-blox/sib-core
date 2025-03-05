@@ -60,7 +60,7 @@ export class CustomGetter {
         throw new Error('Not a valid HTTP url');
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
-        let resources = this.getChildren(path);
+        let resources = this.getList(path);
         if (!resources || (Array.isArray(resources) && resources.length === 0))
           return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
@@ -110,7 +110,7 @@ export class CustomGetter {
       // We do that by poping one element from path1 at each step and affecting it to path2
       // Trying to get the value from it
       while (true) {
-        value = await this.getChildren(path1[0]);
+        value = await this.getList(path1[0]);
 
         if (path1.length <= 1) break; // no dot path
         const lastPath1El = path1.pop();
@@ -219,7 +219,7 @@ export class CustomGetter {
   /**
    * Get children of container as objects
    */
-  getChildren(predicateName: string): object[] {
+  getList(predicateName: string): object[] {
     let value = this.resource[predicateName];
 
     if (!value) {
@@ -232,8 +232,8 @@ export class CustomGetter {
     return value;
   }
 
-  getChildrenAndCache(predicate: string): CustomGetter[] | null {
-    let children = this.getChildren(predicate);
+  getListAndCacheIt(predicate: string): CustomGetter[] | null {
+    let children = this.getList(predicate);
     if (!children) return null;
 
     if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
@@ -260,14 +260,14 @@ export class CustomGetter {
   }
 
   getDcatDataset(): CustomGetter[] | null {
-    return this.getChildrenAndCache('dcat:dataset');
+    return this.getListAndCacheIt('dcat:dataset');
   }
 
   /**
    * Get children of container as Proxys
    */
   getLdpContains(): CustomGetter[] | null {
-    return this.getChildrenAndCache('ldp:contains');
+    return this.getListAndCacheIt('ldp:contains');
   }
 
   merge(resource: CustomGetter) {
@@ -323,7 +323,7 @@ export class CustomGetter {
    * @returns
    */
   async getPermissions(): Promise<string[]> {
-    let permissions = this.getChildren('permissions').map(p => String(p));
+    let permissions = this.getList('permissions').map(p => String(p));
 
     if (!permissions) {
       // if no permission, re-fetch data from store
@@ -333,7 +333,7 @@ export class CustomGetter {
         this.parentId,
         true,
       );
-      permissions = this.getChildren('permissions').map(p => String(p));
+      permissions = this.getList('permissions').map(p => String(p));
     }
 
     if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
