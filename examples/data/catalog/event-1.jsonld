@@ -1,13 +1,22 @@
+
 {
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
   "@id": "/examples/data/catalog/event-1.jsonld",
-  "name": "Coliving",
-  "date": "2020-07-09",
+  "@type": "dcat:Dataset",
+  "title": "Coliving",
+  "description": "Some description",
   "created": "2020-07-09",
-  "seats": 12,
-  "description": "some description",
-  "contact": {
+  "modified": "2020-07-09",
+  "contactPoint": {
     "@id": "/examples/data/list/user-1.jsonld"
   },
-  "permissions": [],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "spatial": {
+    "@type": "Location",
+    "title": "Unknown"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/community"
+  },
+  "seats": 12,
+  "permissions": []
 }

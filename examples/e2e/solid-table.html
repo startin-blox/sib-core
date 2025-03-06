@@ -170,7 +170,7 @@
     <solid-table
       id="dcat-grouped-table"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="name, date, definition"
+      fields="title, modified, definition"
       group-by="definition"
       order-group-desc
     ></solid-table>
@@ -179,7 +179,7 @@
     <solid-table
       id="dcat-grouped-table-year-desc"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="name, date, place, label"
+      fields="title, modified, label"
       group-by="label"
       order-group-desc
     ></solid-table>
@@ -188,7 +188,7 @@
     <solid-table
       id="dcat-grouped-table-year-asc"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="name, date, place, label"
+      fields="title, modified, label"
       group-by="label"
       order-group-asc
     ></solid-table>
@@ -197,7 +197,7 @@
     <solid-table
       id="dcat-grouped-table-date-desc"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="name, modified, place, year"
+      fields="title, modified, label"
       group-by="modified"
       order-group-desc
     ></solid-table>
@@ -206,7 +206,7 @@
     <solid-table
       id="dcat-grouped-table-date-asc"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="name, modified, place, year"
+      fields="title, modified, label"
       group-by="modified"
       order-group-asc
     ></solid-table>

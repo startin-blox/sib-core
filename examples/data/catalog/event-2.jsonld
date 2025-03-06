@@ -1,12 +1,21 @@
 {
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
   "@id": "/examples/data/catalog/event-2.jsonld",
-  "name": "Workshop",
-  "date": "2020-05-10",
+  "@type": "dcat:Dataset",
+  "title": "Workshop",
+  "description": "A practical workshop session.",
   "created": "2020-05-10",
-  "seats": 2,
-  "contact": {
+  "modified": "2020-05-10",
+  "spatial": {
+    "@type": "Location",
+    "title": "Opéra"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/workshop"
+  },
+  "contactPoint": {
     "@id": "/examples/data/list/user-2.jsonld"
   },
-  "permissions": [],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "seats": 2,
+  "permissions": []
 }

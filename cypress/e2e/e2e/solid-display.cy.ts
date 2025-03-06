@@ -64,7 +64,7 @@ describe('solid-display', function () {
       .and('have.text', 'Coliving');
   });
 
-  it('required mixin', () => {
+  it('required mixin (+dcat)', () => {
     [
       { prefix: '#', field1: 'city', field2: 'place', path: 'list' },
       {

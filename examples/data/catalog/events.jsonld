@@ -1,67 +1,104 @@
 {
-  "@context": "https://www.w3.org/ns/dcat#",
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
   "@type": "dcat:Catalog",
   "@id": "/examples/data/catalog/events.jsonld",
+  "title": "Events Catalog",
+  "description": "A catalog of events.",
+  "created": "2024-03-06",
+  "modified": "2024-03-06",
+  "publisher": {
+    "@type": "foaf:Organization",
+    "foaf:name": "Event Organizer",
+    "foaf:homepage": "https://event-organizer.example.com"
+  },
   "dcat:dataset": [
     {
       "@id": "/examples/data/catalog/event-1.jsonld",
-      "name": "Coliving",
-      "date": "2020-07-09",
-      "year": 2020,
+      "@type": "dcat:Dataset",
+      "title": "Coliving",
       "label": 2020,
       "created": "2020-07-09",
       "modified": "2020-07-09",
-      "seats": 12,
-      "place": "",
-      "definition": "",
-      "city": "",
+      "spatial": {
+        "@type": "Location",
+        "title": "Unknown"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/community"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Event Support",
+        "vcard:hasEmail": "mailto:support@example.com"
+      },
       "comment": "",
-      "permissions": []
+      "definition": ""
     },
     {
       "@id": "/examples/data/catalog/event-2.jsonld",
-      "name": "Workshop",
-      "date": "2020-05-10",
-      "year": 2015,
+      "@type": "dcat:Dataset",
+      "title": "Workshop",
       "label": 2015,
       "created": "2020-05-10",
       "modified": "2020-05-10",
-      "seats": 2,
-      "place": "Opéra",
-      "definition": "Opéra",
-      "city": "",
+      "spatial": {
+        "@type": "Location",
+        "title": "Opéra"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/workshop"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Workshop Support",
+        "vcard:hasEmail": "mailto:workshop-support@example.com"
+      },
       "comment": "",
-      "permissions": []
+      "definition": "Opéra"
     },
     {
       "@id": "/examples/data/catalog/event-3.jsonld",
-      "name": "Réunion d'information",
-      "date": "2020-07-10",
-      "year": 2017,
+      "@type": "dcat:Dataset",
+      "title": "Réunion d'information",
       "label": 2017,
       "created": "2020-07-10",
       "modified": "2020-07-10",
-      "seats": 36,
-      "place": "Couvent des jacobins",
-      "definition": "Couvent des jacobins",
-      "city": "Rennes",
+      "spatial": {
+        "@type": "Location",
+        "title": "Rennes"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/conference"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Conference Team",
+        "vcard:hasEmail": "mailto:conference-team@example.com"
+      },
       "comment": "Rennes",
-      "permissions": []
+      "definition": "Couvent des jacobins"
     },
     {
       "@id": "/examples/data/catalog/event-4.jsonld",
-      "name": "Assemblée générale",
-      "date": "2020-05-10",
-      "year": 2019,
+      "@type": "dcat:Dataset",
+      "title": "Assemblée générale",
       "label": 2019,
       "created": "2020-05-10",
       "modified": "2020-05-10",
-      "seats": 5,
-      "place": "",
+      "spatial": {
+        "@type": "Location",
+        "title": "Marseille"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/governance"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "General Assembly Team",
+        "vcard:hasEmail": "mailto:assembly-team@example.com"
+      },
       "definition": "",
-      "city": "Marseille",
-      "comment": "Marseille",
-      "permissions": []
+      "comment": "Marseille"
     }
   ]
 }

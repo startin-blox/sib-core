@@ -132,7 +132,7 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
     });
   });
 
-  it('solid-form-search + search-[field] (+dcat)', () => {
+  it('solid-form-search + search-[field]', () => {
     cy.get('#filter-search-field > form')
       .find('solid-form-label-text')
       .should('have.attr', 'name', 'global_name')

@@ -1,12 +1,21 @@
 {
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
   "@id": "/examples/data/catalog/event-3.jsonld",
-  "name": "Réunion d'information",
-  "date": "2020-07-10",
+  "@type": "dcat:Dataset",
+  "title": "Réunion d'information",
+  "description": "Information meeting about upcoming projects.",
   "created": "2020-07-10",
-  "seats": 230,
-  "contact": {
+  "modified": "2020-07-10",
+  "spatial": {
+    "@type": "Location",
+    "title": "Rennes"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/conference"
+  },
+  "contactPoint": {
     "@id": "/examples/data/list/user-3.jsonld"
   },
-  "permissions": [],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "seats": 230,
+  "permissions": []
 }
