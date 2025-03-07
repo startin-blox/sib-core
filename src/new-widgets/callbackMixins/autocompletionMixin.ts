@@ -64,6 +64,7 @@ const AutocompletionMixin = {
     const slimSelect = new SlimSelect({
       select,
       settings: {
+        contentPosition: 'fixed',
         placeholderText:
           this.placeholder || this.t('autocompletion.placeholder'),
         searchText: this.searchText || this.t('autocompletion.searchText'),

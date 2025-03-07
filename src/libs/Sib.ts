@@ -14,12 +14,20 @@ export const Sib = {
   },
   toElement(component: ComponentConstructorInterface): typeof HTMLElement {
     return class extends HTMLElement {
-      private component: ComponentInterface;
+      component: ComponentInterface;
 
       constructor() {
         super();
         this.component = new component(this);
         this.component.created();
+      }
+
+      /** @deprecated use `component` instead */
+      get _component(): ComponentInterface {
+        return this.component;
+      }
+      set _component(_component: ComponentInterface) {
+        this.component = _component;
       }
 
       static get observedAttributes() {
