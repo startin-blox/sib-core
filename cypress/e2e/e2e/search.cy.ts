@@ -52,8 +52,8 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
     cy.get('solid-form-search#dcat-filter1')
       .find('option')
       .eq(1)
-      .should('have.attr', 'value', 'admin')
-      .contains('admin');
+      .should('have.attr', 'value', 'Test')
+      .contains('Test');
 
     cy.get('solid-form-search#dcat-filter2')
       .find('select')
@@ -85,7 +85,7 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
         'have.length',
         4,
       );
-      cy.get(`${prefix}filter3 select`).select('User');
+      cy.get(`${prefix}filter3 select`).select('First');
       cy.get(`${prefix}display3 > div > solid-display`).should(
         'have.length',
         4,
