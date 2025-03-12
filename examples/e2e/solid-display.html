@@ -181,48 +181,6 @@
       default-widget="solid-display-link"
     ></solid-display>
 
-    <h3>counter-mixin</h3>
-    <solid-display
-      id="display-16"
-      data-src="/examples/data/list/skills.jsonld"
-      fields="name"
-      counter-template="${counter} skills displayed :"
-    ></solid-display>
-    
-    <h3>highlighter-mixin</h3>
-    <solid-display
-      id="display-17"
-      data-src="/examples/data/list/skills.jsonld"
-      fields="name"
-      order-asc="name"
-      highlight-name="Javascript"
-    ></solid-display>
-
-    <h3>nested-[field] attribute</h3>
-    <solid-display
-      id="display-18"
-      data-src="/examples/data/list/user-1.jsonld"
-      nested-field="skills"
-      fields="name"
-    ></solid-display>
-
-    <h3>default-widget attribute</h3>
-    <h4>default-widget only</h4>
-    <solid-display
-      id="display-19"
-      data-src="/examples/data/list/user-1.jsonld"
-      fields="name, email, username"
-      default-widget="solid-display-link"
-    ></solid-display>
-    <h4>widget-[field] & default-widget</h4>
-    <solid-display
-      id="display-20"
-      data-src="/examples/data/list/user-1.jsonld"
-      fields="name, email, username"
-      widget-name="solid-display-div"
-      default-widget="solid-display-link"
-    ></solid-display>
-
     <h3>oembed template</h3>
     <solid-display
       id="display-21"
@@ -406,6 +364,7 @@
     ></solid-display>
 
     <h3>default-widget attribute</h3>
+
     <h4>default-widget only</h4>
     <solid-display
       id="dcat-display-19"
@@ -413,48 +372,7 @@
       fields="name, email, username"
       default-widget="solid-display-link"
     ></solid-display>
-    <h4>widget-[field] & default-widget</h4>
-    <solid-display
-      id="dcat-display-20"
-      data-src="/examples/data/catalog/user-1.jsonld"
-      fields="name, email, username"
-      widget-name="solid-display-div"
-      default-widget="solid-display-link"
-    ></solid-display>
 
-    <h3>counter-mixin</h3>
-    <solid-display
-      id="dcat-display-16"
-      data-src="/examples/data/catalog/skills.jsonld"
-      fields="name"
-      counter-template="${counter} skills displayed :"
-    ></solid-display>
-    
-   <h3>highlighter-mixin</h3>
-    <solid-display
-      id="dcat-display-17"
-      data-src="/examples/data/catalog/skills.jsonld"
-      fields="name"
-      order-asc="name"
-      highlight-name="Javascript"
-    ></solid-display>
-
-    <h3>nested-[field] attribute</h3>
-    <solid-display
-      id="dcat-display-18"
-      data-src="/examples/data/catalog/user-1.jsonld"
-      nested-field="skills"
-      fields="name"
-    ></solid-display>
-
-    <h3>default-widget attribute</h3>
-    <h4>default-widget only</h4>
-    <solid-display
-      id="dcat-display-19"
-      data-src="/examples/data/catalog/user-1.jsonld"
-      fields="name, email, username"
-      default-widget="solid-display-link"
-    ></solid-display>
     <h4>widget-[field] & default-widget</h4>
     <solid-display
       id="dcat-display-20"
