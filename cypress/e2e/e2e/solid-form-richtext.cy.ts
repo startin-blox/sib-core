@@ -65,7 +65,9 @@ describe('solid-form-richtext test', function () {
       .find('button')
       .and('have.attr', 'class', 'ql-bold');
     cy.get('#form-2 solid-form-richtext').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.equal('**Jean-Bernard**\n');
+      expect((<any>$el[0]).component.getValue()).to.equal(
+        '<p><strong>Jean-Bernard</strong></p>',
+      );
       cy.get('#form-2 solid-form-richtext .ql-editor').type(
         '{selectall}Jean-Claude{selectall}',
       );
@@ -75,7 +77,9 @@ describe('solid-form-richtext test', function () {
         .find('em')
         .should('have.text', 'Jean-Claude');
       cy.get('#form-2 solid-form-richtext').then($el => {
-        expect((<any>$el[0]).component.getValue()).to.equal('_Jean-Claude_\n');
+        expect((<any>$el[0]).component.getValue()).to.equal(
+          '<p><em>Jean-Claude</em></p>',
+        );
       });
     });
     // add link button in richtext mixin
@@ -102,7 +106,9 @@ describe('solid-form-richtext test', function () {
     cy.get('#form-3 input[type=submit]').click();
     cy.get('#form-3').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
-        expect(res.name).to.equal('[test link](http://www.yesnoif.com/)\n');
+        expect(res.name).to.equal(
+          '<p><a href="http://www.yesnoif.com/" rel="noopener noreferrer" target="_blank">test&nbsp;link</a></p>',
+        );
       });
     });
     // value stocked in markdown well displayed in the solid-form-richtext

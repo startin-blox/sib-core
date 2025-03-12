@@ -1,10 +1,10 @@
-import qdtm from 'quill-delta-to-markdown';
+import type Quill from 'quill';
+
 const ValueRichtextMixin = {
   name: 'valuerichtext-mixin',
 
   getValue() {
-    const markdown = qdtm.deltaToMarkdown(this.quill.getContents().ops);
-    return markdown;
+    return (this.quill as Quill).getSemanticHTML();
   },
 };
 
