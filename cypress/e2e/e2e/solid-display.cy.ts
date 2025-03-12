@@ -76,8 +76,8 @@ describe('solid-display', function () {
       { prefix: '#', field1: 'city', field2: 'place', path: 'list' },
       {
         prefix: '#dcat-',
-        field1: 'comment',
-        field2: 'definition',
+        field1: 'dct:comment',
+        field2: 'dct:definition',
         path: 'catalog',
       },
     ].forEach(({ prefix, field1, field2, path }) => {

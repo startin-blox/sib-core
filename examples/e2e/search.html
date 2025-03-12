@@ -124,7 +124,7 @@
     <solid-display
       id="dcat-display4"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="title"
+      fields="dct:title"
       filtered-by="dcat-filter4"
     ></solid-display>
 
@@ -165,7 +165,7 @@
     <solid-form-search
       id="dcat-filter-search-field"
       fields="global_name"
-      search-global_name="description, title"
+      search-global_name="dct:description, dct:title, name"
     ></solid-form-search>
     <solid-display
       id="dcat-display-search-field-1"
@@ -176,7 +176,7 @@
     <solid-display
       id="dcat-display-search-field-2"
       data-src="/examples/data/catalog/events.jsonld"
-      fields="title"
+      fields="dct:title"
       filtered-by="dcat-filter-search-field"
     ></solid-display>
 
