@@ -3,6 +3,13 @@ describe('solid-display', function () {
     cy.visit('/examples/e2e/solid-display.html');
   });
 
+  it('check component', () => {
+    cy.get('solid-display').then(([element]) => {
+      expect((<any>element).component?.element).eq(element);
+      expect((<any>element)._component?.element).eq(element);
+    });
+  });
+
   it('display event', () => {
     cy.get('#display-1>div')
       .children()
