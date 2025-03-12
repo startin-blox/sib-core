@@ -107,7 +107,7 @@ describe('solid-form-richtext test', function () {
     cy.get('#form-3').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res.name).to.equal(
-          '<p><a href="http://www.yesnoif.com/" rel="noopener noreferrer" target="_blank">test&nbsp;link</a></p>',
+          '<p><a href="http://www.yesnoif.com/" target="_blank">test link</a></p>',
         );
       });
     });

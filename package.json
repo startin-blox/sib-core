@@ -94,6 +94,7 @@
     "cors": "^2.8.5",
     "lit": "^3.2.1",
     "loglevel": "^1.9.2",
+    "quill-delta-to-html": "^0.12.1",
     "showdown": "^2.1.0",
     "tinymce": "^6.0.2"
   }
