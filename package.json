@@ -67,14 +67,13 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@rckeller/cypress-unfetch": "^1.0.1",
-    "@types/autolinker": "^2.0.4",
     "@types/jsonld": "^1.5.15",
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
     "@types/node": "^22.13.10",
     "@types/pubsub-js": "^1.8.6",
     "autolinker": "^4.1.0",
-    "cypress": "^13.14.2",
+    "cypress": "^14.1.0",
     "cypress-iframe": "^1.0.1",
     "cypress-plugin-tab": "^1.0.5",
     "dialog-polyfill": "^0.5.6",
@@ -90,7 +89,7 @@
     "semver": "7.7.1",
     "slim-select": "^2.10.0",
     "typescript": "^5.8.2",
-    "vite": "^5.4.14"
+    "vite": "^6.2.1"
   },
   "dependencies": {
     "cors": "^2.8.5",
