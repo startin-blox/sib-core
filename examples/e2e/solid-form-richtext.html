@@ -55,6 +55,14 @@
     widget-description="solid-form-richtext">
   </solid-form>
 
+  <h3>XSS sanitization test</h3>
+  <solid-form
+    id="form-sanitization"
+    fields="name"
+    value-name="<p>Hello <strong>World</strong></p><p><script>alert('Hacked!')</script></p>"
+    widget-name="solid-form-richtext"
+  ></solid-form>
+
   <style>
     .id {
       font-family: monospace;

@@ -68,7 +68,7 @@ describe('solid-form-richtext test', function () {
       expect((<any>$el[0]).component.getValue()).to.equal(
         '<p><strong>Jean-Bernard</strong></p>',
       );
-      expect($el.text().trim()).to.equal("Jean-Bernard");
+      expect($el.text().trim()).to.equal('Jean-Bernard');
       cy.get('#form-2 solid-form-richtext .ql-editor').type(
         '{selectall}Jean-Claude{selectall}',
       );
@@ -124,5 +124,12 @@ describe('solid-form-richtext test', function () {
       'have.html',
       '<p>Première ligne</p><p><br></p><p><br></p><p><br></p><p>Seconde Ligne avec quatre sauts de ligne</p>',
     );
+  });
+
+  it('should sanitize harmful XSS scripts from the input', () => {
+    cy.get('#form-sanitization div[data-richtext] [contenteditable]')
+      .should('contain.html', '<strong>World</strong>')
+      .and('contain.html', "alert('Hacked!')")
+      .and('not.contain.html', '<script>');
   });
 });
