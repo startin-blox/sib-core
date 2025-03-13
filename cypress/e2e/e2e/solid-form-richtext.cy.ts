@@ -68,6 +68,7 @@ describe('solid-form-richtext test', function () {
       expect((<any>$el[0]).component.getValue()).to.equal(
         '<p><strong>Jean-Bernard</strong></p>',
       );
+      expect($el.text().trim()).to.equal("Jean-Bernard");
       cy.get('#form-2 solid-form-richtext .ql-editor').type(
         '{selectall}Jean-Claude{selectall}',
       );
