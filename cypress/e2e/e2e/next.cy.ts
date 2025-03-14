@@ -19,10 +19,10 @@ testFiles.forEach(({ file, type }) => {
       cy.get('@list').contains('PHP').click();
       cy.get('#detail > div')
         .should('be.visible')
-        .should('contain', '/examples/data/list/skill-5.jsonld');
+        .should('contain', `/examples/data/${type}/skill-5.jsonld`);
       cy.location().should(loc => {
         expect(loc.hash).to.eq(
-          '#view/@%2Fexamples%2Fdata%2Flist%2Fskill-5.jsonld@',
+          `#view/@%2Fexamples%2Fdata%2F${type}%2Fskill-5.jsonld@`,
         );
       });
     });
@@ -47,10 +47,10 @@ testFiles.forEach(({ file, type }) => {
       cy.get('body').tab().tab().type('{enter}'); //.tab() from plugin to use tab keypress
       cy.get('#detail > div')
         .should('be.visible')
-        .should('contain', '/examples/data/list/skill-2.jsonld');
+        .should('contain', `/examples/data/${type}/skill-2.jsonld`);
       cy.location().should(loc => {
         expect(loc.hash).to.eq(
-          '#view/@%2Fexamples%2Fdata%2Flist%2Fskill-2.jsonld@',
+          `#view/@%2Fexamples%2Fdata%2F${type}%2Fskill-2.jsonld@`,
         );
       });
     });

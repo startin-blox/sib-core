@@ -11,8 +11,8 @@
       "last_name": "User",
       "title": "User",
       "name": "Test User",
-      "username": "admin",
-      "email": "test-user@example.com",
+      "dct:username": "admin",
+      "dct:email": "test-user@example.com",
       "available": true,
       "years_experience": 3,
       "domain": {
@@ -20,16 +20,16 @@
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
-            "@id": "/examples/data/list/skill-2.jsonld"
+            "@id": "/examples/data/catalog/skill-2.jsonld"
           },
           {
-            "@id": "/examples/data/list/skill-3.jsonld"
+            "@id": "/examples/data/catalog/skill-3.jsonld"
           }
         ],
         "permissions": ["view"]
       },
       "profile": {
-        "@id": "/examples/data/list/profile-1.jsonld"
+        "@id": "/examples/data/catalog/profile-1.jsonld"
       },
       "@type": "foaf:user",
       "permissions": ["view"]
@@ -41,8 +41,8 @@
       "last_name": "Hilton",
       "title": "Hilton",
       "name": "Paris Hilton",
-      "username": "paris",
-      "email": "paris@hilton.hi",
+      "dct:username": "paris",
+      "dct:email": "paris@hilton.hi",
       "available": true,
       "years_experience": 5,
       "domain": {
@@ -50,13 +50,13 @@
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
-            "@id": "/examples/data/list/skill-1.jsonld"
+            "@id": "/examples/data/catalog/skill-1.jsonld"
           }
         ],
         "permissions": ["view"]
       },
       "profile": {
-        "@id": "/examples/data/list/profile-2.jsonld"
+        "@id": "/examples/data/catalog/profile-2.jsonld"
       },
       "@type": "foaf:user",
       "permissions": ["view"]
@@ -68,8 +68,8 @@
       "last_name": "DLC",
       "title": "DLC",
       "name": "Pierre DLC",
-      "username": "pierre",
-      "email": "pierredelacroix@happy-dev.fr",
+      "dct:username": "pierre",
+      "dct:email": "pierredelacroix@happy-dev.fr",
       "available": false,
       "years_experience": 5,
       "domain": {
@@ -77,19 +77,19 @@
         "@type": "dcat:Catalog",
         "dcat:dataset": [
           {
-            "@id": "/examples/data/list/skill-1.jsonld"
+            "@id": "/examples/data/catalog/skill-1.jsonld"
           },
           {
-            "@id": "/examples/data/list/skill-2.jsonld"
+            "@id": "/examples/data/catalog/skill-2.jsonld"
           },
           {
-            "@id": "/examples/data/list/skill-4.jsonld"
+            "@id": "/examples/data/catalog/skill-4.jsonld"
           }
         ],
         "permissions": ["view"]
       },
       "profile": {
-        "@id": "/examples/data/list/profile-4.jsonld"
+        "@id": "/examples/data/catalog/profile-4.jsonld"
       },
       "@type": "foaf:user",
       "permissions": ["view"]
@@ -101,8 +101,8 @@
       "last_name": "Paris Member",
       "title": "Paris Member",
       "name": "Not A Paris Member",
-      "username": "not-member-paris",
-      "email": "not-a@paris.members",
+      "dct:username": "not-member-paris",
+      "dct:email": "not-a@paris.members",
       "available": false,
       "years_experience": 7,
       "domain": {
@@ -112,7 +112,7 @@
         "permissions": ["view"]
       },
       "profile": {
-        "@id": "/examples/data/list/profile-3.jsonld"
+        "@id": "/examples/data/catalog/profile-3.jsonld"
       },
       "@type": "foaf:user",
       "permissions": ["view"]

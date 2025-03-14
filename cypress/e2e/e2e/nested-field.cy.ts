@@ -4,16 +4,27 @@ describe('nested-field', function () {
   });
 
   it('nested-[field]', () => {
-    ['#', '#dcat-'].forEach(prefix => {
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
       // data-src in solid-display pointed on skill-*.jsonld
       cy.get(`${prefix}display-skills > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-2.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-2.jsonld`,
+        );
       cy.get(`${prefix}display-skills > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-3.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-3.jsonld`,
+        );
       // User's name not displayed
       cy.get(`${prefix}display-skills > div`)
         .children()
@@ -40,16 +51,27 @@ describe('nested-field', function () {
   });
 
   it('nested-[field] on related object', () => {
-    ['#', '#dcat-'].forEach(prefix => {
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
       // data-src in solid-display pointed on skill-*.jsonld
       cy.get(`${prefix}display-job-skills > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-1.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-1.jsonld`,
+        );
       cy.get(`${prefix}display-job-skills > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-4.jsonld');
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-4.jsonld`,
+        );
       // User's name not displayed
       cy.get(`${prefix}display-job-skills > div`)
         .children()

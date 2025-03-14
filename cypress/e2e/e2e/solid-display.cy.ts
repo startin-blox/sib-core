@@ -207,15 +207,15 @@ describe('solid-display', function () {
 
   it('nested-[field]', () => {
     // data-src in solid-display pointed on skill-*.jsonld
-    ['#', '#dcat-'].forEach(prefix => {
+    [{prefix: '#', path: 'list'}, {prefix: '#dcat-', path: 'catalog'}].forEach(({prefix, path}) => {
       cy.get(`${prefix}display-18 > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-2.jsonld');
+        .should('have.attr', 'data-src', `/examples/data/${path}/skill-2.jsonld`);
       cy.get(`${prefix}display-18 > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', '/examples/data/list/skill-3.jsonld');
+        .should('have.attr', 'data-src', `/examples/data/${path}/skill-3.jsonld`);
       // User's name not displayed
       cy.get(`${prefix}display-18 > div`)
         .children()
@@ -245,7 +245,10 @@ describe('solid-display', function () {
 
   it('default-widget', () => {
     // default-widget applied to every child
-    ['#', '#dcat-'].forEach(prefix => {
+    [
+      { prefix: '#', field1: 'email', field2: 'username' },
+      { prefix: '#dcat-', field1: 'dct:email', field2: 'dct:username' },
+    ].forEach(({ prefix, field1, field2 }) => {
       cy.get(`${prefix}display-19 > div`)
         .find('solid-display-link')
         .eq(0)
@@ -253,11 +256,11 @@ describe('solid-display', function () {
       cy.get(`${prefix}display-19 > div`)
         .find('solid-display-link')
         .eq(1)
-        .should('have.attr', 'name', 'email');
+        .should('have.attr', 'name', field1);
       cy.get(`${prefix}display-19 > div`)
         .find('solid-display-link')
         .eq(2)
-        .should('have.attr', 'name', 'username');
+        .should('have.attr', 'name', field2);
 
       // default-widget applied to several children
       cy.get(`${prefix}display-20 > div`)
@@ -266,11 +269,11 @@ describe('solid-display', function () {
       cy.get(`${prefix}display-20 > div`)
         .find('solid-display-link')
         .eq(0)
-        .should('have.attr', 'name', 'email');
+        .should('have.attr', 'name', field1);
       cy.get(`${prefix}display-20 > div`)
         .find('solid-display-link')
         .eq(1)
-        .should('have.attr', 'name', 'username');
+        .should('have.attr', 'name', field2);
     });
   });
 

@@ -7,27 +7,27 @@
   "description": "Test",
   "last_name": "User",
   "title": "User",
-  "username": "admin",
-  "email": "test-user@example.com",
+  "dct:username": "admin",
+  "dct:email": "test-user@example.com",
   "name": "Test User",
   "available": true,
   "skills": {
-    "@id": "/examples/data/list/user-1-skills.jsonld",
+    "@id": "/examples/data/catalog/user-1-skills.jsonld",
     "@type": "dcat:Catalog",
     "dcat:dataset": [
       {
-        "@id": "/examples/data/list/skill-2.jsonld"
+        "@id": "/examples/data/catalog/skill-2.jsonld"
       },
       {
-        "@id": "/examples/data/list/skill-3.jsonld"
+        "@id": "/examples/data/catalog/skill-3.jsonld"
       }
     ],
     "permissions": ["view"]
   },
   "job": {
-    "@id": "/examples/data/list/job-1.jsonld"
+    "@id": "/examples/data/catalog/job-1.jsonld"
   },
   "profile": {
-    "@id": "/examples/data/list/profile-1.jsonld"
+    "@id": "/examples/data/catalog/profile-1.jsonld"
   }
 }

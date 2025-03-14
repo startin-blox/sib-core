@@ -190,14 +190,16 @@ describe('solid-table', { testIsolation: false }, function () {
         path: 'list',
         field1: 'first_name',
         field2: 'last_name',
+        field3: 'email',
       },
       {
         tableId: '#dcat-table-users-editable',
         path: 'catalog',
         field1: 'description',
         field2: 'title',
+        field3: 'dct:email',
       },
-    ].forEach(({ tableId, path, field1, field2 }) => {
+    ].forEach(({ tableId, path, field1, field2, field3 }) => {
       cy.get(tableId).each($table => {
         cy.wrap($table).within(() => {
           cy.get('table')
@@ -244,8 +246,8 @@ describe('solid-table', { testIsolation: false }, function () {
               'data-src',
               `/examples/data/${path}/user-1.jsonld`,
             )
-            .and('have.attr', 'fields', 'email')
-            .and('have.attr', 'widget-email', 'solid-form-email-label')
+            .and('have.attr', 'fields', `${field3}`)
+            .and('have.attr', `widget-${field3}`, 'solid-form-email-label')
             .and('have.attr', 'class', 'email-input')
             .and('have.attr', 'submit-button', 'Validate modifications')
             .and('have.attr', 'partial', '');
@@ -255,8 +257,11 @@ describe('solid-table', { testIsolation: false }, function () {
   });
 
   it('keep selected lines (+dcat)', () => {
-    ['#', '#dcat-'].forEach(tablePrefix => {
-      cy.get(`${tablePrefix}table-skills`)
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
+      cy.get(`${prefix}table-skills`)
         // Line 2 (CSS)
         .find('input[type="checkbox"][data-selection]')
         .eq(1)
@@ -269,25 +274,25 @@ describe('solid-table', { testIsolation: false }, function () {
         .check();
 
       // Check data
-      cy.get(`${tablePrefix}table-skills`).then($el => {
+      cy.get(`${prefix}table-skills`).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          '/examples/data/list/skill-2.jsonld',
-          '/examples/data/list/skill-3.jsonld',
+          `/examples/data/${path}/skill-2.jsonld`,
+          `/examples/data/${path}/skill-3.jsonld`,
         ]);
       });
 
       // Order list
-      cy.get(`${tablePrefix}sorter select[name=field]`).select('Skill name');
+      cy.get(`${prefix}sorter select[name=field]`).select('Skill name');
 
       // Check data
-      cy.get(`${tablePrefix}table-skills`).then($el => {
+      cy.get(`${prefix}table-skills`).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          '/examples/data/list/skill-2.jsonld',
-          '/examples/data/list/skill-3.jsonld',
+          `/examples/data/${path}/skill-2.jsonld`,
+          `/examples/data/${path}/skill-3.jsonld`,
         ]);
       });
 
-      cy.get(`${tablePrefix}table-skills`)
+      cy.get(`${prefix}table-skills`)
 
         // Line 1 (CSS)
         .find('input[type="checkbox"][data-selection]')

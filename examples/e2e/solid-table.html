@@ -28,11 +28,13 @@
     <solid-table
       id="dcat-table-users"
       data-src="/examples/data/catalog/users.jsonld"
-      fields="description, title, email, username"
+      fields="description, title, dct:email, dct:username"
       label-description="First Name"
       label-title="last_name"
+      label-dct:email="email"
+      label-dct:username="username"
       class-title="sib-last-name"
-      widget-email="solid-display-link-mailto"
+      widget-dct:email="solid-display-link-mailto"
       header
       selectable
       order-by="description"
@@ -50,7 +52,7 @@
     <solid-table
       id="dcat-table-user-1"
       data-src="/examples/data/catalog/user-1.jsonld"
-      fields="first_name, last_name, email, username"
+      fields="first_name, last_name, dct:email, dct:username"
       label-first_name="First Name"
     ></solid-table>
 
@@ -75,15 +77,14 @@
     <solid-table
       id="dcat-table-users-editable"
       data-src="/examples/data/catalog/users.jsonld"
-      fields="description, title, email, username"
+      fields="description, title, dct:email, dct:username"
       editable-description
       editable-title
       enum-title="Smith, Williams, Anderson"
-
-      editable-email
-      widget-email="solid-form-email-label"
-      class-email="email-input"
-      submit-button-email="Validate modifications"
+      editable-dct:email
+      widget-dct:email="solid-form-email-label"
+      class-dct:email="email-input"
+      submit-button-dct:email="Validate modifications"
     ></solid-table>
 
     <h3>table with sorter</h3>
