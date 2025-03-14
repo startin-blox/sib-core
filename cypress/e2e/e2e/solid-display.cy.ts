@@ -207,15 +207,26 @@ describe('solid-display', function () {
 
   it('nested-[field]', () => {
     // data-src in solid-display pointed on skill-*.jsonld
-    [{prefix: '#', path: 'list'}, {prefix: '#dcat-', path: 'catalog'}].forEach(({prefix, path}) => {
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
       cy.get(`${prefix}display-18 > div`)
         .children()
         .eq(0)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skill-2.jsonld`);
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-2.jsonld`,
+        );
       cy.get(`${prefix}display-18 > div`)
         .children()
         .eq(1)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skill-3.jsonld`);
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skill-3.jsonld`,
+        );
       // User's name not displayed
       cy.get(`${prefix}display-18 > div`)
         .children()
