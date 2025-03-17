@@ -1,6 +1,6 @@
 .ss-main {
   position: relative;
-  display: inline-block;
+  display: flex;
   user-select: none;
   color: #666;
   width: 100%;
