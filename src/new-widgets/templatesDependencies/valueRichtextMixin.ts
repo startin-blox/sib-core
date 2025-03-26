@@ -1,10 +1,14 @@
-import qdtm from 'quill-delta-to-markdown';
+import type Quill from 'quill';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 const ValueRichtextMixin = {
   name: 'valuerichtext-mixin',
 
   getValue() {
-    const markdown = qdtm.deltaToMarkdown(this.quill.getContents().ops);
-    return markdown;
+    const ops = (this.quill as Quill).getContents().ops;
+    const converter = new QuillDeltaToHtmlConverter(ops, {
+      multiLineParagraph: false,
+    });
+    return converter.convert();
   },
 };
 

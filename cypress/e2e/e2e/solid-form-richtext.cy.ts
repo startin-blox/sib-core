@@ -65,7 +65,10 @@ describe('solid-form-richtext test', function () {
       .find('button')
       .and('have.attr', 'class', 'ql-bold');
     cy.get('#form-2 solid-form-richtext').then($el => {
-      expect((<any>$el[0]).component.getValue()).to.equal('**Jean-Bernard**\n');
+      expect((<any>$el[0]).component.getValue()).to.equal(
+        '<p><strong>Jean-Bernard</strong></p>',
+      );
+      expect($el.text().trim()).to.equal('Jean-Bernard');
       cy.get('#form-2 solid-form-richtext .ql-editor').type(
         '{selectall}Jean-Claude{selectall}',
       );
@@ -75,7 +78,9 @@ describe('solid-form-richtext test', function () {
         .find('em')
         .should('have.text', 'Jean-Claude');
       cy.get('#form-2 solid-form-richtext').then($el => {
-        expect((<any>$el[0]).component.getValue()).to.equal('_Jean-Claude_\n');
+        expect((<any>$el[0]).component.getValue()).to.equal(
+          '<p><em>Jean-Claude</em></p>',
+        );
       });
     });
     // add link button in richtext mixin
@@ -102,7 +107,9 @@ describe('solid-form-richtext test', function () {
     cy.get('#form-3 input[type=submit]').click();
     cy.get('#form-3').then($el => {
       return (<any>$el[0]).component.getFormValue().then(res => {
-        expect(res.name).to.equal('[test link](http://www.yesnoif.com/)\n');
+        expect(res.name).to.equal(
+          '<p><a href="http://www.yesnoif.com/" target="_blank">test link</a></p>',
+        );
       });
     });
     // value stocked in markdown well displayed in the solid-form-richtext
@@ -117,5 +124,12 @@ describe('solid-form-richtext test', function () {
       'have.html',
       '<p>Première ligne</p><p><br></p><p><br></p><p><br></p><p>Seconde Ligne avec quatre sauts de ligne</p>',
     );
+  });
+
+  it('should sanitize harmful XSS scripts from the input', () => {
+    cy.get('#form-sanitization div[data-richtext] [contenteditable]')
+      .should('contain.html', '<strong>World</strong>')
+      .and('contain.html', "alert('Hacked!')")
+      .and('not.contain.html', '<script>');
   });
 });
