@@ -326,7 +326,27 @@
     <solid-display
       id="dcat-display-11"
       data-src="/examples/data/catalog/users.jsonld"
-      fields="name"
+      fields="dct:username"
+    ></solid-display>
+
+    <h4>resource</h4>
+    <solid-display
+      id="dcat-display-12"
+      data-src="/examples/data/catalog/user-2.jsonld"
+      fields="dct:username"
+    ></solid-display>
+    <h4>empty-value</h4>
+    <solid-widget name="no-skill">
+      <template>
+        ${value}
+      </template>
+    </solid-widget>
+    <solid-display
+      id="dcat-display-13"
+      data-src="/examples/data/catalog/user-3-skills.jsonld"
+      fields="dct:username"
+      empty-value="No skill yet"
+      empty-widget="no-skill"
     ></solid-display>
 
     <h3>counter-mixin</h3>
