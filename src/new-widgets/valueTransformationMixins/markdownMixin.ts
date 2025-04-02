@@ -20,7 +20,7 @@ const MarkdownMixin = {
     if (value) {
       const md = markdownit({
         breaks: true,
-        html: false,
+        html: true,
         linkify: true,
       });
 
