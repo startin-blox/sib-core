@@ -28,7 +28,6 @@ const AutocompletionMixin = {
   },
   initialState: {
     slimSelect: null,
-    mutationObserver: null,
   },
   created() {
     importInlineCSS(
@@ -49,7 +48,6 @@ const AutocompletionMixin = {
   },
   detached() {
     if (this.slimSelect) this.slimSelect.destroy();
-    if (this.mutationObserver) this.mutationObserver.disconnect();
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
     if (this.slimSelect) return;
