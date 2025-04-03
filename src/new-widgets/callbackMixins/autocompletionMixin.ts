@@ -47,10 +47,10 @@ const AutocompletionMixin = {
     );
   },
   detached() {
-    if (this.slimSelect) this.slimSelect.destroy();
+    this.slimSelect?.destroy();
+    this.slimSelect = null;
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
-    if (this.slimSelect) return;
     asyncQuerySelector('select:has(option)', this.element).then(select => {
       this.initSlimSelect(select);
     });
@@ -58,7 +58,7 @@ const AutocompletionMixin = {
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   async initSlimSelect(select: Element) {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    this.slimSelect?.destroy();
     const slimSelect = new SlimSelect({
       select,
       settings: {
