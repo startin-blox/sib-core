@@ -312,6 +312,11 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .children()
         .should('have.length', 1)
         .should('contain', 'DevOps');
+      cy.get('solid-form-multipleselect-autocompletion').then(elm => {
+        expect((elm[0] as any).component.getValue()).deep.eq([
+          { '@id': '/examples/data/list/skill-4.jsonld' },
+        ]);
+      });
     });
   });
 
