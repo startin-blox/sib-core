@@ -11,7 +11,7 @@
   "files": ["dist", "doc"],
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch --sourcemap 'inline'",
+    "watch": "farm watch",
     "serve": "node --watch server.js",
     "lint": "biome check --diagnostic-level=error",
     "lint-all": "biome check",
@@ -91,6 +91,8 @@
     "vite": "^6.2.1"
   },
   "dependencies": {
+    "@farmfe/cli": "^1.0.4",
+    "@farmfe/core": "^1.7.1",
     "cors": "^2.8.5",
     "lit": "^3.2.1",
     "loglevel": "^1.9.2",
