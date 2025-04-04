@@ -71,6 +71,9 @@ const AutocompletionMixin = {
         contentLocation: this.element,
       },
       events: {
+        afterChange: () => {
+          this.element.dispatchEvent(new Event('input', { bubbles: true }));
+        },
         searchFilter: (option, filterValue) =>
           fuzzyCompare(option.text, filterValue),
       },
