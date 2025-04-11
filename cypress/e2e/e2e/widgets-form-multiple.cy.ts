@@ -338,7 +338,7 @@ describe('multiple widgets', { testIsolation: false }, function () {
   it('solid-form-checkboxes', () => {
     [{ prefix: '#' }, { prefix: '#dcat-' }].forEach(({ prefix }) => {
       cy.get(`solid-form-checkboxes${prefix}test1`)
-        .find(`solid-form-multicheckbox > fieldset`)
+        .find('solid-form-multicheckbox > fieldset')
         .children()
         .should('have.length', 9);
       cy.get(`solid-form-checkboxes${prefix}test1 input[type=checkbox]`)
