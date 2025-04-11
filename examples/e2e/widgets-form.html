@@ -240,5 +240,33 @@
       max="14:00"
       step="3600"
     ></solid-form-label-time>
+
+    <h3>Dcat test solid-form-radio</h3>
+    <solid-form-radio
+      id="dcat-test1"
+      name="test1"
+      range="/examples/data/catalog/skills.jsonld"
+    ></solid-form-radio>
+    <solid-form-radio
+      id="dcat-test2"
+      name="test2"
+      range="/examples/data/catalog/skills.jsonld"
+      value="/examples/data/catalog/skill-3.jsonld"
+    ></solid-form-radio>
+
+    <solid-form-dropdown-addable
+      id="dcat-test1"
+      range="/examples/data/catalog/skills.jsonld"
+    ></solid-form-dropdown-addable>
+    <solid-form-dropdown-addable
+      id="dcat-test2"
+      range="/examples/data/catalog/skills.jsonld"
+      addable-data-src="/examples/data/catalog/users.jsonld"
+      addable-fields="name, username, age"
+      addable-widget-name="solid-form-text-placeholder-label"
+      addable-placeholder-name="Enter your name"
+      addable-submit-button="Send data"
+    ></solid-form-dropdown-addable>
+   
   </body>
 </html>

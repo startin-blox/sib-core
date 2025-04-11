@@ -433,57 +433,62 @@ describe('form widgets', { testIsolation: false }, function () {
 
   it('solid-form-radio', () => {
     // With no initial value
-    cy.get('solid-form-radio#test1')
-      .should('have.attr', 'data-src', '/examples/data/list/skills.jsonld')
-      .children()
-      .should('have.length', 1);
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
+      cy.get(`solid-form-radio${prefix}test1`)
+        .should('have.attr', 'data-src', `/examples/data/${path}/skills.jsonld`)
+        .children()
+        .should('have.length', 1);
 
-    cy.get('solid-form-radio#test1') // check attributes
-      .find('> fieldset')
-      .children()
-      .and('have.length', 9);
+      cy.get(`solid-form-radio${prefix}test1`) // check attributes
+        .find('> fieldset')
+        .children()
+        .and('have.length', 9);
 
-    cy.get('solid-form-radio#test1 > fieldset > label')
-      .eq(0) // check options
-      .contains('HTML')
-      .parent()
-      .find('input')
-      .should('have.attr', 'type', 'radio')
-      .should(
-        'have.attr',
-        'value',
-        '{"@id": "/examples/data/list/skill-1.jsonld"}',
-      );
+      cy.get(`solid-form-radio${prefix}test1 > fieldset > label`)
+        .eq(0) // check options
+        .contains('HTML')
+        .parent()
+        .find('input')
+        .should('have.attr', 'type', 'radio')
+        .should(
+          'have.attr',
+          'value',
+          `{"@id": "/examples/data/${path}/skill-1.jsonld"}`,
+        );
 
-    cy.get('solid-form-radio#test1').then($el => {
-      // Check API value
-      expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
-    });
+      cy.get(`solid-form-radio${prefix}test1`).then($el => {
+        // Check API value
+        expect((<any>$el[0]).component.getValue()).to.equal(''); // form value
+      });
 
-    cy.get('solid-form-radio#test1 > fieldset > label').eq(1).click(); // test change value
+      cy.get(`solid-form-radio${prefix}test1 > fieldset > label`).eq(1).click(); // test change value
 
-    cy.get('solid-form-radio#test1').then($el => {
-      // Check API
-      expect((<any>$el[0]).component.value).to.equal(''); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal(
-        '{"@id": "/examples/data/list/skill-2.jsonld"}',
-      ); // form value
-      expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
-      expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
-    });
+      cy.get(`solid-form-radio${prefix}test1`).then($el => {
+        // Check API
+        expect((<any>$el[0]).component.value).to.equal(''); // value attribute
+        expect((<any>$el[0]).component.getValue()).to.equal(
+          `{"@id": "/examples/data/${path}/skill-2.jsonld"}`,
+        ); // form value
+        expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
+        expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
+      });
 
-    // With initial value
-    cy.get('solid-form-radio#test2 label')
-      .eq(2)
-      .find('input')
-      .should('have.attr', 'checked', 'checked');
-    cy.get('solid-form-radio#test2').then($el => {
-      expect((<any>$el[0]).component.value).to.equal(
-        '/examples/data/list/skill-3.jsonld',
-      ); // value attribute
-      expect((<any>$el[0]).component.getValue()).to.equal(
-        '{"@id": "/examples/data/list/skill-3.jsonld"}',
-      ); // form value
+      // With initial value
+      cy.get(`solid-form-radio${prefix}test2 label`)
+        .eq(2)
+        .find('input')
+        .should('have.attr', 'checked', 'checked');
+      cy.get(`solid-form-radio${prefix}test2`).then($el => {
+        expect((<any>$el[0]).component.value).to.equal(
+          `/examples/data/${path}/skill-3.jsonld`,
+        ); // value attribute
+        expect((<any>$el[0]).component.getValue()).to.equal(
+          `{"@id": "/examples/data/${path}/skill-3.jsonld"}`,
+        ); // form value
+      });
     });
 
     cy.get('solid-form-radio#test3')
@@ -646,76 +651,81 @@ describe('form widgets', { testIsolation: false }, function () {
 
   it('solid-form-dropdown-addable', () => {
     // Without addable-data-src provided
-    cy.get('solid-form-dropdown-addable#test1')
-      .children()
-      .should('have.length', 2);
-    cy.get('solid-form-dropdown-addable#test1 > solid-form').should(
-      'have.attr',
-      'data-src',
-      '/examples/data/list/skills.jsonld',
-    );
+    [
+      { prefix: '#', path: 'list' },
+      { prefix: '#dcat-', path: 'catalog' },
+    ].forEach(({ prefix, path }) => {
+      cy.get(`solid-form-dropdown-addable${prefix}test1`)
+        .children()
+        .should('have.length', 2);
+      cy.get(`solid-form-dropdown-addable${prefix}test1 > solid-form`).should(
+        'have.attr',
+        'data-src',
+        `/examples/data/${path}/skills.jsonld`,
+      );
 
-    cy.get('solid-form-dropdown-addable#test1 > solid-form > form')
-      .children()
-      .should('have.length', 3);
-    cy.get(
-      'solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text',
-    )
-      .eq(0)
-      .should('have.attr', 'name', 'name');
-    cy.get(
-      'solid-form-dropdown-addable#test1 > solid-form > form > solid-form-label-text',
-    )
-      .eq(1)
-      .should('have.attr', 'name', 'order');
-    cy.get(
-      'solid-form-dropdown-addable#test1 > solid-form > form > div > input',
-    ).should('have.attr', 'type', 'submit');
+      cy.get(`solid-form-dropdown-addable${prefix}test1 > solid-form > form`)
+        .children()
+        .should('have.length', 3);
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test1 > solid-form > form > solid-form-label-text`,
+      )
+        .eq(0)
+        .should('have.attr', 'name', 'name');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test1 > solid-form > form > solid-form-label-text`,
+      )
+        .eq(1)
+        .should('have.attr', 'name', 'order');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test1 > solid-form > form > div > input`,
+      ).should('have.attr', 'type', 'submit');
 
-    // With addable-data-src provided
+      // With addable-data-src provided
 
-    // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
-    cy.get('solid-form-dropdown-addable#test2 > solid-form')
-      .should('have.attr', 'data-src', '/examples/data/list/users.jsonld')
-      .and('have.attr', 'fields', 'name, username, age')
-      .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
-      .and('have.attr', 'placeholder-name', 'Enter your name')
-      .and('have.attr', 'submit-button', 'Send data');
-    cy.get('solid-form-dropdown-addable#test2 > solid-form > form')
-      .children()
-      .should('have.length', 4);
-    // Verify attributes and values in tags created by widget
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label',
-    )
-      .should('have.attr', 'name', 'name')
-      .and('have.attr', 'placeholder', 'Enter your name');
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label',
-    )
-      .find('label')
-      .should('contain', 'name');
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > solid-form-text-placeholder-label',
-    )
-      .find('input')
-      .should('have.attr', 'placeholder', 'Enter your name');
+      // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
+      cy.get(`solid-form-dropdown-addable${prefix}test2 > solid-form`)
+        .should('have.attr', 'data-src', `/examples/data/${path}/users.jsonld`)
+        .and('have.attr', 'fields', 'name, username, age')
+        .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
+        .and('have.attr', 'placeholder-name', 'Enter your name')
+        .and('have.attr', 'submit-button', 'Send data');
+      cy.get(`solid-form-dropdown-addable${prefix}test2 > solid-form > form`)
+        .children()
+        .should('have.length', 4);
+      // Verify attributes and values in tags created by widget
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > solid-form-text-placeholder-label`,
+      )
+        .should('have.attr', 'name', 'name')
+        .and('have.attr', 'placeholder', 'Enter your name');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > solid-form-text-placeholder-label`,
+      )
+        .find('label')
+        .should('contain', 'name');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > solid-form-text-placeholder-label`,
+      )
+        .find('input')
+        .should('have.attr', 'placeholder', 'Enter your name');
 
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text',
-    )
-      .eq(0)
-      .should('have.attr', 'name', 'username');
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > solid-form-label-text',
-    )
-      .eq(1)
-      .should('have.attr', 'name', 'age');
-    cy.get(
-      'solid-form-dropdown-addable#test2 > solid-form > form > div > input',
-    )
-      .should('have.attr', 'type', 'submit')
-      .and('have.attr', 'value', 'Send data');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > solid-form-label-text`,
+      )
+        .eq(0)
+        .should('have.attr', 'name', 'username');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > solid-form-label-text`,
+      )
+        .eq(1)
+        .should('have.attr', 'name', 'age');
+      cy.get(
+        `solid-form-dropdown-addable${prefix}test2 > solid-form > form > div > input`,
+      )
+        .should('have.attr', 'type', 'submit')
+        .and('have.attr', 'value', 'Send data');
+    });
   });
 
   it('solid-form-password', () => {
