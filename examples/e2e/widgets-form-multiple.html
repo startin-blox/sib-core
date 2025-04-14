@@ -40,11 +40,13 @@
       remove-class="class-removebutton"
     ></solid-form-multiple>
     <solid-form-multipleselect
+      id="test4"
       name="test"
       range="/examples/data/list/skills.jsonld"
       value="/examples/data/list/user-1-skills.jsonld"
     ></solid-form-multipleselect>
     <solid-form-multipleselect-autocompletion
+      id="test5"
       name="test1"
       range="/examples/data/list/skills.jsonld"
       order-asc="name"
@@ -69,5 +71,60 @@
       name="test2"
       enum="html, css, javascript"
     ></solid-form-checkboxes>
+
+    <h3>DCAT</h3>
+    <solid-form-multiple
+      id="dcat-test2"
+      name="test"
+      range="/examples/data/catalog/skills.jsonld"
+      widget="solid-form-dropdown"
+    ></solid-form-multiple>
+
+    <solid-form-multiple
+      id="dcat-test3"
+      name="test"
+      range="/examples/data/catalog/skills.jsonld"
+      widget="solid-form-dropdown"
+      value="/examples/data/catalog/user-1-skills.jsonld"
+      add-label="add"
+      remove-label="remove"
+      add-class="class-addbutton"
+      remove-class="class-removebutton"
+    ></solid-form-multiple>
+    <solid-form-multipleselect
+      id="dcat-test4"
+      name="test"
+      range="/examples/data/catalog/skills.jsonld"
+      value="/examples/data/catalog/user-1-skills.jsonld"
+    ></solid-form-multipleselect>
+    <solid-form-multipleselect-autocompletion
+      id="dcat-test5"
+      name="test1"
+      range="/examples/data/catalog/skills.jsonld"
+      order-asc="name"
+    ></solid-form-multipleselect-autocompletion>
+    <solid-form-multipleselect-autocompletion-placeholder
+      id="dcat-search-attr"
+      name="dcat-test1"
+      range="/examples/data/catalog/skills.jsonld"
+      order-asc="name"
+      placeholder="Sélectionne une compétence"
+      search-placeholder="Rechercher par clavier"
+      search-text="Pas de concordance"
+    ></solid-form-multipleselect-autocompletion-placeholder>
+
+    <solid-form-checkboxes
+      id="dcat-test1"
+      name="test1"
+      range="/examples/data/catalog/skills.jsonld"
+      value="/examples/data/catalog/user-1-skills.jsonld"
+    ></solid-form-checkboxes>
+
+    <solid-form-checkboxes
+      id="dcat-test2"
+      name="test2"
+      enum="html, css, javascript"
+    ></solid-form-checkboxes>
+   
   </body>
 </html>
