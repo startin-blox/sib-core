@@ -11,7 +11,7 @@
   "files": ["dist", "doc"],
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch --sourcemap 'inline'",
+    "watch": "farm watch",
     "serve": "node --watch server.js",
     "lint": "biome check --diagnostic-level=error",
     "lint-all": "biome check",
@@ -65,6 +65,8 @@
     "access": "public"
   },
   "devDependencies": {
+    "@farmfe/cli": "^1.0.4",
+    "@farmfe/core": "^1.7.1",
     "@biomejs/biome": "1.9.4",
     "@rckeller/cypress-unfetch": "^1.0.1",
     "@types/jsonld": "^1.5.15",
