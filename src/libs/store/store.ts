@@ -8,11 +8,14 @@ import type { Resource } from '../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from './server-search.ts';
 import { appendServerSearchToIri } from './server-search.ts';
 
+import { doesResourceContainList } from '../helpers.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
+
+// sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
 
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
@@ -27,6 +30,7 @@ export const base_context = {
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
   sib: 'https://cdn.startinblox.com/owl#',
   tems: 'https://tems-dataspace.eu/owl#',
+  dcat: 'https://www.w3.org/ns/dcat#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
   lat: 'geo:lat',
@@ -274,9 +278,11 @@ export class Store {
 
       // We have to add the server search and pagination attributes again here to the resource cache key
       if (
-        key === id &&
+        (key === id &&
+          resource['@type'] ===
+            this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-          this.getExpandedPredicate('ldp:Container', clientContext)
+          this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -363,9 +369,11 @@ export class Store {
    * @param container
    */
   subscribeChildren(container: CustomGetter, containerId: string) {
-    if (!container['ldp:contains']) return;
-    for (const res of container['ldp:contains']) {
-      this.subscribeResourceTo(containerId, res['@id'] || res.id);
+    const children = container['listPredicate'];
+    if (!children) return;
+
+    for (const res of children) {
+      this.subscribeResourceTo(containerId, res['@id'] || (res as any).id);
     }
   }
 
@@ -503,9 +511,10 @@ export class Store {
     if (this.cache.has(id)) {
       // For federation, clear each source
       const resource = this.cache.get(id);
-      if (resource['@type'] === 'ldp:Container') {
-        for (const child of resource['ldp:contains']) {
-          if (child && child['@type'] === 'ldp:Container')
+      const predicate = resource['listPredicate'];
+      if (predicate) {
+        for (const child of predicate) {
+          if (child?.['@type'] && doesResourceContainList(child))
             this.cache.delete(child['@id']);
         }
       }
@@ -635,7 +644,7 @@ export class Store {
    * @returns boolean
    */
   _isLocalId(id: string) {
-    return id.startsWith('store://local.');
+    return id?.startsWith('store://local.');
   }
 
   /**

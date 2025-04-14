@@ -1,0 +1,25 @@
+{
+  "@id": "/examples/data/catalog/skill-3.jsonld",
+  "name": "Javascript",
+  "@type": "hd:skill",
+  "teacher": {
+    "@id": "/examples/data/catalog/skills-2-teacher.jsonld",
+    "@type": "dcat:Catalog",
+    "dcat:dataset": [
+      {
+        "@id": "/examples/data/catalog/teacher-3.jsonld",
+        "name": "Brittany Doe",
+        "@type": "hd:teacher",
+        "dct:email": "brittany@sib.com"
+      },
+      {
+        "@id": "/examples/data/catalog/teacher-4.jsonld",
+        "name": "Virgil Doe",
+        "@type": "hd:teacher",
+        "dct:email": "virgil@doe.com"
+      }
+    ]
+  },
+  "permissions": ["view", "change", "control", "delete"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

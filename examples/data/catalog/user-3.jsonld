@@ -1,0 +1,24 @@
+{
+  "@id": "/examples/data/catalog/user-3.jsonld",
+  "first_name": "Not A",
+  "description": "Not A",
+  "last_name": "Paris Member",
+  "title": "Paris Member",
+  "dct:username": "not-member-paris",
+  "dct:email": "not-a@paris.members",
+  "name": "Not A Paris Member",
+  "available": false,
+  "domain": {
+    "@context": "https://www.w3.org/ns/dcat#",
+    "@id": "/examples/data/catalog/user-3-skills.jsonld",
+    "@type": "dcat:Catalog",
+    "dcat:dataset": [],
+    "permissions": ["view"]
+  },
+  "profile": {
+    "@id": "/examples/data/catalog/profile-3.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

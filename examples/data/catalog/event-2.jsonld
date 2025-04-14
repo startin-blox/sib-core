@@ -1,0 +1,21 @@
+{
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
+  "@id": "/examples/data/catalog/event-2.jsonld",
+  "@type": "dcat:Dataset",
+  "title": "Workshop",
+  "description": "A practical workshop session.",
+  "created": "2020-05-10",
+  "modified": "2020-05-10",
+  "spatial": {
+    "@type": "Location",
+    "title": "Opéra"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/workshop"
+  },
+  "contactPoint": {
+    "@id": "/examples/data/list/user-2.jsonld"
+  },
+  "seats": 2,
+  "permissions": []
+}

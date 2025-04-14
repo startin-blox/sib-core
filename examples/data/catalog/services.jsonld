@@ -1,0 +1,77 @@
+{
+  "@context": "https://www.w3.org/ns/dcat#",
+  "@type": "dcat:Catalog",
+  "@id": "/examples/data/catalog/services.jsonld",
+  "title": "Cloud Services Catalog",
+  "description": "A catalog of cloud services offered by Startin'blox.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Startin'blox",
+    "url": "https://startinblox.com"
+  },
+  "dcat:dataset": [
+    {
+      "@type": "Dataset",
+      "@id": "/examples/data/catalog/services.jsonld#compute",
+      "title": "Compute Services",
+      "description": "Virtual machines, containers, and serverless computing services.",
+      "keyword": ["compute", "virtual machines", "serverless"],
+      "theme": "https://www.example.com/themes/cloud/compute",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "fn": "Support Team",
+        "hasEmail": "mailto:support@cloud-provider.example.com"
+      },
+      "distribution": [
+        {
+          "@type": "Distribution",
+          "title": "Compute API",
+          "accessURL": "https://api.cloud-provider.example.com/compute",
+          "format": "API"
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@id": "/examples/data/catalog/services.jsonld#storage",
+      "title": "Storage Services",
+      "description": "Block storage, object storage, and archival storage solutions.",
+      "keyword": ["storage", "block storage", "object storage"],
+      "theme": "https://www.example.com/themes/cloud/storage",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "fn": "Storage Support Team",
+        "hasEmail": "mailto:storage-support@cloud-provider.example.com"
+      },
+      "distribution": [
+        {
+          "@type": "Distribution",
+          "title": "Storage API",
+          "accessURL": "https://api.cloud-provider.example.com/storage",
+          "format": "API"
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@id": "/examples/data/catalog/services.jsonld#networking",
+      "title": "Networking Services",
+      "description": "Virtual networks, load balancers, and VPNs.",
+      "keyword": ["networking", "load balancing", "VPN"],
+      "theme": "https://www.example.com/themes/cloud/networking",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "fn": "Networking Support Team",
+        "hasEmail": "mailto:networking-support@cloud-provider.example.com"
+      },
+      "distribution": [
+        {
+          "@type": "Distribution",
+          "title": "Networking API",
+          "accessURL": "https://api.cloud-provider.example.com/networking",
+          "format": "API"
+        }
+      ]
+    }
+  ]
+}

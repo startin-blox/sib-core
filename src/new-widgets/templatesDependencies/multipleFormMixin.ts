@@ -88,12 +88,13 @@ const MultipleFormMixin = {
     if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
   populate() {
-    if (!this.resource || !this.resource['ldp:contains']) return;
+    const resources = this.resource?.['listPredicate'];
+    if (!resources) return;
 
     this.listAttributes.children = []; // reset list
 
     // set value in form
-    for (const resource of this.resource['ldp:contains']) {
+    for (const resource of resources) {
       // for each resource
       this.insertWidget(resource['@id']); // create a widget
     }

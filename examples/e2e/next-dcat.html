@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-form + next</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
+  </head>
+
+  <body>
+    <solid-router use-hash>
+      <solid-route name="view" use-id>view it</solid-route>
+      <solid-route name="user" use-id>user</solid-route>
+    </solid-router>
+    <h3>List-1</h3>
+    <solid-display
+      id="list-1"
+      data-src="/examples/data/catalog/skills.jsonld"
+      fields="name"
+      next="view"
+    ></solid-display>
+
+    <h3>List-2</h3>
+    <solid-display
+      id="list-2"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="name, domain"
+      multiple-domain
+      multiple-domain-fields="name"
+      next="user"
+    ></solid-display>
+
+    <h3>Next view</h3>
+    <div data-view="view">
+      <solid-display
+        id="detail"
+        bind-resources
+        fields="@id"
+      ></solid-display>
+    </div>
+    <div data-view="user">
+      <solid-display
+        id="user-detail"
+        bind-resources
+        fields="@id"
+      ></solid-display>
+    </div>
+  </body>
+</html>

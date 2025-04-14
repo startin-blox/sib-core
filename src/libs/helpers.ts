@@ -276,7 +276,7 @@ function transformArrayToContainer(resource: object) {
       // Do not systematically transform arrays to containers
       newValue[predicate] = {
         '@id': predicateValue['@id'],
-        'ldp:contains': [...predicateValue],
+        'ldp:contains': [...predicateValue], // ???? why only ldp:contains?
       };
       newValue[predicate]['ldp:contains'].forEach(
         (childPredicate: any, index: number) => {
@@ -288,6 +288,24 @@ function transformArrayToContainer(resource: object) {
     }
   }
   return newValue;
+}
+
+/**
+ * Checks whether a given resource contains one of the predefined predicates (`ldp:contains` or `dcat:dataset`).
+ * This list can be exetnded if needed
+ *
+ * @param {object | string} resource - The resource in which to check for the predicates.
+ *      It can be either an object (a JSON-LD resource) or a string (a resource identifier).
+ * @returns {boolean} - Returns `true` if the resource contains at least one of the predicates, otherwise `false`.
+ */
+export function doesResourceContainList(resource: object | string): boolean {
+  const predicates = ['ldp:contains', 'dcat:dataset'];
+
+  return predicates.some(predicate =>
+    typeof resource === 'object'
+      ? predicate in resource
+      : typeof resource === 'string' && resource.includes(predicate),
+  );
 }
 
 export default class AsyncIterableBuilder<Type> {

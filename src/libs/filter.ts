@@ -1,5 +1,6 @@
 import {
   compare,
+  doesResourceContainList,
   findClosingBracketMatchIndex,
   parseFieldsString,
   uniqID,
@@ -96,7 +97,7 @@ const matchValue = async (
   }
   if (subject.isContainer?.()) {
     let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
-    for (const value of subject['ldp:contains']) {
+    for (const value of subject['listPredicate']) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) return orThrow(throwOn, true);
     }
@@ -175,7 +176,7 @@ const traversePath = async (
           let targetsRes = await res[remainingPath[0]];
           if (!targetsRes) return [];
           if (targetsRes.isContainer?.()) {
-            targetsRes = targetsRes['ldp:contains'];
+            targetsRes = targetsRes['listPredicate'];
           }
           if (!Array.isArray(targetsRes)) targetsRes = [targetsRes];
 
@@ -226,8 +227,7 @@ const matchFilter = async (
     fields = window.cachePropsSearchFilter[cacheKey].setSearchFields;
   } else {
     // search on 1 field
-    //FIXME: Better assumption that just using ldp:contains does the job ?
-    if (!(await resource[filter]) && filter.includes('ldp:contains')) {
+    if (!(await resource[filter]) && doesResourceContainList(filter)) {
       // nested field
       // console.log(`No ${filter} found for ${resource['@id']} and ${filter} is a nested field. Trying to traverse path.`);
       const path1: string[] = filter.split('.');

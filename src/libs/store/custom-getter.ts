@@ -10,7 +10,7 @@ export class CustomGetter {
   clientContext: object; // context given by the app
   serverContext: object; // context given by the server
   parentId: string; // id of the parent resource, used to get the absolute url of the current resource
-  containerTypes: string[]; // types of resources interpreted as containers
+  listTypes: string[]; // types of resources interpreted as containers
   serverPagination: object; // pagination attributes to give to server
   serverSearch: object; // search attributes to give to server
 
@@ -31,8 +31,9 @@ export class CustomGetter {
     this.serverPagination = serverPagination;
     this.serverSearch = serverSearch;
 
-    this.containerTypes = [
+    this.listTypes = [
       this.getExpandedPredicate('ldp:Container'),
+      this.getExpandedPredicate('dcat:Catalog'),
       this.getExpandedPredicate('ldp:BasicContainer'),
       this.getExpandedPredicate('ldp:DirectContainer'),
       this.getExpandedPredicate('ldp:IndirectContainer'),
@@ -58,8 +59,9 @@ export class CustomGetter {
         throw new Error('Not a valid HTTP url');
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
-        let resources = this.resource[this.getExpandedPredicate(path)];
-        if (!resources) return undefined;
+        let resources = this.getList(path);
+        if (!resources || (Array.isArray(resources) && resources.length === 0))
+          return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
 
         const result = resources
@@ -107,7 +109,7 @@ export class CustomGetter {
       // We do that by poping one element from path1 at each step and affecting it to path2
       // Trying to get the value from it
       while (true) {
-        value = await this.resource[this.getExpandedPredicate(path1[0])];
+        value = await this.getList(path1[0]);
 
         if (path1.length <= 1) break; // no dot path
         const lastPath1El = path1.pop();
@@ -141,12 +143,13 @@ export class CustomGetter {
    * @returns
    */
   getLiteralValue(value: any): string | string[] | null {
-    if (typeof value !== 'object') return value;
+    if (typeof value !== 'object' || value === null) return value;
     // value object: https://www.w3.org/TR/json-ld11/#value-objects
     if (value['@value']) return value['@value']; // 1 language
     if (!Array.isArray(value)) return value;
     if (value.length === 0) return null;
     if (!Array.isArray(value[0])) return value;
+
     // multiple languages
     const ln = store._getLanguage();
     let translatedValue = value.find(
@@ -182,18 +185,16 @@ export class CustomGetter {
     if (this.resource['@type']) {
       // @type is an array
       if (Array.isArray(this.resource['@type']))
-        return this.containerTypes.some(type =>
+        return this.listTypes.some(type =>
           this.resource['@type'].includes(type),
         );
-      return this.containerTypes.includes(this.resource['@type']);
+      return this.listTypes.includes(this.resource['@type']);
     }
     if (!this.resource.type) return false;
 
     if (Array.isArray(this.resource.type))
-      return this.containerTypes.some(type =>
-        this.resource.type.includes(type),
-      );
-    return this.containerTypes.includes(this.resource.type);
+      return this.listTypes.some(type => this.resource.type.includes(type));
+    return this.listTypes.includes(this.resource.type);
   }
 
   /**
@@ -217,16 +218,23 @@ export class CustomGetter {
   /**
    * Get children of container as objects
    */
-  getChildren(predicateName: string): object[] {
-    return this.resource[this.getExpandedPredicate(predicateName)] || [];
+  getList(predicateName: string): object[] {
+    let value = this.resource[predicateName];
+
+    if (!value) {
+      value = this.resource[this.getExpandedPredicate(predicateName)];
+    }
+
+    if (value === undefined || value === null) {
+      return [];
+    }
+    return value;
   }
 
-  /**
-   * Get children of container as Proxys
-   */
-  getLdpContains(): CustomGetter[] | null {
-    let children = this.resource[this.getExpandedPredicate('ldp:contains')];
+  getListAndCacheIt(predicate: string): CustomGetter[] | null {
+    let children = this.getList(predicate);
     if (!children) return null;
+
     if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
 
     const result = children
@@ -250,6 +258,17 @@ export class CustomGetter {
     return result;
   }
 
+  getDcatDataset(): CustomGetter[] | null {
+    return this.getListAndCacheIt('dcat:dataset');
+  }
+
+  /**
+   * Get children of container as Proxys
+   */
+  getLdpContains(): CustomGetter[] | null {
+    return this.getListAndCacheIt('ldp:contains');
+  }
+
   merge(resource: CustomGetter) {
     this.resource = {
       ...this.getResourceData(),
@@ -259,6 +278,18 @@ export class CustomGetter {
 
   getResourceData(): object {
     return this.resource;
+  }
+
+  getContainerList(): object[] | null {
+    if (this.getType() === 'ldp:Container') {
+      return this.getLdpContains();
+    }
+
+    if (this.getType() === 'dcat:Catalog') {
+      return this.getDcatDataset();
+    }
+
+    return null;
   }
 
   /**
@@ -287,7 +318,8 @@ export class CustomGetter {
    * @returns
    */
   async getPermissions(): Promise<string[]> {
-    let permissions = this.resource[this.getExpandedPredicate('permissions')];
+    let permissions = this.getList('permissions').map(p => String(p));
+
     if (!permissions) {
       // if no permission, re-fetch data from store
       await this.getResource(
@@ -296,7 +328,7 @@ export class CustomGetter {
         this.parentId,
         true,
       );
-      permissions = this.resource[this.getExpandedPredicate('permissions')];
+      permissions = this.getList('permissions').map(p => String(p));
     }
 
     if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
@@ -367,8 +399,8 @@ export class CustomGetter {
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
-          case 'ldp:contains':
-            return this.getLdpContains(); // returns standard arrays synchronously
+          case 'listPredicate':
+            return this.getContainerList(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':

@@ -164,14 +164,15 @@ export class BaseWidget extends HTMLElement {
     })();
   }
   async fetchSources(resource: any) {
-    if (!resource || !resource['ldp:contains']) return null;
+    const data = resource['listPredicate'];
+    if (!data) return null;
     const resources: any[] = [];
     let index = 0;
-    for (let res of resource['ldp:contains']) {
+    for (let res of data) {
       if (!res) {
         // child not in cache yet
         try {
-          const resourceId = resource.getChildren('ldp:contains')[index]['@id'];
+          const resourceId = data[index]['@id'];
           res = await store.getData(resourceId, this.context);
         } catch {
           continue;
@@ -184,8 +185,9 @@ export class BaseWidget extends HTMLElement {
           this.context,
         ); // fetch the datas
         this._listen(res['@id']);
-        if (resourcesFromContainer)
-          resources.push(...resourcesFromContainer['ldp:contains']);
+        if (resourcesFromContainer) {
+          resources.push(...resourcesFromContainer['listPredicate']);
+        }
       } else {
         resources.push(res);
       }
@@ -206,7 +208,7 @@ export class BaseWidget extends HTMLElement {
       if (this._value?.isContainer?.()) {
         // selected options for multiple select
         selected = false;
-        for await (const value of this._value['ldp:contains']) {
+        for await (const value of this._value['listPredicate']) {
           if (value['@id'] === element['@id']) {
             selected = true;
             break;

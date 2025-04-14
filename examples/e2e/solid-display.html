@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <h2>Solid Display</h2>
+  <h2>Solid Display</h2>
 
     <h3>diplay-1</h3>
     <solid-display
@@ -181,48 +181,6 @@
       default-widget="solid-display-link"
     ></solid-display>
 
-    <h3>counter-mixin</h3>
-    <solid-display
-      id="display-16"
-      data-src="/examples/data/list/skills.jsonld"
-      fields="name"
-      counter-template="${counter} skills displayed :"
-    ></solid-display>
-    
-    <h3>highlighter-mixin</h3>
-    <solid-display
-      id="display-17"
-      data-src="/examples/data/list/skills.jsonld"
-      fields="name"
-      order-asc="name"
-      highlight-name="Javascript"
-    ></solid-display>
-
-    <h3>nested-[field] attribute</h3>
-    <solid-display
-      id="display-18"
-      data-src="/examples/data/list/user-1.jsonld"
-      nested-field="skills"
-      fields="name"
-    ></solid-display>
-
-    <h3>default-widget attribute</h3>
-    <h4>default-widget only</h4>
-    <solid-display
-      id="display-19"
-      data-src="/examples/data/list/user-1.jsonld"
-      fields="name, email, username"
-      default-widget="solid-display-link"
-    ></solid-display>
-    <h4>widget-[field] & default-widget</h4>
-    <solid-display
-      id="display-20"
-      data-src="/examples/data/list/user-1.jsonld"
-      fields="name, email, username"
-      widget-name="solid-display-div"
-      default-widget="solid-display-link"
-    ></solid-display>
-
     <h3>oembed template</h3>
     <solid-display
       id="display-21"
@@ -327,6 +285,150 @@
       widget-fullName="solid-set-ul"
       widget-email="solid-display-value-label"
   ></solid-display>
+
+
+    <h2>Test the DCAT context</h2>
+ 
+    <h3>required mixin (dcat)</h3>
+    <solid-display
+      id="dcat-display-6"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="dct:title, dct:comment, dct:definition"
+    ></solid-display>
+    <solid-display
+      id="dcat-display-7"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="dct:title, dct:comment, dct:definition"
+      required-ocean
+    ></solid-display> 
+    <solid-display
+      id="dcat-display-8"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="dct:title, dct:comment, dct:definition"
+      required-dct:comment
+    ></solid-display>
+   <solid-display
+      id="dcat-display-9"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="dct:title, dct:comment, dct:definition"
+      required-dct:definition
+    ></solid-display>
+    <solid-display
+      id="dcat-display-10"
+      data-src="/examples/data/catalog/events.jsonld"
+      fields="dct:title, dct:comment, dct:definition"
+      required-dct:definition
+      required-dct:comment
+    ></solid-display>
+
+    <h3>list mixin (dcat)</h3>
+    <h4>container</h4>
+    <solid-display
+      id="dcat-display-11"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="dct:username"
+    ></solid-display>
+
+    <h4>resource</h4>
+    <solid-display
+      id="dcat-display-12"
+      data-src="/examples/data/catalog/user-2.jsonld"
+      fields="dct:username"
+    ></solid-display>
+    <h4>empty-value</h4>
+    <solid-widget name="no-skill">
+      <template>
+        ${value}
+      </template>
+    </solid-widget>
+    <solid-display
+      id="dcat-display-13"
+      data-src="/examples/data/catalog/user-3-skills.jsonld"
+      fields="dct:username"
+      empty-value="No skill yet"
+      empty-widget="no-skill"
+    ></solid-display>
+
+    <h3>counter-mixin</h3>
+    <solid-display
+      id="dcat-display-16"
+      data-src="/examples/data/catalog/skills.jsonld"
+      fields="name"
+      counter-template="${counter} skills displayed :"
+    ></solid-display>
+    
+    <h3>highlighter-mixin</h3>
+    <solid-display
+      id="dcat-display-17"
+      data-src="/examples/data/catalog/skills.jsonld"
+      fields="name"
+      order-asc="name"
+      highlight-name="Javascript"
+    ></solid-display>
+
+    <h3>nested-[field] attribute</h3>
+    <solid-display
+      id="dcat-display-18"
+      data-src="/examples/data/catalog/user-1.jsonld"
+      nested-field="skills"
+      fields="name"
+    ></solid-display>
+
+    <h3>default-widget attribute</h3>
+
+    <h4>default-widget only</h4>
+    <solid-display
+      id="dcat-display-19"
+      data-src="/examples/data/catalog/user-1.jsonld"
+      fields="name, dct:email, dct:username"
+      default-widget="solid-display-link"
+    ></solid-display>
+
+    <h4>widget-[field] & default-widget</h4>
+    <solid-display
+      id="dcat-display-20"
+      data-src="/examples/data/catalog/user-1.jsonld"
+      fields="name, dct:email, dct:username"
+      widget-name="solid-display-div"
+      default-widget="solid-display-link"
+    ></solid-display>
+
+    <h3>oembed template</h3>
+    <solid-display
+      id="dcat-display-21"
+      data-src="/examples/data/catalog/user-1.jsonld"
+      fields="oembed"
+      value-oembed='https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json'
+      widget-oembed="solid-display-value-oembed"
+    ></solid-display>
+
+    <h3>widgetRendered event</h3>
+    <solid-widget name="custom-w">
+      <template>${value}</template>
+    </solid-widget>
+    <solid-display
+      id="dcat-display-event"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="email, dct:name, dct:username"
+      widget-username="custom-w"
+    ></solid-display>
+
+    <h3>label in a set (div or ul)</h3>
+    <solid-display
+      id="dcat-solid-set-div-label"
+      data-src="/examples/data/catalog/users.jsonld"
+      fields="identity(name, dct:username)"
+      widget-identity="solid-set-div-label"
+    ></solid-display>
+
+    <h3>Display with DCAT context</h3>
+    <solid-display
+      id="dcat-display-services"
+      data-src="/examples/data/catalog/services.jsonld"
+      fields="title, description"
+      widget-title="h5"
+      widget-description="p"
+    ></solid-display>
 
     <script>
       const log = document.getElementById('log-event');

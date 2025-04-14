@@ -1,0 +1,21 @@
+{
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
+  "@id": "/examples/data/catalog/event-4.jsonld",
+  "@type": "dcat:Dataset",
+  "title": "Assemblée générale",
+  "description": "Annual general assembly discussing key organizational matters.",
+  "created": "2020-05-10",
+  "modified": "2020-05-10",
+  "spatial": {
+    "@type": "Location",
+    "title": "Marseille"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/governance"
+  },
+  "contactPoint": {
+    "@id": "/examples/data/list/user-4.jsonld"
+  },
+  "seats": 55,
+  "permissions": []
+}

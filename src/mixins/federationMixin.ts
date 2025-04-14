@@ -60,12 +60,12 @@ const FederationMixin = {
 
   async fetchSource(containerId: string): Promise<Resource[] | null> {
     const cachedContainer = store.get(containerId); // find container in cache
-    if (!cachedContainer || cachedContainer['ldp:contains'] === null) {
+    if (!cachedContainer || cachedContainer.getContainerList() === null) {
       // if container not fetched
       store.clearCache(containerId); // empty cache
     }
     const container = await store.getData(containerId, this.context); // and fetch it
-    return container ? container['ldp:contains'] : null;
+    return container?.['listPredicate'];
   },
 };
 

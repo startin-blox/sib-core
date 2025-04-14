@@ -38,17 +38,64 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
       .contains('User');
   });
 
-  it('solid-form-search + submit-button', () => {
-    cy.get('#filter3')
-      .find('input[type=submit]')
-      .as('btn')
-      .should('have.attr', 'value', 'update result');
-    cy.get('#filter3 > form').find('div').children('input[type="submit"]');
-    cy.get('#display3 > div > solid-display').should('have.length', 4);
-    cy.get('#filter3 select').select('User');
-    cy.get('#display3 > div > solid-display').should('have.length', 4);
-    cy.get('@btn').click();
-    cy.get('#display3 > div > solid-display').should('have.length', 1);
+  it('solid-form-search (+dcat)', () => {
+    cy.get('solid-form-search#dcat-filter1')
+      .find('select')
+      .should('have.attr', 'name', 'name')
+      .children()
+      .and('have.length', 6);
+    cy.get('solid-form-search#dcat-filter1')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#dcat-filter1')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'Test')
+      .contains('Test');
+
+    cy.get('solid-form-search#dcat-filter2')
+      .find('select')
+      .should('have.attr', 'name', 'name')
+      .children()
+      .and('have.length', 5);
+    cy.get('solid-form-search#dcat-filter2')
+      .find('option')
+      .eq(0)
+      .should('have.attr', 'value', '')
+      .contains('-');
+    cy.get('solid-form-search#dcat-filter2')
+      .find('option')
+      .eq(1)
+      .should('have.attr', 'value', 'a')
+      .contains('User');
+  });
+
+  it('solid-form-search + submit-button (+dcat)', () => {
+    ['#', '#dcat-'].forEach(prefix => {
+      cy.get(`${prefix}filter3`)
+        .find('input[type=submit]')
+        .as('btn')
+        .should('have.attr', 'value', 'update result');
+      cy.get(`${prefix}filter3 > form`)
+        .find('div')
+        .children('input[type="submit"]');
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        4,
+      );
+      cy.get(`${prefix}filter3 select`).select('First');
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        4,
+      );
+      cy.get('@btn').click();
+      cy.get(`${prefix}display3 > div > solid-display`).should(
+        'have.length',
+        1,
+      );
+    });
   });
 
   it('solid-form-search + submit-widget', () => {
@@ -69,18 +116,20 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
       .should('exist');
   });
 
-  it('solid-form-search + start-value & end-value', () => {
-    cy.get('#filter4 > form')
-      .find('solid-form-rangedate')
-      .should('have.attr', 'start-value', '2020-06-01')
-      .and('have.attr', 'end-value', '2021-01-12');
-    cy.get('#display4 > div ').children().should('have.length', 2);
+  it('solid-form-search + start-value & end-value (+dcat)', () => {
+    ['#', '#dcat-'].forEach(prefix => {
+      cy.get(`${prefix}filter4 > form`)
+        .find('solid-form-rangedate')
+        .should('have.attr', 'start-value', '2020-06-01')
+        .and('have.attr', 'end-value', '2021-01-12');
+      cy.get(`${prefix}display4 > div `).children().should('have.length', 2);
 
-    cy.get('#filter5 > form')
-      .find('solid-form-rangenumber')
-      .should('have.attr', 'start-value', '2')
-      .and('have.attr', 'end-value', '10');
-    cy.get('#display5 > div ').children().should('have.length', 3);
+      cy.get(`${prefix}filter5 > form`)
+        .find('solid-form-rangenumber')
+        .should('have.attr', 'start-value', '2')
+        .and('have.attr', 'end-value', '10');
+      cy.get(`${prefix}display5 > div `).children().should('have.length', 3);
+    });
   });
 
   it('solid-form-search + search-[field]', () => {
@@ -98,6 +147,25 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
       .children()
       .should('have.length', 1)
       .filter('solid-display[data-src="/examples/data/list/event-4.jsonld"]');
+  });
+
+  it('solid-form-search + search-[field] (+dcat)', () => {
+    cy.get('#dcat-filter-search-field > form')
+      .find('solid-form-label-text')
+      .should('have.attr', 'name', 'global_name')
+      .find('input')
+      .type('em');
+
+    cy.get('#dcat-display-search-field-1 > div')
+      .children()
+      .should('have.length', 1)
+      .filter('solid-display[data-src="/examples/data/catalog/user-3.jsonld"]');
+    cy.get('#dcat-display-search-field-2 > div')
+      .children()
+      .should('have.length', 1)
+      .filter(
+        'solid-display[data-src="/examples/data/catalog/event-4.jsonld"]',
+      );
   });
 
   it('solid-form-search + solid-form-hidden', () => {
