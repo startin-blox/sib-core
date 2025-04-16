@@ -29,8 +29,8 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
   sib: 'https://cdn.startinblox.com/owl#',
-  tems: 'https://tems-dataspace.eu/owl#',
   dcat: 'https://www.w3.org/ns/dcat#',
+  tems: 'https://cdn.startinblox.com/owl/tems.jsonld#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
   lat: 'geo:lat',
@@ -141,7 +141,7 @@ export class Store {
               serverSearch,
             ));
         } catch (error) {
-          console.error(error);
+          console.error(id, error);
         }
       if (!resource) {
         this.loadingList.delete(key);
@@ -180,16 +180,30 @@ export class Store {
   }
 
   async fetchAuthn(iri: string, options: any) {
+    console.log('fetchAuthn', iri, options);
+    if (!this.fetch) {
+      console.warn('No fetch method available');
+    }
+
+    // Check if the session is available
+    // If not, wait for it to be available
     let authenticated = false;
     if (this.session) authenticated = await this.session;
-
+    
     if (this.fetch && authenticated) {
       // authenticated
-      return this.fetch.then(fn => fn(iri, options));
+      console.log('Authenticated headers', options.headers);
+      return this.fetch.then(fn => {
+        console.log('Fetch method available', fn);
+        return fn(iri, options)
+      });
     }
+
     // anonymous
-    if (options.headers)
+    if (options.headers) {
+      console.log('Anonymous headers', options.headers);
       options.headers = this._convertHeaders(options.headers);
+    }
     return fetch(iri, options).then(response => response);
   }
 

@@ -41,6 +41,7 @@
   <body class="segment full">
     <sib-auth auto-login="true">
       <sib-auth-provider
+        id="tems-dev"
         data-authority="https://api.tems-dev.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
@@ -103,10 +104,11 @@
         </solid-widget>
 
         <!-- data-src-profile="https://api.tems-dev.startinblox.com/fedex/profile" -->
+          data-src-index="https://api.tems-dev2.startinblox.com/indexes/objects/trial6/index"
         <solid-display
           filtered-by="solid-directory-listing-search"
           data-src-index="https://api.tems-dev.startinblox.com/fedex/tems-3dobject/index"
-          data-rdf-type="https://tems-dataspace.eu/owl#3DObject"
+          data-rdf-type="tems:3DObject"
           class="main-block segment full children children-third sm-children-full children-margin-bottom-medium sm-children-margin-bottom-xsmall children-padding-right-xsmall children-padding-left-xsmall sm-children-padding-none sm-whitespace-normal masonry"
           fields="segment1(segment2(member-picture(picture), segment3(title, description)))"
           loader-id="loader-members-list"

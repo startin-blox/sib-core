@@ -102,17 +102,18 @@
           </template>
         </solid-widget>
 <!-- data-src-index="http://localhost:8000/fedex/tems-3dobject/index" -->
+          <!-- data-rdf-type="https://cdn.startinblox.com/owl#3DObject" -->
         <solid-display
           filtered-by="solid-directory-listing-search"
-          data-src-profile="http://localhost:8000/profile"
-          data-rdf-type="https://cdn.startinblox.com/owl#3DObject"
+          data-src-profile="http://localhost:8001/profile"
+          data-rdf-type="https://cdn.startinblox.com/owl/tems.jsonld#3DObject"
           class="main-block segment full children children-third sm-children-full children-margin-bottom-medium sm-children-margin-bottom-xsmall children-padding-right-xsmall children-padding-left-xsmall sm-children-padding-none sm-whitespace-normal masonry"
-          fields="segment1(segment2(member-picture(picture), segment3(title, description)))"
+          fields="segment1(segment2(member-picture(picture), segment3(tems:title, tems:description)))"
           loader-id="loader-members-list"
           class-member-picture="segment avatar-wrapper"
-          class-title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
+          class-tems:title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
           class-member-pseudo="segment block"
-          class-description="text-small"
+          class-tems:description="text-small"
           class-segment1="segment hover bg-color-white shadow full text-top whitespace-normal"
           class-segment2="segment full padding-medium text-center whitespace-normal"
           class-segment3="segment three-quarter whitespace-normal"
@@ -120,7 +121,7 @@
           class-member-picture="segment avatar-wrapper"
           class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
           widget-picture="orbit-user-avatar"
-          order-asc="title"
+          order-asc="tems:title"
         >
         </solid-display>
       </div>

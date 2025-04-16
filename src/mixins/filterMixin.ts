@@ -4,13 +4,16 @@ import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
 import { base_context, store } from '../libs/store/store.ts';
+// import IndexLoader from '../libs/store/index-loader.ts';
+import '../libs/store/semantizer.ts';
 
 // Semantizer imports
-import semantizer from '@semantizer/default';
+// import semantizer from '@semantizer/default';
 import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
+import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
 import type { DatasetSemantizer } from '@semantizer/types';
-import { indexEntryFactory } from "@semantizer/mixin-index/lib/IndexEntryMixin.js";
+
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
@@ -99,18 +102,15 @@ const FilterMixin = {
 
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
-      console.log('Init index based search', this.dataSrcIndex, this.dataSrcProfile);
+      console.log(
+        'Init index based search',
+        this.dataSrcIndex,
+        this.dataSrcProfile
+      );
 
       const filterValues = this.searchForm.component.value;
       console.log('Filter values', filterValues);
       this.triggerIndexSearch(filterValues);
-
-      // this.comunicaEngine = new SparqlQueryEngineComunica(
-      //   this.dataSrcIndex,
-      //   update,
-      //   reset,
-      // );
-      // this.comunicaEngine.searchFromSearchForm(); // no filter = default case
 
       this.searchForm.addEventListener('submit', this.onIndexSearch.bind(this));
       this.listPostProcessors.attach(this.applyPostProcessors.bind(this));
@@ -150,47 +150,54 @@ const FilterMixin = {
 
     // 0. Load the instance profile if defined
     if (this.dataSrcProfile) {
+      console.log('Load application profile', this.dataSrcProfile);
       // // 1. Load the WebId of the instance
-      const appIdProfile = await semantizer.load(
+      const appIdProfile = await SEMANTIZER.load(
         this.dataSrcProfile,
-        solidWebIdProfileFactory,
+        solidWebIdProfileFactory
       );
+
       // await appIdProfile.loadExtendedProfile();
       const appId = appIdProfile.getPrimaryTopic();
       if (!appId) {
         throw new Error('The WebId was not found.');
-      } else {
-        // 2. Get the public type index
-        const publicTypeIndex = appId.getPublicTypeIndex();
+      }
 
-        if (!publicTypeIndex) {
-          throw new Error('The TypeIndex was not found.');
-        }
+      // 2. Get the public type index
+      const publicTypeIndex = appId.getPublicTypeIndex();
+      if (!publicTypeIndex) {
+        throw new Error('The TypeIndex was not found.');
+      }
 
-        await publicTypeIndex.load();
+      await publicTypeIndex.load();
 
-        // 3. Find the index from the TypeIndex
-        indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
-          IndexType.Index,
-        ) as DatasetSemantizer;
+      // 3. Find the index from the TypeIndex
+      indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
+        IndexType.Index,
+      ) as DatasetSemantizer;
 
-        if (!indexDataset) {
-          throw new Error('The meta-meta index was not found.');
-        }
+      if (!indexDataset) {
+        throw new Error('The meta-meta index was not found.');
       }
     } else if (this.dataSrcIndex) {
-      indexDataset = await semantizer.load(this.dataSrcIndex, indexEntryFactory);
+      // 1. Load the index directly
+      console.log('Load index directly', this.dataSrcIndex);
+      indexDataset = await SEMANTIZER.load(
+        this.dataSrcIndex
+      );
+      console.log('Index dataset', indexDataset);
     }
 
+    // This line can be combined by passing indexFactory in the load instruction
     // 4. Build the index mixin
     console.log('Index dataset', indexDataset);
-    const index = semantizer.build(indexFactory, indexDataset);
+    const index = SEMANTIZER.build(indexFactory, indexDataset);
 
     // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
     // and get the associated filter values for each of them and add them as pattern
     // How to differentiate between pattern and value properties?
-    const shape = semantizer.build(indexShapeFactory);
-    const dataFactory = semantizer.getConfiguration().getRdfDataModelFactory();
+    const shape = SEMANTIZER.build(indexShapeFactory);
+    const dataFactory = SEMANTIZER.getConfiguration().getRdfDataModelFactory();
 
     // How can we know the type of the shape from the component configuration ?
     // Or should actually the shape be a static configuration object for the component itself ?
@@ -267,7 +274,7 @@ const FilterMixin = {
     }
 
     // How to know what filters are present in the shape ?
-    console.log('Shape filter properties', shape.getFilterProperties());
+    // console.log('Shape filter properties', shape.getFilterProperties());
     // if shape does not contains any pattern property, we add a default one
     if (shape.getFilterProperties().length === 0) {
       shape.addPatternProperty(
