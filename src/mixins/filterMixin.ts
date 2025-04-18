@@ -274,11 +274,11 @@ const FilterMixin = {
     }
 
     // How to know what filters are present in the shape ?
-    // console.log('Shape filter properties', shape.getFilterProperties());
+    console.log('Shape filter properties', shape.getFilterProperties());
     // if shape does not contains any pattern property, we add a default one
     if (shape.getFilterProperties().length === 0) {
       shape.addPatternProperty(
-        dataFactory.namedNode('https://cdn.startinblox.com/owl#description'),
+        dataFactory.namedNode('https://cdn.startinblox.com/owl/tems.jsonld#description'),
         dataFactory.literal('lor.*'),
       );
     }
