@@ -1,6 +1,6 @@
 describe('simple Startin’blox e2e test', () => {
   it('check children count', () => {
-    cy.visit('/examples/filtered.html');
+    cy.visit('/examples/e2e/filtered.html');
     cy.get('#filter1 input').type('MâÿèR'); // match "mayer"
     cy.get('#filter2 input').type('lin'); // match "lindsay", "collins" & "rollins"
     cy.get('main > div:nth-child(1) > solid-display > div > solid-display')
