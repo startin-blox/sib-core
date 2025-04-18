@@ -1,4 +1,4 @@
-import JSONLDContextParser from 'jsonld-context-parser';
+import * as JSONLDContextParser from 'jsonld-context-parser';
 import { Sib } from '../libs/Sib.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
