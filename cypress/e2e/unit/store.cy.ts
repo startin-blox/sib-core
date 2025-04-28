@@ -548,9 +548,31 @@ describe('store', { testIsolation: false }, function () {
       .should('equal', 'https://ldp-server.test/circles/');
   });
 
+  it('refreshResource', () => {
+    cy.window().then(async (win: any) => {
+      const store = win.sibStore;
+      cy.spy(store, 'clearCache');
+      cy.spy(store, 'getData');
+      cy.spy(store, 'fetchData');
+
+      expect(store.cache.length()).to.be.equal(15);
+      await store.refreshResources([
+        '/examples/data/list/user-1.jsonld',
+        '/examples/data/list/users.jsonld',
+      ]);
+
+      expect(store.clearCache).to.be.calledTwice;
+      expect(store.getData).to.be.calledTwice;
+      expect(store.fetchData).to.be.calledTwice;
+
+      expect(store.cache.length()).to.be.equal(15);
+    });
+  });
+
   it('getNestedResources', () => {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
+      store.cache.clear();
       cy.spy(store, 'fetchData');
       await store.getData('/examples/data/list/user-1.jsonld', base_context);
 
@@ -587,26 +609,7 @@ describe('store', { testIsolation: false }, function () {
     });
   });
 
-  it('refreshResource', () => {
-    cy.window().then(async (win: any) => {
-      const store = win.sibStore;
-      cy.spy(store, 'clearCache');
-      cy.spy(store, 'getData');
-      cy.spy(store, 'fetchData');
 
-      expect(store.cache.length()).to.be.equal(15);
-      await store.refreshResources([
-        '/examples/data/list/user-1.jsonld',
-        '/examples/data/list/users.jsonld',
-      ]);
-
-      expect(store.clearCache).to.be.calledTwice;
-      expect(store.getData).to.be.calledTwice;
-      expect(store.fetchData).to.be.calledTwice;
-
-      expect(store.cache.length()).to.be.equal(15);
-    });
-  });
 
   it('notifyResources', () => {
     cy.window().then(async (win: any) => {
