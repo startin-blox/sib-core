@@ -9,9 +9,9 @@ import type { ServerSearchOptions } from './server-search.ts';
 import { appendServerSearchToIri } from './server-search.ts';
 
 import { doesResourceContainList } from '../helpers.ts';
+import { CacheManager } from './cache-manager.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
-import { CacheManager } from './cache-manager.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -125,7 +125,7 @@ export class Store {
         localData['@id'] = id;
         resource = localData;
       } else
-      try {
+        try {
           resource =
             localData ||
             (await this.fetchData(
@@ -256,7 +256,12 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    this.cache.linkUrlWithId(parentId, resources["@id"], clientContext, parentContext)
+    this.cache.linkUrlWithId(
+      parentId,
+      resources['@id'],
+      clientContext,
+      parentContext,
+    );
     const flattenedResources: any = await jsonld.flatten(resources);
     const compactedResources: any[] = await Promise.all(
       flattenedResources.map(r => jsonld.compact(r, {})),
@@ -276,9 +281,9 @@ export class Store {
       if (
         (key === id &&
           resource['@type'] ===
-          this.getExpandedPredicate('ldp:Container', clientContext)) ||
+            this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-        this.getExpandedPredicate('dcat:Catalog', clientContext)
+          this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)

@@ -368,7 +368,6 @@ const asyncQuerySelector: AsyncQuerySelectorType = (
     });
   });
 
-
 function isUrlOrRelativePath(value: string) {
   if (typeof value !== 'string') return false;
 
@@ -426,5 +425,5 @@ export {
   AsyncIterableBuilder,
   asyncQuerySelector,
   asyncQuerySelectorAll,
-  isUrlOrRelativePath
+  isUrlOrRelativePath,
 };
