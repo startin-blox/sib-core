@@ -609,8 +609,6 @@ describe('store', { testIsolation: false }, function () {
     });
   });
 
-
-
   it('notifyResources', () => {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
