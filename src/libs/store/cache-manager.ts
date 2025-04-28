@@ -1,6 +1,6 @@
-import type { Resource } from '../../mixins/interfaces';
-import { isUrlOrRelativePath } from '../helpers';
-import { CustomGetter } from './custom-getter';
+import type { Resource } from '../../mixins/interfaces.ts';
+import { isUrlOrRelativePath } from '../helpers.ts';
+import { CustomGetter } from './custom-getter.ts';
 
 /**
  * A centralized cache manager for JSON-LD resources.
@@ -74,7 +74,7 @@ export class CacheManager {
   set(url: string, resource: Resource): void {
     const id = resource?.['@id'];
     if (!id) {
-      console.warn(`[CacheManager] Resource has no @id`, resource);
+      console.warn('[CacheManager] Resource has no @id', resource);
       return;
     }
 
