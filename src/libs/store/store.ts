@@ -11,6 +11,7 @@ import { appendServerSearchToIri } from './server-search.ts';
 import { doesResourceContainList } from '../helpers.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
+import { CacheManager } from './cache-manager.ts';
 
 const ContextParser = JSONLDContextParser.ContextParser;
 const myParser = new ContextParser();
@@ -43,7 +44,7 @@ export const base_context = {
 };
 
 export class Store {
-  cache: Map<string, any>;
+  cache: CacheManager;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<string>;
@@ -52,7 +53,7 @@ export class Store {
   session: Promise<any> | undefined;
 
   constructor(private storeOptions: StoreOptions) {
-    this.cache = new Map();
+    this.cache = new CacheManager();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
@@ -124,7 +125,7 @@ export class Store {
         localData['@id'] = id;
         resource = localData;
       } else
-        try {
+      try {
           resource =
             localData ||
             (await this.fetchData(
@@ -240,7 +241,7 @@ export class Store {
    * @param serverSearch - Server search query params
    */
   async cacheGraph(
-    resource: any,
+    resources: any,
     clientContext: object,
     parentContext: object,
     parentId: string,
@@ -255,7 +256,8 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    const flattenedResources: any = await jsonld.flatten(resource);
+    this.cache.linkUrlWithId(parentId, resources["@id"], clientContext, parentContext)
+    const flattenedResources: any = await jsonld.flatten(resources);
     const compactedResources: any[] = await Promise.all(
       flattenedResources.map(r => jsonld.compact(r, {})),
     );
@@ -274,9 +276,9 @@ export class Store {
       if (
         (key === id &&
           resource['@type'] ===
-            this.getExpandedPredicate('ldp:Container', clientContext)) ||
+          this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-          this.getExpandedPredicate('dcat:Catalog', clientContext)
+        this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -298,7 +300,7 @@ export class Store {
 
       if (this.get(key)) {
         // if already cached, merge data
-        this.cache.get(key).merge(resourceProxy);
+        this.cache.get(key)?.merge(resourceProxy);
       } else {
         // else, put in cache
         this.cacheResource(key, resourceProxy);
@@ -480,7 +482,7 @@ export class Store {
     if (this.cache.has(id)) {
       // For federation, clear each source
       const resource = this.cache.get(id);
-      const predicate = resource['listPredicate'];
+      const predicate = resource ? resource['listPredicate'] : null;
       if (predicate) {
         for (const child of predicate) {
           if (child?.['@type'] && doesResourceContainList(child))
