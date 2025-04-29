@@ -10,9 +10,10 @@
     <script type="module" src="https://cdn.skypack.dev/@startinblox/oidc"></script>
     <link rel="stylesheet" href="styles.css" />
 
+    <!-- benoit / toto -->
     <sib-auth auto-login>
       <sib-auth-provider
-        data-authority="https://api.community.startinblox.com"
+        data-authority="https://api.test3.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
   </head>
@@ -30,7 +31,7 @@
     <div data-view="home" hidden>
       <h1>Events</h1>
       <solid-display
-        data-src="./data/list/events.jsonld"
+        data-src="/examples/data/list/events.jsonld"
         fields="name, user"
         value-user="store://user.username"
         next="event-infos"
