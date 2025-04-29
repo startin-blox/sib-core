@@ -34,10 +34,6 @@ const AutocompletionMixin = {
       'slimselect-base',
       () => import('slim-select/styles?inline'),
     );
-    importInlineCSS(
-      'slimselect-local',
-      () => import('./slimselect.css?inline'),
-    );
 
     this.slimSelect = null;
     this.addToAttributes(true, 'autocomplete');
