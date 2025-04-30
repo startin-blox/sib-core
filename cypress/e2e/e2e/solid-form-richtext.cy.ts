@@ -16,7 +16,10 @@ describe('solid-form-richtext test', function () {
 
   it('Submitting form with empty rich text input should display an error mesage', () => {
     cy.get('#form-1 div[data-richtext] [contenteditable]')
-      .should('have.text', 'Some sublime description of the event you know, and maybe you can add some styling and so on.')
+      .should(
+        'have.text',
+        'Some sublime description of the event you know, and maybe you can add some styling and so on.',
+      )
       .clear();
     cy.get('#form-1 div[data-richtext] p').clear();
     cy.get('#form-1 input[type="submit"]').click();
@@ -29,7 +32,10 @@ describe('solid-form-richtext test', function () {
   it('Error message disappears when retyping in rich text input', () => {
     // Empty fields , error is shown
     cy.get('#form-1 div[data-richtext] [contenteditable]')
-      .should('have.text', 'Some sublime description of the event you know, and maybe you can add some styling and so on.')
+      .should(
+        'have.text',
+        'Some sublime description of the event you know, and maybe you can add some styling and so on.',
+      )
       .clear();
     cy.get('#form-1 input[type="submit"]').click();
     cy.get('#form-1 div[data-richtext] .required-error-message').should(
