@@ -1,4 +1,4 @@
-import JSONLDContextParser from 'jsonld-context-parser';
+import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
 
 import jsonld from 'jsonld';

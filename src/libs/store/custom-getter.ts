@@ -1,4 +1,4 @@
-import JSONLDContextParser from 'jsonld-context-parser';
+import * as JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { store } from './store.ts';
 

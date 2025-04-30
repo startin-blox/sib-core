@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test:binded attributes</title>
-    <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="../src/index.ts"></script>
     <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
     <script type="module" src="https://cdn.skypack.dev/@startinblox/oidc"></script>
     <link rel="stylesheet" href="styles.css" />
 
+    <!-- benoit / toto -->
     <sib-auth auto-login>
       <sib-auth-provider
-        data-authority="https://api.community.startinblox.com"
+        data-authority="https://api.test3.startinblox.com/"
       ></sib-auth-provider>
     </sib-auth>
   </head>
@@ -30,7 +31,7 @@
     <div data-view="home" hidden>
       <h1>Events</h1>
       <solid-display
-        data-src="./data/list/events.jsonld"
+        data-src="/examples/data/list/events.jsonld"
         fields="name, user"
         value-user="store://user.username"
         next="event-infos"

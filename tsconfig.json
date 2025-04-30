@@ -8,6 +8,7 @@
     "allowJs": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "composite": false,
     "strict": true,
