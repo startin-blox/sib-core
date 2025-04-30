@@ -137,6 +137,15 @@ export class CustomGetter {
     }
   }
 
+  static getEmptyResource(id: string, clientContext, parentContext) {
+    return new CustomGetter(
+      id,
+      { '@id': id },
+      clientContext,
+      parentContext,
+    ).getProxy();
+  }
+
   /**
    * Return value depending of the current language
    * @param value

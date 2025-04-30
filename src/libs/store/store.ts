@@ -258,9 +258,11 @@ export class Store {
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
     this.cache.linkUrlWithId(
       parentId,
-      resources['@id'],
-      clientContext,
-      parentContext,
+      CustomGetter.getEmptyResource(
+        resources['@id'],
+        clientContext,
+        parentContext,
+      ) as any,
     );
     const flattenedResources: any = await jsonld.flatten(resources);
     const compactedResources: any[] = await Promise.all(

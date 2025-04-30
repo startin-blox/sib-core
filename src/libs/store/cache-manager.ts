@@ -1,6 +1,5 @@
 import type { Resource } from '../../mixins/interfaces.ts';
 import { isUrlOrRelativePath } from '../helpers.ts';
-import { CustomGetter } from './custom-getter.ts';
 
 /**
  * A centralized cache manager for JSON-LD resources.
@@ -89,20 +88,11 @@ export class CacheManager {
    * and later by its actual `@id`.
    *
    * @param url - Data source (absolute or relative path).
-   * @param id - The resolved `@id` of the resource.
-   * @param clientContext - context of the client app
-   * @param parentContext - context of the server
+   * @param emptyResource - The resource to associate with this URL. Must include a valid `@id`.
    */
-  linkUrlWithId(url: string, id: string, clientContext, parentContext) {
+  linkUrlWithId(url: string, emptyResource: Resource) {
     if (!isUrlOrRelativePath(url)) return;
     if (this.hasUrlMatch(url)) return;
-
-    const emptyResource = new CustomGetter(
-      id,
-      { '@id': id },
-      clientContext,
-      parentContext,
-    ).getProxy();
 
     this.set(url, emptyResource as any);
   }
