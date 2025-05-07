@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SIB test: solid-display</title>
-    <script type="module" src="../dist/index.js"></script>
+    <script type="module" src="../src/index.ts"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -18,6 +18,14 @@
         data-src="/examples/data/catalog/catalog-example.jsonld"
     ></solid-display>
 
+    <h2>catalog-example with nested fields</h2>
+    <solid-display
+        id="test-2"
+        data-src="/examples/data/catalog/catalog-example.jsonld"
+        nested-field="odrl:hasPolicy"
+    ></solid-display>
+    <!-- fields="odrl:hasPolicy, dcat:distribution, dcat:accessURL" -->
+    <!-- multiple-dcat:distribution -->
 </body>
 
 </html>
