@@ -1,6 +1,6 @@
 describe('Solid Display Catalog Example', () => {
   beforeEach(() => {
-    cy.visit('/examples/catalog-example.html');
+    cy.visit('/examples/e2e/dcat-catalog.html');
   });
 
   it('should load the solid-display component', () => {
@@ -9,7 +9,7 @@ describe('Solid Display Catalog Example', () => {
       .and(
         'have.attr',
         'data-src',
-        '/examples/data/catalog/catalog-example.jsonld',
+        '/examples/data/catalog/e2e/dcat-catalog.jsonld',
       );
   });
 
