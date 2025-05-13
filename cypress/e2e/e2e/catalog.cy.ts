@@ -9,7 +9,7 @@ describe('Solid Display Catalog Example', () => {
       .and(
         'have.attr',
         'data-src',
-        '/examples/data/catalog/e2e/dcat-catalog.jsonld',
+        '/examples/data/catalog/dcat-catalog.jsonld',
       );
   });
 
