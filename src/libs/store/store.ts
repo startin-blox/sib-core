@@ -283,9 +283,9 @@ export class Store {
       if (
         (key === id &&
           resource['@type'] ===
-            this.getExpandedPredicate('ldp:Container', clientContext)) ||
+          this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-          this.getExpandedPredicate('dcat:Catalog', clientContext)
+        this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)
@@ -657,7 +657,8 @@ export class Store {
    * @param parentId
    */
   _getAbsoluteIri(id: string, context: object, parentId: string): string {
-    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
+    let iri = context.expandTerm(id, context); // expand if reduced ids
+    
     if (parentId && !parentId.startsWith('store://local')) {
       // and get full URL from parent caller for local files
       const parentIri = new URL(parentId, document.location.href).href;
