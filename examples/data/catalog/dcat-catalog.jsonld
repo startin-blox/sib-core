@@ -1,0 +1,134 @@
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "DataAccess": "https://example.org/ns/DataAccess#"
+  },
+  "@id": "urn:uuid:4f7475b7-f902-4d77-84fa-ee010b18a0ae",
+  "@type": "dcat:Catalog",
+  "dcat:dataset": [
+    {
+      "@id": "urn:dev3-trial8-object",
+      "@type": "dcat:Dataset",
+      "odrl:hasPolicy": {
+        "@id": "urn:ZGV2My1tZW1iZXItYW5kLWRhdGFwcm9jZXNzb3ItZGVm:ZGV2My10cmlhbDgtb2JqZWN0:MmM0N2IwMzQtMGFhMi00NGRlLWFhZDktNDE1ZGY4M2RmZmM0",
+        "@type": "odrl:Offer",
+        "odrl:permission": [],
+        "odrl:prohibition": [],
+        "odrl:obligation": {
+          "odrl:action": {
+            "@id": "odrl:use"
+          },
+          "odrl:constraint": {
+            "odrl:leftOperand": {
+              "@id": "DataAccess:level"
+            },
+            "odrl:operator": {
+              "@id": "odrl:eq"
+            },
+            "odrl:rightOperand": "processing"
+          }
+        }
+      },
+      "dcat:distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "dct:format": {
+            "@id": "urn:HttpData-PULL"
+          },
+          "dcat:accessService": {
+            "@id": "urn:uuid:232c7755-00e2-4bc5-b370-0eb710abe316",
+            "@type": "dcat:DataService",
+            "dcat:endpointDescription": "dspace:connector",
+            "dcat:endpointUrl": "http://provider-qna-controlplane:8082/api/dsp",
+            "dcat:endpointURL": "http://provider-qna-controlplane:8082/api/dsp"
+          }
+        },
+        {
+          "@type": "dcat:Distribution",
+          "dct:format": {
+            "@id": "urn:HttpData-PUSH"
+          },
+          "dcat:accessService": {
+            "@id": "urn:uuid:232c7755-00e2-4bc5-b370-0eb710abe316",
+            "@type": "dcat:DataService",
+            "dcat:endpointDescription": "dspace:connector",
+            "dcat:endpointUrl": "http://provider-qna-controlplane:8082/api/dsp",
+            "dcat:endpointURL": "http://provider-qna-controlplane:8082/api/dsp"
+          }
+        }
+      ],
+      "idx:IndexEntry": "https://api.tems-dev3.startinblox.com/indexes/objects/trial8/index",
+      "description": "This asset requires Membership to view and negotiate.",
+      "id": "urn:dev3-trial8-object"
+    },
+    {
+      "@id": "urn:dev3-trial6-object",
+      "@type": "dcat:Dataset",
+      "odrl:hasPolicy": {
+        "@id": "urn:ZGV2My1zZW5zaXRpdmUtb25seS1kZWY=:ZGV2My10cmlhbDYtb2JqZWN0:Mzk0ZWYwZjYtMjYzNi00NGY5LTllYWMtYjUwMjEzNTkwNDA3",
+        "@type": "odrl:Offer",
+        "odrl:permission": [],
+        "odrl:prohibition": [],
+        "odrl:obligation": {
+          "odrl:action": {
+            "@id": "odrl:use"
+          },
+          "odrl:constraint": {
+            "odrl:leftOperand": {
+              "@id": "DataAccess:level"
+            },
+            "odrl:operator": {
+              "@id": "odrl:eq"
+            },
+            "odrl:rightOperand": "sensitive"
+          }
+        }
+      },
+      "dcat:distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "dct:format": {
+            "@id": "urn:HttpData-PULL"
+          },
+          "dcat:accessService": {
+            "@id": "urn:uuid:232c7755-00e2-4bc5-b370-0eb710abe316",
+            "@type": "dcat:DataService",
+            "dcat:endpointDescription": "dspace:connector",
+            "dcat:endpointUrl": "http://provider-qna-controlplane:8082/api/dsp",
+            "dcat:endpointURL": "http://provider-qna-controlplane:8082/api/dsp"
+          }
+        },
+        {
+          "@type": "dcat:Distribution",
+          "dct:format": {
+            "@id": "urn:HttpData-PUSH"
+          },
+          "dcat:accessService": {
+            "@id": "urn:uuid:232c7755-00e2-4bc5-b370-0eb710abe316",
+            "@type": "dcat:DataService",
+            "dcat:endpointDescription": "dspace:connector",
+            "dcat:endpointUrl": "http://provider-qna-controlplane:8082/api/dsp",
+            "dcat:endpointURL": "http://provider-qna-controlplane:8082/api/dsp"
+          }
+        }
+      ],
+      "idx:IndexEntry": "https://api.tems-dev3.startinblox.com/indexes/objects/trial6/index",
+      "description": "This asset requires Membership to view and SensitiveData credential to negotiate.",
+      "id": "urn:dev3-trial6-object"
+    }
+  ],
+  "dcat:distribution": [],
+  "dcat:service": {
+    "@id": "urn:uuid:232c7755-00e2-4bc5-b370-0eb710abe316",
+    "@type": "dcat:DataService",
+    "dcat:endpointDescription": "dspace:connector",
+    "dcat:endpointUrl": "http://provider-qna-controlplane:8082/api/dsp",
+    "dcat:endpointURL": "http://provider-qna-controlplane:8082/api/dsp"
+  },
+  "dspace:participantId": "did:web:provider-identityhub%3A7083:provider"
+}

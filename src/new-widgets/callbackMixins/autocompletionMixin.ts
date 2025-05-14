@@ -28,16 +28,11 @@ const AutocompletionMixin = {
   },
   initialState: {
     slimSelect: null,
-    mutationObserver: null,
   },
   created() {
     importInlineCSS(
       'slimselect-base',
       () => import('slim-select/styles?inline'),
-    );
-    importInlineCSS(
-      'slimselect-local',
-      () => import('./slimselect.css?inline'),
     );
 
     this.slimSelect = null;
@@ -48,11 +43,10 @@ const AutocompletionMixin = {
     );
   },
   detached() {
-    if (this.slimSelect) this.slimSelect.destroy();
-    if (this.mutationObserver) this.mutationObserver.disconnect();
+    this.slimSelect?.destroy();
+    this.slimSelect = null;
   },
   addCallback(value: string, listCallbacks: PostProcessorRegistry) {
-    if (this.slimSelect) return;
     asyncQuerySelector('select:has(option)', this.element).then(select => {
       this.initSlimSelect(select);
     });
@@ -60,7 +54,7 @@ const AutocompletionMixin = {
     if (nextProcessor) nextProcessor(value, listCallbacks);
   },
   async initSlimSelect(select: Element) {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    this.slimSelect?.destroy();
     const slimSelect = new SlimSelect({
       select,
       settings: {
@@ -73,6 +67,9 @@ const AutocompletionMixin = {
         contentLocation: this.element,
       },
       events: {
+        afterChange: () => {
+          this.element.dispatchEvent(new Event('input', { bubbles: true }));
+        },
         searchFilter: (option, filterValue) =>
           fuzzyCompare(option.text, filterValue),
       },

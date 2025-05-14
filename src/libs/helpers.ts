@@ -368,6 +368,20 @@ const asyncQuerySelector: AsyncQuerySelectorType = (
     });
   });
 
+function isUrlOrRelativePath(value: string) {
+  if (typeof value !== 'string') return false;
+
+  // Exclude blank nodes
+  if (value.startsWith('_:')) return false;
+
+  // Accept absolute URIs with any protocol (e.g. http:, ftp:, urn:, did:)
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(value)) return true;
+
+  // Accept relative paths starting with /
+  if (value.startsWith('/')) return true;
+
+  return false;
+}
 const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
   selector: string,
   parent: ParentNode = document,
@@ -411,4 +425,5 @@ export {
   AsyncIterableBuilder,
   asyncQuerySelector,
   asyncQuerySelectorAll,
+  isUrlOrRelativePath,
 };

@@ -308,10 +308,15 @@ describe('multiple widgets', { testIsolation: false }, function () {
       cy.get(
         `solid-form-multipleselect-autocompletion${prefix}test5 .ss-values`,
       )
-        .eq(1)
+        .eq(0)
         .children()
         .should('have.length', 1)
         .should('contain', 'DevOps');
+      cy.get('solid-form-multipleselect-autocompletion').then(elm => {
+        expect((elm[0] as any).component.getValue()).deep.eq([
+          { '@id': '/examples/data/list/skill-4.jsonld' },
+        ]);
+      });
     });
   });
 

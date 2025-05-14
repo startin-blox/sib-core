@@ -19,4 +19,5 @@ export interface Resource {
   isFullResource: Function;
   properties: string[];
   serverPagination: object;
+  merge: Function;
 }

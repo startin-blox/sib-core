@@ -27,7 +27,7 @@ describe('solid-form-richeditor-spec', function () {
     cy.get('#tinymce-editor1 solid-form-editor > textarea').should(
       'have.attr',
       'name',
-      'name',
+      'description',
     );
     cy.get('#tinymce-editor1 solid-form-editor > div > div')
       .children()

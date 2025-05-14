@@ -1,4 +1,4 @@
-import JSONLDContextParser from 'jsonld-context-parser';
+import * as JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { store } from './store.ts';
 
@@ -135,6 +135,15 @@ export class CustomGetter {
       store.subscribeResourceTo(this.resourceId, value['@id']);
       return resource ? await resource[path2.join('.')] : undefined; // return value
     }
+  }
+
+  static getEmptyResource(id: string, clientContext, parentContext) {
+    return new CustomGetter(
+      id,
+      { '@id': id },
+      clientContext,
+      parentContext,
+    ).getProxy();
   }
 
   /**

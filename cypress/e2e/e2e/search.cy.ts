@@ -277,6 +277,18 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
       .should('have.length', 2);
   });
 
+  it('solid-form-search + autocomplete', () => {
+    cy.get('#autocompletion > div').children().should('have.length', 4);
+
+    cy.get('#autocompletion .ss-main').click();
+    cy.get('#autocompletion .ss-list > *').contains('DevOps').click();
+    cy.get('#autocompletion > div').children().should('have.length', 1);
+
+    cy.get('#autocompletion .ss-main').click();
+    cy.get('#autocompletion .ss-list > *').contains('CSS').click();
+    cy.get('#autocompletion > div').children().should('have.length', 2);
+  });
+
   it('solid-form-search + debounce', () => {
     const input = cy.get('#filter-debounce input');
     input.type('p');

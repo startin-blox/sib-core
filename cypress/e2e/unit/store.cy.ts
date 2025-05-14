@@ -239,7 +239,7 @@ describe('store', { testIsolation: false }, function () {
 
     cy.get('@users').its('response.statusCode').should('equal', 200);
 
-    cy.window().its('sibStore.cache').should('have.length', 13); // cache
+    cy.window().its('sibStore.cache.resourceCache').should('have.length', 13); // cache
     cy.window().its('sibStore.loadingList').should('have.property', 'size', 0); // loading list
     cy.window().its('sibStore.subscriptionIndex').should('have.length', 8); // Subscription index
 
@@ -393,7 +393,7 @@ describe('store', { testIsolation: false }, function () {
   });
 
   it('clears cache', () => {
-    cy.window().its('sibStore.cache').should('have.length', 15);
+    cy.window().its('sibStore.cache.resourceCache').should('have.length', 15);
 
     cy.window()
       .its('sibStore')
@@ -404,7 +404,7 @@ describe('store', { testIsolation: false }, function () {
       .its('sibStore')
       .invoke('clearCache', '/examples/data/list/user-1.jsonld');
 
-    cy.window().its('sibStore.cache').should('have.length', 14);
+    cy.window().its('sibStore.cache.resourceCache').should('have.length', 14);
 
     cy.window()
       .its('sibStore')
@@ -413,7 +413,7 @@ describe('store', { testIsolation: false }, function () {
 
     cy.window().its('sibStore').invoke('clearCache', 'wrong-id.jsonld');
 
-    cy.window().its('sibStore.cache').should('have.length', 14);
+    cy.window().its('sibStore.cache.resourceCache').should('have.length', 14);
   });
 
   it('subscribes resource', () => {
@@ -551,6 +551,7 @@ describe('store', { testIsolation: false }, function () {
   it('getNestedResources', () => {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
+      store.cache.clear();
       cy.spy(store, 'fetchData');
       await store.getData('/examples/data/list/user-1.jsonld', base_context);
 
@@ -594,17 +595,17 @@ describe('store', { testIsolation: false }, function () {
       cy.spy(store, 'getData');
       cy.spy(store, 'fetchData');
 
-      expect(store.cache).to.have.length(15);
+      expect(store.cache.length()).to.be.equal(4);
       await store.refreshResources([
         '/examples/data/list/user-1.jsonld',
         '/examples/data/list/users.jsonld',
       ]);
 
-      expect(store.clearCache).to.be.calledTwice;
-      expect(store.getData).to.be.calledTwice;
-      expect(store.fetchData).to.be.calledTwice;
+      expect(store.clearCache).to.be.calledOnce;
+      expect(store.getData).to.be.calledOnce;
+      expect(store.fetchData).to.be.calledOnce;
 
-      expect(store.cache).to.have.length(15);
+      expect(store.cache.length()).to.be.equal(4);
     });
   });
 
