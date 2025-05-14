@@ -12,11 +12,7 @@ export default defineConfig({
     },
     rollupOptions: {
       preserveEntrySignatures: 'strict',
-      input: [
-        './src/index.ts',
-        './src/libs/helpers.ts',
-        './src/libs/store/store.ts',
-      ],
+      input: ['./src/index.ts', './src/store.ts', './src/libs/helpers.ts'],
       output: {
         dir: 'dist',
         entryFileNames: '[name].js',
