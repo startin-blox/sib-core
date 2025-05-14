@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: local file</title>
+    <script type="module">
+      async function loadStore () {
+        const {store, baseContext} = await import('../../dist/store.js')
+        return {store, baseContext}
+      }
+
+      async function loadStoreFromCore () {
+        const {store, baseContext} = await import('../../dist/index.js')
+        return {store, baseContext}
+      }
+
+      Object.assign(window, {
+        loadStore,
+        loadStoreFromCore,
+      })
+    </script>
+  </head>
+  <body></body>
+</html>
