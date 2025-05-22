@@ -41,8 +41,8 @@ import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencie
 import { Sib } from './libs/Sib.ts';
 import * as Helpers from './libs/helpers.ts';
 // Libs
-import { base_context as baseContext, store } from './libs/store/store.ts';
 import SolidTemplateElement from './solid-template-element.ts';
+import { baseContext, store } from './store.ts';
 import { widgetFactory } from './widgets/widget-factory.ts';
 
 // lit-html
