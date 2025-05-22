@@ -4,7 +4,7 @@ import { ConfigurationImpl, DatasetBaseFactoryImpl, MixinFactoryImpl, Semantizer
 import { DatasetCoreRdfjsImpl } from "@semantizer/core-rdfjs";
 import { DatasetMixin } from "@semantizer/mixin-dataset";
 import IndexLoader from './index-loader.ts';
-import { LoaderQuadStreamRdfjs } from "@semantizer/loader-quad-stream-rdfjs";
+import LoaderQuadStreamCore from './index-loader-quad.ts';
 
 declare global {
     var SEMANTIZER: Semantizer;
@@ -13,7 +13,7 @@ declare global {
 const semantizer: Semantizer = new SemantizerImpl(
     new ConfigurationImpl({
         loader: new IndexLoader(),
-        loaderQuadStream: new LoaderQuadStreamRdfjs(),
+        loaderQuadStream: new LoaderQuadStreamCore(),
         datasetImpl: DatasetMixin(DatasetCoreRdfjsImpl),
         rdfModelDataFactory: dataFactory,
         mixinFactoryImpl: MixinFactoryImpl,

@@ -13,23 +13,22 @@ export default class IndexLoader implements Loader{
     public async load(uri: string): Promise<DatasetCoreRdfjs<Quad, Quad>> {
         let responseBody;
         let responseText, input;
+        let headers = store.headers;
+
+        //TODO: To be replaced by proper authenticated fetch, but workaround for now.
+        headers['X-Bypass-Policy'] = true;
+
         let response = await store.fetchAuthn(uri, {
           method: 'GET',
-          headers: store.headers,
+          headers: headers,
           credentials: 'include',
         });
-        // .then(response => {
-        //   console.log("[IndexLoader] Index loaded", response);
-        //   if (!response.ok) return;
-        //   return response.json();
-        // });
 
         if (!response) {
             throw new Error(response);
         } else {
           responseBody = response.body;
           responseText = await response.text();
-          console.log("[IndexLoader] Index loaded", responseText);
           input = new Readable({
             read: () => {
               input.push(responseText)
@@ -37,18 +36,12 @@ export default class IndexLoader implements Loader{
             }
           });
         }
-        // const quadStream = await this.loadQuadStream();
-        // const semantizer = this.getSemantizer();
-        // const datasets: DatasetSemantizer[] = []; // stores the datasets of the parsed entry, shape or property
         console.log("[IndexLoader] Input loaded", input);
         const parserJsonld = new ParserJsonld()
         const quads = parserJsonld.import(input);
 
         console.log("[LoaderQuadStreamRdfjs] Quads loaded", quads);
         
-
-        // const quadSet = quads.quadStream();
-        // console.log("[LoaderQuadStreamRdfjs] loaded", quadSet);
         let resDataset = datasetFactory.dataset();
         const quadsRes = new Promise<DatasetCoreRdfjs>((resolve,reject) => {  
           quads.on('data', (quad: Quad) => {
@@ -60,8 +53,6 @@ export default class IndexLoader implements Loader{
             }
           });
           quads.on('end', () => {
-            // console.log("[LoaderQuadStreamRdfjs] Dataset loaded", quad);
-            // resDataset.add(quad);
             resolve(resDataset);
           });
           quads.on('error', (error) => {
@@ -71,7 +62,6 @@ export default class IndexLoader implements Loader{
         });
 
         return quadsRes;
-        // return this._DatasetCoreRdfjsImpl(quads);
     }
 
 

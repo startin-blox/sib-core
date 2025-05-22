@@ -9,14 +9,21 @@ import '../libs/store/semantizer.ts';
 
 // Semantizer imports
 // import semantizer from '@semantizer/default';
-import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
-import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
+// import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
+import { EntryStreamTransformerDefaultImpl, indexFactory } from "@semantizer/mixin-index";
+// import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
+import { IndexQueryingStrategyShaclDefaultImpl } from "@semantizer/utils-index-querying-strategy-shacl";
+import { IndexStrategyFinalShapeDefaultImpl } from "@semantizer/utils-index-querying-strategy-shacl-final";
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
-import type { DatasetSemantizer } from '@semantizer/types';
+import type { DatasetSemantizer, NamedNode } from '@semantizer/types';
+
+import N3 from "n3";
+// import dataFactory from "@rdfjs/data-model";
+import { ValidatorImpl } from "@semantizer/utils-shacl-validator-default";
 
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
-import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
+// import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
 // import { DatasetBaseFactoryImpl } from '@semantizer/core';
 // import IndexStrategySparqlComunica from "@semantizer/mixin-index-strategy-sparql-comunica";
 
@@ -60,6 +67,18 @@ const FilterMixin = {
         this.filteredOn = FilterMode.Index;
         console.log('Set index src', value);
       },
+    },
+    dataTargetShape: {
+      type: String,
+      default: null,
+    },
+    dataFinalShape: {
+      type: String,
+      default: null,
+    },
+    dataSubindexShape: {
+      type: String,
+      default: null,
     },
     filteredBy: {
       type: String,
@@ -190,109 +209,229 @@ const FilterMixin = {
 
     // This line can be combined by passing indexFactory in the load instruction
     // 4. Build the index mixin
-    console.log('Index dataset', indexDataset);
-    const index = SEMANTIZER.build(indexFactory, indexDataset);
+    // console.log('Index dataset', indexDataset);
+    // const index = SEMANTIZER.build(indexFactory, indexDataset);
 
     // 5. Construct the shape by iterating over fields from the component and resolving their predicate names
     // and get the associated filter values for each of them and add them as pattern
     // How to differentiate between pattern and value properties?
-    const shape = SEMANTIZER.build(indexShapeFactory);
-    const dataFactory = SEMANTIZER.getConfiguration().getRdfDataModelFactory();
+    // const shape = SEMANTIZER.build(indexShapeFactory);
+    // const dataFactory = SEMANTIZER.getConfiguration().getRdfDataModelFactory();
 
-    // How can we know the type of the shape from the component configuration ?
-    // Or should actually the shape be a static configuration object for the component itself ?
-    // We could look at a new attribute data-rdf-type on the component to know the type of the shape
-    // this.element.component.dataRdfType = "https://cdn.startinblox.com/owl#User";
-    console.log('Data RDF type', this.dataRdfType);
-    const dataRdfTypeNode = dataFactory.namedNode(this.dataRdfType);
-    console.log('Data RDF type node', dataRdfTypeNode);
-    shape.addTargetRdfType(dataRdfTypeNode);
+    // // How can we know the type of the shape from the component configuration ?
+    // // Or should actually the shape be a static configuration object for the component itself ?
+    // // We could look at a new attribute data-rdf-type on the component to know the type of the shape
+    // // this.element.component.dataRdfType = "https://cdn.startinblox.com/owl#User";
+    // console.log('Data RDF type', this.dataRdfType);
+    // const dataRdfTypeNode = dataFactory.namedNode(this.dataRdfType);
+    // console.log('Data RDF type node', dataRdfTypeNode);
+    // shape.addTargetRdfType(dataRdfTypeNode);
 
-    // How to get the proper predicates from the fields attribute of the component ?
-    // We need to parse the fields attribute to get the predicates
-    // const fields = this.searchFields;
+    // // How to get the proper predicates from the fields attribute of the component ?
+    // // We need to parse the fields attribute to get the predicates
+    // // const fields = this.searchFields;
+    // // const filterValues = parseFieldsString(fields);
+
+    // // But, there are limitations with this parseFieldsString function:
+    // // - There are fields which have multiple values, like skills, which values are an array of resources (with @ids)
+    // // - Deal with that later !!
+
+    // // - There are fields which are sets, which means a combination of two actual predicates, like name(firstName, lastName)
+    // // - Deal with that later !!
+
+    // // - There are fields which are predicates from a linked object, like profile.city on the user, which is a reference to a "city" literal value
+    // console.log('Fields after parsing', filterValues);
+    // for (const [field, fieldValue] of Object.entries(filterValues)) {
+    //   const value = fieldValue as FilterValue;
+    //   console.log(
+    //     'Field, fieldValue, fieldValue!.value',
+    //     field,
+    //     fieldValue,
+    //     value.value,
+    //   );
+
+    //   let path = field;
+    //   if (field.includes('.')) {
+    //     // Split the path on each dots
+    //     const fieldPath: string[] = field.split('.');
+
+    //     // Get last path
+    //     path = fieldPath.pop() as string;
+    //   }
+
+    //   // Arbitrarily format the field name to match the predicate name
+    //   // we need to convert the _*char* to *Char* to match the predicate name
+    //   const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
+    //   console.log('Field name', fieldName);
+    //   const actualPredicate = store.getExpandedPredicate(
+    //     fieldName,
+    //     base_context,
+    //   );
+
+    //   // actualPredicate = actualPredicate.replace('https', 'http');
+    //   console.log('Actual predicate', actualPredicate);
+    //   // Check that value is not empty and that it is not an empty array
+    //   if (
+    //     Array.isArray(value.value) &&
+    //     (value.value as Array<string>).length > 0
+    //   ) {
+    //     // We need to handle the case where the field is an array of resources
+    //     // We need to add a pattern property for each of the resources in the array
+    //     for (const unitValue of value.value as Array<string>) {
+    //       shape.addPatternProperty(
+    //         dataFactory.namedNode(actualPredicate),
+    //         dataFactory.namedNode(unitValue),
+    //       );
+    //       console.log('Adding pattern property',
+    //         dataFactory.namedNode(actualPredicate),
+    //         dataFactory.namedNode(unitValue),
+    //         'to shape',
+    //         shape
+    //       );
+    //     }
+    //   } else if (typeof value.value === 'string' && value.value.length > 0) {
+    //     // @ts-ignore
+    //     shape.addPatternProperty(
+    //       dataFactory.namedNode(actualPredicate),
+    //       dataFactory.literal(`${value.value}.*`),
+    //     );
+    //     console.log('Adding pattern property',
+    //       dataFactory.namedNode(actualPredicate),
+    //       dataFactory.namedNode(`${value.value}.*`),
+    //       'to shape',
+    //       shape
+    //     );
+    //   }
+    // }
+
+    // // How to know what filters are present in the shape ?
+    // console.log('Log right before getFilterProperties call');
+    // console.log('Shape filter properties', shape.getFilterProperties());
+    // console.log('Log right after getFilterProperties call');
+
+    // // if shape does not contains any pattern property, we add a default one
+    // if (shape.getFilterProperties().length === 0) {
+    //   shape.addPatternProperty(
+    //     dataFactory.namedNode('https://cdn.startinblox.com/owl/tems.jsonld#description'),
+    //     dataFactory.literal('lor.*'),
+    //   );
+    //   console.log('Adding default pattern property for description',
+    //     dataFactory.namedNode('https://cdn.startinblox.com/owl/tems.jsonld#description'),
+    //     dataFactory.literal('lor.*'),
+    //     'to shape',
+    //     shape
+    //   );
+    // }
+
+    // console.log('Shape filter properties', shape.getFilterProperties());
+    // console.log('Shape after iterating on the fields', shape);
+    const finalShapeTemplate = await fetch(this.dataFinalShape);
+    let finalShapeTurtle = await finalShapeTemplate.text();
+
+    const subindexShapeTemplate = await fetch(this.dataSubindexShape);
+    let subIndexShapeTurtle = await subindexShapeTemplate.text();
+
+    const targetShapeTemplate = await fetch(this.dataTargetShape);
+    let targetShapeTurtle = await targetShapeTemplate.text();
+    // console.log('Target shape', targetShapeTurtle);
+    // console.log('Final shape', finalShapeTurtle);
+    // console.log('Sub index shape', subIndexShapeTurtle);
+
     // const filterValues = parseFieldsString(fields);
+    const filterFields = Object.entries(filterValues);
+    console.log('Filter fields', filterFields);
+    const firstField = filterFields[0];
+    const firstFieldValue = firstField[1] as FilterValue;
+    console.log('First field', firstField);
+    console.log('First field value', firstFieldValue);
+    console.log('First field value', firstFieldValue.value);
 
-    // But, there are limitations with this parseFieldsString function:
-    // - There are fields which have multiple values, like skills, which values are an array of resources (with @ids)
-    // - Deal with that later !!
-
-    // - There are fields which are sets, which means a combination of two actual predicates, like name(firstName, lastName)
-    // - Deal with that later !!
-
-    // - There are fields which are predicates from a linked object, like profile.city on the user, which is a reference to a "city" literal value
-    console.log('Fields after parsing', filterValues);
-    for (const [field, fieldValue] of Object.entries(filterValues)) {
-      const value = fieldValue as FilterValue;
-      console.log(
-        'Field, fieldValue, fieldValue!.value',
-        field,
-        fieldValue,
-        value.value,
-      );
-
-      let path = field;
-      if (field.includes('.')) {
-        // Split the path on each dots
-        const fieldPath: string[] = field.split('.');
-
-        // Get last path
-        path = fieldPath.pop() as string;
-      }
-
-      // Arbitrarily format the field name to match the predicate name
-      // we need to convert the _*char* to *Char* to match the predicate name
-      const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
-      console.log('Field name', fieldName);
-      const actualPredicate = store.getExpandedPredicate(
-        fieldName,
-        base_context,
-      );
-
-      // actualPredicate = actualPredicate.replace('https', 'http');
-      console.log('Actual predicate', actualPredicate);
-      // Check that value is not empty and that it is not an empty array
-      if (
-        Array.isArray(value.value) &&
-        (value.value as Array<string>).length > 0
-      ) {
-        // We need to handle the case where the field is an array of resources
-        // We need to add a pattern property for each of the resources in the array
-        for (const unitValue of value.value as Array<string>) {
-          shape.addPatternProperty(
-            dataFactory.namedNode(actualPredicate),
-            dataFactory.namedNode(unitValue),
-          );
-        }
-      } else if (typeof value.value === 'string' && value.value.length > 0) {
-        // @ts-ignore
-        shape.addPatternProperty(
-          dataFactory.namedNode(actualPredicate),
-          dataFactory.literal(`${value.value}.*`),
-        );
-      }
+    let path = firstField[0];
+    if (path.includes('.')) {
+      // Split the path on each dots
+      const fieldPath: string[] = path.split('.');
+      // Get last path
+      path = fieldPath.pop() as string;
     }
 
-    // How to know what filters are present in the shape ?
-    console.log('Shape filter properties', shape.getFilterProperties());
-    // if shape does not contains any pattern property, we add a default one
-    if (shape.getFilterProperties().length === 0) {
-      shape.addPatternProperty(
-        dataFactory.namedNode('https://cdn.startinblox.com/owl/tems.jsonld#description'),
-        dataFactory.literal('lor.*'),
-      );
-    }
+    const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
+    console.log('Field name', fieldName);
 
-    console.log('Shape filter properties', shape.getFilterProperties());
-    console.log('Shape after iterating on the fields', shape);
-
-    const strategy = new IndexStrategyConjunction(shape);
-    console.log('Strategy', strategy);
-    await index.findTargetsRecursively(
-      strategy,
-      (...args) => this.updateContainer(...args),
-      9,
+    // Replace the placeholder in the subindex shape
+    subIndexShapeTurtle = subIndexShapeTurtle.replace(
+      '__PLACEHOLDER_RDFTYPE__',
+      this.dataRdfType,
     );
+    subIndexShapeTurtle = subIndexShapeTurtle.replace(
+      '__PLACEHOLDER_PROPERTYNAME__',
+      fieldName,
+    );
+    console.log('Sub index shape with rdf type and property name', subIndexShapeTurtle);
+
+    // Replace the placeholder in the final shape
+    finalShapeTurtle = finalShapeTurtle.replace(
+      '__PLACEHOLDER_RDFTYPE__',
+      this.dataRdfType,
+    );
+    finalShapeTurtle = finalShapeTurtle.replace(
+      '__PLACEHOLDER_PROPERTYNAME__',
+      fieldName,
+    );
+    finalShapeTurtle = finalShapeTurtle.replace(
+      '__PATTERN_PLACEHOLDER__',
+      firstFieldValue.value as string,
+    );
+    console.log('Final shape with rdf type and property name and pattern', finalShapeTurtle);
+
+    // Replace the placeholder in the target shape
+    targetShapeTurtle = targetShapeTurtle.replace(
+      '__PLACEHOLDER_RDFTYPE__',
+      this.dataRdfType,
+    );
+    targetShapeTurtle = targetShapeTurtle.replace(
+      '__PLACEHOLDER_PROPERTYNAME__',
+      fieldName,
+    );
+    targetShapeTurtle = targetShapeTurtle.replace(
+      '__PATTERN_PLACEHOLDER__',
+      firstFieldValue.value as string,
+    );
+
+    console.log('Target shape with rdf type, property name and pattern', targetShapeTurtle);
+    const parser = new N3.Parser({ format: 'text/turtle' });
+    const targetShape = SEMANTIZER.build();
+    targetShape.addAll(parser.parse(targetShapeTurtle));
+
+    const finalIndexShape = SEMANTIZER.build();
+    finalIndexShape.addAll(parser.parse(finalShapeTurtle));
+
+    const subIndexShape = SEMANTIZER.build();
+    subIndexShape.addAll(parser.parse(subIndexShapeTurtle));
+
+    const shaclValidator = new ValidatorImpl();
+    const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
+
+    const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(finalIndexShape, subIndexShape, shaclValidator, entryTransformer);
+    const shaclStrategy = new IndexQueryingStrategyShaclDefaultImpl(targetShape, finalIndexStrategy, shaclValidator, entryTransformer);
+
+    const index = await SEMANTIZER.load(
+      this.dataSrcIndex,
+      indexFactory
+    );
+
+    const resultStream = index.query(shaclStrategy);
+    console.log('Strategy', resultStream);
+    resultStream.on('data', (result: NamedNode) => {
+      console.log('Result stream', result);
+      this.updateContainer(result)
+      console.log('Result', result);
+    });
+
+    // await index.findTargetsRecursively(
+    //   strategy,
+    //   (...args) => this.updateContainer(...args),
+    //   9,
+    // );
   },
   updateContainer(user: DatasetSemantizer) {
     // console.log('Update container', user, this.localResources);
