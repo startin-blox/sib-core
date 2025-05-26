@@ -420,7 +420,7 @@ const FilterMixin = {
     );
 
     const resultStream = index.query(shaclStrategy);
-    console.log('Strategy', resultStream);
+    // console.log('Strategy', resultStream);
     resultStream.on('data', (result: NamedNode) => {
       console.log('Result stream', result);
       this.updateContainer(result)
@@ -433,11 +433,11 @@ const FilterMixin = {
     //   9,
     // );
   },
-  updateContainer(user: DatasetSemantizer) {
-    // console.log('Update container', user, this.localResources);
-    if (user.getOrigin()?.value) {
+  updateContainer(resource: NamedNode) {
+    console.log('Update container', resource.value, this.localResources);
+    if (resource.value) {
       this.localResources['ldp:contains'].push({
-        '@id': user.getOrigin()?.value || '',
+        '@id': resource.value || '',
         '@type': this.dataRdfType,
       });
     }

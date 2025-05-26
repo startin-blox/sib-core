@@ -16,7 +16,7 @@ export default class IndexLoader implements Loader{
         let headers = store.headers;
 
         //TODO: To be replaced by proper authenticated fetch, but workaround for now.
-        headers['X-Bypass-Policy'] = true;
+        // headers['X-Bypass-Policy'] = true;
 
         let response = await store.fetchAuthn(uri, {
           method: 'GET',

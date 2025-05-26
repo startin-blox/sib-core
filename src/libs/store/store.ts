@@ -181,7 +181,6 @@ export class Store {
   }
 
   async fetchAuthn(iri: string, options: any) {
-    console.log('fetchAuthn', iri, options);
     if (!this.fetch) {
       console.warn('No fetch method available');
     }
@@ -193,16 +192,13 @@ export class Store {
     
     if (this.fetch && authenticated) {
       // authenticated
-      console.log('Authenticated headers', options.headers);
       return this.fetch.then(fn => {
-        console.log('Fetch method available', fn);
         return fn(iri, options)
       });
     }
 
     // anonymous
     if (options.headers) {
-      console.log('Anonymous headers', options.headers);
       options.headers = this._convertHeaders(options.headers);
     }
     return fetch(iri, options).then(response => response);
@@ -357,7 +353,6 @@ export class Store {
     id: string,
     bypassLoadingList = false,
   ): Promise<any> {
-    // console.log('from _fetch', method, resource, id);
     if (method !== '_LOCAL')
       return this.fetchAuthn(id, {
         method: method,
