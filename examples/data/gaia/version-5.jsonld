@@ -23,7 +23,9 @@
     "@id": "https://creativecommons.org/licenses/by/4.0/"
   },
   "gx:policy": [
-    { "@id": "https://example.org/gaiax/policy/weather-usage" }
+    {
+      "@id": "https://example.org/gaiax/policy/weather-usage"
+    }
   ],
   "gx:providedBy": {
     "@id": "https://example.org/gaiax/org-meteo",

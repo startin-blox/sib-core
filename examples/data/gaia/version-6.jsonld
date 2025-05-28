@@ -7,16 +7,20 @@
   "@type": "gx:InfrastructureOffering",
   "dct:title": "Edge Compute Node",
   "dct:description": "Compact ARM-based compute node for edge computing.",
-  "geo:lat": 52.5200,
-  "geo:long": 13.4050,
+  "geo:lat": 52.52,
+  "geo:long": 13.405,
   "gx:providedBy": {
     "@id": "https://example.org/gaiax/org-edge",
     "@type": "gx:LegalParticipant",
     "gx:legalName": "EdgeCompute GmbH"
   },
   "gx:dependsOn": [
-    { "@id": "https://example.org/gaiax/infra-network-1" },
-    { "@id": "https://example.org/gaiax/infra-power-1" }
+    {
+      "@id": "https://example.org/gaiax/infra-network-1"
+    },
+    {
+      "@id": "https://example.org/gaiax/infra-power-1"
+    }
   ],
   "gx:resourceEndpoint": {
     "@type": "gx:InterfaceDescription",

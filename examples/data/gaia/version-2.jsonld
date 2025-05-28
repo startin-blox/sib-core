@@ -33,11 +33,7 @@
           "gx:accessURL": "https://data.example.org/"
         }
       ],
-      "gx:keyword": [
-        "Nobel prize",
-        "science",
-        "prize"
-      ],
+      "gx:keyword": ["Nobel prize", "science", "prize"],
       "gx:theme": {
         "@id": "http://eurovoc.europa.eu/100142"
       },

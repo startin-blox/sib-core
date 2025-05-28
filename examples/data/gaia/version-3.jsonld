@@ -17,12 +17,20 @@
     "gx:legalName": "Mathews, Hammond and Jones"
   },
   "gx:policy": [
-    { "@id": "https://example.org/policy/1/0" },
-    { "@id": "https://example.org/policy/1/1" }
+    {
+      "@id": "https://example.org/policy/1/0"
+    },
+    {
+      "@id": "https://example.org/policy/1/1"
+    }
   ],
   "gx:dependsOn": [
-    { "@id": "https://example.org/dependency/1-1" },
-    { "@id": "https://example.org/dependency/1-2" }
+    {
+      "@id": "https://example.org/dependency/1-1"
+    },
+    {
+      "@id": "https://example.org/dependency/1-2"
+    }
   ],
   "gx:serviceType": {
     "@id": "https://example.org/type/storage"
