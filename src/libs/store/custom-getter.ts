@@ -1,8 +1,6 @@
-import * as JSONLDContextParser from 'jsonld-context-parser';
 import type { Resource } from '../../mixins/interfaces.ts';
+import { mergeContexts, normalizeContext } from '../helpers.ts';
 import { store } from './store.ts';
-
-const ContextParser = JSONLDContextParser.ContextParser;
 
 export class CustomGetter {
   resource: any; // content of the requested resource
@@ -38,7 +36,7 @@ export class CustomGetter {
       this.getExpandedPredicate('ldp:DirectContainer'),
       this.getExpandedPredicate('ldp:IndirectContainer'),
       this.getExpandedPredicate('sib:federatedContainer'),
-    ];
+    ].filter(Boolean) as string[];
   }
 
   /**
@@ -121,7 +119,7 @@ export class CustomGetter {
         if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
         return await this.getResource(
           value['@id'],
-          { ...this.clientContext, ...this.serverContext },
+          mergeContexts(this.clientContext, this.serverContext),
           this.parentId || this.resourceId,
         ); // return complete resource
       }
@@ -129,7 +127,7 @@ export class CustomGetter {
 
       const resource = await this.getResource(
         value['@id'],
-        { ...this.clientContext, ...this.serverContext },
+        mergeContexts(this.clientContext, this.serverContext),
         this.parentId || this.resourceId,
       );
       store.subscribeResourceTo(this.resourceId, value['@id']);
@@ -179,7 +177,7 @@ export class CustomGetter {
    */
   async getResource(
     id: string,
-    context: object,
+    context: object | [],
     iriParent: string,
     forceFetch = false,
   ): Promise<Resource | null> {
@@ -231,7 +229,10 @@ export class CustomGetter {
     let value = this.resource[predicateName];
 
     if (!value) {
-      value = this.resource[this.getExpandedPredicate(predicateName)];
+      const index = this.getExpandedPredicate(predicateName);
+      if (index) {
+        value = this.resource[index];
+      }
     }
 
     if (value === undefined || value === null) {
@@ -362,24 +363,22 @@ export class CustomGetter {
   }
 
   getExpandedPredicate(property: string) {
-    return ContextParser.expandTerm(
-      property,
-      { ...this.clientContext, ...this.serverContext },
-      true,
+    const context = normalizeContext(
+      mergeContexts(this.clientContext, this.serverContext),
     );
+    return context.expandTerm(property, true);
   }
   getCompactedPredicate(property: string) {
-    return ContextParser.compactIri(
-      property,
-      { ...this.clientContext, ...this.serverContext },
-      true,
+    const context = normalizeContext(
+      mergeContexts(this.clientContext, this.serverContext),
     );
+    return context.compactIri(property, true);
   }
   getCompactedIri(id: string) {
-    return ContextParser.compactIri(id, {
-      ...this.clientContext,
-      ...this.serverContext,
-    });
+    const context = normalizeContext(
+      mergeContexts(this.clientContext, this.serverContext),
+    );
+    return context.compactIri(id);
   }
   toString() {
     return this.getCompactedIri(this.resource['@id']);

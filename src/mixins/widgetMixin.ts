@@ -167,6 +167,7 @@ const WidgetMixin = {
           field,
           this.context,
         );
+        if (!expandedPredicate) return undefined;
         fieldValue = await resource[expandedPredicate];
       }
 

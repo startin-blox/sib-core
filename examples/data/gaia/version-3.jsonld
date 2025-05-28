@@ -1,0 +1,38 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/dcat3.jsonld",
+    "https://w3id.org/gaia-x/development#"
+  ],
+  "@id": "https://example.org/gaiax/resource-1",
+  "@type": "gx:ServiceOffering",
+  "dct:title": "Centralized contextually-based projection",
+  "dct:description": "Republican goal according kind mother lose. Simple do push believe.",
+  "dcat:contactPoint": {
+    "vcard:fn": "David Lewis",
+    "vcard:hasEmail": "mailto:salazarmelissa@dodson-hall.com"
+  },
+  "gx:providedBy": {
+    "@id": "https://example.org/gaiax/org-1",
+    "@type": "gx:LegalParticipant",
+    "gx:legalName": "Mathews, Hammond and Jones"
+  },
+  "gx:policy": [
+    {
+      "@id": "https://example.org/policy/1/0"
+    },
+    {
+      "@id": "https://example.org/policy/1/1"
+    }
+  ],
+  "gx:dependsOn": [
+    {
+      "@id": "https://example.org/dependency/1-1"
+    },
+    {
+      "@id": "https://example.org/dependency/1-2"
+    }
+  ],
+  "gx:serviceType": {
+    "@id": "https://example.org/type/storage"
+  }
+}

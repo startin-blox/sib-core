@@ -1,5 +1,5 @@
 {
-  "@context": "https://www.w3.org/ns/dcat#",
+  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
   "@type": "dcat:Catalog",
   "@id": "/examples/data/catalog/services.jsonld",
   "title": "Cloud Services Catalog",

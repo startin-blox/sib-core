@@ -5,6 +5,7 @@ import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { normalizeContext } from '../libs/helpers.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
@@ -67,8 +68,9 @@ export const SolidMembership = {
     // Check if current user is member of this group ?
     const memberPredicate = store.getExpandedPredicate(
       'user_set',
-      base_context,
+      normalizeContext(base_context),
     );
+    if (!memberPredicate) return;
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {
