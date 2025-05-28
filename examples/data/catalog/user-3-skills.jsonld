@@ -1,5 +1,5 @@
 {
-  "@context": "https://www.w3.org/ns/dcat#",
+  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
   "@id": "/examples/data/catalog/user-3-skills.jsonld",
   "@type": "dcat:Catalog",
   "dcat:dataset": [],

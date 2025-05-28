@@ -9,7 +9,7 @@
   "name": "Pierre DLC",
   "available": false,
   "domain": {
-    "@context": "https://www.w3.org/ns/dcat#",
+    "@context": "https://www.w3.org/ns/dcat3.jsonld#",
     "@id": "/examples/data/catalog/user-4-skills.jsonld",
     "@type": "dcat:Catalog",
     "dcat:dataset": [

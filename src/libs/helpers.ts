@@ -1,3 +1,5 @@
+import { JsonLdContextNormalized } from 'jsonld-context-parser';
+
 function uniqID(): string {
   return `_${(Math.random() * 36 ** 20).toString(36).slice(0, 10)}`;
 }
@@ -405,6 +407,43 @@ const asyncQuerySelectorAll: AsyncQuerySelectorAllType = (
   return iterable;
 };
 
+const mergeContexts = (client: any, server: any) => ({
+  ...getRawContext(client),
+  ...getRawContext(server),
+});
+
+const normalizeContext = (
+  ctx: any,
+  fallbackCtx: JsonLdContextNormalized | object | null = null,
+): JsonLdContextNormalized => {
+  if (ctx && !(ctx instanceof JsonLdContextNormalized)) {
+    return new JsonLdContextNormalized(ctx);
+  }
+
+  if (!ctx && fallbackCtx) {
+    return normalizeContext(fallbackCtx);
+  }
+
+  return ctx;
+};
+
+const getRawContext = (ctx: any): object => {
+  if (!ctx) return ctx;
+
+  if (ctx instanceof JsonLdContextNormalized) {
+    return ctx.getContextRaw();
+  }
+
+  if (Array.isArray(ctx)) {
+    return ctx.map(getRawContext); // Recursive call
+  }
+  if (ctx && typeof ctx === 'object' && 'contextRaw' in ctx) {
+    return ctx.contextRaw as object;
+  }
+
+  return ctx;
+};
+
 export {
   uniqID,
   stringToDom,
@@ -426,4 +465,7 @@ export {
   asyncQuerySelector,
   asyncQuerySelectorAll,
   isUrlOrRelativePath,
+  mergeContexts,
+  normalizeContext,
+  getRawContext,
 };

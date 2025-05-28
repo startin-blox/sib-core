@@ -5,6 +5,7 @@ import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { normalizeContext } from '../libs/helpers.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
@@ -101,9 +102,10 @@ export const SolidMemberAdd = {
     // Check if current user is member of this group ?
     const memberPredicate = store.getExpandedPredicate(
       'user_set',
-      base_context,
+      normalizeContext(base_context),
     );
     // Here we now retrieve an array of proxy, when we would like an array of @ids only
+    if (!memberPredicate) return;
     this.currentMembers = await this.resource[memberPredicate];
 
     if (!Array.isArray(this.currentMembers)) {

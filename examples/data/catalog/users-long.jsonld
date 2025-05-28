@@ -2,7 +2,7 @@
   "@id": "/examples/data/catalog/users-long.jsonld",
   "@type": "dcat:Catalog",
   "permissions": ["view"],
-  "@context": "https://www.w3.org/ns/dcat#",
+  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
   "dcat:dataset": [
     {
       "@id": "/examples/data/list/--user-0.jsonld",

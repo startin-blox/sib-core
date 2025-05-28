@@ -8,13 +8,15 @@ import type { Resource } from '../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from './server-search.ts';
 import { appendServerSearchToIri } from './server-search.ts';
 
-import { doesResourceContainList } from '../helpers.ts';
+import {
+  doesResourceContainList,
+  getRawContext,
+  mergeContexts,
+  normalizeContext,
+} from '../helpers.ts';
 import { CacheManager } from './cache-manager.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
-
-const ContextParser = JSONLDContextParser.ContextParser;
-const myParser = new ContextParser();
 
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
@@ -28,7 +30,7 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
   sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
-  dcat: 'https://www.w3.org/ns/dcat#',
+  dcat: 'https://www.w3.org/ns/dcat3.jsonld#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
   lat: 'geo:lat',
@@ -51,6 +53,7 @@ export class Store {
   headers: object;
   fetch: Promise<any> | undefined;
   session: Promise<any> | undefined;
+  contextParser: JSONLDContextParser.ContextParser;
 
   constructor(private storeOptions: StoreOptions) {
     this.cache = new CacheManager();
@@ -64,6 +67,7 @@ export class Store {
     };
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
+    this.contextParser = new JSONLDContextParser.ContextParser();
   }
 
   /**
@@ -83,7 +87,7 @@ export class Store {
    */
   async getData(
     id: string,
-    context: any = {},
+    context: object | [] = [],
     parentId = '',
     localData?: object,
     forceFetch = false,
@@ -107,7 +111,6 @@ export class Store {
       const resource = this.get(key);
       if (resource?.isFullResource?.() && !forceFetch) return await resource; // if resource is not complete, re-fetch it
     }
-
     return new Promise(async resolve => {
       document.addEventListener(
         'resourceReady',
@@ -118,7 +121,10 @@ export class Store {
       this.loadingList.add(key);
 
       // Generate proxy
-      const clientContext = await myParser.parse(context);
+      const clientContext = await this.contextParser.parse(
+        getRawContext(context),
+      );
+
       let resource: any = null;
       if (this._isLocalId(id)) {
         if (localData == null) localData = {};
@@ -147,8 +153,7 @@ export class Store {
         );
         return;
       }
-
-      const serverContext = await myParser.parse([
+      const serverContext = await this.contextParser.parse([
         resource['@context'] || base_context,
       ]);
       // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
@@ -199,11 +204,12 @@ export class Store {
    */
   async fetchData(
     id: string,
-    context = {},
+    context: JSONLDContextParser.JsonLdContextNormalized | null = null,
     parentId = '',
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
   ) {
+    // debugger
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination)
       iri = appendServerPaginationToIri(iri, serverPagination);
@@ -242,7 +248,7 @@ export class Store {
    */
   async cacheGraph(
     resources: any,
-    clientContext: object,
+    clientContext: JSONLDContextParser.JsonLdContextNormalized,
     parentContext: object,
     parentId: string,
     serverPagination?: ServerPaginationOptions,
@@ -342,8 +348,9 @@ export class Store {
 
     const resourceProxy = store.get(id);
     const clientContext = resourceProxy
-      ? { ...resourceProxy.clientContext, ...resource['@context'] }
+      ? mergeContexts(resourceProxy.clientContext, resource['@context'])
       : resource['@context'];
+
     this.clearCache(id);
     await this.getData(id, clientContext, '', resource);
     return { ok: true };
@@ -372,9 +379,11 @@ export class Store {
   async _updateResource(method: string, resource: object, id: string) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method))
       throw new Error('Error: method not allowed');
-
-    const context = await myParser.parse([resource['@context'] || {}]); // parse context before expandTerm
+    const context = await this.contextParser.parse([
+      resource['@context'] || {},
+    ]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
+    if (!expandedId) return null;
     return this._fetch(method, resource, id).then(async response => {
       if (response.ok) {
         if (method !== '_LOCAL') {
@@ -552,8 +561,12 @@ export class Store {
    *
    * @returns id of the deleted resource
    */
-  async delete(id: string, context: object = {}) {
+  async delete(
+    id: string,
+    context: JSONLDContextParser.JsonLdContextNormalized | null = null,
+  ) {
     const expandedId = this._getExpandedId(id, context);
+    if (!expandedId) return null;
     const deleted = await this.fetchAuthn(expandedId, {
       method: 'DELETE',
       headers: this.headers,
@@ -584,10 +597,12 @@ export class Store {
     return headers;
   }
 
-  _getExpandedId(id: string, context: object) {
-    return context && Object.keys(context)
-      ? ContextParser.expandTerm(id, context)
-      : id;
+  _getExpandedId(
+    id: string,
+    context: JSONLDContextParser.JsonLdContextNormalized | null,
+  ) {
+    if (!context || Object.keys(context).length === 0) return id;
+    return normalizeContext(context).expandTerm(id);
   }
 
   /**
@@ -596,9 +611,11 @@ export class Store {
    * @param context Your current context
    * @returns The fully expanded term
    */
-  getExpandedPredicate(property: string, context: object | null) {
-    if (!context) return ContextParser.expandTerm(property, base_context, true);
-    return ContextParser.expandTerm(property, context, true);
+  getExpandedPredicate(
+    property: string,
+    context: JSONLDContextParser.JsonLdContextNormalized | null,
+  ) {
+    return normalizeContext(context, base_context).expandTerm(property, true);
   }
 
   /**
@@ -607,9 +624,11 @@ export class Store {
    * @param context Your current context
    * @returns The compacted term
    */
-  getCompactedIri(property: string, context: object | null) {
-    if (!context) return ContextParser.compactIri(property, base_context, true);
-    return ContextParser.compactIri(property, context, true);
+  getCompactedIri(
+    property: string,
+    context: JSONLDContextParser.JsonLdContextNormalized | null,
+  ) {
+    return normalizeContext(context, base_context).compactIri(property, true);
   }
 
   /**
@@ -656,8 +675,13 @@ export class Store {
    * @param context
    * @param parentId
    */
-  _getAbsoluteIri(id: string, context: object, parentId: string): string {
-    let iri = ContextParser.expandTerm(id, context); // expand if reduced ids
+  _getAbsoluteIri(
+    id: string,
+    context: JSONLDContextParser.JsonLdContextNormalized | null,
+    parentId: string,
+  ): string {
+    let iri = normalizeContext(context, base_context).expandTerm(id); // expand if reduced ids
+    if (!iri) return '';
     if (parentId && !parentId.startsWith('store://local')) {
       // and get full URL from parent caller for local files
       const parentIri = new URL(parentId, document.location.href).href;
