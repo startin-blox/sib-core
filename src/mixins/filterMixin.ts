@@ -12,7 +12,7 @@ import '../libs/store/semantizer.ts';
 // import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
 import { EntryStreamTransformerDefaultImpl, indexFactory } from "@semantizer/mixin-index";
 // import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
-import { IndexQueryingStrategyShaclDefaultImpl } from "@semantizer/utils-index-querying-strategy-shacl";
+import { IndexQueryingStrategyShaclUsingFinalIndex } from "@semantizer/utils-index-querying-strategy-shacl-final";
 import { IndexStrategyFinalShapeDefaultImpl } from "@semantizer/utils-index-querying-strategy-shacl-final";
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
 import type { DatasetSemantizer, NamedNode } from '@semantizer/types';
@@ -412,7 +412,7 @@ const FilterMixin = {
     const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
 
     const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(finalIndexShape, subIndexShape, shaclValidator, entryTransformer);
-    const shaclStrategy = new IndexQueryingStrategyShaclDefaultImpl(targetShape, finalIndexStrategy, shaclValidator, entryTransformer);
+    const shaclStrategy = new IndexQueryingStrategyShaclUsingFinalIndex(targetShape, finalIndexStrategy, shaclValidator, entryTransformer);
 
     const index = await SEMANTIZER.load(
       this.dataSrcIndex,

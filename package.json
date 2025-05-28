@@ -119,6 +119,7 @@
     "@semantizer/mixin-webid": "file:../../inria/semantizer/semantizer-typescript/src/mixins/webid",
     "@semantizer/rdfjs-dataset-impl": "file:../../inria/semantizer/semantizer-typescript/src/packages/rdfjs-dataset-impl",
     "@semantizer/types": "file:../../inria/semantizer/semantizer-typescript/src/packages/types",
+    "@semantizer/http-error": "file:../../inria/semantizer/semantizer-typescript/src/packages/http-error",
     "@semantizer/utils-index-querying-strategy-shacl": "file:../../inria/semantizer/semantizer-typescript/src/utils/index-querying-strategy-shacl",
     "@semantizer/utils-index-querying-strategy-shacl-comunica": "file:../../inria/semantizer/semantizer-typescript/src/utils/index-querying-strategy-shacl-comunica",
     "@semantizer/utils-index-querying-strategy-shacl-conjunction": "file:../../inria/semantizer/semantizer-typescript/src/utils/index-querying-strategy-shacl-conjunction",
