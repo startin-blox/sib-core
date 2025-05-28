@@ -1,0 +1,33 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/dcat3.jsonld",
+    "https://w3id.org/gaia-x/development#"
+  ],
+  "@id": "https://example.org/gaiax/data-1",
+  "@type": "gx:DataOffering",
+  "dct:title": "Open Weather Data Set",
+  "dct:description": "Dataset of meteorological data for Europe with high resolution.",
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dcat:accessURL": "https://datasets.example.org/weather/eu.csv",
+      "dcat:format": "text/csv"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dcat:accessURL": "https://datasets.example.org/weather/eu.json",
+      "dcat:format": "application/json"
+    }
+  ],
+  "dct:license": {
+    "@id": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "gx:policy": [
+    { "@id": "https://example.org/gaiax/policy/weather-usage" }
+  ],
+  "gx:providedBy": {
+    "@id": "https://example.org/gaiax/org-meteo",
+    "@type": "gx:LegalParticipant",
+    "gx:legalName": "EuroMeteo Data Services"
+  }
+}

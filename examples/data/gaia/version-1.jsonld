@@ -1,0 +1,112 @@
+{
+  "@context": ["https://www.w3.org/2018/credentials/v1"],
+  "@id": "http://example.org/presentations/3731",
+  "@type": ["VerifiablePresentation"],
+  "verifiableCredential": {
+    "@context": ["https://www.w3.org/2018/credentials/v1"],
+    "@type": ["VerifiableCredential"],
+    "issuer": "http://gaiax.de",
+    "issuanceDate": "2022-10-19T18:48:09Z",
+    "expirationDate": "2034-01-23T11:29:40Z",
+    "credentialSubject": {
+      "@context": {
+        "dcat": "http://www.w3.org/ns/dcat#",
+        "dct": "http://purl.org/dc/terms/",
+        "odrl": "http://www.w3.org/ns/odrl/2/",
+        "dspace": "https://w3id.org/dspace/v0.8/",
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+        "edc": "https://w3id.org/edc/v0.0.1/ns/",
+        "gax-core": "https://w3id.org/gaia-x/core#",
+        "gax-trust-framework": "https://w3id.org/gaia-x/gax-trust-framework#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+      },
+      "@id": "http://localhost:8192/examples/data/catalog/catalog-connector.jsonld",
+      "@type": "gax-trust-framework:Resource",
+      "gax-core:offeredBy": {
+        "@id": "gax-trust-framework:Provider1"
+      },
+      "gax-core:operatedBy": {
+        "@id": "gax-trust-framework:Provider1"
+      },
+      "gax-trust-framework:termsAndConditions": {
+        "@type": "gax-trust-framework:TermsAndConditions",
+        "gax-trust-framework:content": {
+          "@type": "xsd:anyURI",
+          "@value": "http://example.org/tac"
+        },
+        "gax-trust-framework:hash": "1234"
+      },
+      "gax-trust-framework:policy": "www.example.org/ServicePolicy",
+      "gax-trust-framework:dataAccountExport": {
+        "@type": "gax-trust-framework:DataAccountExport",
+        "gax-trust-framework:accessType": "access type",
+        "gax-trust-framework:formatType": "format type",
+        "gax-trust-framework:requestType": "request type"
+      },
+      "dcat:dataset": [
+        {
+          "@id": "http://localhost:8192/assets/asset-2",
+          "@type": "dcat:Dataset",
+          "dct:description": "This asset requires Membership to view and SensitiveData credential to negotiate.",
+          "odrl:hasPolicy": {
+            "@id": "http://localhost:8192/policies/c2Vuc2l0aXZlLW9ubHktZGVm:YXNzZXQtMg==:MzhiYzZkNjctMDIyNi00OGJjLWFmNWYtZTQ2ZjAwYTQzOWI2",
+            "@type": "odrl:Offer",
+            "odrl:permission": [],
+            "odrl:prohibition": [],
+            "odrl:obligation": {
+              "odrl:action": {
+                "@id": "odrl:use"
+              },
+              "odrl:constraint": {
+                "odrl:leftOperand": {
+                  "@id": "edc:DataAccess.level"
+                },
+                "odrl:operator": {
+                  "@id": "odrl:eq"
+                },
+                "odrl:rightOperand": "sensitive"
+              }
+            }
+          },
+          "dcat:distribution": [
+            {
+              "@type": "dcat:Distribution",
+              "dct:format": {
+                "@id": "edc:HttpData-PULL"
+              },
+              "dcat:accessService": {
+                "@id": "http://localhost:8192/services/dataservice-1",
+                "@type": "dcat:DataService",
+                "dcat:endpointDescription": "dspace:connector",
+                "dcat:endpointURL": "http://localhost:8192/api/dsp",
+                "dct:description": "dspace:connector"
+              }
+            },
+            {
+              "@type": "dcat:Distribution",
+              "dct:format": {
+                "@id": "edc:HttpData-PUSH"
+              },
+              "dcat:accessService": {
+                "@id": "http://localhost:8192/services/dataservice-1",
+                "@type": "dcat:DataService",
+                "dcat:endpointDescription": "dspace:connector",
+                "dcat:endpointURL": "http://localhost:8192/api/dsp",
+                "dct:description": "dspace:connector"
+              }
+            }
+          ]
+        }
+      ],
+      "dcat:service": {
+        "@id": "http://localhost:8192/services/dataservice-1",
+        "@type": "dcat:DataService",
+        "dcat:endpointDescription": "dspace:connector",
+        "dcat:endpointURL": "http://localhost:8192/api/dsp",
+        "dct:description": "dspace:connector"
+      },
+      "dspace:participantId": "did:web:localhost%3A7093",
+      "edc:participantId": "did:web:localhost%3A7093"
+    }
+  }
+}

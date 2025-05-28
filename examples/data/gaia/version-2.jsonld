@@ -1,0 +1,54 @@
+{
+  "@context": {
+    "gx": "https://w3id.org/gaia-x/development#",
+    "mygx": "https://my-gaia-x.eu#"
+  },
+  "@graph": [
+    {
+      "@id": "/examples/data/gaia/gaia-x.jsonld",
+      "@type": "gx:ServiceOffering",
+      "gx:name": "Example Service",
+      "gx:description": "This is an example service offering.",
+      "gx:provider": {
+        "@id": "https://my-gaia-x.eu/provider1",
+        "@type": "gx:Participant",
+        "gx:name": "Example Provider"
+      },
+      "gx:policy": [
+        {
+          "@type": "gx:Policy",
+          "gx:policyText": "Policy details here."
+        }
+      ]
+    },
+    {
+      "@id": "https://my-gaia-x.eu/dataset1",
+      "@type": "gx:Dataset",
+      "gx:name": "Example Dataset",
+      "gx:description": "This is an example dataset.",
+      "gx:distribution": [
+        {
+          "@id": "https://my-gaia-x.eu/distribution1",
+          "@type": "gx:Distribution",
+          "gx:accessURL": "https://data.example.org/"
+        }
+      ],
+      "gx:keyword": [
+        "Nobel prize",
+        "science",
+        "prize"
+      ],
+      "gx:theme": {
+        "@id": "http://eurovoc.europa.eu/100142"
+      },
+      "gx:landingPage": {
+        "@id": "http://data.example.org/"
+      },
+      "gx:issued": "2024-01-15",
+      "gx:modified": "2024-08-27",
+      "gx:publisher": {
+        "@id": "https://my-gaia-x.eu/provider1"
+      }
+    }
+  ]
+}

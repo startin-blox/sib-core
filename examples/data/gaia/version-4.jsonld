@@ -1,0 +1,31 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/dcat3.jsonld",
+    "https://w3id.org/gaia-x/development#"
+  ],
+  "@id": "https://example.org/gaiax/service-1",
+  "@type": "gx:ServiceOffering",
+  "dct:title": "Real-time Data Analytics",
+  "dct:description": "Platform for streaming analytics of big data in real time.",
+  "dcat:contactPoint": {
+    "vcard:fn": "Analytics Support Team",
+    "vcard:hasEmail": "mailto:analytics-support@example.org"
+  },
+  "gx:providedBy": {
+    "@id": "https://example.org/gaiax/org-analytics",
+    "@type": "gx:LegalParticipant",
+    "gx:legalName": "Streamline Analytics GmbH"
+  },
+  "gx:serviceType": {
+    "@id": "https://example.org/gaiax/types/analytics"
+  },
+  "gx:resourceEndpoint": {
+    "@type": "gx:InterfaceDescription",
+    "gx:endpoint": "https://api.example.org/analytics/v1",
+    "gx:protocol": "HTTPS",
+    "gx:authentication": "OAuth2.0"
+  },
+  "gx:termsAndConditions": {
+    "@id": "https://example.org/gaiax/terms/analytics-1"
+  }
+}
