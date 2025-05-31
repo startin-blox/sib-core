@@ -1,4 +1,4 @@
-import type { Semantizer, Quad } from "@semantizer/types";
+import type { Semantizer } from "@semantizer/types";
 import dataFactory from "@rdfjs/data-model";
 import { ConfigurationImpl, DatasetBaseFactoryImpl, MixinFactoryImpl, SemantizerImpl } from "@semantizer/core";
 import { DatasetCoreRdfjsImpl } from "@semantizer/core-rdfjs";
@@ -20,6 +20,7 @@ const semantizer: Semantizer = new SemantizerImpl(
         datasetBaseFactoryImpl: DatasetBaseFactoryImpl
     })
 );
+
 
 Object.defineProperty(globalThis, "SEMANTIZER", {
     value: semantizer,
