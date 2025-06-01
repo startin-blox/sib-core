@@ -290,8 +290,15 @@ export class CustomGetter {
     return this.resource;
   }
 
+  /**
+   * Get the list of resources associated with the list predicate of the resource
+   * If the resource is a container, it will return the ldp:contains list
+   * If the resource is a dcat:Catalog, it will return the dcat:dataset list
+   * If the resource is not a container or a catalog, it will return null
+   * @returns object[] | null
+   */
   getContainerList(): object[] | null {
-    if (this.getType() === 'ldp:Container') {
+    if (this.hasType('ldp:Container')) {
       return this.getLdpContains();
     }
 
@@ -303,8 +310,8 @@ export class CustomGetter {
   }
 
   /**
-   * return true resource seems complete
-   * @param prop
+   * return true if resource seems complete
+   * A resource is considered complete if it has at least one property which is not a permission
    */
   isFullResource(): boolean {
     const propertiesKeys = Object.keys(this.resource).filter(
@@ -349,10 +356,31 @@ export class CustomGetter {
   /**
    * returns compacted @type of resource
    */
-  getType(): string {
+  getType(): string | string[] {
+    // If type is an array, return an array of compacted types
+    if (Array.isArray(this.resource['@type'])) {
+      return this.resource['@type'].map(type =>
+        this.getCompactedIri(type),
+      );
+    }
     return this.resource['@type']
       ? this.getCompactedIri(this.resource['@type'])
       : '';
+  }
+
+  /**
+   * Check if the resource has a specific type
+   * @param type
+   */
+  hasType(type: string): boolean {
+    const types = this.getType();
+    if (!types) return false;
+
+    // If type is an array, check if the resource has the type in the array
+    if (Array.isArray(types)) {
+      return types.includes(this.getCompactedIri(type));
+    }
+    return types === this.getCompactedIri(type);
   }
 
   /**
