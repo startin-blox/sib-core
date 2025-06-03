@@ -78,6 +78,7 @@
     "@types/rdfjs__dataset": "^2.0.7",
     "@types/rdfjs__parser-jsonld": "^2.1.7",
     "@types/rdfjs__serializer-turtle": "^1.1.0",
+    "@rckeller/cypress-unfetch": "latest",
     "autolinker": "^4.1.0",
     "cypress": "^14.1.0",
     "cypress-iframe": "^1.0.1",
