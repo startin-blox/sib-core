@@ -35,10 +35,6 @@ enum FilterMode {
   Index = 'index',
 }
 
-enum IndexType {
-  Index = 'https://ns.inria.fr/idx/terms#Index',
-}
-
 interface FilterValue {
   value: string | string[];
 }
@@ -178,23 +174,23 @@ const FilterMixin = {
       );
 
       // await appIdProfile.loadExtendedProfile();
-      const appId = appIdProfile.getPrimaryTopic();
+      const appId = appIdProfile.loadExtendedProfile();
       if (!appId) {
         throw new Error('The WebId was not found.');
       }
+      // appIdProfile.
+      // // 2. Get the public type index
+      // const publicTypeIndex = appId.getPublicTypeIndex();
+      // if (!publicTypeIndex) {
+      //   throw new Error('The TypeIndex was not found.');
+      // }
 
-      // 2. Get the public type index
-      const publicTypeIndex = appId.getPublicTypeIndex();
-      if (!publicTypeIndex) {
-        throw new Error('The TypeIndex was not found.');
-      }
+      // await publicTypeIndex.load();
 
-      await publicTypeIndex.load();
-
-      // 3. Find the index from the TypeIndex
-      indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
-        IndexType.Index,
-      ) as DatasetSemantizer;
+      // // 3. Find the index from the TypeIndex
+      // indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
+      //   IndexType.Index,
+      // ) as DatasetSemantizer;
 
       if (!indexDataset) {
         throw new Error('The meta-meta index was not found.');
