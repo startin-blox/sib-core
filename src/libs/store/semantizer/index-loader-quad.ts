@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import ParserJsonld from '@rdfjs/parser-jsonld';
 import type { Fetch, LoaderQuadStream, Quad, Stream } from '@semantizer/types';
-import { store } from './store.ts';
+import { store } from '../store.ts';
 
 export default class LoaderQuadStreamCore implements LoaderQuadStream {
   public async load(uri: string, otherFetch?: Fetch): Promise<Stream<Quad>> {

@@ -1,11 +1,8 @@
 import { Readable } from 'stream';
 import datasetFactory from '@rdfjs/dataset';
 import ParserJsonld from '@rdfjs/parser-jsonld';
-// import N3 from "n3";
-// import { HttpError } from "@semantizer/http-error";
-// import { DatasetResponse, default as fetch, FactoryInit, FormatsInit, RdfFetchResponse } from "@rdfjs/fetch-lite";
-import type { DatasetCoreRdfjs, Loader, Quad, Stream } from '@semantizer/types';
-import { store } from './store.ts';
+import type { DatasetCoreRdfjs, Loader, Quad } from '@semantizer/types';
+import { store } from '../store.ts';
 
 export default class IndexLoader implements Loader {
   public async load(uri: string): Promise<DatasetCoreRdfjs<Quad, Quad>> {

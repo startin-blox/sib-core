@@ -1,15 +1,11 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-// import { SparqlQueryEngineComunica } from '../libs/SparqlQueryEngineComunica.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
 import { store } from '../libs/store/store.ts';
-// import IndexLoader from '../libs/store/index-loader.ts';
-import '../libs/store/semantizer.ts';
+import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
-// import semantizer from '@semantizer/default';
-// import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
 import {
   EntryStreamTransformerDefaultImpl,
   indexFactory,
@@ -20,13 +16,11 @@ import type {
   LoggingEntry,
   NamedNode,
 } from '@semantizer/types';
-// import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
 import {
   IndexQueryingStrategyShaclUsingFinalIndex,
   IndexStrategyFinalShapeDefaultImpl,
 } from '@semantizer/util-index-querying-strategy-shacl-final';
 
-// import dataFactory from "@rdfjs/data-model";
 import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
 import N3 from 'n3';
 
