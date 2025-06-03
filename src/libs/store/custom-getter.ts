@@ -1,5 +1,5 @@
 import type { Resource } from '../../mixins/interfaces.ts';
-import { getRawContext, mergeContexts, normalizeContext } from '../helpers.ts';
+import { mergeContexts, normalizeContext } from '../helpers.ts';
 import { store } from './store.ts';
 
 export class CustomGetter {
@@ -401,20 +401,20 @@ export class CustomGetter {
           case '@id':
             if (this.resource['@id'])
               return this.getCompactedIri(this.resource['@id']);
+            console.log(this.resource, this.resource['@id']);
             return;
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
-          case 'ldp:contains':
           case 'listPredicate':
             return this.getContainerList(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':
-            return getRawContext(this.clientContext); // get saved client context to re-fetch easily a resource
+            return this.clientContext; // get saved client context to re-fetch easily a resource
           case 'serverContext':
-            return getRawContext(this.serverContext); // get saved client context to re-fetch easily a resource
+            return this.serverContext; // get saved client context to re-fetch easily a resource
           case 'then':
             return;
           default:
