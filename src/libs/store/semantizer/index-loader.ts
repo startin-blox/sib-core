@@ -1,3 +1,4 @@
+// biome-ignore lint: Readable is coming from a polyfill
 import { Readable } from 'stream';
 import datasetFactory from '@rdfjs/dataset';
 import ParserJsonld from '@rdfjs/parser-jsonld';
@@ -6,7 +7,6 @@ import { store } from '../store.ts';
 
 export default class IndexLoader implements Loader {
   public async load(uri: string): Promise<DatasetCoreRdfjs<Quad, Quad>> {
-    let responseText, input;
     const headers = store.headers;
     const response = await store.fetchAuthn(uri, {
       method: 'GET',
@@ -18,8 +18,8 @@ export default class IndexLoader implements Loader {
       throw new Error(response);
     }
 
-    responseText = await response.text();
-    input = new Readable({
+    const responseText = await response.text();
+    const input = new Readable({
       read: () => {
         input.push(responseText);
         input.push(null);
