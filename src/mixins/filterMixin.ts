@@ -10,16 +10,25 @@ import '../libs/store/semantizer.ts';
 // Semantizer imports
 // import semantizer from '@semantizer/default';
 // import indexFactory, { indexShapeFactory } from '@semantizer/mixin-index';
-import { EntryStreamTransformerDefaultImpl, indexFactory } from "@semantizer/mixin-index";
-// import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
-import { IndexStrategyFinalShapeDefaultImpl, IndexQueryingStrategyShaclUsingFinalIndex } from "@semantizer/utils-index-querying-strategy-shacl-final";
+import {
+  EntryStreamTransformerDefaultImpl,
+  indexFactory,
+} from '@semantizer/mixin-index';
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
-import type { DatasetSemantizer, LoggingEntry, NamedNode } from '@semantizer/types';
+import type {
+  DatasetSemantizer,
+  LoggingEntry,
+  NamedNode,
+} from '@semantizer/types';
+// import { indexEntryFactory } from '@semantizer/mixin-index/lib/IndexEntryMixin.js';
+import {
+  IndexQueryingStrategyShaclUsingFinalIndex,
+  IndexStrategyFinalShapeDefaultImpl,
+} from '@semantizer/util-index-querying-strategy-shacl-final';
 
-import N3 from "n3";
 // import dataFactory from "@rdfjs/data-model";
-import { ValidatorImpl } from "@semantizer/utils-shacl-validator-default";
-
+import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
+import N3 from 'n3';
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 // import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
@@ -41,7 +50,9 @@ interface FilterValue {
 }
 
 SEMANTIZER.enableLogging();
-SEMANTIZER.registerEntryCallback((logEntry: LoggingEntry) => console.log(logEntry.level, logEntry.message));
+SEMANTIZER.registerEntryCallback((logEntry: LoggingEntry) =>
+  console.log(logEntry.level, logEntry.message),
+);
 
 const FilterMixin = {
   name: 'filter-mixin',
@@ -57,14 +68,14 @@ const FilterMixin = {
     dataSrcProfile: {
       type: String,
       default: null,
-      callback(value: string) {
+      callback() {
         this.filteredOn = FilterMode.Index;
       },
     },
     dataSrcIndex: {
       type: String,
       default: null,
-      callback(value: string) {
+      callback() {
         this.filteredOn = FilterMode.Index;
       },
     },
@@ -124,7 +135,7 @@ const FilterMixin = {
       console.log(
         'Init index based search',
         this.dataSrcIndex,
-        this.dataSrcProfile
+        this.dataSrcProfile,
       );
 
       const filterValues = this.searchForm.component.value;
@@ -169,7 +180,7 @@ const FilterMixin = {
       // // 1. Load the WebId of the instance
       const appIdProfile = await SEMANTIZER.load(
         this.dataSrcProfile,
-        solidWebIdProfileFactory
+        solidWebIdProfileFactory,
       );
 
       // await appIdProfile.loadExtendedProfile();
@@ -196,9 +207,7 @@ const FilterMixin = {
       }
     } else if (this.dataSrcIndex) {
       // 1. Load the index directly
-      indexDataset = await SEMANTIZER.load(
-        this.dataSrcIndex
-      );
+      indexDataset = await SEMANTIZER.load(this.dataSrcIndex);
     }
 
     const finalShapeTemplate = await fetch(this.dataFinalShape);
@@ -274,17 +283,24 @@ const FilterMixin = {
     const shaclValidator = new ValidatorImpl();
     const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
 
-    const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(finalIndexShape, subIndexShape, shaclValidator, entryTransformer);
-    const shaclStrategy = new IndexQueryingStrategyShaclUsingFinalIndex(targetShape, finalIndexStrategy, shaclValidator, entryTransformer);
-
-    const index = await SEMANTIZER.load(
-      this.dataSrcIndex,
-      indexFactory
+    const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(
+      finalIndexShape,
+      subIndexShape,
+      shaclValidator,
+      entryTransformer,
     );
+    const shaclStrategy = new IndexQueryingStrategyShaclUsingFinalIndex(
+      targetShape,
+      finalIndexStrategy,
+      shaclValidator,
+      entryTransformer,
+    );
+
+    const index = await SEMANTIZER.load(this.dataSrcIndex, indexFactory);
 
     const resultStream = index.mixins.index.query(shaclStrategy);
     resultStream.on('data', (result: NamedNode) => {
-      this.updateContainer(result)
+      this.updateContainer(result);
     });
   },
   updateContainer(resource: NamedNode) {

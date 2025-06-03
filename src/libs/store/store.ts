@@ -193,11 +193,11 @@ export class Store {
     // If not, wait for it to be available
     let authenticated = false;
     if (this.session) authenticated = await this.session;
-    
+
     if (this.fetch && authenticated) {
       // authenticated
       return this.fetch.then(fn => {
-        return fn(iri, options)
+        return fn(iri, options);
       });
     }
 

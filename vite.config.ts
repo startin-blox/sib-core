@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   define: {
-    global: 'globalThis'
+    global: 'globalThis',
   },
   optimizeDeps: {
     include: ['stream-browserify'],

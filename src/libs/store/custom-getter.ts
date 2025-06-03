@@ -359,9 +359,7 @@ export class CustomGetter {
   getType(): string | string[] {
     // If type is an array, return an array of compacted types
     if (Array.isArray(this.resource['@type'])) {
-      return this.resource['@type'].map(type =>
-        this.getCompactedIri(type),
-      );
+      return this.resource['@type'].map(type => this.getCompactedIri(type));
     }
     return this.resource['@type']
       ? this.getCompactedIri(this.resource['@type'])
