@@ -314,7 +314,7 @@ const FilterMixin = {
       this.filterList();
     }
   },
-  async initLocalDataSourceContainerForSearchResults(): Promise<any> {
+  async initLocalDataSourceContainerForSearchResults() {
     const idField = Array.from(Array(20), () =>
       Math.floor(Math.random() * 36).toString(36),
     ).join('');
