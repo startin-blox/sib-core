@@ -1,5 +1,5 @@
 import type { Resource } from '../../mixins/interfaces.ts';
-import { mergeContexts, normalizeContext } from '../helpers.ts';
+import { getRawContext, mergeContexts, normalizeContext } from '../helpers.ts';
 import { store } from './store.ts';
 
 export class CustomGetter {
@@ -290,8 +290,15 @@ export class CustomGetter {
     return this.resource;
   }
 
+  /**
+   * Get the list of resources associated with the list predicate of the resource
+   * If the resource is a container, it will return the ldp:contains list
+   * If the resource is a dcat:Catalog, it will return the dcat:dataset list
+   * If the resource is not a container or a catalog, it will return null
+   * @returns object[] | null
+   */
   getContainerList(): object[] | null {
-    if (this.getType() === 'ldp:Container') {
+    if (this.hasType('ldp:Container')) {
       return this.getLdpContains();
     }
 
@@ -303,8 +310,8 @@ export class CustomGetter {
   }
 
   /**
-   * return true resource seems complete
-   * @param prop
+   * return true if resource seems complete
+   * A resource is considered complete if it has at least one property which is not a permission
    */
   isFullResource(): boolean {
     const propertiesKeys = Object.keys(this.resource).filter(
@@ -328,8 +335,9 @@ export class CustomGetter {
    * @returns
    */
   async getPermissions(): Promise<string[]> {
-    let permissions = this.getList('permissions').map(p => String(p));
-
+    const perms = this.getExpandedPredicate('permissions');
+    if (!perms) return [];
+    let permissions = this.resource[perms];
     if (!permissions) {
       // if no permission, re-fetch data from store
       await this.getResource(
@@ -338,7 +346,7 @@ export class CustomGetter {
         this.parentId,
         true,
       );
-      permissions = this.getList('permissions').map(p => String(p));
+      permissions = this.resource[perms];
     }
 
     if (!Array.isArray(permissions)) permissions = [permissions]; // convert to array if compacted to 1 resource
@@ -349,10 +357,29 @@ export class CustomGetter {
   /**
    * returns compacted @type of resource
    */
-  getType(): string {
+  getType(): string | string[] {
+    // If type is an array, return an array of compacted types
+    if (Array.isArray(this.resource['@type'])) {
+      return this.resource['@type'].map(type => this.getCompactedIri(type));
+    }
     return this.resource['@type']
       ? this.getCompactedIri(this.resource['@type'])
       : '';
+  }
+
+  /**
+   * Check if the resource has a specific type
+   * @param type
+   */
+  hasType(type: string): boolean {
+    const types = this.getType();
+    if (!types) return false;
+
+    // If type is an array, check if the resource has the type in the array
+    if (Array.isArray(types)) {
+      return types.includes(this.getCompactedIri(type));
+    }
+    return types === this.getCompactedIri(type);
   }
 
   /**
@@ -401,20 +428,20 @@ export class CustomGetter {
           case '@id':
             if (this.resource['@id'])
               return this.getCompactedIri(this.resource['@id']);
-            console.log(this.resource, this.resource['@id']);
             return;
           case '@type':
             return this.resource['@type']; // return synchronously
           case 'properties':
             return this.getProperties();
+          case 'ldp:contains':
           case 'listPredicate':
             return this.getContainerList(); // returns standard arrays synchronously
           case 'permissions':
             return this.getPermissions(); // get expanded permissions
           case 'clientContext':
-            return this.clientContext; // get saved client context to re-fetch easily a resource
+            return getRawContext(this.clientContext); // get saved client context to re-fetch easily a resource
           case 'serverContext':
-            return this.serverContext; // get saved client context to re-fetch easily a resource
+            return getRawContext(this.serverContext); // get saved client context to re-fetch easily a resource
           case 'then':
             return;
           default:
