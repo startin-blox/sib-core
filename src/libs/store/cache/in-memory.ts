@@ -1,5 +1,6 @@
-import type { Resource } from '../../mixins/interfaces.ts';
-import { isUrlOrRelativePath } from '../helpers.ts';
+import type { Resource } from '../../../mixins/interfaces.ts';
+import { isUrlOrRelativePath } from '../../helpers.ts';
+import type { CacheManagerInterface } from './cache-manager.ts';
 
 /**
  * A centralized cache manager for JSON-LD resources.
@@ -7,7 +8,7 @@ import { isUrlOrRelativePath } from '../helpers.ts';
  * Handles the decoupling between the fetch URL and the resource's internal @id.
  * Allows storing, retrieving, and resolving resources either by their URL or @id.
  */
-export class CacheManager {
+export class InMemoryCacheManager implements CacheManagerInterface {
   private resourceCache: Map<string, Resource> = new Map();
   private urlToIdMap: Map<string, string> = new Map();
 
@@ -18,7 +19,7 @@ export class CacheManager {
    * @param url - The original URL used to fetch the resource.
    * @returns The cached resource, or undefined if not found.
    */
-  getByUrl(url: string): Resource | undefined {
+  async getByUrl(url: string): Promise<Resource | undefined> {
     const id = this.urlToIdMap.get(url);
     if (!id) return undefined;
     return this.resourceCache.get(id);
@@ -35,7 +36,7 @@ export class CacheManager {
    * @param id - The @id of the resource (can be a URI, URN, or UUID).
    * @returns The cached resource, or undefined if not found.
    */
-  getById(id: string): Resource | undefined {
+  async getById(id: string): Promise<Resource | undefined> {
     return this.resourceCache.get(id);
   }
 
@@ -47,20 +48,21 @@ export class CacheManager {
    * @param idOrUrl - A resource @id or its original fetch URL.
    * @returns The cached resource, or undefined if not found.
    */
-  get(ref: string): Resource | undefined {
+  async get(ref: string): Promise<Resource | undefined> {
+    console.debug('[CacheManager] get', ref, this.resourceCache.get(ref), this.urlToIdMap.get(ref));
     if (this.resourceCache.has(ref)) {
-      return this.resourceCache.get(ref);
+      return await this.resourceCache.get(ref);
     }
 
     const id = this.urlToIdMap.get(ref);
     if (id) {
-      return this.resourceCache.get(id);
+      return await this.resourceCache.get(id);
     }
 
     return undefined;
   }
 
-  length(): number {
+  async length(): Promise<number> {
     return this.resourceCache.size;
   }
 
@@ -70,7 +72,7 @@ export class CacheManager {
    * @param url - The URL from which the resource was fetched.
    * @param resource - The JSON-LD resource to store. Must contain a valid @id.
    */
-  set(url: string, resource: Resource): void {
+  async set(url: string, resource: Resource): Promise<void> {
     const id = resource?.['@id'];
     if (!id) {
       console.warn('[CacheManager] Resource has no @id', resource);
@@ -90,7 +92,7 @@ export class CacheManager {
    * @param url - Data source (absolute or relative path).
    * @param emptyResource - The resource to associate with this URL. Must include a valid `@id`.
    */
-  linkUrlWithId(url: string, emptyResource: Resource) {
+  async linkUrlWithId(url: string, emptyResource: Resource) {
     if (!isUrlOrRelativePath(url)) return;
     if (this.hasUrlMatch(url)) return;
 
@@ -104,7 +106,7 @@ export class CacheManager {
    * @param urlOrId - The @id or URL to check for.
    * @returns True if the resource exists in cache, false otherwise.
    */
-  has(urlOrId: string): boolean {
+  async has(urlOrId: string): Promise<boolean> {
     if (this.resourceCache.has(urlOrId)) return true;
     const id = this.urlToIdMap.get(urlOrId);
     return id ? this.resourceCache.has(id) : false;
@@ -116,14 +118,14 @@ export class CacheManager {
    * @param url - The original fetch URL.
    * @returns The associated @id, or undefined if no mapping exists.
    */
-  getIdByUrl(url: string): string | undefined {
+  async getIdByUrl(url: string): Promise<string | undefined> {
     return this.urlToIdMap.get(url);
   }
 
   /**
    * Clears the entire cache and all URL-to-ID mappings.
    */
-  clear(): void {
+  async clear(): Promise<void> {
     this.resourceCache.clear();
     this.urlToIdMap.clear();
   }
@@ -135,7 +137,7 @@ export class CacheManager {
    * @param idOrUrl - The @id or URL of the resource to delete.
    * @returns True if the resource was found and deleted, false otherwise.
    */
-  delete(idOrUrl: string): boolean {
+  async delete(idOrUrl: string): Promise<boolean> {
     if (this.resourceCache.has(idOrUrl)) {
       this.resourceCache.delete(idOrUrl);
 

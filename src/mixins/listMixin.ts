@@ -43,7 +43,14 @@ const ListMixin = {
   async populate(): Promise<void> {
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     const div = this.div;
-    if (!this.resource) return;
+    console.log(
+      `[ListMixin] Populating list with dataSrc: ${this.dataSrc}, resource: ${this.resource?.['@id']}`, this.resource,
+    );
+    if (!await this.resource) {
+      console.warn('[ListMixin] No resource to populate');
+      return;
+    }
+
 
     // Not a container but a single resource
     if (

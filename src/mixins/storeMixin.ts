@@ -66,11 +66,15 @@ const StoreMixin = {
   },
   created() {
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
+    this.loadResource();
   },
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   get resource(): Resource | null {
+    return this._resource;
+  },
+  async loadResource(): Promise<Resource | null> {
     const id = this.resourceId;
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
@@ -80,7 +84,24 @@ const StoreMixin = {
       this.getDynamicServerSearch?.(), // from `filterMixin`
     );
 
-    return id ? store.get(id, serverPagination, serverSearch) : null;
+    // return id ? await store.get(id, serverPagination, serverSearch) : null;
+    console.log(
+      `[StoreMixin] Loading resource with id: ${id}, context: ${this.context}`,
+      this.context,
+    );
+    if (id) {
+      // 4) Await the async operation. Only _then_ do we assign into _resource.
+      const fetched: Resource | null = await store.get(id, serverPagination, serverSearch);
+      this._resource = fetched;
+      console.log(
+        `[StoreMixin] Loaded resource: ${id}`,
+        fetched,
+      );
+      return this._resource;
+    } else {
+      console.warn('[StoreMixin] No resource id provided');
+      return null;
+    }
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
@@ -104,7 +125,7 @@ const StoreMixin = {
         for (const property in await resource) {
           console.log(`${property}: ${await resource[property]}`);
         }
-        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
+        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${resource['@id']}"`;
       }
     }
 
@@ -123,7 +144,7 @@ const StoreMixin = {
       dynamicServerSearch,
     );
     const forceRefetch = !!dynamicServerSearch;
-    await store.getData(
+    this._resource = await store.getData(
       this.resourceId,
       this.context,
       undefined,
@@ -132,7 +153,7 @@ const StoreMixin = {
       serverPagination,
       serverSearch,
     );
-
+    console.log(this._resource);
     this.updateDOM();
   },
 

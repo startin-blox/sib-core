@@ -30,6 +30,10 @@ const WidgetMixin = {
     this.nameWidgets = [];
   },
   attached(): void {
+    console.log(
+      `[WidgetMixin] attached to ${this.element.tagName}#${this.element.id} and having resource`,
+      this.resource,
+    );
     if (!this.dataSrc && !this.resource && this.noRender === null)
       this.populate();
   },
