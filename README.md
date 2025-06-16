@@ -13,10 +13,10 @@ To start developing in `sib-core`, you need:
 npm install
 
 # 2. Build the framework
-npm run build:dev
+npm run build
 
-# 3. Launch a web server
-npm run serve
+# 3. Build and watch together
+npm run dev
 ```
 
 You can now see examples at [http://127.0.0.1:3000](http://127.0.0.1:3000/).
@@ -26,15 +26,21 @@ To develop new features for `sib-core`, you can add an HTML example file in `/ex
 Don't forget to import the framework:
 
 ```html
-<script type="module" src="../dist/index.js"></script>
+<script type="module" src="../src/index.ts"></script>
 ```
 You can now write HTML using `sib-core` and test it in your browser.
 
 
 ## Testing
+
 You can test the API by running:
 ```shell
 npm run test
+```
+
+Or alternatively, you can select the tests you would like to run by using the Cypress UI:
+```shell
+npm run cypress:open
 ```
 
 # Mixin API
