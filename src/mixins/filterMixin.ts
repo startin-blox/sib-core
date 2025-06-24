@@ -17,7 +17,7 @@ const FilterMixin = {
     filteredBy: {
       type: String,
       default: null,
-      callback(newValue: string) {
+      async callback(newValue: string) {
         // if we change search form, re-populate
         if (
           newValue &&
@@ -26,7 +26,7 @@ const FilterMixin = {
         ) {
           this.searchForm.component.detach(this);
           this.searchForm = null;
-          this.populate();
+          await this.populate();
         }
       },
     },
