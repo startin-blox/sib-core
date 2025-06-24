@@ -15,10 +15,9 @@ import {
   normalizeContext,
 } from '../helpers.ts';
 import type { CacheManagerInterface } from './cache/cache-manager.ts';
+import { InMemoryCacheManager } from './cache/in-memory.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
-import { InMemoryCacheManager } from './cache/in-memory.ts';
-
 
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
@@ -104,10 +103,9 @@ export class Store {
     if (serverSearch) {
       key = appendServerSearchToIri(key, serverSearch);
     }
-
     if (
       localData == null &&
-      await this.cache.has(key) &&
+      (await this.cache.has(key)) &&
       !this.loadingList.has(key)
     ) {
       const resource = await this.get(key);
@@ -126,6 +124,7 @@ export class Store {
       let clientContext = await this.contextParser.parse(
         getRawContext(context),
       );
+      // if (id === "https://ldp-server.test/users/") debugger;
 
       let resource: any = null;
       if (this._isLocalId(id)) {
@@ -143,6 +142,7 @@ export class Store {
               serverPagination,
               serverSearch,
             ));
+          // if (id === "https://ldp-server.test/users/") debugger;
         } catch (error) {
           console.error(error);
         }
@@ -158,17 +158,21 @@ export class Store {
 
       console.log('Fetched resource without normalized context:', id, resource);
 
-      let rawCtx = resource['@context'] || base_context;
+      const rawCtx = resource['@context'] || base_context;
       const normalizedRawContext: JSONLDContextParser.JsonLdContextNormalized =
-        await this.contextParser.parse(Array.isArray(rawCtx) ? rawCtx : [rawCtx]);
+        await this.contextParser.parse(
+          Array.isArray(rawCtx) ? rawCtx : [rawCtx],
+        );
+      // if (id === "https://ldp-server.test/users/") debugger;
 
       clientContext = resource
-        ? mergeContexts(resource.clientContext, normalizedRawContext)
+        ? mergeContexts(clientContext, normalizedRawContext)
         : resource.clientContext;
 
       const serverContext = await this.contextParser.parse([
         resource['@context'] || base_context,
       ]);
+      // if (id === "https://ldp-server.test/users/") debugger;
       console.log('Fetched resource with normalized context:', id, resource);
 
       // Cache proxy
@@ -180,12 +184,17 @@ export class Store {
         serverPagination,
         serverSearch,
       );
+      // if (id === "https://ldp-server.test/users/") debugger;
       this.loadingList.delete(key);
+      const finalResource = await this.get(key);
+      // if (id === "https://ldp-server.test/users/") debugger;
+      console.log('--------------- resource:', resource);
+      console.log('---------------Final resource:', finalResource);
       document.dispatchEvent(
         new CustomEvent('resourceReady', {
           detail: {
             id: key,
-            resource: await this.get(key),
+            resource: finalResource,
             fetchedResource: resource,
           },
         }),
@@ -223,7 +232,6 @@ export class Store {
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
   ) {
-    // debugger
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination)
       iri = appendServerPaginationToIri(iri, serverPagination);
@@ -276,7 +284,7 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    this.cache.linkUrlWithId(
+    await this.cache.linkUrlWithId(
       parentId,
       CustomGetter.getEmptyResource(
         resources['@id'],
@@ -291,7 +299,7 @@ export class Store {
     console.log('Flattened resource:', flattenedResources);
 
     const compactedResources: any[] = await Promise.all(
-      flattenedResources.map(async(r) => jsonld.compact(await r, {}))
+      flattenedResources.map(async r => jsonld.compact(await r, {})),
     );
 
     console.log('Compacted resource:', compactedResources);
@@ -331,17 +339,27 @@ export class Store {
         serverSearch,
       ).getProxy();
       if (resourceProxy.isContainer())
-        this.subscribeChildren(resourceProxy, id);
+        await this.subscribeChildren(resourceProxy, id);
 
       if (await this.get(key)) {
         // if already cached, merge data
         // await this.cache.get(key)?.merge(resourceProxy);
-        const resourceFromCache = await this.cache.get(key)
-        if (resourceFromCache)
+        const resourceFromCache = await this.cache.get(key);
+
+        // if (key === "https://ldp-server.test/users/") debugger;
+
+        if (resourceFromCache) {
           resourceFromCache.merge(resourceProxy);
+          const t = await this.cache.get(key);
+          console.log(
+            '--------------------resourceFromCache',
+            t,
+            resourceFromCache,
+          );
+        }
       } else {
         // else, put in cache
-        this.cacheResource(key, resourceProxy);
+        await this.cacheResource(key, resourceProxy);
       }
     }
   }
@@ -376,7 +394,7 @@ export class Store {
       ? mergeContexts(resourceProxy.clientContext, resource['@context'])
       : resource['@context'];
 
-    this.clearCache(id);
+    await this.clearCache(id);
     console.debug('Actually fetching data for', id, resource);
     await this.getData(id, clientContext, '', resource, true);
 
@@ -387,8 +405,8 @@ export class Store {
    * Subscribe all the children of a container to its parent
    * @param container
    */
-  subscribeChildren(container: CustomGetter, containerId: string) {
-    const children = container['listPredicate'];
+  async subscribeChildren(container: CustomGetter, containerId: string) {
+    const children = await container['listPredicate'];
     if (!children) return;
 
     for (const res of children) {
@@ -414,7 +432,7 @@ export class Store {
     return this._fetch(method, resource, id).then(async response => {
       if (response.ok) {
         if (method !== '_LOCAL') {
-          this.clearCache(expandedId);
+          await this.clearCache(expandedId);
         } // clear cache
         this.getData(expandedId, resource['@context']).then(async () => {
           // re-fetch data
@@ -450,18 +468,20 @@ export class Store {
   async refreshResources(resourceIds: string[]) {
     const uniqueIds = Array.from(new Set(resourceIds));
     const maybe = await Promise.all(
-      uniqueIds.map(id => this.cache.has(id).then(ok => ok ? id : null))
+      uniqueIds.map(
+        async id => await this.cache.has(id).then(ok => (ok ? id : null)),
+      ),
     );
     resourceIds = maybe.filter((id): id is string => id !== null);
 
     const resourceWithContexts = await Promise.all(
-      resourceIds.map(async (resourceId) => {
+      resourceIds.map(async resourceId => {
         const res = await this.get(resourceId);
         return {
           id: resourceId,
           context: res?.clientContext,
         };
-      })
+      }),
     );
 
     for (const resource of resourceWithContexts) {
@@ -471,7 +491,7 @@ export class Store {
     await Promise.all(
       resourceWithContexts.map(async ({ id, context }) => {
         await this.getData(id, context || base_context);
-      })
+      }),
     );
     return resourceIds;
   }
@@ -482,6 +502,7 @@ export class Store {
    */
   notifyResources(resourceIds: string[]) {
     resourceIds = [...new Set(resourceIds)]; // remove duplicates
+    console.log('--------------Notify resources:', resourceIds);
     for (const id of resourceIds) PubSub.publish(id);
   }
 
@@ -527,7 +548,7 @@ export class Store {
       id = appendServerSearchToIri(id, serverSearch);
     }
 
-    let resource = await this.cache.get(id) || null;
+    const resource = (await this.cache.get(id)) || null;
     console.log('[store] Get resource:', id, resource);
     return resource;
   }
@@ -540,7 +561,7 @@ export class Store {
     if (await this.cache.has(id)) {
       // For federation, clear each source
       const resource = await this.cache.get(id);
-      const predicate = resource ? resource['listPredicate'] : null;
+      const predicate = resource ? await resource['listPredicate'] : null;
       if (predicate) {
         for (const child of predicate) {
           if (child?.['@type'] && doesResourceContainList(child))
@@ -592,8 +613,8 @@ export class Store {
    *
    * @returns id of the edited resource
    */
-  patch(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('PATCH', resource, id);
+  async patch(resource: object, id: string): Promise<string | null> {
+    return await this._updateResource('PATCH', resource, id);
   }
 
   /**
@@ -762,8 +783,10 @@ export class Store {
     const handler = event => {
       if (event.detail.id === id) {
         if (event.detail.resource) {
+          console.log('--------------resolving resource');
           resolve(event.detail.resource);
         } else {
+          console.log('--------------resolving fetchedResource');
           resolve(event.detail.fetchedResource);
         }
         // TODO : callback

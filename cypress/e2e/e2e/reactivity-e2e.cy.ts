@@ -7,6 +7,9 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.intercept('GET', 'https://ldp-server.test/users/', {
       fixture: 'users-paris.jsonld',
     });
+    cy.intercept('GET', 'https://ldp-server1.test/users/', {
+      fixture: 'users-paris.jsonld',
+    });
     cy.intercept('GET', '**/sources/users/', {
       fixture: 'users-source.jsonld',
     });

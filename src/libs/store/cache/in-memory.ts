@@ -49,14 +49,19 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @returns The cached resource, or undefined if not found.
    */
   async get(ref: string): Promise<Resource | undefined> {
-    console.debug('[CacheManager] get', ref, this.resourceCache.get(ref), this.urlToIdMap.get(ref));
+    console.debug(
+      '[CacheManager] get',
+      ref,
+      this.resourceCache.get(ref),
+      this.urlToIdMap.get(ref),
+    );
     if (this.resourceCache.has(ref)) {
-      return await this.resourceCache.get(ref);
+      return this.resourceCache.get(ref);
     }
 
     const id = this.urlToIdMap.get(ref);
     if (id) {
-      return await this.resourceCache.get(id);
+      return this.resourceCache.get(id);
     }
 
     return undefined;
@@ -96,7 +101,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
     if (!isUrlOrRelativePath(url)) return;
     if (this.hasUrlMatch(url)) return;
 
-    this.set(url, emptyResource as any);
+    await this.set(url, emptyResource as any);
   }
 
   /**

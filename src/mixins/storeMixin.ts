@@ -91,12 +91,13 @@ const StoreMixin = {
     );
     if (id) {
       // 4) Await the async operation. Only _then_ do we assign into _resource.
-      const fetched: Resource | null = await store.get(id, serverPagination, serverSearch);
-      this._resource = fetched;
-      console.log(
-        `[StoreMixin] Loaded resource: ${id}`,
-        fetched,
+      const fetched: Resource | null = await store.get(
+        id,
+        serverPagination,
+        serverSearch,
       );
+      this._resource = fetched;
+      console.log(`[StoreMixin] Loaded resource: ${id}`, fetched);
       return this._resource;
     } else {
       console.warn('[StoreMixin] No resource id provided');
@@ -144,7 +145,7 @@ const StoreMixin = {
       dynamicServerSearch,
     );
     const forceRefetch = !!dynamicServerSearch;
-    this._resource = await store.getData(
+    await store.getData(
       this.resourceId,
       this.context,
       undefined,
@@ -153,7 +154,8 @@ const StoreMixin = {
       serverPagination,
       serverSearch,
     );
-    console.log(this._resource);
+    this._resource = await store.get(this.resourceId);
+    console.log('-----------------helllllo', this._resource);
     this.updateDOM();
   },
 
@@ -162,9 +164,12 @@ const StoreMixin = {
   },
   updateNavigateSubscription() {},
   async updateDOM(): Promise<void> {
+    this._resource = await store.get(this.resourceId); // TODO: temp fix!!
+    // if (this.dataSrc === "https://ldp-server.test/users/") debugger;
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.replaceAttributesData();
+    console.log('---------------updateDOM');
     await this.populate();
     setTimeout(() =>
       // Brings the dispatchEvent at the end of the queue

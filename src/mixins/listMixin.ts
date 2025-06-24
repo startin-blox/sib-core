@@ -44,13 +44,14 @@ const ListMixin = {
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     const div = this.div;
     console.log(
-      `[ListMixin] Populating list with dataSrc: ${this.dataSrc}, resource: ${this.resource?.['@id']}`, this.resource,
+      `[ListMixin] Populating list with dataSrc: ${this.dataSrc}, resource: ${this.resource?.['@id']}`,
+      this.resource,
     );
-    if (!await this.resource) {
+    // if (this.dataSrc === "https://ldp-server.test/users/") debugger;
+    if (!(await this.resource)) {
       console.warn('[ListMixin] No resource to populate');
       return;
     }
-
 
     // Not a container but a single resource
     if (
@@ -78,8 +79,10 @@ const ListMixin = {
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
 
+      const listPredicate = await this.resource['listPredicate'];
+
       await nextProcessor(
-        this.resource['listPredicate'],
+        listPredicate,
         listPostProcessorsCopy,
         div,
         this.dataSrc,
@@ -87,7 +90,7 @@ const ListMixin = {
     } else if (
       this.arrayField &&
       this.predicateName &&
-      this.resource[this.predicateName]
+      (await this.resource[this.predicateName])
     ) {
       this.setElementAttribute('container');
       this.renderCallbacks = [];

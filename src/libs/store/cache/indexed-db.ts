@@ -115,7 +115,9 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
           // If not found by id, try resolving ref as a URL
           const getIdReq = urlToIdStore.get(ref);
           getIdReq.onsuccess = () => {
-            const mapping = getIdReq.result as { url: string; id: string } | undefined;
+            const mapping = getIdReq.result as
+              | { url: string; id: string }
+              | undefined;
             if (mapping) {
               const getByIdReq = resourcesStore.get(mapping.id);
               getByIdReq.onsuccess = () => {
@@ -236,7 +238,9 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
           // Otherwise, try to resolve as a URL
           const getIdReq = urlToIdStore.get(urlOrId);
           getIdReq.onsuccess = () => {
-            const mapping = getIdReq.result as { url: string; id: string } | undefined;
+            const mapping = getIdReq.result as
+              | { url: string; id: string }
+              | undefined;
             if (mapping) {
               const getByIdReq = resourcesStore.get(mapping.id);
               getByIdReq.onsuccess = () => {
@@ -273,7 +277,9 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       const store = tx.objectStore('urlToId');
       const request = store.get(url);
       request.onsuccess = () => {
-        const result = request.result as { url: string; id: string } | undefined;
+        const result = request.result as
+          | { url: string; id: string }
+          | undefined;
         resolve(result ? result.id : undefined);
       };
       request.onerror = () => {
@@ -328,7 +334,9 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
           // Otherwise, treat idOrUrl as a URL and see if there's a mapping
           const getIdReq = urlToIdStore.get(idOrUrl);
           getIdReq.onsuccess = () => {
-            const mapping = getIdReq.result as { url: string; id: string } | undefined;
+            const mapping = getIdReq.result as
+              | { url: string; id: string }
+              | undefined;
             if (mapping) {
               resourcesStore.delete(mapping.id);
               urlToIdStore.delete(idOrUrl);

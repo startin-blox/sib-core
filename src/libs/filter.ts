@@ -97,7 +97,8 @@ const matchValue = async (
   }
   if (subject.isContainer?.()) {
     let ret: boolean | Promise<boolean> = Promise.resolve(query.value === ''); // if no query, return a match
-    for (const value of subject['listPredicate']) {
+    const subjectList = await subject['listPredicate'];
+    for (const value of subjectList) {
       ret = (await ret) || (await matchValue(value, query)); // do not throw here, we need the result
       if (ret) return orThrow(throwOn, true);
     }
@@ -176,7 +177,7 @@ const traversePath = async (
           let targetsRes = await res[remainingPath[0]];
           if (!targetsRes) return [];
           if (targetsRes.isContainer?.()) {
-            targetsRes = targetsRes['listPredicate'];
+            targetsRes = await targetsRes['listPredicate'];
           }
           if (!Array.isArray(targetsRes)) targetsRes = [targetsRes];
 

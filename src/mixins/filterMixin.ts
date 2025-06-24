@@ -124,7 +124,7 @@ const FilterMixin = {
     await this.populate();
   },
   async getValuesOfField(field: string) {
-    const arrayOfDataObjects = this.resource['listPredicate'];
+    const arrayOfDataObjects = await this.resource['listPredicate'];
     const arrayOfDataIds: string[] = [];
     for (const obj of arrayOfDataObjects) {
       // for each element, if it's an object, catch all elements in 'ldp:contains' key
@@ -144,7 +144,7 @@ const FilterMixin = {
         continue;
       }
       // If it's a container, fetch its children
-      const children = nextArrayOfObjects['listPredicate'];
+      const children = await nextArrayOfObjects['listPredicate'];
       if (!children) continue;
       arrayOfDataIds.push(...children.map(child => child['@id']));
     }

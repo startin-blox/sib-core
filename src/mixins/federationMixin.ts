@@ -54,18 +54,22 @@ const FederationMixin = {
 
     // Special case for list support, if there is only one item it is serialized as an object, not an array
     if (!Array.isArray(resources)) resources = [resources];
-    await Promise.all(resources.map(res => getChildResources(res)));
+    await Promise.all(resources.map(async res => await getChildResources(res)));
     return newResources;
   },
 
   async fetchSource(containerId: string): Promise<Resource[] | null> {
-    const cachedContainer = store.get(containerId); // find container in cache
-    if (!cachedContainer || cachedContainer.getContainerList() === null) {
+    const cachedContainer = await store.get(containerId); // find container in cache
+    // if (containerId === "https://ldp-server.test/users/") debugger;
+    const c = cachedContainer && (await cachedContainer.getContainerList());
+    console.log('-----------------cachedContainer', c);
+
+    if (!cachedContainer || c === null) {
       // if container not fetched
-      store.clearCache(containerId); // empty cache
+      await store.clearCache(containerId); // empty cache
     }
     const container = await store.getData(containerId, this.context); // and fetch it
-    return container?.['listPredicate'];
+    return await container?.['listPredicate'];
   },
 };
 
