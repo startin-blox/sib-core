@@ -19,6 +19,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param url - The original URL used to fetch the resource.
    * @returns The cached resource, or undefined if not found.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async getByUrl(url: string): Promise<Resource | undefined> {
     const id = this.urlToIdMap.get(url);
     if (!id) return undefined;
@@ -36,6 +37,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param id - The @id of the resource (can be a URI, URN, or UUID).
    * @returns The cached resource, or undefined if not found.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async getById(id: string): Promise<Resource | undefined> {
     return this.resourceCache.get(id);
   }
@@ -48,6 +50,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param idOrUrl - A resource @id or its original fetch URL.
    * @returns The cached resource, or undefined if not found.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async get(ref: string): Promise<Resource | undefined> {
     console.debug(
       '[CacheManager] get',
@@ -67,6 +70,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
     return undefined;
   }
 
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async length(): Promise<number> {
     return this.resourceCache.size;
   }
@@ -77,6 +81,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param url - The URL from which the resource was fetched.
    * @param resource - The JSON-LD resource to store. Must contain a valid @id.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async set(url: string, resource: Resource): Promise<void> {
     const id = resource?.['@id'];
     if (!id) {
@@ -97,6 +102,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param url - Data source (absolute or relative path).
    * @param emptyResource - The resource to associate with this URL. Must include a valid `@id`.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async linkUrlWithId(url: string, emptyResource: Resource) {
     if (!isUrlOrRelativePath(url)) return;
     if (this.hasUrlMatch(url)) return;
@@ -111,6 +117,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param urlOrId - The @id or URL to check for.
    * @returns True if the resource exists in cache, false otherwise.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async has(urlOrId: string): Promise<boolean> {
     if (this.resourceCache.has(urlOrId)) return true;
     const id = this.urlToIdMap.get(urlOrId);
@@ -123,6 +130,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param url - The original fetch URL.
    * @returns The associated @id, or undefined if no mapping exists.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async getIdByUrl(url: string): Promise<string | undefined> {
     return this.urlToIdMap.get(url);
   }
@@ -130,6 +138,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
   /**
    * Clears the entire cache and all URL-to-ID mappings.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async clear(): Promise<void> {
     this.resourceCache.clear();
     this.urlToIdMap.clear();
@@ -142,6 +151,7 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    * @param idOrUrl - The @id or URL of the resource to delete.
    * @returns True if the resource was found and deleted, false otherwise.
    */
+  // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async delete(idOrUrl: string): Promise<boolean> {
     if (this.resourceCache.has(idOrUrl)) {
       this.resourceCache.delete(idOrUrl);
