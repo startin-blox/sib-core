@@ -133,14 +133,11 @@ const StoreMixin = {
 
     this.updateNavigateSubscription();
 
-    this.sub1 = PubSub.subscribe(
-      this.resourceId,
-      this.updateDOM.bind(this)
-    );
+    this.sub1 = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
 
     this.sub2 = PubSub.subscribe(
       this.resourceId,
-      this.syncResourceWithCache.bind(this)
+      this.syncResourceWithCache.bind(this),
     );
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
@@ -172,9 +169,9 @@ const StoreMixin = {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
   updateNavigateSubscription() {},
+
   async updateDOM(): Promise<void> {
     this._resource = await store.get(this.resourceId); // TODO: temp fix!!
-    // if (this.dataSrc === "https://ldp-server.test/users/") debugger;
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.replaceAttributesData();

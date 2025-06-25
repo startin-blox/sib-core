@@ -186,7 +186,7 @@ export class BaseWidget extends HTMLElement {
         ); // fetch the datas
         this._listen(res['@id']);
         if (resourcesFromContainer) {
-          resources.push(...await resourcesFromContainer['listPredicate']);
+          resources.push(...(await resourcesFromContainer['listPredicate']));
         }
       } else {
         resources.push(res);
