@@ -1,5 +1,5 @@
 declare let sibStore: import('./libs/store/store').Store;
-import('./libs/store/cache/cache-manager').CacheManagerInterface;
+import('./libs/store/cache/cache-manager.ts').CacheManagerInterface;
 
 interface StoreOptions {
   fetchMethod?: Promise<any>;

@@ -136,11 +136,9 @@ export const SolidForm = {
     );
   },
   async save() {
-    console.log('-------------------save!', this.resourceId, this.partial);
     this.toggleLoaderHidden(false);
     this.hideError();
     const resource = await this.getFormValue();
-    console.log('-------------------save resource!', resource);
     resource['@context'] = this.context;
     let saved: string | null | undefined;
     try {
@@ -172,7 +170,6 @@ export const SolidForm = {
     return saved;
   },
   async submitForm(): Promise<void> {
-    console.log('----------submitForm', this.resourceId, this.partial);
     let id: string;
     try {
       id = (await this.save()) || this.getFormValue()['@id'];
@@ -297,10 +294,6 @@ export const SolidForm = {
     `;
   },
   populate: trackRenderAsync(async function (): Promise<void> {
-    console.log('-------------------populate', this.resourceId);
-    console.log('[debug] resource in populate:', this.resource);
-    console.log('[debug] this._resource:', this._resource);
-
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
     this.element.onchange = () => this.onChange();
     // this._resource = await store.get(this.resourceId);
