@@ -109,7 +109,8 @@ const StoreMixin = {
   },
   async fetchData(value: string) {
     this.empty();
-    if (this.subscription) PubSub.unsubscribe(this.subscription);
+    if (this.sub1) PubSub.unsubscribe(this.sub1);
+    if (this.sub2) PubSub.unsubscribe(this.sub2);
     if (!value || value === 'undefined') return;
 
     this.resourceId = value;
@@ -132,9 +133,14 @@ const StoreMixin = {
 
     this.updateNavigateSubscription();
 
-    this.subscription = PubSub.subscribe(
+    this.sub1 = PubSub.subscribe(
       this.resourceId,
-      this.updateDOM.bind(this),
+      this.updateDOM.bind(this)
+    );
+
+    this.sub2 = PubSub.subscribe(
+      this.resourceId,
+      this.syncResourceWithCache.bind(this)
     );
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
@@ -159,6 +165,9 @@ const StoreMixin = {
     this.updateDOM();
   },
 
+  async syncResourceWithCache(): Promise<void> {
+    this._resource = await store.get(this.resourceId); // TODO: temp fix!!
+  },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
