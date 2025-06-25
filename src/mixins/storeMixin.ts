@@ -102,7 +102,6 @@ const StoreMixin = {
     }
     console.warn('[StoreMixin] No resource id provided');
     return null;
-
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
@@ -168,7 +167,7 @@ const StoreMixin = {
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
-  updateNavigateSubscription() { },
+  updateNavigateSubscription() {},
 
   async updateDOM(): Promise<void> {
     this._resource = await store.get(this.resourceId); // TODO: temp fix!!
@@ -187,7 +186,7 @@ const StoreMixin = {
     );
     this.toggleLoaderHidden(true);
   },
-  empty(): void { },
+  empty(): void {},
   update() {
     if (this.noRender === null) this.updateDOM();
   },
