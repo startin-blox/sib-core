@@ -350,12 +350,6 @@ export class Store {
 
         if (resourceFromCache) {
           resourceFromCache.merge(resourceProxy);
-          const t = await this.cache.get(key);
-          console.log(
-            '--------------------resourceFromCache',
-            t,
-            resourceFromCache,
-          );
         }
       } else {
         // else, put in cache

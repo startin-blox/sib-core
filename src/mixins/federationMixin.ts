@@ -44,8 +44,10 @@ const FederationMixin = {
           this.containerFetched.push(containerId);
 
           const resourcesFetched = await this.fetchSource(containerId); // fetch the resources of this container
-          if (resourcesFetched)
-            newResources.push(...(await this.getResources(resourcesFetched))); // Add content of source to array...
+          if (resourcesFetched) {
+            const t = await this.getResources(resourcesFetched);
+            newResources.push(...t); // Add content of source to array...}
+          }
         }
       } else {
         newResources.push(res); // Or resource directly if not a container
@@ -61,15 +63,20 @@ const FederationMixin = {
   async fetchSource(containerId: string): Promise<Resource[] | null> {
     const cachedContainer = await store.get(containerId); // find container in cache
     // if (containerId === "https://ldp-server.test/users/") debugger;
-    const c = cachedContainer && (await cachedContainer.getContainerList());
-    console.log('-----------------cachedContainer', c);
+    const c = await cachedContainer?.getContainerList();
 
     if (!cachedContainer || c === null) {
       // if container not fetched
-      await store.clearCache(containerId); // empty cache
+      // await store.clearCache(containerId); // empty cache
+      const container = await store.getData(containerId, this.context, undefined, undefined, true); // and fetch it
+      const t = await container?.['listPredicate'];
+      return t;
+
     }
     const container = await store.getData(containerId, this.context); // and fetch it
-    return await container?.['listPredicate'];
+    const t = await container?.['listPredicate'];
+    return t;
+
   },
 };
 

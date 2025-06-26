@@ -231,13 +231,13 @@ export class CustomGetter {
   /**
    * Get children of container as objects
    */
-  getList(predicateName: string): object[] {
-    let value = this.resource[predicateName];
+  async getList(predicateName: string): Promise<object[]> {
+    let value = await this.resource[predicateName];
 
     if (!value) {
       const index = this.getExpandedPredicate(predicateName);
       if (index) {
-        value = this.resource[index];
+        value = await this.resource[index];
       }
     }
 
@@ -248,7 +248,7 @@ export class CustomGetter {
   }
 
   async getListAndCacheIt(predicate: string): Promise<CustomGetter[] | null> {
-    let children = this.getList(predicate);
+    let children = await this.getList(predicate);
     if (!children) return null;
 
     if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
