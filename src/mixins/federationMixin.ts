@@ -68,15 +68,19 @@ const FederationMixin = {
     if (!cachedContainer || c === null) {
       // if container not fetched
       // await store.clearCache(containerId); // empty cache
-      const container = await store.getData(containerId, this.context, undefined, undefined, true); // and fetch it
+      const container = await store.getData(
+        containerId,
+        this.context,
+        undefined,
+        undefined,
+        true,
+      ); // and fetch it
       const t = await container?.['listPredicate'];
       return t;
-
     }
     const container = await store.getData(containerId, this.context); // and fetch it
     const t = await container?.['listPredicate'];
     return t;
-
   },
 };
 
