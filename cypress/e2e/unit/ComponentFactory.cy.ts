@@ -19,6 +19,7 @@ const MixinTestTwo = {
     this.message = 'hooks respect ';
   },
   methodA() {
+    console.log('methodAMixin2');
     return 'AA';
   },
   methodB() {
@@ -54,7 +55,9 @@ const MixinTestOne = {
   methodA() {
     return 'A';
   },
-  methodC() {},
+  methodC() {
+    console.log('methodCMixin1');
+  },
 };
 
 const Component = {

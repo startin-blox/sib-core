@@ -11,10 +11,18 @@ const MixinTestTwo = {
   initialState: {
     a: 0,
   },
-  created() {},
-  attached() {},
-  methodA() {},
-  methodB() {},
+  created() {
+    console.log('created2');
+  },
+  attached() {
+    console.log('attached2');
+  },
+  methodA() {
+    console.log('methodAMixin2');
+  },
+  methodB() {
+    console.log('methodBMixin2');
+  },
 };
 
 const MixinTestOne = {
@@ -36,10 +44,18 @@ const MixinTestOne = {
   set accessorTest(value) {
     this.accessorValue = value;
   },
-  created() {},
-  detached() {},
-  methodA() {},
-  methodC() {},
+  created() {
+    console.log('created1');
+  },
+  detached() {
+    console.log('detached2');
+  },
+  methodA() {
+    console.log('methodAMixin1');
+  },
+  methodC() {
+    console.log('methodCMixin1');
+  },
 };
 
 const component = {
@@ -59,11 +75,21 @@ const component = {
   get accessorTest() {
     return `hello ${this.accessorValue}`;
   },
-  created() {},
-  attached() {},
-  detached() {},
-  methodC() {},
-  methodD() {},
+  created() {
+    console.log('created3');
+  },
+  attached() {
+    console.log('attached3');
+  },
+  detached() {
+    console.log('detached3');
+  },
+  methodC() {
+    console.log('methodCComponent');
+  },
+  methodD() {
+    console.log('methodDComponent');
+  },
 };
 
 describe('Mixin Compositor', () => {
