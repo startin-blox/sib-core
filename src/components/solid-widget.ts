@@ -34,15 +34,12 @@ export const SolidWidget = {
         },
       },
       get template() {
-        console.log('------solidwidget------get template', template);
-
         return () =>
           this.evalTemplate(template).then(
             (tpl: string) => html`${unsafeHTML(tpl)}`,
           );
       },
       evalTemplate(template: string) {
-        console.log('----solidwidget--------evalTemplate', template);
         const tpl = evalTemplateString(template, {
           name: this.name,
           value: this.value || this.resource || '',
@@ -51,32 +48,19 @@ export const SolidWidget = {
           targetSrc: this.targetSrc || '',
         });
 
-        console.log(
-          '----solidwidget--------evalTemplate tpl',
-          tpl,
-          this.value,
-          this.resource,
-        );
         return tpl;
       },
       async templateToDOM(template) {
-        console.log(
-          '----solidwidget--------templateToDOM',
-          await template,
-          this.element,
-        );
         render(await template, this.element);
       },
       // For form widgets, handle nested solid-form
       // TODO: type custom elements
       getValueFromElement(element: any) {
-        console.log('------solidwidget------getValueFromElement', template);
         if (element.tagName === 'SOLID-FORM') return element.component.value; // nested solid-form
         if (element.component) return element.component.getValue(); // form widget
         return element.value; // input
       },
       updateDOM() {
-        console.log('-----solidwidget-------updateDOM', template);
         // override StoreMixin method to launch render when resource fetched
         this.planRender();
       },
