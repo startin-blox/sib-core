@@ -58,10 +58,6 @@ export class CustomGetter {
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
         let resources = await this.getList(path);
-        console.log(
-          '--------------------------getList line 61 resources',
-          resources,
-        );
         if (!resources || (Array.isArray(resources) && resources.length === 0))
           return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource

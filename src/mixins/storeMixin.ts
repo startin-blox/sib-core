@@ -157,7 +157,6 @@ const StoreMixin = {
       serverSearch,
     );
     this._resource = await store.get(this.resourceId);
-    console.log('-----------------helllllo', this._resource);
     this.updateDOM();
   },
 
@@ -174,7 +173,6 @@ const StoreMixin = {
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.replaceAttributesData();
-    console.log('---------------updateDOM');
     await this.populate();
     setTimeout(() =>
       // Brings the dispatchEvent at the end of the queue
