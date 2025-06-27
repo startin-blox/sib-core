@@ -84,11 +84,6 @@ const StoreMixin = {
       this.getDynamicServerSearch?.(), // from `filterMixin`
     );
 
-    // return id ? await store.get(id, serverPagination, serverSearch) : null;
-    console.log(
-      `[StoreMixin] Loading resource with id: ${id}, context: ${this.context}`,
-      this.context,
-    );
     if (id) {
       // 4) Await the async operation. Only _then_ do we assign into _resource.
       const fetched: Resource | null = await store.get(
@@ -97,10 +92,8 @@ const StoreMixin = {
         serverSearch,
       );
       this._resource = fetched;
-      console.log(`[StoreMixin] Loaded resource: ${id}`, fetched);
       return this._resource;
     }
-    console.warn('[StoreMixin] No resource id provided');
     return null;
   },
   get loader(): HTMLElement | null {

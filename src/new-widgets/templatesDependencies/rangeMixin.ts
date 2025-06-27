@@ -105,10 +105,6 @@ const RangeMixin = {
           .filter(el => el !== null)
           .map(async r => await getRangeValue(r)),
       );
-      console.log(
-        '--------------------------- this.listAttributes.range',
-        this.listAttributes.range,
-      );
     }
 
     this.planRender();
