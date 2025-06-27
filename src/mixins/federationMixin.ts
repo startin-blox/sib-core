@@ -62,9 +62,7 @@ const FederationMixin = {
 
   async fetchSource(containerId: string): Promise<Resource[] | null> {
     const cachedContainer = await store.get(containerId); // find container in cache
-    // if (containerId === "https://ldp-server.test/users/") debugger;
     const c = await cachedContainer?.getContainerList();
-    console.log(`-----------${containerId}------fetchSource--c`, c);
     if (!cachedContainer || c === null) {
       // if container not fetched
       // await store.clearCache(containerId); // empty cache
@@ -76,12 +74,10 @@ const FederationMixin = {
         true,
       ); // and fetch it
       const t = await container?.['listPredicate'];
-      console.log(`-----------${containerId}------fetchSource--t`, t);
       return t;
     }
     const container = await store.getData(containerId, this.context); // and fetch it
     const t = await container?.['listPredicate'];
-    console.log(`-----------${containerId}------fetchSource--t`, t);
     return t;
   },
 };

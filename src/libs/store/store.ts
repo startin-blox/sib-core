@@ -124,7 +124,6 @@ export class Store {
       let clientContext = await this.contextParser.parse(
         getRawContext(context),
       );
-      // if (id === "https://ldp-server.test/users/") debugger;
 
       let resource: any = null;
       if (this._isLocalId(id)) {
@@ -142,7 +141,6 @@ export class Store {
               serverPagination,
               serverSearch,
             ));
-          // if (id === "https://ldp-server.test/users/") debugger;
         } catch (error) {
           console.error(error);
         }
@@ -156,14 +154,11 @@ export class Store {
         return;
       }
 
-      console.log('Fetched resource without normalized context:', id, resource);
-
       const rawCtx = resource['@context'] || base_context;
       const normalizedRawContext: JSONLDContextParser.JsonLdContextNormalized =
         await this.contextParser.parse(
           Array.isArray(rawCtx) ? rawCtx : [rawCtx],
         );
-      // if (id === "https://ldp-server.test/users/") debugger;
 
       if (resource)
         clientContext = normalizeContext(
@@ -173,8 +168,6 @@ export class Store {
       const serverContext = await this.contextParser.parse([
         resource['@context'] || base_context,
       ]);
-      // if (id === "https://ldp-server.test/users/") debugger;
-      console.log('Fetched resource with normalized context:', id, resource);
 
       // Cache proxy
       await this.cacheGraph(
@@ -185,12 +178,8 @@ export class Store {
         serverPagination,
         serverSearch,
       );
-      // if (id === "https://ldp-server.test/users/") debugger;
       this.loadingList.delete(key);
       const finalResource = await this.get(key);
-      // if (id === "https://ldp-server.test/users/") debugger;
-      console.log('--------------- resource:', resource);
-      console.log('---------------Final resource:', finalResource);
       document.dispatchEvent(
         new CustomEvent('resourceReady', {
           detail: {
@@ -293,19 +282,12 @@ export class Store {
         parentContext,
       ) as any,
     );
-    console.log('Cache empty resource for', parentId, resources['@id']);
-    console.log('Cache empty resource for', parentId, resources);
-
     const flattenedResources: any = await jsonld.flatten(resources);
-    console.log('Flattened resource:', flattenedResources);
-
     const compactedResources: any[] = await Promise.all(
       flattenedResources.map(async r => jsonld.compact(await r, {})),
     );
 
-    console.log('Compacted resource:', compactedResources);
     for (const resource of compactedResources) {
-      console.log('Cache resource:', resource);
       const id = resource['@id'] || resource.id;
       let key = resource['@id'] || resource.id;
 
@@ -346,8 +328,6 @@ export class Store {
         // if already cached, merge data
         // await this.cache.get(key)?.merge(resourceProxy);
         const resourceFromCache = await this.cache.get(key);
-
-        // if (key === "https://ldp-server.test/users/") debugger;
 
         if (resourceFromCache) {
           resourceFromCache.merge(resourceProxy);
@@ -390,7 +370,6 @@ export class Store {
       : resource['@context'];
 
     await this.clearCache(id);
-    console.debug('Actually fetching data for', id, resource);
     await this.getData(id, clientContext, '', resource, true);
 
     return { ok: true };
@@ -402,7 +381,6 @@ export class Store {
    */
   async subscribeChildren(container: CustomGetter, containerId: string) {
     const children = await container['listPredicate'];
-    console.log('---------------subscribeChildren', containerId, children);
     if (!children) return;
 
     for (const res of children) {
@@ -498,7 +476,6 @@ export class Store {
    */
   notifyResources(resourceIds: string[]) {
     resourceIds = [...new Set(resourceIds)]; // remove duplicates
-    console.log('--------------Notify resources:', resourceIds);
     for (const id of resourceIds) PubSub.publish(id);
   }
 
@@ -545,7 +522,6 @@ export class Store {
     }
 
     const resource = (await this.cache.get(id)) || null;
-    console.log('[store] Get resource:', id, resource);
     return resource;
   }
 
@@ -567,10 +543,6 @@ export class Store {
 
       await this.cache.delete(id);
     }
-  }
-
-  async clear(): Promise<void> {
-    await this.cache.clear();
   }
 
   /**
@@ -783,10 +755,8 @@ export class Store {
     const handler = event => {
       if (event.detail.id === id) {
         if (event.detail.resource) {
-          console.log('--------------resolving resource');
           resolve(event.detail.resource);
         } else {
-          console.log('--------------resolving fetchedResource');
           resolve(event.detail.fetchedResource);
         }
         // TODO : callback

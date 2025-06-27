@@ -47,7 +47,6 @@ const ListMixin = {
       `[ListMixin] Populating list with dataSrc: ${this.dataSrc}, resource: ${this.resource?.['@id']}`,
       this.resource,
     );
-    // if (this.dataSrc === "https://ldp-server.test/users/") debugger;
     if (!(await this.resource)) {
       console.warn('[ListMixin] No resource to populate');
       return;
