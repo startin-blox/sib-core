@@ -165,9 +165,10 @@ export class Store {
         );
       // if (id === "https://ldp-server.test/users/") debugger;
 
-      clientContext = resource
-        ? mergeContexts(clientContext, normalizedRawContext)
-        : resource.clientContext;
+      if (resource)
+        clientContext = normalizeContext(
+          mergeContexts(clientContext, normalizedRawContext),
+        );
 
       const serverContext = await this.contextParser.parse([
         resource['@context'] || base_context,
@@ -401,6 +402,7 @@ export class Store {
    */
   async subscribeChildren(container: CustomGetter, containerId: string) {
     const children = await container['listPredicate'];
+    console.log('---------------subscribeChildren', containerId, children);
     if (!children) return;
 
     for (const res of children) {
@@ -565,6 +567,10 @@ export class Store {
 
       await this.cache.delete(id);
     }
+  }
+
+  async clear(): Promise<void> {
+    await this.cache.clear();
   }
 
   /**

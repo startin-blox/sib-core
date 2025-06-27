@@ -4,7 +4,7 @@
   "ldp:contains": [
     {
       "federation": "users",
-      "@id": "https://ldp-server1.test/users/",
+      "@id": "https://ldp-server.test/users/",
       "@type": "sib:federatedContainer",
       "permissions": ["view"]
     },
