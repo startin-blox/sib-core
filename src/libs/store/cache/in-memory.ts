@@ -52,12 +52,6 @@ export class InMemoryCacheManager implements CacheManagerInterface {
    */
   // biome-ignore lint/suspicious/useAwait: necessary for interface compatibility
   async get(ref: string): Promise<Resource | undefined> {
-    console.debug(
-      '[CacheManager] get',
-      ref,
-      this.resourceCache.get(ref),
-      this.urlToIdMap.get(ref),
-    );
     if (this.resourceCache.has(ref)) {
       return this.resourceCache.get(ref);
     }
