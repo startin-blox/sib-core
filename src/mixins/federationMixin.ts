@@ -76,7 +76,7 @@ const FederationMixin = {
     } else {
       container = await store.getData(containerId, this.context);
     }
-    return  await container?.['listPredicate'];
+    return await container?.['listPredicate'];
   },
 };
 
