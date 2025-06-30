@@ -15,6 +15,25 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
     this.dbPromise = this.openDb();
   }
 
+  // --- INTERNAL HELPERS --------------------------------------------------
+
+  /**
+   * Convert a Resource to the stored shape: move '@id' -> 'id'.
+   */
+  private toStored(resource: Resource): any {
+    if (!resource) return resource;
+    const { ['@id']: atId, ...rest } = resource;
+    return { ...rest, id: atId };
+  }
+
+  /**
+   * Convert stored record back to Resource: move 'id' -> '@id'.
+   */
+  private toResource(stored: any): Resource {
+    if (!stored) return stored;
+    const { id, ...rest } = stored;
+    return { '@id': id, ...rest };
+  }
   /**
    * Opens (or creates) the IndexedDB database and object stores.
    */
@@ -26,7 +45,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
         const db = request.result;
         if (!db.objectStoreNames.contains('resources')) {
           // Store JSON-LD resources under keyPath "@id"
-          db.createObjectStore('resources', { keyPath: '@id' });
+          db.createObjectStore('resources', { keyPath: 'id' });
         }
         if (!db.objectStoreNames.contains('urlToId')) {
           // Store URL-to-@id mappings under keyPath "url"
@@ -61,7 +80,8 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
         const resTx = db.transaction('resources', 'readonly');
         const resStore = resTx.objectStore('resources');
         const getRes = resStore.get(mapping.id);
-        getRes.onsuccess = () => resolve(getRes.result as Resource | undefined);
+        getRes.onsuccess = () =>
+          resolve(this.toResource(getRes.result as Resource | undefined));
         getRes.onerror = () => reject(getRes.error);
       };
       req.onerror = () => reject(req.error);
@@ -81,7 +101,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       const store = tx.objectStore('resources');
       const request = store.get(id);
       request.onsuccess = () => {
-        resolve(request.result as Resource | undefined);
+        resolve(this.toResource(request.result as Resource | undefined));
       };
       request.onerror = () => {
         reject(request.error);
@@ -182,7 +202,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       const urlToIdStore = tx.objectStore('urlToId');
 
       // Put the resource under its @id
-      const putResReq = resourcesStore.put(resource);
+      const putResReq = resourcesStore.put(this.toStored(resource));
       putResReq.onerror = () => {
         reject(putResReq.error);
       };
