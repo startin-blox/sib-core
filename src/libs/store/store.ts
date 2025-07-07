@@ -212,7 +212,6 @@ export class Store {
     serverSearch?: ServerSearchOptions,
     headers?: object,
   ) {
-    // debugger
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination)
       iri = appendServerPaginationToIri(iri, serverPagination);
@@ -382,7 +381,12 @@ export class Store {
    * @param id - id of the resource to update
    * @returns void
    */
-  async _updateResource(method: string, resource: object, id: string) {
+  async _updateResource(
+    method: string,
+    resource: object,
+    id: string,
+    skipFetch = false,
+  ) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method))
       throw new Error('Error: method not allowed');
     const context = await this.contextParser.parse([
@@ -395,26 +399,24 @@ export class Store {
         if (method !== '_LOCAL') {
           this.clearCache(expandedId);
         } // clear cache
-        this.getData(expandedId, resource['@context']).then(async () => {
+        if (!skipFetch) {
           // re-fetch data
-          const nestedResources = await this.getNestedResources(resource, id);
-          const resourcesToRefresh =
-            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-          const resourcesToNotify =
-            this.subscriptionIndex.get(expandedId) || [];
+          await this.getData(expandedId, resource['@context']);
+        }
+        const nestedResources = await this.getNestedResources(resource, id);
+        const resourcesToRefresh =
+          this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+        const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
 
-          return this.refreshResources([
-            ...nestedResources,
-            ...resourcesToRefresh,
-          ]) // refresh related resources
-            .then(resourceIds =>
-              this.notifyResources([
-                expandedId,
-                ...resourceIds,
-                ...resourcesToNotify,
-              ]),
-            ); // notify components
-        });
+        await this.refreshResources([...nestedResources, ...resourcesToRefresh]) // refresh related resources
+          .then(resourceIds =>
+            this.notifyResources([
+              expandedId,
+              ...resourceIds,
+              ...resourcesToNotify,
+            ]),
+          ); // notify components
+
         return response.headers?.get('Location') || null;
       }
       throw response;
@@ -534,8 +536,12 @@ export class Store {
    *
    * @returns id of the posted resource
    */
-  post(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('POST', resource, id);
+  post(
+    resource: object,
+    id: string,
+    skipFetch = false,
+  ): Promise<string | null> {
+    return this._updateResource('POST', resource, id, skipFetch);
   }
 
   /**
