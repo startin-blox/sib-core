@@ -396,26 +396,30 @@ export class Store {
     if (!expandedId) return null;
     return this._fetch(method, resource, id).then(async response => {
       if (response.ok) {
-        if (method !== '_LOCAL') {
-          this.clearCache(expandedId);
-        } // clear cache
         if (!skipFetch) {
+          if (method !== '_LOCAL') {
+            this.clearCache(expandedId);
+          } // clear cache
           // re-fetch data
           await this.getData(expandedId, resource['@context']);
-        }
-        const nestedResources = await this.getNestedResources(resource, id);
-        const resourcesToRefresh =
-          this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-        const resourcesToNotify = this.subscriptionIndex.get(expandedId) || [];
+          const nestedResources = await this.getNestedResources(resource, id);
+          const resourcesToRefresh =
+            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+          const resourcesToNotify =
+            this.subscriptionIndex.get(expandedId) || [];
 
-        await this.refreshResources([...nestedResources, ...resourcesToRefresh]) // refresh related resources
-          .then(resourceIds =>
-            this.notifyResources([
-              expandedId,
-              ...resourceIds,
-              ...resourcesToNotify,
-            ]),
-          ); // notify components
+          await this.refreshResources([
+            ...nestedResources,
+            ...resourcesToRefresh,
+          ]) // refresh related resources
+            .then(resourceIds =>
+              this.notifyResources([
+                expandedId,
+                ...resourceIds,
+                ...resourcesToNotify,
+              ]),
+            ); // notify components
+        }
 
         return response.headers?.get('Location') || null;
       }
@@ -525,8 +529,12 @@ export class Store {
    *
    * @returns id of the posted resource
    */
-  setLocalData(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('_LOCAL', resource, id);
+  setLocalData(
+    resource: object,
+    id: string,
+    skipFetch = false,
+  ): Promise<string | null> {
+    return this._updateResource('_LOCAL', resource, id, skipFetch);
   }
 
   /**
@@ -551,8 +559,8 @@ export class Store {
    *
    * @returns id of the edited resource
    */
-  put(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('PUT', resource, id);
+  put(resource: object, id: string, skipFetch = false): Promise<string | null> {
+    return this._updateResource('PUT', resource, id, skipFetch);
   }
 
   /**
@@ -562,8 +570,12 @@ export class Store {
    *
    * @returns id of the edited resource
    */
-  patch(resource: object, id: string): Promise<string | null> {
-    return this._updateResource('PATCH', resource, id);
+  patch(
+    resource: object,
+    id: string,
+    skipFetch = false,
+  ): Promise<string | null> {
+    return this._updateResource('PATCH', resource, id, skipFetch);
   }
 
   /**
