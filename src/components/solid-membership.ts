@@ -1,5 +1,6 @@
 import { Sib } from '../libs/Sib.ts';
-import { base_context, store } from '../libs/store/store.ts';
+import { base_context, getStore } from '../libs/store/store.ts';
+const store = getStore();
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';
 

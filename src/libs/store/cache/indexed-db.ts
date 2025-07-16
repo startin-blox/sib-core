@@ -21,9 +21,39 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    * Convert a Resource to the stored shape: move '@id' -> 'id'.
    */
   private toStored(resource: Resource): any {
+    console.log('[IndexedDB] Converting resource to stored format', resource);
     if (!resource) return resource;
     const { ['@id']: atId, ...rest } = resource;
-    return { ...rest, id: atId };
+    const result = this.deepUnwrap({ ...rest, id: atId })
+    console.log('[IndexedDB] Converted proxy to :', result);
+    return result;
+  }
+
+  /**
+   * Recursively unwraps an object, converting it to a plain object.
+   * This is useful for removing any non-cloneable properties like DOM nodes,
+   * functions, or other complex types that cannot be stored in IndexedDB.
+   * @param obj 
+   * @returns 
+   */
+  private deepUnwrap(obj: any): any {
+    if (obj === null || typeof obj !== 'object') return obj;
+
+    if (Array.isArray(obj)) {
+      return obj.map(this.deepUnwrap);
+    }
+
+    const plain: any = {};
+    for (const key of Reflect.ownKeys(obj)) {
+      const value = obj[key as keyof typeof obj];
+      try {
+        plain[key] = this.deepUnwrap(value);
+      } catch {
+        // Ignore non-cloneable values like DOM nodes, symbols, etc.
+      }
+    }
+
+    return plain;
   }
 
   /**
@@ -34,12 +64,14 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
     const { id, ...rest } = stored;
     return { '@id': id, ...rest };
   }
+
   /**
    * Opens (or creates) the IndexedDB database and object stores.
    */
   private openDb(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open('CacheManagerDB', 1);
+      console.log('[CacheManager] Opening IndexedDB', request);
 
       request.onupgradeneeded = () => {
         const db = request.result;
@@ -70,6 +102,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    */
   async getByUrl(url: string): Promise<Resource | undefined> {
     const db = await this.dbPromise;
+    console.log('[CacheManager] Getting resource by URL', url, db);
     return new Promise((resolve, reject) => {
       const tx = db.transaction('urlToId', 'readonly');
       const store = tx.objectStore('urlToId');
@@ -119,6 +152,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    */
   async get(ref: string): Promise<Resource | undefined> {
     const db = await this.dbPromise;
+    console.log('[CacheManager] Getting resource by REF', ref, db);
 
     return new Promise((resolve, reject) => {
       const tx = db.transaction(['resources', 'urlToId'], 'readonly');
@@ -196,13 +230,14 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
     }
 
     const db = await this.dbPromise;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const tx = db.transaction(['resources', 'urlToId'], 'readwrite');
       const resourcesStore = tx.objectStore('resources');
       const urlToIdStore = tx.objectStore('urlToId');
 
       // Put the resource under its @id
-      const putResReq = resourcesStore.put(this.toStored(resource));
+      console.log('[IndexedDB] Storing resource', this.toStored(await resource));
+      const putResReq = resourcesStore.put(this.toStored(await resource));
       putResReq.onerror = () => {
         reject(putResReq.error);
       };

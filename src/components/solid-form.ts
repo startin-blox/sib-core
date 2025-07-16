@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib.ts';
 import { setDeepProperty, transformArrayToContainer } from '../libs/helpers.ts';
-import { store } from '../libs/store/store.ts';
+import { getStore } from '../libs/store/store.ts';
+const store = getStore();
 import type { WidgetInterface } from '../mixins/interfaces.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';

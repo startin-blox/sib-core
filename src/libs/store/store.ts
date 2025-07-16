@@ -2,7 +2,6 @@ import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
 
 import jsonld from 'jsonld';
-import { CustomGetter } from './custom-getter.ts';
 
 import type { Resource } from '../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from './server-search.ts';
@@ -57,7 +56,10 @@ export class Store {
   contextParser: JSONLDContextParser.ContextParser;
 
   constructor(private storeOptions: StoreOptions) {
-    this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
+    console.trace();
+    this.cache = this.storeOptions.cacheManager || new InMemoryCacheManager();
+    console.log('[Store] Initializing store with cache', this.cache);
+    console.trace();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
@@ -69,6 +71,14 @@ export class Store {
     this.fetch = this.storeOptions.fetchMethod;
     this.session = this.storeOptions.session;
     this.contextParser = new JSONLDContextParser.ContextParser();
+  }
+
+  /**
+   * Initialize the custom getter
+   */
+  async initGetter() {
+    const { CustomGetter } = await import('./custom-getter.ts');
+    return CustomGetter;
   }
 
   /**
@@ -103,6 +113,13 @@ export class Store {
     if (serverSearch) {
       key = appendServerSearchToIri(key, serverSearch);
     }
+    console.log('[Store] getData', {
+        id,
+        key
+      },
+      this.cache,
+      await this.cache.has(key)
+    )
     if (
       localData == null &&
       (await this.cache.has(key)) &&
@@ -274,9 +291,10 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
+    let customGetter = await this.initGetter();
     await this.cache.linkUrlWithId(
       parentId,
-      CustomGetter.getEmptyResource(
+      customGetter.getEmptyResource(
         resources['@id'],
         clientContext,
         parentContext,
@@ -312,7 +330,8 @@ export class Store {
         if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
       }
 
-      const resourceProxy = new CustomGetter(
+      let customGetter = await this.initGetter();
+      const resourceProxy = new customGetter(
         key,
         resource,
         clientContext,
@@ -379,7 +398,7 @@ export class Store {
    * Subscribe all the children of a container to its parent
    * @param container
    */
-  async subscribeChildren(container: CustomGetter, containerId: string) {
+  async subscribeChildren(container: any, containerId: string) {
     const children = await container['listPredicate'];
     if (!children) return;
 
@@ -767,23 +786,55 @@ export class Store {
   };
 }
 
-let store: Store;
-if (window.sibStore) {
-  store = window.sibStore;
-} else {
+// Use a symbol or private key to avoid name collision
+const STORE_KEY = '__SIB_STORE_SINGLETON__';
+const READY_KEY = '__SIB_STORE_READY__';
+const globalScope = globalThis as any;
+
+function getStore(storeOptions?: StoreOptions): Store {
+  if (globalScope[STORE_KEY] instanceof Store) {
+    return globalScope[STORE_KEY];
+  }
+
   const sibAuth = document.querySelector('sib-auth');
-  const storeOptions: StoreOptions = {};
+  const options: StoreOptions = storeOptions ?? {};
 
   if (sibAuth) {
     const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
-    storeOptions.session = sibAuthDefined.then(() => (sibAuth as any).session);
-    storeOptions.fetchMethod = sibAuthDefined.then(() =>
+    options.session = options.session ?? sibAuthDefined.then(() => (sibAuth as any).session);
+    options.fetchMethod = options.fetchMethod ?? sibAuthDefined.then(() =>
       (sibAuth as any).getFetch(),
     );
   }
 
-  store = new Store(storeOptions);
-  window.sibStore = store;
+  const store = new Store(options);
+  globalScope[STORE_KEY] = store;
+  return store;
 }
 
-export { store };
+/**
+ * Asynchronous getter — waits until the store is ready.
+ */
+async function getStoreAsync(): Promise<Store> {
+  const globalScope = globalThis as any;
+  if (globalScope[STORE_KEY]) {
+    return globalScope[STORE_KEY];
+  }
+
+  if (window.sibStore instanceof Store) {
+    globalScope[STORE_KEY] = window.sibStore;
+    return globalScope[STORE_KEY];
+  }
+
+  // Fallback to global promise (in case HTML script is still initializing it)
+  if (globalScope[READY_KEY]) {
+    const store = await globalScope[READY_KEY];
+    globalScope[STORE_KEY] = store;
+    return store;
+  }
+
+  // Optional fallback: create default store (if really needed)
+  // throw new Error('[Store] Store not initialized and no global promise found.');
+}
+
+export { getStore, getStoreAsync };

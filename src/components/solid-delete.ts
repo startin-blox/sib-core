@@ -1,5 +1,6 @@
 import { Sib } from '../libs/Sib.ts';
-import { store } from '../libs/store/store.ts';
+import { getStoreAsync } from '../libs/store/store.ts';
+const store = await getStoreAsync();
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';

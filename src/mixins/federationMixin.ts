@@ -1,5 +1,6 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-import { store } from '../libs/store/store.ts';
+import { getStoreAsync } from '../libs/store/store.ts';
+const store = await getStoreAsync();
 import type { Resource } from './interfaces.ts';
 
 const FederationMixin = {

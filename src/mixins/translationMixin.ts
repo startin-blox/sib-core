@@ -1,4 +1,5 @@
-import { store } from '../libs/store/store.ts';
+import { getStoreAsync } from '../libs/store/store.ts';
+const store = await getStoreAsync();
 
 const TranslationMixin = {
   name: 'translation-mixin',

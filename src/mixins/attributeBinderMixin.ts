@@ -1,4 +1,5 @@
-import { base_context, store } from '../libs/store/store.ts';
+import { base_context, getStoreAsync } from '../libs/store/store.ts';
+const store = await getStoreAsync();
 import type { Resource } from './interfaces.ts';
 
 const AttributeBinderMixin = {

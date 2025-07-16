@@ -11,4 +11,5 @@ declare namespace Cypress {
 interface Window {
   sibStore: import('../src/libs/store/store').Store;
   cache: import('../src/libs/store/cache/in-memory').CacheManager;
+  sibStoreReady?: Promise<Store>;
 }

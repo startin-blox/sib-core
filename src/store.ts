@@ -1,1 +1,1 @@
-export { base_context as baseContext, store } from './libs/store/store.ts';
+export { base_context as baseContext, getStore } from './libs/store/store.ts';

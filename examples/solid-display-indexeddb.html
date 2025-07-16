@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-display</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <script type="module">
+    import { Store } from '../src/libs/store/store.ts';
+    import { IndexedDBCacheManager } from '../src/libs/store/cache/indexed-db.ts';
+
+    // let store;
+    let indexedDBCacheManager = new IndexedDBCacheManager();
+    const sibAuth = document.querySelector('sib-auth');
+    const storeOptions = {
+      cacheManager: indexedDBCacheManager
+    };
+
+    if (sibAuth) {
+      const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
+      storeOptions.session = sibAuthDefined.then(() => (sibAuth).session);
+      storeOptions.fetchMethod = sibAuthDefined.then(() =>
+        (sibAuth).getFetch(),
+      );
+    }
+
+    const store = new Store(storeOptions);
+
+    // Publish the store singleton and a ready promise
+    const globalScope = globalThis;
+    globalScope.__SIB_STORE_SINGLETON__ = store;
+    globalScope.__SIB_STORE_READY__ = Promise.resolve(store);
+
+    // Optional: dispatch event for others
+    window.dispatchEvent(new Event('sib-store-ready'));
+  </script>
+
+  <body>
+    <h2>Simple display</h2>
+    <solid-display
+      data-src="/examples/data/list/users.jsonld"
+    ></solid-display>
+
+    <style>
+      .id{
+        font-family: monospace;
+        color: blue;
+      }
+      .name{
+        font-family: cursive;
+        color: green;
+      }
+    </style>
+  </body>
+  <script type="module" src="../src/index.ts"></script>
+</html>

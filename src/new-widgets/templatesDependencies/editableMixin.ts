@@ -1,4 +1,5 @@
-import { store } from '../../libs/store/store.ts';
+import { getStore } from '../../libs/store/store.ts';
+const store = getStore();
 import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 import { html } from 'lit';

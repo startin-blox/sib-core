@@ -95,7 +95,7 @@ describe('IndexedDBCacheManager', () => {
     const r = { '@id': 'urn:persist', foo: 'bar' };
     await cache.set('/persist', r as any);
 
-    // creae new instance, should see the same DB
+    // create new instance, should see the same DB
     cache = new IndexedDBCacheManager();
     expect(await cache.getById('urn:persist')).to.deep.equal(r);
   });
