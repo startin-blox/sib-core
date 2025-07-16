@@ -19,6 +19,7 @@ describe('Component factory', function () {
   it('register', () => {
     cy.spy(cnsl, 'warn');
     const myComponent = { name: 'my-component' };
+    ///@ts-ignore
     Sib.register(myComponent);
     const el = doc.createElement('my-component');
     const myComponentClass = win.customElements.get('my-component');
@@ -27,6 +28,7 @@ describe('Component factory', function () {
     expect(el).is.instanceOf(win.HTMLElement);
     expect(el).is.instanceOf(myComponentClass);
     expect(cnsl.warn).not.be.called;
+    ///@ts-ignore
     Sib.register(myComponent);
     expect(cnsl.warn).to.be.called;
   });
