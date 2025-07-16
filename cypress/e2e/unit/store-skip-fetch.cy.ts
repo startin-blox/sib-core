@@ -15,7 +15,7 @@ export const base_context = {
   lng: 'geo:long',
 };
 
-describe('Store skipFetch parameter', { testIsolation: false }, function () {
+describe('Store skipFetch parameter', { testIsolation: false }, () => {
   beforeEach(() => {
     cy.visit('/examples/e2e/store.html');
   });
@@ -26,11 +26,11 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'Location': '/examples/data/list/user-new.jsonld',
+          Location: '/examples/data/list/user-new.jsonld',
           'access-control-expose-headers': 'Location',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('postRequest');
 
       cy.window().then((win: any) => {
@@ -50,7 +50,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/users.jsonld',
-            true
+            true,
           )
           .then((result: string) => {
             expect(result).to.equal('/examples/data/list/user-new.jsonld');
@@ -65,31 +65,30 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
       cy.get('@notifyResourcesSpy').should('not.have.been.called');
     });
 
-
     it('should call getData when skipFetch is false (default)', () => {
       cy.intercept('POST', '/examples/data/list/users.jsonld', {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'Location': '/examples/data/list/user-new.jsonld',
+          Location: '/examples/data/list/user-new.jsonld',
           'access-control-expose-headers': 'Location',
           'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('postRequest');
 
       cy.intercept('GET', '/examples/data/list/users.jsonld', {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
         body: {
           '@id': '/examples/data/list/users.jsonld',
           '@type': 'ldp:Container',
           'ldp:contains': [],
           '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
-        }
+        },
       }).as('getRequest');
 
       cy.window().then((win: any) => {
@@ -104,10 +103,10 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
             {
               '@type': 'foaf:user',
               name: 'New User',
-              '@context': 'https://cdn.startinblox.com/owl/context.jsonld'
+              '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/users.jsonld',
-            false
+            false,
           )
           .then((location: string) => {
             expect(location).to.equal('/examples/data/list/user-new.jsonld');
@@ -126,25 +125,25 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'Location': '/examples/data/list/user-new.jsonld',
+          Location: '/examples/data/list/user-new.jsonld',
           'access-control-expose-headers': 'Location',
           'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('postRequest');
 
       cy.intercept('GET', '/examples/data/list/users.jsonld', {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
         body: {
           '@id': '/examples/data/list/users.jsonld',
           '@type': 'ldp:Container',
           'ldp:contains': [],
           '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
-        }
+        },
       }).as('getRequest');
 
       cy.window().then((win: any) => {
@@ -173,7 +172,6 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
       cy.get('@getDataSpy').should('have.been.called');
       cy.get('@clearCacheSpy').should('have.been.called');
     });
-
   });
 
   describe('put() method with skipFetch', () => {
@@ -182,9 +180,9 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('putRequest');
 
       cy.window().then((win: any) => {
@@ -205,7 +203,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/user-1.jsonld',
-            true
+            true,
           )
           .then((result: string) => {
             expect(result).to.be.null;
@@ -225,9 +223,9 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('putRequest');
 
       cy.intercept('GET', '/examples/data/list/user-1.jsonld', {
@@ -240,7 +238,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         },
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
       }).as('getRequest');
 
@@ -260,7 +258,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/user-1.jsonld',
-            false
+            false,
           )
           .then((result: string) => {
             expect(result).to.be.null;
@@ -281,9 +279,9 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('patchRequest');
 
       cy.window().then((win: any) => {
@@ -303,7 +301,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/user-1.jsonld',
-            true
+            true,
           )
           .then((result: string) => {
             expect(result).to.be.null;
@@ -324,9 +322,9 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: ''
+        body: '',
       }).as('patchRequest');
 
       cy.intercept('GET', '/examples/data/list/user-1.jsonld', {
@@ -339,7 +337,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         },
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
       }).as('getRequest');
 
@@ -359,7 +357,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             '/examples/data/list/user-1.jsonld',
-            false
+            false,
           )
           .then((result: string) => {
             expect(result).to.be.null;
@@ -381,13 +379,13 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
         body: {
-          "@context": {
-            "foaf": "http://xmlns.com/foaf/0.1/"
-          }
-        }
+          '@context': {
+            foaf: 'http://xmlns.com/foaf/0.1/',
+          },
+        },
       }).as('contextRequest');
       cy.window().then((win: any) => {
         const store = win.sibStore;
@@ -403,11 +401,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
           '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
         };
         cy.wrap(
-          store.setLocalData(
-            resource,
-            'store://local.test',
-            true
-          )
+          store.setLocalData(resource, 'store://local.test', true),
         ).should('be.null');
       });
 
@@ -416,16 +410,15 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
       cy.get('@getDataSpy').should('have.been.called');
       cy.get('@clearCacheSpy').should('have.been.called');
     });
-
 
     it('should call getData and clearCache when skipFetch is false', () => {
       cy.intercept('GET', 'https://cdn.startinblox.com/owl/context.jsonld', {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
         },
-        body: { "@context": {} }
+        body: { '@context': {} },
       }).as('contextRequest');
 
       cy.window().then((win: any) => {
@@ -442,7 +435,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
           '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
         };
         cy.wrap(
-          store.setLocalData(resource, 'store://local.test', false)
+          store.setLocalData(resource, 'store://local.test', false),
         ).should('be.null');
       });
 
@@ -451,7 +444,6 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
       cy.get('@getDataSpy').should('have.been.called');
       cy.get('@clearCacheSpy').should('have.been.called');
     });
-
 
     it('should maintain resource in cache after setLocalData with skipFetch', () => {
       cy.window().then((win: any) => {
@@ -465,7 +457,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             localId,
-            true
+            true,
           )
           .then(() => {
             const cachedResource = win.sibStore.get(localId);
@@ -486,7 +478,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
         statusCode: 200,
         headers: {
           'content-type': 'application/ld+json',
-          'Location': '/examples/data/list/user-new.jsonld'
+          Location: '/examples/data/list/user-new.jsonld',
         },
       }).as('postRequest');
 
@@ -554,12 +546,11 @@ describe('Store skipFetch parameter', { testIsolation: false }, function () {
             (err: any) => {
               expect(err).to.exist;
               expect(err.status).to.equal(400);
-            }
+            },
           );
       });
 
       cy.wait('@postErrorRequest');
     });
-
   });
 });
