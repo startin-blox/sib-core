@@ -14,7 +14,8 @@ import {
   mergeContexts,
   normalizeContext,
 } from '../helpers.ts';
-import { CacheManager } from './cache-manager.ts';
+import type { CacheManagerInterface } from './cache/cache-manager.ts';
+import { InMemoryCacheManager } from './cache/in-memory.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
 
@@ -46,7 +47,7 @@ export const base_context = {
 };
 
 export class Store {
-  cache: CacheManager;
+  cache: CacheManagerInterface;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<string>;
@@ -56,7 +57,7 @@ export class Store {
   contextParser: JSONLDContextParser.ContextParser;
 
   constructor(private storeOptions: StoreOptions) {
-    this.cache = new CacheManager();
+    this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
@@ -102,13 +103,12 @@ export class Store {
     if (serverSearch) {
       key = appendServerSearchToIri(key, serverSearch);
     }
-
     if (
       localData == null &&
-      this.cache.has(key) &&
+      (await this.cache.has(key)) &&
       !this.loadingList.has(key)
     ) {
-      const resource = this.get(key);
+      const resource = await this.get(key);
       if (resource?.isFullResource?.() && !forceFetch) return await resource; // if resource is not complete, re-fetch it
     }
     return new Promise(async resolve => {
@@ -121,7 +121,7 @@ export class Store {
       this.loadingList.add(key);
 
       // Generate proxy
-      const clientContext = await this.contextParser.parse(
+      let clientContext = await this.contextParser.parse(
         getRawContext(context),
       );
 
@@ -153,10 +153,22 @@ export class Store {
         );
         return;
       }
+
+      const rawCtx = resource['@context'] || base_context;
+      const normalizedRawContext: JSONLDContextParser.JsonLdContextNormalized =
+        await this.contextParser.parse(
+          Array.isArray(rawCtx) ? rawCtx : [rawCtx],
+        );
+
+      if (resource)
+        clientContext = normalizeContext(
+          mergeContexts(clientContext, normalizedRawContext),
+        );
+
       const serverContext = await this.contextParser.parse([
         resource['@context'] || base_context,
       ]);
-      // const resourceProxy = new CustomGetter(key, resource, clientContext, serverContext, parentId ? parentId : key, serverPagination, serverSearch).getProxy();
+
       // Cache proxy
       await this.cacheGraph(
         resource,
@@ -167,11 +179,12 @@ export class Store {
         serverSearch,
       );
       this.loadingList.delete(key);
+      const finalResource = await this.get(key);
       document.dispatchEvent(
         new CustomEvent('resourceReady', {
           detail: {
             id: key,
-            resource: this.get(key),
+            resource: finalResource,
             fetchedResource: resource,
           },
         }),
@@ -261,7 +274,7 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    this.cache.linkUrlWithId(
+    await this.cache.linkUrlWithId(
       parentId,
       CustomGetter.getEmptyResource(
         resources['@id'],
@@ -271,8 +284,9 @@ export class Store {
     );
     const flattenedResources: any = await jsonld.flatten(resources);
     const compactedResources: any[] = await Promise.all(
-      flattenedResources.map(r => jsonld.compact(r, {})),
+      flattenedResources.map(async r => jsonld.compact(await r, {})),
     );
+
     for (const resource of compactedResources) {
       const id = resource['@id'] || resource.id;
       let key = resource['@id'] || resource.id;
@@ -308,14 +322,19 @@ export class Store {
         serverSearch,
       ).getProxy();
       if (resourceProxy.isContainer())
-        this.subscribeChildren(resourceProxy, id);
+        await this.subscribeChildren(resourceProxy, id);
 
-      if (this.get(key)) {
+      if (await this.get(key)) {
         // if already cached, merge data
-        this.cache.get(key)?.merge(resourceProxy);
+        // await this.cache.get(key)?.merge(resourceProxy);
+        const resourceFromCache = await this.cache.get(key);
+
+        if (resourceFromCache) {
+          resourceFromCache.merge(resourceProxy);
+        }
       } else {
         // else, put in cache
-        this.cacheResource(key, resourceProxy);
+        await this.cacheResource(key, resourceProxy);
       }
     }
   }
@@ -325,8 +344,8 @@ export class Store {
    * @param key
    * @param resourceProxy
    */
-  cacheResource(key: string, resourceProxy: any) {
-    this.cache.set(key, resourceProxy);
+  async cacheResource(key: string, resourceProxy: any) {
+    await this.cache.set(key, resourceProxy);
   }
 
   /**
@@ -345,13 +364,14 @@ export class Store {
         credentials: 'include',
       });
 
-    const resourceProxy = store.get(id);
+    const resourceProxy = await this.get(id);
     const clientContext = resourceProxy
       ? mergeContexts(resourceProxy.clientContext, resource['@context'])
       : resource['@context'];
 
-    this.clearCache(id);
-    await this.getData(id, clientContext, '', resource);
+    await this.clearCache(id);
+    await this.getData(id, clientContext, '', resource, true);
+
     return { ok: true };
   }
 
@@ -359,8 +379,8 @@ export class Store {
    * Subscribe all the children of a container to its parent
    * @param container
    */
-  subscribeChildren(container: CustomGetter, containerId: string) {
-    const children = container['listPredicate'];
+  async subscribeChildren(container: CustomGetter, containerId: string) {
+    const children = await container['listPredicate'];
     if (!children) return;
 
     for (const res of children) {
@@ -392,7 +412,7 @@ export class Store {
       if (response.ok) {
         if (!skipFetch) {
           if (method !== '_LOCAL') {
-            this.clearCache(expandedId);
+            await this.clearCache(expandedId);
           } // clear cache
           // re-fetch data
           await this.getData(expandedId, resource['@context']);
@@ -427,21 +447,36 @@ export class Store {
    * @returns - all the resource ids
    */
   async refreshResources(resourceIds: string[]) {
-    resourceIds = [...new Set(resourceIds.filter(id => this.cache.has(id)))]; // remove duplicates and not cached resources
-    const resourceWithContexts = resourceIds.map(resourceId => ({
-      id: resourceId,
-      context: store.get(resourceId)?.clientContext,
-    }));
-    for (const resource of resourceWithContexts) {
-      if (!this._isLocalId(resource.id)) this.clearCache(resource.id);
-    }
-    await Promise.all(
-      resourceWithContexts.map(({ id, context }) =>
-        this.getData(id, context || base_context),
+    const uniqueIds = Array.from(new Set(resourceIds));
+    const maybe = await Promise.all(
+      uniqueIds.map(
+        async id => await this.cache.has(id).then(ok => (ok ? id : null)),
       ),
+    );
+    resourceIds = maybe.filter((id): id is string => id !== null);
+
+    const resourceWithContexts = await Promise.all(
+      resourceIds.map(async resourceId => {
+        const res = await this.get(resourceId);
+        return {
+          id: resourceId,
+          context: res?.clientContext,
+        };
+      }),
+    );
+
+    for (const resource of resourceWithContexts) {
+      if (!this._isLocalId(resource.id)) await this.clearCache(resource.id);
+    }
+
+    await Promise.all(
+      resourceWithContexts.map(async ({ id, context }) => {
+        await this.getData(id, context || base_context);
+      }),
     );
     return resourceIds;
   }
+
   /**
    * Notifies all components for a list of ids
    * @param resourceIds -
@@ -456,8 +491,8 @@ export class Store {
    * @param resource - object
    * @param id - string
    */
-  getNestedResources(resource: object, id: string) {
-    const cachedResource = store.get(id);
+  async getNestedResources(resource: object, id: string) {
+    const cachedResource = await this.get(id);
     if (!cachedResource || cachedResource.isContainer?.()) return [];
     const nestedProperties: any[] = [];
     const excludeKeys = ['@context'];
@@ -480,11 +515,11 @@ export class Store {
    *
    * @returns Resource (Proxy) if in the cache, null otherwise
    */
-  get(
+  async get(
     id: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-  ): Resource | null {
+  ): Promise<Resource | null> {
     if (serverPagination) {
       id = appendServerPaginationToIri(id, serverPagination);
     }
@@ -493,26 +528,27 @@ export class Store {
       id = appendServerSearchToIri(id, serverSearch);
     }
 
-    return this.cache.get(id) || null;
+    const resource = (await this.cache.get(id)) || null;
+    return resource;
   }
 
   /**
    * Removes a resource from the cache
    * @param id - id of the resource to remove from the cache
    */
-  clearCache(id: string): void {
-    if (this.cache.has(id)) {
+  async clearCache(id: string): Promise<void> {
+    if (await this.cache.has(id)) {
       // For federation, clear each source
-      const resource = this.cache.get(id);
-      const predicate = resource ? resource['listPredicate'] : null;
+      const resource = await this.cache.get(id);
+      const predicate = resource ? await resource['listPredicate'] : null;
       if (predicate) {
         for (const child of predicate) {
           if (child?.['@type'] && doesResourceContainList(child))
-            this.cache.delete(child['@id']);
+            await this.cache.delete(child['@id']);
         }
       }
 
-      this.cache.delete(id);
+      await this.cache.delete(id);
     }
   }
 
@@ -564,12 +600,12 @@ export class Store {
    *
    * @returns id of the edited resource
    */
-  patch(
+  async patch(
     resource: object,
     id: string,
-    skipFetch = false,
+    skipFetch: boolean = false
   ): Promise<string | null> {
-    return this._updateResource('PATCH', resource, id, skipFetch);
+    return await this._updateResource('PATCH', resource, id, skipFetch);
   }
 
   /**

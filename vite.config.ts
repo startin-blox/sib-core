@@ -5,6 +5,7 @@ export default defineConfig({
   root: './',
   base: './',
   build: {
+    sourcemap: false,
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'sib',

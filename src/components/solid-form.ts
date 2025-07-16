@@ -296,6 +296,7 @@ export const SolidForm = {
   populate: trackRenderAsync(async function (): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
     this.element.onchange = () => this.onChange();
+    // this._resource = await store.get(this.resourceId);
     const fields = await this.getFields();
     const widgetTemplates = await Promise.all(
       fields.map((field: string) => this.createWidgetTemplate(field)),

@@ -63,7 +63,7 @@ const RangeMixin = {
     this.listAttributes.optionValue = this.optionValue;
   },
   async populate() {
-    const resources = this.resource ? this.resource['listPredicate'] : [];
+    const resources = this.resource ? await this.resource['listPredicate'] : [];
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     listPostProcessorsCopy.attach(
       this.setRangeAttribute.bind(this),
@@ -101,7 +101,9 @@ const RangeMixin = {
       };
 
       this.listAttributes.range = await Promise.all(
-        resources.filter(el => el !== null).map(r => getRangeValue(r)),
+        resources
+          .filter(el => el !== null)
+          .map(async r => await getRangeValue(r)),
       );
     }
 

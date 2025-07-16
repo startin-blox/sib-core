@@ -57,27 +57,29 @@ export class CustomGetter {
         throw new Error('Not a valid HTTP url');
       // If the path is a HTTP-scheme based URL, we need to fetch the resource directly
       if (isUrl) {
-        let resources = this.getList(path);
+        let resources = await this.getList(path);
         if (!resources || (Array.isArray(resources) && resources.length === 0))
           return undefined;
         if (!Array.isArray(resources)) resources = [resources]; // convert to array if compacted to 1 resource
 
         const result = resources
-          ? resources.map((res: object) => {
-              let resource: any = store.get(res['@id']);
-              if (resource) return resource;
+          ? Promise.all(
+              resources.map(async (res: object) => {
+                let resource: any = await store.get(res['@id']);
+                if (resource) return resource;
 
-              // if not in cache, generate the basic resource
-              resource = new CustomGetter(
-                res['@id'],
-                { '@id': res['@id'] },
-                this.clientContext,
-                this.serverContext,
-                this.parentId,
-              ).getProxy();
-              store.cacheResource(res['@id'], resource); // put it in cache
-              return resource; // and return it
-            })
+                // if not in cache, generate the basic resource
+                resource = new CustomGetter(
+                  res['@id'],
+                  { '@id': res['@id'] },
+                  this.clientContext,
+                  this.serverContext,
+                  this.parentId,
+                ).getProxy();
+                await store.cacheResource(res['@id'], resource); // put it in cache
+                return resource; // and return it
+              }),
+            )
           : [];
 
         return result;
@@ -182,7 +184,7 @@ export class CustomGetter {
     forceFetch = false,
   ): Promise<Resource | null> {
     if (id.startsWith('_:b')) return await store.get(id + iriParent); // anonymous node = get from cache
-    return store.getData(id, context, iriParent, undefined, forceFetch);
+    return await store.getData(id, context, iriParent, undefined, forceFetch);
   }
 
   /**
@@ -225,13 +227,13 @@ export class CustomGetter {
   /**
    * Get children of container as objects
    */
-  getList(predicateName: string): object[] {
-    let value = this.resource[predicateName];
+  async getList(predicateName: string): Promise<object[]> {
+    let value = await this.resource[predicateName];
 
     if (!value) {
       const index = this.getExpandedPredicate(predicateName);
       if (index) {
-        value = this.resource[index];
+        value = await this.resource[index];
       }
     }
 
@@ -241,42 +243,44 @@ export class CustomGetter {
     return value;
   }
 
-  getListAndCacheIt(predicate: string): CustomGetter[] | null {
-    let children = this.getList(predicate);
+  async getListAndCacheIt(predicate: string): Promise<CustomGetter[] | null> {
+    let children = await this.getList(predicate);
     if (!children) return null;
 
     if (!Array.isArray(children)) children = [children]; // convert to array if compacted to 1 resource
 
     const result = children
-      ? children.map((res: object) => {
-          let resource: any = store.get(res['@id']);
-          if (resource) return resource;
+      ? await Promise.all(
+          children.map(async (res: object) => {
+            let resource: any = await store.get(res['@id']);
+            if (resource) return resource;
 
-          // if not in cache, generate the basic resource
-          resource = new CustomGetter(
-            res['@id'],
-            { '@id': res['@id'] },
-            this.clientContext,
-            this.serverContext,
-            this.parentId,
-          ).getProxy();
-          store.cacheResource(res['@id'], resource); // put it in cache
-          return resource; // and return it
-        })
+            // if not in cache, generate the basic resource
+            resource = new CustomGetter(
+              res['@id'],
+              { '@id': res['@id'] },
+              this.clientContext,
+              this.serverContext,
+              this.parentId,
+            ).getProxy();
+            await store.cacheResource(res['@id'], resource); // put it in cache
+            return resource; // and return it
+          }),
+        )
       : [];
 
     return result;
   }
 
-  getDcatDataset(): CustomGetter[] | null {
-    return this.getListAndCacheIt('dcat:dataset');
+  async getDcatDataset(): Promise<CustomGetter[] | null> {
+    return await this.getListAndCacheIt('dcat:dataset');
   }
 
   /**
    * Get children of container as Proxys
    */
-  getLdpContains(): CustomGetter[] | null {
-    return this.getListAndCacheIt('ldp:contains');
+  async getLdpContains(): Promise<CustomGetter[] | null> {
+    return await this.getListAndCacheIt('ldp:contains');
   }
 
   merge(resource: CustomGetter) {
@@ -297,13 +301,13 @@ export class CustomGetter {
    * If the resource is not a container or a catalog, it will return null
    * @returns object[] | null
    */
-  getContainerList(): object[] | null {
+  async getContainerList(): Promise<object[] | null> {
     if (this.hasType('ldp:Container')) {
-      return this.getLdpContains();
+      return await this.getLdpContains();
     }
 
     if (this.getType() === 'dcat:Catalog') {
-      return this.getDcatDataset();
+      return await this.getDcatDataset();
     }
 
     return null;
@@ -385,8 +389,8 @@ export class CustomGetter {
   /**
    * Remove the resource from the cache
    */
-  clearCache(): void {
-    store.clearCache(this.resourceId);
+  async clearCache(): Promise<void> {
+    await store.clearCache(this.resourceId);
   }
 
   getExpandedPredicate(property: string) {

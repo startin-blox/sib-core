@@ -43,7 +43,10 @@ const ListMixin = {
   async populate(): Promise<void> {
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     const div = this.div;
-    if (!this.resource) return;
+    if (!(await this.resource)) {
+      console.warn('[ListMixin] No resource to populate');
+      return;
+    }
 
     // Not a container but a single resource
     if (
@@ -71,8 +74,10 @@ const ListMixin = {
       // Execute the first post-processor of the list
       const nextProcessor = listPostProcessorsCopy.shift();
 
+      const listPredicate = await this.resource['listPredicate'];
+
       await nextProcessor(
-        this.resource['listPredicate'],
+        listPredicate,
         listPostProcessorsCopy,
         div,
         this.dataSrc,
@@ -80,7 +85,7 @@ const ListMixin = {
     } else if (
       this.arrayField &&
       this.predicateName &&
-      this.resource[this.predicateName]
+      (await this.resource[this.predicateName])
     ) {
       this.setElementAttribute('container');
       this.renderCallbacks = [];
