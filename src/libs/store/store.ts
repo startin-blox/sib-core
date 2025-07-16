@@ -603,7 +603,7 @@ export class Store {
   async patch(
     resource: object,
     id: string,
-    skipFetch: boolean = false
+    skipFetch = false,
   ): Promise<string | null> {
     return await this._updateResource('PATCH', resource, id, skipFetch);
   }
