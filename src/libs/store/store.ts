@@ -804,9 +804,8 @@ function getStore(storeOptions?: StoreOptions): Store {
     options.session =
       options.session ?? sibAuthDefined.then(() => (sibAuth as any).session);
     options.fetchMethod =
-      options.fetchMethod ?? sibAuthDefined.then(() =>
-      (sibAuth as any).getFetch(),
-    );
+      options.fetchMethod ??
+      sibAuthDefined.then(() => (sibAuth as any).getFetch());
   }
 
   const store = new Store(options);

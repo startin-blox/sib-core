@@ -238,7 +238,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       // Put the resource under its @id
       console.log(
         '[IndexedDB] Storing resource',
-        this.toStored(await resource)
+        this.toStored(await resource),
       );
       const putResReq = resourcesStore.put(this.toStored(await resource));
       putResReq.onerror = () => {
