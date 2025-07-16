@@ -445,7 +445,7 @@ describe('Store skipFetch parameter', { testIsolation: false }, () => {
       cy.get('@clearCacheSpy').should('have.been.called');
     });
 
-    it('should maintain resource in cache after setLocalData with skipFetch', () => {
+    it('should maintain resource in cache after setLocalData with skipFetch==true', () => {
       cy.window().then((win: any) => {
         const localId = 'store://local.testcache';
 
@@ -453,17 +453,16 @@ describe('Store skipFetch parameter', { testIsolation: false }, () => {
           .setLocalData(
             {
               '@type': 'foaf:user',
-              name: 'Local User Test',
+              label: 'Local User Test',
               '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
             },
             localId,
             true,
           )
-          .then(() => {
-            const cachedResource = win.sibStore.get(localId);
+          .then(async () => {
+            const cachedResource = await win.sibStore.get(localId);
             expect(cachedResource).to.exist;
-
-            return cachedResource.name;
+            return cachedResource.label;
           })
           .then((name: string) => {
             expect(name).to.equal('Local User Test');
