@@ -164,7 +164,7 @@ export class BaseWidget extends HTMLElement {
     })();
   }
   async fetchSources(resource: any) {
-    const data = resource['listPredicate'];
+    const data = await resource['listPredicate'];
     if (!data) return null;
     const resources: any[] = [];
     let index = 0;
@@ -186,7 +186,7 @@ export class BaseWidget extends HTMLElement {
         ); // fetch the datas
         this._listen(res['@id']);
         if (resourcesFromContainer) {
-          resources.push(...resourcesFromContainer['listPredicate']);
+          resources.push(...(await resourcesFromContainer['listPredicate']));
         }
       } else {
         resources.push(res);
@@ -208,7 +208,8 @@ export class BaseWidget extends HTMLElement {
       if (this._value?.isContainer?.()) {
         // selected options for multiple select
         selected = false;
-        for await (const value of this._value['listPredicate']) {
+        const listPredicate = await this._value['listPredicate'];
+        for await (const value of listPredicate) {
           if (value['@id'] === element['@id']) {
             selected = true;
             break;

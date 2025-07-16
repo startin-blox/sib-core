@@ -47,6 +47,7 @@ export const SolidWidget = {
           label: this.label,
           targetSrc: this.targetSrc || '',
         });
+
         return tpl;
       },
       async templateToDOM(template) {

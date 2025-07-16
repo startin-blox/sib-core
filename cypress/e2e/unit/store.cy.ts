@@ -60,7 +60,7 @@ describe('store', { testIsolation: false }, function () {
       await store.setLocalData(dataToSave1, url);
       const dataRead1 = await store.getData(url);
       expect(await dataRead1?.foo).eq('bar');
-      store.clearCache(url);
+      await store.clearCache(url);
     });
   });
 
@@ -80,10 +80,10 @@ describe('store', { testIsolation: false }, function () {
         dataToSave1,
         '/examples/data/list/user-1.jsonld',
       );
-      const dataRead = store.get('/examples/data/list/user-1.jsonld');
+      const dataRead = await store.get('/examples/data/list/user-1.jsonld');
       expect(await dataRead.username).eq('local user');
       expect(await dataRead.email).not.exist;
-      store.clearCache('/examples/data/list/user-1.jsonld');
+      await store.clearCache('/examples/data/list/user-1.jsonld');
     });
   });
 
@@ -233,47 +233,50 @@ describe('store', { testIsolation: false }, function () {
       },
     }).as('user-6');
 
-    cy.window()
-      .its('sibStore')
-      .invoke('getData', '/examples/data/list/users.jsonld', base_context);
+    cy.window().then(async win => {
+      const store = win.sibStore;
+      await store.getData('/examples/data/list/users.jsonld', base_context);
+    });
 
     cy.get('@users').its('response.statusCode').should('equal', 200);
 
-    cy.window().its('sibStore.cache.resourceCache').should('have.length', 13); // cache
+    cy.window().then(async (win: Cypress.AUTWindow) => {
+      expect(await win.sibStore.cache.length()).to.equals(13);
+    });
+
     cy.window().its('sibStore.loadingList').should('have.property', 'size', 0); // loading list
     cy.window().its('sibStore.subscriptionIndex').should('have.length', 8); // Subscription index
 
-    cy.window()
-      .its('sibStore')
-      .invoke('get', '/examples/data/list/users.jsonld')
-      .should('exist');
+    cy.window().then(async (win: Cypress.AUTWindow) => {
+      expect(await win.sibStore.get('/examples/data/list/users.jsonld')).to
+        .exist;
 
-    // properties are expanded
-    cy.window()
-      .its('sibStore')
-      .invoke(
-        'getData',
+      await win.sibStore.getData(
         '/examples/data/extra-context/user-6.jsonld',
         base_context,
       );
-    cy.window()
-      .its('sibStore')
-      .invoke('get', '/examples/data/extra-context/user-6.jsonld')
-      .invoke('getResourceData')
-      .should(
-        'have.property',
+      const user = await win.sibStore.get(
+        '/examples/data/extra-context/user-6.jsonld',
+      );
+      const data = await user?.getResourceData();
+
+      expect(data).to.have.property(
         'https://cdn.startinblox.com/owl#email',
         'test-user@example.com',
       ); // @vocab
-    cy.window()
-      .its('sibStore')
-      .invoke('get', '/examples/data/extra-context/profile-6.jsonld')
-      .invoke('getResourceData')
-      .should(
-        'have.property',
+    });
+
+    cy.window().then(async win => {
+      const profile = await win.sibStore.get(
+        '/examples/data/extra-context/profile-6.jsonld',
+      );
+      const data = await profile?.getResourceData();
+
+      expect(data).to.have.property(
         'http://xmlns.com/foaf/0.1/depiction',
         'my-avatar.png',
       ); // nested additionnal context
+    });
   });
 
   it('send xhr requests', () => {
@@ -320,9 +323,10 @@ describe('store', { testIsolation: false }, function () {
       cy.spy(win.PubSub, 'publish');
     });
 
-    cy.window()
-      .its('sibStore')
-      .invoke('fetchData', '/examples/data/list/user-1.jsonld');
+    cy.window().then(async win => {
+      const store = win.sibStore;
+      await store.fetchData('/examples/data/list/user-1.jsonld');
+    });
     cy.get('@get')
       .its('request.url')
       .should('equal', `${baseUrl}/examples/data/list/user-1.jsonld`);
@@ -393,27 +397,22 @@ describe('store', { testIsolation: false }, function () {
   });
 
   it('clears cache', () => {
-    cy.window().its('sibStore.cache.resourceCache').should('have.length', 15);
+    cy.window().then(async (win: Cypress.AUTWindow) => {
+      expect(await win.sibStore.cache.length()).to.equals(15);
 
-    cy.window()
-      .its('sibStore')
-      .invoke('get', '/examples/data/list/user-1.jsonld')
-      .should('exist');
+      expect(await win.sibStore.get('/examples/data/list/user-1.jsonld')).to
+        .exist;
 
-    cy.window()
-      .its('sibStore')
-      .invoke('clearCache', '/examples/data/list/user-1.jsonld');
+      await win.sibStore.clearCache('/examples/data/list/user-1.jsonld');
+      expect(await win.sibStore.cache.length()).to.equals(14);
 
-    cy.window().its('sibStore.cache.resourceCache').should('have.length', 14);
+      await win.sibStore.clearCache('/examples/data/list/user-1.jsonld');
+      expect(await win.sibStore.get('/examples/data/list/user-1.jsonld')).to.not
+        .exist;
 
-    cy.window()
-      .its('sibStore')
-      .invoke('get', '/examples/data/list/user-1.jsonld')
-      .should('not.exist');
-
-    cy.window().its('sibStore').invoke('clearCache', 'wrong-id.jsonld');
-
-    cy.window().its('sibStore.cache.resourceCache').should('have.length', 14);
+      await win.sibStore.clearCache('wrong-id.jsonld');
+      expect(await win.sibStore.cache.length()).to.equals(14);
+    });
   });
 
   it('subscribes resource', () => {
@@ -551,7 +550,7 @@ describe('store', { testIsolation: false }, function () {
   it('getNestedResources', () => {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
-      store.cache.clear();
+      await store.cache.clear();
       cy.spy(store, 'fetchData');
       await store.getData('/examples/data/list/user-1.jsonld', base_context);
 
@@ -595,7 +594,7 @@ describe('store', { testIsolation: false }, function () {
       cy.spy(store, 'getData');
       cy.spy(store, 'fetchData');
 
-      expect(store.cache.length()).to.be.equal(4);
+      expect(await store.cache.length()).to.be.equal(4);
       await store.refreshResources([
         '/examples/data/list/user-1.jsonld',
         '/examples/data/list/users.jsonld',
@@ -605,7 +604,7 @@ describe('store', { testIsolation: false }, function () {
       expect(store.getData).to.be.calledOnce;
       expect(store.fetchData).to.be.calledOnce;
 
-      expect(store.cache.length()).to.be.equal(4);
+      expect(await store.cache.length()).to.be.equal(4);
     });
   });
 
@@ -643,7 +642,7 @@ describe('store', { testIsolation: false }, function () {
       );
 
       cy.wait(100).then(async () => {
-        const resource = store.get('store://local.2');
+        const resource = await store.get('store://local.2');
         expect(resource).to.exist;
         const name = await resource.name;
         expect(name).to.equal('ok');

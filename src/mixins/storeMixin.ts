@@ -66,11 +66,15 @@ const StoreMixin = {
   },
   created() {
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
+    this.loadResource();
   },
   detached() {
     if (this.subscription) PubSub.unsubscribe(this.subscription);
   },
   get resource(): Resource | null {
+    return this._resource;
+  },
+  async loadResource(): Promise<Resource | null> {
     const id = this.resourceId;
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
@@ -80,14 +84,25 @@ const StoreMixin = {
       this.getDynamicServerSearch?.(), // from `filterMixin`
     );
 
-    return id ? store.get(id, serverPagination, serverSearch) : null;
+    if (id) {
+      // 4) Await the async operation. Only _then_ do we assign into _resource.
+      const fetched: Resource | null = await store.get(
+        id,
+        serverPagination,
+        serverSearch,
+      );
+      this._resource = fetched;
+      return this._resource;
+    }
+    return null;
   },
   get loader(): HTMLElement | null {
     return this.loaderId ? document.getElementById(this.loaderId) : null;
   },
   async fetchData(value: string) {
     this.empty();
-    if (this.subscription) PubSub.unsubscribe(this.subscription);
+    if (this.sub1) PubSub.unsubscribe(this.sub1);
+    if (this.sub2) PubSub.unsubscribe(this.sub2);
     if (!value || value === 'undefined') return;
 
     this.resourceId = value;
@@ -104,15 +119,17 @@ const StoreMixin = {
         for (const property in await resource) {
           console.log(`${property}: ${await resource[property]}`);
         }
-        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${await resource['@id']}"`;
+        throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${resource['@id']}"`;
       }
     }
 
     this.updateNavigateSubscription();
 
-    this.subscription = PubSub.subscribe(
+    this.sub1 = PubSub.subscribe(this.resourceId, this.updateDOM.bind(this));
+
+    this.sub2 = PubSub.subscribe(
       this.resourceId,
-      this.updateDOM.bind(this),
+      this.syncResourceWithCache.bind(this),
     );
     const serverPagination = formatAttributesToServerPaginationOptions(
       this.element.attributes,
@@ -132,15 +149,20 @@ const StoreMixin = {
       serverPagination,
       serverSearch,
     );
-
+    this._resource = await store.get(this.resourceId);
     this.updateDOM();
   },
 
+  async syncResourceWithCache(): Promise<void> {
+    this._resource = await store.get(this.resourceId); // TODO: temp fix!!
+  },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
   },
   updateNavigateSubscription() {},
+
   async updateDOM(): Promise<void> {
+    this._resource = await store.get(this.resourceId); // TODO: temp fix!!
     this.toggleLoaderHidden(false); // brings a loader out if the attribute is set
     this.empty();
     await this.replaceAttributesData();

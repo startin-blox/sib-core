@@ -24,15 +24,15 @@ describe('store twice', { testIsolation: false }, () => {
       expect(storeCore).to.equals(store);
       expect(storeCore).to.equals(win.sibStore);
 
-      expect(store.cache.length()).to.equals(0);
-      expect(storeCore.cache.length()).to.equals(0);
-      expect(win.sibStore.cache.length()).to.equals(0);
+      expect(await store.cache.length()).to.equals(0);
+      expect(await storeCore.cache.length()).to.equals(0);
+      expect(await win.sibStore.cache.length()).to.equals(0);
 
       await store.getData('/examples/data/list/user-1.jsonld', baseContext);
 
-      expect(store.cache.length()).to.equals(4);
-      expect(storeCore.cache.length()).to.equals(4);
-      expect(win.sibStore.cache.length()).to.equals(4);
+      expect(await store.cache.length()).to.equals(4);
+      expect(await storeCore.cache.length()).to.equals(4);
+      expect(await win.sibStore.cache.length()).to.equals(4);
     });
   });
 });

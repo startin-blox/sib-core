@@ -63,8 +63,8 @@ const MultipleselectFormMixin = {
     const nextProcessor = listValueTransformations.shift();
     if (nextProcessor) nextProcessor(value, listValueTransformations);
   },
-  populate() {
-    const resources = this.resource?.['listPredicate'];
+  async populate() {
+    const resources = await this.resource?.['listPredicate'];
     if (!this.resource || (!resources && !Array.isArray(this.resource))) return;
     this.setValue(resources);
 
