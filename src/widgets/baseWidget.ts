@@ -1,6 +1,8 @@
 import { evalTemplateString } from '../libs/helpers.ts';
-import { getStoreAsync } from '../libs/store/store.ts';
-const store = await getStoreAsync();
+import { getStore } from '../libs/store/store.ts';
+
+const store = await getStore();
+if (!store) throw new Error('Store is not available');
 
 export class BaseWidget extends HTMLElement {
   private src: string | undefined;

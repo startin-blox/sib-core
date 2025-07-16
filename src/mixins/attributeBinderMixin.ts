@@ -1,6 +1,8 @@
 import { base_context, getStoreAsync } from '../libs/store/store.ts';
-const store = await getStoreAsync();
 import type { Resource } from './interfaces.ts';
+
+const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 const AttributeBinderMixin = {
   name: 'attribute-binder-mixin',

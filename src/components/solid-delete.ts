@@ -1,6 +1,5 @@
 import { Sib } from '../libs/Sib.ts';
 import { getStoreAsync } from '../libs/store/store.ts';
-const store = await getStoreAsync();
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';
@@ -8,6 +7,9 @@ import { ValidationMixin } from '../mixins/validationMixin.ts';
 import { html, render } from 'lit';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
+
+const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 export const SolidDelete = {
   name: 'solid-delete',

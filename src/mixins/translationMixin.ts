@@ -1,5 +1,7 @@
 import { getStoreAsync } from '../libs/store/store.ts';
+
 const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 const TranslationMixin = {
   name: 'translation-mixin',

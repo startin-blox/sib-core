@@ -14,13 +14,14 @@ describe('store twice', { testIsolation: false }, () => {
       expect(win.sibStore).to.be.undefined;
 
       // import from store.js
-      const { store, baseContext } = await win.loadStore();
-
+      const { getStore, baseContext } = await win.loadStore();
+      const store = await getStore();
       expect(win.sibStore).to.not.be.undefined;
       expect(store).to.equals(win.sibStore);
 
       // import from index.js
-      const { store: storeCore } = await win.loadStoreFromCore();
+      const { getStore: getStoreCore } = await win.loadStoreFromCore();
+      const storeCore = await getStoreCore();
       expect(storeCore).to.equals(store);
       expect(storeCore).to.equals(win.sibStore);
 

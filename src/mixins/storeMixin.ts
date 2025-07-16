@@ -4,11 +4,13 @@ import {
   mergeServerSearchOptions,
 } from '../libs/store/server-search.ts';
 import { getStoreAsync } from '../libs/store/store.ts';
-const store = await getStoreAsync();
 import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
 import type { Resource } from './interfaces.ts';
 import { ServerPaginationMixin } from './serverPaginationMixin.ts';
+
+const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 const StoreMixin = {
   name: 'store-mixin',

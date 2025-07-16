@@ -1,7 +1,9 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { getStoreAsync } from '../libs/store/store.ts';
-const store = await getStoreAsync();
 import type { Resource } from './interfaces.ts';
+
+const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 const FederationMixin = {
   name: 'federation-mixin',
