@@ -24,7 +24,7 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
     console.log('[IndexedDB] Converting resource to stored format', resource);
     if (!resource) return resource;
     const { ['@id']: atId, ...rest } = resource;
-    const result = this.deepUnwrap({ ...rest, id: atId })
+    const result = this.deepUnwrap({ ...rest, id: atId });
     console.log('[IndexedDB] Converted proxy to :', result);
     return result;
   }
@@ -33,8 +33,8 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    * Recursively unwraps an object, converting it to a plain object.
    * This is useful for removing any non-cloneable properties like DOM nodes,
    * functions, or other complex types that cannot be stored in IndexedDB.
-   * @param obj 
-   * @returns 
+   * @param obj
+   * @returns plain object
    */
   private deepUnwrap(obj: any): any {
     if (obj === null || typeof obj !== 'object') return obj;
@@ -236,7 +236,10 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       const urlToIdStore = tx.objectStore('urlToId');
 
       // Put the resource under its @id
-      console.log('[IndexedDB] Storing resource', this.toStored(await resource));
+      console.log(
+        '[IndexedDB] Storing resource',
+        this.toStored(await resource)
+      );
       const putResReq = resourcesStore.put(this.toStored(await resource));
       putResReq.onerror = () => {
         reject(putResReq.error);

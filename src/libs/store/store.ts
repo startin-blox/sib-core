@@ -75,7 +75,7 @@ export class Store {
    * Initialize the custom getter
    */
   async initGetter() {
-    const { CustomGetter } = await import('./custom-getter.ts');
+    const { CustomGetter } = await import('./custom-getter.ts');
     return CustomGetter;
   }
 
@@ -111,12 +111,14 @@ export class Store {
     if (serverSearch) {
       key = appendServerSearchToIri(key, serverSearch);
     }
-    console.log('[Store] getData', {
+    console.log(
+      '[Store] getData',
+      {
         id,
-        key
+        key,
       },
       this.cache,
-      await this.cache.has(key)
+      await this.cache.has(key),
     );
     if (
       localData == null &&
@@ -799,8 +801,10 @@ function getStore(storeOptions?: StoreOptions): Store {
 
   if (sibAuth) {
     const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
-    options.session = options.session ?? sibAuthDefined.then(() => (sibAuth as any).session);
-    options.fetchMethod = options.fetchMethod ?? sibAuthDefined.then(() =>
+    options.session =
+      options.session ?? sibAuthDefined.then(() => (sibAuth as any).session);
+    options.fetchMethod =
+      options.fetchMethod ?? sibAuthDefined.then(() =>
       (sibAuth as any).getFetch(),
     );
   }
