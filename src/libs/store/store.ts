@@ -791,7 +791,7 @@ const STORE_KEY = '__SIB_STORE_SINGLETON__';
 const READY_KEY = '__SIB_STORE_READY__';
 const globalScope = globalThis as any;
 
-function getStore(storeOptions?: StoreOptions): Store {
+export function getStore(storeOptions?: StoreOptions): Store {
   if (globalScope[STORE_KEY] instanceof Store) {
     return globalScope[STORE_KEY];
   }
@@ -809,14 +809,14 @@ function getStore(storeOptions?: StoreOptions): Store {
   }
 
   const store = new Store(options);
-  globalScope[STORE_KEY] = store;
+  window.sibStore = globalScope[STORE_KEY] = store;
   return store;
 }
 
 /**
  * Asynchronous getter — waits until the store is ready.
  */
-async function getStoreAsync(): Promise<Store | undefined> {
+export async function getStoreAsync(): Promise<Store | undefined> {
   const globalScope = globalThis as any;
   if (globalScope[STORE_KEY]) {
     return globalScope[STORE_KEY];
@@ -830,13 +830,11 @@ async function getStoreAsync(): Promise<Store | undefined> {
   // Fallback to global promise (in case HTML script is still initializing it)
   if (globalScope[READY_KEY]) {
     const store = await globalScope[READY_KEY];
-    globalScope[STORE_KEY] = store;
+    window.sibStore = globalScope[STORE_KEY] = store;
     return store;
   }
 
   // Optional fallback: create default store (if really needed)
-  return undefined;
+  return getStore();
   // throw new Error('[Store] Store not initialized and no global promise found.');
 }
-
-export { getStore, getStoreAsync };

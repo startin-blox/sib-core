@@ -1,9 +1,18 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 export default defineConfig({
   root: './',
   base: './',
+  plugins: [
+    topLevelAwait({
+      // The export name of top-level await promise for each chunk module
+      promiseExportName: '__tla',
+      // The function to generate import names of top-level await promise in each chunk module
+      promiseImportName: i => `__tla_${i}`,
+    })
+  ],
   build: {
     sourcemap: false,
     lib: {
