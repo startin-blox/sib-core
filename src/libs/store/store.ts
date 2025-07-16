@@ -56,10 +56,8 @@ export class Store {
   contextParser: JSONLDContextParser.ContextParser;
 
   constructor(private storeOptions: StoreOptions) {
-    console.trace();
-    this.cache = this.storeOptions.cacheManager || new InMemoryCacheManager();
+    this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
     console.log('[Store] Initializing store with cache', this.cache);
-    console.trace();
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
@@ -119,7 +117,7 @@ export class Store {
       },
       this.cache,
       await this.cache.has(key)
-    )
+    );
     if (
       localData == null &&
       (await this.cache.has(key)) &&
@@ -815,7 +813,7 @@ function getStore(storeOptions?: StoreOptions): Store {
 /**
  * Asynchronous getter — waits until the store is ready.
  */
-async function getStoreAsync(): Promise<Store> {
+async function getStoreAsync(): Promise<Store | undefined> {
   const globalScope = globalThis as any;
   if (globalScope[STORE_KEY]) {
     return globalScope[STORE_KEY];
@@ -834,6 +832,7 @@ async function getStoreAsync(): Promise<Store> {
   }
 
   // Optional fallback: create default store (if really needed)
+  return undefined;
   // throw new Error('[Store] Store not initialized and no global promise found.');
 }
 
