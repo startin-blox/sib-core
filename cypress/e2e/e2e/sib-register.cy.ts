@@ -32,6 +32,7 @@ describe('Component factory', function () {
         const myComponentClass = win.customElements.get('my-component');
 
         expect(myComponentClass).to.not.be.undefined;
+        //@ts-ignore
         expect(el).to.be.instanceOf(win.HTMLElement);
         expect(el).to.be.instanceOf(myComponentClass);
         expect(cnsl.warn).not.to.be.called;
