@@ -17,19 +17,29 @@ describe('Component factory', function () {
   });
 
   it('register', () => {
-    cy.spy(cnsl, 'warn');
-    const myComponent = { name: 'my-component' };
-    ///@ts-ignore
-    Sib.register(myComponent);
-    const el = doc.createElement('my-component');
-    const myComponentClass = win.customElements.get('my-component');
-    expect(myComponentClass).is.not.undefined;
-    ///@ts-ignore
-    expect(el).is.instanceOf(win.HTMLElement);
-    expect(el).is.instanceOf(myComponentClass);
-    expect(cnsl.warn).not.be.called;
-    ///@ts-ignore
-    Sib.register(myComponent);
-    expect(cnsl.warn).to.be.called;
+    cy.window()
+      .should('have.property', 'Sib')
+      .then(async () => {
+        Sib = await win.Sib;
+        expect(Sib).to.be.an('object');
+        expect(Sib).to.have.property('register');
+
+        cnsl = (win as Window & typeof globalThis).console;
+        cy.spy(cnsl, 'warn');
+
+        const myComponent = { name: 'my-component' };
+        Sib.register(myComponent);
+
+        const el = win.document.createElement('my-component');
+        const myComponentClass = win.customElements.get('my-component');
+
+        expect(myComponentClass).to.not.be.undefined;
+        expect(el).to.be.instanceOf(win.HTMLElement);
+        expect(el).to.be.instanceOf(myComponentClass);
+        expect(cnsl.warn).not.to.be.called;
+
+        Sib.register(myComponent); // Second call
+        expect(cnsl.warn).to.be.called;
+      });
   });
 });
