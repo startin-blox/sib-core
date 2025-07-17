@@ -249,7 +249,11 @@ describe('form widgets', { testIsolation: false }, function () {
   it('solid-form-dropdown', () => {
     // With no initial value
     cy.get('solid-form-dropdown#test1')
-      .should('have.attr', 'data-src', '/examples/data/list/skills/skills.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/skills/skills.jsonld',
+      )
       .children()
       .should('have.length', 1);
 
@@ -280,7 +284,10 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-dropdown#test1 > select')
       .select('CSS')
-      .should('have.value', '{"@id": "/examples/data/list/skills/skill-2.jsonld"}'); // test change value
+      .should(
+        'have.value',
+        '{"@id": "/examples/data/list/skills/skill-2.jsonld"}',
+      ); // test change value
 
     cy.get('solid-form-dropdown#test1').then($el => {
       // Check API
@@ -438,7 +445,11 @@ describe('form widgets', { testIsolation: false }, function () {
       { prefix: '#dcat-', path: 'catalog' },
     ].forEach(({ prefix, path }) => {
       cy.get(`solid-form-radio${prefix}test1`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
         .children()
         .should('have.length', 1);
 
@@ -685,7 +696,11 @@ describe('form widgets', { testIsolation: false }, function () {
 
       // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
       cy.get(`solid-form-dropdown-addable${prefix}test2 > solid-form`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/users/users.jsonld`)
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/users/users.jsonld`,
+        )
         .and('have.attr', 'fields', 'name, username, age')
         .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
         .and('have.attr', 'placeholder-name', 'Enter your name')

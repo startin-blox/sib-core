@@ -31,7 +31,11 @@ describe('solid-widget', { testIsolation: false }, function () {
   it('nested component', () => {
     cy.get('#display-4')
       .find('custom-widget-4 solid-display')
-      .should('have.attr', 'data-src', '/examples/data/list/profiles/profile-1.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/profiles/profile-1.jsonld',
+      );
 
     cy.get('#display-4')
       .find('custom-widget-4 solid-display solid-display-value[name=city]')

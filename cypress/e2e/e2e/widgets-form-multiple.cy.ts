@@ -61,8 +61,16 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .find('solid-form-dropdown')
         .should('have.attr', 'data-holder', '')
         .should('have.attr', 'value', '')
-        .should('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
+        .should(
+          'have.attr',
+          'range',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
         .should('have.attr', 'name', 'test');
 
       cy.get(
@@ -170,10 +178,18 @@ describe('multiple widgets', { testIsolation: false }, function () {
 
       cy.get(
         `solid-form-multiple${prefix}test3 > div[data-index="test0"] solid-form-dropdown`,
-      ).should('have.attr', 'value', `/examples/data/${path}/skills/skill-2.jsonld`);
+      ).should(
+        'have.attr',
+        'value',
+        `/examples/data/${path}/skills/skill-2.jsonld`,
+      );
       cy.get(
         `solid-form-multiple${prefix}test3 > div[data-index="test1"] solid-form-dropdown`,
-      ).should('have.attr', 'value', `/examples/data/${path}/skills/skill-3.jsonld`);
+      ).should(
+        'have.attr',
+        'value',
+        `/examples/data/${path}/skills/skill-3.jsonld`,
+      );
 
       // Check widget value
       cy.get(`solid-form-multiple${prefix}test3`).then($el => {
@@ -228,8 +244,16 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .find('solid-form-dropdown')
         .should('have.attr', 'multiple', 'multiple')
         .should('have.attr', 'name', 'test')
-        .should('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
+        .should(
+          'have.attr',
+          'range',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
         .should(
           'have.attr',
           'values',
@@ -273,8 +297,16 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .should('have.attr', 'data-holder', '')
         .and('have.attr', 'multiple', 'multiple')
         .and('have.attr', 'name', 'test1')
-        .and('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
-        .and('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
+        .and(
+          'have.attr',
+          'range',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
+        .and(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
         .and('have.attr', 'order-asc', 'name');
       cy.get(
         `solid-form-multipleselect-autocompletion${prefix}test5 > solid-form-dropdown`,

@@ -69,7 +69,10 @@ describe('store', { testIsolation: false }, function () {
 
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
-      await store.getData('/examples/data/list/users/user-1.jsonld', base_context);
+      await store.getData(
+        '/examples/data/list/users/user-1.jsonld',
+        base_context,
+      );
       const dataToSave1 = {
         '@id': '/examples/data/list/users/user-1.jsonld',
         '@type': 'foaf:user',
@@ -80,7 +83,9 @@ describe('store', { testIsolation: false }, function () {
         dataToSave1,
         '/examples/data/list/users/user-1.jsonld',
       );
-      const dataRead = await store.get('/examples/data/list/users/user-1.jsonld');
+      const dataRead = await store.get(
+        '/examples/data/list/users/user-1.jsonld',
+      );
       expect(await dataRead.username).eq('local user');
       expect(await dataRead.email).not.exist;
       await store.clearCache('/examples/data/list/users/user-1.jsonld');
@@ -235,7 +240,10 @@ describe('store', { testIsolation: false }, function () {
 
     cy.window().then(async win => {
       const store = win.sibStore;
-      await store.getData('/examples/data/list/users/users.jsonld', base_context);
+      await store.getData(
+        '/examples/data/list/users/users.jsonld',
+        base_context,
+      );
     });
 
     cy.get('@users').its('response.statusCode').should('equal', 200);
@@ -248,8 +256,8 @@ describe('store', { testIsolation: false }, function () {
     cy.window().its('sibStore.subscriptionIndex').should('have.length', 8); // Subscription index
 
     cy.window().then(async (win: Cypress.AUTWindow) => {
-      expect(await win.sibStore.get('/examples/data/list/users/users.jsonld')).to
-        .exist;
+      expect(await win.sibStore.get('/examples/data/list/users/users.jsonld'))
+        .to.exist;
 
       await win.sibStore.getData(
         '/examples/data/extra-context/user-6.jsonld',
@@ -400,15 +408,15 @@ describe('store', { testIsolation: false }, function () {
     cy.window().then(async (win: Cypress.AUTWindow) => {
       expect(await win.sibStore.cache.length()).to.equals(15);
 
-      expect(await win.sibStore.get('/examples/data/list/users/user-1.jsonld')).to
-        .exist;
+      expect(await win.sibStore.get('/examples/data/list/users/user-1.jsonld'))
+        .to.exist;
 
       await win.sibStore.clearCache('/examples/data/list/users/user-1.jsonld');
       expect(await win.sibStore.cache.length()).to.equals(14);
 
       await win.sibStore.clearCache('/examples/data/list/users/user-1.jsonld');
-      expect(await win.sibStore.get('/examples/data/list/users/user-1.jsonld')).to.not
-        .exist;
+      expect(await win.sibStore.get('/examples/data/list/users/user-1.jsonld'))
+        .to.not.exist;
 
       await win.sibStore.clearCache('wrong-id.jsonld');
       expect(await win.sibStore.cache.length()).to.equals(14);
@@ -552,7 +560,10 @@ describe('store', { testIsolation: false }, function () {
       const store = win.sibStore;
       await store.cache.clear();
       cy.spy(store, 'fetchData');
-      await store.getData('/examples/data/list/users/user-1.jsonld', base_context);
+      await store.getData(
+        '/examples/data/list/users/user-1.jsonld',
+        base_context,
+      );
 
       const resource = {
         '@id': '/examples/data/list/users/user-1.jsonld',

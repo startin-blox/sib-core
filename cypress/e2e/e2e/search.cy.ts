@@ -142,11 +142,15 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
     cy.get('#display-search-field-1 > div')
       .children()
       .should('have.length', 1)
-      .filter('solid-display[data-src="/examples/data/list/users/user-3.jsonld"]');
+      .filter(
+        'solid-display[data-src="/examples/data/list/users/user-3.jsonld"]',
+      );
     cy.get('#display-search-field-2 > div')
       .children()
       .should('have.length', 1)
-      .filter('solid-display[data-src="/examples/data/list/events/event-4.jsonld"]');
+      .filter(
+        'solid-display[data-src="/examples/data/list/events/event-4.jsonld"]',
+      );
   });
 
   it('solid-form-search + search-[field] (+dcat)', () => {
@@ -159,7 +163,9 @@ describe('solid-form-search widget', { testIsolation: false }, function () {
     cy.get('#dcat-display-search-field-1 > div')
       .children()
       .should('have.length', 1)
-      .filter('solid-display[data-src="/examples/data/catalog/users/user-3.jsonld"]');
+      .filter(
+        'solid-display[data-src="/examples/data/catalog/users/user-3.jsonld"]',
+      );
     cy.get('#dcat-display-search-field-2 > div')
       .children()
       .should('have.length', 1)

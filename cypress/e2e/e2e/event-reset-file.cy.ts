@@ -1,7 +1,9 @@
 describe('event-reset-file', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
     cy.visit('/examples/e2e/event-reset-file.html');
-    cy.intercept('PUT', 'examples/data/list/events/event-1.jsonld', {}).as('put');
+    cy.intercept('PUT', 'examples/data/list/events/event-1.jsonld', {}).as(
+      'put',
+    );
     cy.intercept('PUT', 'examples/data/list/events/event-empty.jsonld', {}).as(
       'put-empty',
     );

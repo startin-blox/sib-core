@@ -102,7 +102,11 @@ describe('solid-form', { testIsolation: false }, function () {
   it('widget creation', () => {
     cy.get('#form-3 solid-form-dropdown')
       .should('have.attr', 'range', '/examples/data/list/skills/skills.jsonld')
-      .should('have.attr', 'data-src', '/examples/data/list/skills/skills.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/skills/skills.jsonld',
+      )
       .should('have.attr', 'order-desc', 'name')
       .should('have.attr', 'name', 'skills');
 
@@ -241,7 +245,11 @@ describe('solid-form', { testIsolation: false }, function () {
     // Verify addable's attributes are passed in the solid-form-dropdown-addable
     cy.get('solid-form#form-addable > form > solid-form-dropdown-addable')
       .should('have.attr', 'name', 'skills')
-      .and('have.attr', 'addable-data-src', '/examples/data/list/users/users.jsonld')
+      .and(
+        'have.attr',
+        'addable-data-src',
+        '/examples/data/list/users/users.jsonld',
+      )
       .and('have.attr', 'addable-fields', 'name')
       .and(
         'have.attr',

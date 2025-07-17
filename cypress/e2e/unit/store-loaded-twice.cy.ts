@@ -29,7 +29,10 @@ describe('store twice', { testIsolation: false }, () => {
       expect(await storeCore.cache.length()).to.equals(0);
       expect(await win.sibStore.cache.length()).to.equals(0);
 
-      await store.getData('/examples/data/list/users/user-1.jsonld', baseContext);
+      await store.getData(
+        '/examples/data/list/users/user-1.jsonld',
+        baseContext,
+      );
 
       expect(await store.cache.length()).to.equals(4);
       expect(await storeCore.cache.length()).to.equals(4);

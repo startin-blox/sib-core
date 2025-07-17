@@ -7,7 +7,11 @@ describe('alias', function () {
     cy.get('#alias-test > div')
       .children()
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/users/user-1.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-1.jsonld',
+      );
 
     cy.get('#alias-test > div > solid-display > div')
       .children()
@@ -36,7 +40,11 @@ describe('alias', function () {
     cy.get('#alias-test > div')
       .children()
       .eq(1)
-      .should('have.attr', 'data-src', '/examples/data/list/users/user-2.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-2.jsonld',
+      );
 
     cy.get('#alias-test > div')
       .children()
