@@ -1,13 +1,11 @@
 describe('Component factory', function () {
   let Sib: typeof import('../../../src/libs/Sib').Sib;
   let win: Window;
-  let doc: Document;
   let cnsl: Console;
   this.beforeEach('get dom', () => {
     cy.visit('examples/e2e/sib-register.html');
     cy.window().then(w => {
       win = w;
-      doc = win.document;
       cnsl = (win as Window & typeof globalThis).console;
       ///@ts-ignore
       Sib = win.Sib;
