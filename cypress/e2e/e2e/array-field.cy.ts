@@ -8,11 +8,11 @@ describe('array-field', function () {
     cy.get('#display-members > div')
       .children()
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/users/user-2.jsonld');
     cy.get('#display-members > div')
       .children()
       .eq(1)
-      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld');
+      .should('have.attr', 'data-src', '/examples/data/list/users/user-1.jsonld');
     // Group's name not displayed
     cy.get('#display-members > div')
       .children()

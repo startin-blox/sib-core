@@ -15,7 +15,7 @@ describe('nested-field', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-2.jsonld`,
+          `/examples/data/${path}/skills/skill-2.jsonld`,
         );
       cy.get(`${prefix}display-skills > div`)
         .children()
@@ -23,7 +23,7 @@ describe('nested-field', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-3.jsonld`,
+          `/examples/data/${path}/skills/skill-3.jsonld`,
         );
       // User's name not displayed
       cy.get(`${prefix}display-skills > div`)
@@ -62,7 +62,7 @@ describe('nested-field', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-1.jsonld`,
+          `/examples/data/${path}/skills/skill-1.jsonld`,
         );
       cy.get(`${prefix}display-job-skills > div`)
         .children()
@@ -70,7 +70,7 @@ describe('nested-field', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-4.jsonld`,
+          `/examples/data/${path}/skills/skill-4.jsonld`,
         );
       // User's name not displayed
       cy.get(`${prefix}display-job-skills > div`)

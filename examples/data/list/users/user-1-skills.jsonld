@@ -1,0 +1,14 @@
+{
+  "@id": "/examples/data/list/users/user-1-skills.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/list/skills/skill-2.jsonld"
+    },
+    {
+      "@id": "/examples/data/list/skills/skill-3.jsonld"
+    }
+  ],
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

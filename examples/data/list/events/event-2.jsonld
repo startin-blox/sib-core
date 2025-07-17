@@ -1,0 +1,11 @@
+{
+  "@id": "/examples/data/list/events/event-2.jsonld",
+  "name": "Workshop",
+  "date": "2020-05-10",
+  "seats": 2,
+  "contact": {
+    "@id": "/examples/data/list/users/user-2.jsonld"
+  },
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

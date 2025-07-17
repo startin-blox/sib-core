@@ -14,7 +14,7 @@
     <h3>diplay-1</h3>
     <solid-display
       id="display-1"
-      data-src="/examples/data/list/event-1.jsonld"
+      data-src="/examples/data/list/events/event-1.jsonld"
       fields="event, name, date"
       value-event="Event name and date : "
       class-event="presentationEvent"
@@ -25,7 +25,7 @@
     <h3>diplay-2</h3>
     <solid-display
       id="display-2"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="completeName(introName,first_name, last_name), emailSet(introEmail, email)"
       value-introName="My complete name is : "
       value-introEmail="My email address is : "
@@ -38,21 +38,21 @@
     <h3>all fields</h3>
     <solid-display
       id="display-3"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       child-attribute-child="child-value"
     ></solid-display>
 
     <h3>no fields</h3>
     <solid-display
       id="display-4"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields
     ></solid-display>
 
     <h3>HTML tag</h3>
     <solid-display
       id="display-5"
-      data-src="/examples/data/list/event-1.jsonld"
+      data-src="/examples/data/list/events/event-1.jsonld"
       fields="name"
       class-name="custom-class"
       widget-name="h2"
@@ -61,30 +61,30 @@
     <h3>required mixin</h3>
     <solid-display
       id="display-6"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name, city, place"
     ></solid-display>
     <solid-display
       id="display-7"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name, city, place"
       required-ocean
     ></solid-display>
     <solid-display
       id="display-8"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name, city, place"
       required-city
     ></solid-display>
     <solid-display
       id="display-9"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name, city, place"
       required-place
     ></solid-display>
     <solid-display
       id="display-10"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name, city, place"
       required-place
       required-city
@@ -94,13 +94,13 @@
     <h4>container</h4>
     <solid-display
       id="display-11"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username"
     ></solid-display>
     <h4>resource</h4>
     <solid-display
       id="display-12"
-      data-src="/examples/data/list/user-2.jsonld"
+      data-src="/examples/data/list/users/user-2.jsonld"
       fields="username"
     ></solid-display>
     <h4>empty-value</h4>
@@ -111,7 +111,7 @@
     </solid-widget>
     <solid-display
       id="display-13"
-      data-src="/examples/data/list/user-3-skills.jsonld"
+      data-src="/examples/data/list/users/user-3-skills.jsonld"
       fields="name"
       empty-value="No skill yet"
       empty-widget="no-skill"
@@ -120,13 +120,13 @@
     <h3>src action</h3>
     <solid-display
       id="display-14"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="name, profile-edit"
       action-profile-edit="profile-edit-route"
     ></solid-display>
     <solid-display
       id="display-15"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="name, profile-edit"
       action-profile-edit="profile-edit-route"
       src-profile-edit="other-resource"
@@ -134,7 +134,7 @@
     <h3>default-[field]</h3>
     <solid-display
       id="default-field"
-      data-src="/examples/data/list/profile-1.jsonld"
+      data-src="/examples/data/list/profiles/profile-1.jsonld"
       fields="available"
       default-available="not defined"
     ></solid-display>
@@ -142,7 +142,7 @@
     <h3>counter-mixin</h3>
     <solid-display
       id="display-16"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       counter-template="${counter} skills displayed :"
     ></solid-display>
@@ -150,7 +150,7 @@
     <h3>highlighter-mixin</h3>
     <solid-display
       id="display-17"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       order-asc="name"
       highlight-name="Javascript"
@@ -159,7 +159,7 @@
     <h3>nested-[field] attribute</h3>
     <solid-display
       id="display-18"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       nested-field="skills"
       fields="name"
     ></solid-display>
@@ -168,14 +168,14 @@
     <h4>default-widget only</h4>
     <solid-display
       id="display-19"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="name, email, username"
       default-widget="solid-display-link"
     ></solid-display>
     <h4>widget-[field] & default-widget</h4>
     <solid-display
       id="display-20"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="name, email, username"
       widget-name="solid-display-div"
       default-widget="solid-display-link"
@@ -184,7 +184,7 @@
     <h3>oembed template</h3>
     <solid-display
       id="display-21"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="oembed"
       value-oembed='https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json'
       widget-oembed="solid-display-value-oembed"
@@ -204,7 +204,7 @@
 
     <solid-display
       id="display-22"
-      data-src="/examples/data/list/profile-3.jsonld"
+      data-src="/examples/data/list/profiles/profile-3.jsonld"
       fields="bio, city, phone, website"
       default-widget-bio = "custom-default-widget"
       default-widget-phone = "custom-default-widget"
@@ -215,21 +215,21 @@
     <h5>set without data</h5>
     <solid-display
       id="widget-empty-set1"
-      data-src="/examples/data/list/profile-4.jsonld"
+      data-src="/examples/data/list/profiles/profile-4.jsonld"
       fields="@id, contact(city, phone, website)"
       empty-contact="widget-empty-set"
     ></solid-display>
     <h5>set with data</h5>
     <solid-display
       id="widget-empty-set2"
-      data-src="/examples/data/list/profile-2.jsonld"
+      data-src="/examples/data/list/profiles/profile-2.jsonld"
       fields="@id, contact(city, phone, website)"
       empty-contact="widget-empty-set"
     ></solid-display>
     <h5>set with widget value </h5>
     <solid-display
       id="widget-empty-set3"
-      data-src="/examples/data/list/profile-4.jsonld"
+      data-src="/examples/data/list/profiles/profile-4.jsonld"
       fields="@id, contact(city, phone, website)"
       empty-contact="empty-set-value"
       empty-contact-value="empty set value"
@@ -252,7 +252,7 @@
     </solid-widget>
     <solid-display
       id="display-event"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="email, name, username"
       widget-username="custom-w"
     ></solid-display>
@@ -260,7 +260,7 @@
     <h3>label in a set (div or ul)</h3>
     <solid-display
       id="solid-set-div-label"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="identity(name, username)"
       widget-identity="solid-set-div-label"
     ></solid-display>
@@ -270,14 +270,14 @@
     <h3>Set, widget classes</h3>
     <solid-display
       id="display-class"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="fullName(first_name, last_name), email"
       widget-fullName="solid-set-ul"
       widget-email="solid-display-value-label"
   ></solid-display>
   <solid-display
       id="display-class2"
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="fullName(first_name, last_name), email"
       class-fullName="fullnameClass"
       class-first_name="fnameClass"
@@ -292,30 +292,30 @@
     <h3>required mixin (dcat)</h3>
     <solid-display
       id="dcat-display-6"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title, dct:comment, dct:definition"
     ></solid-display>
     <solid-display
       id="dcat-display-7"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title, dct:comment, dct:definition"
       required-ocean
     ></solid-display> 
     <solid-display
       id="dcat-display-8"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title, dct:comment, dct:definition"
       required-dct:comment
     ></solid-display>
    <solid-display
       id="dcat-display-9"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title, dct:comment, dct:definition"
       required-dct:definition
     ></solid-display>
     <solid-display
       id="dcat-display-10"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title, dct:comment, dct:definition"
       required-dct:definition
       required-dct:comment
@@ -325,14 +325,14 @@
     <h4>container</h4>
     <solid-display
       id="dcat-display-11"
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields="dct:username"
     ></solid-display>
 
     <h4>resource</h4>
     <solid-display
       id="dcat-display-12"
-      data-src="/examples/data/catalog/user-2.jsonld"
+      data-src="/examples/data/catalog/users/user-2.jsonld"
       fields="dct:username"
     ></solid-display>
     <h4>empty-value</h4>
@@ -343,7 +343,7 @@
     </solid-widget>
     <solid-display
       id="dcat-display-13"
-      data-src="/examples/data/catalog/user-3-skills.jsonld"
+      data-src="/examples/data/catalog/users/user-3-skills.jsonld"
       fields="dct:username"
       empty-value="No skill yet"
       empty-widget="no-skill"
@@ -352,7 +352,7 @@
     <h3>counter-mixin</h3>
     <solid-display
       id="dcat-display-16"
-      data-src="/examples/data/catalog/skills.jsonld"
+      data-src="/examples/data/catalog/skills/skills.jsonld"
       fields="name"
       counter-template="${counter} skills displayed :"
     ></solid-display>
@@ -360,7 +360,7 @@
     <h3>highlighter-mixin</h3>
     <solid-display
       id="dcat-display-17"
-      data-src="/examples/data/catalog/skills.jsonld"
+      data-src="/examples/data/catalog/skills/skills.jsonld"
       fields="name"
       order-asc="name"
       highlight-name="Javascript"
@@ -369,7 +369,7 @@
     <h3>nested-[field] attribute</h3>
     <solid-display
       id="dcat-display-18"
-      data-src="/examples/data/catalog/user-1.jsonld"
+      data-src="/examples/data/catalog/users/user-1.jsonld"
       nested-field="skills"
       fields="name"
     ></solid-display>
@@ -379,7 +379,7 @@
     <h4>default-widget only</h4>
     <solid-display
       id="dcat-display-19"
-      data-src="/examples/data/catalog/user-1.jsonld"
+      data-src="/examples/data/catalog/users/user-1.jsonld"
       fields="name, dct:email, dct:username"
       default-widget="solid-display-link"
     ></solid-display>
@@ -387,7 +387,7 @@
     <h4>widget-[field] & default-widget</h4>
     <solid-display
       id="dcat-display-20"
-      data-src="/examples/data/catalog/user-1.jsonld"
+      data-src="/examples/data/catalog/users/user-1.jsonld"
       fields="name, dct:email, dct:username"
       widget-name="solid-display-div"
       default-widget="solid-display-link"
@@ -396,7 +396,7 @@
     <h3>oembed template</h3>
     <solid-display
       id="dcat-display-21"
-      data-src="/examples/data/catalog/user-1.jsonld"
+      data-src="/examples/data/catalog/users/user-1.jsonld"
       fields="oembed"
       value-oembed='https://www.audiomack.com/oembed?url=https%3A%2F%2Faudiomack.com%2Faudiomack%2Fplaylist%2Fjust-chillin&format=json'
       widget-oembed="solid-display-value-oembed"
@@ -408,7 +408,7 @@
     </solid-widget>
     <solid-display
       id="dcat-display-event"
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields="email, dct:name, dct:username"
       widget-username="custom-w"
     ></solid-display>
@@ -416,7 +416,7 @@
     <h3>label in a set (div or ul)</h3>
     <solid-display
       id="dcat-solid-set-div-label"
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields="identity(name, dct:username)"
       widget-identity="solid-set-div-label"
     ></solid-display>

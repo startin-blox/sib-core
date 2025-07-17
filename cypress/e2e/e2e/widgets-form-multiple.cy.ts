@@ -61,8 +61,8 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .find('solid-form-dropdown')
         .should('have.attr', 'data-holder', '')
         .should('have.attr', 'value', '')
-        .should('have.attr', 'range', `/examples/data/${path}/skills.jsonld`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills.jsonld`)
+        .should('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
+        .should('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
         .should('have.attr', 'name', 'test');
 
       cy.get(
@@ -125,13 +125,13 @@ describe('multiple widgets', { testIsolation: false }, function () {
         `solid-form-multiple${prefix}test2 > div[data-index="test1"] select`,
       ).should(
         'have.value',
-        `{"@id": "/examples/data/${path}/skill-1.jsonld"}`,
+        `{"@id": "/examples/data/${path}/skills/skill-1.jsonld"}`,
       );
       cy.get(
         `solid-form-multiple${prefix}test2 > div[data-index="test2"] select`,
       ).should(
         'have.value',
-        `{"@id": "/examples/data/${path}/skill-3.jsonld"}`,
+        `{"@id": "/examples/data/${path}/skills/skill-3.jsonld"}`,
       );
 
       // Check widget value
@@ -139,8 +139,8 @@ describe('multiple widgets', { testIsolation: false }, function () {
         // Check API
         expect((<any>$el[0]).component.value).to.equal(''); // value attribute
         expect((<any>$el[0]).component.getValue()).to.deep.equal([
-          `{"@id": "/examples/data/${path}/skill-1.jsonld"}`,
-          `{"@id": "/examples/data/${path}/skill-3.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-1.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-3.jsonld"}`,
         ]); // form value
       });
     });
@@ -155,7 +155,7 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/user-1-skills.jsonld`,
+          `/examples/data/${path}/users/user-1-skills.jsonld`,
         )
         .children()
         .should('have.length', 3);
@@ -170,20 +170,20 @@ describe('multiple widgets', { testIsolation: false }, function () {
 
       cy.get(
         `solid-form-multiple${prefix}test3 > div[data-index="test0"] solid-form-dropdown`,
-      ).should('have.attr', 'value', `/examples/data/${path}/skill-2.jsonld`);
+      ).should('have.attr', 'value', `/examples/data/${path}/skills/skill-2.jsonld`);
       cy.get(
         `solid-form-multiple${prefix}test3 > div[data-index="test1"] solid-form-dropdown`,
-      ).should('have.attr', 'value', `/examples/data/${path}/skill-3.jsonld`);
+      ).should('have.attr', 'value', `/examples/data/${path}/skills/skill-3.jsonld`);
 
       // Check widget value
       cy.get(`solid-form-multiple${prefix}test3`).then($el => {
         // Check API
         expect((<any>$el[0]).component.value).to.equal(
-          `/examples/data/${path}/user-1-skills.jsonld`,
+          `/examples/data/${path}/users/user-1-skills.jsonld`,
         ); // value attribute
         expect((<any>$el[0]).component.getValue()).to.deep.equal([
-          `{"@id": "/examples/data/${path}/skill-2.jsonld"}`,
-          `{"@id": "/examples/data/${path}/skill-3.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-2.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-3.jsonld"}`,
         ]); // form value
       });
 
@@ -194,10 +194,10 @@ describe('multiple widgets', { testIsolation: false }, function () {
       cy.get(`solid-form-multiple${prefix}test3`).then($el => {
         // Check API
         expect((<any>$el[0]).component.value).to.equal(
-          `/examples/data/${path}/user-1-skills.jsonld`,
+          `/examples/data/${path}/users/user-1-skills.jsonld`,
         ); // value attribute
         expect((<any>$el[0]).component.getValue()).to.deep.equal([
-          `{"@id": "/examples/data/${path}/skill-2.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-2.jsonld"}`,
         ]); // form value
       });
       cy.get(`solid-form-multiple${prefix}test3 > button`).should(
@@ -219,7 +219,7 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/user-1-skills.jsonld`,
+          `/examples/data/${path}/users/user-1-skills.jsonld`,
         )
         .children()
         .should('have.length', 1);
@@ -228,22 +228,22 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .find('solid-form-dropdown')
         .should('have.attr', 'multiple', 'multiple')
         .should('have.attr', 'name', 'test')
-        .should('have.attr', 'range', `/examples/data/${path}/skills.jsonld`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills.jsonld`)
+        .should('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
+        .should('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
         .should(
           'have.attr',
           'values',
-          `["/examples/data/${path}/skill-2.jsonld","/examples/data/${path}/skill-3.jsonld"]`,
+          `["/examples/data/${path}/skills/skill-2.jsonld","/examples/data/${path}/skills/skill-3.jsonld"]`,
         );
 
       cy.get(`solid-form-multipleselect${prefix}test4`).then($el => {
         // Check API
         expect((<any>$el[0]).component.value).to.equal(
-          `/examples/data/${path}/user-1-skills.jsonld`,
+          `/examples/data/${path}/users/user-1-skills.jsonld`,
         ); // value attribute
         expect((<any>$el[0]).component.getValue()).to.deep.equal([
-          { '@id': `/examples/data/${path}/skill-2.jsonld` },
-          { '@id': `/examples/data/${path}/skill-3.jsonld` },
+          { '@id': `/examples/data/${path}/skills/skill-2.jsonld` },
+          { '@id': `/examples/data/${path}/skills/skill-3.jsonld` },
         ]); // form value
       });
 
@@ -255,9 +255,9 @@ describe('multiple widgets', { testIsolation: false }, function () {
       cy.get(`solid-form-multipleselect${prefix}test4`).then($el => {
         // Check API
         expect((<any>$el[0]).component.getValue()).to.deep.equal([
-          { '@id': `/examples/data/${path}/skill-2.jsonld` },
-          { '@id': `/examples/data/${path}/skill-3.jsonld` },
-          { '@id': `/examples/data/${path}/skill-4.jsonld` },
+          { '@id': `/examples/data/${path}/skills/skill-2.jsonld` },
+          { '@id': `/examples/data/${path}/skills/skill-3.jsonld` },
+          { '@id': `/examples/data/${path}/skills/skill-4.jsonld` },
         ]); // form value
       });
     });
@@ -273,8 +273,8 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .should('have.attr', 'data-holder', '')
         .and('have.attr', 'multiple', 'multiple')
         .and('have.attr', 'name', 'test1')
-        .and('have.attr', 'range', `/examples/data/${path}/skills.jsonld`)
-        .and('have.attr', 'data-src', `/examples/data/${path}/skills.jsonld`)
+        .and('have.attr', 'range', `/examples/data/${path}/skills/skills.jsonld`)
+        .and('have.attr', 'data-src', `/examples/data/${path}/skills/skills.jsonld`)
         .and('have.attr', 'order-asc', 'name');
       cy.get(
         `solid-form-multipleselect-autocompletion${prefix}test5 > solid-form-dropdown`,
@@ -314,7 +314,7 @@ describe('multiple widgets', { testIsolation: false }, function () {
         .should('contain', 'DevOps');
       cy.get('solid-form-multipleselect-autocompletion').then(elm => {
         expect((elm[0] as any).component.getValue()).deep.eq([
-          { '@id': '/examples/data/list/skill-4.jsonld' },
+          { '@id': '/examples/data/list/skills/skill-4.jsonld' },
         ]);
       });
     });

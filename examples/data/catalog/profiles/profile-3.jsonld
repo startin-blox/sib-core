@@ -1,0 +1,15 @@
+{
+  "@id": "/examples/data/catalog/profiles/profile-3.jsonld",
+  "jabberID": "not-member-paris@example.com",
+  "name": "profile 3",
+  "user": {
+    "@id": "/examples/data/catalog/users/user-3.jsonld"
+  },
+  "available": null,
+  "bio": "",
+  "city": "Rennes",
+  "phone": "",
+  "website": "",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

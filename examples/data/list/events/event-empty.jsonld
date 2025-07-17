@@ -1,0 +1,12 @@
+{
+  "@id": "/examples/data/list/events/event-empty.jsonld",
+  "name": "",
+  "date": "",
+  "seats": 0,
+  "description": "",
+  "contact": {
+    "@id": "/examples/data/list/users/user-1.jsonld"
+  },
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

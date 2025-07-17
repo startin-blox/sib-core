@@ -26,7 +26,7 @@
       <h1>Events</h1>
       <solid-display
         id="events"
-        data-src="/examples/data/list/events.jsonld"
+        data-src="/examples/data/list/events/events.jsonld"
         fields="name, custom-id, child-date"
         value-custom-id="store://container.@id"
         value-child-date="store://resource.date"
@@ -44,7 +44,7 @@
 
       <solid-table
         id="table"
-        data-src="/examples/data/list/events.jsonld"
+        data-src="/examples/data/list/events/events.jsonld"
         fields="temp"
         value-temp="store://resource.@id"
       ></solid-table>
@@ -63,7 +63,7 @@
     <script type="module">
       export default class SibAuth extends HTMLElement {
         getUser() {
-          return {"@id": '/examples/data/list/user-1.jsonld'}
+          return {"@id": '/examples/data/list/users/user-1.jsonld'}
         }
         getFetch() {
           return fetch

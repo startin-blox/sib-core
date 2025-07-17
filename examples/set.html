@@ -13,7 +13,7 @@
     <details>
       <summary>Set</summary>
       <solid-display
-        data-src="/examples/data/list/users.jsonld"
+        data-src="/examples/data/list/users/users.jsonld"
         fields="@id, name(first_name, last_name, username), infos(email, profile.city)"
       ></solid-display>
     </details>
@@ -21,7 +21,7 @@
     <details>
       <summary>Nested set</summary>
       <solid-display
-        data-src="/examples/data/list/users.jsonld"
+        data-src="/examples/data/list/users/users.jsonld"
         fields="@id, name(first_name, last_name, username, infos(email, profile.city))"
         widget-name="solid-set-ul"
       ></solid-display>

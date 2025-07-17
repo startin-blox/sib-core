@@ -14,14 +14,14 @@
     <h2>Simple display with aliased @ids</h2>
     <solid-display
       id="alias-test"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="@id, @id as user_id, username, username as strangename"
     ></solid-display>
 
     <h2>Simple display with aliased @ids, username and email + sets</h2>
     <solid-display
       id="alias-test-2"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="@id, @id as user_id, info(username, username as strangename), email, first_name, email as ratatouille"
     ></solid-display>
 
@@ -38,7 +38,7 @@
     <h2>Simple display with custom widget, username and email + sets</h2>
     <solid-display
       id="alias-test-3"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="@id, @id as user_id"
       widget-user_id="custom-widget"
     ></solid-display>

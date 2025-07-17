@@ -1,0 +1,104 @@
+{
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
+  "@type": "dcat:Catalog",
+  "@id": "/examples/data/catalog/events/events.jsonld",
+  "title": "Events Catalog",
+  "description": "A catalog of events.",
+  "created": "2024-03-06",
+  "modified": "2024-03-06",
+  "publisher": {
+    "@type": "foaf:Organization",
+    "foaf:name": "Event Organizer",
+    "foaf:homepage": "https://event-organizer.example.com"
+  },
+  "dcat:dataset": [
+    {
+      "@id": "/examples/data/catalog/events/event-1.jsonld",
+      "@type": "dcat:Dataset",
+      "dct:title": "Coliving",
+      "label": 2020,
+      "created": "2020-07-09",
+      "modified": "2020-07-09",
+      "spatial": {
+        "@type": "Location",
+        "title": "Unknown"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/community"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Event Support",
+        "vcard:hasEmail": "mailto:support@example.com"
+      },
+      "dct:comment": "",
+      "dct:definition": ""
+    },
+    {
+      "@id": "/examples/data/catalog/events/event-2.jsonld",
+      "@type": "dcat:Dataset",
+      "dct:title": "Workshop",
+      "label": 2015,
+      "created": "2020-05-10",
+      "modified": "2020-05-10",
+      "spatial": {
+        "@type": "Location",
+        "title": "Opéra"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/workshop"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Workshop Support",
+        "vcard:hasEmail": "mailto:workshop-support@example.com"
+      },
+      "dct:comment": "",
+      "dct:definition": "Opéra"
+    },
+    {
+      "@id": "/examples/data/catalog/events/event-3.jsonld",
+      "@type": "dcat:Dataset",
+      "dct:title": "Réunion d'information",
+      "label": 2017,
+      "created": "2020-07-10",
+      "modified": "2020-07-10",
+      "spatial": {
+        "@type": "Location",
+        "title": "Rennes"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/conference"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "Conference Team",
+        "vcard:hasEmail": "mailto:conference-team@example.com"
+      },
+      "dct:comment": "Rennes",
+      "dct:definition": "Couvent des jacobins"
+    },
+    {
+      "@id": "/examples/data/catalog/events/event-4.jsonld",
+      "@type": "dcat:Dataset",
+      "dct:title": "Assemblée générale",
+      "label": 2019,
+      "created": "2020-05-10",
+      "modified": "2020-05-10",
+      "spatial": {
+        "@type": "Location",
+        "title": "Marseille"
+      },
+      "theme": {
+        "@id": "http://example.com/themes/governance"
+      },
+      "contactPoint": {
+        "@type": "vcard:Organization",
+        "vcard:fn": "General Assembly Team",
+        "vcard:hasEmail": "mailto:assembly-team@example.com"
+      },
+      "dct:definition": "",
+      "dct:comment": "Marseille"
+    }
+  ]
+}

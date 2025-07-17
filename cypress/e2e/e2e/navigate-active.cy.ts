@@ -5,16 +5,16 @@ describe('uses active on navigate', { testIsolation: false }, function () {
   });
 
   it('set active by default | unset active on leaveRoute | set active on enterRoute', () => {
-    cy.get('solid-display[data-src="/examples/data/list/user-2.jsonld"]')
+    cy.get('solid-display[data-src="/examples/data/list/users/user-2.jsonld"]')
       .should('exist')
       .and('have.attr', 'active');
-    cy.get('solid-display[data-src="/examples/data/list/user-1.jsonld"]')
+    cy.get('solid-display[data-src="/examples/data/list/users/user-1.jsonld"]')
       .should('exist')
       .and('not.have.attr', 'active');
-    cy.get('solid-display[data-src="/examples/data/list/user-3.jsonld"]')
+    cy.get('solid-display[data-src="/examples/data/list/users/user-3.jsonld"]')
       .should('exist')
       .and('not.have.attr', 'active');
-    cy.get('solid-display[data-src="/examples/data/list/user-4.jsonld"]')
+    cy.get('solid-display[data-src="/examples/data/list/users/user-4.jsonld"]')
       .should('exist')
       .and('not.have.attr', 'active');
   });
@@ -22,32 +22,32 @@ describe('uses active on navigate', { testIsolation: false }, function () {
   it('unset active on leaveRoute', () => {
     cy.get('#leave-route').click();
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-1.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-1.jsonld"]',
     ).should('not.have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-2.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-2.jsonld"]',
     ).should('not.have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-3.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-3.jsonld"]',
     ).should('not.have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-4.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-4.jsonld"]',
     ).should('not.have.attr', 'active');
   });
 
   it('set active on enterRoute', () => {
     cy.get('#enter-route').click();
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-1.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-1.jsonld"]',
     ).should('have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-2.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-2.jsonld"]',
     ).should('not.have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-3.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-3.jsonld"]',
     ).should('not.have.attr', 'active');
     cy.get(
-      'solid-display[data-src="/examples/data/list/user-4.jsonld"]',
+      'solid-display[data-src="/examples/data/list/users/user-4.jsonld"]',
     ).should('not.have.attr', 'active');
   });
 });

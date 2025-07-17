@@ -1,0 +1,28 @@
+{
+  "@id": "/examples/data/catalog/users/user-2.jsonld",
+  "first_name": "Paris",
+  "description": "Paris",
+  "last_name": "Hilton",
+  "title": "Hilton",
+  "dct:username": "paris",
+  "dct:email": "paris@hilton.hi",
+  "name": "Paris Hilton",
+  "available": true,
+  "domain": {
+    "@context": "https://www.w3.org/ns/dcat3.jsonld#",
+    "@id": "/examples/data/catalog/users/user-2-skills.jsonld",
+    "@type": "dcat:Catalog",
+    "dcat:dataset": [
+      {
+        "@id": "/examples/data/catalog/skills/skill-1.jsonld"
+      }
+    ],
+    "permissions": ["view"]
+  },
+  "profile": {
+    "@id": "/examples/data/catalog/profile-2.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

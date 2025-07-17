@@ -16,7 +16,7 @@
 
     <h1>Solid-display</h1>
     <solid-display
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="username, skills"
       multiple-skills
       multiple-skills-fields="name"
@@ -30,7 +30,7 @@
       </template>
     </solid-widget>
     <solid-display
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="username, skills"
       multiple-skills="custom-multiple"
     ></solid-display>
@@ -38,32 +38,32 @@
     <h1>Solid-form</h1>
     <h2>multiple form</h2>
     <solid-form
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="skills"
       multiple-skills
     ></solid-form>
 
     <h2>multiple form with dropdowns</h2>
     <solid-form
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="skills"
       multiple-skills
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
     ></solid-form>
 
     <h2>multiple form with multiple select</h2>
     <solid-form
-      data-src="/examples/data/list/user-1.jsonld"
+      data-src="/examples/data/list/users/user-1.jsonld"
       fields="skills"
       multiple-skills="solid-form-multipleselect-autocompletion"
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
     ></solid-form>
 
     <h1>creation form</h1>
     <solid-form
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username, skills"
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
       multiple-skills
       multiple-skills-add-label="Ajouter une compétence"
       multiple-skills-remove-label="Supprimer cette compétence"

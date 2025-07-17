@@ -53,7 +53,7 @@ describe('solid-table', { testIsolation: false }, function () {
         .should(
           'have.attr',
           'data-resource',
-          `/examples/data/${path}/user-3.jsonld`,
+          `/examples/data/${path}/users/user-3.jsonld`,
         )
         .children('td')
         .should('have.length', 5)
@@ -101,8 +101,8 @@ describe('solid-table', { testIsolation: false }, function () {
       // Check data
       cy.get(tableId).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          `/examples/data/${path}/user-2.jsonld`,
-          `/examples/data/${path}/user-4.jsonld`,
+          `/examples/data/${path}/users/user-2.jsonld`,
+          `/examples/data/${path}/users/user-4.jsonld`,
         ]);
       });
 
@@ -110,10 +110,10 @@ describe('solid-table', { testIsolation: false }, function () {
       cy.get(tableId).find('input[type="checkbox"]').eq(0).check();
       cy.get(tableId).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          `/examples/data/${path}/user-3.jsonld`,
-          `/examples/data/${path}/user-2.jsonld`,
-          `/examples/data/${path}/user-4.jsonld`,
-          `/examples/data/${path}/user-1.jsonld`,
+          `/examples/data/${path}/users/user-3.jsonld`,
+          `/examples/data/${path}/users/user-2.jsonld`,
+          `/examples/data/${path}/users/user-4.jsonld`,
+          `/examples/data/${path}/users/user-1.jsonld`,
         ]);
       });
 
@@ -213,7 +213,7 @@ describe('solid-table', { testIsolation: false }, function () {
             .should(
               'have.attr',
               'data-src',
-              `/examples/data/${path}/user-1.jsonld`,
+              `/examples/data/${path}/users/user-1.jsonld`,
             )
             .and('have.attr', 'fields', field1)
             .and('have.attr', 'partial', '')
@@ -229,7 +229,7 @@ describe('solid-table', { testIsolation: false }, function () {
             .should(
               'have.attr',
               'data-src',
-              `/examples/data/${path}/user-1.jsonld`,
+              `/examples/data/${path}/users/user-1.jsonld`,
             )
             .and('have.attr', 'fields', field2)
             .and('have.attr', `enum-${field2}`, 'Smith, Williams, Anderson')
@@ -244,7 +244,7 @@ describe('solid-table', { testIsolation: false }, function () {
             .should(
               'have.attr',
               'data-src',
-              `/examples/data/${path}/user-1.jsonld`,
+              `/examples/data/${path}/users/user-1.jsonld`,
             )
             .and('have.attr', 'fields', `${field3}`)
             .and('have.attr', `widget-${field3}`, 'solid-form-email-label')
@@ -276,8 +276,8 @@ describe('solid-table', { testIsolation: false }, function () {
       // Check data
       cy.get(`${prefix}table-skills`).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          `/examples/data/${path}/skill-2.jsonld`,
-          `/examples/data/${path}/skill-3.jsonld`,
+          `/examples/data/${path}/skills/skill-2.jsonld`,
+          `/examples/data/${path}/skills/skill-3.jsonld`,
         ]);
       });
 
@@ -287,8 +287,8 @@ describe('solid-table', { testIsolation: false }, function () {
       // Check data
       cy.get(`${prefix}table-skills`).then($el => {
         expect((<any>$el[0]).component.selectedLines).to.deep.equal([
-          `/examples/data/${path}/skill-2.jsonld`,
-          `/examples/data/${path}/skill-3.jsonld`,
+          `/examples/data/${path}/skills/skill-2.jsonld`,
+          `/examples/data/${path}/skills/skill-3.jsonld`,
         ]);
       });
 

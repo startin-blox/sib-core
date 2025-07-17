@@ -16,7 +16,7 @@
       enum-username="admin, paris, pierre, option4, not-member-paris"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username"
       filtered-by="filter1"
     ></solid-display>
@@ -27,7 +27,7 @@
       enum-last_name="User = a, Hilton = b, DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields='last_name'
       filtered-by="filter2"
     ></solid-display>
@@ -39,7 +39,7 @@
       enum-name="Test, Paris, Pierre, option4, Not A Paris Member"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields="name"
       filtered-by="dcat-filter1"
     ></solid-display>
@@ -50,7 +50,7 @@
       enum-name="User = a, Hilton = b, DLC = c, Paris Member = d"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields='name'
       filtered-by="dcat-filter2"
     ></solid-display>
@@ -64,7 +64,7 @@
     ></solid-form-search>
     <solid-display
       id="display3"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields='last_name'
       filtered-by="filter3"
     ></solid-display>
@@ -78,7 +78,7 @@
     ></solid-form-search>
     <solid-display
       id="dcat-display3"
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields='title'
       filtered-by="dcat-filter3"
     ></solid-display>
@@ -94,7 +94,7 @@
     ></solid-form-search>
     <solid-display
       id="display4"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name"
       filtered-by="filter4"
     ></solid-display>
@@ -108,7 +108,7 @@
     ></solid-form-search>
     <solid-display
       id="display5"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       filtered-by="filter5"
     ></solid-display>
@@ -123,7 +123,7 @@
     ></solid-form-search>
     <solid-display
       id="dcat-display4"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title"
       filtered-by="dcat-filter4"
     ></solid-display>
@@ -137,7 +137,7 @@
     ></solid-form-search>
     <solid-display
       id="dcat-display5"
-      data-src="/examples/data/catalog/skills.jsonld"
+      data-src="/examples/data/catalog/skills/skills.jsonld"
       fields="name"
       filtered-by="dcat-filter5"
     ></solid-display>
@@ -150,13 +150,13 @@
     ></solid-form-search>
     <solid-display
       id="display-search-field-1"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username"
       filtered-by="filter-search-field"
     ></solid-display>
     <solid-display
       id="display-search-field-2"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name"
       filtered-by="filter-search-field"
     ></solid-display> 
@@ -169,13 +169,13 @@
     ></solid-form-search>
     <solid-display
       id="dcat-display-search-field-1"
-      data-src="/examples/data/catalog/users.jsonld"
+      data-src="/examples/data/catalog/users/users.jsonld"
       fields="name"
       filtered-by="dcat-filter-search-field"
     ></solid-display>
     <solid-display
       id="dcat-display-search-field-2"
-      data-src="/examples/data/catalog/events.jsonld"
+      data-src="/examples/data/catalog/events/events.jsonld"
       fields="dct:title"
       filtered-by="dcat-filter-search-field"
     ></solid-display>
@@ -205,7 +205,7 @@
 
     <solid-display
       id="display-filter-hidden"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="name, available"
       filtered-by="filter-hidden"
     ></solid-display>
@@ -219,7 +219,7 @@
 
     <solid-display
       id="display-filter-hidden-bool"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="name, available"
       filtered-by="filter-hidden-bool"
     ></solid-display>
@@ -232,7 +232,7 @@
 
     <solid-display
       id="display-filter-hidden-num"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="name, available, years_experience"
       filtered-by="filter-hidden-num"
     ></solid-display>
@@ -244,7 +244,7 @@
     ></solid-form-search>
     <solid-display
       id="display-fake-field"
-      data-src="/examples/data/list/events.jsonld"
+      data-src="/examples/data/list/events/events.jsonld"
       fields="name"
       filtered-by="filter-fake-field"
     ></solid-display> 
@@ -253,12 +253,12 @@
     <solid-form-search
       id="skill-search"
       fields="skills"
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
       widget-skills="solid-form-placeholder-dropdown"
     ></solid-form-search>
     <solid-display
       id="filter-container"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username"
       filtered-by="skill-search"
     ></solid-display>
@@ -270,7 +270,7 @@
     ></solid-form-search>
     <solid-display
       id="display-null-subject"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="name, profile.available"
       filtered-by="filter-null-subject"
   ></solid-display>
@@ -278,11 +278,11 @@
   <solid-form-search
     id="profile-search"
     fields="profile"
-    value-profile="/examples/data/list/profile-1.jsonld"
+    value-profile="/examples/data/list/profiles/profile-1.jsonld"
   ></solid-form-search>
   <solid-display
     id="display-profile-search"
-    data-src="/examples/data/list/users.jsonld"
+    data-src="/examples/data/list/users/users.jsonld"
     fields="username"
     filtered-by="profile-search"
   ></solid-display>
@@ -293,7 +293,7 @@
   ></solid-form-search>
   <solid-display
     id="display-number-search"
-    data-src="/examples/data/list/users.jsonld"
+    data-src="/examples/data/list/users/users.jsonld"
     fields="username"
     filtered-by="number-search"
   ></solid-display>
@@ -308,7 +308,7 @@
     ></solid-form-search>
     <solid-display
       id="span-empty-widget"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="name"
       filtered-by="filter-with-empty-widget"
       empty-widget="my-empty-widget"
@@ -323,7 +323,7 @@
     ></solid-form-search>
     <solid-display
       id="enum-checkboxes-display"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       filtered-by="enum-checkboxes"
     ></solid-display>
@@ -331,12 +331,12 @@
     <h3>solid-form-search + autocompletion</h3>
     <solid-display
       id="autocompletion"
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username, skills"
       multiple-skills
       widget-skills="solid-skill"
       search-fields="skills"
-      search-range-skills="/examples/data/list/skills.jsonld"
+      search-range-skills="/examples/data/list/skills/skills.jsonld"
       search-widget-skills="solid-form-multipleselect-autocompletion"
     ></solid-display>
 
@@ -348,7 +348,7 @@
     ></solid-form-search>
     <solid-display
       id="debounce"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       filtered-by="filter-debounce"
     ></solid-display>
@@ -361,7 +361,7 @@
     ></solid-form-search>
     <solid-display
       id="enter"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       filtered-by="enter-submit"
     ></solid-display>
@@ -373,7 +373,7 @@
     ></solid-form-search>
     <solid-display
       id="enter-debounce"
-      data-src="/examples/data/list/skills.jsonld"
+      data-src="/examples/data/list/skills/skills.jsonld"
       fields="name"
       filtered-by="enter-submit-debounce"
     ></solid-display>

@@ -94,7 +94,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/event-3.jsonld`,
+          `/examples/data/${path}/events/event-3.jsonld`,
         );
       cy.get(`${prefix}display-8 > div`)
         .children()
@@ -102,7 +102,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/event-4.jsonld`,
+          `/examples/data/${path}/events/event-4.jsonld`,
         );
 
       cy.get(`${prefix}display-9`).should('have.attr', `required-${field2}`);
@@ -113,7 +113,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/event-2.jsonld`,
+          `/examples/data/${path}/events/event-2.jsonld`,
         );
       cy.get(`${prefix}display-9 > div`)
         .children()
@@ -121,7 +121,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/event-3.jsonld`,
+          `/examples/data/${path}/events/event-3.jsonld`,
         );
 
       cy.get(`${prefix}display-10`).should('have.attr', `required-${field1}`);
@@ -130,7 +130,7 @@ describe('solid-display', function () {
       cy.get(`${prefix}display-10 > div > solid-display`).should(
         'have.attr',
         'data-src',
-        `/examples/data/${path}/event-3.jsonld`,
+        `/examples/data/${path}/events/event-3.jsonld`,
       );
     });
   });
@@ -152,12 +152,12 @@ describe('solid-display', function () {
     cy.get('#display-14 > div > solid-action').should(
       'have.attr',
       'src',
-      '/examples/data/list/user-1.jsonld',
+      '/examples/data/list/users/user-1.jsonld',
     );
     cy.get('#display-14 > div > solid-action > solid-link').should(
       'have.attr',
       'data-src',
-      '/examples/data/list/user-1.jsonld',
+      '/examples/data/list/users/user-1.jsonld',
     );
 
     cy.get('#display-15 > div > solid-action').should(
@@ -217,7 +217,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-2.jsonld`,
+          `/examples/data/${path}/skills/skill-2.jsonld`,
         );
       cy.get(`${prefix}display-18 > div`)
         .children()
@@ -225,7 +225,7 @@ describe('solid-display', function () {
         .should(
           'have.attr',
           'data-src',
-          `/examples/data/${path}/skill-3.jsonld`,
+          `/examples/data/${path}/skills/skill-3.jsonld`,
         );
       // User's name not displayed
       cy.get(`${prefix}display-18 > div`)

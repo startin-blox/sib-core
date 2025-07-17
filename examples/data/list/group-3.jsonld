@@ -2,7 +2,7 @@
   "name": "LDP_circle_members_1",
   "members": [
     {
-      "@id": "/examples/data/list/user-2.jsonld",
+      "@id": "/examples/data/list/users/user-2.jsonld",
       "@type": "foaf:user",
       "name": "Benoit Alessandroni",
       "email": "benoit@toto.com",
@@ -13,7 +13,7 @@
       }
     },
     {
-      "@id": "/examples/data/list/user-1.jsonld",
+      "@id": "/examples/data/list/users/user-1.jsonld",
       "@type": "foaf:user",
       "name": "Blaise Pascal",
       "email": "blaise@toto.com",
@@ -24,7 +24,7 @@
       }
     },
     {
-      "@id": "/examples/data/list/user-3.jsonld",
+      "@id": "/examples/data/list/users/user-3.jsonld",
       "@type": "foaf:user",
       "name": "Vitali Klitschko",
       "email": "blaise@toto.com",
@@ -35,7 +35,7 @@
       }
     },
     {
-      "@id": "/examples/data/list/user-4.jsonld",
+      "@id": "/examples/data/list/users/user-4.jsonld",
       "@type": "foaf:user",
       "name": "Eric Cantona",
       "email": "cantona@toto.com",
@@ -48,10 +48,10 @@
   ],
   "events": {
     "@type": "ldp:Container",
-    "@id": "/examples/data/list/events.jsonld",
+    "@id": "/examples/data/list/events/events.jsonld",
     "ldp:contains": [
       {
-        "@id": "/examples/data/list/event-1.jsonld",
+        "@id": "/examples/data/list/events/event-1.jsonld",
         "name": "Coliving",
         "date": "2020-07-09",
         "seats": 12,
@@ -60,7 +60,7 @@
         "permissions": []
       },
       {
-        "@id": "/examples/data/list/event-2.jsonld",
+        "@id": "/examples/data/list/events/event-2.jsonld",
         "name": "Workshop",
         "date": "2020-05-10",
         "seats": 2,
