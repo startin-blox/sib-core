@@ -76,7 +76,7 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
       'contain',
       'Rennes',
     );
-    cy.get('solid-display#federation solid-display > div').should('have.length', 3);
+    cy.get('solid-display#federation solid-display').should('have.length', 3);
     cy.get('solid-display#circles-user solid-display').should('have.length', 1);
   });
 
