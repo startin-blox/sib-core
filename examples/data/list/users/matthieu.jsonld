@@ -6,7 +6,7 @@
   "email": "matthieu.fesselier@gmail.com",
   "name": "Matthieu Fesselier",
   "profile": {
-    "@id": "/examples/data/list/users/profiles/matthieu.jsonld"
+    "@id": "/examples/data/list/profiles/matthieu.jsonld"
   },
   "@type": "foaf:user",
   "@context": [

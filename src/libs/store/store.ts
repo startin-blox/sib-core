@@ -291,7 +291,7 @@ export class Store {
     // So either we do not modify the key of the blank nodes to force them into the cache
     // Either we modify it by adding the parentId and we end up with
     // a lot of cached permissions objects associated with the container top resource (like xxxxx/circles/)
-    let customGetter = await this.initGetter();
+    const customGetter = await this.initGetter();
     await this.cache.linkUrlWithId(
       parentId,
       customGetter.getEmptyResource(
@@ -330,7 +330,7 @@ export class Store {
         if (serverSearch) key = appendServerSearchToIri(key, serverSearch);
       }
 
-      let customGetter = await this.initGetter();
+      const customGetter = await this.initGetter();
       const resourceProxy = new customGetter(
         key,
         resource,
