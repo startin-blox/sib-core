@@ -1,0 +1,14 @@
+{
+  "@id": "https://ldp-server2.test/profiles/admin/",
+  "slug": "admin",
+  "available": null,
+  "bio": "",
+  "city": "Nantes",
+  "phone": "",
+  "website": "",
+  "user": {
+    "@id": "https://ldp-server2.test/users/admin/"
+  },
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}
