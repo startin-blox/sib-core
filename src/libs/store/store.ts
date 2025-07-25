@@ -226,8 +226,7 @@ export class Store {
     };
 
     // Add custom headers if provided
-    if (headers)
-      requestHeaders = { ...requestHeaders, ...headers };
+    if (headers) requestHeaders = { ...requestHeaders, ...headers };
 
     /**
      * Fetch data with authentication if available (sib-auth)
