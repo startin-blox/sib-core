@@ -167,7 +167,6 @@ export class Store {
         parentId ? parentId : key,
         serverPagination,
         serverSearch,
-        headers,
       );
       this.loadingList.delete(key);
       document.dispatchEvent(
@@ -260,7 +259,6 @@ export class Store {
     parentId: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-    headers?: object,
   ) {
     // Flatten and compact the graph, which is an issue with large containers having child permissions serialized
     // Because
