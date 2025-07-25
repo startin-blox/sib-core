@@ -315,7 +315,6 @@ export class Store {
         parentId,
         serverPagination,
         serverSearch,
-        headers,
       ).getProxy();
       if (resourceProxy.isContainer())
         this.subscribeChildren(resourceProxy, id);
