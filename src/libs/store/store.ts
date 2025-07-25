@@ -93,6 +93,7 @@ export class Store {
     forceFetch = false,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
+    headers?: object,
   ): Promise<Resource | null> {
     let key = id;
     if (serverPagination) {
@@ -140,6 +141,7 @@ export class Store {
               parentId,
               serverPagination,
               serverSearch,
+              headers,
             ));
         } catch (error) {
           console.error(error);
@@ -165,6 +167,7 @@ export class Store {
         parentId ? parentId : key,
         serverPagination,
         serverSearch,
+        headers,
       );
       this.loadingList.delete(key);
       document.dispatchEvent(
@@ -208,6 +211,7 @@ export class Store {
     parentId = '',
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
+    headers?: object,
   ) {
     // debugger
     let iri = this._getAbsoluteIri(id, context, parentId);
@@ -215,11 +219,15 @@ export class Store {
       iri = appendServerPaginationToIri(iri, serverPagination);
     if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
-    const headers = {
+    let requestHeaders = {
       ...this.headers,
       'accept-language': this._getLanguage(),
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
+
+    // Add custom headers if provided
+    if (headers)
+      requestHeaders = { ...requestHeaders, ...headers };
 
     /**
      * Fetch data with authentication if available (sib-auth)
@@ -229,7 +237,7 @@ export class Store {
      */
     return this.fetchAuthn(iri, {
       method: 'GET',
-      headers: headers,
+      headers: requestHeaders,
       credentials: 'include',
     }).then(response => {
       if (!response.ok) return;
@@ -253,6 +261,7 @@ export class Store {
     parentId: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
+    headers?: object,
   ) {
     // Flatten and compact the graph, which is an issue with large containers having child permissions serialized
     // Because
@@ -307,6 +316,7 @@ export class Store {
         parentId,
         serverPagination,
         serverSearch,
+        headers,
       ).getProxy();
       if (resourceProxy.isContainer())
         this.subscribeChildren(resourceProxy, id);
