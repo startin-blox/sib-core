@@ -7,13 +7,13 @@
     <title>SIB test: local file</title>
     <script type="module">
       async function loadStore () {
-        const {getStore, baseContext} = await import('../../dist/store.js')
-        return {getStore, baseContext}
+        const {StoreService, baseContext} = await import('../../dist/store.js')
+        return {StoreService, baseContext}
       }
 
       async function loadStoreFromCore () {
-        const {getStore, baseContext} = await import('../../dist/index.js')
-        return {getStore, baseContext}
+        const {StoreService, baseContext} = await import('../../dist/index.js')
+        return {StoreService, baseContext}
       }
 
       Object.assign(window, {

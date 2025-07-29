@@ -41,7 +41,8 @@ import { Sib } from './libs/Sib.ts';
 import * as Helpers from './libs/helpers.ts';
 // Libs
 import SolidTemplateElement from './solid-template-element.ts';
-import { baseContext, getStore } from './store.ts';
+import { StoreService, baseContext } from './store.ts';
+
 import { widgetFactory } from './widgets/widget-factory.ts';
 
 // lit-html
@@ -85,7 +86,7 @@ export {
   TemplatesDependenciesMixins,
   Templates,
   // Libs
-  getStore,
+  StoreService,
   Sib,
   SolidTemplateElement,
   widgetFactory,

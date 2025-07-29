@@ -1,8 +1,7 @@
 import type { Resource } from '../../mixins/interfaces.ts';
 import { getRawContext, mergeContexts, normalizeContext } from '../helpers.ts';
-import { getStore } from './store.ts';
-
-const store = getStore();
+import { StoreService } from './storeService.ts';
+const store = StoreService.getInstance();
 
 export class CustomGetter {
   resource: any; // content of the requested resource
@@ -186,7 +185,13 @@ export class CustomGetter {
     forceFetch = false,
   ): Promise<Resource | null> {
     if (id.startsWith('_:b')) return await store.get(id + iriParent); // anonymous node = get from cache
-    return await store.getData(id, context, iriParent, undefined, forceFetch);
+    return (await store.getData(
+      id,
+      context,
+      iriParent,
+      undefined,
+      forceFetch,
+    )) as Resource;
   }
 
   /**

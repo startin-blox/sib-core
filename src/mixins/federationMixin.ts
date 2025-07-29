@@ -1,8 +1,9 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-import { getStoreAsync } from '../libs/store/store.ts';
 import type { Resource } from './interfaces.ts';
 
-const store = await getStoreAsync();
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
+// const store = await getStoreAsync();
 if (!store) throw new Error('Store is not available');
 
 const FederationMixin = {
@@ -69,15 +70,15 @@ const FederationMixin = {
     const isMissingOrEmpty =
       !container || (await container.getContainerList()) === null;
     if (isMissingOrEmpty) {
-      container = await store.getData(
+      container = (await store.getData(
         containerId,
         this.context,
         undefined,
         undefined,
         true,
-      );
+      )) as Resource;
     } else {
-      container = await store.getData(containerId, this.context);
+      container = (await store.getData(containerId, this.context)) as Resource;
     }
     return await container?.['listPredicate'];
   },

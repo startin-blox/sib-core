@@ -1,9 +1,9 @@
 import { Sib } from '../libs/Sib.ts';
-import { getStoreAsync } from '../libs/store/store.ts';
 
 import { html, render } from 'lit';
 
-const store = await getStoreAsync();
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 if (!store) throw new Error('Store is not available');
 
 export const SolidLang = {

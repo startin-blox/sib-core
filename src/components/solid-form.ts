@@ -1,7 +1,7 @@
 import { Sib } from '../libs/Sib.ts';
 import { setDeepProperty, transformArrayToContainer } from '../libs/helpers.ts';
-import { getStore } from '../libs/store/store.ts';
-const store = getStore();
+import { StoreService } from '../libs/store/storeService.ts';
+
 import type { WidgetInterface } from '../mixins/interfaces.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
@@ -12,6 +12,7 @@ import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { trackRenderAsync } from '../logger.ts';
 
+const store = StoreService.getInstance();
 export const SolidForm = {
   name: 'solid-form',
   use: [WidgetMixin, StoreMixin, NextMixin, ValidationMixin],

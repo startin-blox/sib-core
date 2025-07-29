@@ -9,8 +9,9 @@
   </head>
 
   <script type="module">
-    import { Store } from '../src/libs/store/store.ts';
     import { IndexedDBCacheManager } from '../src/libs/store/cache/indexed-db.ts';
+    import { StoreService } from '../src/libs/store/storeService.ts';
+    import { StoreType } from '../src/libs/store/IStore.ts';
 
     // let store;
     let indexedDBCacheManager = new IndexedDBCacheManager();
@@ -27,21 +28,32 @@
       );
     }
 
-    const store = new Store(storeOptions);
+    StoreService.init({
+      type: StoreType.LDP,
+      options: storeOptions
+    });
 
-    // Publish the store singleton and a ready promise
-    const globalScope = globalThis;
-    globalScope.__SIB_STORE_SINGLETON__ = store;
-    globalScope.__SIB_STORE_READY__ = Promise.resolve(store);
-
-    // Optional: dispatch event for others
-    window.dispatchEvent(new Event('sib-store-ready'));
+    console.log('StoreService initialized with IndexedDBCacheManager', window.sibStore);
   </script>
 
   <body>
     <h2>Simple display</h2>
     <solid-display
       data-src="/examples/data/list/users/users.jsonld"
+    ></solid-display>
+
+    <h2>Simple display of nested fields</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      nested-field="events"
+      fields="name"
+    ></solid-display>
+
+    <h2>Simple display of array of resources</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      array-field="members"
+      fields="name"
     ></solid-display>
 
     <style>

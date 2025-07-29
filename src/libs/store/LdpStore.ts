@@ -1,11 +1,11 @@
+import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
-
-import jsonld from 'jsonld';
+import type { IStore, StoreConfig } from './IStore.ts';
 
 import type { Resource } from '../../mixins/interfaces.ts';
-import type { ServerSearchOptions } from './server-search.ts';
-import { appendServerSearchToIri } from './server-search.ts';
+import type { ServerSearchOptions } from './options/server-search.ts';
+import { appendServerSearchToIri } from './options/server-search.ts';
 
 import {
   doesResourceContainList,
@@ -15,8 +15,8 @@ import {
 } from '../helpers.ts';
 import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import { InMemoryCacheManager } from './cache/in-memory.ts';
-import type { ServerPaginationOptions } from './server-pagination.ts';
-import { appendServerPaginationToIri } from './server-pagination.ts';
+import type { ServerPaginationOptions } from './options/server-pagination.ts';
+import { appendServerPaginationToIri } from './options/server-pagination.ts';
 
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
@@ -45,7 +45,7 @@ export const base_context = {
   control: 'acl:Control',
 };
 
-export class Store {
+export class LdpStore implements IStore<Resource> {
   cache: CacheManagerInterface;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
@@ -57,7 +57,6 @@ export class Store {
 
   constructor(private storeOptions: StoreOptions) {
     this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
-    console.log('[Store] Initializing store with cache', this.cache);
     this.subscriptionIndex = new Map();
     this.subscriptionVirtualContainersIndex = new Map();
     this.loadingList = new Set();
@@ -96,10 +95,10 @@ export class Store {
    */
   async getData(
     id: string,
-    context: object | [] = [],
-    parentId = '',
+    context?: object | [],
+    parentId?: string,
     localData?: object,
-    forceFetch = false,
+    forceFetch?: boolean,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
     headers?: object,
@@ -112,15 +111,6 @@ export class Store {
     if (serverSearch) {
       key = appendServerSearchToIri(key, serverSearch);
     }
-    console.log(
-      '[Store] getData',
-      {
-        id,
-        key,
-      },
-      this.cache,
-      await this.cache.has(key),
-    );
     if (
       localData == null &&
       (await this.cache.has(key)) &&
@@ -315,7 +305,7 @@ export class Store {
       const id = resource['@id'] || resource.id;
       let key = resource['@id'] || resource.id;
 
-      if (!key) console.log('No key or id for resource:', resource);
+      if (!key) console.warn('No key or id for resource:', resource);
       if (key === '/') key = parentId;
       if (key.startsWith('_:b')) key = key + parentId; // anonymous node -> store in cache with parentId not being a container resourceId
       // But how to handle the case where the parent is a container, we need its permissions in the cache !
@@ -353,7 +343,6 @@ export class Store {
         // if already cached, merge data
         // await this.cache.get(key)?.merge(resourceProxy);
         const resourceFromCache = await this.cache.get(key);
-
         if (resourceFromCache) {
           resourceFromCache.merge(resourceProxy);
         }
@@ -811,55 +800,25 @@ export class Store {
   };
 }
 
-// Use a symbol or private key to avoid name collision
-const STORE_KEY = '__SIB_STORE_SINGLETON__';
-const READY_KEY = '__SIB_STORE_READY__';
-const globalScope = globalThis as any;
-
-export function getStore(storeOptions?: StoreOptions): Store {
-  if (globalScope[STORE_KEY] instanceof Store) {
-    return globalScope[STORE_KEY];
+export function initLdpStore(_cfg?: StoreConfig): LdpStore {
+  if (window.sibStore) {
+    return window.sibStore;
   }
 
-  const sibAuth = document.querySelector('sib-auth');
-  const options: StoreOptions = storeOptions ?? {};
-
-  if (sibAuth) {
-    const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
-    options.session =
-      options.session ?? sibAuthDefined.then(() => (sibAuth as any).session);
-    options.fetchMethod =
-      options.fetchMethod ??
-      sibAuthDefined.then(() => (sibAuth as any).getFetch());
-  }
-
-  const store = new Store(options);
-  window.sibStore = globalScope[STORE_KEY] = store;
+  const store = new LdpStore(_cfg?.options || {});
+  window.sibStore = store;
   return store;
 }
 
-/**
- * Asynchronous getter — waits until the store is ready.
- */
-export async function getStoreAsync(): Promise<Store | undefined> {
-  const globalScope = globalThis as any;
-  if (globalScope[STORE_KEY]) {
-    return globalScope[STORE_KEY];
-  }
+export class LdpStoreAdapter {
+  private static store: IStore<any>;
 
-  if (window.sibStore instanceof Store) {
-    globalScope[STORE_KEY] = window.sibStore;
-    return globalScope[STORE_KEY];
-  }
+  private constructor() {}
 
-  // Fallback to global promise (in case HTML script is still initializing it)
-  if (globalScope[READY_KEY]) {
-    const store = await globalScope[READY_KEY];
-    window.sibStore = globalScope[STORE_KEY] = store;
-    return store;
+  public static getStoreInstance(_cfg?: StoreConfig): IStore<any> {
+    if (!LdpStoreAdapter.store) {
+      LdpStoreAdapter.store = initLdpStore(_cfg);
+    }
+    return LdpStoreAdapter.store;
   }
-
-  // Optional fallback: create default store (if really needed)
-  return getStore();
-  // throw new Error('[Store] Store not initialized and no global promise found.');
 }

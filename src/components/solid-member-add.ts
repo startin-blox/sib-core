@@ -1,16 +1,17 @@
 import { Sib } from '../libs/Sib.ts';
-import { base_context, getStore } from '../libs/store/store.ts';
-const store = getStore();
+import { StoreService } from '../libs/store/storeService.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { normalizeContext } from '../libs/helpers.ts';
+import { base_context } from '../libs/store/LdpStore.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 
+const store = StoreService.getInstance();
 export const SolidMemberAdd = {
   name: 'solid-member-add',
   use: [NextMixin, ValidationMixin, ContextMixin, StoreMixin],

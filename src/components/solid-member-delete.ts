@@ -1,15 +1,17 @@
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Sib } from '../libs/Sib.ts';
-import { base_context, getStore } from '../libs/store/store.ts';
-const store = getStore();
+
+import { StoreService } from '../libs/store/storeService.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { normalizeContext } from '../libs/helpers.ts';
+import { base_context } from '../libs/store/LdpStore.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
+const store = StoreService.getInstance();
 export const SolidMemberDelete = {
   name: 'solid-member-delete',
   use: [NextMixin, ValidationMixin, ContextMixin],

@@ -1,11 +1,12 @@
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
-import { base_context, getStore } from '../../libs/store/store.ts';
-const store = getStore();
+import { base_context } from '../../libs/store/LdpStore.ts';
 import { FederationMixin } from '../../mixins/federationMixin.ts';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { SorterMixin } from '../../mixins/sorterMixin.ts';
 import { StoreMixin } from '../../mixins/storeMixin.ts';
 
+import { StoreService } from '../../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 const RangeMixin = {
   name: 'range-mixin',
   use: [StoreMixin, SorterMixin, FederationMixin],

@@ -1,5 +1,5 @@
-import { getStore } from '../../libs/store/store.ts';
-const store = getStore();
+import { StoreService } from '../../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 import { StoreMixin } from '../../mixins/storeMixin.ts';
 
 import { html } from 'lit';

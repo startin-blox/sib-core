@@ -1,10 +1,8 @@
-import {
-  base_context as baseContext,
-  getStore,
-  getStoreAsync,
-} from './libs/store/store.ts';
+import { base_context as baseContext } from './libs/store/LdpStore.ts';
 
-const sibStore = await getStoreAsync();
+import { StoreService } from './libs/store/storeService.ts';
+
+const sibStore = StoreService.getInstance();
 if (!sibStore) throw new Error('Store is not available');
 
-export { sibStore, baseContext, getStore, getStoreAsync };
+export { StoreService, baseContext, sibStore };

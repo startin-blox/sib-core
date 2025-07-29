@@ -71,7 +71,6 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
   private openDb(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open('CacheManagerDB', 1);
-      console.log('[CacheManager] Opening IndexedDB', request);
 
       request.onupgradeneeded = () => {
         const db = request.result;

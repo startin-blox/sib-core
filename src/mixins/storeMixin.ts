@@ -1,15 +1,16 @@
-import { formatAttributesToServerPaginationOptions } from '../libs/store/server-pagination.ts';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/options/server-pagination.ts';
 import {
   formatAttributesToServerSearchOptions,
   mergeServerSearchOptions,
-} from '../libs/store/server-search.ts';
-import { getStoreAsync } from '../libs/store/store.ts';
+} from '../libs/store/options/server-search.ts';
 import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
 import type { Resource } from './interfaces.ts';
 import { ServerPaginationMixin } from './serverPaginationMixin.ts';
 
-const store = await getStoreAsync();
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
+
 if (!store) throw new Error('Store is not available');
 
 const StoreMixin = {
