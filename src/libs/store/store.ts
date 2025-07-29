@@ -102,6 +102,7 @@ export class Store {
     forceFetch = false,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
+    headers?: object,
   ): Promise<Resource | null> {
     let key = id;
     if (serverPagination) {
@@ -157,6 +158,7 @@ export class Store {
               parentId,
               serverPagination,
               serverSearch,
+              headers,
             ));
         } catch (error) {
           console.error(error);
@@ -238,17 +240,21 @@ export class Store {
     parentId = '',
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
+    headers?: object,
   ) {
     let iri = this._getAbsoluteIri(id, context, parentId);
     if (serverPagination)
       iri = appendServerPaginationToIri(iri, serverPagination);
     if (serverSearch) iri = appendServerSearchToIri(iri, serverSearch);
 
-    const headers = {
+    let requestHeaders = {
       ...this.headers,
       'accept-language': this._getLanguage(),
       // 'Prefer' : 'return=representation; max-triple-count="100"' // Commenting out for now as it raises CORS errors
     };
+
+    // Add custom headers if provided
+    if (headers) requestHeaders = { ...requestHeaders, ...headers };
 
     /**
      * Fetch data with authentication if available (sib-auth)
@@ -258,7 +264,7 @@ export class Store {
      */
     return this.fetchAuthn(iri, {
       method: 'GET',
-      headers: headers,
+      headers: requestHeaders,
       credentials: 'include',
     }).then(response => {
       if (!response.ok) return;
