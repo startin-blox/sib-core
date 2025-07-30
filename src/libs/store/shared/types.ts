@@ -71,7 +71,11 @@ export interface IStore<T> {
   session: Promise<any> | undefined;
   headers?: object;
 
-  getData(...GetDataArgs): Promise<Resource | null> | Promise<Container<T>>;
+  getData(
+    ...GetDataArgs
+  ):
+    | Promise<Resource | null>
+    | Promise<Container<T>>
   get(
     id: string,
     serverPagination?: ServerPaginationOptions,

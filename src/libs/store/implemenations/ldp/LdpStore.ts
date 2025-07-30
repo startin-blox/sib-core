@@ -2,6 +2,7 @@ import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
 import type { IStore, Resource } from '../../shared/types.ts';
+
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import { appendServerSearchToIri } from '../../shared/options/server-search.ts';
 
@@ -489,20 +490,19 @@ export class LdpStore implements IStore<Resource> {
     ]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
     if (!expandedId) return null;
-    return this._fetch(method, resource, id, bypassLoadingList).then(
-      async response => {
-        if (response.ok) {
-          if (!skipFetch) {
-            if (method !== '_LOCAL') {
-              await this.clearCache(expandedId);
-            } // clear cache
+    return this._fetch(method, resource, id).then(async response => {
+      if (response.ok) {
+        if (!skipFetch) {
+          if (method !== '_LOCAL') {
+            await this.clearCache(expandedId);
             // re-fetch data
             await this.getData(expandedId, resource['@context']);
-            const nestedResources = await this.getNestedResources(resource, id);
-            const resourcesToRefresh =
-              this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-            const resourcesToNotify =
-              this.subscriptionIndex.get(expandedId) || [];
+          }
+          const nestedResources = await this.getNestedResources(resource, id);
+          const resourcesToRefresh =
+            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+          const resourcesToNotify =
+            this.subscriptionIndex.get(expandedId) || [];
 
           await this.refreshResources([
             ...nestedResources,
