@@ -1,24 +1,24 @@
 import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
-import type { IStore, StoreConfig } from './IStore.ts';
+import type { IStore } from '../../shared/types.ts';
 
-import type { Resource } from '../../mixins/interfaces.ts';
-import type { ServerSearchOptions } from './options/server-search.ts';
-import { appendServerSearchToIri } from './options/server-search.ts';
+import type { Resource } from '../../../../mixins/interfaces.ts';
+import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
+import { appendServerSearchToIri } from '../../shared/options/server-search.ts';
 
 import {
   doesResourceContainList,
   getRawContext,
   mergeContexts,
   normalizeContext,
-} from '../helpers.ts';
-import type { CacheManagerInterface } from './cache/cache-manager.ts';
-import { InMemoryCacheManager } from './cache/in-memory.ts';
-import type { ServerPaginationOptions } from './options/server-pagination.ts';
-import { appendServerPaginationToIri } from './options/server-pagination.ts';
-import type { SearchProvider } from './search/SearchProvider.ts';
-import { SolidIndexingSearchProvider } from './search/SolidIndexingSearchProvider.ts';
+} from '../../../helpers.ts';
+import type { SearchProvider } from '../../search/SearchProvider.ts';
+import { SolidIndexingSearchProvider } from '../../search/SolidIndexingSearchProvider.ts';
+import type { CacheManagerInterface } from '../../shared/cache/cache-manager.ts';
+import { InMemoryCacheManager } from '../../shared/cache/in-memory.ts';
+import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
+import { appendServerPaginationToIri } from '../../shared/options/server-pagination.ts';
 
 // sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
 export const base_context = {
@@ -902,28 +902,5 @@ export class LdpStore implements IStore<Resource> {
     options: ConjunctionQueryOptions,
   ): Promise<any[]> {
     return this.searchProvider.queryConjunction(options);
-  }
-}
-
-export function initLdpStore(_cfg?: StoreConfig): LdpStore {
-  if (window.sibStore) {
-    return window.sibStore;
-  }
-
-  const store = new LdpStore(_cfg?.options || {});
-  window.sibStore = store;
-  return store;
-}
-
-export class LdpStoreAdapter {
-  private static store: IStore<any>;
-
-  private constructor() {}
-
-  public static getStoreInstance(_cfg?: StoreConfig): IStore<any> {
-    if (!LdpStoreAdapter.store) {
-      LdpStoreAdapter.store = initLdpStore(_cfg);
-    }
-    return LdpStoreAdapter.store;
   }
 }

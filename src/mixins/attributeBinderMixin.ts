@@ -1,4 +1,4 @@
-import { base_context } from '../libs/store/LdpStore.ts';
+import { base_context } from '../libs/store/implemenations/ldp/LdpStore.ts';
 import type { Resource } from './interfaces.ts';
 
 import { StoreService } from '../libs/store/storeService.ts';

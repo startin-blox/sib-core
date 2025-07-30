@@ -1,16 +1,17 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { IStore, StoreConfig } from '../IStore.ts';
-import type { CacheManagerInterface } from '../cache/cache-manager.ts';
-import { InMemoryCacheManager } from '../cache/in-memory.ts';
-import type { ServerPaginationOptions } from '../options/server-pagination.ts';
-import type { ServerSearchOptions } from '../options/server-search.ts';
-import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
-import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
-import type { Container, Resource, Source } from './interfaces.ts';
+import type { CacheManagerInterface } from '../../shared/cache/cache-manager.ts';
+import { InMemoryCacheManager } from '../../shared/cache/in-memory.ts';
+import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
+import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
+import type { IStore, StoreConfig } from '../../shared/types.ts';
+import type { Container, Resource } from '../../shared/types.ts';
 import {
   initLocalDataSourceContainer,
   mapSourceToDestination,
-} from './utils.ts';
+} from '../../shared/utils.ts';
+import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
+import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
+import type { Source } from './interfaces.ts';
 
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;

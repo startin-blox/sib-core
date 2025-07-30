@@ -1,12 +1,10 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { Resource } from '../../mixins/interfaces.ts';
-import type { IndexQueryOptions } from './LdpStore.ts';
-import type { CacheManagerInterface } from './cache/cache-manager.ts';
+import type { IndexQueryOptions } from '../implemenations/ldp/LdpStore.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
-} from './federated-catalogue/FederatedCatalogueAPIWrapper.ts';
-import type { Container } from './federated-catalogue/interfaces.ts';
+} from '../implemenations/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
+import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';
 
@@ -17,6 +15,31 @@ export interface ConjunctionQueryOptions {
   filterValues: Record<string, any>;
   useConjunction: boolean;
   exactMatchMapping?: Record<string, boolean>;
+}
+
+type Permission = 'add' | 'delete' | 'change' | 'control' | 'view' | string;
+type Context = Record<string, string | { '@id': string }>;
+type DateTime = string;
+import type { Resource as RessourceLDP } from '../../../mixins/interfaces.ts';
+
+export interface Resource extends LimitedResource {
+  [key: string]: any;
+}
+
+export interface LimitedResource {
+  '@id': string;
+  '@type'?: string | string[] | Promise<string | string[]>;
+  _originalResource?: Resource;
+  properties?: string[] | Promise<string[]>;
+  permissions?: Permission[];
+  clientContext?: Context | Promise<Context>;
+  serverContext?: Context | Promise<Context>;
+  creation_date?: DateTime;
+  update_date?: DateTime;
+}
+
+export interface Container<T> extends Resource {
+  'ldp:contains': T[];
 }
 
 type ListArgs = { targetType: string };
@@ -40,12 +63,17 @@ export interface IStore<T> {
   session: Promise<any> | undefined;
   headers?: object;
 
-  getData(...GetDataArgs): Promise<Resource | null> | Promise<Container<T>>;
+  getData(
+    ...GetDataArgs
+  ):
+    | Promise<Resource | null>
+    | Promise<Container<T>>
+    | Promise<RessourceLDP | null>;
   get(
     id: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-  ): Promise<Resource | null>;
+  ): Promise<Resource | null> | Promise<RessourceLDP | null>;
   post(
     resource: object,
     id: string,

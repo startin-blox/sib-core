@@ -7,7 +7,7 @@ import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { normalizeContext } from '../libs/helpers.ts';
-import { base_context } from '../libs/store/LdpStore.ts';
+import { base_context } from '../libs/store/implemenations/ldp/LdpStore.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 

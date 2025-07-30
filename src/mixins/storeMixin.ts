@@ -1,8 +1,8 @@
-import { formatAttributesToServerPaginationOptions } from '../libs/store/options/server-pagination.ts';
+import { formatAttributesToServerPaginationOptions } from '../libs/store/shared/options/server-pagination.ts';
 import {
   formatAttributesToServerSearchOptions,
   mergeServerSearchOptions,
-} from '../libs/store/options/server-search.ts';
+} from '../libs/store/shared/options/server-search.ts';
 import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
 import type { Resource } from './interfaces.ts';
@@ -90,11 +90,7 @@ const StoreMixin = {
 
     if (id) {
       // 4) Await the async operation. Only _then_ do we assign into _resource.
-      const fetched: Resource | null = await store.get(
-        id,
-        serverPagination,
-        serverSearch,
-      );
+      const fetched = await store.get(id, serverPagination, serverSearch);
       this._resource = fetched;
       return this._resource;
     }

@@ -1,5 +1,5 @@
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
-import { base_context } from '../../libs/store/LdpStore.ts';
+import { base_context } from '../../libs/store/implemenations/ldp/LdpStore.ts';
 import { FederationMixin } from '../../mixins/federationMixin.ts';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { SorterMixin } from '../../mixins/sorterMixin.ts';

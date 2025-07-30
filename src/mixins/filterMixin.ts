@@ -1,12 +1,12 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
-import { hasQueryIndex, hasSetLocalData } from '../libs/store/IStore.ts';
-import type { ServerSearchOptions } from '../libs/store/options/server-search.ts';
+import { hasQueryIndex, hasSetLocalData } from '../libs/store/shared/types.ts';
+import type { ServerSearchOptions } from '../libs/store/shared/options/server-search.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
-import type { IndexQueryOptions } from '../libs/store/LdpStore.ts';
+import type { IndexQueryOptions } from '../libs/store/implemenations/ldp/LdpStore.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports

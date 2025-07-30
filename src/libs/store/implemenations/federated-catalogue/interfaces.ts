@@ -68,30 +68,6 @@ export interface Source {
   proof?: { [key: string]: any };
 }
 
-export interface Container<T> extends Resource {
-  'ldp:contains': T[];
-}
-
-type Permission = 'add' | 'delete' | 'change' | 'control' | 'view' | string;
-type Context = Record<string, string | { '@id': string }>;
-type DateTime = string;
-
-export interface LimitedResource {
-  '@id': string;
-  '@type'?: string | string[] | Promise<string | string[]>;
-  _originalResource?: Resource;
-  properties?: string[] | Promise<string[]>;
-  permissions?: Permission[];
-  clientContext?: Context | Promise<Context>;
-  serverContext?: Context | Promise<Context>;
-  creation_date?: DateTime;
-  update_date?: DateTime;
-}
-
-export interface Resource extends LimitedResource {
-  [key: string]: any;
-}
-
 export interface Destination {
   '@id': string;
   creation_date: string;

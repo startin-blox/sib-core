@@ -1,4 +1,8 @@
-import type { DcatService, Destination, Source } from './interfaces.ts';
+import type {
+  DcatService,
+  Destination,
+  Source,
+} from '../implemenations/federated-catalogue/interfaces.ts';
 
 /**
  * 2. Revised mapping function:
