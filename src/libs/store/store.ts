@@ -18,6 +18,24 @@ import { CacheManager } from './cache-manager.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
 
+// Semantizer imports
+import {
+  EntryStreamTransformerDefaultImpl,
+  indexFactory,
+} from '@semantizer/mixin-index';
+import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
+import type {
+  DatasetSemantizer,
+  LoggingEntry,
+  NamedNode,
+} from '@semantizer/types';
+import {
+  IndexQueryingStrategyShaclUsingFinalIndex,
+  IndexStrategyFinalShapeDefaultImpl,
+} from '@semantizer/util-index-querying-strategy-shacl-final';
+import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
+import N3 from 'n3';
+
 // sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
@@ -46,6 +64,18 @@ export const base_context = {
   delete: 'acl:Delete',
   control: 'acl:Control',
 };
+
+export interface IndexQueryOptions {
+  dataSrcProfile?: string;
+  dataSrcIndex: string;
+  dataRdfType: string;
+  filterValues: Record<string, any>;
+}
+
+export interface IndexQueryResult {
+  '@id': string;
+  '@type': string;
+}
 
 export class Store {
   cache: CacheManager;
@@ -773,6 +803,242 @@ export class Store {
     };
     return handler;
   };
+
+  /**
+   * Query an index using semantizer with dynamically generated shapes
+   * @param options - Index query options
+   * @returns Promise<IndexQueryResult[]> - Array of matching resources
+   */
+  async queryIndex(options: IndexQueryOptions): Promise<IndexQueryResult[]> {
+    let indexDataset: DatasetSemantizer | undefined;
+
+    // 0. Load the instance profile if defined
+    if (options.dataSrcProfile) {
+      console.log('Load application profile', options.dataSrcProfile);
+      const appIdProfile = await SEMANTIZER.load(
+        options.dataSrcProfile,
+        solidWebIdProfileFactory,
+      );
+
+      const appId = appIdProfile.loadExtendedProfile();
+      if (!appId) {
+        throw new Error('The WebId was not found.');
+      }
+
+      if (!indexDataset) {
+        throw new Error('The meta-meta index was not found.');
+      }
+    } else if (options.dataSrcIndex) {
+      // 1. Load the index directly
+      indexDataset = await SEMANTIZER.load(options.dataSrcIndex);
+    }
+
+    const filterFields = Object.entries(options.filterValues);
+    const firstField = filterFields[0];
+    const firstFieldValue = firstField[1] as { value: string };
+
+    let path = firstField[0];
+    if (path.includes('.')) {
+      // Split the path on each dots
+      const fieldPath: string[] = path.split('.');
+      // Get last path
+      path = fieldPath.pop() as string;
+    }
+
+    const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
+    const searchPattern = firstFieldValue.value as string;
+
+    // Generate shapes dynamically
+    const { targetShape, subIndexShape, finalShape } = this.generateShapes(
+      options.dataRdfType,
+      fieldName,
+      searchPattern
+    );
+
+    const parser = new N3.Parser({ format: 'text/turtle' });
+    const targetShapeGraph = SEMANTIZER.build();
+    targetShapeGraph.addAll(parser.parse(targetShape));
+
+    const finalIndexShapeGraph = SEMANTIZER.build();
+    finalIndexShapeGraph.addAll(parser.parse(finalShape));
+
+    const subIndexShapeGraph = SEMANTIZER.build();
+    subIndexShapeGraph.addAll(parser.parse(subIndexShape));
+
+    const shaclValidator = new ValidatorImpl();
+    const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
+
+    const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(
+      finalIndexShapeGraph,
+      subIndexShapeGraph,
+      shaclValidator,
+      entryTransformer,
+    );
+    const shaclStrategy = new IndexQueryingStrategyShaclUsingFinalIndex(
+      targetShapeGraph,
+      finalIndexStrategy,
+      shaclValidator,
+      entryTransformer,
+    );
+
+    const index = await SEMANTIZER.load(options.dataSrcIndex, indexFactory);
+
+    return new Promise((resolve) => {
+      const results: IndexQueryResult[] = [];
+
+      const resultStream = index.mixins.index.query(shaclStrategy);
+      resultStream.on('data', (result: NamedNode) => {
+        if (result.value) {
+          results.push({
+            '@id': result.value,
+            '@type': options.dataRdfType,
+          });
+        }
+      });
+
+      resultStream.on('end', () => {
+        resolve(results);
+      });
+
+      resultStream.on('error', (error) => {
+        console.error('Error in index query:', error);
+        resolve([]);
+      });
+    });
+  }
+
+  /**
+   * Generate SHACL shapes dynamically based on query parameters
+   * @param rdfType - The RDF type to filter on
+   * @param propertyName - The property name to search
+   * @param pattern - The search pattern
+   * @returns Object containing target, subindex, and final shapes
+   */
+  private generateShapes(rdfType: string, propertyName: string, pattern: string) {
+    const targetShape = `
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix idx: <https://ns.inria.fr/idx/terms#>.
+@prefix sib: <https://cdn.startinblox.com/owl#>.
+@prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+idx:IndexEntry
+a rdfs:Class, sh:NodeShape ;
+sh:closed false;
+sh:property [
+  sh:path idx:hasTarget;
+    sh:minCount 1;
+];
+sh:property [
+    sh:path idx:hasShape ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:property [
+      sh:path sh:property ;
+      sh:minCount 1;
+        sh:qualifiedValueShape
+            [
+                sh:and (
+                    [ sh:path sh:path ; sh:hasValue rdf:type ]
+                    [ sh:path sh:hasValue; sh:hasValue ${rdfType} ]
+                )
+            ],
+            [
+                sh:and (
+                    [ sh:path sh:path; sh:hasValue ${propertyName} ]
+                    [ sh:path sh:pattern; sh:hasValue "${pattern}.*"  ]
+                )
+            ];
+  sh:qualifiedMinCount 1 ;
+    ];
+].
+`;
+
+    const subIndexShape = `
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix idx: <https://ns.inria.fr/idx/terms#>.
+@prefix sib: <https://cdn.startinblox.com/owl#>.
+@prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+idx:IndexEntry
+a rdfs:Class, sh:NodeShape ;
+#sh:closed false;
+sh:property [
+    sh:path idx:hasSubIndex;
+    sh:minCount 1;
+];
+sh:property [
+    sh:path idx:hasShape ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:property [
+        sh:path sh:property ;
+        sh:minCount 1;
+        sh:qualifiedValueShape
+            [
+                sh:and (
+                    [ sh:path sh:path ; sh:hasValue rdf:type ]
+                    [ sh:path sh:hasValue; sh:hasValue ${rdfType} ]
+                )
+            ],
+            [
+                sh:and (
+                    [ sh:path sh:path ; sh:hasValue ${propertyName} ]
+                    [ sh:path sh:pattern ; sh:maxCount 0 ]
+                )
+            ];
+        sh:qualifiedMinCount 1;
+    ]
+].`;
+
+    const finalShape = `
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix idx: <https://ns.inria.fr/idx/terms#>.
+@prefix sib: <https://cdn.startinblox.com/owl#>.
+@prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+idx:IndexEntry
+a rdfs:Class, sh:NodeShape ;
+sh:closed false;
+sh:property [
+    sh:path idx:hasSubIndex;
+    sh:minCount 1;
+];
+sh:property [
+    sh:path idx:hasShape ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:property [
+        sh:path sh:property ;
+        sh:minCount 1;
+        sh:qualifiedValueShape
+            [
+                sh:and (
+                    [ sh:path sh:path ; sh:hasValue rdf:type ]
+                    [ sh:path sh:hasValue; sh:hasValue ${rdfType} ]
+                )
+            ],
+            [
+                sh:and (
+                    [ sh:path sh:path; sh:hasValue ${propertyName} ]
+                    [ sh:path sh:pattern; sh:hasValue "${pattern}.*"  ]
+                )
+            ];
+        sh:qualifiedMinCount 1 ;
+    ];
+].
+`;
+
+    return { targetShape, subIndexShape, finalShape };
+  }
 }
 
 let store: Store;

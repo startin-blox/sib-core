@@ -2,10 +2,18 @@
 import { Readable } from 'stream';
 import datasetFactory from '@rdfjs/dataset';
 import ParserJsonld from '@rdfjs/parser-jsonld';
-import type { DatasetCoreRdfjs, Loader, Quad } from '@semantizer/types';
+import type { DatasetCoreRdfjs, Loader, LoggingComponent, Quad } from '@semantizer/types';
 import { store } from '../store.ts';
+import { LoaderBase } from "@semantizer/util-loader-base";
 
-export default class IndexLoader implements Loader {
+export default class IndexLoader extends LoaderBase implements Loader {
+  override getLoggingComponent(): LoggingComponent {
+    return {
+      type: 'PACKAGE',
+      name: 'loader-quad-stream-core',
+    };
+  }
+
   public async load(uri: string): Promise<DatasetCoreRdfjs<Quad, Quad>> {
     const headers = store.headers;
     const response = await store.fetchAuthn(uri, {

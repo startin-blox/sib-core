@@ -1,10 +1,19 @@
 // biome-ignore lint: Readable is coming from a polyfill
 import { Readable } from 'stream';
 import ParserJsonld from '@rdfjs/parser-jsonld';
-import type { Fetch, LoaderQuadStream, Quad, Stream } from '@semantizer/types';
+import type { Fetch, LoaderQuadStream, LoggingComponent, Quad, Stream } from '@semantizer/types';
 import { store } from '../store.ts';
+import { LoaderBase } from '@semantizer/util-loader-base';
 
-export default class LoaderQuadStreamCore implements LoaderQuadStream {
+
+export default class LoaderQuadStreamCore extends LoaderBase implements LoaderQuadStream {
+  public getLoggingComponent(): LoggingComponent {
+    return {
+      type: 'PACKAGE',
+      name: 'loader-quad-stream-core',
+    };
+  }
+
   public async load(uri: string, _otherFetch?: Fetch): Promise<Stream<Quad>> {
     const headers = store.headers;
     console.log(`Loading·specific·URI·${uri}`);

@@ -3,6 +3,7 @@ import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/server-search.ts';
 import { store } from '../libs/store/store.ts';
+import type { IndexQueryOptions } from '../libs/store/store.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
@@ -20,7 +21,6 @@ import {
   IndexQueryingStrategyShaclUsingFinalIndex,
   IndexStrategyFinalShapeDefaultImpl,
 } from '@semantizer/util-index-querying-strategy-shacl-final';
-
 import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
 import N3 from 'n3';
 
@@ -39,8 +39,8 @@ interface FilterValue {
   value: string | string[];
 }
 
-SEMANTIZER.enableLogging();
-SEMANTIZER.registerEntryCallback((logEntry: LoggingEntry) =>
+SEMANTIZER.getConfiguration().enableLogging();
+SEMANTIZER.getConfiguration().registerLoggingEntryCallback((logEntry: LoggingEntry) =>
   console.log(logEntry.level, logEntry.message),
 );
 
@@ -68,18 +68,6 @@ const FilterMixin = {
       callback() {
         this.filteredOn = FilterMode.Index;
       },
-    },
-    dataTargetShape: {
-      type: String,
-      default: null,
-    },
-    dataFinalShape: {
-      type: String,
-      default: null,
-    },
-    dataSubindexShape: {
-      type: String,
-      default: null,
     },
     filteredBy: {
       type: String,
@@ -161,149 +149,31 @@ const FilterMixin = {
     const filterValues = submitEvent.target.parentElement.component.value;
     this.triggerIndexSearch(filterValues);
   },
-  async triggerIndexSearch(filterValues: []) {
-    let indexDataset: DatasetSemantizer | undefined;
+  async triggerIndexSearch(filterValues: Record<string, any>) {
+    const queryOptions: IndexQueryOptions = {
+      dataSrcProfile: this.dataSrcProfile,
+      dataSrcIndex: this.dataSrcIndex,
+      dataRdfType: this.dataRdfType,
+      filterValues,
+    };
 
-    // 0. Load the instance profile if defined
-    if (this.dataSrcProfile) {
-      console.log('Load application profile', this.dataSrcProfile);
-      // // 1. Load the WebId of the instance
-      const appIdProfile = await SEMANTIZER.load(
-        this.dataSrcProfile,
-        solidWebIdProfileFactory,
-      );
-
-      // await appIdProfile.loadExtendedProfile();
-      const appId = appIdProfile.loadExtendedProfile();
-      if (!appId) {
-        throw new Error('The WebId was not found.');
+    try {
+      const results = await store.queryIndex(queryOptions);
+      
+      // Update the local container with results
+      this.localResources['ldp:contains'] = results;
+      store.setLocalData(this.localResources, this.dataSrc, true);
+      this.populate();
+      
+      if (this.loader) {
+        this.loader.toggleAttribute('hidden', true);
       }
-      // appIdProfile.
-      // // 2. Get the public type index
-      // const publicTypeIndex = appId.getPublicTypeIndex();
-      // if (!publicTypeIndex) {
-      //   throw new Error('The TypeIndex was not found.');
-      // }
-
-      // await publicTypeIndex.load();
-
-      // // 3. Find the index from the TypeIndex
-      // indexDataset = publicTypeIndex.getRegisteredInstanceForClass(
-      //   IndexType.Index,
-      // ) as DatasetSemantizer;
-
-      if (!indexDataset) {
-        throw new Error('The meta-meta index was not found.');
+    } catch (error) {
+      console.error('Error querying index:', error);
+      if (this.loader) {
+        this.loader.toggleAttribute('hidden', true);
       }
-    } else if (this.dataSrcIndex) {
-      // 1. Load the index directly
-      indexDataset = await SEMANTIZER.load(this.dataSrcIndex);
     }
-
-    const finalShapeTemplate = await fetch(this.dataFinalShape);
-    let finalShapeTurtle = await finalShapeTemplate.text();
-
-    const subindexShapeTemplate = await fetch(this.dataSubindexShape);
-    let subIndexShapeTurtle = await subindexShapeTemplate.text();
-
-    const targetShapeTemplate = await fetch(this.dataTargetShape);
-    let targetShapeTurtle = await targetShapeTemplate.text();
-
-    const filterFields = Object.entries(filterValues);
-    const firstField = filterFields[0];
-    const firstFieldValue = firstField[1] as FilterValue;
-
-    let path = firstField[0];
-    if (path.includes('.')) {
-      // Split the path on each dots
-      const fieldPath: string[] = path.split('.');
-      // Get last path
-      path = fieldPath.pop() as string;
-    }
-
-    const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
-    // Replace the placeholder in the subindex shape
-    subIndexShapeTurtle = subIndexShapeTurtle.replace(
-      '__PLACEHOLDER_RDFTYPE__',
-      this.dataRdfType,
-    );
-    subIndexShapeTurtle = subIndexShapeTurtle.replace(
-      '__PLACEHOLDER_PROPERTYNAME__',
-      fieldName,
-    );
-
-    // Replace the placeholder in the final shape
-    finalShapeTurtle = finalShapeTurtle.replace(
-      '__PLACEHOLDER_RDFTYPE__',
-      this.dataRdfType,
-    );
-    finalShapeTurtle = finalShapeTurtle.replace(
-      '__PLACEHOLDER_PROPERTYNAME__',
-      fieldName,
-    );
-    finalShapeTurtle = finalShapeTurtle.replace(
-      '__PATTERN_PLACEHOLDER__',
-      firstFieldValue.value as string,
-    );
-
-    // Replace the placeholder in the target shape
-    targetShapeTurtle = targetShapeTurtle.replace(
-      '__PLACEHOLDER_RDFTYPE__',
-      this.dataRdfType,
-    );
-    targetShapeTurtle = targetShapeTurtle.replace(
-      '__PLACEHOLDER_PROPERTYNAME__',
-      fieldName,
-    );
-    targetShapeTurtle = targetShapeTurtle.replace(
-      '__PATTERN_PLACEHOLDER__',
-      firstFieldValue.value as string,
-    );
-
-    const parser = new N3.Parser({ format: 'text/turtle' });
-    const targetShape = SEMANTIZER.build();
-    targetShape.addAll(parser.parse(targetShapeTurtle));
-
-    const finalIndexShape = SEMANTIZER.build();
-    finalIndexShape.addAll(parser.parse(finalShapeTurtle));
-
-    const subIndexShape = SEMANTIZER.build();
-    subIndexShape.addAll(parser.parse(subIndexShapeTurtle));
-
-    const shaclValidator = new ValidatorImpl();
-    const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
-
-    const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(
-      finalIndexShape,
-      subIndexShape,
-      shaclValidator,
-      entryTransformer,
-    );
-    const shaclStrategy = new IndexQueryingStrategyShaclUsingFinalIndex(
-      targetShape,
-      finalIndexStrategy,
-      shaclValidator,
-      entryTransformer,
-    );
-
-    const index = await SEMANTIZER.load(this.dataSrcIndex, indexFactory);
-
-    const resultStream = index.mixins.index.query(shaclStrategy);
-    resultStream.on('data', (result: NamedNode) => {
-      this.updateContainer(result);
-    });
-  },
-  updateContainer(resource: NamedNode) {
-    console.log('Update result container', resource.value, this.localResources);
-    if (resource.value) {
-      this.localResources['ldp:contains'].push({
-        '@id': resource.value || '',
-        '@type': this.dataRdfType,
-      });
-    }
-
-    store.setLocalData(this.localResources, this.dataSrc, true);
-    this.populate();
   },
   get filters(): SearchQuery {
     return this.searchForm?.component?.value ?? {};
