@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/130.jsonld",
+  "creation_date": "2025-03-11T10:30:00Z",
+  "update_date": "2025-04-08T17:30:00Z",
+  "tc:title": "Cluj-Napoca Tailors' Bastion",
+  "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+  "website": "https://www.3d-heritage.eu/en/home/1/1ad55ce6-66a9-40b6-b022-ad1a77db1020/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/130/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/230/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Middle Ages",
+  "country": "Romania",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/70/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "PLY",
+  "file_size": "9 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "PNG",
+  "texture_resolution": "2048x2048",
+  "polygons": 91322,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/70/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "VRT"
+}

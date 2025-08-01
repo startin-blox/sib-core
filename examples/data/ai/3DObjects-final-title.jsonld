@@ -1,0 +1,32 @@
+{
+	"@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+	"@graph": [
+		{
+			"@id": "https://api.tems-dev2.startinblox.com/indexes/objects/trial8/title/gra",
+			"@type": "idx:Index"
+		},
+		{
+			"@id": "https://api.tems-dev2.startinblox.com/indexes/objects/trial8/title/gra#target",
+			"@type": "sh:NodeShape",
+			"sh:closed": "false",
+			"sh:property": [
+				{
+					"sh:path": "rdf:type",
+					"sh:hasValue": {
+						"@id": "tems:3DObject"
+					}
+				},
+				{
+					"sh:path": "sib:title",
+					"sh:pattern": "gra.*"
+				}
+			]
+		},
+		{
+			"@id": "https://api.tems-dev2.startinblox.com/indexes/objects/trial8/title/gra#0",
+			"@type": "idx:IndexEntry",
+			"idx:hasShape": "https://api.tems-dev2.startinblox.com/indexes/objects/trial8/title/gra#target",
+			"idx:hasTarget": "https://api.tems-dev2.startinblox.com/objects/trial8/9/"
+		}
+	]
+}

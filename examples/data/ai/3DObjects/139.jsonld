@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/139.jsonld",
+  "creation_date": "2025-03-14T10:39:00Z",
+  "update_date": "2025-04-08T17:39:00Z",
+  "tc:title": "Bia\u0142ystok Branicki Palace",
+  "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+  "website": "https://www.3d-heritage.eu/en/home/1/0538bcb6-0f6b-4ce5-a89d-22954f598cb5/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/139/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/239/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Long Nineteenth Century",
+  "country": "Romania",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/79/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "glTF",
+  "file_size": "37 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "PNG",
+  "texture_resolution": "2048x2048",
+  "polygons": 7378,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/79/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "Arctur"
+}

@@ -1,0 +1,56 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:country",
+          "sh:value": "Croatia"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/100.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/102.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/108.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/128.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/149.jsonld"
+    }
+  ]
+}

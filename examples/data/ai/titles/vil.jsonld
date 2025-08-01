@@ -1,0 +1,44 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/vil.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:title",
+          "sh:pattern": "vil.*"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/113.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/118.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/vil.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/147.jsonld"
+    }
+  ]
+}

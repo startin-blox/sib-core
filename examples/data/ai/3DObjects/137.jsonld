@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/137.jsonld",
+  "creation_date": "2025-03-13T10:37:00Z",
+  "update_date": "2025-04-08T17:37:00Z",
+  "tc:title": "Zamo\u015b\u0107 Town Hall",
+  "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+  "website": "https://www.3d-heritage.eu/en/home/1/893042ba-3186-44f3-b00c-c9add87327ec/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/137/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/237/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Long Nineteenth Century",
+  "country": "Poland",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/77/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "FBX",
+  "file_size": "118 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "JPG",
+  "texture_resolution": "4096x4096",
+  "polygons": 68861,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/77/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "Arctur"
+}

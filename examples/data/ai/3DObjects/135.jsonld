@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/135.jsonld",
+  "creation_date": "2025-03-12T10:35:00Z",
+  "update_date": "2025-04-08T17:35:00Z",
+  "tc:title": "Klaip\u0117da Castle Remains",
+  "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+  "website": "https://www.3d-heritage.eu/en/home/1/667a5cb4-67a2-4453-a098-f36abe04ccf3/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/135/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/235/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Classical Antiquity",
+  "country": "Lithuania",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/75/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "STL",
+  "file_size": "31 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "PNG",
+  "texture_resolution": "2048x2048",
+  "polygons": 95834,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/75/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}

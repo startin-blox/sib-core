@@ -1,0 +1,86 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:format",
+          "sh:value": "STL"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/107.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/111.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/112.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/113.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/115.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/126.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/127.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/135.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#8",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/143.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#9",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/stl.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/148.jsonld"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/146.jsonld",
+  "creation_date": "2025-03-16T10:46:00Z",
+  "update_date": "2025-04-08T17:46:00Z",
+  "tc:title": "Bratislava UFO Bridge",
+  "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+  "website": "https://www.3d-heritage.eu/en/home/1/98834fcc-d6c6-42e2-85e0-98759adbafef/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/146/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/246/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Classical Antiquity",
+  "country": "Slovakia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/86/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "glTF",
+  "file_size": "67 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "2048x2048",
+  "polygons": 8042,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/86/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}

@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/149.jsonld",
+  "creation_date": "2025-03-17T10:49:00Z",
+  "update_date": "2025-04-08T17:49:00Z",
+  "tc:title": "Dubrovnik Rector's Palace",
+  "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+  "website": "https://www.3d-heritage.eu/en/home/1/c900d72a-0ada-49c2-ae92-20d4204ff2cd/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/149/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/249/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Middle Ages",
+  "country": "Croatia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/89/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "glTF",
+  "file_size": "86 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "PNG",
+  "texture_resolution": "2048x2048",
+  "polygons": 13787,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/89/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}

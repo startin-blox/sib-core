@@ -1,0 +1,74 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:format",
+          "sh:value": "OBJ"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/105.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/114.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/117.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/120.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/121.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/138.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/141.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/formats/obj.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/147.jsonld"
+    }
+  ]
+}

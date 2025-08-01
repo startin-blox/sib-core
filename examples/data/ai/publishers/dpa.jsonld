@@ -1,0 +1,140 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "dcat:publisher",
+          "sh:value": "DPA"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/102.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/106.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/107.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/112.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/117.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/122.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/124.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/127.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#8",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/128.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#9",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/129.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#10",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/131.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#11",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/135.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#12",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/140.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#13",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/141.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#14",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/142.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#15",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/143.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#16",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/146.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#17",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/148.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#18",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/publishers/dpa.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/149.jsonld"
+    }
+  ]
+}

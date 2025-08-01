@@ -1,0 +1,106 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#classical-antiquity",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period",
+            "sh:value": "Classical Antiquity"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/time-periods/classical-antiquity.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#contemporary-history",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period",
+            "sh:value": "Contemporary History"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/time-periods/contemporary-history.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#early-modern-period",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period",
+            "sh:value": "Early Modern Period"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#long-nineteenth-century",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period",
+            "sh:value": "Long Nineteenth Century"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/time-periods/long-nineteenth-century.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#middle-ages",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-time-period-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period",
+            "sh:value": "Middle Ages"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/time-periods/middle-ages.jsonld"
+    }
+  ]
+}

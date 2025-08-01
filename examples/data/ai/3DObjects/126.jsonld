@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/126.jsonld",
+  "creation_date": "2025-03-09T10:26:00Z",
+  "update_date": "2025-04-08T17:26:00Z",
+  "tc:title": "Ruse Regional Museum",
+  "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+  "website": "https://www.3d-heritage.eu/en/home/1/52e92d8d-a0e4-477f-aa44-460f77067376/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/126/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/226/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Classical Antiquity",
+  "country": "Bulgaria",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/66/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "STL",
+  "file_size": "70 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "PNG",
+  "texture_resolution": "1024x1024",
+  "polygons": 13872,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/66/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "VRT"
+}

@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/134.jsonld",
+  "creation_date": "2025-03-12T10:34:00Z",
+  "update_date": "2025-04-08T17:34:00Z",
+  "tc:title": "C\u0113sis Castle",
+  "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+  "website": "https://www.3d-heritage.eu/en/home/1/0c8ad483-e758-4e59-9ab6-cef99c93913d/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/134/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/234/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Classical Antiquity",
+  "country": "Latvia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/74/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "glTF",
+  "file_size": "79 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "1024x1024",
+  "polygons": 107374,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/74/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "VRT"
+}

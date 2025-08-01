@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/112.jsonld",
+  "creation_date": "2025-03-05T10:12:00Z",
+  "update_date": "2025-04-08T17:12:00Z",
+  "tc:title": "Prague Astronomical Clock",
+  "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+  "website": "https://www.3d-heritage.eu/en/home/1/c751d4ea-ee0c-43b3-800e-ad288345e16a/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/112/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/212/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Contemporary History",
+  "country": "Czech Republic",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/52/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "STL",
+  "file_size": "84 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "JPG",
+  "texture_resolution": "1024x1024",
+  "polygons": 10728,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/52/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}

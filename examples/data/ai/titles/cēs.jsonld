@@ -1,0 +1,32 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/c\u0113s",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/c\u0113s#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:title",
+          "sh:pattern": "c\u0113s.*"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/titles/c\u0113s#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/c\u0113s#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/134.jsonld"
+    }
+  ]
+}

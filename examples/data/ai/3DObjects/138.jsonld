@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/138.jsonld",
+  "creation_date": "2025-03-13T10:38:00Z",
+  "update_date": "2025-04-08T17:38:00Z",
+  "tc:title": "Torun Gingerbread Museum",
+  "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+  "website": "https://www.3d-heritage.eu/en/home/1/bb9936b8-6ebb-4e30-890b-5110238cdcdc/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/138/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/238/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Early Modern Period",
+  "country": "Poland",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/78/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "OBJ",
+  "file_size": "111 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "4096x4096",
+  "polygons": 100662,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/78/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "Arctur"
+}

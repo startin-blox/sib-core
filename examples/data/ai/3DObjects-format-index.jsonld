@@ -1,0 +1,106 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#fbx",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "FBX"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/formats/fbx.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#gltf",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "GLTF"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/formats/gltf.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#obj",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "OBJ"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/formats/obj.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#ply",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "PLY"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/formats/ply.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#stl",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "STL"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/formats/stl.jsonld"
+    }
+  ]
+}

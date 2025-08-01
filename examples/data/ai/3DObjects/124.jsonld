@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/124.jsonld",
+  "creation_date": "2025-03-09T10:24:00Z",
+  "update_date": "2025-04-08T17:24:00Z",
+  "tc:title": "Plovdiv Roman Stadium",
+  "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+  "website": "https://www.3d-heritage.eu/en/home/1/4d1971ac-52a6-4659-b196-ae902ae0e3fe/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/124/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/224/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Middle Ages",
+  "country": "Bulgaria",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/64/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "FBX",
+  "file_size": "88 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "2048x2048",
+  "polygons": 59585,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/64/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}

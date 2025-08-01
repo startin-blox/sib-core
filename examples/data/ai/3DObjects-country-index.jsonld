@@ -1,0 +1,304 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#bosnia-and-herzegovina",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Bosnia And Herzegovina"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/bosnia-and-herzegovina.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#bulgaria",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Bulgaria"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/bulgaria.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#croatia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Croatia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/croatia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#czech-republic",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Czech Republic"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/czech-republic.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#estonia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Estonia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/estonia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#hungary",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Hungary"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/hungary.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#latvia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Latvia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/latvia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#lithuania",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Lithuania"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/lithuania.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#montenegro",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Montenegro"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/montenegro.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#north-macedonia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "North Macedonia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/north-macedonia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#poland",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Poland"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/poland.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#romania",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Romania"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/romania.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#serbia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Serbia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/serbia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#slovakia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Slovakia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/slovakia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#slovenia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Slovenia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/slovenia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#ukraine",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:value": "Ukraine"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/countries/ukraine.jsonld"
+    }
+  ]
+}

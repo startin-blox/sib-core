@@ -1,0 +1,754 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-title-index-updated.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#ban",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ban.*"
+          }
+        ]
+      },
+      			"idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/ban.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#bel",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bel.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/bel.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#bia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bia.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/bia.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#bra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/bra.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#brn",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "brn.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/brn.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#buc",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "buc.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/buc.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#bud",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bud.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/bud.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#cel",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cel.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/cel.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#clu",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "clu.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/clu.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#dub",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "dub.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/dub.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#gda",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "gda.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/gda.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#kau",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kau.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/kau.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#kla",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kla.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/kla.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#kot",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kot.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/kot.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#kra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/kra.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#lju",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "lju.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/lju.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#lvi",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "lvi.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/lvi.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#mar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/mar.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#nov",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "nov.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/nov.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#old",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "old.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/old.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#olo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "olo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/olo.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#osi",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "osi.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/osi.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#pir",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pir.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/pir.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#plo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "plo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/plo.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#pra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/pra.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#rig",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rig.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/rig.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#rom",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rom.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/rom.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#rus",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rus.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/rus.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#sar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/sar.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#sib",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sib.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/sib.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#sig",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sig.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/sig.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#sko",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sko.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/sko.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#tal",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tal.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/tal.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#tar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/tar.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#tim",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tim.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/tim.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#tor",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tor.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/tor.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#tra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/tra.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#vil",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "vil.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/vil.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#war",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "war.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/war.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#zag",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "zag.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/zag.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#zam",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "zam.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/zam.jsonld"
+    }
+  ]
+}

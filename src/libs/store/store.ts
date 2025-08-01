@@ -922,6 +922,7 @@ export class Store {
 @prefix idx: <https://ns.inria.fr/idx/terms#>.
 @prefix sib: <https://cdn.startinblox.com/owl#>.
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 
 idx:IndexEntry
@@ -963,6 +964,7 @@ sh:property [
 @prefix idx: <https://ns.inria.fr/idx/terms#>.
 @prefix sib: <https://cdn.startinblox.com/owl#>.
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 
 idx:IndexEntry
@@ -1003,6 +1005,7 @@ sh:property [
 @prefix idx: <https://ns.inria.fr/idx/terms#>.
 @prefix sib: <https://cdn.startinblox.com/owl#>.
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
+@prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 
 idx:IndexEntry

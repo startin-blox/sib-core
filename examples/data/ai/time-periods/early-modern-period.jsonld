@@ -1,0 +1,104 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:time_period",
+          "sh:value": "Early Modern Period"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/111.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/118.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/119.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/120.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/125.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/128.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/131.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/132.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#8",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/133.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#9",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/136.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#10",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/138.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#11",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/141.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#12",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/time-periods/early-modern-period.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/145.jsonld"
+    }
+  ]
+}

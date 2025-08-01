@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/120.jsonld",
+  "creation_date": "2025-03-07T10:20:00Z",
+  "update_date": "2025-04-08T17:20:00Z",
+  "tc:title": "Lviv Opera House",
+  "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+  "website": "https://www.3d-heritage.eu/en/home/1/dfff969e-bbd6-49a2-a962-46b00f7c27bf/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/120/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/220/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Early Modern Period",
+  "country": "Ukraine",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/60/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "OBJ",
+  "file_size": "67 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TGA",
+  "texture_resolution": "4096x4096",
+  "polygons": 38584,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/60/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "Arctur"
+}

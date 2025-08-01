@@ -1,0 +1,95 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://localhost:5173/examples/data/ai/3DObjects/140.jsonld",
+  "creation_date": "2025-03-14T10:40:00Z",
+  "update_date": "2025-04-08T17:40:00Z",
+  "tc:title": "Sighisoara Clock Tower",
+  "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+  "website": "https://www.3d-heritage.eu/en/home/1/b575643c-f51c-4313-919a-86ec8a3bb4d0/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/140/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/240/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Contemporary History",
+  "country": "Romania",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/80/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "FBX",
+  "file_size": "72 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "JPG",
+  "texture_resolution": "1024x1024",
+  "polygons": 117928,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/80/",
+    "@type": "foaf:Group"
+  },
+  "@type": [
+    "tc:Object",
+    "tc:3DObject"
+  ],
+  "publisher": "DPA"
+}
