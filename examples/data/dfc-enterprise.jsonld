@@ -1,11 +1,6 @@
 {
-  "@context": [
-    "https://cdn.startinblox.com/owl/context.jsonld",
-    {
-      "dfc:b": "https://www.datafoodconsortium.org#"
-    }
-  ],
-  "@id": "enterprise.jsonld",
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "/examples/data/dfc-enterprise.jsonld",
   "@graph": [
     {
       "@id": "http://test.host/api/dfc/enterprises/10000",

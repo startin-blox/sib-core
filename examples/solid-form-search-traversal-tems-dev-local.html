@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: Traversal Search Feature</title>
+    <script type="module" src="../../src/index.ts"></script>
+    <script type="module" src="https://cdn.skypack.dev/@startinblox/router"></script>
+    <script
+      type="module"
+      src="https://cdn.skypack.dev/@startinblox/oidc@latest"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@startinblox/orbit-styling-framework@1/dist/index.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.skypack.dev/@startinblox/component-directory@latest/dist/style.css?min"
+    />
+  </head>
+  <style>
+    h1, h2, h3, h4, p, solid-display-label-div, solid-display-label-link {
+      margin-left: 10px;
+    }
+    solid-display-label-div label {
+      font-weight: bold;
+    }
+    solid-display-label-div div {
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
+    .avatar {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+    }
+    .main-block {
+      white-space: normal !important;
+    }
+    .main-block.children-third > div > solid-display {
+      width: 32.2% !important;
+    }
+    solid-form-multipleselect-autocompletion solid-form-dropdown>div {
+      box-sizing: border-box;
+      box-shadow: 0 0 5px 0 rgba(133,140,148,.09);
+    }
+    button {
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      background-color: #119ba0;
+      margin-left: 10px;
+    }
+  </style>
+
+  <solid-router default-route="home" use-hash>
+    <solid-route name="home" hidden>List</solid-route>
+    <solid-route
+      hidden
+      use-id
+      name="model-infos"
+    ></solid-route>
+  </solid-router>
+
+  <body class="segment full">
+    <h1>
+      Startin'Blox demo: search for distributed data efficiently with indexes on tems local 3D object
+    </h1>
+
+    <div class="segment full">
+      <div id="directory-list" data-view="directory-list">
+        <h2 class="margin-left-xsmall sm-margin-none text-xlarge text-bold text-color-heading text-uppercase">
+          Tems 3D Objects
+        </h2>
+
+        <div data-view="home">
+          <solid-form-search
+            id="solid-directory-listing-search"
+            class="segment block padding-top-large padding-bottom-large whitespace-normal form search-form"
+            fields="tc:title"
+            class-tc:title="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+            label-tc:title="Search by title"
+            widget-tc:title="solid-form-placeholder-text"
+            class-sib:description="segment margin-bottom-small third sm-full padding-right-xsmall padding-left-xsmall sm-padding-none text-small input-shadow input-bg-white icon icon-magnify"
+            label-sib:description="Search by description"
+            widget-sib:description="solid-form-placeholder-text"
+            submit-button="Search"
+            submit-widget="button"
+            class-submit="button primary padding-left-xsmall"
+            naked=""
+          ></solid-form-search>
+
+
+          <div id="loader-members-list" class="loader loader-top" hidden>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <solid-widget name="directory-city">
+            <template>
+              <span class="segment block city-display margin-bottom-xsmall">${value}</span>
+            </template>
+          </solid-widget>
+          <solid-widget name="custom-img-unit">
+            <template>
+              <img
+                src="${value}"
+                width="50%"
+                height="50%"
+                alt="Avatar"
+              />
+            </template>
+          </solid-widget>
+          <solid-widget name="solid-widget-image">
+            <template>
+              <solid-display
+                data-src="${value}"
+                fields="url"
+                class="placeholder"
+                alt="Placeholder"
+                widget-url="custom-img-unit">
+              </solid-display>
+            </template>
+          </solid-widget>
+          <solid-widget name="orbit-user-avatar">
+            <template>
+              <solid-display
+                data-src="${value}"
+                fields="@id"
+                widget-id="solid-widget-image"
+              /></solid-display>
+            </template>
+          </solid-widget>
+
+          <!-- // TemsDev2 is manufacturing and temsDev3 is qna -->
+          <!-- Seeding and configuration of the djangoldp needs to be aligned -->
+
+          <!-- data-target-shape="https://cdn.startinblox.com/owl/ttl/shapes/3dmodel-target-shape.ttl"
+          data-subindex-shape="https://cdn.startinblox.com/owl/ttl/shapes/3dmodel-subindex-shape.ttl"
+          data-final-shape="https://cdn.startinblox.com/owl/ttl/shapes/3dmodel-final-shape.ttl" -->
+          <solid-display
+            filtered-by="solid-directory-listing-search"
+            filtered-on="index"
+            data-src-index="http://localhost:5173/examples/data/ai/3DObjects-index.jsonld"
+            data-rdf-type="tc:3DObject"
+            class="main-block segment full children children-third sm-children-full children-margin-bottom-medium sm-children-margin-bottom-xsmall children-padding-right-xsmall children-padding-left-xsmall sm-children-padding-none sm-whitespace-normal masonry"
+            fields="segment1(segment2(member-picture(images), segment3(title, description, )))"
+            loader-id="loader-members-list"
+            class-member-picture="segment avatar-wrapper"
+            class-title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
+            class-member-pseudo="segment block"
+            class-description="text-small"
+            class-segment1="segment hover bg-color-white shadow full text-top whitespace-normal"
+            class-segment2="segment full padding-medium text-center whitespace-normal"
+            class-segment3="segment three-quarter whitespace-normal"
+            class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
+            class-member-picture="segment avatar-wrapper"
+            class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
+            widget-images="orbit-user-avatar"
+            order-asc="title"
+            next="model-infos"
+          >
+          </solid-display>
+        </div>
+
+        <div data-view="model-infos" hidden>
+          <solid-display
+            bind-resources
+            fields="title, description, images, copyright, website, technical-details, historical_period, polygons, geometry, file_size, vertives, textures"
+            value-custom-field="store://resource.date"
+            widget-title="h1"
+            widget-description="p"
+            widget-images="solid-widget-image"
+
+            widget-copyright="solid-display-label-div"
+            label-copyright="Copyright: "
+
+            widget-website="solid-display-label-link"
+            label-website="Website: "
+
+            widget-technical-details="h2"
+            value-technical-details="Technical details"
+            label-historical_period="Historical period:"
+            label-polygons="Polygons:"
+            label-geometry="Geometry:"
+            label-file_size="File size:"
+            label-vertives="Vertives:"
+            label-textures="Textures:"
+            widget-description="p"
+
+            widget-historical_period="solid-display-label-div"
+            widget-polygons="solid-display-label-div"
+            widget-geometry="solid-display-label-div"
+            widget-file_size="solid-display-label-div"
+            widget-vertives="solid-display-label-div"
+            widget-textures="solid-display-label-div"
+          ></solid-display>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index"
+    },
+    {
+      "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tems:3DObject"
+      }
+    },
+    {
+      "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index#source0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index#target"
+          },
+          {
+            "sh:path": "sib:title"
+          },
+          {
+            "sh:path": "sib:description"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "https://api.tems-dev2.startinblox.com/indexes/objects/trial8/index"
+    },
+    {
+      "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index#source1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "https://api.tems-dev.startinblox.com/fedex/tems-3dobject-explicit/index#target"
+          },
+          {
+            "sh:path": "sib:title"
+          },
+          {
+            "sh:path": "sib:description"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "https://api.tems-dev3.startinblox.com/indexes/objects/trial8/index"
+    }
+  ]
+}
