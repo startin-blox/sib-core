@@ -148,10 +148,10 @@
             data-src-index="http://localhost:5173/examples/data/ai/3DObjects-index.jsonld"
             data-rdf-type="tc:3DObject"
             class="main-block segment full children children-third sm-children-full children-margin-bottom-medium sm-children-margin-bottom-xsmall children-padding-right-xsmall children-padding-left-xsmall sm-children-padding-none sm-whitespace-normal masonry"
-            fields="segment1(segment2(member-picture(images), segment3(title, description, )))"
+            fields="segment1(segment2(member-picture(images), segment3(tc:title, description, )))"
             loader-id="loader-members-list"
             class-member-picture="segment avatar-wrapper"
-            class-title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
+            class-tc:title="segment block margin-top-xsmall margin-bottom-xxsmall text-xlarge text-bold text-color-heading whitespace-normal"
             class-member-pseudo="segment block"
             class-description="text-small"
             class-segment1="segment hover bg-color-white shadow full text-top whitespace-normal"
@@ -161,7 +161,7 @@
             class-member-picture="segment avatar-wrapper"
             class-segment4="segment full padding-medium padding-bottom-xsmall border-top border-color-grey whitespace-normal"
             widget-images="orbit-user-avatar"
-            order-asc="title"
+            order-asc="tc:title"
             next="model-infos"
           >
           </solid-display>
@@ -170,9 +170,9 @@
         <div data-view="model-infos" hidden>
           <solid-display
             bind-resources
-            fields="title, description, images, copyright, website, technical-details, historical_period, polygons, geometry, file_size, vertives, textures"
+            fields="tc:title, description, images, copyright, website, technical-details, historical_period, polygons, geometry, file_size, vertives, textures"
             value-custom-field="store://resource.date"
-            widget-title="h1"
+            widget-tc:title="h1"
             widget-description="p"
             widget-images="solid-widget-image"
 

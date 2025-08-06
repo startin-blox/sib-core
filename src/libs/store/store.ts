@@ -77,6 +77,13 @@ export interface IndexQueryResult {
   '@type': string;
 }
 
+export interface IndexQueryContainer {
+  '@context': string;
+  '@type': string;
+  '@id': string;
+  'ldp:contains': any[];
+}
+
 export class Store {
   cache: CacheManager;
   subscriptionIndex: Map<string, any>; // index of all the containers per resource
@@ -807,14 +814,15 @@ export class Store {
   /**
    * Query an index using semantizer with dynamically generated shapes
    * @param options - Index query options
-   * @returns Promise<IndexQueryResult[]> - Array of matching resources
+   * @returns Promise<any[]> - Array of matching resources for ldp:contains
    */
-  async queryIndex(options: IndexQueryOptions): Promise<IndexQueryResult[]> {
+  async queryIndex(options: IndexQueryOptions): Promise<any[]> {
+    console.log('🔍 [Store.queryIndex] Starting query with options:', JSON.stringify(options, null, 2));
     let indexDataset: DatasetSemantizer | undefined;
 
     // 0. Load the instance profile if defined
     if (options.dataSrcProfile) {
-      console.log('Load application profile', options.dataSrcProfile);
+      console.log('📋 [Store.queryIndex] Load application profile', options.dataSrcProfile);
       const appIdProfile = await SEMANTIZER.load(
         options.dataSrcProfile,
         solidWebIdProfileFactory,
@@ -830,10 +838,16 @@ export class Store {
       }
     } else if (options.dataSrcIndex) {
       // 1. Load the index directly
+      console.log('📂 [Store.queryIndex] Loading index from:', options.dataSrcIndex);
       indexDataset = await SEMANTIZER.load(options.dataSrcIndex);
+      console.log('✅ [Store.queryIndex] Index loaded successfully');
     }
 
+    console.log('🔍 [Store.queryIndex] Filter values:', JSON.stringify(options.filterValues, null, 2));
+
     const filterFields = Object.entries(options.filterValues);
+    console.log('🔍 [Store.queryIndex] Filter fields:', filterFields);
+
     const firstField = filterFields[0];
     const firstFieldValue = firstField[1] as { value: string };
 
@@ -848,12 +862,27 @@ export class Store {
     const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
     const searchPattern = firstFieldValue.value as string;
 
+    console.log('🔍 [Store.queryIndex] Parsed parameters:');
+    console.log('  - Path:', path);
+    console.log('  - Field name:', fieldName);
+    console.log('  - Search pattern:', searchPattern);
+    console.log('  - RDF type:', options.dataRdfType);
+
     // Generate shapes dynamically
+    console.log('🔧 [Store.queryIndex] Generating SHACL shapes...');
     const { targetShape, subIndexShape, finalShape } = this.generateShapes(
       options.dataRdfType,
       fieldName,
       searchPattern
     );
+
+    console.log('📝 [Store.queryIndex] Generated shapes:');
+    console.log('=== TARGET SHAPE ===');
+    console.log(targetShape);
+    console.log('=== SUBINDEX SHAPE ===');
+    console.log(subIndexShape);
+    console.log('=== FINAL SHAPE ===');
+    console.log(finalShape);
 
     const parser = new N3.Parser({ format: 'text/turtle' });
     const targetShapeGraph = SEMANTIZER.build();
@@ -881,28 +910,60 @@ export class Store {
       entryTransformer,
     );
 
+    console.log('🔧 [Store.queryIndex] Creating index with factory...');
     const index = await SEMANTIZER.load(options.dataSrcIndex, indexFactory);
+    console.log('✅ [Store.queryIndex] Index created successfully');
 
-    return new Promise((resolve) => {
-      const results: IndexQueryResult[] = [];
+    console.log('🚀 [Store.queryIndex] Starting query stream...');
+    const resultStream = index.mixins.index.query(shaclStrategy);
 
-      const resultStream = index.mixins.index.query(shaclStrategy);
-      resultStream.on('data', (result: NamedNode) => {
+    return new Promise<any[]>((resolve, reject) => {
+      const resultIds: string[] = [];
+      const resources: any[] = [];
+      let pendingFetches = 0;
+      let streamEnded = false;
+
+      const checkComplete = () => {
+        if (streamEnded && pendingFetches === 0) {
+          console.log(`🏁 [Store.queryIndex] All resources fetched. Found ${resultIds.length} result IDs:`, resultIds);
+          console.log(`🎯 [Store.queryIndex] Returning ${resources.length} resources for ldp:contains`);
+          resolve(resources);
+        }
+      };
+
+      resultStream.on('data', async (result: NamedNode) => {
+        console.log('📦 [Store.queryIndex] Received result:', result.value);
         if (result.value) {
-          results.push({
-            '@id': result.value,
-            '@type': options.dataRdfType,
-          });
+          resultIds.push(result.value);
+          console.log('✅ [Store.queryIndex] Added result ID:', result.value);
+
+          pendingFetches++;
+          try {
+            const resource = await this.getData(result.value);
+            if (resource) {
+              resources.push(resource);
+              console.log(`✅ [Store.queryIndex] Successfully fetched resource: ${result.value}`);
+            } else {
+              console.warn(`⚠️ [Store.queryIndex] Could not fetch resource: ${result.value}`);
+            }
+          } catch (error) {
+            console.error(`❌ [Store.queryIndex] Error fetching resource ${result.value}:`, error);
+          } finally {
+            pendingFetches--;
+            checkComplete();
+          }
         }
       });
 
-      resultStream.on('end', () => {
-        resolve(results);
+      resultStream.on('error', (error) => {
+        console.error('❌ [Store.queryIndex] Error in index query:', error);
+        reject(error);
       });
 
-      resultStream.on('error', (error) => {
-        console.error('Error in index query:', error);
-        resolve([]);
+      resultStream.on('end', () => {
+        console.log(`🏁 [Store.queryIndex] Stream ended. Found ${resultIds.length} result IDs:`, resultIds);
+        streamEnded = true;
+        checkComplete();
       });
     });
   }
@@ -915,6 +976,10 @@ export class Store {
    * @returns Object containing target, subindex, and final shapes
    */
   private generateShapes(rdfType: string, propertyName: string, pattern: string) {
+    console.log('🔧 [Store.generateShapes] Generating shapes with parameters:');
+    console.log('  - RDF Type:', rdfType);
+    console.log('  - Property Name:', propertyName);
+    console.log('  - Pattern:', pattern);
     const targetShape = `
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -924,6 +989,8 @@ export class Store {
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix dct: <http://purl.org/dc/terms/>.
 
 idx:IndexEntry
 a rdfs:Class, sh:NodeShape ;
@@ -966,6 +1033,8 @@ sh:property [
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix dct: <http://purl.org/dc/terms/>.
 
 idx:IndexEntry
 a rdfs:Class, sh:NodeShape ;
@@ -1007,6 +1076,8 @@ sh:property [
 @prefix tems: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix tc: <https://cdn.startinblox.com/owl/tems.jsonld#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix dct: <http://purl.org/dc/terms/>.
 
 idx:IndexEntry
 a rdfs:Class, sh:NodeShape ;

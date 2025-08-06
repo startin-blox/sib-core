@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Direct Store Query Example - SIB Core</title>
+  <script type="module">
+    import { store } from '../../src/libs/store/store.ts';
+    import '../../src/libs/store/semantizer/semantizer.ts';
+
+    class DirectStoreQueryExample {
+      constructor() {
+        this.container = null;
+        this.results = [];
+      }
+
+      async initialize() {
+        try {
+          updateStatus("Initializing store query example...");
+          
+          // Create a local container for results (similar to filterMixin)
+          await this.createLocalContainer();
+          
+          updateStatus("Store query example ready!");
+        } catch (error) {
+          updateStatus(`Initialization failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Create a local container for storing search results
+       * This mimics what filterMixin does
+       */
+      async createLocalContainer() {
+        const idField = Array.from(Array(20), () =>
+          Math.floor(Math.random() * 36).toString(36),
+        ).join('');
+
+        this.containerId = `store://local.${idField}/`;
+        this.container = {
+          '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
+          '@type': 'ldp:Container',
+          '@id': this.containerId,
+          'ldp:contains': [],
+          permissions: ['view'],
+        };
+
+        await store.setLocalData(this.container, this.containerId);
+        updateStatus(`Created local container: ${this.containerId}`);
+      }
+
+      /**
+       * Perform a direct store query (similar to filterMixin.triggerIndexSearch)
+       * @param searchPattern - The search pattern (e.g., "cas" for castle)
+       */
+      async performQuery(searchPattern) {
+        try {
+          updateStatus(`Querying store with pattern: "${searchPattern}"`);
+          
+          // Create query options (similar to what filterMixin creates)
+          const queryOptions = {
+            dataSrcIndex: 'http://localhost:5173/examples/data/ai/3DObjects-title-index.jsonld',
+            dataRdfType: 'tc:3DObject',
+            filterValues: {
+              'tc:title': { value: searchPattern }
+            }
+          };
+
+          updateStatus(`Query options: ${JSON.stringify(queryOptions, null, 2)}`);
+          
+          // Call store.queryIndex directly - now returns ready-to-use resources!
+          const results = await store.queryIndex(queryOptions);
+          
+          updateStatus(`Found ${results.length} results from store`);
+          
+          // Update the local container with results (exactly like filterMixin does)
+          this.container['ldp:contains'] = results;
+          await store.setLocalData(this.container, this.containerId, true);
+          
+          this.results = results;
+          this.displayResults();
+          
+          updateStatus(`Successfully updated container with ${results.length} results`);
+          
+        } catch (error) {
+          updateStatus(`Query failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Display the results in the UI
+       */
+      displayResults() {
+        const resultsDiv = document.getElementById("results");
+        let html = '<h3>Query Results:</h3>';
+        
+        if (this.results.length === 0) {
+          html += '<p>No results found.</p>';
+        } else {
+          html += `<p>Found ${this.results.length} results:</p>`;
+          
+          this.results.forEach((result, index) => {
+            html += `
+              <div class="result-item">
+                <h4>Result ${index + 1}</h4>
+                <p><strong>ID:</strong> ${result['@id'] || 'N/A'}</p>
+                <p><strong>Type:</strong> ${result['@type'] || 'N/A'}</p>
+                <p><strong>Title:</strong> ${result['tc:title'] || 'N/A'}</p>
+                <p><strong>Description:</strong> ${result['description'] || 'N/A'}</p>
+                <p><strong>Country:</strong> ${result['country'] || 'N/A'}</p>
+                <p><strong>Format:</strong> ${result['format'] || 'N/A'}</p>
+              </div>
+            `;
+          });
+        }
+        
+        resultsDiv.innerHTML = html;
+      }
+
+      /**
+       * Get the current container data (for debugging)
+       */
+      getContainerData() {
+        return this.container;
+      }
+    }
+
+    // Global instance
+    const storeQueryExample = new DirectStoreQueryExample();
+
+    function updateStatus(status) {
+      const output = document.getElementById("output");
+      output.innerHTML = status;
+      console.log(status);
+    }
+
+    // Event handlers
+    async function performQuery() {
+      const patternInput = document.getElementById('patternInput');
+      const pattern = patternInput.value.trim();
+      
+      if (!pattern) {
+        updateStatus("Please enter a search pattern");
+        return;
+      }
+      
+      try {
+        await storeQueryExample.performQuery(pattern);
+      } catch (error) {
+        console.error('Query error:', error);
+      }
+    }
+
+    async function showContainerData() {
+      const containerData = storeQueryExample.getContainerData();
+      const output = document.getElementById("output");
+      output.innerHTML = `<h4>Container Data:</h4><pre>${JSON.stringify(containerData, null, 2)}</pre>`;
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await storeQueryExample.initialize();
+        document.getElementById('queryBtn').disabled = false;
+        document.getElementById('queryBtn').textContent = 'Query Store';
+      } catch (error) {
+        console.error('Initialization failed:', error);
+      }
+    });
+
+    // Make functions globally available
+    window.performQuery = performQuery;
+    window.showContainerData = showContainerData;
+  </script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .query-section {
+      margin-bottom: 30px;
+    }
+    
+    #patternInput {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    #queryBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-right: 10px;
+    }
+    
+    #queryBtn:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    
+    #queryBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #containerBtn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #containerBtn:hover {
+      background-color: #218838;
+    }
+    
+    #output {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    
+    .result-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .result-item h4 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    .result-item p {
+      margin: 5px 0;
+      color: #666;
+    }
+    
+    .examples {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .examples h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+    
+    .example-pattern {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-left: 3px solid #007bff;
+    }
+    
+    .example-pattern:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .info-box {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .info-box h4 {
+      margin-top: 0;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Direct Store Query Example</h1>
+    
+    <div class="info-box">
+      <h4>🎯 How filterMixin Uses store.queryIndex</h4>
+      <p>This example demonstrates how to use <code>store.queryIndex()</code> directly, just like the <code>filterMixin</code> does:</p>
+      <ol>
+        <li><strong>Create local container</strong> for storing results</li>
+        <li><strong>Call store.queryIndex()</strong> with query options</li>
+        <li><strong>Assign results to ldp:contains</strong> directly</li>
+        <li><strong>Update local data</strong> in the store</li>
+      </ol>
+      <p>The key improvement: <code>store.queryIndex()</code> now returns complete resource objects ready for <code>ldp:contains</code>!</p>
+    </div>
+    
+    <div class="examples">
+      <h3>💡 Example Patterns (click to try):</h3>
+      <div class="example-pattern" onclick="document.getElementById('patternInput').value='cas'">
+        "cas" (matches castle titles)
+      </div>
+      <div class="example-pattern" onclick="document.getElementById('patternInput').value='for'">
+        "for" (matches fortress titles)
+      </div>
+      <div class="example-pattern" onclick="document.getElementById('patternInput').value='pal'">
+        "pal" (matches palace titles)
+      </div>
+      <div class="example-pattern" onclick="document.getElementById('patternInput').value='cat'">
+        "cat" (matches cathedral titles)
+      </div>
+      <div class="example-pattern" onclick="document.getElementById('patternInput').value='bra'">
+        "bra" (matches Bran Castle)
+      </div>
+    </div>
+    
+    <div class="query-section">
+      <label for="patternInput"><strong>Enter search pattern:</strong></label>
+      <input 
+        id="patternInput" 
+        type="text" 
+        placeholder="e.g., cas (for castle)"
+      />
+      <button id="queryBtn" disabled>Loading...</button>
+      <button id="containerBtn" onclick="showContainerData()">Show Container Data</button>
+    </div>
+    
+    <div id="output">Initializing store query example...</div>
+    
+    <div id="results"></div>
+  </div>
+</body>
+</html> 

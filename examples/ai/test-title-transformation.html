@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title Transformation Test</title>
+</head>
+<body>
+  <h1>🧪 Title Transformation Test</h1>
+  
+  <div id="results"></div>
+
+  <script type="module">
+    import { naturalLanguageSearch } from '../../src/libs/natural-language-search.ts';
+    import { THREE_D_MODELS_CONFIG } from '../../src/libs/configs/3d-models-field-mappings.ts';
+    import { getModelConfig } from '../../src/libs/configs/ner-model-config.ts';
+
+    const resultsDiv = document.getElementById('results');
+
+    async function testTitleTransformation() {
+      try {
+        // Initialize the NER model
+        const modelConfig = getModelConfig('3dobjects');
+        const ort = window.ort;
+        
+        if (!ort) {
+          throw new Error("ONNX Runtime not loaded");
+        }
+
+        await naturalLanguageSearch.initialize({
+          labels: THREE_D_MODELS_CONFIG.nerLabels,
+          tokenizerPath: modelConfig.tokenizerPath,
+          modelPath: modelConfig.modelPath,
+          ort: ort
+        });
+
+        // Test cases
+        const testCases = [
+          "Show me a swimming pool model",
+          "Find a castle model", 
+          "I need a ban model",
+          "Show me a pyramid model"
+        ];
+
+        resultsDiv.innerHTML = '<h2>Testing Title Transformation...</h2>';
+
+        for (const testCase of testCases) {
+          try {
+            // Extract search parameters
+            const searchParams = await naturalLanguageSearch.extractSearchParams(testCase);
+            
+            // Convert to query options (this is where transformation happens)
+            const queryOptions = naturalLanguageSearch.convertToQueryOptions(searchParams, THREE_D_MODELS_CONFIG.fieldMappings);
+            
+            // Display results
+            const titleValue = searchParams.title || 'No title found';
+            const transformedValue = queryOptions.find(opt => opt.filterValues['tc:title'])?.filterValues['tc:title'] || 'No transformation';
+            
+            resultsDiv.innerHTML += `
+              <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <h3>Test Case: "${testCase}"</h3>
+                <p><strong>Extracted Title:</strong> "${titleValue}"</p>
+                <p><strong>Transformed Pattern:</strong> "${transformedValue}"</p>
+                <p><strong>Query Options:</strong> ${JSON.stringify(queryOptions, null, 2)}</p>
+              </div>
+            `;
+          } catch (error) {
+            resultsDiv.innerHTML += `
+              <div style="border: 1px solid #f00; padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #ffe6e6;">
+                <h3>Test Case: "${testCase}"</h3>
+                <p><strong>Error:</strong> ${error.message}</p>
+              </div>
+            `;
+          }
+        }
+
+      } catch (error) {
+        resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+      }
+    }
+
+    // Run the test when the page loads
+    testTitleTransformation();
+  </script>
+
+  <!-- Load ONNX Runtime -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+</body>
+</html> 

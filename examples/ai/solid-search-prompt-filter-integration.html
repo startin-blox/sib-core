@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Natural Language Filter Integration - SIB Core</title>
+  <script type="module">
+    import { naturalLanguageSearch } from '../../src/libs/natural-language-search.ts';
+    import { store } from '../../src/libs/store/store.ts';
+    import '../../src/libs/store/semantizer/semantizer.ts';
+
+    // Extend the filterMixin to support natural language search
+    class NaturalLanguageFilterMixin {
+      constructor() {
+        this.isInitialized = false;
+        this.searchResults = [];
+      }
+
+      async initialize() {
+        try {
+          updateStatus("Initializing natural language search...");
+          await naturalLanguageSearch.initialize();
+          this.isInitialized = true;
+          updateStatus("Natural language search ready!");
+        } catch (error) {
+          updateStatus(`Initialization failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Perform natural language search and update the filter
+       * @param prompt - Natural language prompt
+       */
+      async performNaturalLanguageSearch(prompt) {
+        if (!this.isInitialized) {
+          throw new Error("Natural language search not initialized");
+        }
+
+        try {
+          updateStatus("Processing natural language query...");
+          
+          // Extract search parameters from the prompt
+          const searchParams = await naturalLanguageSearch.extractSearchParams(prompt);
+          updateStatus(`Extracted parameters: ${JSON.stringify(searchParams, null, 2)}`);
+          
+          // Convert to filter values format expected by filterMixin
+          const filterValues = this.convertToFilterValues(searchParams);
+          
+          // Perform the search using the store
+          const results = await naturalLanguageSearch.search(prompt);
+          
+          // Update the local resources with results
+          this.updateLocalResources(results);
+          
+          updateStatus(`Found ${results.length} results`);
+          this.displayResults(results);
+          
+          return results;
+          
+        } catch (error) {
+          updateStatus(`Search failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Convert search parameters to filter values format
+       * @param searchParams - Extracted search parameters
+       * @returns Filter values in the expected format
+       */
+      convertToFilterValues(searchParams) {
+        const filterValues = {};
+        
+        // Map the extracted parameters to filter values
+        if (searchParams.title) {
+          filterValues['tc:title'] = searchParams.title;
+        }
+        if (searchParams.country) {
+          filterValues['schema:location'] = searchParams.country;
+        }
+        if (searchParams.format) {
+          filterValues['dcat:format'] = searchParams.format;
+        }
+        if (searchParams.publisher) {
+          filterValues['dcat:publisher'] = searchParams.publisher;
+        }
+        if (searchParams.licence) {
+          filterValues['dc:license'] = searchParams.licence;
+        }
+        
+        return filterValues;
+      }
+
+      /**
+       * Update local resources with search results
+       * @param results - Search results
+       */
+      updateLocalResources(results) {
+        // Create a container structure similar to what filterMixin expects
+        const container = {
+          '@context': 'https://cdn.startinblox.com/owl/context-bis.jsonld',
+          '@type': 'ldp:Container',
+          'ldp:contains': results
+        };
+        
+        // Update the store with the new data
+        store.setLocalData(container, 'natural-language-search', true);
+      }
+
+      /**
+       * Display search results
+       * @param results - Search results
+       */
+      displayResults(results) {
+        const resultsDiv = document.getElementById("results");
+        
+        if (results.length === 0) {
+          resultsDiv.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+
+        const resultsHtml = results.map(resource => {
+          const id = resource['@id'] || resource.id || 'Unknown';
+          const title = resource['tc:title'] || resource['schema:name'] || 'Untitled';
+          const format = resource['dcat:format'] || 'Unknown format';
+          const publisher = resource['dcat:publisher'] || 'Unknown publisher';
+          const country = resource['schema:location'] || 'Unknown location';
+          const license = resource['dc:license'] || 'Unknown license';
+          
+          return `
+            <div class="result-item">
+              <h3>${title}</h3>
+              <p><strong>ID:</strong> ${id}</p>
+              <p><strong>Format:</strong> ${format}</p>
+              <p><strong>Publisher:</strong> ${publisher}</p>
+              <p><strong>Location:</strong> ${country}</p>
+              <p><strong>License:</strong> ${license}</p>
+            </div>
+          `;
+        }).join('');
+
+        resultsDiv.innerHTML = `
+          <h2>Search Results (${results.length})</h2>
+          ${resultsHtml}
+        `;
+      }
+
+      /**
+       * Get the current initialization status
+       */
+      get initialized() {
+        return this.isInitialized;
+      }
+    }
+
+    // Global instance
+    const nlFilter = new NaturalLanguageFilterMixin();
+
+    function updateStatus(status) {
+      const output = document.getElementById("output");
+      output.innerHTML = status;
+      console.log(status);
+    }
+
+    // Initialize the filter system
+    async function initializeFilter() {
+      try {
+        await nlFilter.initialize();
+        document.getElementById("searchBtn").disabled = false;
+        document.getElementById("searchBtn").textContent = "Search";
+      } catch (error) {
+        updateStatus(`Initialization failed: ${error.message}`);
+      }
+    }
+
+    // Handle search button click
+    async function performSearch() {
+      const prompt = document.getElementById("promptInput").value.trim();
+      if (!prompt) {
+        updateStatus("Please enter a search prompt");
+        return;
+      }
+
+      try {
+        document.getElementById("searchBtn").disabled = true;
+        document.getElementById("searchBtn").textContent = "Searching...";
+        
+        await nlFilter.performNaturalLanguageSearch(prompt);
+        
+      } catch (error) {
+        updateStatus(`Search failed: ${error.message}`);
+      } finally {
+        document.getElementById("searchBtn").disabled = false;
+        document.getElementById("searchBtn").textContent = "Search";
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById("searchBtn").addEventListener("click", performSearch);
+      document.getElementById("promptInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          performSearch();
+        }
+      });
+      
+      // Initialize the filter system
+      initializeFilter();
+    });
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .search-section {
+      margin-bottom: 30px;
+    }
+    
+    #promptInput {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      resize: vertical;
+    }
+    
+    #searchBtn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #searchBtn:hover:not(:disabled) {
+      background-color: #218838;
+    }
+    
+    #searchBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #output {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    
+    .result-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .result-item h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    .result-item p {
+      margin: 5px 0;
+      color: #666;
+    }
+    
+    .examples {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .examples h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+    
+    .example-prompt {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-left: 3px solid #28a745;
+    }
+    
+    .example-prompt:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .integration-info {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .integration-info h3 {
+      margin-top: 0;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Natural Language Filter Integration</h1>
+    
+    <div class="integration-info">
+      <h3>💡 How This Works:</h3>
+      <p>This example demonstrates how to integrate natural language search with the existing sib-core filter system:</p>
+      <ol>
+        <li><strong>Natural Language Processing:</strong> Uses the NER model to extract structured data from free-text prompts</li>
+        <li><strong>Parameter Mapping:</strong> Converts extracted entities to filter values compatible with the existing filterMixin</li>
+        <li><strong>Store Integration:</strong> Uses the store.queryIndex method to perform semantic searches</li>
+        <li><strong>Result Display:</strong> Shows how results can be integrated with the existing UI components</li>
+      </ol>
+    </div>
+    
+    <div class="examples">
+      <h3>💡 Example Prompts (click to try):</h3>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me a 3D model of a castle in France, in glTF format, published by Arctur, under CC0 license.'">
+        "Show me a 3D model of a castle in France, in glTF format, published by Arctur, under CC0 license."
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='I need a pyramid model located in Egypt, provided in OBJ, made available by DPA and licensed CC-BY.'">
+        "I need a pyramid model located in Egypt, provided in OBJ, made available by DPA and licensed CC-BY."
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Find a tea house rendered in STL from Japan, with a CC-BY license, provided by OpenGeoLab.'">
+        "Find a tea house rendered in STL from Japan, with a CC-BY license, provided by OpenGeoLab."
+      </div>
+    </div>
+    
+    <div class="search-section">
+      <label for="promptInput"><strong>Enter your natural language query:</strong></label>
+      <textarea 
+        id="promptInput" 
+        rows="4" 
+        placeholder="e.g., Show me a 3D model of a swimming pool in France, in OBJ format, published by Arctur, under CC0 license."
+      ></textarea>
+      <button id="searchBtn" disabled>Loading...</button>
+    </div>
+    
+    <div id="output">Initializing natural language filter system...</div>
+    
+    <div id="results"></div>
+  </div>
+</body>
+</html> 

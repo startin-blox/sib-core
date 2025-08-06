@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Castle Search - SIB Core</title>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script type="module">
+    import { store } from '../../src/libs/store/store.ts';
+    import { naturalLanguageSearch } from '../../src/libs/natural-language-search.ts';
+    import { THREE_D_MODELS_CONFIG } from '../../src/libs/configs/3d-models-field-mappings.ts';
+    import { getModelConfig } from '../../src/libs/configs/ner-model-config.ts';
+    import '../../src/libs/store/semantizer/semantizer.ts';
+
+    class CastleSearchTest {
+      constructor() {
+        this.isInitialized = false;
+      }
+
+      async initialize() {
+        try {
+          updateStatus("Loading NER model...");
+          
+          const modelConfig = getModelConfig('3dobjects');
+          const ort = window.ort;
+          
+          await naturalLanguageSearch.initialize({
+            labels: THREE_D_MODELS_CONFIG.nerLabels,
+            tokenizerPath: modelConfig.tokenizerPath,
+            modelPath: modelConfig.modelPath,
+            baseUrl: modelConfig.baseUrl,
+            ort: ort
+          });
+          
+          this.isInitialized = true;
+          updateStatus("NER model loaded successfully!");
+        } catch (error) {
+          updateStatus(`Error loading NER model: ${error.message}`);
+          throw error;
+        }
+      }
+
+      async testCastleSearch() {
+        try {
+          updateStatus("Testing castle search...");
+          
+          // Test different castle-related prompts
+          const testPrompts = [
+            "Show me a castle model",
+            "Find a fortress model", 
+            "I need a palace model",
+            "Show me Bran Castle",
+            "Find Kotor Fortress"
+          ];
+          
+          const results = [];
+          
+          for (const prompt of testPrompts) {
+            updateStatus(`Testing: "${prompt}"`);
+            
+            const searchParams = await naturalLanguageSearch.extractSearchParams(prompt);
+            console.log(`Search params for "${prompt}":`, searchParams);
+            
+            const searchResults = await naturalLanguageSearch.search(prompt, THREE_D_MODELS_CONFIG.fieldMappings);
+            console.log(`Results for "${prompt}":`, searchResults);
+            
+            results.push({
+              prompt,
+              searchParams,
+              resultCount: searchResults.length
+            });
+          }
+          
+          displayResults(results);
+          
+        } catch (error) {
+          updateStatus(`Search test failed: ${error.message}`);
+          throw error;
+        }
+      }
+    }
+
+    const castleTest = new CastleSearchTest();
+
+    function updateStatus(status) {
+      const output = document.getElementById("output");
+      output.innerHTML = status;
+      console.log(status);
+    }
+
+    function displayResults(results) {
+      const resultsDiv = document.getElementById("results");
+      let html = '<h3>Test Results:</h3>';
+      
+      results.forEach(result => {
+        html += `
+          <div class="result-item">
+            <h4>Prompt: "${result.prompt}"</h4>
+            <p><strong>Search Parameters:</strong></p>
+            <pre>${JSON.stringify(result.searchParams, null, 2)}</pre>
+            <p><strong>Results Found:</strong> ${result.resultCount}</p>
+          </div>
+        `;
+      });
+      
+      resultsDiv.innerHTML = html;
+    }
+
+    // Initialize and run test
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await castleTest.initialize();
+        await castleTest.testCastleSearch();
+      } catch (error) {
+        console.error('Test failed:', error);
+      }
+    });
+  </script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    #output {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    
+    .result-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .result-item h4 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    pre {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏰 Castle Search Test</h1>
+    <p>This test demonstrates that castle-related searches now work with the new title patterns.</p>
+    
+    <div id="output">Initializing test...</div>
+    <div id="results"></div>
+  </div>
+</body>
+</html> 

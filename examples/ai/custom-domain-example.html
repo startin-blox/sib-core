@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Domain Natural Language Search - SIB Core</title>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script type="module">
+    import { AutoTokenizer } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0';
+    import { store } from '../../src/libs/store/store.ts';
+    import { naturalLanguageSearch } from '../../src/libs/natural-language-search.ts';
+    import { getModelConfig } from '../../src/libs/configs/ner-model-config.ts';
+    import '../../src/libs/store/semantizer/semantizer.ts';
+
+    // Custom domain configuration - completely generic
+    const CUSTOM_DOMAIN_CONFIG = {
+      // Define your own NER labels (no defaults)
+      nerLabels: [
+        "O",           // Outside entity
+        "B-product",   // Product name
+        "B-brand",     // Brand name
+        "B-category",  // Product category
+        "B-price"      // Price range
+      ],
+      
+      // Define your own field mappings
+      fieldMappings: {
+        product: {
+          dataSrcIndex: "http://localhost:5173/examples/data/products/product-index.jsonld",
+          dataRdfType: "schema:Product",
+          propertyName: "schema:name"
+        },
+        brand: {
+          dataSrcIndex: "http://localhost:5173/examples/data/products/brand-index.jsonld",
+          dataRdfType: "schema:Product",
+          propertyName: "schema:brand"
+        },
+        category: {
+          dataSrcIndex: "http://localhost:5173/examples/data/products/category-index.jsonld",
+          dataRdfType: "schema:Product",
+          propertyName: "schema:category"
+        },
+        price: {
+          dataSrcIndex: "http://localhost:5173/examples/data/products/price-index.jsonld",
+          dataRdfType: "schema:Product",
+          propertyName: "schema:price"
+        }
+      }
+    };
+
+    class CustomDomainSearch {
+      constructor() {
+        this.isInitialized = false;
+      }
+
+      async initialize() {
+        try {
+          updateStatus("Loading NER model for custom domain...");
+          
+          // Get model configuration for products domain (or fallback to 3dobjects)
+          const modelConfig = getModelConfig('products');
+          
+          // Get the ONNX Runtime instance from the global scope
+          const ort = window.ort;
+          if (!ort) {
+            throw new Error("ONNX Runtime not loaded. Make sure the script tag is present.");
+          }
+          
+          // Initialize with custom labels (required - no defaults)
+          await naturalLanguageSearch.initialize({
+            labels: CUSTOM_DOMAIN_CONFIG.nerLabels,
+            tokenizerPath: modelConfig.tokenizerPath,
+            modelPath: modelConfig.modelPath,
+            ort: ort
+          });
+          
+          // Validate field mappings compatibility
+          const validationErrors = naturalLanguageSearch.validateFieldMappings(CUSTOM_DOMAIN_CONFIG.fieldMappings);
+          if (validationErrors.length > 0) {
+            throw new Error(`Field mapping validation failed: ${validationErrors.join(', ')}`);
+          }
+          
+          this.isInitialized = true;
+          updateStatus("Custom domain NER model loaded successfully!");
+          updateStatus(`Configured labels: ${CUSTOM_DOMAIN_CONFIG.nerLabels.join(', ')}`);
+        } catch (error) {
+          updateStatus(`Error loading NER model: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Perform natural language search using the store
+       * @param prompt - Natural language prompt
+       * @returns Array of matching resources
+       */
+      async search(prompt) {
+        try {
+          updateStatus("Extracting entities from prompt...");
+          
+          // Extract search parameters from the prompt
+          const searchParams = await naturalLanguageSearch.extractSearchParams(prompt);
+          updateStatus(`Extracted entities: ${JSON.stringify(searchParams, null, 2)}`);
+          
+          // Perform the search using custom field mappings
+          const results = await naturalLanguageSearch.search(prompt, CUSTOM_DOMAIN_CONFIG.fieldMappings);
+          
+          updateStatus(`Found ${results.length} results`);
+          return results;
+          
+        } catch (error) {
+          updateStatus(`Search failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Get the current initialization status
+       */
+      get initialized() {
+        return this.isInitialized;
+      }
+
+      /**
+       * Get current configuration info
+       */
+      getConfigurationInfo() {
+        return {
+          labels: naturalLanguageSearch.currentLabels,
+          fieldMappings: Object.keys(CUSTOM_DOMAIN_CONFIG.fieldMappings),
+          domain: "custom-products"
+        };
+      }
+    }
+
+    // Global instance
+    const customSearch = new CustomDomainSearch();
+
+    function updateStatus(status) {
+      const output = document.getElementById("output");
+      output.innerHTML = status;
+      console.log(status);
+    }
+
+    // Initialize the search system
+    async function initializeSearch() {
+      try {
+        await customSearch.initialize();
+        document.getElementById("searchBtn").disabled = false;
+        document.getElementById("searchBtn").textContent = "Search";
+        
+        // Display configuration info
+        const configInfo = customSearch.getConfigurationInfo();
+        document.getElementById("configInfo").innerHTML = `
+          <h3>Current Configuration:</h3>
+          <p><strong>Labels:</strong> ${configInfo.labels.join(', ')}</p>
+          <p><strong>Field Mappings:</strong> ${configInfo.fieldMappings.join(', ')}</p>
+          <p><strong>Domain:</strong> ${configInfo.domain}</p>
+        `;
+      } catch (error) {
+        updateStatus(`Initialization failed: ${error.message}`);
+      }
+    }
+
+    // Handle search button click
+    async function performSearch() {
+      const prompt = document.getElementById("promptInput").value.trim();
+      if (!prompt) {
+        updateStatus("Please enter a search prompt");
+        return;
+      }
+
+      try {
+        document.getElementById("searchBtn").disabled = true;
+        document.getElementById("searchBtn").textContent = "Searching...";
+        
+        const results = await customSearch.search(prompt);
+        displayResults(results);
+        
+      } catch (error) {
+        updateStatus(`Search failed: ${error.message}`);
+      } finally {
+        document.getElementById("searchBtn").disabled = false;
+        document.getElementById("searchBtn").textContent = "Search";
+      }
+    }
+
+    // Display search results
+    function displayResults(results) {
+      const resultsDiv = document.getElementById("results");
+      
+      if (results.length === 0) {
+        resultsDiv.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+
+      const resultsHtml = results.map(resource => {
+        const id = resource['@id'] || resource.id || 'Unknown';
+        const name = resource['schema:name'] || 'Untitled';
+        const brand = resource['schema:brand'] || 'Unknown brand';
+        const category = resource['schema:category'] || 'Unknown category';
+        const price = resource['schema:price'] || 'Unknown price';
+        
+        return `
+          <div class="result-item">
+            <h3>${name}</h3>
+            <p><strong>ID:</strong> ${id}</p>
+            <p><strong>Brand:</strong> ${brand}</p>
+            <p><strong>Category:</strong> ${category}</p>
+            <p><strong>Price:</strong> ${price}</p>
+          </div>
+        `;
+      }).join('');
+
+      resultsDiv.innerHTML = `
+        <h2>Search Results (${results.length})</h2>
+        ${resultsHtml}
+      `;
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById("searchBtn").addEventListener("click", performSearch);
+      document.getElementById("promptInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          performSearch();
+        }
+      });
+      
+      // Initialize the search system
+      initializeSearch();
+    });
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .search-section {
+      margin-bottom: 30px;
+    }
+    
+    #promptInput {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      resize: vertical;
+    }
+    
+    #searchBtn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #searchBtn:hover:not(:disabled) {
+      background-color: #218838;
+    }
+    
+    #searchBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #output {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    
+    .result-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .result-item h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    .result-item p {
+      margin: 5px 0;
+      color: #666;
+    }
+    
+    .examples {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .examples h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+    
+    .example-prompt {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-left: 3px solid #28a745;
+    }
+    
+    .example-prompt:hover {
+      background-color: #f8f9fa;
+    }
+    
+    #configInfo {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    #configInfo h3 {
+      margin-top: 0;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Custom Domain Natural Language Search</h1>
+    
+    <div id="configInfo">
+      <h3>Configuration Loading...</h3>
+    </div>
+    
+    <div class="examples">
+      <h3>💡 Example Prompts for Custom Product Domain (click to try):</h3>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Find a smartphone from Apple in the electronics category under $1000.'">
+        "Find a smartphone from Apple in the electronics category under $1000." (product: "smartphone" → "sma.*")
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='I need a laptop from Dell in the computers category.'">
+        "I need a laptop from Dell in the computers category." (product: "laptop" → "lap.*")
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me a tablet model.'">
+        "Show me a tablet model." (product: "tablet" → "tab.*")
+      </div>
+    </div>
+    
+    <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+      <strong>💡 Product Name Transformation:</strong> Product names are automatically transformed to 3-character patterns for querying. 
+      For example: "smartphone" becomes "sma.*", "laptop" becomes "lap.*", "tablet" becomes "tab.*"
+    </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me products from Samsung in the mobile category.'">
+        "Show me products from Samsung in the mobile category."
+      </div>
+    </div>
+    
+    <div class="search-section">
+      <label for="promptInput"><strong>Enter your search prompt:</strong></label>
+      <textarea 
+        id="promptInput" 
+        rows="4" 
+        placeholder="e.g., Find a smartphone from Apple in the electronics category under $1000."
+      ></textarea>
+      <button id="searchBtn" disabled>Loading...</button>
+    </div>
+    
+    <div id="output">Initializing custom domain search system...</div>
+    
+    <div id="results"></div>
+  </div>
+</body>
+</html> 

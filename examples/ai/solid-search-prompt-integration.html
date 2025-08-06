@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Solid Search Prompt Integration - SIB Core</title>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script type="module">
+    import { AutoTokenizer } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0';
+    import { store } from '../../src/libs/store/store.ts';
+    import { naturalLanguageSearch } from '../../src/libs/natural-language-search.ts';
+    import { THREE_D_MODELS_CONFIG } from '../../src/libs/configs/3d-models-field-mappings.ts';
+    import { getModelConfig } from '../../src/libs/configs/ner-model-config.ts';
+    import '../../src/libs/store/semantizer/semantizer.ts';
+
+    class NaturalLanguageSearch {
+      constructor() {
+        this.isInitialized = false;
+      }
+
+      async initialize() {
+        try {
+          updateStatus("Loading NER model...");
+          
+          // Get model configuration for 3D objects domain
+          const modelConfig = getModelConfig('3dobjects');
+          
+          // Get the ONNX Runtime instance from the global scope
+          const ort = window.ort;
+          if (!ort) {
+            throw new Error("ONNX Runtime not loaded. Make sure the script tag is present.");
+          }
+          
+          // Initialize with required domain-specific configuration using CDN URLs
+          await naturalLanguageSearch.initialize({
+            labels: THREE_D_MODELS_CONFIG.nerLabels, // Required - no defaults
+            tokenizerPath: modelConfig.tokenizerPath,
+            modelPath: modelConfig.modelPath,
+            baseUrl: modelConfig.baseUrl,
+            ort: ort
+          });
+          
+          // Validate field mappings compatibility
+          const validationErrors = naturalLanguageSearch.validateFieldMappings(THREE_D_MODELS_CONFIG.fieldMappings);
+          if (validationErrors.length > 0) {
+            throw new Error(`Field mapping validation failed: ${validationErrors.join(', ')}`);
+          }
+          
+          this.isInitialized = true;
+          updateStatus("NER model loaded successfully!");
+        } catch (error) {
+          updateStatus(`Error loading NER model: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Perform natural language search using the store
+       * @param prompt - Natural language prompt
+       * @returns Array of matching resources ready for ldp:contains
+       */
+      async search(prompt) {
+        try {
+          updateStatus("Extracting entities from prompt...");
+          
+          // Extract search parameters from the prompt
+          const searchParams = await naturalLanguageSearch.extractSearchParams(prompt);
+          updateStatus(`Extracted entities: ${JSON.stringify(searchParams, null, 2)}`);
+          
+          // Perform the search using domain-specific field mappings
+          const results = await naturalLanguageSearch.search(prompt, THREE_D_MODELS_CONFIG.fieldMappings);
+          
+          updateStatus(`Found ${results.length} results`);
+          return results;
+          
+        } catch (error) {
+          updateStatus(`Search failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Perform direct store query using the new queryIndex method
+       * @param prompt - Natural language prompt
+       * @returns Array of matching resources ready for ldp:contains
+       */
+      async searchWithStore(prompt) {
+        try {
+          updateStatus("Extracting entities and querying store directly...");
+          
+          // Extract search parameters from the prompt
+          const searchParams = await naturalLanguageSearch.extractSearchParams(prompt);
+          updateStatus(`Extracted entities: ${JSON.stringify(searchParams, null, 2)}`);
+          
+          // Convert to store query options
+          const queryOptions = naturalLanguageSearch.convertToQueryOptions(searchParams, THREE_D_MODELS_CONFIG.fieldMappings);
+          
+          if (queryOptions.length === 0) {
+            updateStatus("No valid query options found");
+            return [];
+          }
+          
+          // Use the first query option (you could iterate through multiple if needed)
+          const firstQuery = queryOptions[0];
+          updateStatus(`Querying store with: ${JSON.stringify(firstQuery, null, 2)}`);
+          
+          // Call store.queryIndex directly - now returns ready-to-use resources!
+          const results = await store.queryIndex(firstQuery);
+          
+          updateStatus(`Found ${results.length} results from store`);
+          return results;
+          
+        } catch (error) {
+          updateStatus(`Store search failed: ${error.message}`);
+          throw error;
+        }
+      }
+
+      /**
+       * Get the current initialization status
+       */
+      get initialized() {
+        return this.isInitialized;
+      }
+    }
+
+    // Global instance
+    const nlSearch = new NaturalLanguageSearch();
+
+    function updateStatus(status) {
+      const output = document.getElementById("output");
+      output.innerHTML = status;
+      console.log(status);
+    }
+
+    async function displayResults(results, method) {
+      const resultsDiv = document.getElementById("results");
+      let html = `<h3>Search Results (${method}):</h3>`;
+      
+      if (results.length === 0) {
+        html += '<p>No results found.</p>';
+        resultsDiv.innerHTML += html;
+        return;
+      }
+      
+      html += `<p>Found ${results.length} results:</p>`;
+      
+      // Use for...of loop to properly handle async operations
+      for (let index = 0; index < results.length; index++) {
+        const result = results[index];
+        
+        // Handle both Promise and direct value access
+        const title = result['tc:title'] instanceof Promise ? await result['tc:title'] : result['tc:title'];
+        const description = result['description'] instanceof Promise ? await result['description'] : result['description'];
+        const country = result['country'] instanceof Promise ? await result['country'] : result['country'];
+        const format = result['format'] instanceof Promise ? await result['format'] : result['format'];
+        
+        html += `
+          <div class="result-item">
+            <h4>Result ${index + 1}</h4>
+            <p><strong>ID:</strong> ${result['@id'] || 'N/A'}</p>
+            <p><strong>Type:</strong> ${result['@type'] || 'N/A'}</p>
+            <p><strong>Title:</strong> ${title || 'N/A'}</p>
+            <p><strong>Description:</strong> ${description || 'N/A'}</p>
+            <p><strong>Country:</strong> ${country || 'N/A'}</p>
+            <p><strong>Format:</strong> ${format || 'N/A'}</p>
+          </div>
+        `;
+      }
+
+      resultsDiv.innerHTML += html;
+    }
+
+    // Event handlers
+    async function performSearch() {
+      const promptInput = document.getElementById('promptInput');
+      const prompt = promptInput.value.trim();
+      
+      if (!prompt) {
+        updateStatus("Please enter a search prompt");
+        return;
+      }
+      
+      if (!nlSearch.initialized) {
+        updateStatus("Search system not initialized");
+        return;
+      }
+      
+      try {
+        updateStatus("Performing search...");
+        
+        // Clear previous results
+        document.getElementById("results").innerHTML = "";
+        
+        // Method 1: Using naturalLanguageSearch.search (original method)
+        const results1 = await nlSearch.search(prompt);
+        await displayResults(results1, "Natural Language Search");
+        
+        // Method 2: Using store.queryIndex directly (new method)
+        const results2 = await nlSearch.searchWithStore(prompt);
+        
+        // Display store results using the fixed displayResults function
+        await displayResults(results2, "Direct Store Query");
+        
+        updateStatus(`Search completed. Found ${results1.length} results via NL search, ${results2.length} results via direct store query.`);
+        
+      } catch (error) {
+        updateStatus(`Search failed: ${error.message}`);
+        console.error('Search error:', error);
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await nlSearch.initialize();
+        document.getElementById('searchBtn').disabled = false;
+        document.getElementById('searchBtn').textContent = 'Search';
+
+        document.getElementById("searchBtn").addEventListener("click", performSearch);
+        document.getElementById("promptInput").addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            performSearch();
+          }
+        });
+      } catch (error) {
+        console.error('Initialization failed:', error);
+      }
+    });
+
+    // Make functions globally available
+    window.performSearch = performSearch;
+  </script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .search-section {
+      margin-bottom: 30px;
+    }
+    
+    #promptInput {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      resize: vertical;
+    }
+    
+    #searchBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #searchBtn:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    
+    #searchBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #output {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    
+    .result-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .result-item h3, .result-item h4 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    .result-item p {
+      margin: 5px 0;
+      color: #666;
+    }
+    
+    .examples {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .examples h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+    
+    .example-prompt {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-left: 3px solid #007bff;
+    }
+    
+    .example-prompt:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .info-box {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .info-box h4 {
+      margin-top: 0;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Natural Language Search for 3D Objects</h1>
+    
+    <div class="info-box">
+      <h4>🆕 New Store Integration</h4>
+      <p>This example now demonstrates both methods:</p>
+      <ul>
+        <li><strong>Method 1:</strong> Original natural language search with result processing</li>
+        <li><strong>Method 2:</strong> Direct store.queryIndex() call that returns ready-to-use resources for ldp:contains</li>
+      </ul>
+      <p>The store.queryIndex() method now returns complete resource objects that can be directly assigned to ldp:contains!</p>
+    </div>
+    
+    <div class="examples">
+      <h3>💡 Example Prompts (click to try):</h3>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me a castle model'">
+        "Show me a castle model" (tests cas.* pattern)
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Find a fortress model'">
+        "Find a fortress model" (tests for.* pattern)
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me a palace model'">
+        "Show me a palace model" (tests pal.* pattern)
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Find Bran Castle'">
+        "Find Bran Castle" (tests specific castle)
+      </div>
+      <div class="example-prompt" onclick="document.getElementById('promptInput').value='Show me a cathedral model'">
+        "Show me a cathedral model" (tests cat.* pattern)
+      </div>
+    </div>
+    
+    <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+      <strong>💡 Title Transformation:</strong> Titles are automatically transformed to 3-character patterns for querying. 
+      For example: "castle" becomes "cas", "fortress" becomes "for", "palace" becomes "pal"
+    </div>
+    
+    <div class="search-section">
+      <label for="promptInput"><strong>Enter your search prompt:</strong></label>
+      <textarea 
+        id="promptInput" 
+        rows="4" 
+        placeholder="e.g., Show me a castle model"
+      ></textarea>
+      <button id="searchBtn" disabled>Loading...</button>
+    </div>
+    
+    <div id="output">Initializing search system...</div>
+    
+    <div id="results"></div>
+  </div>
+</body>
+</html> 

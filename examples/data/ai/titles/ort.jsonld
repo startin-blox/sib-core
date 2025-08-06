@@ -2,11 +2,11 @@
   "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
   "@graph": [
     {
-      "@id": "http://localhost:5173/examples/data/ai/titles/cēs",
+      "@id": "http://localhost:5173/examples/data/ai/titles/ort.jsonld",
       "@type": "idx:Index"
     },
     {
-      "@id": "http://localhost:5173/examples/data/ai/titles/cēs#target",
+      "@id": "http://localhost:5173/examples/data/ai/titles/ort.jsonld#target",
       "@type": "sh:NodeShape",
       "sh:closed": "false",
       "sh:property": [
@@ -18,15 +18,15 @@
         },
         {
           "sh:path": "tc:title",
-          "sh:pattern": "cēs.*"
+          "sh:pattern": "ort.*"
         }
       ]
     },
     {
-      "@id": "http://localhost:5173/examples/data/ai/titles/cēs#0",
+      "@id": "http://localhost:5173/examples/data/ai/titles/ort.jsonld#0",
       "@type": "idx:IndexEntry",
-      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/cēs#target",
-      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/134.jsonld"
+      "idx:hasShape": "http://localhost:5173/examples/data/ai/titles/ort.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/ai/3DObjects/129.jsonld"
     }
   ]
 }

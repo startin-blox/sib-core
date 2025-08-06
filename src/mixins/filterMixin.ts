@@ -7,22 +7,9 @@ import type { IndexQueryOptions } from '../libs/store/store.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
-import {
-  EntryStreamTransformerDefaultImpl,
-  indexFactory,
-} from '@semantizer/mixin-index';
-import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
 import type {
-  DatasetSemantizer,
   LoggingEntry,
-  NamedNode,
 } from '@semantizer/types';
-import {
-  IndexQueryingStrategyShaclUsingFinalIndex,
-  IndexStrategyFinalShapeDefaultImpl,
-} from '@semantizer/util-index-querying-strategy-shacl-final';
-import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
-import N3 from 'n3';
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 // import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
@@ -33,10 +20,6 @@ enum FilterMode {
   Server = 'server',
   Client = 'client',
   Index = 'index',
-}
-
-interface FilterValue {
-  value: string | string[];
 }
 
 SEMANTIZER.getConfiguration().enableLogging();
