@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exact Match Example - SIB Core</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .note {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Exact Match Example - SIB Core Store</h1>
+    
+    <div class="example-section">
+        <h2>📋 Overview</h2>
+        <p>This example demonstrates how to use the enhanced <code>store.generateShapes</code> method with exact matching capabilities for specific fields like <code>tc:country</code> and <code>dcat:format</code>.</p>
+        
+        <div class="note">
+            <strong>Key Feature:</strong> The <code>exactMatchMapping</code> parameter allows you to specify which properties should use exact matching (<code>sh:hasValue</code>) instead of pattern matching (<code>sh:pattern</code>).
+        </div>
+    </div>
+
+    <div class="example-section">
+        <h2>🔧 Usage Example</h2>
+        
+        <h3>1. Basic Query with Pattern Matching (Default)</h3>
+        <div class="code-block">
+// Standard query - uses sh:pattern with ".*" suffix
+const options: IndexQueryOptions = {
+  dataSrcIndex: "http://localhost:5173/data/ai/3DObjects-index.jsonld",
+  dataRdfType: "tc:3DObject",
+  filterValues: {
+    "tc:title": { value: "castle" }
+  }
+};
+
+const results = await store.queryIndex(options);
+// Generates: sh:pattern "castle.*"
+        </div>
+
+        <h3>2. Query with Exact Matching</h3>
+        <div class="code-block">
+// Query with exact matching for specific fields
+const options: IndexQueryOptions = {
+  dataSrcIndex: "http://localhost:5173/data/ai/3DObjects-index.jsonld",
+  dataRdfType: "tc:3DObject",
+  filterValues: {
+    "tc:title": { value: "castle" },
+    "tc:country": { value: "France" },
+    "dcat:format": { value: "3D" }
+  },
+  exactMatchMapping: {
+    "tc:country": "France",    // Uses sh:hasValue instead of sh:pattern
+    "dcat:format": "3D"        // Uses sh:hasValue instead of sh:pattern
+  }
+};
+
+const results = await store.queryIndex(options);
+// Generates: 
+// - tc:title: sh:pattern "castle.*"
+// - tc:country: sh:hasValue "France"
+// - dcat:format: sh:hasValue "3D"
+        </div>
+
+        <h3>3. Conjunction Query with Exact Matching</h3>
+        <div class="code-block">
+// Conjunction query with exact matching
+const conjunctionOptions: ConjunctionQueryOptions = {
+  dataSrcIndex: "http://localhost:5173/data/ai/3DObjects-index.jsonld",
+  dataRdfType: "tc:3DObject",
+  filterValues: {
+    "tc:title": { value: "medieval" },
+    "tc:country": { value: "Germany" },
+    "dcat:format": { value: "gltf" }
+  },
+  useConjunction: true,
+  exactMatchMapping: {
+    "tc:country": "Germany",
+    "dcat:format": "gltf"
+  }
+};
+
+const results = await store.queryIndexConjunction(conjunctionOptions);
+        </div>
+    </div>
+
+    <div class="example-section">
+        <h2>🔍 SHACL Shape Generation</h2>
+        
+        <h3>Pattern Matching (Default)</h3>
+        <div class="code-block">
+// For property "tc:title" with pattern "castle"
+[ sh:path sh:path; sh:hasValue tc:title ]
+[ sh:path sh:pattern; sh:hasValue "castle.*" ]
+        </div>
+
+        <h3>Exact Matching</h3>
+        <div class="code-block">
+// For property "tc:country" with exact value "France"
+[ sh:path sh:path; sh:hasValue tc:country ]
+[ sh:path sh:hasValue; sh:hasValue "France" ]
+        </div>
+    </div>
+
+    <div class="example-section">
+        <h2>📝 Implementation Details</h2>
+        
+        <h3>Enhanced generateShapes Method</h3>
+        <div class="code-block">
+private generateShapes(
+  rdfType: string, 
+  propertyName: string, 
+  pattern: string, 
+  exactMatchMapping?: Record&lt;string, string&gt;
+) {
+  // Determine if this property should use exact matching
+  const isExactMatch = exactMatchMapping && exactMatchMapping[propertyName];
+  const matchValue = isExactMatch ? exactMatchMapping[propertyName] : `${pattern}.*`;
+  const matchConstraint = isExactMatch ? 'sh:hasValue' : 'sh:pattern';
+  
+  // Generate SHACL shapes with dynamic constraint
+  // ...
+}
+        </div>
+
+        <h3>Updated Interfaces</h3>
+        <div class="code-block">
+export interface IndexQueryOptions {
+  dataSrcProfile?: string;
+  dataSrcIndex: string;
+  dataRdfType: string;
+  filterValues: Record&lt;string, any&gt;;
+  exactMatchMapping?: Record&lt;string, string&gt;; // NEW: Mapping for exact matches
+}
+
+export interface ConjunctionQueryOptions {
+  dataSrcProfile?: string;
+  dataSrcIndex: string;
+  dataRdfType: string;
+  filterValues: Record&lt;string, any&gt;;
+  useConjunction?: boolean;
+  exactMatchMapping?: Record&lt;string, string&gt;; // NEW: Mapping for exact matches
+}
+        </div>
+    </div>
+
+    <div class="example-section">
+        <h2>🎯 Use Cases</h2>
+        
+        <h3>When to Use Exact Matching</h3>
+        <ul>
+            <li><strong>Enumerated values:</strong> Countries, formats, licenses, categories</li>
+            <li><strong>Precise identifiers:</strong> Codes, IDs, specific names</li>
+            <li><strong>Controlled vocabularies:</strong> Standardized terms</li>
+        </ul>
+
+        <h3>When to Use Pattern Matching</h3>
+        <ul>
+            <li><strong>Text search:</strong> Titles, descriptions, content</li>
+            <li><strong>Partial matches:</strong> User input, search terms</li>
+            <li><strong>Fuzzy search:</strong> Approximate matching</li>
+        </ul>
+
+        <div class="note">
+            <strong>Example:</strong> For 3D models, you might want exact matching for <code>dcat:format</code> ("gltf", "fbx", "obj") but pattern matching for <code>tc:title</code> to allow partial text searches.
+        </div>
+    </div>
+
+    <div class="example-section">
+        <h2>🚀 Benefits</h2>
+        <ul>
+            <li><strong>Flexibility:</strong> Choose the right matching strategy for each field</li>
+            <li><strong>Performance:</strong> Exact matches can be more efficient than pattern matching</li>
+            <li><strong>Accuracy:</strong> Avoid false positives from partial matches on enumerated values</li>
+            <li><strong>Backward Compatibility:</strong> Existing code continues to work without changes</li>
+        </ul>
+    </div>
+</body>
+</html> 

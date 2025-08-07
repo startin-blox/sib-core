@@ -5,6 +5,7 @@ export interface FieldMapping {
   dataSrcIndex: string;
   dataRdfType: string;
   propertyName: string;
+  exactMatch?: boolean; // Whether this field should use exact matching instead of pattern matching
 }
 
 export interface FieldMappings {
@@ -54,7 +55,7 @@ export class NaturalLanguageSearch {
         baseUrl,
         tokenizerPath = "ner_tokenizer",
         modelPath = "/ner_model_quantized.onnx",
-        ort
+        ort = (window as any).ort,
       } = config;
       console.log("tokenizerPath", tokenizerPath);
       console.log("modelPath", modelPath);
@@ -163,18 +164,26 @@ export class NaturalLanguageSearch {
       if (value && fieldMappings[entityType]) {
         const mapping = fieldMappings[entityType];
         
-        // Special handling for title-like fields - transform to 3-character pattern
+        // Transform value based on exactMatch configuration
         let transformedValue = value;
-        if (entityType === 'title' || entityType === 'product') {
+        if (!mapping.exactMatch) {
+          // Use pattern matching for title-like fields when exactMatch is false
           transformedValue = this.transformTitleToPattern(value);
         }
-        
+
+        // Determine if this field should use exact matching based on field mapping configuration
+        const exactMatchMapping: Record<string, boolean> = {};
+        if (mapping.exactMatch) {
+          exactMatchMapping[mapping.propertyName] = true;
+        }
+
         queryOptions.push({
           dataSrcIndex: mapping.dataSrcIndex,
           dataRdfType: mapping.dataRdfType,
           filterValues: {
             [mapping.propertyName]: { value: transformedValue }
-          }
+          },
+          exactMatchMapping: Object.keys(exactMatchMapping).length > 0 ? exactMatchMapping : undefined
         });
       }
     }

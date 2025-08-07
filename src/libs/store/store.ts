@@ -70,6 +70,17 @@ export interface IndexQueryOptions {
   dataSrcIndex: string;
   dataRdfType: string;
   filterValues: Record<string, any>;
+  exactMatchMapping?: Record<string, boolean>; // Mapping of property names to exact match flags
+}
+
+// New interface for conjunction queries
+export interface ConjunctionQueryOptions {
+  dataSrcProfile?: string;
+  dataSrcIndex: string;
+  dataRdfType: string;
+  filterValues: Record<string, any>; // Multiple fields
+  useConjunction?: boolean; // Flag to enable conjunction strategy
+  exactMatchMapping?: Record<string, boolean>; // Mapping of property names to exact match flags
 }
 
 export interface IndexQueryResult {
@@ -852,14 +863,23 @@ export class Store {
     const firstFieldValue = firstField[1] as { value: string };
 
     let path = firstField[0];
-    if (path.includes('.')) {
+    let fieldName = path;
+    
+    // Handle nested paths (e.g., "nested.field")
+    if (path.includes('.') && !path.includes(':')) {
       // Split the path on each dots
       const fieldPath: string[] = path.split('.');
       // Get last path
       path = fieldPath.pop() as string;
+      fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
+    } else if (path.includes(':')) {
+      // Handle prefixed URIs (e.g., "schema:location")
+      fieldName = path; // Keep the full prefixed URI
+    } else {
+      // Handle simple field names
+      fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
     }
 
-    const fieldName = path.replace(/_([a-z])/g, g => g[1].toUpperCase());
     const searchPattern = firstFieldValue.value as string;
 
     console.log('🔍 [Store.queryIndex] Parsed parameters:');
@@ -867,13 +887,15 @@ export class Store {
     console.log('  - Field name:', fieldName);
     console.log('  - Search pattern:', searchPattern);
     console.log('  - RDF type:', options.dataRdfType);
+    console.log('  - Exact match mapping:', options.exactMatchMapping);
 
     // Generate shapes dynamically
     console.log('🔧 [Store.queryIndex] Generating SHACL shapes...');
     const { targetShape, subIndexShape, finalShape } = this.generateShapes(
       options.dataRdfType,
       fieldName,
-      searchPattern
+      searchPattern,
+      options.exactMatchMapping
     );
 
     console.log('📝 [Store.queryIndex] Generated shapes:');
@@ -969,17 +991,108 @@ export class Store {
   }
 
   /**
+   * Query multiple fields and find intersection (conjunction) of results
+   * @param options - Conjunction query options with multiple filter values
+   * @returns Promise<any[]> - Array of matching resources that satisfy ALL criteria
+   */
+  async queryIndexConjunction(options: ConjunctionQueryOptions): Promise<any[]> {
+    console.log('🔍 [Store.queryIndexConjunction] Starting conjunction query with options:', JSON.stringify(options, null, 2));
+
+    const filterFields = Object.entries(options.filterValues);
+    console.log('🔍 [Store.queryIndexConjunction] Filter fields:', filterFields);
+
+    if (filterFields.length === 0) {
+      return [];
+    }
+
+    // Execute individual queries for each field
+    const queryPromises = filterFields.map(([propertyName, filterValue]) => {
+      const queryOptions: IndexQueryOptions = {
+        dataSrcIndex: options.dataSrcIndex,
+        dataRdfType: options.dataRdfType,
+        filterValues: {
+          [propertyName]: filterValue
+        },
+        exactMatchMapping: options.exactMatchMapping
+      };
+
+      console.log(`🔍 [Store.queryIndexConjunction] Executing query for ${propertyName}:`, queryOptions);
+      return this.queryIndex(queryOptions);
+    });
+
+    try {
+      // Wait for all queries to complete
+      const allResults = await Promise.all(queryPromises);
+      console.log('🔍 [Store.queryIndexConjunction] All individual queries completed');
+
+      // Find intersection (resources that appear in ALL result sets)
+      if (allResults.length === 1) {
+        return allResults[0];
+      }
+
+      // Get the first result set as the base
+      const baseResults = allResults[0];
+      const baseIds = new Set(baseResults.map((r: any) => r['@id']));
+
+      console.log(`🔍 [Store.queryIndexConjunction] Base results count: ${baseResults.length}`);
+
+      // Check which resources exist in ALL result sets
+      const intersectionResults = baseResults.filter((resource: any) => {
+        const resourceId = resource['@id'];
+        console.log(`🔍 [Store.queryIndexConjunction] Checking resource: ${resourceId}`);
+
+        const existsInAllSets = allResults.every((resultSet, index) => {
+          const found = resultSet.some((r: any) => r['@id'] === resourceId);
+          console.log(`  - Set ${index}: ${found ? '✅' : '❌'} (${resultSet.length} items)`);
+          return found;
+        });
+
+        console.log(`  - Final result: ${existsInAllSets ? '✅ IN INTERSECTION' : '❌ NOT IN INTERSECTION'}`);
+        return existsInAllSets;
+      });
+
+      console.log(`🔍 [Store.queryIndexConjunction] Conjunction results count: ${intersectionResults.length}`);
+      return intersectionResults;
+
+    } catch (error) {
+      console.error('❌ [Store.queryIndexConjunction] Error in conjunction query:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Generate SHACL shapes dynamically based on query parameters
    * @param rdfType - The RDF type to filter on
    * @param propertyName - The property name to search
    * @param pattern - The search pattern
+   * @param exactMatchMapping - Optional mapping of property names to exact match flags (uses sh:hasValue instead of sh:pattern)
    * @returns Object containing target, subindex, and final shapes
    */
-  private generateShapes(rdfType: string, propertyName: string, pattern: string) {
+  private generateShapes(
+    rdfType: string,
+    propertyName: string,
+    pattern: string,
+    exactMatchMapping?: Record<string, boolean>
+  ) {
     console.log('🔧 [Store.generateShapes] Generating shapes with parameters:');
     console.log('  - RDF Type:', rdfType);
     console.log('  - Property Name:', propertyName);
     console.log('  - Pattern:', pattern);
+    console.log('  - Exact Match Mapping:', exactMatchMapping);
+
+    // Determine if this property should use exact matching
+    const isExactMatch = exactMatchMapping && exactMatchMapping[propertyName];
+    // For exact matching, use sh:pattern with case-insensitive regex for case-insensitive exact matching
+    // This handles both case sensitivity and provides standard SHACL compliance
+    // Note: Some SHACL engines may not support (?i) flags, so we use lowercase pattern
+    // Try simple pattern matching without regex anchors for better compatibility
+    const matchValue = isExactMatch ? pattern.toLowerCase() : `${pattern}.*`;
+    const matchConstraint = 'sh:pattern';
+
+    console.log('  - Is Exact Match:', isExactMatch);
+    console.log('  - Match Value:', matchValue);
+    console.log('  - Match Constraint:', matchConstraint);
+    console.log('  - Generated SHACL constraint: [ sh:path', matchConstraint + '; sh:hasValue "' + matchValue + '" ]');
     const targetShape = `
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -1016,7 +1129,7 @@ sh:property [
             [
                 sh:and (
                     [ sh:path sh:path; sh:hasValue ${propertyName} ]
-                    [ sh:path sh:pattern; sh:hasValue "${pattern}.*"  ]
+                    [ sh:path ${matchConstraint}; sh:hasValue "${matchValue}"  ]
                 )
             ];
   sh:qualifiedMinCount 1 ;
@@ -1059,7 +1172,7 @@ sh:property [
             ],
             [
                 sh:and (
-                    [ sh:path sh:path ; sh:hasValue ${propertyName} ]
+                    [ sh:path sh:path; sh:hasValue ${propertyName} ]
                     [ sh:path sh:pattern ; sh:maxCount 0 ]
                 )
             ];
@@ -1103,7 +1216,7 @@ sh:property [
             [
                 sh:and (
                     [ sh:path sh:path; sh:hasValue ${propertyName} ]
-                    [ sh:path sh:pattern; sh:hasValue "${pattern}.*"  ]
+                    [ sh:path ${matchConstraint}; sh:hasValue "${matchValue}"  ]
                 )
             ];
         sh:qualifiedMinCount 1 ;
