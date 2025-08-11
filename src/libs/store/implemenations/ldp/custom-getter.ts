@@ -1,10 +1,11 @@
-import type { Resource } from '../../../../mixins/interfaces.ts';
 import {
   getRawContext,
   mergeContexts,
   normalizeContext,
 } from '../../../helpers.ts';
+import type { Resource } from '../../shared/types.ts';
 import { StoreService } from '../../storeService.ts';
+
 const store = StoreService.getInstance();
 
 export class CustomGetter {

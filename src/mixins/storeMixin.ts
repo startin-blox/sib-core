@@ -5,10 +5,10 @@ import {
 } from '../libs/store/shared/options/server-search.ts';
 import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
-import type { Resource } from './interfaces.ts';
 import { ServerPaginationMixin } from './serverPaginationMixin.ts';
-
 import { StoreService } from '../libs/store/storeService.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
+
 const store = StoreService.getInstance();
 
 if (!store) throw new Error('Store is not available');

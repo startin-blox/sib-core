@@ -1,9 +1,8 @@
 import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
-import type { IStore } from '../../shared/types.ts';
+import type { IStore, Resource } from '../../shared/types.ts';
 
-import type { Resource } from '../../../../mixins/interfaces.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import { appendServerSearchToIri } from '../../shared/options/server-search.ts';
 
@@ -367,9 +366,9 @@ export class LdpStore implements IStore<Resource> {
       if (
         (key === id &&
           resource['@type'] ===
-            this.getExpandedPredicate('ldp:Container', clientContext)) ||
+          this.getExpandedPredicate('ldp:Container', clientContext)) ||
         resource['@type'] ===
-          this.getExpandedPredicate('dcat:Catalog', clientContext)
+        this.getExpandedPredicate('dcat:Catalog', clientContext)
       ) {
         // Add only pagination and search params to the original resource
         if (serverPagination)

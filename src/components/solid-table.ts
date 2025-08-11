@@ -6,7 +6,6 @@ import { FederationMixin } from '../mixins/federationMixin.ts';
 import { FilterMixin } from '../mixins/filterMixin.ts';
 import { GrouperMixin } from '../mixins/grouperMixin.ts';
 import { HighlighterMixin } from '../mixins/highlighterMixin.ts';
-import type { Resource } from '../mixins/interfaces.ts';
 import { ListMixin } from '../mixins/listMixin.ts';
 import { PaginateMixin } from '../mixins/paginateMixin.ts';
 import { RequiredMixin } from '../mixins/requiredMixin.ts';
@@ -19,6 +18,7 @@ import { until } from 'lit/directives/until.js';
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { spread } from '../libs/lit-helpers.ts';
 import { trackRenderAsync } from '../logger.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
 
 export const SolidTable = {
   name: 'solid-table',

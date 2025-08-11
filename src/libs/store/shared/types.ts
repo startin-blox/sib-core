@@ -20,8 +20,6 @@ export interface ConjunctionQueryOptions {
 type Permission = 'add' | 'delete' | 'change' | 'control' | 'view' | string;
 type Context = Record<string, string | { '@id': string }>;
 type DateTime = string;
-import type { Resource as RessourceLDP } from '../../../mixins/interfaces.ts';
-
 export interface Resource extends LimitedResource {
   [key: string]: any;
 }
@@ -67,13 +65,12 @@ export interface IStore<T> {
     ...GetDataArgs
   ):
     | Promise<Resource | null>
-    | Promise<Container<T>>
-    | Promise<RessourceLDP | null>;
+    | Promise<Container<T>>;
   get(
     id: string,
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
-  ): Promise<Resource | null> | Promise<RessourceLDP | null>;
+  ): Promise<Resource | null>;
   post(
     resource: object,
     id: string,

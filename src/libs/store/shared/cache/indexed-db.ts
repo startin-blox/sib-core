@@ -1,5 +1,5 @@
-import type { Resource } from '../../../../mixins/interfaces.ts';
 import { isUrlOrRelativePath } from '../../../helpers.ts';
+import type { Resource } from '../types.ts';
 import type { CacheManagerInterface } from './cache-manager.ts';
 
 /**
