@@ -19,6 +19,7 @@ import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { spread } from '../libs/lit-helpers.ts';
 import type { Resource } from '../libs/store/shared/types.ts';
 import { trackRenderAsync } from '../logger.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
 
 export const SolidTable = {
   name: 'solid-table',
