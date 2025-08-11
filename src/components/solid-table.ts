@@ -17,8 +17,8 @@ import { html, render } from 'lit';
 import { until } from 'lit/directives/until.js';
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { spread } from '../libs/lit-helpers.ts';
-import { trackRenderAsync } from '../logger.ts';
 import type { Resource } from '../libs/store/shared/types.ts';
+import { trackRenderAsync } from '../logger.ts';
 
 export const SolidTable = {
   name: 'solid-table',

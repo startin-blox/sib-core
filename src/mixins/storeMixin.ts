@@ -3,11 +3,11 @@ import {
   formatAttributesToServerSearchOptions,
   mergeServerSearchOptions,
 } from '../libs/store/shared/options/server-search.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
+import { StoreService } from '../libs/store/storeService.ts';
 import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
 import { ServerPaginationMixin } from './serverPaginationMixin.ts';
-import { StoreService } from '../libs/store/storeService.ts';
-import type { Resource } from '../libs/store/shared/types.ts';
 
 const store = StoreService.getInstance();
 

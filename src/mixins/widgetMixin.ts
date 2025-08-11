@@ -6,12 +6,9 @@ import {
   parseFieldsString,
 } from '../libs/helpers.ts';
 import { preHTML, spread } from '../libs/lit-helpers.ts';
-import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
-import {
-  type WidgetInterface,
-  WidgetType,
-} from './interfaces.ts';
 import type { Resource } from '../libs/store/shared/types.ts';
+import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
+import { type WidgetInterface, WidgetType } from './interfaces.ts';
 
 const WidgetMixin = {
   name: 'widget-mixin',

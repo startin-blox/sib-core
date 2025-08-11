@@ -1,5 +1,5 @@
-import type { Resource } from '../libs/store/shared/types.ts';
 import { base_context } from '../libs/store/implemenations/ldp/LdpStore.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
