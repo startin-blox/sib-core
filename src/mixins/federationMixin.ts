@@ -1,5 +1,5 @@
-import type { Resource } from '../libs/store/shared/types.ts';
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
