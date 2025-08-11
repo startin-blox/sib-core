@@ -4,11 +4,8 @@ import { InMemoryCacheManager } from '../../shared/cache/in-memory.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import type { IStore, StoreConfig } from '../../shared/types.ts';
-import type { Container, Resource } from '../../shared/types.ts';
-import {
-  initLocalDataSourceContainer,
-  mapSourceToDestination,
-} from '../../shared/utils.ts';
+import type { Resource } from '../../shared/types.ts';
+import { mapSourceToDestination } from '../../shared/utils.ts';
 import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
 import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
 import type { Source } from './interfaces.ts';
@@ -17,7 +14,6 @@ export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
   session: Promise<any> | undefined;
   private fcApi: FederatedCatalogueAPIWrapper;
-  private fcContainer: Container<any> | undefined;
 
   constructor(private cfg: StoreConfig) {
     if (!this.cfg.login) {
@@ -40,7 +36,6 @@ export class FederatedCatalogueStore implements IStore<any> {
       this.cfg.login,
       this.cfg.optionsServer,
     );
-    this.fcContainer = undefined;
     this.cache = new InMemoryCacheManager();
   }
 
@@ -53,15 +48,17 @@ export class FederatedCatalogueStore implements IStore<any> {
       throw new Error('Federated API not initialized, returning empty data.');
     }
 
-    if (!this.fcContainer || this.fcContainer['ldp:contains'].length === 0) {
-      this.fcContainer = await initLocalDataSourceContainer();
+    let resource = await this.get(targetType);
+
+    if (!resource || resource['ldp:contains'].length === 0) {
+      resource = await this.initLocalDataSourceContainer();
       const dataset = await this.fcApi.getAllSelfDescriptions();
       for (const item in dataset.items) {
         const sd: Source = await this.fcApi.getSelfDescriptionByHash(
           dataset.items[item].meta.sdHash,
         );
         if (sd) {
-          const resource = mapSourceToDestination(sd, {
+          const mappedResource = mapSourceToDestination(sd, {
             temsServiceBase: this.cfg.temsServiceBase as string,
             temsCategoryBase: this.cfg.temsCategoryBase as string,
             temsImageBase: this.cfg.temsImageBase as string,
@@ -70,38 +67,66 @@ export class FederatedCatalogueStore implements IStore<any> {
 
           // Check if the resource is already in the local container
           if (
-            !this.fcContainer['ldp:contains'].some(
-              (r: Resource) => r['@id'] === resource['@id'],
+            !resource['ldp:contains'].some(
+              (r: Resource) => r['@id'] === mappedResource['@id'],
             )
           ) {
-            this.fcContainer['ldp:contains'].push(resource);
+            resource['ldp:contains'].push(mappedResource);
           }
         }
       }
-      // TODO: Rewrite this line to keep different types of tore isolated
-      // window.sibStore.setLocalData(this.fcContainer, this.fcContainer['@id']);
+      this.setLocalData(resource, resource['@id']);
     }
 
-    const localContainer = await initLocalDataSourceContainer();
-    localContainer['ldp:contains'] = this.fcContainer['ldp:contains'].filter(
-      (item: Resource) => item['@type'] === targetType,
-    );
     document.dispatchEvent(
       new CustomEvent('save', {
-        detail: { resource: { '@id': this.fcContainer['@id'] } },
+        detail: { resource: { '@id': resource['@id'] } },
         bubbles: true,
       }),
     );
 
+    return resource;
+  }
+
+  /**
+   * Initializes a local data source container with a deterministic ID.
+   * This function creates a new local data source container with a predictable identifier
+   * based on the endpoint configuration and sets it in the local store.
+   * @param containerType Optional container type for different data categories
+   * @returns A local data source container with a deterministic ID.
+   */
+  async initLocalDataSourceContainer(containerType = 'default') {
+    const endpointHash =
+      this.cfg.endpoint?.replace(/[^a-zA-Z0-9]/g, '') || 'unknown';
+    const idField = `fc-${endpointHash}-${containerType}`;
+
+    const dataSrc = `store://local.${idField}/`;
+    const localContainer: Resource = {
+      '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
+      '@type': 'ldp:Container',
+      '@id': dataSrc,
+      'ldp:contains': new Array<any>(),
+      permissions: ['view'],
+    };
+    await this.setLocalData(localContainer, dataSrc);
     return localContainer;
   }
 
-  get(
-    _id: string,
+  async get(
+    id: string,
     _serverPagination?: ServerPaginationOptions,
     _serverSearch?: ServerSearchOptions,
-  ) {
-    return Promise.resolve(null);
+  ): Promise<Resource | null> {
+    try {
+      const resource = await this.cache.get(id);
+      return resource || null;
+    } catch (error) {
+      console.error(
+        `[FederatedCatalogueStore] Error getting resource ${id}:`,
+        error,
+      );
+      return null;
+    }
   }
   post(_resource: object, _id: string, _skipFetch?: boolean) {
     return Promise.resolve(null);
@@ -122,11 +147,30 @@ export class FederatedCatalogueStore implements IStore<any> {
     return Promise.resolve(null);
   }
 
-  clearCache(_id: string) {
-    return Promise.resolve();
+  async clearCache(id: string) {
+    try {
+      if (await this.cache.has(id)) {
+        await this.cache.delete(id);
+        console.log(`[FederatedCatalogueStore] Cleared cache for ${id}`);
+      }
+    } catch (error) {
+      console.error(
+        `[FederatedCatalogueStore] Error clearing cache for ${id}:`,
+        error,
+      );
+    }
   }
-  cacheResource(_key: string, _resourceProxy: any) {
-    return Promise.resolve();
+
+  async cacheResource(key: string, resourceProxy: any) {
+    try {
+      await this.cache.set(key, resourceProxy);
+      console.log(`[FederatedCatalogueStore] Cached resource ${key}`);
+    } catch (error) {
+      console.error(
+        `[FederatedCatalogueStore] Error caching resource ${key}:`,
+        error,
+      );
+    }
   }
   _getLanguage() {
     return '';
@@ -142,6 +186,43 @@ export class FederatedCatalogueStore implements IStore<any> {
   subscribeResourceTo(_resourceId: string, _nestedResourceId: string) {}
   fetchAuthn(_iri: string, _options: any) {
     return Promise.resolve({} as Response);
+  }
+
+  async setLocalData(
+    resource: object,
+    id: string,
+    _skipFetch?: boolean,
+  ): Promise<string | null> {
+    try {
+      // Ensure resource has proper @id field
+      const resourceWithId = {
+        ...resource,
+        '@id': id,
+      };
+      await this.cache.set(id, resourceWithId);
+      console.log(`[FederatedCatalogueStore] Stored local data for ${id}`);
+      this.notifyComponents(id, resourceWithId); //??
+      return id;
+    } catch (error) {
+      console.error(
+        `[FederatedCatalogueStore] Error storing local data for ${id}:`,
+        error,
+      );
+      return null;
+    }
+  }
+
+  notifyComponents(id: string, resource: Resource) {
+    document.dispatchEvent(
+      new CustomEvent('resoureReady', {
+        detail: {
+          id,
+          resource,
+          fetchedResource: resource,
+        },
+        bubbles: true,
+      }),
+    );
   }
 }
 

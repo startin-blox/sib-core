@@ -170,27 +170,3 @@ export function mapSourceToDestination(
 
   return dest;
 }
-
-/**
- * Initializes a local data source container with a random ID.
- * This function creates a new local data source container with a unique identifier
- * and sets it in the local store.
- * @returns A local data source container with a random ID.
- */
-export async function initLocalDataSourceContainer() {
-  const idField = Array.from(Array(20), () =>
-    Math.floor(Math.random() * 36).toString(36),
-  ).join('');
-
-  const dataSrc = `store://local.${idField}/`;
-  const localContainer = {
-    '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
-    '@type': 'ldp:Container',
-    '@id': dataSrc,
-    'ldp:contains': new Array<any>(),
-    permissions: ['view'],
-  };
-  // TODO: Rewrite this line to keep different types of tore isolated
-  // await window.sibStore.setLocalData(localContainer, dataSrc);
-  return localContainer;
-}
