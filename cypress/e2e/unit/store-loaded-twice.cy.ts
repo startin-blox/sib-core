@@ -14,25 +14,29 @@ describe('store twice', { testIsolation: false }, () => {
       expect(win.sibStore).to.be.undefined;
 
       // import from store.js
-      const { store, baseContext } = await win.loadStore();
-
+      const { baseContext, StoreService } = await win.loadStore();
+      const store = StoreService.getInstance();
       expect(win.sibStore).to.not.be.undefined;
       expect(store).to.equals(win.sibStore);
 
       // import from index.js
-      const { store: storeCore } = await win.loadStoreFromCore();
+      const { StoreService: GetStoreService } = await win.loadStoreFromCore();
+      const storeCore = GetStoreService.getInstance();
       expect(storeCore).to.equals(store);
       expect(storeCore).to.equals(win.sibStore);
 
-      expect(store.cache.length()).to.equals(0);
-      expect(storeCore.cache.length()).to.equals(0);
-      expect(win.sibStore.cache.length()).to.equals(0);
+      expect(await store.cache.length()).to.equals(0);
+      expect(await storeCore.cache.length()).to.equals(0);
+      expect(await win.sibStore.cache.length()).to.equals(0);
 
-      await store.getData('/examples/data/list/user-1.jsonld', baseContext);
+      await store.getData(
+        '/examples/data/list/users/user-1.jsonld',
+        baseContext,
+      );
 
-      expect(store.cache.length()).to.equals(4);
-      expect(storeCore.cache.length()).to.equals(4);
-      expect(win.sibStore.cache.length()).to.equals(4);
+      expect(await store.cache.length()).to.equals(4);
+      expect(await storeCore.cache.length()).to.equals(4);
+      expect(await win.sibStore.cache.length()).to.equals(4);
     });
   });
 });

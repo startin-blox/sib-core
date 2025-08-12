@@ -1,6 +1,7 @@
 import { Sib } from '../libs/Sib.ts';
 import { setDeepProperty, transformArrayToContainer } from '../libs/helpers.ts';
-import { store } from '../libs/store/store.ts';
+import { StoreService } from '../libs/store/storeService.ts';
+
 import type { WidgetInterface } from '../mixins/interfaces.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
@@ -11,6 +12,7 @@ import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { trackRenderAsync } from '../logger.ts';
 
+const store = StoreService.getInstance();
 export const SolidForm = {
   name: 'solid-form',
   use: [WidgetMixin, StoreMixin, NextMixin, ValidationMixin],
@@ -296,6 +298,7 @@ export const SolidForm = {
   populate: trackRenderAsync(async function (): Promise<void> {
     this.element.oninput = () => this.onInput(); // prevent from firing change multiple times
     this.element.onchange = () => this.onChange();
+    // this._resource = await store.get(this.resourceId);
     const fields = await this.getFields();
     const widgetTemplates = await Promise.all(
       fields.map((field: string) => this.createWidgetTemplate(field)),

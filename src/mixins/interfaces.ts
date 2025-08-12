@@ -15,6 +15,7 @@ export interface Resource {
   serverContext: object;
   isContainer: Function;
   getContainerList: Function;
+  getResourceData: Function;
   isArray: Function;
   isFullResource: Function;
   properties: string[];

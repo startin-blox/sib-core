@@ -1,6 +1,10 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-import { store } from '../libs/store/store.ts';
 import type { Resource } from './interfaces.ts';
+
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
+// const store = await getStoreAsync();
+if (!store) throw new Error('Store is not available');
 
 const FederationMixin = {
   name: 'federation-mixin',
@@ -44,8 +48,10 @@ const FederationMixin = {
           this.containerFetched.push(containerId);
 
           const resourcesFetched = await this.fetchSource(containerId); // fetch the resources of this container
-          if (resourcesFetched)
-            newResources.push(...(await this.getResources(resourcesFetched))); // Add content of source to array...
+          if (resourcesFetched) {
+            const t = await this.getResources(resourcesFetched);
+            newResources.push(...t); // Add content of source to array...}
+          }
         }
       } else {
         newResources.push(res); // Or resource directly if not a container
@@ -54,18 +60,27 @@ const FederationMixin = {
 
     // Special case for list support, if there is only one item it is serialized as an object, not an array
     if (!Array.isArray(resources)) resources = [resources];
-    await Promise.all(resources.map(res => getChildResources(res)));
+    await Promise.all(resources.map(async res => await getChildResources(res)));
     return newResources;
   },
 
   async fetchSource(containerId: string): Promise<Resource[] | null> {
-    const cachedContainer = store.get(containerId); // find container in cache
-    if (!cachedContainer || cachedContainer.getContainerList() === null) {
-      // if container not fetched
-      store.clearCache(containerId); // empty cache
+    let container = await store.get(containerId);
+
+    const isMissingOrEmpty =
+      !container || (await container.getContainerList()) === null;
+    if (isMissingOrEmpty) {
+      container = (await store.getData(
+        containerId,
+        this.context,
+        undefined,
+        undefined,
+        true,
+      )) as Resource;
+    } else {
+      container = (await store.getData(containerId, this.context)) as Resource;
     }
-    const container = await store.getData(containerId, this.context); // and fetch it
-    return container?.['listPredicate'];
+    return await container?.['listPredicate'];
   },
 };
 

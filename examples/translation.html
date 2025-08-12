@@ -19,11 +19,11 @@
     <solid-form-search
       id="filter-dropdownautocomp"
       fields="skills"
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
       widget-skills="solid-form-dropdown-autocompletion-placeholder"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username, skills"
       multiple-skills
       filtered-by="filter-dropdownautocomp"
@@ -40,7 +40,7 @@
     <h3>Solid-form and dialog popup</h3>
     <solid-form
       id="simple-dialog"
-      data-src="/examples/data/list/event-1.jsonld"
+      data-src="/examples/data/list/events/event-1.jsonld"
       fields="name"
       confirmation-type="dialog"
     ></solid-form>

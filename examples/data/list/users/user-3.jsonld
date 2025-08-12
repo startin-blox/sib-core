@@ -1,0 +1,21 @@
+{
+  "@id": "/examples/data/list/users/user-3.jsonld",
+  "first_name": "Not A",
+  "last_name": "Paris Member",
+  "username": "not-member-paris",
+  "email": "not-a@paris.members",
+  "name": "Not A Paris Member",
+  "available": false,
+  "skills": {
+    "@id": "/examples/data/list/users/user-3-skills.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [],
+    "permissions": ["view"]
+  },
+  "profile": {
+    "@id": "/examples/data/list/profiles/profile-3.jsonld"
+  },
+  "@type": "foaf:user",
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

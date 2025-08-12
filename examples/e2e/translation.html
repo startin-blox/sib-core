@@ -22,18 +22,18 @@
 
     <solid-form
       id="void-submitbutton"
-      data-src="/examples/data/list/event-1.jsonld"
+      data-src="/examples/data/list/events/event-1.jsonld"
       fields="name, contact.email"
     ></solid-form>
 
     <solid-form-search
       id="translation-autocomp"
       fields="skills"
-      range-skills="/examples/data/list/skills.jsonld"
+      range-skills="/examples/data/list/skills/skills.jsonld"
       widget-skills="solid-form-multipleselect-autocompletion"
     ></solid-form-search>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="username, skills"
       multiple-skills
       filtered-by="translation-autocomp"
@@ -49,7 +49,7 @@
 
     <solid-form
       id="custom-submitbutton"
-      data-src="/examples/data/list/event-1.jsonld"
+      data-src="/examples/data/list/events/event-1.jsonld"
       fields="name"
       submit-button="Send form"
     ></solid-form>

@@ -1,0 +1,12 @@
+{
+  "@id": "/examples/data/list/events/event-1.jsonld",
+  "name": "Coliving",
+  "date": "2020-07-09",
+  "seats": 12,
+  "description": "Some sublime description of the event you know, and maybe you can add some styling and so on.",
+  "contact": {
+    "@id": "/examples/data/list/users/user-1.jsonld"
+  },
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

@@ -30,7 +30,11 @@ describe('auto-range attribute', function () {
     cy.get('#auto-range1 > div').children().should('have.length', 3);
     cy.get('#auto-range1 > div > solid-display')
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-2.jsonld',
+      )
       .find('solid-display[solid-container]')
       .children()
       .children()
@@ -38,7 +42,11 @@ describe('auto-range attribute', function () {
       .and('contain', 'HTML');
     cy.get('#auto-range1 > div > solid-display')
       .eq(1)
-      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-4.jsonld',
+      )
       .find('solid-display[solid-container]')
       .children()
       .children()
@@ -48,7 +56,11 @@ describe('auto-range attribute', function () {
       .and('contain', 'DevOps');
     cy.get('#auto-range1 > div > solid-display')
       .eq(2)
-      .should('have.attr', 'data-src', '/examples/data/list/user-5.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-5.jsonld',
+      )
       .find('solid-display[solid-container]')
       .children()
       .children()
@@ -63,7 +75,7 @@ describe('auto-range attribute', function () {
     cy.get('#auto-range1 > div > solid-display').should(
       'have.attr',
       'data-src',
-      '/examples/data/list/user-5.jsonld',
+      '/examples/data/list/users/user-5.jsonld',
     );
   });
 
@@ -140,18 +152,30 @@ describe('auto-range attribute', function () {
     cy.get('#auto-range-double > div > solid-display').should(
       'have.attr',
       'data-src',
-      '/examples/data/list/user-2.jsonld',
+      '/examples/data/list/users/user-2.jsonld',
     );
     cy.get('#auto-range-double2 > div').children().should('have.length', 3);
     cy.get('#auto-range-double2 > div > solid-display')
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-2.jsonld',
+      );
     cy.get('#auto-range-double2 > div > solid-display')
       .eq(1)
-      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-4.jsonld',
+      );
     cy.get('#auto-range-double2 > div > solid-display')
       .eq(2)
-      .should('have.attr', 'data-src', '/examples/data/list/user-5.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-5.jsonld',
+      );
 
     cy.get('#double-auto-range')
       .find('select[name="profile"]')
@@ -160,6 +184,10 @@ describe('auto-range attribute', function () {
     cy.get('#auto-range-double2 > div').children().should('have.length', 1);
     cy.get('#auto-range-double2 > div > solid-display')
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/user-4.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-4.jsonld',
+      );
   });
 });

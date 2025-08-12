@@ -7,10 +7,10 @@
     "@type": "ldp:Container",
     "ldp:contains": [
       {
-        "@id": "/examples/data/list/skill-1.jsonld"
+        "@id": "/examples/data/list/skills/skill-1.jsonld"
       },
       {
-        "@id": "/examples/data/list/skill-4.jsonld"
+        "@id": "/examples/data/list/skills/skill-4.jsonld"
       }
     ]
   },

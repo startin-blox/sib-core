@@ -11,7 +11,7 @@
   <body>
     <solid-route active>Route</solid-route>
     <solid-display
-      data-src="/examples/data/list/users.jsonld"
+      data-src="/examples/data/list/users/users.jsonld"
       fields="@id, username, first_name, last_name, email"
     ></solid-display>
 
@@ -19,10 +19,10 @@
     <button id="leave-route">LeaveRoute</button>
 
     <script>
-      document.querySelector('solid-route').resourceId = '/examples/data/list/user-2.jsonld';
+      document.querySelector('solid-route').resourceId = '/examples/data/list/users/user-2.jsonld';
 
       document.getElementById('enter-route').onclick = () => {
-        PubSub.publish('enterRoute./examples/data/list/user-1.jsonld');
+        PubSub.publish('enterRoute./examples/data/list/users/user-1.jsonld');
       }
       document.getElementById('leave-route').onclick = () => {
         PubSub.publish('leaveRoute');

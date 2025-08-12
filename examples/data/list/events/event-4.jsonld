@@ -1,0 +1,11 @@
+{
+  "@id": "/examples/data/list/events/event-4.jsonld",
+  "name": "Assemblée générale",
+  "date": "2020-05-10",
+  "seats": 55,
+  "contact": {
+    "@id": "/examples/data/list/users/user-4.jsonld"
+  },
+  "permissions": [],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

@@ -1,7 +1,10 @@
 import { Sib } from '../libs/Sib.ts';
-import { store } from '../libs/store/store.ts';
 
 import { html, render } from 'lit';
+
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
+if (!store) throw new Error('Store is not available');
 
 export const SolidLang = {
   name: 'solid-lang',

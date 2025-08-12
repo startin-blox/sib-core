@@ -64,7 +64,7 @@
       "@type": ["ldp:Container", "ldp:BasicContainer", "ldp:Resource"]
     },
     {
-      "@id": "/examples/data/list/skills",
+      "@id": "/examples/data/list/skills/skills",
       "@type": ["ldp:Container", "ldp:BasicContainer", "ldp:Resource"]
     },
     {

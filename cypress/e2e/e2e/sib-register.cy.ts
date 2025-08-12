@@ -1,13 +1,11 @@
 describe('Component factory', function () {
   let Sib: typeof import('../../../src/libs/Sib').Sib;
   let win: Window;
-  let doc: Document;
   let cnsl: Console;
   this.beforeEach('get dom', () => {
     cy.visit('examples/e2e/sib-register.html');
     cy.window().then(w => {
       win = w;
-      doc = win.document;
       cnsl = (win as Window & typeof globalThis).console;
       ///@ts-ignore
       Sib = win.Sib;
@@ -17,17 +15,30 @@ describe('Component factory', function () {
   });
 
   it('register', () => {
-    cy.spy(cnsl, 'warn');
-    const myComponent = { name: 'my-component' };
-    Sib.register(myComponent);
-    const el = doc.createElement('my-component');
-    const myComponentClass = win.customElements.get('my-component');
-    expect(myComponentClass).is.not.undefined;
-    ///@ts-ignore
-    expect(el).is.instanceOf(win.HTMLElement);
-    expect(el).is.instanceOf(myComponentClass);
-    expect(cnsl.warn).not.be.called;
-    Sib.register(myComponent);
-    expect(cnsl.warn).to.be.called;
+    cy.window()
+      .should('have.property', 'Sib')
+      .then(async () => {
+        Sib = await win.Sib;
+        expect(Sib).to.be.an('object');
+        expect(Sib).to.have.property('register');
+
+        cnsl = (win as Window & typeof globalThis).console;
+        cy.spy(cnsl, 'warn');
+
+        const myComponent = { name: 'my-component' };
+        Sib.register(myComponent);
+
+        const el = win.document.createElement('my-component');
+        const myComponentClass = win.customElements.get('my-component');
+
+        expect(myComponentClass).to.not.be.undefined;
+        //@ts-ignore
+        expect(el).to.be.instanceOf(win.HTMLElement);
+        expect(el).to.be.instanceOf(myComponentClass);
+        expect(cnsl.warn).not.to.be.called;
+
+        Sib.register(myComponent); // Second call
+        expect(cnsl.warn).to.be.called;
+      });
   });
 });

@@ -1,17 +1,11 @@
 // TODO: We should make tests run independently of one another
 describe('Reactivity e2e test2', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
-    cy.intercept('GET', 'https://ldp-server2.test/users/', {
-      fixture: 'users-nantes.jsonld',
-    });
-    cy.intercept('GET', 'https://ldp-server.test/users/', {
-      fixture: 'users-paris.jsonld',
-    });
-    cy.intercept('GET', '**/sources/users/', {
-      fixture: 'users-source.jsonld',
-    });
     cy.intercept('GET', '**/users/matthieu/', {
       fixture: 'users-matthieu.jsonld',
+    });
+    cy.intercept('GET', '**/users/jbpasquier/', {
+      fixture: 'users-jbpasquier.jsonld',
     });
     cy.intercept('GET', '**/users/matthieu/circles/', {
       fixture: 'users-matthieu-circles.jsonld',
@@ -25,11 +19,17 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     cy.intercept('GET', '**/profiles/alex/', {
       fixture: 'profiles-alex.jsonld',
     });
+    cy.intercept('GET', '**/profiles/admin/', {
+      fixture: 'profiles-admin.jsonld',
+    });
     cy.intercept('GET', '**/circles/16/', {
       fixture: 'circles-16.jsonld',
     });
     cy.intercept('GET', '**/circles/17/members/', {
       fixture: 'circles-17-members.jsonld',
+    });
+    cy.intercept('GET', '**/sources/users/', {
+      fixture: 'users-source.jsonld',
     });
 
     cy.visit('/examples/e2e/reactivity-e2e-test.html');
@@ -40,7 +40,13 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
       fixture: 'users-nantes.jsonld',
     });
     cy.intercept('GET', 'https://ldp-server.test/users/', {
-      fixture: 'users-paris.jsonld', // add fixture in case everything is not loaded yet
+      fixture: 'users-paris.jsonld',
+    });
+    cy.intercept('GET', '**/sources/users/', {
+      fixture: 'users-source.jsonld',
+    });
+    cy.intercept('GET', '**/users/matthieu/', {
+      fixture: 'users-matthieu.jsonld',
     });
 
     cy.get('solid-display#user > div > solid-display-value:nth-child(1)')
@@ -141,7 +147,7 @@ describe('Reactivity e2e test2', { testIsolation: false }, function () {
     ).should('have.text', 'Briouze');
 
     // Nested resource in multi dot field
-    // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); DOES NOT WORK YET
+    // cy.get('solid-display#circle > solid-display-value[name="owner.profile.city"]').should('contain', 'Paris'); //DOES NOT WORK YET
   });
 
   it('has reactive properties', () => {

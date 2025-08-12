@@ -1,0 +1,14 @@
+{
+  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
+  "@id": "/examples/data/catalog/users/user-1-skills.jsonld",
+  "@type": "dcat:Catalog",
+  "dcat:dataset": [
+    {
+      "@id": "/examples/data/catalog/skills/skill-2.jsonld"
+    },
+    {
+      "@id": "/examples/data/catalog/skills/skill-3.jsonld"
+    }
+  ],
+  "permissions": ["view"]
+}

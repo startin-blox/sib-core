@@ -1,0 +1,7 @@
+{
+  "@id": "/examples/data/catalog/skills/skill-4.jsonld",
+  "name": "DevOps",
+  "@type": "hd:skill",
+  "permissions": ["view", "change", "control", "delete"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

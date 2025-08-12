@@ -7,10 +7,10 @@
     "@type": "dcat:Catalog",
     "dcat:dataset": [
       {
-        "@id": "/examples/data/catalog/skill-1.jsonld"
+        "@id": "/examples/data/catalog/skills/skill-1.jsonld"
       },
       {
-        "@id": "/examples/data/catalog/skill-4.jsonld"
+        "@id": "/examples/data/catalog/skills/skill-4.jsonld"
       }
     ]
   },

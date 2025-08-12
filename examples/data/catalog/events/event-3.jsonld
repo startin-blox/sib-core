@@ -1,0 +1,21 @@
+{
+  "@context": "https://www.w3.org/ns/dcat3.jsonld",
+  "@id": "/examples/data/catalog/events/event-3.jsonld",
+  "@type": "dcat:Dataset",
+  "title": "Réunion d'information",
+  "description": "Information meeting about upcoming projects.",
+  "created": "2020-07-10",
+  "modified": "2020-07-10",
+  "spatial": {
+    "@type": "Location",
+    "title": "Rennes"
+  },
+  "theme": {
+    "@id": "http://example.com/themes/conference"
+  },
+  "contactPoint": {
+    "@id": "/examples/data/list/users/user-3.jsonld"
+  },
+  "seats": 230,
+  "permissions": []
+}

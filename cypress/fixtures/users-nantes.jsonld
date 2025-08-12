@@ -10,7 +10,7 @@
       "email": "admin@admin.in",
       "name": "Admin Admin",
       "profile": {
-        "@id": "http://ldp-server2.test/profiles/admin/"
+        "@id": "https://ldp-server2.test/profiles/admin/"
       },
       "@type": "foaf:user",
       "@context": {

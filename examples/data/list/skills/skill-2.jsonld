@@ -1,0 +1,25 @@
+{
+  "@id": "/examples/data/list/skills/skill-2.jsonld",
+  "name": "CSS",
+  "@type": "hd:skill",
+  "teacher": {
+    "@id": "/examples/data/list/skills/skills-2-teacher.jsonld",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "/examples/data/list/users/teacher-1.jsonld",
+        "name": "John Doe",
+        "@type": "hd:teacher",
+        "email": "bento@sib.com"
+      },
+      {
+        "@id": "/examples/data/list/users/teacher-2.jsonld",
+        "name": "Jane Doe",
+        "@type": "hd:teacher",
+        "email": "jane@doe.com"
+      }
+    ]
+  },
+  "permissions": ["view", "change", "control", "delete"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

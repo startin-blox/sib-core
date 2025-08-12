@@ -1,7 +1,0 @@
-{
-  "@id": "/examples/data/list/skill-5.jsonld",
-  "name": "PHP",
-  "@type": "hd:skill",
-  "permissions": ["view", "change", "control", "delete"],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
-}

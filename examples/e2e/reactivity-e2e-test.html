@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Reactivity of the Startin’blox store test</title>
+  <title>Reactivity of the Startin'blox store test</title>
   <script type="module" src="../../dist/index.js"></script>
 </head>
 <body>
@@ -48,7 +48,7 @@
     </template>
   </solid-widget>
 
-  <h2>user list</h2>
+  <h2>user list from paris</h2>
   <solid-display
     id="users"
     data-src="https://ldp-server.test/users/"
@@ -59,7 +59,7 @@
   <solid-display
     id="federation"
     data-src="https://ldp-server.test/sources/users/"
-    fields="first_name, last_name, username"
+    fields="first_name, last_name, username, profile.city"
   ></solid-display>
 
   <h2>range</h2>

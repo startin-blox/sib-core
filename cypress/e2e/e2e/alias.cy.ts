@@ -7,19 +7,23 @@ describe('alias', function () {
     cy.get('#alias-test > div')
       .children()
       .eq(0)
-      .should('have.attr', 'data-src', '/examples/data/list/user-1.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-1.jsonld',
+      );
 
     cy.get('#alias-test > div > solid-display > div')
       .children()
       .eq(0)
       .should('have.attr', 'name', '@id')
-      .should('have.attr', 'value', '/examples/data/list/user-1.jsonld');
+      .should('have.attr', 'value', '/examples/data/list/users/user-1.jsonld');
 
     cy.get('#alias-test > div > solid-display > div')
       .children()
       .eq(1)
       .should('have.attr', 'name', '@id as user_id')
-      .should('have.attr', 'value', '/examples/data/list/user-1.jsonld');
+      .should('have.attr', 'value', '/examples/data/list/users/user-1.jsonld');
 
     cy.get('#alias-test > div > solid-display > div')
       .children()
@@ -36,7 +40,11 @@ describe('alias', function () {
     cy.get('#alias-test > div')
       .children()
       .eq(1)
-      .should('have.attr', 'data-src', '/examples/data/list/user-2.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/users/user-2.jsonld',
+      );
 
     cy.get('#alias-test > div')
       .children()
@@ -46,7 +54,7 @@ describe('alias', function () {
         expect($element).to.have.attr('name', '@id as user_id');
         expect($element).to.have.attr(
           'value',
-          '/examples/data/list/user-2.jsonld',
+          '/examples/data/list/users/user-2.jsonld',
         );
       });
 
@@ -67,7 +75,7 @@ describe('alias', function () {
         expect($element).to.have.attr('name', '@id as user_id');
         expect($element).to.have.attr(
           'value',
-          '/examples/data/list/user-4.jsonld',
+          '/examples/data/list/users/user-4.jsonld',
         );
       });
 

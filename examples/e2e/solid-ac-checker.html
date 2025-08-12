@@ -36,7 +36,7 @@
     <div>
       <h3>Fetch permissions</h3>
       <solid-display
-        data-src="/examples/data/list/skills.jsonld"
+        data-src="/examples/data/list/skills/skills.jsonld"
         fields="name"
       ></solid-display>
       <button id="load">Load data</button>
@@ -56,7 +56,7 @@
       </solid-widget>
 
       <solid-display
-        data-src="/examples/data/list/skills.jsonld"
+        data-src="/examples/data/list/skills/skills.jsonld"
         fields="name, @id"
         widget-id="ac-checker-widget"
       ></solid-display>
@@ -64,7 +64,7 @@
 
     <script>
       load.onclick= () => {
-        document.querySelector('#ac-checker-3').dataset.src = "/examples/data/list/skill-2.jsonld";
+        document.querySelector('#ac-checker-3').dataset.src = "/examples/data/list/skills/skill-2.jsonld";
       }
     </script>
   </body>

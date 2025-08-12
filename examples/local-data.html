@@ -16,7 +16,7 @@
       (async () => {
         const urlFoo = `store://local.foo`;
         const urlBar = `store://local.bar`;
-        const data1 = await fetch('data/list/skills.jsonld').then(r =>r.json());
+        const data1 = await fetch('data/list/skills/skills.jsonld').then(r =>r.json());
         delete data1['@context'];
         data1['@id'] = urlFoo;
         // data['ldp:contains'] = data['ldp:contains'].map(a=>({'$id': a['$id']}));

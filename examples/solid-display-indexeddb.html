@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SIB test: solid-display</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <script type="module">
+    import { IndexedDBCacheManager } from '../src/libs/store/cache/indexed-db.ts';
+    import { StoreService } from '../src/libs/store/storeService.ts';
+    import { StoreType } from '../src/libs/store/IStore.ts';
+
+    // let store;
+    let indexedDBCacheManager = new IndexedDBCacheManager();
+    const sibAuth = document.querySelector('sib-auth');
+    const storeOptions = {
+      cacheManager: indexedDBCacheManager
+    };
+
+    if (sibAuth) {
+      const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
+      storeOptions.session = sibAuthDefined.then(() => (sibAuth).session);
+      storeOptions.fetchMethod = sibAuthDefined.then(() =>
+        (sibAuth).getFetch(),
+      );
+    }
+
+    StoreService.init({
+      type: StoreType.LDP,
+      options: storeOptions
+    });
+
+    console.log('StoreService initialized with IndexedDBCacheManager', window.sibStore);
+  </script>
+
+  <body>
+    <h2>Simple display</h2>
+    <solid-display
+      data-src="/examples/data/list/users/users.jsonld"
+    ></solid-display>
+
+    <h2>Simple display of nested fields</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      nested-field="events"
+      fields="name"
+    ></solid-display>
+
+    <h2>Simple display of array of resources</h2>
+    <solid-display
+      data-src="/examples/data/list/group-3.jsonld"
+      array-field="members"
+      fields="name"
+    ></solid-display>
+
+    <style>
+      .id{
+        font-family: monospace;
+        color: blue;
+      }
+      .name{
+        font-family: cursive;
+        color: green;
+      }
+    </style>
+  </body>
+  <script type="module" src="../src/index.ts"></script>
+</html>

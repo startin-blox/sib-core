@@ -1,0 +1,40 @@
+{
+  "@id": "/examples/data/list/users/paris.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "/examples/data/list/users/users/matthieu/",
+      "first_name": "Matthieu",
+      "last_name": "Fesselier",
+      "username": "matthieu",
+      "email": "matthieu.fesselier@gmail.com",
+      "name": "Matthieu Fesselier",
+      "profile": {
+        "@id": "/examples/data/list/users/profiles/matthieu/"
+      },
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      },
+      "permissions": ["view", "change"]
+    },
+    {
+      "@id": "/examples/data/list/users/users/jbpasquier/",
+      "first_name": "Jean-Baptiste",
+      "last_name": "Pasquier",
+      "username": "jbpasquier",
+      "email": "contact@jbpasquier.eu",
+      "name": "Jean-Baptiste Pasquier",
+      "profile": {
+        "@id": "/examples/data/list/users/profiles/jbpasquier/"
+      },
+      "@type": "foaf:user",
+      "@context": {
+        "get_full_name": "rdfs:label"
+      },
+      "permissions": ["view"]
+    }
+  ],
+  "permissions": ["add", "view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

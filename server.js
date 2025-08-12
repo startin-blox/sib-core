@@ -39,7 +39,7 @@ process.env.ELECTRON_EXTRA_LAUNCH_ARGS = '--lang=en';
       const val = String(req.query['search-terms'] || '');
 
       const jsonData = await fs.readFile(
-        './examples/data/list/users-mocked.jsonld',
+        './examples/data/list/users/users-mocked.jsonld',
         { encoding: 'utf8' },
       );
       const data = JSON.parse(jsonData);

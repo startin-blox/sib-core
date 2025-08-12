@@ -31,7 +31,11 @@ describe('solid-widget', { testIsolation: false }, function () {
   it('nested component', () => {
     cy.get('#display-4')
       .find('custom-widget-4 solid-display')
-      .should('have.attr', 'data-src', '/examples/data/list/profile-1.jsonld');
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/profiles/profile-1.jsonld',
+      );
 
     cy.get('#display-4')
       .find('custom-widget-4 solid-display solid-display-value[name=city]')
@@ -41,7 +45,7 @@ describe('solid-widget', { testIsolation: false }, function () {
   it('src attribute', () => {
     cy.get('#display-5')
       .find('custom-widget-5 span[name=src]')
-      .should('have.text', '/examples/data/list/user-1.jsonld');
+      .should('have.text', '/examples/data/list/users/user-1.jsonld');
     cy.get('#display-5')
       .find('custom-widget-5 span[name=value]')
       .should('have.text', 'next-view');
@@ -69,7 +73,7 @@ describe('solid-widget', { testIsolation: false }, function () {
       return (<any>$el[0]).component.getFormValue().then(res => {
         expect(res).to.deep.equal({
           email: 'test-user@example.com',
-          '@id': '/examples/data/list/user-1.jsonld',
+          '@id': '/examples/data/list/users/user-1.jsonld',
         });
       });
     });

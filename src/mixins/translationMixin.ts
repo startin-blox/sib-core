@@ -1,4 +1,7 @@
-import { store } from '../libs/store/store.ts';
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
+
+if (!store) throw new Error('Store is not available');
 
 const TranslationMixin = {
   name: 'translation-mixin',

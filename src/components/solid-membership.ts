@@ -1,14 +1,16 @@
 import { Sib } from '../libs/Sib.ts';
-import { base_context, store } from '../libs/store/store.ts';
 import { NextMixin } from '../mixins/nextMixin.ts';
 import { ValidationMixin } from '../mixins/validationMixin.ts';
 
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { normalizeContext } from '../libs/helpers.ts';
+import { base_context } from '../libs/store/LdpStore.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 export const SolidMembership = {
   name: 'solid-membership',
   use: [NextMixin, ValidationMixin, ContextMixin],

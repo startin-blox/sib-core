@@ -23,7 +23,7 @@ const SorterMixin = {
     sortedBy: {
       type: String,
       default: null,
-      callback(newValue: string) {
+      async callback(newValue: string) {
         // if we change search form, re-populate
         if (
           newValue &&
@@ -31,7 +31,7 @@ const SorterMixin = {
           newValue !== this.sortForm.getAttribute('id')
         ) {
           this.sortForm = null;
-          this.populate();
+          await this.populate();
         }
       },
     },

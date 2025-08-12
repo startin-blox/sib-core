@@ -1,5 +1,6 @@
 import { Sib } from '../libs/Sib.ts';
-import { store } from '../libs/store/store.ts';
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 import { CounterMixin } from '../mixins/counterMixin.ts';
 import { FederationMixin } from '../mixins/federationMixin.ts';
 import { FilterMixin } from '../mixins/filterMixin.ts';

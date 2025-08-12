@@ -1,0 +1,20 @@
+{
+  "@id": "/examples/data/list/sources/users.jsonld",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "federation": "users",
+      "@id": "/examples/data/list/sources/users/paris.jsonld",
+      "@type": "sib:federatedContainer",
+      "permissions": ["view"]
+    },
+    {
+      "federation": "users",
+      "@id": "https://ldp-server2.test/users/",
+      "@type": "sib:federatedContainer",
+      "permissions": ["view"]
+    }
+  ],
+  "permissions": ["view"],
+  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+}

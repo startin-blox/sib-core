@@ -1,10 +1,12 @@
 import { PostProcessorRegistry } from '../../libs/PostProcessorRegistry.ts';
-import { base_context, store } from '../../libs/store/store.ts';
+import { base_context } from '../../libs/store/LdpStore.ts';
 import { FederationMixin } from '../../mixins/federationMixin.ts';
 import type { Resource } from '../../mixins/interfaces.ts';
 import { SorterMixin } from '../../mixins/sorterMixin.ts';
 import { StoreMixin } from '../../mixins/storeMixin.ts';
 
+import { StoreService } from '../../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 const RangeMixin = {
   name: 'range-mixin',
   use: [StoreMixin, SorterMixin, FederationMixin],
@@ -63,7 +65,7 @@ const RangeMixin = {
     this.listAttributes.optionValue = this.optionValue;
   },
   async populate() {
-    const resources = this.resource ? this.resource['listPredicate'] : [];
+    const resources = this.resource ? await this.resource['listPredicate'] : [];
     const listPostProcessorsCopy = this.listPostProcessors.deepCopy();
     listPostProcessorsCopy.attach(
       this.setRangeAttribute.bind(this),
@@ -101,7 +103,9 @@ const RangeMixin = {
       };
 
       this.listAttributes.range = await Promise.all(
-        resources.filter(el => el !== null).map(r => getRangeValue(r)),
+        resources
+          .filter(el => el !== null)
+          .map(async r => await getRangeValue(r)),
       );
     }
 

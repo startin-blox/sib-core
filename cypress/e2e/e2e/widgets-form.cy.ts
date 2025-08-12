@@ -249,7 +249,11 @@ describe('form widgets', { testIsolation: false }, function () {
   it('solid-form-dropdown', () => {
     // With no initial value
     cy.get('solid-form-dropdown#test1')
-      .should('have.attr', 'data-src', '/examples/data/list/skills.jsonld')
+      .should(
+        'have.attr',
+        'data-src',
+        '/examples/data/list/skills/skills.jsonld',
+      )
       .children()
       .should('have.length', 1);
 
@@ -269,7 +273,7 @@ describe('form widgets', { testIsolation: false }, function () {
       .should(
         'have.attr',
         'value',
-        '{"@id": "/examples/data/list/skill-1.jsonld"}',
+        '{"@id": "/examples/data/list/skills/skill-1.jsonld"}',
       )
       .contains('HTML');
 
@@ -280,13 +284,16 @@ describe('form widgets', { testIsolation: false }, function () {
 
     cy.get('solid-form-dropdown#test1 > select')
       .select('CSS')
-      .should('have.value', '{"@id": "/examples/data/list/skill-2.jsonld"}'); // test change value
+      .should(
+        'have.value',
+        '{"@id": "/examples/data/list/skills/skill-2.jsonld"}',
+      ); // test change value
 
     cy.get('solid-form-dropdown#test1').then($el => {
       // Check API
       expect((<any>$el[0]).component.value).to.equal(''); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(
-        '{"@id": "/examples/data/list/skill-2.jsonld"}',
+        '{"@id": "/examples/data/list/skills/skill-2.jsonld"}',
       ); // form value
       expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
       expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
@@ -295,14 +302,14 @@ describe('form widgets', { testIsolation: false }, function () {
     // With initial value
     cy.get('solid-form-dropdown#test2 > select').should(
       'have.value',
-      '{"@id": "/examples/data/list/skill-2.jsonld"}',
+      '{"@id": "/examples/data/list/skills/skill-2.jsonld"}',
     );
     cy.get('solid-form-dropdown#test2').then($el => {
       expect((<any>$el[0]).component.value).to.equal(
-        '/examples/data/list/skill-2.jsonld',
+        '/examples/data/list/skills/skill-2.jsonld',
       ); // value attribute
       expect((<any>$el[0]).component.getValue()).to.equal(
-        '{"@id": "/examples/data/list/skill-2.jsonld"}',
+        '{"@id": "/examples/data/list/skills/skill-2.jsonld"}',
       ); // form value
     });
 
@@ -312,9 +319,9 @@ describe('form widgets', { testIsolation: false }, function () {
       .should(
         'have.attr',
         'value',
-        '{"@id": "/examples/data/list/skill-1.jsonld"}',
+        '{"@id": "/examples/data/list/skills/skill-1.jsonld"}',
       )
-      .contains('/examples/data/list/skill-1.jsonld');
+      .contains('/examples/data/list/skills/skill-1.jsonld');
 
     // With multiple
     cy.get('solid-form-dropdown#test4 > select')
@@ -323,16 +330,16 @@ describe('form widgets', { testIsolation: false }, function () {
       .should('have.length', 8);
     cy.get('solid-form-dropdown#test4').then($el => {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([
-        { '@id': '/examples/data/list/skill-1.jsonld' },
-        { '@id': '/examples/data/list/skill-3.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-1.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-3.jsonld' },
       ]); // form value
     });
 
     cy.get('solid-form-dropdown#test4 > select').select(['CSS', 'Javascript']); // change value
     cy.get('solid-form-dropdown#test4').then($el => {
       expect((<any>$el[0]).component.getValue()).to.deep.equal([
-        { '@id': '/examples/data/list/skill-2.jsonld' },
-        { '@id': '/examples/data/list/skill-3.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-2.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-3.jsonld' },
       ]); // form value
     });
 
@@ -419,7 +426,7 @@ describe('form widgets', { testIsolation: false }, function () {
       .should(
         'have.attr',
         'value',
-        '{"@id": "/examples/data/list/profile-2.jsonld"}',
+        '{"@id": "/examples/data/list/profiles/profile-2.jsonld"}',
       );
     cy.get('solid-form-dropdown#test12 > select')
       .children()
@@ -427,7 +434,7 @@ describe('form widgets', { testIsolation: false }, function () {
       .should(
         'have.attr',
         'value',
-        '{"@id": "/examples/data/list/profile-2.jsonld"}',
+        '{"@id": "/examples/data/list/profiles/profile-2.jsonld"}',
       );
   });
 
@@ -438,7 +445,11 @@ describe('form widgets', { testIsolation: false }, function () {
       { prefix: '#dcat-', path: 'catalog' },
     ].forEach(({ prefix, path }) => {
       cy.get(`solid-form-radio${prefix}test1`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/skills.jsonld`)
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/skills/skills.jsonld`,
+        )
         .children()
         .should('have.length', 1);
 
@@ -456,7 +467,7 @@ describe('form widgets', { testIsolation: false }, function () {
         .should(
           'have.attr',
           'value',
-          `{"@id": "/examples/data/${path}/skill-1.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-1.jsonld"}`,
         );
 
       cy.get(`solid-form-radio${prefix}test1`).then($el => {
@@ -470,7 +481,7 @@ describe('form widgets', { testIsolation: false }, function () {
         // Check API
         expect((<any>$el[0]).component.value).to.equal(''); // value attribute
         expect((<any>$el[0]).component.getValue()).to.equal(
-          `{"@id": "/examples/data/${path}/skill-2.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-2.jsonld"}`,
         ); // form value
         expect((<any>$el[0]).component.context).to.be.not.empty; // check storeMixin properties
         expect((<any>$el[0]).component.resourceId).to.be.not.empty; // check storeMixin properties
@@ -483,10 +494,10 @@ describe('form widgets', { testIsolation: false }, function () {
         .should('have.attr', 'checked', 'checked');
       cy.get(`solid-form-radio${prefix}test2`).then($el => {
         expect((<any>$el[0]).component.value).to.equal(
-          `/examples/data/${path}/skill-3.jsonld`,
+          `/examples/data/${path}/skills/skill-3.jsonld`,
         ); // value attribute
         expect((<any>$el[0]).component.getValue()).to.equal(
-          `{"@id": "/examples/data/${path}/skill-3.jsonld"}`,
+          `{"@id": "/examples/data/${path}/skills/skill-3.jsonld"}`,
         ); // form value
       });
     });
@@ -546,9 +557,9 @@ describe('form widgets', { testIsolation: false }, function () {
     cy.get('#test-checkboxes').then(async ($el: any) => {
       const values = await $el[0].component.getValue();
       expect(values).to.deep.equal([
-        { '@id': '/examples/data/list/skill-1.jsonld' },
-        { '@id': '/examples/data/list/skill-3.jsonld' },
-        { '@id': '/examples/data/list/skill-5.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-1.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-3.jsonld' },
+        { '@id': '/examples/data/list/skills/skill-5.jsonld' },
       ]);
     });
   });
@@ -661,7 +672,7 @@ describe('form widgets', { testIsolation: false }, function () {
       cy.get(`solid-form-dropdown-addable${prefix}test1 > solid-form`).should(
         'have.attr',
         'data-src',
-        `/examples/data/${path}/skills.jsonld`,
+        `/examples/data/${path}/skills/skills.jsonld`,
       );
 
       cy.get(`solid-form-dropdown-addable${prefix}test1 > solid-form > form`)
@@ -685,7 +696,11 @@ describe('form widgets', { testIsolation: false }, function () {
 
       // Verify attributes are passed in the solid-form created in solid-form-dropdown-addable
       cy.get(`solid-form-dropdown-addable${prefix}test2 > solid-form`)
-        .should('have.attr', 'data-src', `/examples/data/${path}/users.jsonld`)
+        .should(
+          'have.attr',
+          'data-src',
+          `/examples/data/${path}/users/users.jsonld`,
+        )
         .and('have.attr', 'fields', 'name, username, age')
         .and('have.attr', 'widget-name', 'solid-form-text-placeholder-label')
         .and('have.attr', 'placeholder-name', 'Enter your name')

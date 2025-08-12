@@ -146,8 +146,7 @@ export const SolidFormSearch = {
         '@context': this.context,
         'ldp:contains': ldpContains,
       };
-      // @ts-ignore
-      sibStore.setLocalData(data, id);
+      await sibStore.setLocalData(data, id);
     }
   },
   change(resource: object, eventOptions: FilterEventOptions): void {
