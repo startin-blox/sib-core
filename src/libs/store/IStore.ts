@@ -8,6 +8,16 @@ import type {
 import type { Container } from './federated-catalogue/interfaces.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';
+import type { IndexQueryOptions } from './LdpStore.ts';
+
+// Add the missing ConjunctionQueryOptions interface
+export interface ConjunctionQueryOptions {
+  dataSrcIndex: string;
+  dataRdfType: string;
+  filterValues: Record<string, any>;
+  useConjunction: boolean;
+  exactMatchMapping?: Record<string, boolean>;
+}
 
 type ListArgs = { targetType: string };
 type FetchArgs = {
@@ -70,6 +80,24 @@ export interface IStore<T> {
     property: string,
     context: JSONLDContextParser.JsonLdContextNormalized | null,
   ): string | null;
+
+  // Optional methods that some stores implement
+  queryIndex?(options: IndexQueryOptions): Promise<any[]>;
+  setLocalData?(data: object, id: string, skipFetch?: boolean, bypassLoadingList?: boolean): Promise<string | null>;
+  queryIndexConjunction?(options: ConjunctionQueryOptions): Promise<any[]>;
+}
+
+// Type guard functions
+export function hasQueryIndex(store: IStore<any>): store is IStore<any> & { queryIndex: Function } {
+  return 'queryIndex' in store && typeof store.queryIndex === 'function';
+}
+
+export function hasSetLocalData(store: IStore<any>): store is IStore<any> & { setLocalData: Function } {
+  return 'setLocalData' in store && typeof store.setLocalData === 'function';
+}
+
+export function hasQueryIndexConjunction(store: IStore<any>): store is IStore<any> & { queryIndexConjunction: Function } {
+  return 'queryIndexConjunction' in store && typeof store.queryIndexConjunction === 'function';
 }
 
 export enum StoreType {

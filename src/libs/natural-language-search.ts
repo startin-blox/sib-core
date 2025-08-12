@@ -1,5 +1,8 @@
-import { store } from './store/store.ts';
-import type { IndexQueryOptions } from './store/store.ts';
+import type { IndexQueryOptions } from './store/LdpStore.ts';
+import { StoreService } from '../libs/store/storeService.ts';
+import { hasQueryIndex } from './store/IStore.ts';
+
+const store = StoreService.getInstance();
 
 export interface FieldMapping {
   dataSrcIndex: string;
@@ -68,6 +71,7 @@ export class NaturalLanguageSearch {
       }
 
       // Dynamically import the tokenizer
+      // @ts-ignore
       const { env, AutoTokenizer } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0');
       env.localModelPath = baseUrl;
       console.log("ort", ort);
@@ -107,7 +111,7 @@ export class NaturalLanguageSearch {
     });
 
     // Process the output to extract entities
-    const [batch, outputLen, numLabels] = output.logits.dims;
+    const [outputLen, numLabels] = output.logits.dims;
     const result: NERResult = {};
     
     for (let i = 0; i < outputLen; i++) {
@@ -131,7 +135,7 @@ export class NaturalLanguageSearch {
     const searchObj: SearchParams = {};
     
     for (const label of this.labels) {
-      const [prefix, field] = label.split("-");
+      const [field] = label.split("-");
       if (field && label in result) {
         searchObj[field] = result[label].join(" ").replaceAll(" ##", "");
       }
@@ -215,6 +219,9 @@ export class NaturalLanguageSearch {
       
       for (const options of queryOptions) {
         try {
+          if (!hasQueryIndex(store)) {
+            throw new Error('Store does not support queryIndex method');
+          }
           const results = await store.queryIndex(options);
           allResults.push(...results);
         } catch (error) {

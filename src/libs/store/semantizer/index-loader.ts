@@ -23,6 +23,7 @@ export default class IndexLoader extends LoaderBase implements Loader {
       credentials: 'include',
     });
 
+    // @ts-ignore
     if (!response && !response.ok) {
       throw new Error(response);
     }

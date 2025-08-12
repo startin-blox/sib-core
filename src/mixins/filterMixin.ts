@@ -3,8 +3,10 @@ import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/options/server-search.ts';
 import { StoreService } from '../libs/store/storeService.ts';
+import { hasQueryIndex, hasSetLocalData } from '../libs/store/IStore.ts';
+
 const store = StoreService.getInstance();
-import type { IndexQueryOptions } from '../libs/store/store.ts';
+import type { IndexQueryOptions } from '../libs/store/LdpStore.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
@@ -125,7 +127,10 @@ const FilterMixin = {
   },
   onIndexSearch(submitEvent: any): void {
     this.localResources['ldp:contains'] = []; // empty the previous results
-    store.setLocalData(this.localResources, this.dataSrc, true);
+    if (!hasSetLocalData(store)) {
+      throw new Error('Store does not support setLocalData method');
+    }
+    store.setLocalData(this.localResources, this.dataSrc, false, true);
     if (this.loader) {
       this.loader.toggleAttribute('hidden', false);
     }
@@ -142,10 +147,16 @@ const FilterMixin = {
     };
 
     try {
+      if (!hasQueryIndex(store)) {
+        throw new Error('Store does not support queryIndex method');
+      }
       const results = await store.queryIndex(queryOptions);
       
       // Update the local container with results
       this.localResources['ldp:contains'] = results;
+      if (!hasSetLocalData(store)) {
+        throw new Error('Store does not support setLocalData method');
+      }
       store.setLocalData(this.localResources, this.dataSrc, true);
       this.populate();
       
@@ -182,6 +193,9 @@ const FilterMixin = {
       permissions: ['view'],
     };
 
+    if (!hasSetLocalData(store)) {
+      throw new Error('Store does not support setLocalData method');
+    }
     await store.setLocalData(this.localResources, this.dataSrc);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
   },

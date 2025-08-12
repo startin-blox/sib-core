@@ -26,7 +26,6 @@ import {
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
 import type {
   DatasetSemantizer,
-  LoggingEntry,
   NamedNode,
 } from '@semantizer/types';
 import {
@@ -153,7 +152,7 @@ export class LdpStore implements IStore<Resource> {
     serverPagination?: ServerPaginationOptions,
     serverSearch?: ServerSearchOptions,
     headers?: object,
-    bypassLoadingList? = false,
+    bypassLoadingList?: boolean,
   ): Promise<Resource | null> {
     let key = id;
     if (serverPagination) {
@@ -1093,7 +1092,7 @@ export class LdpStore implements IStore<Resource> {
 
       // Get the first result set as the base
       const baseResults = allResults[0];
-      const baseIds = new Set(baseResults.map((r: any) => r['@id']));
+      // const baseIds = new Set(baseResults.map((r: any) => r['@id']));
 
       console.log(`🔍 [Store.queryIndexConjunction] Base results count: ${baseResults.length}`);
 
