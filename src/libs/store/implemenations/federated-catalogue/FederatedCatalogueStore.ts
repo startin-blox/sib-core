@@ -65,14 +65,7 @@ export class FederatedCatalogueStore implements IStore<any> {
             temsProviderBase: this.cfg.temsProviderBase as string,
           });
 
-          // Check if the resource is already in the local container
-          if (
-            !resource['ldp:contains'].some(
-              (r: Resource) => r['@id'] === mappedResource['@id'],
-            )
-          ) {
-            resource['ldp:contains'].push(mappedResource);
-          }
+          resource['ldp:contains'].push(mappedResource);
         }
       }
       this.setLocalData(resource, resource['@id']);
@@ -194,7 +187,6 @@ export class FederatedCatalogueStore implements IStore<any> {
     _skipFetch?: boolean,
   ): Promise<string | null> {
     try {
-      // Ensure resource has proper @id field
       const resourceWithId = {
         ...resource,
         '@id': id,
