@@ -74,9 +74,9 @@ export class NaturalLanguageSearch {
 
       // Dynamically import the tokenizer
       // @ts-ignore
-      const { env, AutoTokenizer } = await import(
-        'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0'
-      );
+      const transformersUrl =
+        'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0';
+      const { env, AutoTokenizer } = await import(transformersUrl);
       env.localModelPath = baseUrl;
       console.log('ort', ort);
       this.tokenizer = await AutoTokenizer.from_pretrained(tokenizerPath);
