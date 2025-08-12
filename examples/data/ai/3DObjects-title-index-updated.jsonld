@@ -28,7 +28,7 @@
           }
         ]
       },
-      			"idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/ban.jsonld"
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/ai/titles/ban.jsonld"
     },
     {
       "@id": "http://localhost:5173/examples/data/ai/3DObjects-index-title.jsonld#bel",

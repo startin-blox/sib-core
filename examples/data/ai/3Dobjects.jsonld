@@ -91,10 +91,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/40/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -185,10 +182,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/41/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -279,10 +273,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/42/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -373,10 +364,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/43/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -467,10 +455,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/44/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -561,10 +546,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/45/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -655,10 +637,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/46/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -749,10 +728,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/47/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -843,10 +819,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/48/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -937,10 +910,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/49/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1031,10 +1001,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/50/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1125,10 +1092,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/51/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1219,10 +1183,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/52/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -1313,10 +1274,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/53/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -1407,10 +1365,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/54/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1501,10 +1456,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/55/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -1595,10 +1547,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/56/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -1689,10 +1638,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/57/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -1783,10 +1729,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/58/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1877,10 +1820,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/59/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -1971,10 +1911,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/60/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -2065,10 +2002,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/61/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -2159,10 +2093,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/62/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -2253,10 +2184,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/63/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -2347,10 +2275,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/64/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -2441,10 +2366,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/65/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -2535,10 +2457,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/66/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -2629,10 +2548,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/67/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -2723,10 +2639,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/68/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -2817,10 +2730,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/69/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -2911,10 +2821,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/70/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -3005,10 +2912,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/71/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -3099,10 +3003,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/72/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3193,10 +3094,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/73/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3287,10 +3185,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/74/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -3381,10 +3276,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/75/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -3475,10 +3367,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/76/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3569,10 +3458,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/77/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3663,10 +3549,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/78/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3757,10 +3640,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/79/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -3851,10 +3731,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/80/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -3945,10 +3822,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/81/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -4039,10 +3913,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/82/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -4133,10 +4004,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/83/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -4227,10 +4095,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/84/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -4321,10 +4186,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/85/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "Arctur"
     },
     {
@@ -4415,10 +4277,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/86/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -4509,10 +4368,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/87/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "VRT"
     },
     {
@@ -4603,10 +4459,7 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/88/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     },
     {
@@ -4697,18 +4550,9 @@
         "@id": "https://api.tems-stg.startinblox.com/groups/89/",
         "@type": "foaf:Group"
       },
-      "@type": [
-        "tc:Object",
-        "tc:3DObject"
-      ],
+      "@type": ["tc:Object", "tc:3DObject"],
       "publisher": "DPA"
     }
   ],
-  "permissions": [
-    "view",
-    "change",
-    "delete",
-    "add",
-    "control"
-  ]
+  "permissions": ["view", "change", "delete", "add", "control"]
 }

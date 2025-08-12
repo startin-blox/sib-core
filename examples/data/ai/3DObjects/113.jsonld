@@ -87,9 +87,6 @@
     "@id": "https://api.tems-stg.startinblox.com/groups/53/",
     "@type": "foaf:Group"
   },
-  "@type": [
-    "tc:Object",
-    "tc:3DObject"
-  ],
+  "@type": ["tc:Object", "tc:3DObject"],
   "publisher": "VRT"
 }

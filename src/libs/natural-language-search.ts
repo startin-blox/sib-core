@@ -1,6 +1,6 @@
-import type { IndexQueryOptions } from './store/LdpStore.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 import { hasQueryIndex } from './store/IStore.ts';
+import type { IndexQueryOptions } from './store/LdpStore.ts';
 
 const store = StoreService.getInstance();
 
@@ -29,11 +29,11 @@ export interface NERResult {
 }
 
 export interface NERConfig {
-  labels: string[];  // Required - no defaults
+  labels: string[]; // Required - no defaults
   baseUrl: string;
   tokenizerPath?: string;
   modelPath?: string;
-  ort?: any;  // ONNX Runtime instance
+  ort?: any; // ONNX Runtime instance
 }
 
 export class NaturalLanguageSearch {
@@ -49,37 +49,43 @@ export class NaturalLanguageSearch {
    */
   async initialize(config: NERConfig): Promise<void> {
     if (!config.labels || config.labels.length === 0) {
-      throw new Error("Labels are required for NER model initialization");
+      throw new Error('Labels are required for NER model initialization');
     }
 
     try {
       const {
         labels,
         baseUrl,
-        tokenizerPath = "ner_tokenizer",
-        modelPath = "/ner_model_quantized.onnx",
+        tokenizerPath = 'ner_tokenizer',
+        modelPath = '/ner_model_quantized.onnx',
         ort = (window as any).ort,
       } = config;
-      console.log("tokenizerPath", tokenizerPath);
-      console.log("modelPath", modelPath);
+      console.log('tokenizerPath', tokenizerPath);
+      console.log('modelPath', modelPath);
 
       this.labels = [...labels];
       this.ort = ort;
       // Check if ONNX Runtime is available
       if (!this.ort) {
-        throw new Error("ONNX Runtime (ort) is required. Please provide it in the config or ensure it's loaded globally.");
+        throw new Error(
+          "ONNX Runtime (ort) is required. Please provide it in the config or ensure it's loaded globally.",
+        );
       }
 
       // Dynamically import the tokenizer
       // @ts-ignore
-      const { env, AutoTokenizer } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0');
+      const { env, AutoTokenizer } = await import(
+        'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0'
+      );
       env.localModelPath = baseUrl;
-      console.log("ort", ort);
+      console.log('ort', ort);
       this.tokenizer = await AutoTokenizer.from_pretrained(tokenizerPath);
       this.session = await this.ort.InferenceSession.create(modelPath);
       this.isInitialized = true;
     } catch (error) {
-      throw new Error(`Failed to initialize NER model: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Failed to initialize NER model: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -90,39 +96,55 @@ export class NaturalLanguageSearch {
    */
   async applyModel(prompt: string): Promise<NERResult> {
     if (!this.isInitialized) {
-      throw new Error("NER model not initialized. Call initialize() first.");
+      throw new Error('NER model not initialized. Call initialize() first.');
     }
 
     if (this.labels.length === 0) {
-      throw new Error("No labels configured. Please initialize with valid labels.");
+      throw new Error(
+        'No labels configured. Please initialize with valid labels.',
+      );
     }
 
     if (!this.ort) {
-      throw new Error("ONNX Runtime not available. Please provide it during initialization.");
+      throw new Error(
+        'ONNX Runtime not available. Please provide it during initialization.',
+      );
     }
 
     const tensor = await this.tokenizer(prompt);
     const inputLen = tensor.input_ids.data.length;
-    
+
     const output = await this.session.run({
-      input_ids: new this.ort.Tensor("int64", tensor.input_ids.data, [1, inputLen]),
-      attention_mask: new this.ort.Tensor("int64", tensor.attention_mask.data, [1, inputLen]),
-      token_type_ids: new this.ort.Tensor("int64", tensor.token_type_ids.data, [1, inputLen])
+      input_ids: new this.ort.Tensor('int64', tensor.input_ids.data, [
+        1,
+        inputLen,
+      ]),
+      attention_mask: new this.ort.Tensor('int64', tensor.attention_mask.data, [
+        1,
+        inputLen,
+      ]),
+      token_type_ids: new this.ort.Tensor('int64', tensor.token_type_ids.data, [
+        1,
+        inputLen,
+      ]),
     });
 
     // Process the output to extract entities
     const [outputLen, numLabels] = output.logits.dims;
     const result: NERResult = {};
-    
+
     for (let i = 0; i < outputLen; i++) {
-      const predictions = output.logits.cpuData.slice(numLabels * i, numLabels * (i + 1));
+      const predictions = output.logits.cpuData.slice(
+        numLabels * i,
+        numLabels * (i + 1),
+      );
       const label = this.labels[predictions.indexOf(Math.max(...predictions))];
       const token = this.tokenizer.decode([tensor.input_ids.data[i]]);
-      
+
       if (!(label in result)) result[label] = [];
       result[label].push(token);
     }
-    
+
     return result;
   }
 
@@ -133,14 +155,14 @@ export class NaturalLanguageSearch {
    */
   getSearchParams(result: NERResult): SearchParams {
     const searchObj: SearchParams = {};
-    
+
     for (const label of this.labels) {
-      const [field] = label.split("-");
+      const [field] = label.split('-');
       if (field && label in result) {
-        searchObj[field] = result[label].join(" ").replaceAll(" ##", "");
+        searchObj[field] = result[label].join(' ').replaceAll(' ##', '');
       }
     }
-    
+
     return searchObj;
   }
 
@@ -161,13 +183,16 @@ export class NaturalLanguageSearch {
    * @param fieldMappings - Field mappings provided by the component
    * @returns Array of query options for each field
    */
-  convertToQueryOptions(searchParams: SearchParams, fieldMappings: FieldMappings): IndexQueryOptions[] {
+  convertToQueryOptions(
+    searchParams: SearchParams,
+    fieldMappings: FieldMappings,
+  ): IndexQueryOptions[] {
     const queryOptions: IndexQueryOptions[] = [];
-    
+
     for (const [entityType, value] of Object.entries(searchParams)) {
       if (value && fieldMappings[entityType]) {
         const mapping = fieldMappings[entityType];
-        
+
         // Transform value based on exactMatch configuration
         let transformedValue = value;
         if (!mapping.exactMatch) {
@@ -185,13 +210,16 @@ export class NaturalLanguageSearch {
           dataSrcIndex: mapping.dataSrcIndex,
           dataRdfType: mapping.dataRdfType,
           filterValues: {
-            [mapping.propertyName]: { value: transformedValue }
+            [mapping.propertyName]: { value: transformedValue },
           },
-          exactMatchMapping: Object.keys(exactMatchMapping).length > 0 ? exactMatchMapping : undefined
+          exactMatchMapping:
+            Object.keys(exactMatchMapping).length > 0
+              ? exactMatchMapping
+              : undefined,
         });
       }
     }
-    
+
     return queryOptions;
   }
 
@@ -201,22 +229,28 @@ export class NaturalLanguageSearch {
    * @param fieldMappings - Field mappings provided by the component
    * @returns Array of matching resources
    */
-  async search(prompt: string, fieldMappings: FieldMappings): Promise<SearchResult[]> {
+  async search(
+    prompt: string,
+    fieldMappings: FieldMappings,
+  ): Promise<SearchResult[]> {
     try {
       // Step 1: Extract entities using NER
       const nerResult = await this.applyModel(prompt);
       const searchParams = this.getSearchParams(nerResult);
-      
+
       // Step 2: Convert to query options using provided mappings
-      const queryOptions = this.convertToQueryOptions(searchParams, fieldMappings);
-      
+      const queryOptions = this.convertToQueryOptions(
+        searchParams,
+        fieldMappings,
+      );
+
       if (queryOptions.length === 0) {
         return [];
       }
-      
+
       // Step 3: Execute queries
       const allResults: SearchResult[] = [];
-      
+
       for (const options of queryOptions) {
         try {
           if (!hasQueryIndex(store)) {
@@ -228,12 +262,13 @@ export class NaturalLanguageSearch {
           console.error(`Error querying ${options.dataSrcIndex}:`, error);
         }
       }
-      
+
       // Step 4: Remove duplicates and return results
       return this.removeDuplicates(allResults);
-      
     } catch (error) {
-      throw new Error(`Search failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Search failed: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -284,7 +319,7 @@ export class NaturalLanguageSearch {
    */
   updateLabels(labels: string[]): void {
     if (!labels || labels.length === 0) {
-      throw new Error("Labels cannot be empty");
+      throw new Error('Labels cannot be empty');
     }
     this.labels = [...labels];
   }
@@ -297,7 +332,7 @@ export class NaturalLanguageSearch {
   validateFieldMappings(fieldMappings: FieldMappings): string[] {
     const errors: string[] = [];
     const availableEntityTypes = this.labels
-      .map(label => label.split("-")[1])
+      .map(label => label.split('-')[1])
       .filter(Boolean);
 
     for (const entityType of availableEntityTypes) {
@@ -308,7 +343,9 @@ export class NaturalLanguageSearch {
 
     for (const entityType of Object.keys(fieldMappings)) {
       if (!availableEntityTypes.includes(entityType)) {
-        errors.push(`Field mapping for '${entityType}' has no corresponding NER label`);
+        errors.push(
+          `Field mapping for '${entityType}' has no corresponding NER label`,
+        );
       }
     }
 
@@ -320,5 +357,7 @@ export class NaturalLanguageSearch {
 export const naturalLanguageSearch = new NaturalLanguageSearch();
 
 // Export utility functions that require field mappings
-export const extractSearchParams = (prompt: string) => naturalLanguageSearch.extractSearchParams(prompt);
-export const search = (prompt: string, fieldMappings: FieldMappings) => naturalLanguageSearch.search(prompt, fieldMappings); 
+export const extractSearchParams = (prompt: string) =>
+  naturalLanguageSearch.extractSearchParams(prompt);
+export const search = (prompt: string, fieldMappings: FieldMappings) =>
+  naturalLanguageSearch.search(prompt, fieldMappings);

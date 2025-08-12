@@ -24,10 +24,7 @@ import {
   indexFactory,
 } from '@semantizer/mixin-index';
 import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
-import type {
-  DatasetSemantizer,
-  NamedNode,
-} from '@semantizer/types';
+import type { DatasetSemantizer, NamedNode } from '@semantizer/types';
 import {
   IndexQueryingStrategyShaclUsingFinalIndex,
   IndexStrategyFinalShapeDefaultImpl,
@@ -93,7 +90,6 @@ export interface IndexQueryContainer {
   '@id': string;
   'ldp:contains': any[];
 }
-
 
 export class LdpStore implements IStore<Resource> {
   cache: CacheManagerInterface;
@@ -504,37 +500,39 @@ export class LdpStore implements IStore<Resource> {
     ]); // parse context before expandTerm
     const expandedId = this._getExpandedId(id, context);
     if (!expandedId) return null;
-    return this._fetch(method, resource, id, bypassLoadingList).then(async response => {
-      if (response.ok) {
-        if (!skipFetch) {
-          if (method !== '_LOCAL') {
-            await this.clearCache(expandedId);
-          } // clear cache
-          // re-fetch data
-          await this.getData(expandedId, resource['@context']);
-          const nestedResources = await this.getNestedResources(resource, id);
-          const resourcesToRefresh =
-            this.subscriptionVirtualContainersIndex.get(expandedId) || [];
-          const resourcesToNotify =
-            this.subscriptionIndex.get(expandedId) || [];
+    return this._fetch(method, resource, id, bypassLoadingList).then(
+      async response => {
+        if (response.ok) {
+          if (!skipFetch) {
+            if (method !== '_LOCAL') {
+              await this.clearCache(expandedId);
+            } // clear cache
+            // re-fetch data
+            await this.getData(expandedId, resource['@context']);
+            const nestedResources = await this.getNestedResources(resource, id);
+            const resourcesToRefresh =
+              this.subscriptionVirtualContainersIndex.get(expandedId) || [];
+            const resourcesToNotify =
+              this.subscriptionIndex.get(expandedId) || [];
 
-          await this.refreshResources([
-            ...nestedResources,
-            ...resourcesToRefresh,
-          ]) // refresh related resources
-            .then(resourceIds =>
-              this.notifyResources([
-                expandedId,
-                ...resourceIds,
-                ...resourcesToNotify,
-              ]),
-            ); // notify components
+            await this.refreshResources([
+              ...nestedResources,
+              ...resourcesToRefresh,
+            ]) // refresh related resources
+              .then(resourceIds =>
+                this.notifyResources([
+                  expandedId,
+                  ...resourceIds,
+                  ...resourcesToNotify,
+                ]),
+              ); // notify components
+          }
+
+          return response.headers?.get('Location') || null;
         }
-
-        return response.headers?.get('Location') || null;
-      }
-      throw response;
-    });
+        throw response;
+      },
+    );
   }
 
   /**
@@ -661,7 +659,13 @@ export class LdpStore implements IStore<Resource> {
     skipFetch = false,
     bypassLoadingList = false,
   ): Promise<string | null> {
-    return this._updateResource('_LOCAL', resource, id, skipFetch, bypassLoadingList);
+    return this._updateResource(
+      '_LOCAL',
+      resource,
+      id,
+      skipFetch,
+      bypassLoadingList,
+    );
   }
 
   /**
@@ -888,12 +892,18 @@ export class LdpStore implements IStore<Resource> {
    * @returns Promise<any[]> - Array of matching resources for ldp:contains
    */
   async queryIndex(options: IndexQueryOptions): Promise<any[]> {
-    console.log('🔍 [Store.queryIndex] Starting query with options:', JSON.stringify(options, null, 2));
+    console.log(
+      '🔍 [Store.queryIndex] Starting query with options:',
+      JSON.stringify(options, null, 2),
+    );
     let indexDataset: DatasetSemantizer | undefined;
 
     // 0. Load the instance profile if defined
     if (options.dataSrcProfile) {
-      console.log('📋 [Store.queryIndex] Load application profile', options.dataSrcProfile);
+      console.log(
+        '📋 [Store.queryIndex] Load application profile',
+        options.dataSrcProfile,
+      );
       const appIdProfile = await SEMANTIZER.load(
         options.dataSrcProfile,
         solidWebIdProfileFactory,
@@ -909,12 +919,18 @@ export class LdpStore implements IStore<Resource> {
       }
     } else if (options.dataSrcIndex) {
       // 1. Load the index directly
-      console.log('📂 [Store.queryIndex] Loading index from:', options.dataSrcIndex);
+      console.log(
+        '📂 [Store.queryIndex] Loading index from:',
+        options.dataSrcIndex,
+      );
       indexDataset = await SEMANTIZER.load(options.dataSrcIndex);
       console.log('✅ [Store.queryIndex] Index loaded successfully');
     }
 
-    console.log('🔍 [Store.queryIndex] Filter values:', JSON.stringify(options.filterValues, null, 2));
+    console.log(
+      '🔍 [Store.queryIndex] Filter values:',
+      JSON.stringify(options.filterValues, null, 2),
+    );
 
     const filterFields = Object.entries(options.filterValues);
     console.log('🔍 [Store.queryIndex] Filter fields:', filterFields);
@@ -924,7 +940,7 @@ export class LdpStore implements IStore<Resource> {
 
     let path = firstField[0];
     let fieldName = path;
-    
+
     // Handle nested paths (e.g., "nested.field")
     if (path.includes('.') && !path.includes(':')) {
       // Split the path on each dots
@@ -955,7 +971,7 @@ export class LdpStore implements IStore<Resource> {
       options.dataRdfType,
       fieldName,
       searchPattern,
-      options.exactMatchMapping
+      options.exactMatchMapping,
     );
 
     console.log('📝 [Store.queryIndex] Generated shapes:');
@@ -1007,8 +1023,13 @@ export class LdpStore implements IStore<Resource> {
 
       const checkComplete = () => {
         if (streamEnded && pendingFetches === 0) {
-          console.log(`🏁 [Store.queryIndex] All resources fetched. Found ${resultIds.length} result IDs:`, resultIds);
-          console.log(`🎯 [Store.queryIndex] Returning ${resources.length} resources for ldp:contains`);
+          console.log(
+            `🏁 [Store.queryIndex] All resources fetched. Found ${resultIds.length} result IDs:`,
+            resultIds,
+          );
+          console.log(
+            `🎯 [Store.queryIndex] Returning ${resources.length} resources for ldp:contains`,
+          );
           resolve(resources);
         }
       };
@@ -1024,12 +1045,19 @@ export class LdpStore implements IStore<Resource> {
             const resource = await this.getData(result.value);
             if (resource) {
               resources.push(resource);
-              console.log(`✅ [Store.queryIndex] Successfully fetched resource: ${result.value}`);
+              console.log(
+                `✅ [Store.queryIndex] Successfully fetched resource: ${result.value}`,
+              );
             } else {
-              console.warn(`⚠️ [Store.queryIndex] Could not fetch resource: ${result.value}`);
+              console.warn(
+                `⚠️ [Store.queryIndex] Could not fetch resource: ${result.value}`,
+              );
             }
           } catch (error) {
-            console.error(`❌ [Store.queryIndex] Error fetching resource ${result.value}:`, error);
+            console.error(
+              `❌ [Store.queryIndex] Error fetching resource ${result.value}:`,
+              error,
+            );
           } finally {
             pendingFetches--;
             checkComplete();
@@ -1037,13 +1065,16 @@ export class LdpStore implements IStore<Resource> {
         }
       });
 
-      resultStream.on('error', (error) => {
+      resultStream.on('error', error => {
         console.error('❌ [Store.queryIndex] Error in index query:', error);
         reject(error);
       });
 
       resultStream.on('end', () => {
-        console.log(`🏁 [Store.queryIndex] Stream ended. Found ${resultIds.length} result IDs:`, resultIds);
+        console.log(
+          `🏁 [Store.queryIndex] Stream ended. Found ${resultIds.length} result IDs:`,
+          resultIds,
+        );
         streamEnded = true;
         checkComplete();
       });
@@ -1055,11 +1086,19 @@ export class LdpStore implements IStore<Resource> {
    * @param options - Conjunction query options with multiple filter values
    * @returns Promise<any[]> - Array of matching resources that satisfy ALL criteria
    */
-  async queryIndexConjunction(options: ConjunctionQueryOptions): Promise<any[]> {
-    console.log('🔍 [Store.queryIndexConjunction] Starting conjunction query with options:', JSON.stringify(options, null, 2));
+  async queryIndexConjunction(
+    options: ConjunctionQueryOptions,
+  ): Promise<any[]> {
+    console.log(
+      '🔍 [Store.queryIndexConjunction] Starting conjunction query with options:',
+      JSON.stringify(options, null, 2),
+    );
 
     const filterFields = Object.entries(options.filterValues);
-    console.log('🔍 [Store.queryIndexConjunction] Filter fields:', filterFields);
+    console.log(
+      '🔍 [Store.queryIndexConjunction] Filter fields:',
+      filterFields,
+    );
 
     if (filterFields.length === 0) {
       return [];
@@ -1071,19 +1110,24 @@ export class LdpStore implements IStore<Resource> {
         dataSrcIndex: options.dataSrcIndex,
         dataRdfType: options.dataRdfType,
         filterValues: {
-          [propertyName]: filterValue
+          [propertyName]: filterValue,
         },
-        exactMatchMapping: options.exactMatchMapping
+        exactMatchMapping: options.exactMatchMapping,
       };
 
-      console.log(`🔍 [Store.queryIndexConjunction] Executing query for ${propertyName}:`, queryOptions);
+      console.log(
+        `🔍 [Store.queryIndexConjunction] Executing query for ${propertyName}:`,
+        queryOptions,
+      );
       return this.queryIndex(queryOptions);
     });
 
     try {
       // Wait for all queries to complete
       const allResults = await Promise.all(queryPromises);
-      console.log('🔍 [Store.queryIndexConjunction] All individual queries completed');
+      console.log(
+        '🔍 [Store.queryIndexConjunction] All individual queries completed',
+      );
 
       // Find intersection (resources that appear in ALL result sets)
       if (allResults.length === 1) {
@@ -1094,28 +1138,40 @@ export class LdpStore implements IStore<Resource> {
       const baseResults = allResults[0];
       // const baseIds = new Set(baseResults.map((r: any) => r['@id']));
 
-      console.log(`🔍 [Store.queryIndexConjunction] Base results count: ${baseResults.length}`);
+      console.log(
+        `🔍 [Store.queryIndexConjunction] Base results count: ${baseResults.length}`,
+      );
 
       // Check which resources exist in ALL result sets
       const intersectionResults = baseResults.filter((resource: any) => {
         const resourceId = resource['@id'];
-        console.log(`🔍 [Store.queryIndexConjunction] Checking resource: ${resourceId}`);
+        console.log(
+          `🔍 [Store.queryIndexConjunction] Checking resource: ${resourceId}`,
+        );
 
         const existsInAllSets = allResults.every((resultSet, index) => {
           const found = resultSet.some((r: any) => r['@id'] === resourceId);
-          console.log(`  - Set ${index}: ${found ? '✅' : '❌'} (${resultSet.length} items)`);
+          console.log(
+            `  - Set ${index}: ${found ? '✅' : '❌'} (${resultSet.length} items)`,
+          );
           return found;
         });
 
-        console.log(`  - Final result: ${existsInAllSets ? '✅ IN INTERSECTION' : '❌ NOT IN INTERSECTION'}`);
+        console.log(
+          `  - Final result: ${existsInAllSets ? '✅ IN INTERSECTION' : '❌ NOT IN INTERSECTION'}`,
+        );
         return existsInAllSets;
       });
 
-      console.log(`🔍 [Store.queryIndexConjunction] Conjunction results count: ${intersectionResults.length}`);
+      console.log(
+        `🔍 [Store.queryIndexConjunction] Conjunction results count: ${intersectionResults.length}`,
+      );
       return intersectionResults;
-
     } catch (error) {
-      console.error('❌ [Store.queryIndexConjunction] Error in conjunction query:', error);
+      console.error(
+        '❌ [Store.queryIndexConjunction] Error in conjunction query:',
+        error,
+      );
       throw error;
     }
   }
@@ -1132,7 +1188,7 @@ export class LdpStore implements IStore<Resource> {
     rdfType: string,
     propertyName: string,
     pattern: string,
-    exactMatchMapping?: Record<string, boolean>
+    exactMatchMapping?: Record<string, boolean>,
   ) {
     console.log('🔧 [Store.generateShapes] Generating shapes with parameters:');
     console.log('  - RDF Type:', rdfType);
@@ -1152,7 +1208,10 @@ export class LdpStore implements IStore<Resource> {
     console.log('  - Is Exact Match:', isExactMatch);
     console.log('  - Match Value:', matchValue);
     console.log('  - Match Constraint:', matchConstraint);
-    console.log('  - Generated SHACL constraint: [ sh:path', matchConstraint + '; sh:hasValue "' + matchValue + '" ]');
+    console.log(
+      '  - Generated SHACL constraint: [ sh:path',
+      matchConstraint + '; sh:hasValue "' + matchValue + '" ]',
+    );
     const targetShape = `
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .

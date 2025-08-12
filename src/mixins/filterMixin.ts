@@ -1,18 +1,16 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
+import { hasQueryIndex, hasSetLocalData } from '../libs/store/IStore.ts';
 import type { ServerSearchOptions } from '../libs/store/options/server-search.ts';
 import { StoreService } from '../libs/store/storeService.ts';
-import { hasQueryIndex, hasSetLocalData } from '../libs/store/IStore.ts';
 
 const store = StoreService.getInstance();
 import type { IndexQueryOptions } from '../libs/store/LdpStore.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
-import type {
-  LoggingEntry,
-} from '@semantizer/types';
+import type { LoggingEntry } from '@semantizer/types';
 
 // The index strategies: two choices, use a default algorithm by Maxime or use a SPARQL query with Comunica
 // import IndexStrategyConjunction from '@semantizer/mixin-index-strategy-conjunction';
@@ -26,8 +24,8 @@ enum FilterMode {
 }
 
 SEMANTIZER.getConfiguration().enableLogging();
-SEMANTIZER.getConfiguration().registerLoggingEntryCallback((logEntry: LoggingEntry) =>
-  console.log(logEntry.level, logEntry.message),
+SEMANTIZER.getConfiguration().registerLoggingEntryCallback(
+  (logEntry: LoggingEntry) => console.log(logEntry.level, logEntry.message),
 );
 
 const FilterMixin = {
@@ -151,7 +149,7 @@ const FilterMixin = {
         throw new Error('Store does not support queryIndex method');
       }
       const results = await store.queryIndex(queryOptions);
-      
+
       // Update the local container with results
       this.localResources['ldp:contains'] = results;
       if (!hasSetLocalData(store)) {
@@ -159,7 +157,7 @@ const FilterMixin = {
       }
       store.setLocalData(this.localResources, this.dataSrc, true);
       this.populate();
-      
+
       if (this.loader) {
         this.loader.toggleAttribute('hidden', true);
       }

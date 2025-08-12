@@ -6,42 +6,47 @@ import type { FieldMappings } from '../natural-language-search.ts';
  */
 export const DOCUMENTS_FIELD_MAPPINGS: FieldMappings = {
   title: {
-    dataSrcIndex: "http://localhost:5173/examples/data/documents/documents-title-index.jsonld",
-    dataRdfType: "schema:Document",
-    propertyName: "schema:name"
+    dataSrcIndex:
+      'http://localhost:5173/examples/data/documents/documents-title-index.jsonld',
+    dataRdfType: 'schema:Document',
+    propertyName: 'schema:name',
   },
   author: {
-    dataSrcIndex: "http://localhost:5173/examples/data/documents/documents-author-index.jsonld", 
-    dataRdfType: "schema:Document",
-    propertyName: "schema:author"
+    dataSrcIndex:
+      'http://localhost:5173/examples/data/documents/documents-author-index.jsonld',
+    dataRdfType: 'schema:Document',
+    propertyName: 'schema:author',
   },
   subject: {
-    dataSrcIndex: "http://localhost:5173/examples/data/documents/documents-subject-index.jsonld",
-    dataRdfType: "schema:Document", 
-    propertyName: "schema:about"
+    dataSrcIndex:
+      'http://localhost:5173/examples/data/documents/documents-subject-index.jsonld',
+    dataRdfType: 'schema:Document',
+    propertyName: 'schema:about',
   },
   language: {
-    dataSrcIndex: "http://localhost:5173/examples/data/documents/documents-language-index.jsonld",
-    dataRdfType: "schema:Document",
-    propertyName: "schema:inLanguage"
+    dataSrcIndex:
+      'http://localhost:5173/examples/data/documents/documents-language-index.jsonld',
+    dataRdfType: 'schema:Document',
+    propertyName: 'schema:inLanguage',
   },
   date: {
-    dataSrcIndex: "http://localhost:5173/examples/data/documents/documents-date-index.jsonld",
-    dataRdfType: "schema:Document",
-    propertyName: "schema:datePublished"
-  }
+    dataSrcIndex:
+      'http://localhost:5173/examples/data/documents/documents-date-index.jsonld',
+    dataRdfType: 'schema:Document',
+    propertyName: 'schema:datePublished',
+  },
 };
 
 /**
  * NER labels configuration for Documents domain
  */
 export const DOCUMENTS_NER_LABELS = [
-  "O", 
-  "B-title", 
-  "B-author", 
-  "B-subject", 
-  "B-language", 
-  "B-date"
+  'O',
+  'B-title',
+  'B-author',
+  'B-subject',
+  'B-language',
+  'B-date',
 ];
 
 /**
@@ -50,5 +55,5 @@ export const DOCUMENTS_NER_LABELS = [
 export const DOCUMENTS_CONFIG = {
   fieldMappings: DOCUMENTS_FIELD_MAPPINGS,
   nerLabels: DOCUMENTS_NER_LABELS,
-  domain: "documents"
-}; 
+  domain: 'documents',
+};

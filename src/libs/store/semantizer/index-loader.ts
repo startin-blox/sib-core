@@ -2,8 +2,13 @@
 import { Readable } from 'stream';
 import datasetFactory from '@rdfjs/dataset';
 import ParserJsonld from '@rdfjs/parser-jsonld';
-import type { DatasetCoreRdfjs, Loader, LoggingComponent, Quad } from '@semantizer/types';
-import { LoaderBase } from "@semantizer/util-loader-base";
+import type {
+  DatasetCoreRdfjs,
+  Loader,
+  LoggingComponent,
+  Quad,
+} from '@semantizer/types';
+import { LoaderBase } from '@semantizer/util-loader-base';
 import { StoreService } from '../storeService.ts';
 const store = StoreService.getInstance();
 
