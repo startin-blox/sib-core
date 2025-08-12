@@ -18,6 +18,8 @@ type FetchArgs = {
   forceFetch?: boolean;
   serverPagination?: ServerPaginationOptions;
   serverSearch?: ServerSearchOptions;
+  headers?: object;
+  bypassLoadingList?: boolean;
 };
 
 export type GetDataArgs = ListArgs | FetchArgs;
@@ -26,6 +28,7 @@ export type GetDataArgs = ListArgs | FetchArgs;
 export interface IStore<T> {
   cache: CacheManagerInterface;
   session: Promise<any> | undefined;
+  headers?: object;
 
   getData(...GetDataArgs): Promise<Resource | null> | Promise<Container<T>>;
   get(

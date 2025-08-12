@@ -2,7 +2,8 @@ import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
 import type { ServerSearchOptions } from '../libs/store/options/server-search.ts';
-import { store } from '../libs/store/store.ts';
+import { StoreService } from '../libs/store/storeService.ts';
+const store = StoreService.getInstance();
 import type { IndexQueryOptions } from '../libs/store/store.ts';
 import '../libs/store/semantizer/semantizer.ts';
 

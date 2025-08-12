@@ -3,8 +3,9 @@ import { Readable } from 'stream';
 import datasetFactory from '@rdfjs/dataset';
 import ParserJsonld from '@rdfjs/parser-jsonld';
 import type { DatasetCoreRdfjs, Loader, LoggingComponent, Quad } from '@semantizer/types';
-import { store } from '../store.ts';
 import { LoaderBase } from "@semantizer/util-loader-base";
+import { StoreService } from '../storeService.ts';
+const store = StoreService.getInstance();
 
 export default class IndexLoader extends LoaderBase implements Loader {
   override getLoggingComponent(): LoggingComponent {
