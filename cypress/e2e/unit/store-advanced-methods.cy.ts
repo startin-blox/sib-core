@@ -1,9 +1,10 @@
 /**
  * Store Advanced Methods Tests
- * 
+ *
  * Uses examples data from 0.0.0.0:3000/examples/data/ai/cypress/
  */
-const REAL_DATA_SRC_INDEX = 'http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld';
+const REAL_DATA_SRC_INDEX =
+  'http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld';
 
 describe('Store Advanced Methods', { testIsolation: false }, function () {
   this.beforeAll('visit', () => {
@@ -21,9 +22,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
       } else {
         cy.log('⚠️ SEMANTIZER is not available globally');
         cy.log('This explains why advanced methods may not be available');
-        cy.log('The semantizer needs to be imported in the store.html or store.js file');
+        cy.log(
+          'The semantizer needs to be imported in the store.html or store.js file',
+        );
       }
-      
+
       // Check if semantizer is available on the store instance
       const store = win.sibStore;
       if (store && store.constructor.name === 'LdpStore') {
@@ -37,16 +40,20 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     cy.window().then((win: any) => {
       expect(win.sibStore).to.exist;
       expect(win.sibStore).to.be.an('object');
-      
+
       // Log store type and available methods
       cy.log(`Store type: ${win.sibStore.constructor.name}`);
-      cy.log(`Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(win.sibStore)).join(', ')}`);
-      
+      cy.log(
+        `Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(win.sibStore)).join(', ')}`,
+      );
+
       // Check if this is an LdpStore (which should have the advanced methods)
       if (win.sibStore.constructor.name === 'LdpStore') {
         cy.log('✅ Store is LdpStore - should support advanced methods');
       } else {
-        cy.log(`⚠️ Store is ${win.sibStore.constructor.name} - advanced methods may not be available`);
+        cy.log(
+          `⚠️ Store is ${win.sibStore.constructor.name} - advanced methods may not be available`,
+        );
       }
     });
   });
@@ -54,22 +61,26 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
   it('has advanced method prototypes', () => {
     cy.window().then((win: any) => {
       const store = win.sibStore;
-      
+
       // Check if the methods exist (they might be optional in IStore)
       if (store.queryIndex) {
         expect(store.queryIndex).to.be.a('function');
         cy.log('✅ queryIndex method is available');
       } else {
-        cy.log('⚠️ queryIndex method is not available (may need semantizer dependencies)');
+        cy.log(
+          '⚠️ queryIndex method is not available (may need semantizer dependencies)',
+        );
       }
-      
+
       if (store.queryIndexConjunction) {
         expect(store.queryIndexConjunction).to.be.a('function');
         cy.log('✅ queryIndexConjunction method is available');
       } else {
-        cy.log('⚠️ queryIndexConjunction method is not available (may need semantizer dependencies)');
+        cy.log(
+          '⚠️ queryIndexConjunction method is not available (may need semantizer dependencies)',
+        );
       }
-      
+
       // Note: generateShapes is private, so we can't test it directly
       // but we can test it indirectly through queryIndex
     });
@@ -79,7 +90,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should query index with single filter', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping test');
           cy.log('This may indicate missing semantizer dependencies');
@@ -88,32 +99,36 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
 
         cy.log('Testing queryIndex with single filter...');
         cy.log(`Store type: ${store.constructor.name}`);
-        cy.log(`Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(store)).join(', ')}`);
-        
+        cy.log(
+          `Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(store)).join(', ')}`,
+        );
+
         try {
           const results = await store.queryIndex({
             dataSrcIndex: REAL_DATA_SRC_INDEX,
             dataRdfType: 'tc:3DObject',
             filterValues: {
-              'tc:country': { value: 'Slovakia' }
+              'tc:country': { value: 'Slovakia' },
             },
             exactMatchMapping: {
-              'tc:country': true
-            }
+              'tc:country': true,
+            },
           });
 
           expect(results).to.be.an('array');
           cy.log('Results received:', results);
           expect(results.length).to.be.greaterThan(0);
-          
+
           // Check that results contain the expected data
           // @id is the id of the resource
           // @type is the type of the resource
-          const slovakiaResults = results.filter((r: any) => 
-            r['@id'] && r['@type']
+          const slovakiaResults = results.filter(
+            (r: any) => r['@id'] && r['@type'],
           );
           expect(slovakiaResults.length).to.be.greaterThan(0);
-          cy.log(`✅ queryIndex returned ${results.length} results, ${slovakiaResults.length} from Slovakia`);
+          cy.log(
+            `✅ queryIndex returned ${results.length} results, ${slovakiaResults.length} from Slovakia`,
+          );
         } catch (error) {
           cy.log('❌ Error during queryIndex:', error);
           throw error;
@@ -124,7 +139,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle pattern matching for titles', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping test');
           return;
@@ -134,11 +149,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:title': { value: 'cas' }
+            'tc:title': { value: 'cas' },
           },
           exactMatchMapping: {
-            'tc:title': false // Pattern matching
-          }
+            'tc:title': false, // Pattern matching
+          },
         });
 
         expect(results).to.be.an('array');
@@ -152,7 +167,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should perform conjunction query with multiple filters', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndexConjunction) {
           cy.log('queryIndexConjunction method not available, skipping test');
           return;
@@ -163,13 +178,13 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataRdfType: 'tc:3DObject',
           filterValues: {
             'tc:country': { value: 'Slovakia' },
-            'tc:title': { value: 'cas' }
+            'tc:title': { value: 'cas' },
           },
           useConjunction: true,
           exactMatchMapping: {
             'tc:country': true,
-            'tc:title': false
-          }
+            'tc:title': false,
+          },
         });
 
         expect(results).to.be.an('array');
@@ -185,7 +200,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should return empty array for no matching filters', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndexConjunction) {
           cy.log('queryIndexConjunction method not available, skipping test');
           return;
@@ -196,9 +211,9 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataRdfType: 'tc:3DObject',
           filterValues: {
             'tc:country': { value: 'NonExistentCountry' },
-            'tc:title': { value: 'NonExistentTitle' }
+            'tc:title': { value: 'NonExistentTitle' },
           },
-          useConjunction: true
+          useConjunction: true,
         });
 
         expect(results).to.be.an('array');
@@ -209,7 +224,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle single filter in conjunction query', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndexConjunction) {
           cy.log('queryIndexConjunction method not available, skipping test');
           return;
@@ -219,12 +234,12 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
+            'tc:country': { value: 'Slovakia' },
           },
           exactMatchMapping: {
-            'tc:country': true
+            'tc:country': true,
           },
-          useConjunction: true
+          useConjunction: true,
         });
 
         expect(results).to.be.an('array');
@@ -238,9 +253,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should generate shapes through queryIndex', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
-          cy.log('queryIndex method not available, skipping generateShapes test');
+          cy.log(
+            'queryIndex method not available, skipping generateShapes test',
+          );
           return;
         }
 
@@ -249,11 +266,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
+            'tc:country': { value: 'Slovakia' },
           },
           exactMatchMapping: {
-            'tc:country': true
-          }
+            'tc:country': true,
+          },
         });
 
         expect(results).to.be.an('array');
@@ -264,7 +281,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle exact match vs pattern matching in shape generation', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping exact match test');
           return;
@@ -275,11 +292,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
+            'tc:country': { value: 'Slovakia' },
           },
           exactMatchMapping: {
-            'tc:country': false
-          }
+            'tc:country': false,
+          },
         });
 
         // Test pattern matching
@@ -287,11 +304,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:title': { value: 'cas' }
+            'tc:title': { value: 'cas' },
           },
           exactMatchMapping: {
-            'tc:title': false
-          }
+            'tc:title': false,
+          },
         });
 
         expect(exactResults).to.be.an('array');
@@ -304,9 +321,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle missing dataSrcIndex gracefully', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
-          cy.log('queryIndex method not available, skipping error handling test');
+          cy.log(
+            'queryIndex method not available, skipping error handling test',
+          );
           return;
         }
 
@@ -314,10 +333,10 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: '',
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
-          }
+            'tc:country': { value: 'Slovakia' },
+          },
         });
-        
+
         // Should return empty array for invalid URL instead of throwing error
         expect(results).to.be.an('array');
         expect(results.length).to.equal(0);
@@ -327,7 +346,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle invalid URL format gracefully', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping invalid URL test');
           return;
@@ -337,10 +356,10 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: 'not-a-valid-url',
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
-          }
+            'tc:country': { value: 'Slovakia' },
+          },
         });
-        
+
         // Should return empty array for invalid URL instead of throwing error
         expect(results).to.be.an('array');
         expect(results.length).to.equal(0);
@@ -350,7 +369,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle null/undefined dataSrcIndex gracefully', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping null URL test');
           return;
@@ -360,10 +379,10 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: null as any,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:country': { value: 'Slovakia' }
-          }
+            'tc:country': { value: 'Slovakia' },
+          },
         });
-        
+
         // Should return empty array for invalid URL instead of throwing error
         expect(results).to.be.an('array');
         expect(results.length).to.equal(0);
@@ -373,9 +392,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle invalid URLs in conjunction queries gracefully', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndexConjunction) {
-          cy.log('queryIndexConjunction method not available, skipping invalid URL test');
+          cy.log(
+            'queryIndexConjunction method not available, skipping invalid URL test',
+          );
           return;
         }
 
@@ -384,11 +405,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataRdfType: 'tc:3DObject',
           filterValues: {
             'tc:country': { value: 'Slovakia' },
-            'tc:title': { value: 'cas' }
+            'tc:title': { value: 'cas' },
           },
-          useConjunction: true
+          useConjunction: true,
         });
-        
+
         // Should return empty array for invalid URL instead of throwing error
         expect(results).to.be.an('array');
         expect(results.length).to.equal(0);
@@ -398,9 +419,11 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle empty filter values', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndexConjunction) {
-          cy.log('queryIndexConjunction method not available, skipping empty filters test');
+          cy.log(
+            'queryIndexConjunction method not available, skipping empty filters test',
+          );
           return;
         }
 
@@ -408,7 +431,7 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {},
-          useConjunction: true
+          useConjunction: true,
         });
 
         expect(results).to.be.an('array');
@@ -421,23 +444,23 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
     it('should handle large result sets', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping performance test');
           return;
         }
 
         const startTime = performance.now();
-        
+
         const results = await store.queryIndex({
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:title': { value: 'cas' } // Very broad pattern
+            'tc:title': { value: 'cas' }, // Very broad pattern
           },
           exactMatchMapping: {
-            'tc:title': false
-          }
+            'tc:title': false,
+          },
         });
 
         const endTime = performance.now();
@@ -446,29 +469,35 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
         expect(results).to.be.an('array');
         expect(executionTime).to.be.lessThan(15000); // Should complete within 5 seconds
       });
-    });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    });
 
     it('should handle special characters in search patterns', async () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
 
         if (!store.queryIndex) {
-          cy.log('queryIndex method not available, skipping special characters test');
+          cy.log(
+            'queryIndex method not available, skipping special characters test',
+          );
           return;
         }
 
-        cy.log('Testing pattern matching with special characters: "castle (medieval)"');
-        cy.log('This should extract "cas" prefix and match the "cas.*" pattern in the index');
+        cy.log(
+          'Testing pattern matching with special characters: "castle (medieval)"',
+        );
+        cy.log(
+          'This should extract "cas" prefix and match the "cas.*" pattern in the index',
+        );
 
         const results = await store.queryIndex({
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:title': { value: 'castle (medieval)' }
+            'tc:title': { value: 'castle (medieval)' },
           },
           exactMatchMapping: {
-            'tc:title': false // Pattern matching
-          }
+            'tc:title': false, // Pattern matching
+          },
         });
 
         expect(results).to.be.an('array');
@@ -478,22 +507,29 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
         expect(results.length).to.be.greaterThan(0);
 
         // Verify we got castle-related results
-        const castleResults = results.filter(async (r: any) => 
-          r['tc:title'] && (await(r['tc:title'])).toLowerCase().includes('castle')
+        const castleResults = results.filter(
+          async (r: any) =>
+            r['tc:title'] &&
+            (await r['tc:title']).toLowerCase().includes('castle'),
         );
-        
-        cy.log(`✅ Pattern matching returned ${results.length} results, ${castleResults.length} castle-related`);
+
+        cy.log(
+          `✅ Pattern matching returned ${results.length} results, ${castleResults.length} castle-related`,
+        );
         expect(castleResults.length).to.be.greaterThan(0);
-        
+
         // Log some example results to verify the pattern matching worked
-        cy.log('Example results:', results.slice(0, 3).map((r: any) => r['tc:title']));
+        cy.log(
+          'Example results:',
+          results.slice(0, 3).map((r: any) => r['tc:title']),
+        );
       });
     });
 
     it('should handle exact matching with special characters', () => {
       cy.window().then(async (win: any) => {
         const store = win.sibStore;
-        
+
         if (!store.queryIndex) {
           cy.log('queryIndex method not available, skipping exact match test');
           return;
@@ -501,29 +537,31 @@ describe('Store Advanced Methods', { testIsolation: false }, function () {
 
         cy.log('Testing exact matching with special characters: "Bran Castle"');
         cy.log('This should use exact pattern matching without wildcards');
-        
+
         const results = await store.queryIndex({
           dataSrcIndex: REAL_DATA_SRC_INDEX,
           dataRdfType: 'tc:3DObject',
           filterValues: {
-            'tc:title': { value: 'Bran Castle' }
+            'tc:title': { value: 'Bran Castle' },
           },
           exactMatchMapping: {
-            'tc:title': false // Exact matching
-          }
+            'tc:title': false, // Exact matching
+          },
         });
 
         expect(results).to.be.an('array');
-        
+
         // Exact matching should find exact matches
         expect(results.length).to.be.greaterThan(0);
-        
+
         // Verify we got the exact match
-        const exactMatches = results.filter(async (r: any) => 
-          await(r['tc:title']) === 'Bran Castle'
+        const exactMatches = results.filter(
+          async (r: any) => (await r['tc:title']) === 'Bran Castle',
         );
-        
-        cy.log(`✅ Exact matching returned ${results.length} results, ${exactMatches.length} exact matches`);
+
+        cy.log(
+          `✅ Exact matching returned ${results.length} results, ${exactMatches.length} exact matches`,
+        );
         expect(exactMatches.length).to.be.greaterThan(0);
       });
     });

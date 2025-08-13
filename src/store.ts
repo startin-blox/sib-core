@@ -1,4 +1,3 @@
-
 // Import minimal polyfills first
 import './polyfills.ts';
 
@@ -8,8 +7,6 @@ import './libs/store/semantizer/semantizer.ts';
 import { base_context as baseContext } from './libs/store/LdpStore.ts';
 
 import { StoreService } from './libs/store/storeService.ts';
-
-
 
 const sibStore = StoreService.getInstance();
 if (!sibStore) throw new Error('Store is not available');

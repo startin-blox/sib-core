@@ -918,7 +918,10 @@ export class LdpStore implements IStore<Resource> {
   async queryIndex(options: IndexQueryOptions): Promise<any[]> {
     // Validate dataSrcIndex before proceeding
     if (!this.isValidUrl(options.dataSrcIndex)) {
-      console.warn('⚠️ [Store.queryIndex] Invalid dataSrcIndex URL:', options.dataSrcIndex);
+      console.warn(
+        '⚠️ [Store.queryIndex] Invalid dataSrcIndex URL:',
+        options.dataSrcIndex,
+      );
       return [];
     }
 
@@ -1121,7 +1124,10 @@ export class LdpStore implements IStore<Resource> {
   ): Promise<any[]> {
     // Validate dataSrcIndex before proceeding
     if (!this.isValidUrl(options.dataSrcIndex)) {
-      console.warn('⚠️ [Store.queryIndexConjunction] Invalid dataSrcIndex URL:', options.dataSrcIndex);
+      console.warn(
+        '⚠️ [Store.queryIndexConjunction] Invalid dataSrcIndex URL:',
+        options.dataSrcIndex,
+      );
       return [];
     }
 
@@ -1249,12 +1255,13 @@ export class LdpStore implements IStore<Resource> {
       const cleanPattern = pattern
         .toLowerCase()
         .replace(/[^\w\s]/g, ' ') // Replace special chars with spaces
-        .replace(/\s+/g, ' ')     // Normalize multiple spaces
-        .trim();                  // Remove leading/trailing spaces
+        .replace(/\s+/g, ' ') // Normalize multiple spaces
+        .trim(); // Remove leading/trailing spaces
 
       // Extract first meaningful word (at least 3 characters)
       const words = cleanPattern.split(' ').filter(word => word.length >= 3);
-      const prefix = words.length > 0 ? words[0].substring(0, 3) : pattern.substring(0, 3);
+      const prefix =
+        words.length > 0 ? words[0].substring(0, 3) : pattern.substring(0, 3);
 
       matchValue = `${prefix}.*`;
 

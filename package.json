@@ -8,10 +8,7 @@
   "directories": {
     "example": "examples"
   },
-  "files": [
-    "dist",
-    "doc"
-  ],
+  "files": ["dist", "doc"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -24,7 +21,7 @@
     "test": "node server.js --test",
     "cypress": "node server.js --test-ui",
     "cypress:open": "cypress open"
-},
+  },
   "repository": {
     "type": "git",
     "url": "https://git.startinblox.com/framework/sib-core.git"
