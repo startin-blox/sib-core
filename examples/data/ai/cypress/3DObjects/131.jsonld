@@ -1,0 +1,92 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/131.jsonld",
+  "creation_date": "2025-03-11T10:31:00Z",
+  "update_date": "2025-04-08T17:31:00Z",
+  "tc:title": "Bansk\u00e1 \u0160tiavnica Old Castle",
+  "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+  "website": "https://www.3d-heritage.eu/en/home/1/f7c8da43-8d99-487d-87d0-5fb13dad5ca6/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/131/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/231/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Early Modern Period",
+  "tc:country": "Slovakia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/71/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "PLY",
+  "file_size": "8 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "JPG",
+  "texture_resolution": "1024x1024",
+  "polygons": 81860,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/71/",
+    "@type": "foaf:Group"
+  },
+  "@type": ["tc:Object", "tc:3DObject"],
+  "publisher": "DPA"
+}

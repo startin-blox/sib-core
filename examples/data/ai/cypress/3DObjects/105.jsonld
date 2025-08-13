@@ -1,0 +1,92 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/105.jsonld",
+  "creation_date": "2025-03-02T10:05:00Z",
+  "update_date": "2025-04-08T17:05:00Z",
+  "tc:title": "Belgrade Fortress",
+  "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+  "website": "https://www.3d-heritage.eu/en/home/1/c3e637b9-c0ed-4c89-b058-75db3de7baa2/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/105/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/205/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Long Nineteenth Century",
+  "tc:country": "Serbia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/45/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "OBJ",
+  "file_size": "108 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "4096x4096",
+  "polygons": 118849,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/45/",
+    "@type": "foaf:Group"
+  },
+  "@type": ["tc:Object", "tc:3DObject"],
+  "publisher": "Arctur"
+}

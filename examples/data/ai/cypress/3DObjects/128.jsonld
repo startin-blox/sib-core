@@ -1,0 +1,92 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/128.jsonld",
+  "creation_date": "2025-03-10T10:28:00Z",
+  "update_date": "2025-04-08T17:28:00Z",
+  "tc:title": "Osijek Tvr\u0111a",
+  "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+  "website": "https://www.3d-heritage.eu/en/home/1/0275a893-69b1-480b-ba7d-3383c79c9e9c/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/128/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/228/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Early Modern Period",
+  "tc:country": "Croatia",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/68/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "PLY",
+  "file_size": "9 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TGA",
+  "texture_resolution": "1024x1024",
+  "polygons": 6777,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/68/",
+    "@type": "foaf:Group"
+  },
+  "@type": ["tc:Object", "tc:3DObject"],
+  "publisher": "DPA"
+}

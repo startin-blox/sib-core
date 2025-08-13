@@ -1,0 +1,74 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:country",
+          "sh:pattern": "Romania"
+        }
+      ]
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/106.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/109.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/122.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/125.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/129.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/130.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/139.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/140.jsonld"
+    }
+  ]
+}

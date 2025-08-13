@@ -1,0 +1,92 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/101.jsonld",
+  "creation_date": "2025-03-01T10:01:00Z",
+  "update_date": "2025-04-08T17:01:00Z",
+  "tc:title": "Sarajevo City Hall",
+  "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+  "website": "https://www.3d-heritage.eu/en/home/1/29557eec-c597-470a-bc3a-4756b90b5490/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/101/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/201/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Contemporary History",
+  "tc:country": "Bosnia and Herzegovina",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/41/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "glTF",
+  "file_size": "80 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "JPG",
+  "texture_resolution": "1024x1024",
+  "polygons": 21081,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/41/",
+    "@type": "foaf:Group"
+  },
+  "@type": ["tc:Object", "tc:3DObject"],
+  "publisher": "Arctur"
+}

@@ -1,0 +1,92 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/122.jsonld",
+  "creation_date": "2025-03-08T10:22:00Z",
+  "update_date": "2025-04-08T17:22:00Z",
+  "tc:title": "Bucharest Palace of Parliament",
+  "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+  "website": "https://www.3d-heritage.eu/en/home/1/2c0bd0e6-f207-4753-b6ec-c3d55dd0f2b0/",
+  "licences": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/licences/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+        "@type": "tc:Licence"
+      }
+    ]
+  },
+  "images": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/images/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/122/",
+        "@type": "tc:Image"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/images/222/",
+        "@type": "tc:Image"
+      }
+    ]
+  },
+  "keywords": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/keywords/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+        "@type": "tc:Keyword"
+      },
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+        "@type": "tc:Keyword"
+      }
+    ]
+  },
+  "categories": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/categories/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+        "@type": "tc:Category"
+      }
+    ]
+  },
+  "time_period": "Classical Antiquity",
+  "tc:country": "Romania",
+  "location": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/locations/62/",
+    "@type": "tc:Location"
+  },
+  "actual_representation": "-",
+  "format": "PLY",
+  "file_size": "91 MB",
+  "year": 2025,
+  "texture": "yes",
+  "texture_formats": "TIFF",
+  "texture_resolution": "2048x2048",
+  "polygons": 122118,
+  "ai": false,
+  "allow_ai": false,
+  "prices": "-",
+  "rights_holder": "-",
+  "creator": "Arctur Team",
+  "providers": {
+    "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/providers/",
+    "@type": "ldp:Container",
+    "ldp:contains": [
+      {
+        "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+        "@type": "tc:Provider"
+      }
+    ]
+  },
+  "owners": {
+    "@id": "https://api.tems-stg.startinblox.com/groups/62/",
+    "@type": "foaf:Group"
+  },
+  "@type": ["tc:Object", "tc:3DObject"],
+  "publisher": "DPA"
+}

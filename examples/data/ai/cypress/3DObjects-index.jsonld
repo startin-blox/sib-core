@@ -1,0 +1,101 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#title",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#publisher",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target"
+          },
+          {
+            "sh:path": "dcat:publisher"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#country",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#format",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#time_period",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:time_period"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-time-period-index.jsonld"
+    }
+  ]
+}

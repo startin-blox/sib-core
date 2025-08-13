@@ -871,6 +871,12 @@ export class LdpStore implements IStore<Resource> {
     localStorage.setItem('language', selectedLanguageCode);
   }
 
+  /**
+   * Resolve a resource
+   * @param id - id of the resource to resolve
+   * @param resolve - callback function
+   * @returns handler function
+   */
   resolveResource = (id: string, resolve) => {
     const handler = event => {
       if (event.detail.id === id) {
@@ -887,11 +893,35 @@ export class LdpStore implements IStore<Resource> {
   };
 
   /**
-   * Query an index using semantizer with dynamically generated shapes
-   * @param options - Index query options
-   * @returns Promise<any[]> - Array of matching resources for ldp:contains
+   * Validate if a string is a valid URL
+   * @param url - The URL string to validate
+   * @returns true if valid, false otherwise
+   */
+  private isValidUrl(url: string): boolean {
+    if (!url || typeof url !== 'string') {
+      return false;
+    }
+
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Query an index using SHACL shapes and return matching resources
+   * @param options - Query options including data source, RDF type, and filter values
+   * @returns Promise resolving to an array of matching resources
    */
   async queryIndex(options: IndexQueryOptions): Promise<any[]> {
+    // Validate dataSrcIndex before proceeding
+    if (!this.isValidUrl(options.dataSrcIndex)) {
+      console.warn('⚠️ [Store.queryIndex] Invalid dataSrcIndex URL:', options.dataSrcIndex);
+      return [];
+    }
+
     console.log(
       '🔍 [Store.queryIndex] Starting query with options:',
       JSON.stringify(options, null, 2),
@@ -1089,6 +1119,12 @@ export class LdpStore implements IStore<Resource> {
   async queryIndexConjunction(
     options: ConjunctionQueryOptions,
   ): Promise<any[]> {
+    // Validate dataSrcIndex before proceeding
+    if (!this.isValidUrl(options.dataSrcIndex)) {
+      console.warn('⚠️ [Store.queryIndexConjunction] Invalid dataSrcIndex URL:', options.dataSrcIndex);
+      return [];
+    }
+
     console.log(
       '🔍 [Store.queryIndexConjunction] Starting conjunction query with options:',
       JSON.stringify(options, null, 2),
@@ -1198,11 +1234,35 @@ export class LdpStore implements IStore<Resource> {
 
     // Determine if this property should use exact matching
     const isExactMatch = exactMatchMapping && exactMatchMapping[propertyName];
+
     // For exact matching, use sh:pattern with case-insensitive regex for case-insensitive exact matching
     // This handles both case sensitivity and provides standard SHACL compliance
     // Note: Some SHACL engines may not support (?i) flags, so we use lowercase pattern
     // Try simple pattern matching without regex anchors for better compatibility
-    const matchValue = isExactMatch ? pattern.toLowerCase() : `${pattern}.*`;
+    let matchValue: string;
+    if (isExactMatch) {
+      // Exact match: use the pattern as-is, converted to lowercase
+      matchValue = pattern.toLowerCase();
+    } else {
+      // Pattern match: extract meaningful prefix and add wildcard
+      // Remove special characters and extract first few meaningful characters
+      const cleanPattern = pattern
+        .toLowerCase()
+        .replace(/[^\w\s]/g, ' ') // Replace special chars with spaces
+        .replace(/\s+/g, ' ')     // Normalize multiple spaces
+        .trim();                  // Remove leading/trailing spaces
+
+      // Extract first meaningful word (at least 3 characters)
+      const words = cleanPattern.split(' ').filter(word => word.length >= 3);
+      const prefix = words.length > 0 ? words[0].substring(0, 3) : pattern.substring(0, 3);
+
+      matchValue = `${prefix}.*`;
+
+      console.log('  - Cleaned pattern:', cleanPattern);
+      console.log('  - Extracted words:', words);
+      console.log('  - Generated prefix:', prefix);
+    }
+
     const matchConstraint = 'sh:pattern';
 
     console.log('  - Is Exact Match:', isExactMatch);

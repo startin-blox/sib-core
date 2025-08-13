@@ -1,0 +1,50 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:title",
+          "sh:pattern": "cat.*"
+        }
+      ]
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/108.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/118.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/129.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/148.jsonld"
+    }
+  ]
+}

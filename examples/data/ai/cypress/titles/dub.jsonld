@@ -1,0 +1,38 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:title",
+          "sh:pattern": "dub.*"
+        }
+      ]
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/102.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/149.jsonld"
+    }
+  ]
+}

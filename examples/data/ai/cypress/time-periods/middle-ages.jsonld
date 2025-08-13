@@ -1,0 +1,62 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:time_period",
+          "sh:value": "Middle Ages"
+        }
+      ]
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/100.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/109.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/124.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/130.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/143.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/middle-ages.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/149.jsonld"
+    }
+  ]
+}

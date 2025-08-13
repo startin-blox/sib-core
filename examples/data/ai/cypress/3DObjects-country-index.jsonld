@@ -1,0 +1,304 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#bosnia-and-herzegovina",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Bosnia And Herzegovina"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/bosnia-and-herzegovina.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#bulgaria",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Bulgaria"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/bulgaria.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#croatia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Croatia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/croatia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#czech-republic",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Czech Republic"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/czech-republic.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#estonia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Estonia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/estonia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#hungary",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Hungary"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/hungary.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#latvia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Latvia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/latvia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#lithuania",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Lithuania"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/lithuania.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#montenegro",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Montenegro"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/montenegro.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#north-macedonia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "North Macedonia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/north-macedonia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#poland",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Poland"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/poland.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#romania",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Romania"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/romania.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#serbia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Serbia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/serbia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#slovakia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "slovakia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/slovakia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#slovenia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Slovenia"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/slovenia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#ukraine",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-country-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:country",
+            "sh:pattern": "Ukraine"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/countries/ukraine.jsonld"
+    }
+  ]
+}

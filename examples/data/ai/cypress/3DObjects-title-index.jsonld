@@ -1,0 +1,2158 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#rom",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rom.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/rom.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sar.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#med",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "med.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/med.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cel",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cel.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cel.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#gra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "gra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/gra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#neo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "neo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/neo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#anc",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "anc.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/anc.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#vic",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "vic.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/vic.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mod",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mod.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mod.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bar.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tig",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tig.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tig.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#arc",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "arc.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/arc.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sta",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sta.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sta.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cas",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cas.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cas.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ren",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ren.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ren.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#art",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "art.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/art.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ind",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ind.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ind.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#wel",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "wel.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/wel.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bri",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bri.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bri.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pre",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pre.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pre.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#his",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "his.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/his.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tun",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tun.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tun.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#iro",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "iro.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/iro.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bro",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bro.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bro.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#got",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "got.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/got.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#byz",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "byz.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/byz.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sai",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sai.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sai.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#vik",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "vik.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/vik.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#con",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "con.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/con.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tit",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tit.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tit.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#dub",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "dub.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/dub.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tim",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tim.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tim.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ban",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ban.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ban.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bel",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bel.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bel.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bud",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bud.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bud.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#kra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/kra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#lju",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "lju.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/lju.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mar.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#rig",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rig.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/rig.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#vil",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "vil.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/vil.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#war",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "war.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/war.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#zag",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "zag.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/zag.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bia",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bia.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bia.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#brn",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "brn.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/brn.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#buc",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "buc.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/buc.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#clu",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "clu.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/clu.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cēs",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cēs.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cēs.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#gda",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "gda.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/gda.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#kau",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kau.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/kau.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#kla",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kla.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/kla.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#kot",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "kot.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/kot.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#lvi",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "lvi.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/lvi.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#nov",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "nov.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/nov.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#old",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "old.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/old.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#olo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "olo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/olo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#osi",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "osi.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/osi.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pir",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pir.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pir.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#plo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "plo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/plo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#rus",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rus.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/rus.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sib",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sib.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sib.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sig",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sig.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sig.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sko",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sko.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sko.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tal",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tal.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tal.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tar",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tar.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tar.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tor",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tor.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tor.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#zam",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "zam.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/zam.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#amp",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "amp.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/amp.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pul",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pul.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pul.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cit",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cit.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cit.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#hal",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "hal.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/hal.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#wal",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "wal.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/wal.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mos",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mos.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mos.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#par",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "par.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/par.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#for",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "for.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/for.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#clo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "clo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/clo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cat",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cat.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cat.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#woo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "woo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/woo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#chu",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "chu.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/chu.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ast",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ast.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ast.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tow",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tow.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tow.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#gat",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "gat.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/gat.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#fre",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "fre.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/fre.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mon",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mon.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mon.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#upr",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "upr.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/upr.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mus",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mus.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mus.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#cra",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "cra.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/cra.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ope",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ope.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ope.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#hou",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "hou.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/hou.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pal",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pal.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pal.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sto",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sto.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sto.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#lie",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "lie.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/lie.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#reg",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "reg.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/reg.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#sad",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "sad.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/sad.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#pet",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "pet.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/pet.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tvr",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tvr.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tvr.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ort",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ort.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ort.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tai",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tai.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tai.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bas",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bas.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bas.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#šti",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "šti.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/šti.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#uni",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "uni.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/uni.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#mai",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "mai.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/mai.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#bui",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "bui.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/bui.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#rem",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rem.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/rem.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#col",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "col.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/col.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#the",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "the.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/the.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#hol",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "hol.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/hol.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#tri",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "tri.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/tri.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#gin",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "gin.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/gin.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#wat",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "wat.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/wat.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#squ",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "squ.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/squ.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#isl",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "isl.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/isl.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#st.",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "st..*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/st..jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ufo",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ufo.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ufo.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#ged",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "ged.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/ged.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#waw",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "waw.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/waw.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#rec",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:title",
+            "sh:pattern": "rec.*"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/titles/rec.jsonld"
+    }
+  ]
+}

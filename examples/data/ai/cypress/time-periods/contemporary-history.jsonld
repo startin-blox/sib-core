@@ -1,0 +1,104 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:3DObject"
+          }
+        },
+        {
+          "sh:path": "tc:time_period",
+          "sh:value": "Contemporary History"
+        }
+      ]
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/101.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/108.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/112.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/116.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/117.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/123.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/126.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#7",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/129.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#8",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/130.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#9",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/134.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#10",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/140.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#11",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/142.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#12",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://0.0.0.0:3000/examples/data/ai/cypress/time-periods/contemporary-history.jsonld#target",
+      "idx:hasTarget": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects/144.jsonld"
+    }
+  ]
+}

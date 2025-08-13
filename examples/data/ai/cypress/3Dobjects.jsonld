@@ -1,0 +1,4558 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@id": "https://api.tems-stg.startinblox.com/objects/object3d/",
+  "@type": "ldp:Container",
+  "ldp:contains": [
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/",
+      "creation_date": "2025-03-01T10:00:00Z",
+      "update_date": "2025-04-08T17:00:00Z",
+      "tc:title": "Roman Amphitheater of Pula",
+      "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+      "website": "https://www.3d-heritage.eu/en/home/1/07533840-2173-4d7e-9e5c-aa10fb51f866/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/100/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/200/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Croatia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/40/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "20 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "4096x4096",
+      "polygons": 7266,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/100/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/40/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/",
+      "creation_date": "2025-03-01T10:01:00Z",
+      "update_date": "2025-04-08T17:01:00Z",
+      "tc:title": "Sarajevo City Hall",
+      "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+      "website": "https://www.3d-heritage.eu/en/home/1/29557eec-c597-470a-bc3a-4756b90b5490/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/101/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/201/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Bosnia and Herzegovina",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/41/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "80 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 21081,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/101/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/41/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/",
+      "creation_date": "2025-03-01T10:02:00Z",
+      "update_date": "2025-04-08T17:02:00Z",
+      "tc:title": "Dubrovnik City Walls",
+      "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+      "website": "https://www.3d-heritage.eu/en/home/1/b2c85d4a-5f5a-4f6f-9e66-0c63e992f541/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/102/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/202/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Croatia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/42/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "92 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "4096x4096",
+      "polygons": 131919,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/102/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/42/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/",
+      "creation_date": "2025-03-02T10:03:00Z",
+      "update_date": "2025-04-08T17:03:00Z",
+      "tc:title": "Old Bridge of Mostar",
+      "description": "A UNESCO World Heritage site with a deep cultural significance and iconic architectural features.",
+      "website": "https://www.3d-heritage.eu/en/home/1/7fb15834-7b8d-45ce-af95-37c2aa2824a8/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/103/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/203/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Bosnia and Herzegovina",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/43/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "77 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "2048x2048",
+      "polygons": 30640,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/103/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/43/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/",
+      "creation_date": "2025-03-02T10:04:00Z",
+      "update_date": "2025-04-08T17:04:00Z",
+      "tc:title": "Budapest Parliament",
+      "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+      "website": "https://www.3d-heritage.eu/en/home/1/cd7469f0-7959-4a9a-a24f-c8f164eca8ea/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/104/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/204/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Hungary",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/44/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "32 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "2048x2048",
+      "polygons": 114579,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/104/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/44/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/",
+      "creation_date": "2025-03-02T10:05:00Z",
+      "update_date": "2025-04-08T17:05:00Z",
+      "tc:title": "Belgrade Fortress",
+      "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+      "website": "https://www.3d-heritage.eu/en/home/1/c3e637b9-c0ed-4c89-b058-75db3de7baa2/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/105/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/205/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Serbia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/45/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "108 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "4096x4096",
+      "polygons": 118849,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/105/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/45/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/",
+      "creation_date": "2025-03-03T10:06:00Z",
+      "update_date": "2025-04-08T17:06:00Z",
+      "tc:title": "Bran Castle",
+      "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+      "website": "https://www.3d-heritage.eu/en/home/1/b184abe7-e556-43fd-bb26-b1f82b41f405/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/106/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/206/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/46/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "106 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 7538,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/106/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/46/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/",
+      "creation_date": "2025-03-03T10:07:00Z",
+      "update_date": "2025-04-08T17:07:00Z",
+      "tc:title": "Krak\u00f3w Cloth Hall",
+      "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+      "website": "https://www.3d-heritage.eu/en/home/1/b5bad90e-383e-4f10-ac1c-570ab37073e9/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/107/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/207/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/47/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "16 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 29131,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/107/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/47/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/",
+      "creation_date": "2025-03-03T10:08:00Z",
+      "update_date": "2025-04-08T17:08:00Z",
+      "tc:title": "Zagreb Cathedral",
+      "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+      "website": "https://www.3d-heritage.eu/en/home/1/5da5ed12-8d28-4572-a6ce-63109503709d/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/108/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/208/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Croatia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/48/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "47 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "4096x4096",
+      "polygons": 44761,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/108/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/48/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/",
+      "creation_date": "2025-03-04T10:09:00Z",
+      "update_date": "2025-04-08T17:09:00Z",
+      "tc:title": "Transylvania Wooden Church",
+      "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+      "website": "https://www.3d-heritage.eu/en/home/1/7891ded1-b6ff-4875-b381-204b42777dea/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/109/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/209/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/49/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "86 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 8062,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/109/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/49/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/",
+      "creation_date": "2025-03-04T10:10:00Z",
+      "update_date": "2025-04-08T17:10:00Z",
+      "tc:title": "Kotor Fortress Walls",
+      "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+      "website": "https://www.3d-heritage.eu/en/home/1/cb0615fb-7819-41ab-abdf-fb0581653678/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/110/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/210/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Montenegro",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/50/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "11 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "4096x4096",
+      "polygons": 23964,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/110/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/50/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/",
+      "creation_date": "2025-03-04T10:11:00Z",
+      "update_date": "2025-04-08T17:11:00Z",
+      "tc:title": "Ljubljana Castle",
+      "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+      "website": "https://www.3d-heritage.eu/en/home/1/a68a991d-bb4a-4c69-a1a5-9db457d9dbcb/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/111/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/211/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Slovenia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/51/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "69 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "2048x2048",
+      "polygons": 36782,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/111/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/51/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/",
+      "creation_date": "2025-03-05T10:12:00Z",
+      "update_date": "2025-04-08T17:12:00Z",
+      "tc:title": "Prague Astronomical Clock",
+      "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+      "website": "https://www.3d-heritage.eu/en/home/1/c751d4ea-ee0c-43b3-800e-ad288345e16a/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/112/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/212/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Czech Republic",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/52/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "84 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 10728,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/112/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/52/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/",
+      "creation_date": "2025-03-05T10:13:00Z",
+      "update_date": "2025-04-08T17:13:00Z",
+      "tc:title": "Vilnius Old Town Gate",
+      "description": "A UNESCO World Heritage site with a deep cultural significance and iconic architectural features.",
+      "website": "https://www.3d-heritage.eu/en/home/1/6857da81-e758-4acc-976c-8d00a6a41b8d/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/113/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/213/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/53/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "73 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 120811,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/113/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/53/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/",
+      "creation_date": "2025-03-05T10:14:00Z",
+      "update_date": "2025-04-08T17:14:00Z",
+      "tc:title": "Tallinn City Wall",
+      "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+      "website": "https://www.3d-heritage.eu/en/home/1/bcc145f5-2b7d-49fc-81bc-eb116b253844/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/114/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/214/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Estonia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/54/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "19 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "1024x1024",
+      "polygons": 40496,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/114/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/54/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/",
+      "creation_date": "2025-03-06T10:15:00Z",
+      "update_date": "2025-04-08T17:15:00Z",
+      "tc:title": "Riga Freedom Monument",
+      "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+      "website": "https://www.3d-heritage.eu/en/home/1/5bf187fe-9938-4486-aaa2-7b1faef9a4e7/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/115/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/215/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Latvia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/55/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "65 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 55203,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/115/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/55/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/",
+      "creation_date": "2025-03-06T10:16:00Z",
+      "update_date": "2025-04-08T17:16:00Z",
+      "tc:title": "Warsaw Uprising Museum",
+      "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+      "website": "https://www.3d-heritage.eu/en/home/1/a1302f2d-5e8f-4b61-a45a-64d7640d776b/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/116/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/216/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/56/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "64 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "4096x4096",
+      "polygons": 8108,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/116/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/56/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/",
+      "creation_date": "2025-03-06T10:17:00Z",
+      "update_date": "2025-04-08T17:17:00Z",
+      "tc:title": "Bratislava Castle",
+      "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+      "website": "https://www.3d-heritage.eu/en/home/1/985f1ccb-81ef-41e9-bc50-9b4fbc0be677/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/117/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/217/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Slovakia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/57/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "93 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 21443,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/117/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/57/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/",
+      "creation_date": "2025-03-07T10:18:00Z",
+      "update_date": "2025-04-08T17:18:00Z",
+      "tc:title": "Vilnius Cathedral",
+      "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+      "website": "https://www.3d-heritage.eu/en/home/1/2336d589-1339-48a1-b05b-0b215780e12b/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/118/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/218/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/58/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "81 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "2048x2048",
+      "polygons": 52626,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/118/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/58/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/",
+      "creation_date": "2025-03-07T10:19:00Z",
+      "update_date": "2025-04-08T17:19:00Z",
+      "tc:title": "Gda\u0144sk Crane",
+      "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+      "website": "https://www.3d-heritage.eu/en/home/1/552cc952-6858-4de1-a048-8305802a84d5/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/119/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/219/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/59/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "99 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "2048x2048",
+      "polygons": 37808,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/119/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/59/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/",
+      "creation_date": "2025-03-07T10:20:00Z",
+      "update_date": "2025-04-08T17:20:00Z",
+      "tc:title": "Lviv Opera House",
+      "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+      "website": "https://www.3d-heritage.eu/en/home/1/dfff969e-bbd6-49a2-a962-46b00f7c27bf/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/120/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/220/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Ukraine",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/60/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "67 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "4096x4096",
+      "polygons": 38584,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/120/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/60/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/",
+      "creation_date": "2025-03-08T10:21:00Z",
+      "update_date": "2025-04-08T17:21:00Z",
+      "tc:title": "Brno Town Hall",
+      "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+      "website": "https://www.3d-heritage.eu/en/home/1/3fd7d7d1-eeae-4b03-9abe-7522f8a0cd41/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/121/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/221/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Czech Republic",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/61/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "31 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "2048x2048",
+      "polygons": 68896,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/121/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/61/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/",
+      "creation_date": "2025-03-08T10:22:00Z",
+      "update_date": "2025-04-08T17:22:00Z",
+      "tc:title": "Bucharest Palace of Parliament",
+      "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+      "website": "https://www.3d-heritage.eu/en/home/1/2c0bd0e6-f207-4753-b6ec-c3d55dd0f2b0/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/122/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/222/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/62/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "91 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "2048x2048",
+      "polygons": 122118,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/122/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/62/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/",
+      "creation_date": "2025-03-08T10:23:00Z",
+      "update_date": "2025-04-08T17:23:00Z",
+      "tc:title": "Skopje Stone Bridge",
+      "description": "A UNESCO World Heritage site with a deep cultural significance and iconic architectural features.",
+      "website": "https://www.3d-heritage.eu/en/home/1/9b0a6609-0a75-4b23-8d88-0177358094a1/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/123/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/223/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "North Macedonia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/63/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "117 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "4096x4096",
+      "polygons": 27653,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/123/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/63/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/",
+      "creation_date": "2025-03-09T10:24:00Z",
+      "update_date": "2025-04-08T17:24:00Z",
+      "tc:title": "Plovdiv Roman Stadium",
+      "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+      "website": "https://www.3d-heritage.eu/en/home/1/4d1971ac-52a6-4659-b196-ae902ae0e3fe/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/124/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/224/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Bulgaria",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/64/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "88 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "2048x2048",
+      "polygons": 59585,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/124/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/64/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/",
+      "creation_date": "2025-03-09T10:25:00Z",
+      "update_date": "2025-04-08T17:25:00Z",
+      "tc:title": "Sibiu Bridge of Lies",
+      "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+      "website": "https://www.3d-heritage.eu/en/home/1/06abd7d1-08cb-4f13-ac77-1504f123a1de/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/125/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/225/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/65/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "35 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 23152,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/125/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/65/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/",
+      "creation_date": "2025-03-09T10:26:00Z",
+      "update_date": "2025-04-08T17:26:00Z",
+      "tc:title": "Ruse Regional Museum",
+      "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+      "website": "https://www.3d-heritage.eu/en/home/1/52e92d8d-a0e4-477f-aa44-460f77067376/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/126/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/226/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Bulgaria",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/66/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "70 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "1024x1024",
+      "polygons": 13872,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/126/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/66/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/",
+      "creation_date": "2025-03-10T10:27:00Z",
+      "update_date": "2025-04-08T17:27:00Z",
+      "tc:title": "Novi Sad Petrovaradin Fortress",
+      "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+      "website": "https://www.3d-heritage.eu/en/home/1/0aaf2dd9-162c-4edb-a60d-f77e86444c0e/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/127/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/227/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Serbia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/67/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "31 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 41982,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/127/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/67/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/",
+      "creation_date": "2025-03-10T10:28:00Z",
+      "update_date": "2025-04-08T17:28:00Z",
+      "tc:title": "Osijek Tvr\u0111a",
+      "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+      "website": "https://www.3d-heritage.eu/en/home/1/0275a893-69b1-480b-ba7d-3383c79c9e9c/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/128/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/228/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Croatia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/68/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "9 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "1024x1024",
+      "polygons": 6777,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/128/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/68/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/",
+      "creation_date": "2025-03-10T10:29:00Z",
+      "update_date": "2025-04-08T17:29:00Z",
+      "tc:title": "Timi\u0219oara Orthodox Cathedral",
+      "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+      "website": "https://www.3d-heritage.eu/en/home/1/bf0403df-15e2-420a-bd0d-92ddf7aa24e9/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/129/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/229/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/69/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "107 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "2048x2048",
+      "polygons": 104719,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/129/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/69/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/",
+      "creation_date": "2025-03-11T10:30:00Z",
+      "update_date": "2025-04-08T17:30:00Z",
+      "tc:title": "Cluj-Napoca Tailors' Bastion",
+      "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+      "website": "https://www.3d-heritage.eu/en/home/1/1ad55ce6-66a9-40b6-b022-ad1a77db1020/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/130/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/230/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/70/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "9 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 91322,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/130/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/70/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/",
+      "creation_date": "2025-03-11T10:31:00Z",
+      "update_date": "2025-04-08T17:31:00Z",
+      "tc:title": "Bansk\u00e1 \u0160tiavnica Old Castle",
+      "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+      "website": "https://www.3d-heritage.eu/en/home/1/f7c8da43-8d99-487d-87d0-5fb13dad5ca6/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/131/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/231/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Slovakia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/71/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "PLY",
+      "file_size": "8 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 81860,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/131/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/71/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/",
+      "creation_date": "2025-03-11T10:32:00Z",
+      "update_date": "2025-04-08T17:32:00Z",
+      "tc:title": "Kaunas Castle",
+      "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+      "website": "https://www.3d-heritage.eu/en/home/1/e1c5b79a-4856-4297-8426-234458fe4bd7/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/132/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/232/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/72/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "64 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "4096x4096",
+      "polygons": 18446,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/132/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/72/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/",
+      "creation_date": "2025-03-12T10:33:00Z",
+      "update_date": "2025-04-08T17:33:00Z",
+      "tc:title": "Tartu University Main Building",
+      "description": "A UNESCO World Heritage site with a deep cultural significance and iconic architectural features.",
+      "website": "https://www.3d-heritage.eu/en/home/1/88e4aea3-8596-413b-a975-5471a5fb11b8/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/133/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/233/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Estonia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/73/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "18 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 9104,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/133/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/73/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/",
+      "creation_date": "2025-03-12T10:34:00Z",
+      "update_date": "2025-04-08T17:34:00Z",
+      "tc:title": "C\u0113sis Castle",
+      "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+      "website": "https://www.3d-heritage.eu/en/home/1/0c8ad483-e758-4e59-9ab6-cef99c93913d/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/134/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/234/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Latvia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/74/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "79 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "1024x1024",
+      "polygons": 107374,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/134/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/74/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/",
+      "creation_date": "2025-03-12T10:35:00Z",
+      "update_date": "2025-04-08T17:35:00Z",
+      "tc:title": "Klaip\u0117da Castle Remains",
+      "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+      "website": "https://www.3d-heritage.eu/en/home/1/667a5cb4-67a2-4453-a098-f36abe04ccf3/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/135/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/235/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/75/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "31 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 95834,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/135/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/75/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/",
+      "creation_date": "2025-03-13T10:36:00Z",
+      "update_date": "2025-04-08T17:36:00Z",
+      "tc:title": "Olomouc Column of the Holy Trinity",
+      "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+      "website": "https://www.3d-heritage.eu/en/home/1/4f679156-b9bf-4e11-bbf7-c53355153c97/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/136/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/236/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Czech Republic",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/76/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "13 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "4096x4096",
+      "polygons": 39958,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/136/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/76/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/",
+      "creation_date": "2025-03-13T10:37:00Z",
+      "update_date": "2025-04-08T17:37:00Z",
+      "tc:title": "Zamo\u015b\u0107 Town Hall",
+      "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+      "website": "https://www.3d-heritage.eu/en/home/1/893042ba-3186-44f3-b00c-c9add87327ec/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/137/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/237/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/77/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "118 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "4096x4096",
+      "polygons": 68861,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/137/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/77/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/",
+      "creation_date": "2025-03-13T10:38:00Z",
+      "update_date": "2025-04-08T17:38:00Z",
+      "tc:title": "Torun Gingerbread Museum",
+      "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+      "website": "https://www.3d-heritage.eu/en/home/1/bb9936b8-6ebb-4e30-890b-5110238cdcdc/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/138/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/238/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/78/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "111 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "4096x4096",
+      "polygons": 100662,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/138/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/78/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/",
+      "creation_date": "2025-03-14T10:39:00Z",
+      "update_date": "2025-04-08T17:39:00Z",
+      "tc:title": "Bia\u0142ystok Branicki Palace",
+      "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+      "website": "https://www.3d-heritage.eu/en/home/1/0538bcb6-0f6b-4ce5-a89d-22954f598cb5/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/139/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/239/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/79/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "37 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 7378,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/139/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/79/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/",
+      "creation_date": "2025-03-14T10:40:00Z",
+      "update_date": "2025-04-08T17:40:00Z",
+      "tc:title": "Sighisoara Clock Tower",
+      "description": "A well-preserved historical monument from the Roman period, featuring multiple layers of architectural interventions over the centuries.",
+      "website": "https://www.3d-heritage.eu/en/home/1/b575643c-f51c-4313-919a-86ec8a3bb4d0/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/140/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/240/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Romania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/80/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "72 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 117928,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/140/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/80/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/",
+      "creation_date": "2025-03-14T10:41:00Z",
+      "update_date": "2025-04-08T17:41:00Z",
+      "tc:title": "Maribor Water Tower",
+      "description": "A grand civic building renowned for its distinctive architecture and restoration after being destroyed during conflict.",
+      "website": "https://www.3d-heritage.eu/en/home/1/0c2a7b74-96cc-4721-843e-51a2f47fe555/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/141/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/241/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/2/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Slovenia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/81/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "7 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "1024x1024",
+      "polygons": 36964,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/141/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/81/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/",
+      "creation_date": "2025-03-15T10:42:00Z",
+      "update_date": "2025-04-08T17:42:00Z",
+      "tc:title": "Piran Tartini Square",
+      "description": "An imposing defensive structure with medieval walls and towers that have been reconstructed and preserved.",
+      "website": "https://www.3d-heritage.eu/en/home/1/5021ce94-913e-45aa-8fa4-9affb34f37de/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/142/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/242/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/3/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Slovenia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/82/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "98 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "JPG",
+      "texture_resolution": "1024x1024",
+      "polygons": 120257,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/142/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/82/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/",
+      "creation_date": "2025-03-15T10:43:00Z",
+      "update_date": "2025-04-08T17:43:00Z",
+      "tc:title": "Celje Old Castle",
+      "description": "A UNESCO World Heritage site with a deep cultural significance and iconic architectural features.",
+      "website": "https://www.3d-heritage.eu/en/home/1/7167aa50-9bbe-4560-971a-91b79f6ac1bd/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/143/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/243/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/4/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Slovenia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/83/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "39 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "1024x1024",
+      "polygons": 13629,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/143/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/83/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/",
+      "creation_date": "2025-03-15T10:44:00Z",
+      "update_date": "2025-04-08T17:44:00Z",
+      "tc:title": "Trakai Island Castle",
+      "description": "A parliamentary building known for its neo-Gothic design and prominent location by the river.",
+      "website": "https://www.3d-heritage.eu/en/home/1/5cd33132-e194-4c71-baeb-55ae4aca0125/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/144/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/244/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/5/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/3/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Contemporary History",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/84/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "110 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "1024x1024",
+      "polygons": 23534,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/144/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/84/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/",
+      "creation_date": "2025-03-16T10:45:00Z",
+      "update_date": "2025-04-08T17:45:00Z",
+      "tc:title": "Riga St. Peter's Church",
+      "description": "An ancient fortress with layers of Roman, Byzantine, Ottoman, and modern history, offering panoramic city views.",
+      "website": "https://www.3d-heritage.eu/en/home/1/a1cfe3be-48ed-4e48-9b9c-e270752792b2/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/145/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/245/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/6/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/4/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Long Nineteenth Century",
+      "country": "Latvia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/85/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "FBX",
+      "file_size": "13 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "1024x1024",
+      "polygons": 119169,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/145/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/10/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/85/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "Arctur"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/",
+      "creation_date": "2025-03-16T10:46:00Z",
+      "update_date": "2025-04-08T17:46:00Z",
+      "tc:title": "Bratislava UFO Bridge",
+      "description": "A Gothic castle associated with the Dracula legend, showcasing medieval military architecture.",
+      "website": "https://www.3d-heritage.eu/en/home/1/98834fcc-d6c6-42e2-85e0-98759adbafef/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/146/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/246/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/7/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/5/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Slovakia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/86/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "67 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TIFF",
+      "texture_resolution": "2048x2048",
+      "polygons": 8042,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/146/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/11/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/86/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/",
+      "creation_date": "2025-03-16T10:47:00Z",
+      "update_date": "2025-04-08T17:47:00Z",
+      "tc:title": "Vilnius Gediminas Tower",
+      "description": "A Renaissance-era hall that served as a major trading center, now home to cultural exhibits and events.",
+      "website": "https://www.3d-heritage.eu/en/home/1/458e92b9-cda7-4e8c-b452-6082a1d28e43/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/147/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/247/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/8/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/6/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Early Modern Period",
+      "country": "Lithuania",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/87/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "OBJ",
+      "file_size": "64 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 6777,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/147/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/12/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/87/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "VRT"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/",
+      "creation_date": "2025-03-17T10:48:00Z",
+      "update_date": "2025-04-08T17:48:00Z",
+      "tc:title": "Krak\u00f3w Wawel Cathedral",
+      "description": "The tallest building in its city, an iconic religious site combining Gothic and neo-Gothic styles.",
+      "website": "https://www.3d-heritage.eu/en/home/1/6e72b6ab-3f01-4e4c-9647-097642bf7968/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/13/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/148/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/248/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/9/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/1/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Classical Antiquity",
+      "country": "Poland",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/88/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "STL",
+      "file_size": "117 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "TGA",
+      "texture_resolution": "4096x4096",
+      "polygons": 135811,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/148/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/13/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/88/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    },
+    {
+      "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/",
+      "creation_date": "2025-03-17T10:49:00Z",
+      "update_date": "2025-04-08T17:49:00Z",
+      "tc:title": "Dubrovnik Rector's Palace",
+      "description": "A traditional wooden church exemplifying rural craftsmanship and religious heritage of the region.",
+      "website": "https://www.3d-heritage.eu/en/home/1/c900d72a-0ada-49c2-ae92-20d4204ff2cd/",
+      "licences": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/licences/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/licences/14/",
+            "@type": "tc:Licence"
+          }
+        ]
+      },
+      "images": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/images/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/149/",
+            "@type": "tc:Image"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/images/249/",
+            "@type": "tc:Image"
+          }
+        ]
+      },
+      "keywords": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/keywords/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/10/",
+            "@type": "tc:Keyword"
+          },
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/keywords/3dobjects/1/",
+            "@type": "tc:Keyword"
+          }
+        ]
+      },
+      "categories": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/categories/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/objects/categories/3dobjects/2/",
+            "@type": "tc:Category"
+          }
+        ]
+      },
+      "time_period": "Middle Ages",
+      "country": "Croatia",
+      "location": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/locations/89/",
+        "@type": "tc:Location"
+      },
+      "actual_representation": "-",
+      "format": "glTF",
+      "file_size": "86 MB",
+      "year": 2025,
+      "texture": "yes",
+      "texture_formats": "PNG",
+      "texture_resolution": "2048x2048",
+      "polygons": 13787,
+      "ai": false,
+      "allow_ai": false,
+      "prices": "-",
+      "rights_holder": "-",
+      "creator": "Arctur Team",
+      "providers": {
+        "@id": "https://api.tems-stg.startinblox.com/objects/object3d/149/providers/",
+        "@type": "ldp:Container",
+        "ldp:contains": [
+          {
+            "@id": "https://api.tems-stg.startinblox.com/providers/14/",
+            "@type": "tc:Provider"
+          }
+        ]
+      },
+      "owners": {
+        "@id": "https://api.tems-stg.startinblox.com/groups/89/",
+        "@type": "foaf:Group"
+      },
+      "@type": ["tc:Object", "tc:3DObject"],
+      "publisher": "DPA"
+    }
+  ],
+  "permissions": ["view", "change", "delete", "add", "control"]
+}

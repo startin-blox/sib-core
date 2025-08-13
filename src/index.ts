@@ -1,4 +1,3 @@
-import './libs/polyfills.js';
 import { SolidAcChecker } from './components/solid-ac-checker.ts';
 import { SolidDelete } from './components/solid-delete.ts';
 // Components
@@ -51,12 +50,7 @@ import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { until } from 'lit/directives/until.js';
-import process from 'process';
 
-// Define `process` globally if it doesn't exist
-if (typeof globalThis.process === 'undefined') {
-  globalThis.process = process;
-}
 
 export {
   // Components

@@ -1,0 +1,70 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#arctur",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#target"
+          },
+          {
+            "sh:path": "dcat:publisher",
+            "sh:value": "Arctur"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/publishers/arctur.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#vrt",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#target"
+          },
+          {
+            "sh:path": "dcat:publisher",
+            "sh:value": "VRT"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/publishers/vrt.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#dpa",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-publisher-index.jsonld#target"
+          },
+          {
+            "sh:path": "dcat:publisher",
+            "sh:value": "DPA"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/publishers/dpa.jsonld"
+    }
+  ]
+}

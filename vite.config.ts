@@ -10,13 +10,14 @@ export default defineConfig({
     preserveSymlinks: true,
     alias: {
       stream: 'stream-browserify',
+      buffer: 'buffer',
     },
   },
   define: {
     global: 'globalThis',
   },
   optimizeDeps: {
-    include: ['stream-browserify'],
+    include: ['stream-browserify', 'buffer'],
     esbuildOptions: {
       plugins: [
         NodeGlobalsPolyfillPlugin({
@@ -48,6 +49,12 @@ export default defineConfig({
         dir: 'dist',
         entryFileNames: '[name].js',
       },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+          process: true,
+        }),
+      ],
     },
     outDir: 'dist',
     minify: false,

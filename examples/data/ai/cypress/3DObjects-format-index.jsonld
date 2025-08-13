@@ -1,0 +1,106 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:3DObject"
+      }
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#fbx",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "FBX"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/formats/fbx.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#gltf",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "GLTF"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/formats/gltf.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#obj",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "OBJ"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/formats/obj.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#ply",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "PLY"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/formats/ply.jsonld"
+    },
+    {
+      "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#stl",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://0.0.0.0:3000/examples/data/ai/cypress/3DObjects-format-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:format",
+            "sh:value": "STL"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://0.0.0.0:3000/examples/data/ai/cypress/formats/stl.jsonld"
+    }
+  ]
+}
