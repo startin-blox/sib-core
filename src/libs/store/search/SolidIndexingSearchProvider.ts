@@ -2,7 +2,7 @@ import type {
   ConjunctionQueryOptions,
   IndexQueryOptions,
 } from '../LdpStore.ts';
-import type { IndexSearchProvider } from './IndexSearchProvider.ts';
+import type { SearchProvider } from './SearchProvider.ts';
 
 // Semantizer imports
 import {
@@ -18,7 +18,7 @@ import {
 import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
 import N3 from 'n3';
 
-export class SolidIndexingSearchProvider implements IndexSearchProvider {
+export class SolidIndexingSearchProvider implements SearchProvider {
   constructor(private dataFetcher: (id: string) => Promise<any>) {}
 
   /**

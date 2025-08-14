@@ -3,7 +3,7 @@ import type {
   IndexQueryOptions,
 } from '../LdpStore.ts';
 
-export interface IndexSearchProvider {
+export interface SearchProvider {
   /**
    * Query an index using SHACL shapes and return matching resources
    * @param options - Query options including data source, RDF type, and filter values

@@ -17,7 +17,7 @@ import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import { InMemoryCacheManager } from './cache/in-memory.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import { appendServerPaginationToIri } from './options/server-pagination.ts';
-import type { IndexSearchProvider } from './search/IndexSearchProvider.ts';
+import type { SearchProvider } from './search/SearchProvider.ts';
 import { SolidIndexingSearchProvider } from './search/SolidIndexingSearchProvider.ts';
 
 // sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
@@ -88,7 +88,7 @@ export class LdpStore implements IStore<Resource> {
   fetch: Promise<any> | undefined;
   session: Promise<any> | undefined;
   contextParser: JSONLDContextParser.ContextParser;
-  private searchProvider: IndexSearchProvider;
+  private searchProvider: SearchProvider;
 
   constructor(private storeOptions: StoreOptions) {
     this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
