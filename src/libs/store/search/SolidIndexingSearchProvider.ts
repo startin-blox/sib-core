@@ -431,7 +431,7 @@ export class SolidIndexingSearchProvider implements IndexSearchProvider {
     console.log('  - Match Constraint:', matchConstraint);
     console.log(
       '  - Generated SHACL constraint: [ sh:path',
-     `${matchConstraint}; sh:hasValue "${matchValue}" ]`,
+      `${matchConstraint}; sh:hasValue "${matchValue}" ]`,
     );
 
     const targetShape = `
