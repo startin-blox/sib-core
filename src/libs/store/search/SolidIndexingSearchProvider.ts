@@ -9,8 +9,7 @@ import {
   EntryStreamTransformerDefaultImpl,
   indexFactory,
 } from '@semantizer/mixin-index';
-import { solidWebIdProfileFactory } from '@semantizer/mixin-solid-webid';
-import type { DatasetSemantizer, NamedNode } from '@semantizer/types';
+import type { NamedNode } from '@semantizer/types';
 import {
   IndexQueryingStrategyShaclUsingFinalIndex,
   IndexStrategyFinalShapeDefaultImpl,
@@ -40,17 +39,44 @@ export class SolidIndexingSearchProvider implements SearchProvider {
   }
 
   /**
+   * Check if either dataSrcIndex or dataSrcProfile is a valid URL
+   * @param options - Query options including data source, RDF type, and filter values
+   * @returns true if either dataSrcIndex or dataSrcProfile is a valid URL, false otherwise
+   */
+  hasValidIndexUrl(options: IndexQueryOptions): boolean {
+    return (
+      this.isValidUrl(options.dataSrcIndex ?? '') ||
+      this.isValidUrl(options.dataSrcProfile ?? '')
+    );
+  }
+
+  /**
    * Query an index using SHACL shapes and return matching resources
    * @param options - Query options including data source, RDF type, and filter values
    * @returns Promise resolving to an array of matching resources
    */
   async query(options: IndexQueryOptions): Promise<any[]> {
     // Validate dataSrcIndex before proceeding
-    if (!this.isValidUrl(options.dataSrcIndex)) {
-      console.warn(
-        '⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid dataSrcIndex URL:',
-        options.dataSrcIndex,
-      );
+    let indexUri: string;
+
+    // Path 1: Direct index specification
+    if (options.dataSrcIndex) {
+      indexUri = options.dataSrcIndex;
+      console.log('📂 [SolidIndexingSearchProvider.queryIndex] Using direct index URI:', indexUri);
+    }
+    // Path 2: Profile-based discovery
+    else if (options.dataSrcProfile) {
+      indexUri = await this.discoverIndexFromProfile(options.dataSrcProfile);
+      console.log('🔍 [SolidIndexingSearchProvider.queryIndex] Discovered index URI from profile:', indexUri);
+    }
+    else {
+      console.warn('Either dataSrcIndex or dataSrcProfile must be specified');
+      return [];
+    }
+
+    // Validate the discovered/resolved URI
+    if (!this.isValidUrl(indexUri)) {
+      console.warn('⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid index URI, returning empty results');
       return [];
     }
 
@@ -58,38 +84,6 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       '🔍 [SolidIndexingSearchProvider.queryIndex] Starting query with options:',
       JSON.stringify(options, null, 2),
     );
-    let indexDataset: DatasetSemantizer | undefined;
-
-    // 0. Load the instance profile if defined
-    if (options.dataSrcProfile) {
-      console.log(
-        '📋 [SolidIndexingSearchProvider.queryIndex] Load application profile',
-        options.dataSrcProfile,
-      );
-      const appIdProfile = await SEMANTIZER.load(
-        options.dataSrcProfile,
-        solidWebIdProfileFactory,
-      );
-
-      const appId = appIdProfile.loadExtendedProfile();
-      if (!appId) {
-        throw new Error('The WebId was not found.');
-      }
-
-      if (!indexDataset) {
-        throw new Error('The meta-meta index was not found.');
-      }
-    } else if (options.dataSrcIndex) {
-      // 1. Load the index directly
-      console.log(
-        '📂 [SolidIndexingSearchProvider.queryIndex] Loading index from:',
-        options.dataSrcIndex,
-      );
-      indexDataset = await SEMANTIZER.load(options.dataSrcIndex);
-      console.log(
-        '✅ [SolidIndexingSearchProvider.queryIndex] Index loaded successfully',
-      );
-    }
 
     console.log(
       '🔍 [SolidIndexingSearchProvider.queryIndex] Filter values:',
@@ -184,7 +178,7 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     console.log(
       '🔧 [SolidIndexingSearchProvider.queryIndex] Creating index with factory...',
     );
-    const index = await SEMANTIZER.load(options.dataSrcIndex, indexFactory);
+    const index = await SEMANTIZER.load(indexUri, indexFactory);
     console.log(
       '✅ [SolidIndexingSearchProvider.queryIndex] Index created successfully',
     );
@@ -276,10 +270,11 @@ export class SolidIndexingSearchProvider implements SearchProvider {
    */
   async queryConjunction(options: ConjunctionQueryOptions): Promise<any[]> {
     // Validate dataSrcIndex before proceeding
-    if (!this.isValidUrl(options.dataSrcIndex)) {
+    if (!this.hasValidIndexUrl(options)) {
       console.warn(
-        '⚠️ [SolidIndexingSearchProvider.queryIndexConjunction] Invalid dataSrcIndex URL:',
+        '⚠️ [SolidIndexingSearchProvider.queryIndexConjunction] Invalid index URL:',
         options.dataSrcIndex,
+        options.dataSrcProfile,
       );
       return [];
     }
@@ -566,5 +561,81 @@ sh:property [
 `;
 
     return { targetShape, subIndexShape, finalShape };
+  }
+
+  /**
+   * Discover index URI from a profile document through profile traversal
+   * @param profileUrl - The profile URL to traverse
+   * @returns Promise resolving to the discovered index URI
+   */
+  private async discoverIndexFromProfile(profileUrl: string): Promise<string> {
+    try {
+      // 1. Load the profile document
+      const profileResponse = await fetch(profileUrl);
+      const profileData = await profileResponse.json();
+
+      // 2. Extract the publicTypeIndex URL
+      const publicTypeIndexUrl = this.extractPublicTypeIndexUrl(profileData);
+      if (!publicTypeIndexUrl) {
+        throw new Error('No publicTypeIndex found in profile');
+      }
+
+      // 3. Load the publicTypeIndex document
+      const typeIndexResponse = await fetch(publicTypeIndexUrl);
+      const typeIndexData = await typeIndexResponse.json();
+
+      // 4. Find the first idx:Index instance
+      const indexUri = this.extractIndexUri(typeIndexData);
+      if (!indexUri) {
+        throw new Error('No idx:Index instance found in publicTypeIndex');
+      }
+
+      return indexUri;
+
+    } catch (error: any) {
+      console.error('Profile discovery failed:', error);
+      throw new Error(`Failed to discover index from profile: ${error.message}`);
+    }
+  }
+
+  /**
+   * Extract the publicTypeIndex URL from profile data
+   * @param profileData - The parsed profile JSON-LD data
+   * @returns The publicTypeIndex URL or null if not found
+   */
+  private extractPublicTypeIndexUrl(profileData: any): string | null {
+    // Look for the profile document with foaf:primaryTopic
+    const profileDoc = profileData['@graph']?.find((item: any) =>
+      item['@type'] === 'foaf:PersonalProfileDocument'
+    );
+    console.log('🔍 [SolidIndexingSearchProvider.extractPublicTypeIndexUrl] Profile document:', profileDoc);
+
+    if (profileDoc?.["foaf:primaryTopic"]) {
+      const primaryTopicId = profileDoc?.["foaf:primaryTopic"];
+
+      // Find the primary topic document
+      const primaryTopic = profileData['@graph']?.find((item: any) =>
+        item['@id'] === primaryTopicId
+      );
+
+      return primaryTopic?.['solid:publicTypeIndex'] || null;
+    }
+
+    return null;
+  }
+
+  /**
+   * Extract the index URI from type index data
+   * @param typeIndexData - The parsed publicTypeIndex JSON-LD data
+   * @returns The index URI or null if not found
+   */
+  private extractIndexUri(typeIndexData: any): string | null {
+    // Look for the first registration with solid:forClass = "idx:Index"
+    const indexRegistration = typeIndexData['@graph']?.find((item: any) =>
+      item['solid:forClass'] === 'idx:Index' &&
+      item['solid:instance']
+    );
+
+    return indexRegistration?.['solid:instance'] || null;
   }
 }

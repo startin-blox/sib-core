@@ -51,7 +51,7 @@ export const base_context = {
 
 export interface IndexQueryOptions {
   dataSrcProfile?: string;
-  dataSrcIndex: string;
+  dataSrcIndex?: string;
   dataRdfType: string;
   filterValues: Record<string, any>;
   exactMatchMapping?: Record<string, boolean>; // Mapping of property names to exact match flags

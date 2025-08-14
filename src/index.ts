@@ -9,7 +9,6 @@ import { SolidMemberAdd } from './components/solid-member-add.ts';
 import { SolidMemberDelete } from './components/solid-member-delete.ts';
 import { SolidMembership } from './components/solid-membership.ts';
 import { SolidTable } from './components/solid-table.ts';
-import { SolidTraversalSearch } from './components/solid-traversal-search.ts';
 import { SolidWidget } from './components/solid-widget.ts';
 
 // Mixins
@@ -56,7 +55,6 @@ export {
   SolidDisplay,
   SolidForm,
   SolidFormSearch,
-  SolidTraversalSearch,
   SolidWidget,
   SolidAcChecker,
   SolidDelete,
