@@ -62,21 +62,28 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     // Path 1: Direct index specification
     if (options.dataSrcIndex) {
       indexUri = options.dataSrcIndex;
-      console.log('📂 [SolidIndexingSearchProvider.queryIndex] Using direct index URI:', indexUri);
+      console.log(
+        '📂 [SolidIndexingSearchProvider.queryIndex] Using direct index URI:',
+        indexUri,
+      );
     }
     // Path 2: Profile-based discovery
     else if (options.dataSrcProfile) {
       indexUri = await this.discoverIndexFromProfile(options.dataSrcProfile);
-      console.log('🔍 [SolidIndexingSearchProvider.queryIndex] Discovered index URI from profile:', indexUri);
-    }
-    else {
+      console.log(
+        '🔍 [SolidIndexingSearchProvider.queryIndex] Discovered index URI from profile:',
+        indexUri,
+      );
+    } else {
       console.warn('Either dataSrcIndex or dataSrcProfile must be specified');
       return [];
     }
 
     // Validate the discovered/resolved URI
     if (!this.isValidUrl(indexUri)) {
-      console.warn('⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid index URI, returning empty results');
+      console.warn(
+        '⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid index URI, returning empty results',
+      );
       return [];
     }
 
@@ -591,10 +598,11 @@ sh:property [
       }
 
       return indexUri;
-
     } catch (error: any) {
       console.error('Profile discovery failed:', error);
-      throw new Error(`Failed to discover index from profile: ${error.message}`);
+      throw new Error(
+        `Failed to discover index from profile: ${error.message}`,
+      );
     }
   }
 
@@ -605,17 +613,20 @@ sh:property [
    */
   private extractPublicTypeIndexUrl(profileData: any): string | null {
     // Look for the profile document with foaf:primaryTopic
-    const profileDoc = profileData['@graph']?.find((item: any) =>
-      item['@type'] === 'foaf:PersonalProfileDocument'
+    const profileDoc = profileData['@graph']?.find(
+      (item: any) => item['@type'] === 'foaf:PersonalProfileDocument',
     );
-    console.log('🔍 [SolidIndexingSearchProvider.extractPublicTypeIndexUrl] Profile document:', profileDoc);
+    console.log(
+      '🔍 [SolidIndexingSearchProvider.extractPublicTypeIndexUrl] Profile document:',
+      profileDoc,
+    );
 
-    if (profileDoc?.["foaf:primaryTopic"]) {
-      const primaryTopicId = profileDoc?.["foaf:primaryTopic"];
+    if (profileDoc?.['foaf:primaryTopic']) {
+      const primaryTopicId = profileDoc?.['foaf:primaryTopic'];
 
       // Find the primary topic document
-      const primaryTopic = profileData['@graph']?.find((item: any) =>
-        item['@id'] === primaryTopicId
+      const primaryTopic = profileData['@graph']?.find(
+        (item: any) => item['@id'] === primaryTopicId,
       );
 
       return primaryTopic?.['solid:publicTypeIndex'] || null;
@@ -631,9 +642,9 @@ sh:property [
    */
   private extractIndexUri(typeIndexData: any): string | null {
     // Look for the first registration with solid:forClass = "idx:Index"
-    const indexRegistration = typeIndexData['@graph']?.find((item: any) =>
-      item['solid:forClass'] === 'idx:Index' &&
-      item['solid:instance']
+    const indexRegistration = typeIndexData['@graph']?.find(
+      (item: any) =>
+        item['solid:forClass'] === 'idx:Index' && item['solid:instance'],
     );
 
     return indexRegistration?.['solid:instance'] || null;
