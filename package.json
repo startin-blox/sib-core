@@ -67,7 +67,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-
     "@rckeller/cypress-unfetch": "latest",
     "@types/jsonld": "^1.5.15",
     "@types/markdown-it": "^14.1.2",
