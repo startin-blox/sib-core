@@ -21,17 +21,7 @@ npm run dev
 
 You can now see examples at [http://127.0.0.1:3000](http://127.0.0.1:3000/).
 
-## Optional: Using Farm as a bundler
-The project now supports `Farm` as an alternative build tool.
 
-To run the project using `Farm` in watch mode:
-
-```shell
-npm run watch
-```
-This uses the configuration defined in `farm.config.ts`.
-
-By default, Vite is still used for building and serving. Farm can be used as an alternative if you want to experiment with faster build performance or compare workflows.
 
 ## Adding new features
 To develop new features for `sib-core`, you can add an HTML example file in `/examples` directory and link it in `/index.html`.
