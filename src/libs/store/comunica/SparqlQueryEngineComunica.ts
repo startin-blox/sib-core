@@ -1,5 +1,5 @@
 import { QueryEngine } from '@comunica/query-sparql';
-import { SparqlQueryFactory } from '../libs/SparqlQueryFactory.ts';
+import { SparqlQueryFactory } from './SparqlQueryFactory.ts';
 
 export type SparqlQueryEngineComunicaUpdateCallback = (
   user: string,
