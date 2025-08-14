@@ -166,7 +166,11 @@ const StoreMixin = {
   updateNavigateSubscription() {},
 
   async updateDOM(): Promise<void> {
-    const indexServerSearch = this.isIndexBasedSearch?.(); // from `filterMixin`
+    // Check for index-based search directly from DOM attributes instead of cross-mixin dependency
+    const indexServerSearch =
+      this.element.getAttribute('filtered-on') === 'index' &&
+      !!this.element.getAttribute('data-src-index');
+
     if (!indexServerSearch) {
       this._resource = await store.get(this.resourceId);
       this.toggleLoaderHidden(false);
