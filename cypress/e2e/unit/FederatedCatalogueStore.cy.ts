@@ -1,7 +1,7 @@
 import {
   FederatedCatalogueStore,
   FederatedCatalogueStoreAdapter,
-} from '../../../src/libs/store/implemenations/federated-catalogue/FederatedCatalogueStore.ts';
+} from '../../../src/libs/store/impl/federated-catalogue/FederatedCatalogueStore.ts';
 import {
   type StoreConfig,
   StoreType,

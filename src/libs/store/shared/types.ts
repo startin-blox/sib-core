@@ -3,7 +3,7 @@ import type { IndexQueryOptions } from '../implemenations/ldp/LdpStore.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
-} from '../implemenations/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
+} from '../impl/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
 import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';
@@ -35,6 +35,16 @@ export interface LimitedResource {
   creation_date?: DateTime;
   update_date?: DateTime;
 }
+
+// export interface ResourceLdp extends LimitedResource {
+//   isContainer: Function;
+//   getContainerList: Function;
+//   getResourceData: Function;
+//   isArray: Function;
+//   isFullResource: Function;
+//   serverPagination: object;
+//   merge: Function;
+// }
 
 export interface Container<T> extends Resource {
   'ldp:contains': T[];

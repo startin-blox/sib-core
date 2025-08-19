@@ -1,6 +1,6 @@
 /*based on https://github.com/balessan/federated-api/blob/main/src/get.py */
 
-import type { SelfDescription } from './SelfDescription.ts';
+import type { SelfDescription } from './SelfDescription.d.ts';
 
 export interface KeycloakOptions
   extends KeycloakOptionsServer,

@@ -1,5 +1,5 @@
-import { FederatedCatalogueStoreAdapter } from './implemenations/federated-catalogue/FederatedCatalogueStore.ts';
-import { LdpStoreAdapter } from './implemenations/ldp/LdpStoreAdapter.ts';
+import { FederatedCatalogueStoreAdapter } from './impl/federated-catalogue/FederatedCatalogueStore.ts';
+import { LdpStoreAdapter } from './impl/ldp/LdpStoreAdapter.ts';
 import { type IStore, type StoreConfig, StoreType } from './shared/types.ts';
 
 type StoreAdapterConstructor = {
