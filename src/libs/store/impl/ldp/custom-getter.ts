@@ -1,19 +1,11 @@
-<<<<<<<< HEAD:src/libs/store/impl/ldp/custom-getter.ts
-========
-import type { Resource } from '../../../../mixins/interfaces.ts';
->>>>>>>> 242496e2 (refactor: store folder structure):src/libs/store/implemenations/ldp/custom-getter.ts
+
 import {
   getRawContext,
   mergeContexts,
   normalizeContext,
 } from '../../../helpers.ts';
-<<<<<<<< HEAD:src/libs/store/impl/ldp/custom-getter.ts
 import type { Resource } from '../../shared/types.ts';
 import { StoreService } from '../../storeService.ts';
-
-========
-import { StoreService } from '../../storeService.ts';
->>>>>>>> 242496e2 (refactor: store folder structure):src/libs/store/implemenations/ldp/custom-getter.ts
 const store = StoreService.getInstance();
 
 export class CustomGetter {
