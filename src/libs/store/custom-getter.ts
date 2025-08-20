@@ -117,6 +117,23 @@ export class CustomGetter {
       if (path2.length === 0) {
         // end of the path
         if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
+
+        // Check if this is just a reference (like @type: @id properties) that shouldn't be fetched
+        // If the object only has @id and optionally @type, and it's not cached, return the @id string
+        const valueKeys = Object.keys(value).filter(k => k !== '@type');
+        if (valueKeys.length === 1 && valueKeys[0] === '@id') {
+          const resource = await this.getResource(
+            value['@id'],
+            mergeContexts(this.clientContext, this.serverContext),
+            this.parentId || this.resourceId,
+          );
+          // If resource couldn't be fetched (null), return the @id string directly
+          if (resource === null) {
+            return value['@id'];
+          }
+          return resource; // return complete resource if it exists
+        }
+
         return await this.getResource(
           value['@id'],
           mergeContexts(this.clientContext, this.serverContext),
