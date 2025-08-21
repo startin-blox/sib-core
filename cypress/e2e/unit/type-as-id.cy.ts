@@ -55,7 +55,7 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
       // Use only DFC context pattern that we know works - no external URLs
       const context = {
         '@vocab': 'https://cdn.startinblox.com/owl#',
-        'dfc': 'http://static.datafoodconsortium.org/',
+        dfc: 'http://static.datafoodconsortium.org/',
         'dfc:hasType': { '@type': '@id' },
         'dfc:category': { '@type': '@id' },
         'dfc:status': { '@type': '@id' },
@@ -66,13 +66,16 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
         '@id': '/multi-type-test',
         name: 'Multi Type Test',
         'dfc:hasType': {
-          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
+          '@id':
+            'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
         },
         'dfc:category': {
-          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food',
+          '@id':
+            'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food',
         },
         'dfc:status': {
-          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active',
+          '@id':
+            'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active',
         },
       };
 
@@ -88,9 +91,15 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
       expect(category).to.be.a('string');
       expect(status).to.be.a('string');
 
-      expect(hasType).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer');
-      expect(category).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food');
-      expect(status).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active');
+      expect(hasType).to.equal(
+        'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
+      );
+      expect(category).to.equal(
+        'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food',
+      );
+      expect(status).to.equal(
+        'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active',
+      );
     });
   });
 

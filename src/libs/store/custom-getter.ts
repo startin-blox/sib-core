@@ -130,11 +130,19 @@ export class CustomGetter {
 
           // Try to determine if this is a @type: @id property by checking context
           try {
-            const mergedContext = mergeContexts(this.clientContext, this.serverContext);
+            const mergedContext = mergeContexts(
+              this.clientContext,
+              this.serverContext,
+            );
             const rawContext = getRawContext(mergedContext);
 
             // Check if current path is defined as @type: @id in context
-            if (rawContext && rawContext[path] && typeof rawContext[path] === 'object' && rawContext[path]['@type'] === '@id') {
+            if (
+              rawContext &&
+              rawContext[path] &&
+              typeof rawContext[path] === 'object' &&
+              rawContext[path]['@type'] === '@id'
+            ) {
               // This is a @type: @id property, return the string ID directly
               return value['@id'];
             }
