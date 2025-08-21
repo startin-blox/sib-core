@@ -138,8 +138,7 @@ export class CustomGetter {
 
             // Check if current path is defined as @type: @id in context
             if (
-              rawContext &&
-              rawContext[path] &&
+              rawContext?.[path] &&
               typeof rawContext[path] === 'object' &&
               rawContext[path]['@type'] === '@id'
             ) {
