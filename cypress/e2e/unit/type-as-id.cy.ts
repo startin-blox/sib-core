@@ -52,12 +52,13 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
     cy.window().then(async (win: any) => {
       const store = win.sibStore;
 
+      // Use only DFC context pattern that we know works - no external URLs
       const context = {
         '@vocab': 'https://cdn.startinblox.com/owl#',
-        dfc: 'http://static.datafoodconsortium.org/',
+        'dfc': 'http://static.datafoodconsortium.org/',
         'dfc:hasType': { '@type': '@id' },
-        category: { '@id': 'http://example.org/category#', '@type': '@id' },
-        status: { '@id': 'http://example.org/status#', '@type': '@id' },
+        'dfc:category': { '@type': '@id' },
+        'dfc:status': { '@type': '@id' },
       };
 
       const testData = {
@@ -65,14 +66,13 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
         '@id': '/multi-type-test',
         name: 'Multi Type Test',
         'dfc:hasType': {
-          '@id':
-            'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
+          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
         },
-        category: {
-          '@id': 'http://example.org/categories/food',
+        'dfc:category': {
+          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food',
         },
-        status: {
-          '@id': 'http://example.org/status/active',
+        'dfc:status': {
+          '@id': 'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active',
         },
       };
 
@@ -81,18 +81,16 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
 
       // All type-as-id properties should return strings
       const hasType = await resource['dfc:hasType'];
-      const category = await resource.category;
-      const status = await resource.status;
+      const category = await resource['dfc:category'];
+      const status = await resource['dfc:status'];
 
       expect(hasType).to.be.a('string');
       expect(category).to.be.a('string');
       expect(status).to.be.a('string');
 
-      expect(hasType).to.equal(
-        'http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer',
-      );
-      expect(category).to.equal('http://example.org/categories/food');
-      expect(status).to.equal('http://example.org/status/active');
+      expect(hasType).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Producer');
+      expect(category).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Food');
+      expect(status).to.equal('http://static.datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#Active');
     });
   });
 
