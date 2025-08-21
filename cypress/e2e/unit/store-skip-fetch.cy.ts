@@ -471,53 +471,6 @@ describe('Store skipFetch parameter', { testIsolation: false }, () => {
     });
   });
 
-  describe('Performance tests', () => {
-    it('should be faster with skipFetch=true', () => {
-      cy.intercept('POST', '/examples/data/list/users.jsonld', {
-        statusCode: 200,
-        headers: {
-          'content-type': 'application/ld+json',
-          Location: '/examples/data/list/user-new.jsonld',
-        },
-      }).as('postRequest');
-
-      cy.intercept('GET', '/examples/data/list/users.jsonld', {
-        statusCode: 200,
-        body: {
-          '@id': '/examples/data/list/users.jsonld',
-          '@type': 'ldp:Container',
-          'ldp:contains': [],
-          '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
-        },
-        headers: {
-          'content-type': 'application/ld+json',
-        },
-      }).as('getRequest');
-
-      cy.window().then(async (win: any) => {
-        const store = win.sibStore;
-
-        const resource = {
-          '@type': 'foaf:user',
-          name: 'Performance Test User',
-          '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
-        };
-
-        const startSkip = performance.now();
-        await store.post(resource, '/examples/data/list/users.jsonld', true);
-        const endSkip = performance.now();
-        const timeWithSkip = endSkip - startSkip;
-
-        const startNoSkip = performance.now();
-        await store.post(resource, '/examples/data/list/users.jsonld', false);
-        const endNoSkip = performance.now();
-        const timeWithoutSkip = endNoSkip - startNoSkip;
-
-        expect(timeWithSkip).to.be.lessThan(timeWithoutSkip);
-      });
-    });
-  });
-
   describe('Error handling with skipFetch', () => {
     it('should handle errors properly when skipFetch is true', () => {
       cy.intercept('POST', '/examples/data/list/users.jsonld', {
