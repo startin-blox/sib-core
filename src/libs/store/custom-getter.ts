@@ -163,7 +163,7 @@ export class CustomGetter {
               if (expandedPath && expandedPath !== path) {
                 pathsToCheck.push(expandedPath);
               }
-            } catch (expandError) {
+            } catch (_expandError) {
               // Expansion failed, continue with just the original path
             }
 
