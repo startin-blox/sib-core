@@ -30,7 +30,7 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
       await store.setLocalData(testData, '/test-type-as-id');
 
       // Get the resource back
-      const resource = store.get('/test-type-as-id');
+      const resource = await store.get('/test-type-as-id');
       expect(resource).to.exist;
 
       // Test the type-as-id property - this is the main test
@@ -80,7 +80,7 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
       };
 
       await store.setLocalData(testData, '/multi-type-test');
-      const resource = store.get('/multi-type-test');
+      const resource = await store.get('/multi-type-test');
 
       // All type-as-id properties should return strings
       const hasType = await resource['dfc:hasType'];
@@ -142,7 +142,7 @@ describe('Type as ID Handling', { testIsolation: false }, function () {
       await store.setLocalData(testData, '/mixed-test');
       await store.setLocalData(relatedData, '/related-item');
 
-      const resource = store.get('/mixed-test');
+      const resource = await store.get('/mixed-test');
 
       // Type-as-id should return string
       const hasType = await resource['dfc:hasType'];

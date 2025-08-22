@@ -110,7 +110,22 @@ export class CustomGetter {
       // We do that by poping one element from path1 at each step and affecting it to path2
       // Trying to get the value from it
       while (true) {
-        value = await this.getList(path1[0]);
+        // Try to get the value directly first, then fall back to getList for containers
+        value = this.resource[path1[0]];
+        if (!value) {
+          const expandedPath = this.getExpandedPredicate(path1[0]);
+          if (expandedPath) {
+            value = this.resource[expandedPath];
+          }
+        }
+
+        // If still no value, try getList (for container/array cases)
+        if (!value) {
+          value = await this.getList(path1[0]);
+          if (Array.isArray(value) && value.length === 0) {
+            value = undefined;
+          }
+        }
 
         if (path1.length <= 1) break; // no dot path
         const lastPath1El = path1.pop();
@@ -126,7 +141,7 @@ export class CustomGetter {
         const valueKeys = Object.keys(value).filter(k => k !== '@type');
         if (valueKeys.length === 1 && valueKeys[0] === '@id') {
           // First check if it's already cached - if so, use the cached resource
-          const cachedResource = store.get(value['@id']);
+          const cachedResource = await store.get(value['@id']);
           if (cachedResource) {
             return cachedResource;
           }
@@ -139,31 +154,55 @@ export class CustomGetter {
             );
             const rawContext = getRawContext(mergedContext);
 
-            // Check if current path is defined as @type: @id in context
-            if (
-              rawContext?.[path] &&
-              typeof rawContext[path] === 'object' &&
-              rawContext[path]['@type'] === '@id'
-            ) {
-              // This is a @type: @id property, return the string ID directly
-              return value['@id'];
+            // Check both the compact and expanded forms of the path
+            const pathsToCheck = [path];
+
+            // Try to get the expanded form too if different from the compact form
+            try {
+              const expandedPath = this.getExpandedPredicate(path);
+              if (expandedPath && expandedPath !== path) {
+                pathsToCheck.push(expandedPath);
+              }
+            } catch (expandError) {
+              // Expansion failed, continue with just the original path
+            }
+
+            // Check if any form of the path is defined as @type: @id in context
+            for (const pathToCheck of pathsToCheck) {
+              if (
+                rawContext?.[pathToCheck] &&
+                typeof rawContext[pathToCheck] === 'object' &&
+                rawContext[pathToCheck]['@type'] === '@id'
+              ) {
+                // This is a @type: @id property, return the string ID directly
+                return value['@id'];
+              }
             }
           } catch (error) {
             // If context parsing fails, continue with normal flow
             console.warn('Context parsing failed in CustomGetter:', error);
           }
 
-          // If not explicitly @type: @id or context check failed, try to fetch the resource
-          const resource = await this.getResource(
-            value['@id'],
-            mergeContexts(this.clientContext, this.serverContext),
-            this.parentId || this.resourceId,
-          );
-          // If resource couldn't be fetched (null), return the @id string directly
-          if (resource === null) {
-            return value['@id'];
+          // If not explicitly @type: @id, try to fetch the resource
+          try {
+            const resource = await this.getResource(
+              value['@id'],
+              mergeContexts(this.clientContext, this.serverContext),
+              this.parentId || this.resourceId,
+            );
+
+            // If resource was successfully fetched, return it
+            if (resource !== null) {
+              return resource;
+            }
+          } catch (fetchError) {
+            // Resource fetch failed, fall back to returning the @id string
+            console.warn('Failed to fetch resource:', value['@id'], fetchError);
           }
-          return resource; // return complete resource if it exists
+
+          // If resource couldn't be fetched or fetch failed, return the @id string directly
+          // This handles cases where the context isn't available or the fetch fails
+          return value['@id'];
         }
 
         return await this.getResource(
