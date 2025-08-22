@@ -32,6 +32,9 @@ Don't forget to import the framework:
 ```
 You can now write HTML using `sib-core` and test it in your browser.
 
+## Documentation
+
+- **[Store API Documentation](./docs/store.md)** - Comprehensive guide to the StartinBlox Store API, including data retrieval, manipulation, and advanced querying capabilities.
 
 ## Testing
 
