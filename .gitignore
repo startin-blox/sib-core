@@ -10,3 +10,4 @@ cypress/downloads
 .DS_Store
 .npm
 .env
+CLAUDE.md
