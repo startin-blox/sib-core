@@ -120,6 +120,52 @@ export class CustomGetter {
       if (path2.length === 0) {
         // end of the path
         if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
+
+        // Check if this is just a reference (like @type: @id properties) that shouldn't be fetched
+        // If the object only has @id and optionally @type, handle it specially
+        const valueKeys = Object.keys(value).filter(k => k !== '@type');
+        if (valueKeys.length === 1 && valueKeys[0] === '@id') {
+          // First check if it's already cached - if so, use the cached resource
+          const cachedResource = store.get(value['@id']);
+          if (cachedResource) {
+            return cachedResource;
+          }
+
+          // Try to determine if this is a @type: @id property by checking context
+          try {
+            const mergedContext = mergeContexts(
+              this.clientContext,
+              this.serverContext,
+            );
+            const rawContext = getRawContext(mergedContext);
+
+            // Check if current path is defined as @type: @id in context
+            if (
+              rawContext?.[path] &&
+              typeof rawContext[path] === 'object' &&
+              rawContext[path]['@type'] === '@id'
+            ) {
+              // This is a @type: @id property, return the string ID directly
+              return value['@id'];
+            }
+          } catch (error) {
+            // If context parsing fails, continue with normal flow
+            console.warn('Context parsing failed in CustomGetter:', error);
+          }
+
+          // If not explicitly @type: @id or context check failed, try to fetch the resource
+          const resource = await this.getResource(
+            value['@id'],
+            mergeContexts(this.clientContext, this.serverContext),
+            this.parentId || this.resourceId,
+          );
+          // If resource couldn't be fetched (null), return the @id string directly
+          if (resource === null) {
+            return value['@id'];
+          }
+          return resource; // return complete resource if it exists
+        }
+
         return await this.getResource(
           value['@id'],
           mergeContexts(this.clientContext, this.serverContext),
