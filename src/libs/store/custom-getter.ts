@@ -110,7 +110,22 @@ export class CustomGetter {
       // We do that by poping one element from path1 at each step and affecting it to path2
       // Trying to get the value from it
       while (true) {
-        value = await this.getList(path1[0]);
+        // Try to get the value directly first, then fall back to getList for containers
+        value = this.resource[path1[0]];
+        if (!value) {
+          const expandedPath = this.getExpandedPredicate(path1[0]);
+          if (expandedPath) {
+            value = this.resource[expandedPath];
+          }
+        }
+
+        // If still no value, try getList (for container/array cases)
+        if (!value) {
+          value = await this.getList(path1[0]);
+          if (Array.isArray(value) && value.length === 0) {
+            value = undefined;
+          }
+        }
 
         if (path1.length <= 1) break; // no dot path
         const lastPath1El = path1.pop();
@@ -120,6 +135,76 @@ export class CustomGetter {
       if (path2.length === 0) {
         // end of the path
         if (!value || !value['@id']) return this.getLiteralValue(value); // no value or not a resource
+
+        // Check if this is just a reference (like @type: @id properties) that shouldn't be fetched
+        // If the object only has @id and optionally @type, handle it specially
+        const valueKeys = Object.keys(value).filter(k => k !== '@type');
+        if (valueKeys.length === 1 && valueKeys[0] === '@id') {
+          // First check if it's already cached - if so, use the cached resource
+          const cachedResource = await store.get(value['@id']);
+          if (cachedResource) {
+            return cachedResource;
+          }
+
+          // Try to determine if this is a @type: @id property by checking context
+          try {
+            const mergedContext = mergeContexts(
+              this.clientContext,
+              this.serverContext,
+            );
+            const rawContext = getRawContext(mergedContext);
+
+            // Check both the compact and expanded forms of the path
+            const pathsToCheck = [path];
+
+            // Try to get the expanded form too if different from the compact form
+            try {
+              const expandedPath = this.getExpandedPredicate(path);
+              if (expandedPath && expandedPath !== path) {
+                pathsToCheck.push(expandedPath);
+              }
+            } catch (_expandError) {
+              // Expansion failed, continue with just the original path
+            }
+
+            // Check if any form of the path is defined as @type: @id in context
+            for (const pathToCheck of pathsToCheck) {
+              if (
+                rawContext?.[pathToCheck] &&
+                typeof rawContext[pathToCheck] === 'object' &&
+                rawContext[pathToCheck]['@type'] === '@id'
+              ) {
+                // This is a @type: @id property, return the string ID directly
+                return value['@id'];
+              }
+            }
+          } catch (error) {
+            // If context parsing fails, continue with normal flow
+            console.warn('Context parsing failed in CustomGetter:', error);
+          }
+
+          // If not explicitly @type: @id, try to fetch the resource
+          try {
+            const resource = await this.getResource(
+              value['@id'],
+              mergeContexts(this.clientContext, this.serverContext),
+              this.parentId || this.resourceId,
+            );
+
+            // If resource was successfully fetched, return it
+            if (resource !== null) {
+              return resource;
+            }
+          } catch (fetchError) {
+            // Resource fetch failed, fall back to returning the @id string
+            console.warn('Failed to fetch resource:', value['@id'], fetchError);
+          }
+
+          // If resource couldn't be fetched or fetch failed, return the @id string directly
+          // This handles cases where the context isn't available or the fetch fails
+          return value['@id'];
+        }
+
         return await this.getResource(
           value['@id'],
           mergeContexts(this.clientContext, this.serverContext),
