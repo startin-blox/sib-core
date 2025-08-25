@@ -506,24 +506,23 @@ export class LdpStore implements IStore<Resource> {
             const resourcesToNotify =
               this.subscriptionIndex.get(expandedId) || [];
 
-            await this.refreshResources([
-              ...nestedResources,
-              ...resourcesToRefresh,
-            ]) // refresh related resources
-              .then(resourceIds =>
-                this.notifyResources([
-                  expandedId,
-                  ...resourceIds,
-                  ...resourcesToNotify,
-                ]),
-              ); // notify components
-          }
-
-          return response.headers?.get('Location') || null;
+          await this.refreshResources([
+            ...nestedResources,
+            ...resourcesToRefresh,
+          ]) // refresh related resources
+            .then(resourceIds =>
+              this.notifyResources([
+                expandedId,
+                ...resourceIds,
+                ...resourcesToNotify,
+              ]),
+            ); // notify components
         }
-        throw response;
-      },
-    );
+
+        return response.headers?.get('Location') || null;
+      }
+      throw response;
+    });
   }
 
   /**

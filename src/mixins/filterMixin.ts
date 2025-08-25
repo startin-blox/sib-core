@@ -1,8 +1,8 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
-import { hasQueryIndex, hasSetLocalData } from '../libs/store/shared/types.ts';
 import type { ServerSearchOptions } from '../libs/store/shared/options/server-search.ts';
+import { hasQueryIndex, hasSetLocalData } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
