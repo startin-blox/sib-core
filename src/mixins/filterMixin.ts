@@ -128,7 +128,7 @@ const FilterMixin = {
     if (!hasSetLocalData(store)) {
       throw new Error('Store does not support setLocalData method');
     }
-    store.setLocalData(this.localResources, this.dataSrc, false, true);
+    store.setLocalData(this.localResources, this.dataSrc, false);
     if (this.loader) {
       this.loader.toggleAttribute('hidden', false);
     }
@@ -194,7 +194,7 @@ const FilterMixin = {
     if (!hasSetLocalData(store)) {
       throw new Error('Store does not support setLocalData method');
     }
-    await store.setLocalData(this.localResources, this.dataSrc);
+    await store.setLocalData(this.localResources, this.dataSrc, true);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
   },
   isFilteredOnServer() {

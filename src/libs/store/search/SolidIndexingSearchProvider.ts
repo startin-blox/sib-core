@@ -1,7 +1,7 @@
 import type {
   ConjunctionQueryOptions,
   IndexQueryOptions,
-} from '../LdpStore.ts';
+} from '../impl/ldp/LdpStore.ts';
 import type { SearchProvider } from './SearchProvider.ts';
 
 // Semantizer imports

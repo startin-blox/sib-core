@@ -482,7 +482,6 @@ export class LdpStore implements IStore<Resource> {
     resource: object,
     id: string,
     skipFetch = false,
-    bypassLoadingList = false,
   ) {
     if (!['POST', 'PUT', 'PATCH', '_LOCAL'].includes(method))
       throw new Error('Error: method not allowed');
@@ -647,15 +646,8 @@ export class LdpStore implements IStore<Resource> {
     resource: object,
     id: string,
     skipFetch = false,
-    bypassLoadingList = false,
   ): Promise<string | null> {
-    return this._updateResource(
-      '_LOCAL',
-      resource,
-      id,
-      skipFetch,
-      bypassLoadingList,
-    );
+    return this._updateResource('_LOCAL', resource, id, skipFetch);
   }
 
   /**
