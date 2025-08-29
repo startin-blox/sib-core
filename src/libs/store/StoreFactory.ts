@@ -1,7 +1,7 @@
 import { type IStore, type StoreConfig, StoreType } from './IStore.ts';
 import { LdpStoreAdapter } from './LdpStore.ts';
-import { FederatedCatalogueStoreAdapter } from './federated-catalogue/FederatedCatalogueStore.ts';
 import { DataspaceConnectorStoreAdapter } from './dataspace-connector/DataspaceConnectorStore.ts';
+import { FederatedCatalogueStoreAdapter } from './federated-catalogue/FederatedCatalogueStore.ts';
 
 type StoreAdapterConstructor = {
   getStoreInstance(cfg: StoreConfig): IStore<any>;

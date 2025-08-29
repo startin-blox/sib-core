@@ -3,31 +3,31 @@ import type { StoreConfig } from '../IStore.ts';
 // Dataspace Protocol Configuration
 export interface DataspaceConnectorConfig extends StoreConfig {
   // Required endpoints (v3 API)
-  catalogEndpoint: string;          // /v3/catalog/request
-  contractNegotiationEndpoint: string; // /v3/contractnegotiations  
-  transferProcessEndpoint: string;  // /v3/transferprocesses
+  catalogEndpoint: string; // /v3/catalog/request
+  contractNegotiationEndpoint: string; // /v3/contractnegotiations
+  transferProcessEndpoint: string; // /v3/transferprocesses
 
   // Additional v3 endpoints
-  assetsEndpoint?: string;          // /v3/assets
-  policiesEndpoint?: string;        // /v3/policydefinitions
+  assetsEndpoint?: string; // /v3/assets
+  policiesEndpoint?: string; // /v3/policydefinitions
   contractDefinitionsEndpoint?: string; // /v3/contractdefinitions
-  
+
   // API version
-  apiVersion?: 'v2' | 'v3';         // Default to v3
-  
+  apiVersion?: 'v2' | 'v3'; // Default to v3
+
   // Authentication - Eclipse EDC specific
   authMethod: 'edc-api-key' | 'bearer' | 'oauth2' | 'delegated';
-  
+
   // EDC API Key authentication (most common)
   edcApiKey?: string;
-  
+
   // Standard authentication methods
   bearerToken?: string;
   oauth2Config?: OAuth2Config;
-  
+
   // EDC Delegated Authentication Service
   delegatedAuthConfig?: DelegatedAuthConfig;
-  
+
   // Optional configuration
   participantId?: string;
   timeout?: number;
@@ -204,10 +204,10 @@ export interface DataService {
 }
 
 // State Enums
-export type ContractNegotiationState = 
+export type ContractNegotiationState =
   | 'INITIAL'
   | 'REQUESTING'
-  | 'REQUESTED' 
+  | 'REQUESTED'
   | 'OFFERING'
   | 'OFFERED'
   | 'ACCEPTING'
