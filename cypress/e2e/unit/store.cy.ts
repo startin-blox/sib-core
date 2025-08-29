@@ -601,7 +601,7 @@ describe('store', { testIsolation: false }, function () {
   });
 
   it('refreshResources keeps cache size unchanged (isolated cache)', () => {
-    cy.window().then(async () => {
+    cy.window().then(() => {
       const testStore = new LdpStore({});
 
       const rel1 = '/examples/data/list/users/user-1.jsonld';
