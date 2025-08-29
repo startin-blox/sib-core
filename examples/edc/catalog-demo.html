@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Catalog Demo - France TV Access</title>
+    <script type="module" src="../../src/index.ts"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .demo-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .demo-info h3 {
+            margin-top: 0;
+        }
+        .demo-info code {
+            background: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .catalog-header {
+            background: #e8f5e8;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .catalog-header h2 {
+            margin: 0 0 0.5rem 0;
+            color: #2e7d32;
+        }
+        .catalog-header p {
+            margin: 0.25rem 0;
+            color: #555;
+        }
+        .edc-datasets-list {
+            display: grid;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .edc-dataset-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+        }
+        .edc-dataset-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .dataset-title {
+            margin: 0 0 0.5rem 0;
+            color: #1976d2;
+            font-size: 1.25rem;
+        }
+        .dataset-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .dataset-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .dataset-metadata span {
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.125rem;
+            color: #666;
+        }
+        .loading::after {
+            content: "...";
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+        .error {
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            background: #ffebee;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>EDC Catalog Demo</h1>
+        <p>Displaying assets from France TV Access connector</p>
+    </div>
+
+    <div class="demo-info">
+        <h3>Demo Configuration</h3>
+        <p>This demo fetches the catalog from <strong>France TV Access</strong> connector:</p>
+        <ul>
+            <li><strong>Consumer Connector:</strong> <code>consumer.connector-dev.startinblox.com</code></li>
+            <li><strong>Provider Connector:</strong> <code>france-tv-access.connector.luminvent.com</code></li>
+            <li><strong>Protocol:</strong> Dataspace Protocol HTTP (EDC v3 Management API)</li>
+        </ul>
+        <p>This is equivalent to the curl command:</p>
+        <pre><code>curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catalog/request" \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "@context": { "@vocab": "https://w3id.org/edc/v0.0.1/ns/" },
+  "counterPartyAddress": "https://france-tv-access.connector.luminvent.com/protocol",
+  "protocol": "dataspace-protocol-http"
+}'</code></pre>
+    </div>
+
+    <edc-catalog-display 
+        connector-uri="https://consumer.connector-dev.startinblox.com/management"
+        api-key="password"
+        counter-party-address="https://france-tv-access.connector.luminvent.com/protocol">
+    </edc-catalog-display>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ EDC Catalog Demo loaded');
+        });
+    </script>
+</body>
+</html>

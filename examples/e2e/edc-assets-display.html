@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Assets Display Test</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <style>
+        .edc-assets-list {
+            display: grid;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .edc-asset-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #f9f9f9;
+        }
+        .asset-title {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+        .asset-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .asset-metadata {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .loading, .error, .empty {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+        .error {
+            color: red;
+            border: 1px solid red;
+            background: #ffe6e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>EDC Assets Display Test</h1>
+
+    <edc-assets-display 
+        connector-uri="https://test-connector.example.com/management"
+        api-key="test-api-key"
+        fields="dcterms:title,@id,dcterms:description">
+    </edc-assets-display>
+
+    <script type="module">
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ EDC Assets Display component loaded');
+        });
+    </script>
+</body>
+</html>

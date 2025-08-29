@@ -1,6 +1,9 @@
 import { SolidAcChecker } from './components/solid-ac-checker.ts';
 import { SolidDelete } from './components/solid-delete.ts';
+
 // Components
+import { EdcAssetsDisplay } from './components/edc-assets-display.ts';
+import { EdcCatalogDisplay } from './components/edc-catalog-display.ts';
 import { SolidDisplay } from './components/solid-display.ts';
 import { SolidFormSearch } from './components/solid-form-search.ts';
 import { SolidForm } from './components/solid-form.ts';
@@ -52,6 +55,8 @@ import { until } from 'lit/directives/until.js';
 
 export {
   // Components
+  EdcAssetsDisplay,
+  EdcCatalogDisplay,
   SolidDisplay,
   SolidForm,
   SolidFormSearch,
