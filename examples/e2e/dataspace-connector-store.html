@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataspaceConnector Store Test</title>
+</head>
+<body>
+    <div id="status">Loading...</div>
+
+    <script type="module">
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Import StoreService from index.js which exports it
+                const { StoreService } = await import('../../dist/index.js');
+                
+                // Force reset of StoreService to allow reinitialization
+                StoreService.currentStore = null;
+                StoreService.currentConfig = null;
+                
+                // Configure DataspaceConnector store
+                const config = {
+                    type: 'dataspaceConnector',
+                    endpoint: 'https://test-connector.example.com/management/',
+                    catalogEndpoint: 'https://test-connector.example.com/management/v3/catalog/request',
+                    contractNegotiationEndpoint: 'https://test-connector.example.com/management/v3/contractnegotiations',
+                    transferProcessEndpoint: 'https://test-connector.example.com/management/v3/transferprocesses',
+                    authMethod: 'edc-api-key',
+                    edcApiKey: 'test-api-key',
+                    participantId: 'test-consumer',
+                    retryAttempts: 5,
+                    timeout: 30000
+                };
+
+                // Initialize a new DataspaceConnector store
+                StoreService.init(config);
+                window.edcStore = StoreService.getInstance();
+                document.getElementById('status').textContent = 'Store initialized successfully';
+                console.log('✅ DataspaceConnector store available as window.edcStore');
+                
+            } catch (error) {
+                document.getElementById('status').textContent = 'Error: ' + error.message;
+                console.error('Store initialization error:', error);
+                console.error('Error stack:', error.stack);
+                
+                // Also make the error details available on window for debugging
+                window.storeError = error;
+            }
+        });
+    </script>
+</body>
+</html>

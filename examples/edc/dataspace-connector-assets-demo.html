@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Assets Catalog Demo - DataspaceConnectorStore</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .config-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .asset-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #fafafa;
+        }
+        .asset-id {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .asset-title {
+            font-size: 1.1em;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+        .asset-description {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .asset-properties {
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #e6ffe6;
+            color: #00b894;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 EDC Assets Catalog Demo</h1>
+        <p>Demo showcasing DataspaceConnectorStore fetching assets from EDC Management API v3</p>
+        
+        <div class="config-section">
+            <h3>📋 Store Configuration</h3>
+            <p><strong>Consumer Connector:</strong> https://consumer.connector-dev.startinblox.com</p>
+            <p><strong>Management API:</strong> /management/v3/assets/request (POST)</p>
+            <p><strong>Authentication:</strong> X-Api-Key header</p>
+            <p><strong>Query Spec:</strong> {"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":5,"filterExpression":[]}</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="fetchAssets()">🔍 Fetch Assets</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+        </div>
+
+        <div id="status"></div>
+        <div id="results"></div>
+    </div>
+
+    <!-- DataspaceConnectorStore configuration -->
+    <sib-store
+        name="edc-consumer"
+        type="DataspaceConnector"
+        data-source="https://consumer.connector-dev.startinblox.com/management/"
+        auth-method="edc-api-key"
+        edc-api-key="password"
+        api-version="v3"
+        catalog-endpoint="/v3/catalog/request"
+        assets-endpoint="/v3/assets/request"
+        contract-negotiation-endpoint="/v3/contractnegotiations/request"
+        transfer-process-endpoint="/v3/transferprocesses/request"
+        policies-endpoint="/v3/policydefinitions/request"
+        contract-definitions-endpoint="/v3/contractdefinitions/request"
+    ></sib-store>
+
+    <script>
+        let store;
+
+        // Wait for store to be available
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Wait for sib-core to initialize
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            try {
+                store = window.data?.stores?.['edc-consumer'];
+                if (!store) {
+                    showError('Store not initialized. Make sure sib-core is loaded properly.');
+                    return;
+                }
+                showSuccess('DataspaceConnectorStore initialized successfully!');
+            } catch (error) {
+                showError('Failed to initialize store: ' + error.message);
+            }
+        });
+
+        async function fetchAssets() {
+            if (!store) {
+                showError('Store not initialized');
+                return;
+            }
+
+            showLoading('Fetching assets from EDC Management API v3...');
+            
+            try {
+                // This corresponds to your curl request:
+                // POST https://consumer.connector-dev.startinblox.com/management/v3/assets/request
+                // with QuerySpec body: {"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":5,"filterExpression":[]}
+                
+                const assets = await store.getAssets({
+                    offset: 0,
+                    limit: 5,
+                    filterExpression: []
+                });
+
+                showSuccess(`✅ Successfully fetched ${assets.length} assets`);
+                displayAssets(assets);
+
+            } catch (error) {
+                showError('Failed to fetch assets: ' + error.message);
+                console.error('EDC Assets fetch error:', error);
+            }
+        }
+
+        function displayAssets(assets) {
+            const resultsDiv = document.getElementById('results');
+            
+            if (!assets || assets.length === 0) {
+                resultsDiv.innerHTML = '<p>No assets found in the catalog.</p>';
+                return;
+            }
+
+            let html = '<h3>📦 Available Assets</h3>';
+            
+            assets.forEach((asset, index) => {
+                const assetId = asset['@id'] || `asset-${index}`;
+                const title = asset['dcterms:title'] || asset.name || 'Untitled Asset';
+                const description = asset['dcterms:description'] || asset.description || 'No description available';
+                const properties = asset.properties || {};
+
+                html += `
+                    <div class="asset-card">
+                        <div class="asset-id">🆔 ${assetId}</div>
+                        <div class="asset-title">📋 ${title}</div>
+                        <div class="asset-description">${description}</div>
+                        <div class="asset-properties">
+                            <strong>Properties:</strong>
+                            <pre>${JSON.stringify(properties, null, 2)}</pre>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function showError(message) {
+            document.getElementById('status').innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        function showSuccess(message) {
+            document.getElementById('status').innerHTML = `<div class="success">✅ ${message}</div>`;
+        }
+
+        function showLoading(message) {
+            document.getElementById('status').innerHTML = `<div class="loading">⏳ ${message}</div>`;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('status').innerHTML = '';
+        }
+
+        // Debug info
+        console.log('=== EDC Assets Demo Debug Info ===');
+        console.log('This demo replicates the curl request:');
+        console.log('curl https://consumer.connector-dev.startinblox.com/management/v3/assets/request \\');
+        console.log('  -X POST \\');
+        console.log('  -H "x-api-key: password" \\');
+        console.log('  -H "content-type: application/json" \\');
+        console.log('  --data-raw \'{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":5,"filterExpression":[]}\'');
+        console.log('');
+        console.log('The DataspaceConnectorStore.getAssets() method will:');
+        console.log('1. Make POST request to /management/v3/assets/request');
+        console.log('2. Include X-Api-Key: password header');
+        console.log('3. Send QuerySpec body with offset:0, limit:5');
+        console.log('4. Parse the JSON-LD response into asset objects');
+    </script>
+</body>
+</html>

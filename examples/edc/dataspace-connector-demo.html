@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataspace Connector Store Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .status.connecting { background: #fff3cd; color: #856404; }
+        .status.connected { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .config-section {
+            border: 2px dashed #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .endpoint-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196f3;
+        }
+        .catalog-display {
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .dataset-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .asset-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #fafafa;
+        }
+        .asset-id {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .asset-title {
+            font-size: 1.1em;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+        .asset-description {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .curl-equivalent {
+            background: #212529;
+            color: #20c997;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85em;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .log {
+            background: #212529;
+            color: #20c997;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔗 Eclipse Dataspace Connector Integration Demo</h1>
+        <p>Testing sib-core DataspaceConnectorStore with stbx-consumer EDC</p>
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ Demo Notice:</strong> This is a demonstration of the DataspaceConnectorStore implementation. 
+        The connector at IP 51.158.102.51 may not be accessible or configured for external connections.
+        Please ensure proper network access and authentication configuration.
+    </div>
+
+    <div class="container">
+        <h2>📋 Connector Configuration</h2>
+        <div class="config-section">
+            <div class="endpoint-info">
+                <strong>Target EDC Connector:</strong> consumer.connector-dev.startinblox.com<br>
+                <strong>Participant ID:</strong> stbx-consumer<br>
+                <strong>Protocol:</strong> HTTPS<br>
+                <strong>Management API:</strong> /management<br>
+                <strong>Protocol API:</strong> /protocol<br>
+                <strong>Public API:</strong> /public
+            </div>
+            
+            <div class="form-group">
+                <label for="connectorUrl">Connector Base URL:</label>
+                <input type="url" id="connectorUrl" value="https://consumer.connector-dev.startinblox.com" style="font-family: monospace;">
+                <small style="color: #666; display: block; margin-top: 5px;">
+                    Change to http://51.158.102.51:29193 for direct IP access (if HTTPS not set up yet)
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <label for="authMethod">Authentication Method:</label>
+                <select id="authMethod">
+                    <option value="edc-api-key" selected>EDC API Key (X-Api-Key)</option>
+                    <option value="bearer">Bearer Token</option>
+                    <option value="oauth2">OAuth2</option>
+                    <option value="delegated">EDC Delegated Auth</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="edcApiKeyGroup">
+                <label for="edcApiKey">EDC API Key:</label>
+                <input type="password" id="edcApiKey" placeholder="Enter your EDC API key (edc.api.auth.key value)">
+                <small style="color: #666; display: block; margin-top: 5px;">
+                    This is the value configured as <code>edc.api.auth.key</code> in your EDC connector.
+                </small>
+            </div>
+            
+            <div class="form-group" style="display: none;" id="bearerTokenGroup">
+                <label for="bearerToken">Bearer Token:</label>
+                <input type="password" id="bearerToken" placeholder="Enter your JWT bearer token">
+            </div>
+            
+            <div class="form-group" style="display: none;" id="oauth2Group">
+                <label for="tokenEndpoint">OAuth2 Token Endpoint:</label>
+                <input type="url" id="tokenEndpoint" placeholder="https://auth.example.com/token">
+                <label for="clientId">Client ID:</label>
+                <input type="text" id="clientId" placeholder="your-client-id">
+                <label for="clientSecret">Client Secret:</label>
+                <input type="password" id="clientSecret" placeholder="your-client-secret">
+            </div>
+            
+            <div class="form-group" style="display: none;" id="delegatedGroup">
+                <label for="dacKeyUrl">DAC Key URL:</label>
+                <input type="url" id="dacKeyUrl" placeholder="https://your-edc.com/auth/key">
+                <label for="idpEndpoint">Identity Provider Endpoint:</label>
+                <input type="url" id="idpEndpoint" placeholder="https://keycloak.example.com/auth/realms/edc/protocol/openid-connect/token">
+                <label for="dacClientId">Client ID:</label>
+                <input type="text" id="dacClientId" placeholder="edc-client">
+                <label for="dacClientSecret">Client Secret:</label>
+                <input type="password" id="dacClientSecret" placeholder="your-client-secret">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🔌 Connection Status</h2>
+        <div id="connectionStatus" class="status connecting">Not connected</div>
+        <button class="btn" id="connectBtn" onclick="initializeStore()">Initialize Store</button>
+        <button class="btn" id="catalogBtn" onclick="fetchCatalog()" disabled>Fetch Catalog</button>
+        <button class="btn" id="assetsBtn" onclick="fetchAssets()" disabled>Fetch Assets</button>
+        <button class="btn" id="policiesBtn" onclick="fetchPolicies()" disabled>Fetch Policies</button>
+        <button class="btn" id="contractsBtn" onclick="fetchContractDefinitions()" disabled>Fetch Contract Definitions</button>
+        <button class="btn" id="testBtn" onclick="testDataAccess()" disabled>Test Data Access</button>
+        <button class="btn" onclick="clearLog()">Clear Log</button>
+        <button class="btn" id="inspectCacheBtn" onclick="inspectCache()">Inspect Cache</button>
+    </div>
+
+    <div class="container">
+        <h2>📊 Catalog Data</h2>
+        <div id="catalogDisplay" class="catalog-display">
+            <p>No catalog data loaded. Click "Fetch Catalog" to retrieve available datasets.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📦 Assets Data</h2>
+        <div class="curl-equivalent">
+Equivalent curl command:
+curl 'https://consumer.connector-dev.startinblox.com/management/v3/assets/request' \
+  -X POST \
+  -H 'x-api-key: password' \
+  -H 'content-type: application/json' \
+  --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":5,"filterExpression":[]}'</div>
+        <div id="assetsDisplay" class="catalog-display">
+            <p>No assets data loaded. Click "Fetch Assets" to retrieve available assets.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Policy Definitions Data</h2>
+        <div class="curl-equivalent">
+Equivalent curl command:
+curl 'https://consumer.connector-dev.startinblox.com/management/v3/policydefinitions/request' \
+  -X POST \
+  -H 'x-api-key: password' \
+  -H 'content-type: application/json' \
+  --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":10,"filterExpression":[]}'</div>
+        <div id="policiesDisplay" class="catalog-display">
+            <p>No policy definitions loaded. Click "Fetch Policies" to retrieve available policies.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📄 Contract Definitions Data</h2>
+        <div class="curl-equivalent">
+Equivalent curl command:
+curl 'https://consumer.connector-dev.startinblox.com/management/v3/contractdefinitions/request' \
+  -X POST \
+  -H 'x-api-key: password' \
+  -H 'content-type: application/json' \
+  --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":10,"filterExpression":[]}'</div>
+        <div id="contractDefinitionsDisplay" class="catalog-display">
+            <p>No contract definitions loaded. Click "Fetch Contract Definitions" to retrieve available contracts.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🛠️ Store Operations</h2>
+        <div class="form-group">
+            <label for="resourceId">Resource/Dataset ID:</label>
+            <input type="text" id="resourceId" placeholder="Enter dataset ID from catalog">
+        </div>
+        <button class="btn" id="fetchResourceBtn" onclick="fetchResource()" disabled>Fetch Resource</button>
+        <div id="resourceResult" style="margin-top: 15px;"></div>
+    </div>
+
+    <div class="container">
+        <h2>📝 Debug Log</h2>
+        <div id="debugLog" class="log">
+            <div>Dataspace Connector Store Demo initialized...</div>
+            <div>Waiting for store configuration...</div>
+        </div>
+    </div>
+
+    <!-- Import sib-core -->
+    <script type="module" src="../../src/index.ts"></script>
+    
+    <script type="module">
+        import { StoreService } from '../../src/store.ts';
+        import { StoreType } from '../../src/libs/store/IStore.ts';
+        import { StoreFactory } from '../../src/libs/store/StoreFactory.ts';
+
+        // let window.dataspaceStore = null;
+        let defaultConnectorUrl = 'https://consumer.connector-dev.startinblox.com';
+
+        // UI Helper functions
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            
+            let color = '#20c997';
+            if (type === 'error') color = '#dc3545';
+            else if (type === 'warning') color = '#ffc107';
+            else if (type === 'success') color = '#28a745';
+            
+            logEntry.innerHTML = `<span style="color: #6c757d;">[${timestamp}]</span> <span style="color: ${color};">${message}</span>`;
+            logElement.appendChild(logEntry);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function updateStatus(status, type) {
+            const statusElement = document.getElementById('connectionStatus');
+            statusElement.textContent = status;
+            statusElement.className = `status ${type}`;
+        }
+
+        function clearLog() {
+            const logElement = document.getElementById('debugLog');
+            logElement.innerHTML = '<div>Debug log cleared...</div>';
+        }
+
+        // Auth method change handler
+        document.getElementById('authMethod').addEventListener('change', function() {
+            const method = this.value;
+            const edcApiKeyGroup = document.getElementById('edcApiKeyGroup');
+            const bearerGroup = document.getElementById('bearerTokenGroup');
+            const oauth2Group = document.getElementById('oauth2Group');
+            const delegatedGroup = document.getElementById('delegatedGroup');
+            
+            // Hide all groups
+            edcApiKeyGroup.style.display = 'none';
+            bearerGroup.style.display = 'none';
+            oauth2Group.style.display = 'none';
+            delegatedGroup.style.display = 'none';
+            
+            // Show relevant group
+            if (method === 'edc-api-key') {
+                edcApiKeyGroup.style.display = 'block';
+            } else if (method === 'bearer') {
+                bearerGroup.style.display = 'block';
+            } else if (method === 'oauth2') {
+                oauth2Group.style.display = 'block';
+            } else if (method === 'delegated') {
+                delegatedGroup.style.display = 'block';
+            }
+        });
+
+        // Store initialization
+        window.initializeStore = async function() {
+            try {
+                log('Initializing Dataspace Connector Store...', 'info');
+                updateStatus('Connecting...', 'connecting');
+                
+                const connectorUrl = document.getElementById('connectorUrl').value || defaultConnectorUrl;
+                const authMethod = document.getElementById('authMethod').value;
+                
+                // Build configuration
+                const config = {
+                    type: StoreType.DataspaceConnector,
+                    endpoint: connectorUrl,
+                    catalogEndpoint: `${connectorUrl}/management/v3/catalog/request`,
+                    contractNegotiationEndpoint: `${connectorUrl}/management/v3/contractnegotiations`,
+                    transferProcessEndpoint: `${connectorUrl}/management/v3/transferprocesses`,
+                    authMethod: authMethod,
+                    participantId: 'stbx-consumer',
+                    retryAttempts: 10,
+                    timeout: 30000
+                };
+
+                // Add authentication config
+                if (authMethod === 'edc-api-key') {
+                    const apiKey = document.getElementById('edcApiKey').value;
+                    if (!apiKey) {
+                        throw new Error('EDC API key is required');
+                    }
+                    config.edcApiKey = apiKey;
+                    log(`Using EDC API key authentication (X-Api-Key header)`, 'info');
+                } else if (authMethod === 'bearer') {
+                    const token = document.getElementById('bearerToken').value;
+                    if (!token) {
+                        throw new Error('Bearer token is required');
+                    }
+                    config.bearerToken = token;
+                    log(`Using bearer token authentication`, 'info');
+                } else if (authMethod === 'oauth2') {
+                    const tokenEndpoint = document.getElementById('tokenEndpoint').value;
+                    const clientId = document.getElementById('clientId').value;
+                    const clientSecret = document.getElementById('clientSecret').value;
+                    
+                    if (!tokenEndpoint || !clientId || !clientSecret) {
+                        throw new Error('All OAuth2 fields are required');
+                    }
+                    
+                    config.oauth2Config = {
+                        tokenEndpoint,
+                        clientId,
+                        clientSecret,
+                        scope: 'edc:all'
+                    };
+                    log(`Using OAuth2 authentication with endpoint: ${tokenEndpoint}`, 'info');
+                } else if (authMethod === 'delegated') {
+                    const dacKeyUrl = document.getElementById('dacKeyUrl').value;
+                    const idpEndpoint = document.getElementById('idpEndpoint').value;
+                    const dacClientId = document.getElementById('dacClientId').value;
+                    const dacClientSecret = document.getElementById('dacClientSecret').value;
+                    
+                    if (!dacKeyUrl || !idpEndpoint || !dacClientId || !dacClientSecret) {
+                        throw new Error('All delegated auth fields are required');
+                    }
+                    
+                    config.delegatedAuthConfig = {
+                        keyUrl: dacKeyUrl,
+                        identityProviderEndpoint: idpEndpoint,
+                        clientId: dacClientId,
+                        clientSecret: dacClientSecret
+                    };
+                    log(`Using EDC Delegated Authentication with IdP: ${idpEndpoint}`, 'info');
+                }
+
+                log(`Configuration: ${JSON.stringify(config, null, 2)}`, 'info');
+                
+                // Create store instance
+                window.dataspaceStore = StoreFactory.create(config);
+                log('Store instance created successfully', 'success');
+
+                // Test basic connectivity
+                await testConnectivity();
+                
+                updateStatus('Connected', 'connected');
+                
+                // Enable buttons
+                document.getElementById('catalogBtn').disabled = false;
+                document.getElementById('assetsBtn').disabled = false;
+                document.getElementById('policiesBtn').disabled = false;
+                document.getElementById('contractsBtn').disabled = false;
+                document.getElementById('testBtn').disabled = false;
+                document.getElementById('fetchResourceBtn').disabled = false;
+                document.getElementById('connectBtn').disabled = true;
+                
+                log('Store initialization completed successfully!', 'success');
+                
+            } catch (error) {
+                log(`Store initialization failed: ${error.message}`, 'error');
+                console.error('Full error:', error);
+                updateStatus('Connection failed', 'error');
+            }
+        };
+
+        async function testConnectivity() {
+            try {
+                log('Testing connectivity to EDC endpoints...', 'info');
+                
+                // Test if endpoints are reachable
+                const connectorUrl = document.getElementById('connectorUrl').value || defaultConnectorUrl;
+                const testUrl = `${connectorUrl}/management/v3/catalog/request`;
+                
+                log(`Testing endpoint: ${testUrl}`, 'info');
+                
+                // This will test the authentication and basic connectivity
+                const response = await fetch(testUrl, {
+                    method: 'OPTIONS', // Use OPTIONS to test connectivity without triggering CORS issues
+                    mode: 'no-cors'
+                });
+                
+                log('Connectivity test completed (basic network check passed)', 'info');
+            } catch (error) {
+                log(`Connectivity test failed: ${error.message}`, 'warning');
+                log('This may be due to CORS restrictions or network connectivity issues', 'warning');
+            }
+        }
+
+        window.fetchAssets = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('Fetching assets from EDC Management API v3...', 'info');
+                log('Replicating curl: POST /management/v3/assets/request', 'info');
+                const assetsBtn = document.getElementById('assetsBtn');
+                assetsBtn.disabled = true;
+                assetsBtn.textContent = 'Fetching...';
+                
+                // This replicates your exact curl request:
+                // curl 'https://consumer.connector-dev.startinblox.com/management/v3/assets/request'
+                //   -X POST -H 'x-api-key: password' -H 'content-type: application/json'
+                //   --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":5,"filterExpression":[]}'
+                
+                const assets = await window.dataspaceStore.getAssets({
+                    '@context': {
+                        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/'
+                    },
+                    offset: 0,
+                    limit: 5,
+                    filterExpression: []
+                });
+                
+                if (assets && Array.isArray(assets)) {
+                    log(`✅ Successfully fetched ${assets.length} assets`, 'success');
+                    
+                    // Debug cache contents
+                    log('Assets cached with IDs:', 'info');
+                    assets.forEach(asset => {
+                        if (asset['@id']) {
+                            log(`  - Cached: ${asset['@id']}`, 'info');
+                        }
+                    });
+                    
+                    displayAssets(assets);
+                } else {
+                    log('No assets data received', 'warning');
+                    document.getElementById('assetsDisplay').innerHTML = 
+                        '<p style="color: #856404;">No assets data received. Check connector configuration and API key.</p>';
+                }
+                
+            } catch (error) {
+                log(`Assets fetch failed: ${error.message}`, 'error');
+                document.getElementById('assetsDisplay').innerHTML = 
+                    `<p style="color: #721c24;">Error: ${error.message}</p>`;
+            } finally {
+                const assetsBtn = document.getElementById('assetsBtn');
+                assetsBtn.disabled = false;
+                assetsBtn.textContent = 'Fetch Assets';
+            }
+        };
+
+        function displayAssets(assets) {
+            const displayElement = document.getElementById('assetsDisplay');
+            
+            if (!assets || assets.length === 0) {
+                displayElement.innerHTML = '<p>No assets found in the connector</p>';
+                return;
+            }
+            
+            log(`Found ${assets.length} assets in connector`, 'info');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <strong>Assets Found:</strong> ${assets.length}<br>
+                    <strong>Query:</strong> offset:0, limit:5, no filters
+                </div>
+            `;
+            
+            assets.forEach((asset, index) => {
+                const assetId = asset['@id'] || `asset-${index}`;
+                const title = asset['dcterms:title'] || asset.name || 'Untitled Asset';
+                const description = asset['dcterms:description'] || asset.description || 'No description available';
+                const properties = asset.properties || {};
+                const dataAddress = asset.dataAddress || {};
+
+                html += `
+                    <div class="dataset-item">
+                        <div class="asset-id"><strong>🆔 Asset ID:</strong> ${assetId}</div>
+                        <div class="asset-title"><strong>📋 Title:</strong> ${title}</div>
+                        <div class="asset-description"><strong>📝 Description:</strong> ${description}</div>
+                        <div style="margin-top: 10px;">
+                            <strong>🔧 Properties:</strong>
+                            <pre style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 0.85em;">${JSON.stringify(properties, null, 2)}</pre>
+                        </div>
+                        ${Object.keys(dataAddress).length > 0 ? `
+                        <div style="margin-top: 10px;">
+                            <strong>🌐 Data Address:</strong>
+                            <pre style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 0.85em;">${JSON.stringify(dataAddress, null, 2)}</pre>
+                        </div>
+                        ` : ''}
+                        <button class="btn" onclick="selectDataset('${assetId}')" style="margin-top: 5px; font-size: 12px; padding: 5px 10px;">Select Asset</button>
+                    </div>
+                `;
+            });
+            
+            displayElement.innerHTML = html;
+        }
+
+        window.fetchCatalog = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('Fetching catalog from dataspace connector...', 'info');
+                const catalogBtn = document.getElementById('catalogBtn');
+                catalogBtn.disabled = true;
+                catalogBtn.textContent = 'Fetching...';
+                
+                // Use the store's getCatalog method
+                const catalog = await window.dataspaceStore.getCatalog();
+                
+                if (catalog) {
+                    log('Catalog fetched successfully', 'success');
+                    displayCatalog(catalog);
+                } else {
+                    log('No catalog data received', 'warning');
+                    document.getElementById('catalogDisplay').innerHTML = 
+                        '<p style="color: #856404;">No catalog data received. This may be due to network restrictions or connector configuration.</p>';
+                }
+                
+            } catch (error) {
+                log(`Catalog fetch failed: ${error.message}`, 'error');
+                document.getElementById('catalogDisplay').innerHTML = 
+                    `<p style="color: #721c24;">Error: ${error.message}</p>`;
+            } finally {
+                const catalogBtn = document.getElementById('catalogBtn');
+                catalogBtn.disabled = false;
+                catalogBtn.textContent = 'Fetch Catalog';
+            }
+        };
+
+        function displayCatalog(catalog) {
+            const displayElement = document.getElementById('catalogDisplay');
+            
+            if (!catalog || !catalog['dcat:dataset']) {
+                displayElement.innerHTML = '<p>No datasets found in catalog</p>';
+                return;
+            }
+            
+            const datasets = catalog['dcat:dataset'];
+            log(`Found ${datasets.length} datasets in catalog`, 'info');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <strong>Catalog ID:</strong> ${catalog['@id'] || 'Unknown'}<br>
+                    <strong>Participant ID:</strong> ${catalog.participantId || 'Unknown'}<br>
+                    <strong>Datasets Found:</strong> ${datasets.length}
+                </div>
+            `;
+            
+            datasets.forEach((dataset, index) => {
+                html += `
+                    <div class="dataset-item">
+                        <strong>Dataset ${index + 1}:</strong> ${dataset['@id']}<br>
+                        <strong>Title:</strong> ${dataset['dcterms:title'] || 'No title'}<br>
+                        <strong>Description:</strong> ${dataset['dcterms:description'] || 'No description'}<br>
+                        ${dataset['dcat:distribution'] ? `<strong>Distributions:</strong> ${dataset['dcat:distribution'].length}` : ''}
+                        <button class="btn" onclick="selectDataset('${dataset['@id']}')" style="margin-top: 5px; font-size: 12px; padding: 5px 10px;">Select</button>
+                    </div>
+                `;
+            });
+            
+            displayElement.innerHTML = html;
+        }
+
+        window.fetchPolicies = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('Fetching policy definitions from EDC Management API v3...', 'info');
+                log('Replicating curl: POST /management/v3/policydefinitions/request', 'info');
+                const policiesBtn = document.getElementById('policiesBtn');
+                policiesBtn.disabled = true;
+                policiesBtn.textContent = 'Fetching...';
+                
+                // This replicates your exact curl request:
+                // curl 'https://consumer.connector-dev.startinblox.com/management/v3/policydefinitions/request'
+                //   -X POST -H 'x-api-key: password' -H 'content-type: application/json'
+                //   --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":10,"filterExpression":[]}'
+                
+                const policies = await window.dataspaceStore.getPolicyDefinitions({
+                    '@context': {
+                        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/'
+                    },
+                    offset: 0,
+                    limit: 10,
+                    filterExpression: []
+                });
+                
+                if (policies && Array.isArray(policies)) {
+                    log(`✅ Successfully fetched ${policies.length} policy definitions`, 'success');
+                    displayPolicies(policies);
+                } else {
+                    log('No policy definitions received', 'warning');
+                    document.getElementById('policiesDisplay').innerHTML = 
+                        '<p style="color: #856404;">No policy definitions received. Check connector configuration and API key.</p>';
+                }
+                
+            } catch (error) {
+                log(`Policy definitions fetch failed: ${error.message}`, 'error');
+                document.getElementById('policiesDisplay').innerHTML = 
+                    `<p style="color: #721c24;">Error: ${error.message}</p>`;
+            } finally {
+                const policiesBtn = document.getElementById('policiesBtn');
+                policiesBtn.disabled = false;
+                policiesBtn.textContent = 'Fetch Policies';
+            }
+        };
+
+        function displayPolicies(policies) {
+            const displayElement = document.getElementById('policiesDisplay');
+            
+            if (!policies || policies.length === 0) {
+                displayElement.innerHTML = '<p>No policy definitions found in the connector</p>';
+                return;
+            }
+            
+            log(`Found ${policies.length} policy definitions in connector`, 'info');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <strong>Policy Definitions Found:</strong> ${policies.length}<br>
+                    <strong>Query:</strong> offset:0, limit:10, no filters
+                </div>
+            `;
+            
+            policies.forEach((policy, index) => {
+                const policyId = policy['@id'] || `policy-${index}`;
+                const policyType = policy['@type'] || 'PolicyDefinition';
+                const odrlPolicy = policy.policy || {};
+                const createdAt = policy.createdAt ? new Date(policy.createdAt).toLocaleString() : 'Unknown';
+
+                html += `
+                    <div class="dataset-item">
+                        <div><strong>🆔 Policy ID:</strong> ${policyId}</div>
+                        <div><strong>📋 Type:</strong> ${policyType}</div>
+                        <div><strong>🕒 Created:</strong> ${createdAt}</div>
+                        <div style="margin-top: 10px;">
+                            <strong>📜 ODRL Policy:</strong>
+                            <pre style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 0.85em;">${JSON.stringify(odrlPolicy, null, 2)}</pre>
+                        </div>
+                        <button class="btn" onclick="selectPolicy('${policyId}')" style="margin-top: 5px; font-size: 12px; padding: 5px 10px;">Select Policy</button>
+                    </div>
+                `;
+            });
+            
+            displayElement.innerHTML = html;
+        }
+
+        window.fetchContractDefinitions = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('Fetching contract definitions from EDC Management API v3...', 'info');
+                log('Replicating curl: POST /management/v3/contractdefinitions/request', 'info');
+                const contractsBtn = document.getElementById('contractsBtn');
+                contractsBtn.disabled = true;
+                contractsBtn.textContent = 'Fetching...';
+                
+                // This replicates your exact curl request:
+                // curl 'https://consumer.connector-dev.startinblox.com/management/v3/contractdefinitions/request'
+                //   -X POST -H 'x-api-key: password' -H 'content-type: application/json'
+                //   --data-raw '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"offset":0,"limit":10,"filterExpression":[]}'
+                
+                const contractDefinitions = await window.dataspaceStore.getContractDefinitions({
+                    '@context': {
+                        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/'
+                    },
+                    offset: 0,
+                    limit: 10,
+                    filterExpression: []
+                });
+                
+                if (contractDefinitions && Array.isArray(contractDefinitions)) {
+                    log(`✅ Successfully fetched ${contractDefinitions.length} contract definitions`, 'success');
+                    displayContractDefinitions(contractDefinitions);
+                } else {
+                    log('No contract definitions received', 'warning');
+                    document.getElementById('contractDefinitionsDisplay').innerHTML = 
+                        '<p style="color: #856404;">No contract definitions received. Check connector configuration and API key.</p>';
+                }
+                
+            } catch (error) {
+                log(`Contract definitions fetch failed: ${error.message}`, 'error');
+                document.getElementById('contractDefinitionsDisplay').innerHTML = 
+                    `<p style="color: #721c24;">Error: ${error.message}</p>`;
+            } finally {
+                const contractsBtn = document.getElementById('contractsBtn');
+                contractsBtn.disabled = false;
+                contractsBtn.textContent = 'Fetch Contract Definitions';
+            }
+        };
+
+        function displayContractDefinitions(contractDefinitions) {
+            const displayElement = document.getElementById('contractDefinitionsDisplay');
+            
+            if (!contractDefinitions || contractDefinitions.length === 0) {
+                displayElement.innerHTML = '<p>No contract definitions found in the connector</p>';
+                return;
+            }
+            
+            log(`Found ${contractDefinitions.length} contract definitions in connector`, 'info');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <strong>Contract Definitions Found:</strong> ${contractDefinitions.length}<br>
+                    <strong>Query:</strong> offset:0, limit:10, no filters
+                </div>
+            `;
+            
+            contractDefinitions.forEach((contract, index) => {
+                const contractId = contract['@id'] || `contract-${index}`;
+                const contractType = contract['@type'] || 'ContractDefinition';
+                const accessPolicyId = contract.accessPolicyId || 'No access policy';
+                const contractPolicyId = contract.contractPolicyId || 'No contract policy';
+                const assetsSelector = contract.assetsSelector || [];
+                const createdAt = contract.createdAt ? new Date(contract.createdAt).toLocaleString() : 'Unknown';
+
+                html += `
+                    <div class="dataset-item">
+                        <div><strong>🆔 Contract ID:</strong> ${contractId}</div>
+                        <div><strong>📋 Type:</strong> ${contractType}</div>
+                        <div><strong>🔐 Access Policy:</strong> ${accessPolicyId}</div>
+                        <div><strong>📜 Contract Policy:</strong> ${contractPolicyId}</div>
+                        <div><strong>🕒 Created:</strong> ${createdAt}</div>
+                        <div style="margin-top: 10px;">
+                            <strong>🎯 Assets Selector:</strong>
+                            <pre style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 0.85em;">${JSON.stringify(assetsSelector, null, 2)}</pre>
+                        </div>
+                        <button class="btn" onclick="selectContract('${contractId}')" style="margin-top: 5px; font-size: 12px; padding: 5px 10px;">Select Contract</button>
+                    </div>
+                `;
+            });
+            
+            displayElement.innerHTML = html;
+        }
+
+        window.selectPolicy = function(policyId) {
+            log(`Selected policy: ${policyId}`, 'info');
+        };
+
+        window.selectContract = function(contractId) {
+            log(`Selected contract definition: ${contractId}`, 'info');
+        };
+
+        window.selectDataset = function(datasetId) {
+            document.getElementById('resourceId').value = datasetId;
+            log(`Selected dataset: ${datasetId}`, 'info');
+        };
+
+        window.fetchResource = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            const resourceId = document.getElementById('resourceId').value;
+            if (!resourceId) {
+                log('Please enter a resource ID', 'warning');
+                return;
+            }
+            
+            try {
+                log(`Fetching resource by ID: ${resourceId}`, 'info');
+                const fetchBtn = document.getElementById('fetchResourceBtn');
+                fetchBtn.disabled = true;
+                fetchBtn.textContent = 'Fetching...';
+                
+                // First, try to get from cache (populated by previous catalog/assets/policies/contracts calls)
+                log('Checking cache for resource...', 'info');
+                log(`Cache object:`, window.dataspaceStore.cache);
+                log(`Cache type: ${window.dataspaceStore.cache.constructor.name}`);
+                
+                const cachedResource = await window.dataspaceStore.cache.get(resourceId);
+                
+                if (cachedResource) {
+                    log('✅ Found resource in cache!', 'success');
+                    document.getElementById('resourceResult').innerHTML = `
+                        <h4>🎯 Cached Resource (ID: ${resourceId}):</h4>
+                        <div style="background: #e8f5e8; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                            <strong>✅ Retrieved from Cache</strong> - Previously fetched via catalog/assets/policies/contracts
+                        </div>
+                        <pre>${JSON.stringify(cachedResource, null, 2)}</pre>
+                    `;
+                    return;
+                }
+                
+                // If not in cache, try direct API call
+                log('Resource not in cache, making direct API call...', 'info');
+                const connectorUrl = document.getElementById('connectorUrl').value || defaultConnectorUrl;
+                const assetUrl = `${connectorUrl}/management/v3/assets/${encodeURIComponent(resourceId)}`;
+                
+                log(`Making direct request to: ${assetUrl}`, 'info');
+                
+                const response = await fetch(assetUrl, {
+                    method: 'GET',
+                    headers: {
+                        'X-Api-Key': document.getElementById('edcApiKey').value || 'password',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const asset = await response.json();
+                    // Cache the retrieved asset
+                    await window.dataspaceStore.cache.set(resourceId, asset);
+                    
+                    log('Asset fetched and cached successfully', 'success');
+                    document.getElementById('resourceResult').innerHTML = `
+                        <h4>🎯 Asset Details (ID: ${resourceId}):</h4>
+                        <div style="background: #fff3cd; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                            <strong>🔍 Direct API Fetch</strong> - GET /management/v3/assets/${resourceId} (now cached)
+                        </div>
+                        <pre>${JSON.stringify(asset, null, 2)}</pre>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    log(`Asset fetch failed: HTTP ${response.status}`, 'error');
+                    document.getElementById('resourceResult').innerHTML = 
+                        `<p style="color: #721c24;">HTTP ${response.status}: ${errorText}</p>`;
+                }
+                
+            } catch (error) {
+                log(`Resource fetch failed: ${error.message}`, 'error');
+                document.getElementById('resourceResult').innerHTML = 
+                    `<p style="color: #721c24;">Error: ${error.message}</p>`;
+            } finally {
+                const fetchBtn = document.getElementById('fetchResourceBtn');
+                fetchBtn.disabled = false;
+                fetchBtn.textContent = 'Fetch Resource';
+            }
+        };
+
+        window.testDataAccess = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('Testing catalog fetch with correct counterPartyAddress...', 'info');
+                const testBtn = document.getElementById('testBtn');
+                testBtn.disabled = true;
+                testBtn.textContent = 'Testing...';
+                
+                // Get the correct counterPartyAddress from the connector URL
+                const connectorUrl = document.getElementById('connectorUrl').value || defaultConnectorUrl;
+                const protocolEndpoint = `${connectorUrl}/protocol`;
+                
+                log(`Using protocol endpoint: ${protocolEndpoint}`, 'info');
+                
+                // Test catalog fetch with proper counterPartyAddress
+                const result = await window.dataspaceStore.getCatalog(protocolEndpoint);
+                
+                if (result) {
+                    log('Catalog fetch test successful', 'success');
+                    log(`Result contains ${result['dcat:dataset']?.length || 0} datasets`, 'info');
+                    
+                    // Display a preview of the result
+                    const preview = {
+                        '@id': result['@id'],
+                        'participantId': result.participantId,
+                        'dataset_count': result['dcat:dataset']?.length || 0,
+                        'service_count': result['dcat:service']?.length || 0
+                    };
+                    log(`Catalog preview: ${JSON.stringify(preview, null, 2)}`, 'info');
+                } else {
+                    log('Catalog fetch returned null', 'warning');
+                }
+                
+            } catch (error) {
+                log(`Catalog fetch test failed: ${error.message}`, 'error');
+            } finally {
+                const testBtn = document.getElementById('testBtn');
+                testBtn.disabled = false;
+                testBtn.textContent = 'Test Data Access';
+            }
+        };
+
+        window.inspectCache = async function() {
+            if (!window.dataspaceStore) {
+                log('Store not initialized', 'error');
+                return;
+            }
+            
+            try {
+                log('=== CACHE INSPECTION ===', 'info');
+                log(`Cache manager type: ${window.dataspaceStore.cache.constructor.name}`, 'info');
+                
+                // Try to inspect InMemoryCacheManager internals
+                if (window.dataspaceStore.cache.constructor.name === 'InMemoryCacheManager') {
+                    // Access the internal Map if possible
+                    log('InMemoryCacheManager detected', 'info');
+                    
+                    // Try to get cache size if available (resourceCache is the internal Map)
+                    if (window.dataspaceStore.cache.resourceCache && window.dataspaceStore.cache.resourceCache instanceof Map) {
+                        const cacheSize = window.dataspaceStore.cache.resourceCache.size;
+                        log(`Cache size: ${cacheSize} items`, 'info');
+                        
+                        // List all cached keys
+                        const keys = Array.from(window.dataspaceStore.cache.resourceCache.keys());
+                        log(`Cached keys: ${JSON.stringify(keys)}`, 'info');
+                        
+                        // Show first few cached items
+                        for (const key of keys.slice(0, 5)) {
+                            const value = await window.dataspaceStore.cache.get(key);
+                            const valuePreview = value ? 
+                                (value['@type'] || value.type || 'Unknown type') + 
+                                (value['dcterms:title'] || value.name ? ` - ${value['dcterms:title'] || value.name}` : '') 
+                                : 'Not found';
+                            log(`Cache[${key}]: ${valuePreview}`, 'info');
+                        }
+                        
+                        // Also check URL mappings
+                        if (window.dataspaceStore.cache.urlToIdMap && window.dataspaceStore.cache.urlToIdMap instanceof Map) {
+                            const urlMappings = window.dataspaceStore.cache.urlToIdMap.size;
+                            log(`URL-to-ID mappings: ${urlMappings}`, 'info');
+                        }
+                    } else {
+                        log('Cache internal structure not accessible', 'warning');
+                        log('Available properties:', Object.keys(window.dataspaceStore.cache));
+                    }
+                } else {
+                    log(`Unknown cache manager: ${window.dataspaceStore.cache.constructor.name}`, 'warning');
+                }
+                
+                // Test setting and getting a test value
+                log('Testing cache set/get...', 'info');
+                await window.dataspaceStore.cache.set('test-key', { test: 'value', timestamp: Date.now() });
+                const testValue = await window.dataspaceStore.cache.get('test-key');
+                log(`Test cache result: ${JSON.stringify(testValue)}`, testValue ? 'success' : 'error');
+                
+            } catch (error) {
+                log(`Cache inspection failed: ${error.message}`, 'error');
+                console.error('Cache inspection error:', error);
+            }
+        };
+
+        // Initialize log
+        log('Demo page loaded successfully', 'success');
+        log(`Target connector: ${defaultConnectorUrl}`, 'info');
+        log('Participant ID: stbx-consumer', 'info');
+        log('Please configure authentication and click "Initialize Store"', 'info');
+    </script>
+</body>
+</html>
