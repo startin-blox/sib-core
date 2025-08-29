@@ -1,4 +1,4 @@
-import { LdpStore } from "../../../src/libs/store/impl/ldp/LdpStore";
+import { LdpStore } from '../../../src/libs/store/impl/ldp/LdpStore.tsx';
 
 const baseUrl = Cypress.config().baseUrl;
 
@@ -637,8 +637,7 @@ describe('store', { testIsolation: false }, function () {
       cy.wait(['@res1', '@res2']);
 
       cy.wrap(null).then(async () => {
-
-        const beforeSize = await testStore.cache.length?.() ?? 0;
+        const beforeSize = (await testStore.cache.length?.()) ?? 0;
 
         cy.spy(testStore, 'clearCache').as('clearCacheSpy');
         cy.spy(testStore, 'getData').as('getDataSpy');
@@ -646,8 +645,10 @@ describe('store', { testIsolation: false }, function () {
 
         await testStore.refreshResources([rel1, rel2]);
 
-        const afterSize = await testStore.cache.length?.() ?? 0;
-        expect(afterSize, 'cache size must remain the same').to.equal(beforeSize);
+        const afterSize = (await testStore.cache.length?.()) ?? 0;
+        expect(afterSize, 'cache size must remain the same').to.equal(
+          beforeSize,
+        );
 
         expect(await testStore.cache.has(rel1)).to.equal(true);
         expect(await testStore.cache.has(rel2)).to.equal(true);
@@ -656,17 +657,20 @@ describe('store', { testIsolation: false }, function () {
       cy.get('@clearCacheSpy')
         .should('have.been.calledWith', rel1)
         .and('have.been.calledWith', rel2)
-        .its('callCount').should('eq', 2);
+        .its('callCount')
+        .should('eq', 2);
 
       cy.get('@getDataSpy')
         .should('have.been.calledWith', rel1)
         .and('have.been.calledWith', rel2)
-        .its('callCount').should('eq', 2);
+        .its('callCount')
+        .should('eq', 2);
 
       cy.get('@fetchDataSpy')
         .should('have.been.calledWith', rel1)
         .and('have.been.calledWith', rel2)
-        .its('callCount').should('eq', 2);
+        .its('callCount')
+        .should('eq', 2);
     });
   });
 
