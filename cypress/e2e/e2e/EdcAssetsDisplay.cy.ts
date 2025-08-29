@@ -26,7 +26,10 @@ describe('EdcAssetsDisplay', { testIsolation: false }, function () {
 
   it('displays loading state initially', () => {
     cy.get('edc-assets-display').should('exist');
-    cy.get('edc-assets-display .loading').should('contain', 'Loading assets...');
+    cy.get('edc-assets-display .loading').should(
+      'contain',
+      'Loading assets...',
+    );
   });
 
   it('fetches and displays assets from EDC connector', () => {
@@ -44,32 +47,47 @@ describe('EdcAssetsDisplay', { testIsolation: false }, function () {
     cy.get('.edc-asset-item').should('have.length', 3);
 
     // Check first asset
-    cy.get('.edc-asset-item').first().within(() => {
-      cy.get('.asset-title').should('contain', 'Test Dataset 1');
-      cy.get('.asset-description').should('contain', 'A test dataset for e2e testing');
-      cy.get('.asset-id').should('contain', 'ID: test-asset-1');
-      cy.get('.asset-type').should('contain', 'Type: data');
-    });
+    cy.get('.edc-asset-item')
+      .first()
+      .within(() => {
+        cy.get('.asset-title').should('contain', 'Test Dataset 1');
+        cy.get('.asset-description').should(
+          'contain',
+          'A test dataset for e2e testing',
+        );
+        cy.get('.asset-id').should('contain', 'ID: test-asset-1');
+        cy.get('.asset-type').should('contain', 'Type: data');
+      });
 
     // Check second asset
-    cy.get('.edc-asset-item').eq(1).within(() => {
-      cy.get('.asset-title').should('contain', 'Test Dataset 2');
-      cy.get('.asset-type').should('contain', 'Type: service');
-      cy.get('.asset-description').should('not.exist');
-    });
+    cy.get('.edc-asset-item')
+      .eq(1)
+      .within(() => {
+        cy.get('.asset-title').should('contain', 'Test Dataset 2');
+        cy.get('.asset-type').should('contain', 'Type: service');
+        cy.get('.asset-description').should('not.exist');
+      });
 
     // Check asset without title (should show ID)
-    cy.get('.edc-asset-item').eq(2).within(() => {
-      cy.get('.asset-title').should('contain', 'asset-without-title');
-      cy.get('.asset-id').should('contain', 'ID: asset-without-title');
-    });
+    cy.get('.edc-asset-item')
+      .eq(2)
+      .within(() => {
+        cy.get('.asset-title').should('contain', 'asset-without-title');
+        cy.get('.asset-id').should('contain', 'ID: asset-without-title');
+      });
   });
 
   it('sends correct EDC v3 API request', () => {
     cy.get('@edcAssets').should((interception: any) => {
       expect(interception.request.method).to.equal('POST');
-      expect(interception.request.headers).to.have.property('x-api-key', 'test-api-key');
-      expect(interception.request.headers).to.have.property('content-type', 'application/json');
+      expect(interception.request.headers).to.have.property(
+        'x-api-key',
+        'test-api-key',
+      );
+      expect(interception.request.headers).to.have.property(
+        'content-type',
+        'application/json',
+      );
       expect(interception.request.body).to.have.property('@type', 'QuerySpec');
       expect(interception.request.body).to.have.property('offset', 0);
       expect(interception.request.body).to.have.property('limit', 50);
@@ -115,6 +133,8 @@ describe('EdcAssetsDisplay', { testIsolation: false }, function () {
 
     cy.get('.edc-asset-item[data-asset-id="test-asset-1"]').should('exist');
     cy.get('.edc-asset-item[data-asset-id="test-asset-2"]').should('exist');
-    cy.get('.edc-asset-item[data-asset-id="asset-without-title"]').should('exist');
+    cy.get('.edc-asset-item[data-asset-id="asset-without-title"]').should(
+      'exist',
+    );
   });
 });

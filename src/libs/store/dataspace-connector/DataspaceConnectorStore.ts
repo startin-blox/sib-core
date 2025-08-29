@@ -9,7 +9,6 @@ import type { ServerSearchOptions } from '../options/server-search.ts';
 import type {
   CatalogRequest,
   CatalogResponse,
-  ContractNegotiationRequest,
   ContractNegotiationResponse,
   DataAddress,
   Dataset,
@@ -145,15 +144,20 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   ): Promise<string> {
     await this.ensureAuthenticated();
 
-    const negotiationRequest: ContractNegotiationRequest = {
-      '@context': [
-        'https://w3id.org/edc/v0.0.1/ns/',
-        'https://w3id.org/dspace/2024/1/context.json',
-      ],
-      '@type': 'https://w3id.org/edc/v0.0.1/ns/ContractRequestMessage',
+    const negotiationRequest = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'ContractRequest',
       counterPartyAddress,
       protocol: 'dataspace-protocol-http',
-      policy,
+      policy: {
+        '@context': 'http://www.w3.org/ns/odrl.jsonld',
+        '@id': policy['@id'],
+        '@type': 'Offer',
+        assigner: 'provider',
+        target: policy.target || 'assetId',
+      },
     };
 
     const response = await this.fetchAuthn(
@@ -177,8 +181,28 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     // Store negotiation for tracking
     this.contractNegotiations.set(negotiationId, negotiation);
 
-    // Poll for negotiation completion
-    return this.waitForNegotiationCompletion(negotiationId);
+    // Return negotiation ID immediately - let caller handle polling
+    return negotiationId;
+  }
+
+  /**
+   * Alias for negotiateContract - for backwards compatibility
+   */
+  initiateNegotiation(
+    counterPartyAddress: string,
+    assetId: string,
+    policy: OdrlPolicy,
+  ): Promise<string> {
+    return this.negotiateContract(counterPartyAddress, assetId, policy);
+  }
+
+  /**
+   * Get negotiation status by ID - public method for component access
+   */
+  getNegotiationStatus(
+    negotiationId: string,
+  ): Promise<ContractNegotiationResponse> {
+    return this._getNegotiationStatus(negotiationId);
   }
 
   /**
@@ -278,7 +302,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     );
   }
 
-  private async waitForNegotiationCompletion(
+  // Remove this method since component now handles all polling
+  /*private async _waitForNegotiationCompletion(
     negotiationId: string,
   ): Promise<string> {
     const maxAttempts = this.config.retryAttempts || 30;
@@ -298,7 +323,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
 
     throw new Error('Contract negotiation timeout');
-  }
+  }*/
 
   private async _getNegotiationStatus(
     negotiationId: string,

@@ -1,10 +1,10 @@
-import { Sib } from '../libs/Sib.ts';
 import { html, render } from 'lit';
-import { WidgetMixin } from '../mixins/widgetMixin.ts';
-import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
-import { StoreService } from '../libs/store/storeService.ts';
-import type { DataspaceConnectorConfig } from '../libs/store/dataspace-connector/types.ts';
+import { Sib } from '../libs/Sib.ts';
 import { StoreType } from '../libs/store/IStore.ts';
+import { StoreFactory } from '../libs/store/StoreFactory.ts';
+import type { DataspaceConnectorConfig } from '../libs/store/dataspace-connector/types.ts';
+import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
+import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
 export const EdcAssetsDisplay = {
   name: 'edc-assets-display',
@@ -43,11 +43,11 @@ export const EdcAssetsDisplay = {
       this.fetchAssets();
     }
   },
-  
+
   async fetchAssets() {
     console.log('fetchAssets', this.connectorUri, this.apiKey);
     if (!this.connectorUri || !this.apiKey) return;
-    
+
     this.loading = true;
     this.error = null;
     this.render();
@@ -66,18 +66,12 @@ export const EdcAssetsDisplay = {
         timeout: 30000,
       };
 
-      // Force reset of StoreService to allow reinitialization
-      StoreService.currentStore = null;
-      StoreService.currentConfig = null;
-
       // Create temporary store instance for EDC
-      StoreService.init(config);
-      const store = StoreService.getInstance();
+      const store = StoreFactory.create(config);
       console.log('store', store);
       const assets = await (store as any).getAssets();
       console.log('assets', assets);
       this.assets = assets || [];
-      
     } catch (error) {
       console.error('Failed to fetch EDC assets:', error);
       this.error = (error as Error).message;
@@ -96,10 +90,7 @@ export const EdcAssetsDisplay = {
     }
 
     if (this.error) {
-      render(
-        html`<div class="error">Error: ${this.error}</div>`,
-        this.element,
-      );
+      render(html`<div class="error">Error: ${this.error}</div>`, this.element);
       return;
     }
 
@@ -116,18 +107,22 @@ export const EdcAssetsDisplay = {
               <h3 class="asset-title">
                 ${asset['dcterms:title'] || asset.properties?.name || asset['@id']}
               </h3>
-              ${asset['dcterms:description'] || asset.properties?.description
-                ? html`<p class="asset-description">
+              ${
+                asset['dcterms:description'] || asset.properties?.description
+                  ? html`<p class="asset-description">
                     ${asset['dcterms:description'] || asset.properties?.description}
                   </p>`
-                : ''}
+                  : ''
+              }
               <div class="asset-metadata">
                 <span class="asset-id">ID: ${asset['@id']}</span>
-                ${asset.properties?.['https://w3id.org/edc/v0.0.1/ns/type']
-                  ? html`<span class="asset-type">
+                ${
+                  asset.properties?.['https://w3id.org/edc/v0.0.1/ns/type']
+                    ? html`<span class="asset-type">
                       Type: ${asset.properties['https://w3id.org/edc/v0.0.1/ns/type']}
                     </span>`
-                  : ''}
+                    : ''
+                }
               </div>
             </div>
           `,
