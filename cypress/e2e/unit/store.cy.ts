@@ -1,3 +1,5 @@
+import { LdpStore } from "../../../src/libs/store/impl/ldp/LdpStore";
+
 const baseUrl = Cypress.config().baseUrl;
 
 export const base_context = {
@@ -598,24 +600,73 @@ describe('store', { testIsolation: false }, function () {
     });
   });
 
-  it('refreshResource', () => {
-    cy.window().then(async (win: any) => {
-      const store = win.sibStore;
-      cy.spy(store, 'clearCache');
-      cy.spy(store, 'getData');
-      cy.spy(store, 'fetchData');
+  it('refreshResources keeps cache size unchanged (isolated cache)', () => {
+    cy.window().then(async () => {
+      const testStore = new LdpStore({});
 
-      expect(await store.cache.length()).to.be.equal(4);
-      await store.refreshResources([
-        '/examples/data/list/users/user-1.jsonld',
-        '/examples/data/list/users/users.jsonld',
-      ]);
+      const rel1 = '/examples/data/list/users/user-1.jsonld';
+      const rel2 = '/examples/data/list/users/users.jsonld';
 
-      expect(store.clearCache).to.be.calledOnce;
-      expect(store.getData).to.be.calledOnce;
-      expect(store.fetchData).to.be.calledOnce;
+      cy.intercept('GET', '**/examples/data/list/users/user-1.jsonld', {
+        statusCode: 200,
+        headers: { 'content-type': 'application/ld+json' },
+        body: {
+          '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
+          '@id': rel1,
+          '@type': 'ldp:Container',
+          'ldp:contains': [],
+        },
+      }).as('res1');
 
-      expect(await store.cache.length()).to.be.equal(4);
+      cy.intercept('GET', '**/examples/data/list/users/users.jsonld', {
+        statusCode: 200,
+        headers: { 'content-type': 'application/ld+json' },
+        body: {
+          '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
+          '@id': rel2,
+          '@type': 'ldp:Container',
+          'ldp:contains': [],
+        },
+      }).as('res2');
+
+      cy.wrap(null).then(async () => {
+        await testStore.getData(rel1, {}, '', undefined, true);
+        await testStore.getData(rel2, {}, '', undefined, true);
+      });
+
+      cy.wait(['@res1', '@res2']);
+
+      cy.wrap(null).then(async () => {
+
+        const beforeSize = await testStore.cache.length?.() ?? 0;
+
+        cy.spy(testStore, 'clearCache').as('clearCacheSpy');
+        cy.spy(testStore, 'getData').as('getDataSpy');
+        cy.spy(testStore, 'fetchData').as('fetchDataSpy');
+
+        await testStore.refreshResources([rel1, rel2]);
+
+        const afterSize = await testStore.cache.length?.() ?? 0;
+        expect(afterSize, 'cache size must remain the same').to.equal(beforeSize);
+
+        expect(await testStore.cache.has(rel1)).to.equal(true);
+        expect(await testStore.cache.has(rel2)).to.equal(true);
+      });
+
+      cy.get('@clearCacheSpy')
+        .should('have.been.calledWith', rel1)
+        .and('have.been.calledWith', rel2)
+        .its('callCount').should('eq', 2);
+
+      cy.get('@getDataSpy')
+        .should('have.been.calledWith', rel1)
+        .and('have.been.calledWith', rel2)
+        .its('callCount').should('eq', 2);
+
+      cy.get('@fetchDataSpy')
+        .should('have.been.calledWith', rel1)
+        .and('have.been.calledWith', rel2)
+        .its('callCount').should('eq', 2);
     });
   });
 
