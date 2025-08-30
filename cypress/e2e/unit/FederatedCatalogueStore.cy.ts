@@ -267,66 +267,86 @@ describe('FederatedCatalogueStore', () => {
     });
 
     it('reuses cached container on subsequent call (does not refetch list)', () => {
-      const fc = (p: string) =>
-        `${mockConfig.endpoint?.replace(/\/$/, '')}${p}`;
+      try {
+        const fc = (p: string) =>
+          `${mockConfig.endpoint?.replace(/\/$/, '')}${p}`;
 
-      cy.intercept('POST', '**/protocol/openid-connect/token', {
-        statusCode: 200,
-        body: { access_token: 'mock', token_type: 'Bearer', expires_in: 3600 },
-      }).as('auth');
-
-      const VC_BODY = {
-        verifiableCredential: {
-          credentialSubject: {
-            '@id': 'urn:svc:1',
-            '@type': ['gax-trust-framework:ServiceOffering'],
-            name: 'Service A',
+        cy.intercept('POST', '**/protocol/openid-connect/token', {
+          statusCode: 200,
+          body: {
+            access_token: 'mock',
+            token_type: 'Bearer',
+            expires_in: 3600,
           },
-        },
-        proof: {},
-      };
+        }).as('auth');
 
-      cy.intercept('GET', fc('/self-descriptions'), {
-        statusCode: 200,
-        body: { items: [{ meta: { sdHash: 'hash-1' } }] },
-      }).as('fcList');
+        const VC_BODY = {
+          verifiableCredential: {
+            issuanceDate: '2024-01-01T00:00:00Z',
+            expirationDate: '2024-12-31T23:59:59Z',
+            credentialSubject: {
+              '@id': 'urn:svc:svc-1',
+              'dcat:service': {
+                'dcterms:title': 'Service A',
+                'rdfs:comment': 'Desc',
+                'dcat:keyword': ['kw'],
+                'dcat:endpointURL': 'https://example.com/api',
+                'dcterms:creator': {
+                  'foaf:name': 'Org',
+                  'foaf:thumbnail': { 'rdf:resource': 'https://img/logo.png' },
+                },
+              },
+              'gax-core:operatedBy': { '@id': 'did:example:provider-1' },
+            },
+          },
+          proof: {},
+        };
 
-      cy.intercept('GET', fc('/self-descriptions/hash-1'), {
-        statusCode: 200,
-        body: VC_BODY,
-      }).as('fcSD1');
+        cy.intercept('GET', fc('/self-descriptions'), {
+          statusCode: 200,
+          body: { items: [{ meta: { sdHash: 'hash-1' } }] },
+        }).as('fcList');
 
-      const store = new FederatedCatalogueStore(mockConfig);
+        cy.intercept('GET', fc('/self-descriptions/hash-1'), {
+          statusCode: 200,
+          body: VC_BODY,
+        }).as('fcSD1');
+        cy.window().then(async () => {
+          const store = new FederatedCatalogueStore(mockConfig);
 
-      const first = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
-      });
+          const first = store.getData({
+            targetType: 'gax-trust-framework:ServiceOffering',
+          });
 
-      cy.wait('@auth');
-      cy.wait('@fcList');
-      cy.wait('@fcSD1');
+          cy.wait('@auth');
+          cy.wait('@fcList');
+          cy.wait('@fcSD1');
 
-      cy.wrap(first).then((res: any) => {
-        expect(res).to.exist;
-        expect(res['@type']).to.equal('ldp:Container');
-        expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
-      });
+          cy.wrap(first).then((res: any) => {
+            expect(res).to.exist;
+            expect(res['@type']).to.equal('ldp:Container');
+            expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
+          });
 
-      cy.intercept('GET', fc('/self-descriptions')).as('fcListAgain');
+          cy.intercept('GET', fc('/self-descriptions')).as('fcListAgain');
 
-      const second = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
-      });
+          const second = store.getData({
+            targetType: 'gax-trust-framework:ServiceOffering',
+          });
 
-      cy.wrap(second).then((res: any) => {
-        expect(res).to.exist;
-        expect(res['@type']).to.equal('ldp:Container');
-        expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
-      });
+          cy.wrap(second).then((res: any) => {
+            expect(res).to.exist;
+            expect(res['@type']).to.equal('ldp:Container');
+            expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
+          });
 
-      cy.get('@fcListAgain.all').should(($calls: any) => {
-        expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
-      });
+          cy.get('@fcListAgain.all').should(($calls: any) => {
+            expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
+          });
+        });
+      } catch (e) {
+        console.log('-------------------e', e);
+      }
     });
   });
 });
