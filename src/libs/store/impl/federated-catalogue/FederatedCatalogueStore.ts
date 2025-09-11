@@ -51,7 +51,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     let resource = await this.get(targetType);
 
     if (!resource || resource['ldp:contains'].length === 0) {
-      resource = await this.initLocalDataSourceContainer();
+      resource = await this.initLocalDataSourceContainer(targetType);
       const dataset = await this.fcApi.getAllSelfDescriptions();
       for (const item in dataset.items) {
         const sd: Source = await this.fcApi.getSelfDescriptionByHash(
@@ -68,7 +68,7 @@ export class FederatedCatalogueStore implements IStore<any> {
           resource['ldp:contains'].push(mappedResource);
         }
       }
-      this.setLocalData(resource, resource['@id']);
+      this.setLocalData(resource, targetType);
     }
 
     document.dispatchEvent(
@@ -88,12 +88,14 @@ export class FederatedCatalogueStore implements IStore<any> {
    * @param containerType Optional container type for different data categories
    * @returns A local data source container with a deterministic ID.
    */
-  async initLocalDataSourceContainer(containerType = 'default') {
+  async initLocalDataSourceContainer(dataSrc = '', containerType = 'default') {
     const endpointHash =
       this.cfg.endpoint?.replace(/[^a-zA-Z0-9]/g, '') || 'unknown';
     const idField = `fc-${endpointHash}-${containerType}`;
 
-    const dataSrc = `store://local.${idField}/`;
+    if (!dataSrc) {
+      dataSrc = `store://local.${idField}/`;
+    }
     const localContainer: Resource = {
       '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
       '@type': 'ldp:Container',
