@@ -3,7 +3,7 @@ import type { IndexQueryOptions } from '../implemenations/ldp/LdpStore.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
-} from '../impl/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
+} from '../implementations/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
 import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';

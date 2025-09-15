@@ -1,9 +1,9 @@
 import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
-import type { IStore, Resource } from '../../shared/types.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import { appendServerSearchToIri } from '../../shared/options/server-search.ts';
+import type { IStore, Resource } from '../../shared/types.ts';
 
 import {
   doesResourceContainList,
