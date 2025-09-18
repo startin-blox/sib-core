@@ -1,5 +1,5 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { IndexQueryOptions } from '../implemenations/ldp/LdpStore.ts';
+import type { IndexQueryOptions } from '../implementations/ldp/LdpStore.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
