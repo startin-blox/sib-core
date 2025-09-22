@@ -5,16 +5,15 @@ import {
   ProviderRegistry,
 } from '../libs/provider-registry/ProviderRegistry.ts';
 import { StoreFactory } from '../libs/store/StoreFactory.ts';
+import type {
+  FederatedDataset,
+  Provider,
+  ProviderStatus,
+} from '../libs/store/impl/dataspace-connector/interfaces.ts';
 import type { DataspaceConnectorConfig } from '../libs/store/impl/dataspace-connector/types.ts';
 import { StoreType } from '../libs/store/shared/types.ts';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
-import type {
-  FederatedDataset,
-  Provider,
-  ProviderStatus
-} from '../libs/store/impl/dataspace-connector/interfaces.ts';
-
 
 export const EdcFederatedCatalogDisplay = {
   name: 'edc-federated-catalog-display',
@@ -566,14 +565,22 @@ export const EdcFederatedCatalogDisplay = {
   renderHeader() {
     const totalDatasets = this.federatedDatasets.length;
     const totalProviders = this._providersArray.length;
-    const activeProviders = (Array.from(this.providerStats.values()) as ProviderStatus[]).filter(
-      (stat: ProviderStatus) => stat.status === 'success',
-    ).length;
+    const activeProviders = (
+      Array.from(this.providerStats.values()) as ProviderStatus[]
+    ).filter((stat: ProviderStatus) => stat.status === 'success').length;
 
     // Get breakdown of datasets by provider
-    const providerBreakdown = (Array.from(this.providerStats.values()) as ProviderStatus[])
-      .filter((stat: ProviderStatus) => stat.status === 'success' && stat.datasetCount > 0)
-      .map((stat: ProviderStatus) => `${stat.datasetCount} from ${stat.provider.name}`)
+    const providerBreakdown = (
+      Array.from(this.providerStats.values()) as ProviderStatus[]
+    )
+      .filter(
+        (stat: ProviderStatus) =>
+          stat.status === 'success' && stat.datasetCount > 0,
+      )
+      .map(
+        (stat: ProviderStatus) =>
+          `${stat.datasetCount} from ${stat.provider.name}`,
+      )
       .join(', ');
 
     return html`
