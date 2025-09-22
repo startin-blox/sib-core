@@ -1,12 +1,12 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
 import { searchInResources } from '../libs/filter.ts';
 import type { SearchQuery } from '../libs/interfaces.ts';
-import { hasQueryIndex, hasSetLocalData } from '../libs/store/IStore.ts';
-import type { ServerSearchOptions } from '../libs/store/options/server-search.ts';
+import type { ServerSearchOptions } from '../libs/store/shared/options/server-search.ts';
+import { hasQueryIndex, hasSetLocalData } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
-import type { IndexQueryOptions } from '../libs/store/LdpStore.ts';
+import type { IndexQueryOptions } from '../libs/store/impl/ldp/LdpStore.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports
@@ -128,7 +128,7 @@ const FilterMixin = {
     if (!hasSetLocalData(store)) {
       throw new Error('Store does not support setLocalData method');
     }
-    store.setLocalData(this.localResources, this.dataSrc, false, true);
+    store.setLocalData(this.localResources, this.dataSrc, false);
     if (this.loader) {
       this.loader.toggleAttribute('hidden', false);
     }
@@ -194,7 +194,7 @@ const FilterMixin = {
     if (!hasSetLocalData(store)) {
       throw new Error('Store does not support setLocalData method');
     }
-    await store.setLocalData(this.localResources, this.dataSrc);
+    await store.setLocalData(this.localResources, this.dataSrc, true);
     if (this.loader) this.loader.toggleAttribute('hidden', true);
   },
   isFilteredOnServer() {

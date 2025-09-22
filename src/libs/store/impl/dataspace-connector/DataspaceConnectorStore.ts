@@ -1,10 +1,9 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { Resource } from '../../../mixins/interfaces.ts';
-import type { IStore, StoreConfig } from '../IStore.ts';
-import type { CacheManagerInterface } from '../cache/cache-manager.ts';
-import { InMemoryCacheManager } from '../cache/in-memory.ts';
-import type { ServerPaginationOptions } from '../options/server-pagination.ts';
-import type { ServerSearchOptions } from '../options/server-search.ts';
+import type { Resource, IStore, StoreConfig } from '../../shared/types.ts';
+import type { CacheManagerInterface } from '../../cache/cache-manager.ts';
+import { InMemoryCacheManager } from '../../cache/in-memory.ts';
+import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
+import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 
 import type {
   CatalogRequest,

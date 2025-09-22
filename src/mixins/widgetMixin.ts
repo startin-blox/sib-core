@@ -6,12 +6,9 @@ import {
   parseFieldsString,
 } from '../libs/helpers.ts';
 import { preHTML, spread } from '../libs/lit-helpers.ts';
+import type { Resource } from '../libs/store/shared/types.ts';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
-import {
-  type Resource,
-  type WidgetInterface,
-  WidgetType,
-} from './interfaces.ts';
+import { type WidgetInterface, WidgetType } from './interfaces.ts';
 
 const WidgetMixin = {
   name: 'widget-mixin',
@@ -80,10 +77,13 @@ const WidgetMixin = {
     if (!resource) return [];
 
     const fields: string[] = [];
-    for (const prop of resource.properties) {
-      if (!prop.startsWith('@') && !(prop === 'permissions')) {
-        if (!this.isAlias(prop) && (await resource[prop])) fields.push(prop);
-        else if (this.isAlias(prop)) fields.push(prop);
+    const properties = await resource.properties;
+    if (properties) {
+      for (const prop of properties) {
+        if (!prop.startsWith('@') && !(prop === 'permissions')) {
+          if (!this.isAlias(prop) && (await resource[prop])) fields.push(prop);
+          else if (this.isAlias(prop)) fields.push(prop);
+        }
       }
     }
     return fields;

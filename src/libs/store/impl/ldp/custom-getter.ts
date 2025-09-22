@@ -1,6 +1,10 @@
-import type { Resource } from '../../mixins/interfaces.ts';
-import { getRawContext, mergeContexts, normalizeContext } from '../helpers.ts';
-import { StoreService } from './storeService.ts';
+import {
+  getRawContext,
+  mergeContexts,
+  normalizeContext,
+} from '../../../helpers.ts';
+import type { Resource } from '../../shared/types.ts';
+import { StoreService } from '../../storeService.ts';
 const store = StoreService.getInstance();
 
 export class CustomGetter {
@@ -268,7 +272,7 @@ export class CustomGetter {
     context: object | [],
     iriParent: string,
     forceFetch = false,
-  ): Promise<Resource | null> {
+  ) {
     if (id.startsWith('_:b')) return await store.get(id + iriParent); // anonymous node = get from cache
     return (await store.getData(
       id,

@@ -1,7 +1,7 @@
 import type { PostProcessorRegistry } from '../libs/PostProcessorRegistry.ts';
-import type { Resource } from './interfaces.ts';
-
+import type { Resource } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
+
 const store = StoreService.getInstance();
 // const store = await getStoreAsync();
 if (!store) throw new Error('Store is not available');

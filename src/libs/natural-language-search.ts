@@ -1,6 +1,6 @@
-import { StoreService } from '../libs/store/storeService.ts';
-import { hasQueryIndex } from './store/IStore.ts';
-import type { IndexQueryOptions } from './store/LdpStore.ts';
+import type { IndexQueryOptions } from './store/impl/ldp/LdpStore.ts';
+import { hasQueryIndex } from './store/shared/types.ts';
+import { StoreService } from './store/storeService.ts';
 
 const store = StoreService.getInstance();
 

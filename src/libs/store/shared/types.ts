@@ -1,12 +1,10 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { Resource } from '../../mixins/interfaces.ts';
-import type { IndexQueryOptions } from './LdpStore.ts';
-import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
-} from './federated-catalogue/FederatedCatalogueAPIWrapper.ts';
-import type { Container } from './federated-catalogue/interfaces.ts';
+} from '../impl/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
+import type { IndexQueryOptions } from '../impl/ldp/LdpStore.ts';
+import type { CacheManagerInterface } from '../cache/cache-manager.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';
 
@@ -17,6 +15,39 @@ export interface ConjunctionQueryOptions {
   filterValues: Record<string, any>;
   useConjunction: boolean;
   exactMatchMapping?: Record<string, boolean>;
+}
+
+type Permission = 'add' | 'delete' | 'change' | 'control' | 'view' | string;
+type Context = Record<string, string | { '@id': string }>;
+type DateTime = string;
+export interface Resource extends LimitedResource {
+  [key: string]: any;
+}
+
+export interface LimitedResource {
+  '@id': string;
+  '@type'?: string | string[] | Promise<string | string[]>;
+  _originalResource?: Resource;
+  properties?: string[] | Promise<string[]>;
+  permissions?: Permission[];
+  clientContext?: Context | Promise<Context>;
+  serverContext?: Context | Promise<Context>;
+  creation_date?: DateTime;
+  update_date?: DateTime;
+}
+
+// export interface ResourceLdp extends LimitedResource {
+//   isContainer: Function;
+//   getContainerList: Function;
+//   getResourceData: Function;
+//   isArray: Function;
+//   isFullResource: Function;
+//   serverPagination: object;
+//   merge: Function;
+// }
+
+export interface Container<T> extends Resource {
+  'ldp:contains': T[];
 }
 
 type ListArgs = { targetType: string };

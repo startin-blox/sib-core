@@ -1,5 +1,4 @@
-// src/cache/CacheInterface.ts
-import type { Resource } from '../../../mixins/interfaces.ts';
+import type { Resource } from '../shared/types.ts';
 
 export interface CacheManagerInterface {
   /**

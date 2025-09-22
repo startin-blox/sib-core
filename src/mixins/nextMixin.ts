@@ -1,4 +1,4 @@
-import type { Resource } from './interfaces.js';
+import type { Resource } from '../libs/store/shared/types.ts';
 
 const NextMixin = {
   name: 'next-mixin',

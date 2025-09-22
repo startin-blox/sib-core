@@ -1,8 +1,8 @@
 import { html, render } from 'lit';
 import { Sib } from '../libs/Sib.ts';
-import { StoreType } from '../libs/store/IStore.ts';
+import { StoreType } from '../libs/store/shared/types.ts';
 import { StoreFactory } from '../libs/store/StoreFactory.ts';
-import type { DataspaceConnectorConfig } from '../libs/store/dataspace-connector/types.ts';
+import type { DataspaceConnectorConfig } from '../libs/store/impl/dataspace-connector/types.ts';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
 import { ProviderRegistry, type ProviderInfo } from '../libs/provider-registry/ProviderRegistry.ts';
