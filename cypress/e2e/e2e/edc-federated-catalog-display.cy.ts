@@ -84,7 +84,7 @@ describe('EdcFederatedCatalogDisplay', () => {
       const counterPartyAddress = req.body?.counterPartyAddress;
       console.log('Intercept - counterPartyAddress:', counterPartyAddress);
 
-      let response;
+      let response: any;
       if (counterPartyAddress === 'https://provider-a.example.com/management') {
         response = mockCatalogProviderA;
         console.log('Returning Provider A mock (2 datasets)');
