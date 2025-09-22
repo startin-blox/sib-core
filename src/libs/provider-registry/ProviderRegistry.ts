@@ -14,9 +14,9 @@ export class ProviderRegistry {
 
   constructor(initialProviders?: ProviderInfo[]) {
     if (initialProviders) {
-      initialProviders.forEach(provider => {
+      for (const provider of initialProviders) {
         this.addProvider(provider);
-      });
+      }
     }
   }
 

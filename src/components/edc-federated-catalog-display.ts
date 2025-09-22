@@ -127,7 +127,7 @@ export const EdcFederatedCatalogDisplay = {
     if (
       !this.consumerConnector ||
       !this.apiKey ||
-      !this._providersArray?.length
+      this._providersArray?.length === 0
     )
       return;
 
@@ -141,9 +141,9 @@ export const EdcFederatedCatalogDisplay = {
     this.selectedProviders.clear();
 
     // Initially select all providers
-    this._providersArray.forEach((provider: Provider) => {
+    for (const provider of this._providersArray) {
       this.selectedProviders.add(provider.address);
-    });
+    }
 
     this.render();
 
@@ -210,17 +210,16 @@ export const EdcFederatedCatalogDisplay = {
             );
 
             return federatedDatasets;
-          } else {
-            this.errorProviders.set(provider.address, 'No catalog received');
-            this.providerStats.set(provider.address, {
-              provider,
-              datasetCount: 0,
-              status: 'error',
-              error: 'No catalog received',
-              lastUpdated: new Date().toISOString(),
-            });
-            return [];
           }
+          this.errorProviders.set(provider.address, 'No catalog received');
+          this.providerStats.set(provider.address, {
+            provider,
+            datasetCount: 0,
+            status: 'error',
+            error: 'No catalog received',
+            lastUpdated: new Date().toISOString(),
+          });
+          return [];
         } catch (error) {
           const errorMessage = (error as Error).message;
           console.error(
@@ -673,9 +672,8 @@ export const EdcFederatedCatalogDisplay = {
     if (datasets.length === 0) {
       if (this.federatedDatasets.length === 0) {
         return html`<div class="empty">No datasets found in federated catalog</div>`;
-      } else {
-        return html`<div class="empty">No datasets match your current filters</div>`;
       }
+      return html`<div class="empty">No datasets match your current filters</div>`;
     }
 
     return html`

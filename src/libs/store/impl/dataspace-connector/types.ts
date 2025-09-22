@@ -1,4 +1,4 @@
-import type { StoreConfig } from '../../shared/types';
+import type { StoreConfig } from '../../shared/types.ts';
 
 // Dataspace Protocol Configuration
 export interface DataspaceConnectorConfig extends StoreConfig {
