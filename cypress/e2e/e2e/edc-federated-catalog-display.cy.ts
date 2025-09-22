@@ -2,14 +2,14 @@
 const mockCatalogProviderA = {
   '@context': {
     '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-    'dcat': 'http://www.w3.org/ns/dcat#',
-    'dcterms': 'http://purl.org/dc/terms/',
-    'foaf': 'http://xmlns.com/foaf/0.1/',
-    'dspace': 'https://w3id.org/dspace/v0.8/'
+    dcat: 'http://www.w3.org/ns/dcat#',
+    dcterms: 'http://purl.org/dc/terms/',
+    foaf: 'http://xmlns.com/foaf/0.1/',
+    dspace: 'https://w3id.org/dspace/v0.8/',
   },
   '@id': 'provider-a-catalog',
   '@type': 'dcat:Catalog',
-  'participantId': 'provider-a-did',
+  participantId: 'provider-a-did',
   'dcat:dataset': [
     {
       '@id': 'dataset-a1',
@@ -17,10 +17,10 @@ const mockCatalogProviderA = {
       'dcterms:title': 'Financial Data A1',
       'dcterms:description': 'High-quality financial dataset from Provider A',
       'dcat:keyword': ['finance', 'banking', 'data'],
-      'properties': {
+      properties: {
         'https://w3id.org/edc/v0.0.1/ns/type': 'data',
-        'https://w3id.org/edc/v0.0.1/ns/version': '1.0'
-      }
+        'https://w3id.org/edc/v0.0.1/ns/version': '1.0',
+      },
     },
     {
       '@id': 'dataset-a2',
@@ -28,25 +28,25 @@ const mockCatalogProviderA = {
       'dcterms:title': 'Market Analytics A2',
       'dcterms:description': 'Real-time market analytics from Provider A',
       'dcat:keyword': ['market', 'analytics', 'real-time'],
-      'properties': {
+      properties: {
         'https://w3id.org/edc/v0.0.1/ns/type': 'api',
-        'https://w3id.org/edc/v0.0.1/ns/version': '2.1'
-      }
-    }
-  ]
+        'https://w3id.org/edc/v0.0.1/ns/version': '2.1',
+      },
+    },
+  ],
 };
 
 const mockCatalogProviderB = {
   '@context': {
     '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-    'dcat': 'http://www.w3.org/ns/dcat#',
-    'dcterms': 'http://purl.org/dc/terms/',
-    'foaf': 'http://xmlns.com/foaf/0.1/',
-    'dspace': 'https://w3id.org/dspace/v0.8/'
+    dcat: 'http://www.w3.org/ns/dcat#',
+    dcterms: 'http://purl.org/dc/terms/',
+    foaf: 'http://xmlns.com/foaf/0.1/',
+    dspace: 'https://w3id.org/dspace/v0.8/',
   },
   '@id': 'provider-b-catalog',
   '@type': 'dcat:Catalog',
-  'participantId': 'provider-b-did',
+  participantId: 'provider-b-did',
   'dcat:dataset': [
     {
       '@id': 'dataset-b1',
@@ -54,33 +54,33 @@ const mockCatalogProviderB = {
       'dcterms:title': 'Supply Chain Data B1',
       'dcterms:description': 'Comprehensive supply chain tracking data',
       'dcat:keyword': ['supply-chain', 'logistics', 'tracking'],
-      'properties': {
+      properties: {
         'https://w3id.org/edc/v0.0.1/ns/type': 'data',
-        'https://w3id.org/edc/v0.0.1/ns/version': '1.5'
-      }
-    }
-  ]
+        'https://w3id.org/edc/v0.0.1/ns/version': '1.5',
+      },
+    },
+  ],
 };
 
 const mockCatalogProviderC = {
   '@context': {
     '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-    'dcat': 'http://www.w3.org/ns/dcat#',
-    'dcterms': 'http://purl.org/dc/terms/',
-    'foaf': 'http://xmlns.com/foaf/0.1/',
-    'dspace': 'https://w3id.org/dspace/v0.8/'
+    dcat: 'http://www.w3.org/ns/dcat#',
+    dcterms: 'http://purl.org/dc/terms/',
+    foaf: 'http://xmlns.com/foaf/0.1/',
+    dspace: 'https://w3id.org/dspace/v0.8/',
   },
   '@id': 'provider-c-catalog',
   '@type': 'dcat:Catalog',
-  'participantId': 'provider-c-did',
-  'dcat:dataset': []
+  participantId: 'provider-c-did',
+  'dcat:dataset': [],
 };
 
-describe('EdcFederatedCatalogDisplay', function () {
+describe('EdcFederatedCatalogDisplay', () => {
   beforeEach(() => {
     // Set up intercept for the consumer connector catalog requests
     // Match requests based on counterPartyAddress to return correct provider data
-    cy.intercept('POST', '/management/v3/catalog/request', (req) => {
+    cy.intercept('POST', '/management/v3/catalog/request', req => {
       const counterPartyAddress = req.body?.counterPartyAddress;
       console.log('Intercept - counterPartyAddress:', counterPartyAddress);
 
@@ -88,15 +88,22 @@ describe('EdcFederatedCatalogDisplay', function () {
       if (counterPartyAddress === 'https://provider-a.example.com/management') {
         response = mockCatalogProviderA;
         console.log('Returning Provider A mock (2 datasets)');
-      } else if (counterPartyAddress === 'https://provider-b.example.com/management') {
+      } else if (
+        counterPartyAddress === 'https://provider-b.example.com/management'
+      ) {
         response = mockCatalogProviderB;
         console.log('Returning Provider B mock (1 dataset)');
-      } else if (counterPartyAddress === 'https://provider-c.example.com/management') {
+      } else if (
+        counterPartyAddress === 'https://provider-c.example.com/management'
+      ) {
         response = mockCatalogProviderC;
         console.log('Returning Provider C mock (0 datasets)');
       } else {
         response = mockCatalogProviderA;
-        console.log('Fallback to Provider A mock, counterPartyAddress was:', counterPartyAddress);
+        console.log(
+          'Fallback to Provider A mock, counterPartyAddress was:',
+          counterPartyAddress,
+        );
       }
 
       req.reply({
@@ -137,22 +144,31 @@ describe('EdcFederatedCatalogDisplay', function () {
     cy.get('.stat-card.success').should('have.length', 3);
 
     // Check Provider A stats
-    cy.get('.stat-card').contains('Provider A').parent().within(() => {
-      cy.get('.stat-count').should('contain', '2 datasets');
-      cy.get('.stat-status').should('contain', 'success');
-    });
+    cy.get('.stat-card')
+      .contains('Provider A')
+      .parent()
+      .within(() => {
+        cy.get('.stat-count').should('contain', '2 datasets');
+        cy.get('.stat-status').should('contain', 'success');
+      });
 
     // Check Provider B stats
-    cy.get('.stat-card').contains('Provider B').parent().within(() => {
-      cy.get('.stat-count').should('contain', '1 datasets');
-      cy.get('.stat-status').should('contain', 'success');
-    });
+    cy.get('.stat-card')
+      .contains('Provider B')
+      .parent()
+      .within(() => {
+        cy.get('.stat-count').should('contain', '1 datasets');
+        cy.get('.stat-status').should('contain', 'success');
+      });
 
     // Check Provider C stats (empty catalog)
-    cy.get('.stat-card').contains('Provider C').parent().within(() => {
-      cy.get('.stat-count').should('contain', '0 datasets');
-      cy.get('.stat-status').should('contain', 'success');
-    });
+    cy.get('.stat-card')
+      .contains('Provider C')
+      .parent()
+      .within(() => {
+        cy.get('.stat-count').should('contain', '0 datasets');
+        cy.get('.stat-status').should('contain', 'success');
+      });
   });
 
   it('displays federated datasets with provider information', () => {
@@ -189,7 +205,10 @@ describe('EdcFederatedCatalogDisplay', function () {
     cy.get('.provider-checkbox').contains('Provider B').click();
 
     // Should show empty state since Provider C has no datasets
-    cy.get('.empty', { timeout: 5000 }).should('contain', 'No datasets match your current filters');
+    cy.get('.empty', { timeout: 5000 }).should(
+      'contain',
+      'No datasets match your current filters',
+    );
 
     // Re-check Provider A (should show Provider A datasets again)
     cy.get('.provider-checkbox').contains('Provider A').click();
@@ -215,15 +234,21 @@ describe('EdcFederatedCatalogDisplay', function () {
     cy.wait(1000);
 
     // Check if filtering worked - should only show dataset-a1
-    cy.get('.federated-datasets-list').then(($list) => {
+    cy.get('.federated-datasets-list').then($list => {
       const text = $list.text();
       cy.log('Filtered content:', text);
 
       // If search filtering works, should contain dataset-a1 but not the others
-      if (text.includes('dataset-a1') && !text.includes('dataset-a2') && !text.includes('dataset-b1')) {
+      if (
+        text.includes('dataset-a1') &&
+        !text.includes('dataset-a2') &&
+        !text.includes('dataset-b1')
+      ) {
         cy.log('✅ Search filtering is working correctly');
       } else {
-        cy.log('❌ Search filtering is not working - all datasets still visible');
+        cy.log(
+          '❌ Search filtering is not working - all datasets still visible',
+        );
       }
     });
 
@@ -239,7 +264,7 @@ describe('EdcFederatedCatalogDisplay', function () {
 
   it('handles provider API errors gracefully', () => {
     // Set up error responses for Provider A and B via the consumer connector
-    cy.intercept('POST', '/management/v3/catalog/request', (req) => {
+    cy.intercept('POST', '/management/v3/catalog/request', req => {
       const counterPartyAddress = req.body.counterPartyAddress;
 
       if (counterPartyAddress?.includes('provider-a.example.com')) {
@@ -271,20 +296,29 @@ describe('EdcFederatedCatalogDisplay', function () {
     cy.get('.stat-card.success').should('have.length', 1);
 
     // Check error messages are displayed
-    cy.get('.stat-card').contains('Provider A').parent().within(() => {
-      cy.get('.stat-error').should('exist');
-      cy.get('.stat-status').should('contain', 'error');
-    });
+    cy.get('.stat-card')
+      .contains('Provider A')
+      .parent()
+      .within(() => {
+        cy.get('.stat-error').should('exist');
+        cy.get('.stat-status').should('contain', 'error');
+      });
 
-    cy.get('.stat-card').contains('Provider B').parent().within(() => {
-      cy.get('.stat-error').should('exist');
-      cy.get('.stat-status').should('contain', 'error');
-    });
+    cy.get('.stat-card')
+      .contains('Provider B')
+      .parent()
+      .within(() => {
+        cy.get('.stat-error').should('exist');
+        cy.get('.stat-status').should('contain', 'error');
+      });
 
     // Provider C should still be successful
-    cy.get('.stat-card').contains('Provider C').parent().within(() => {
-      cy.get('.stat-status').should('contain', 'success');
-    });
+    cy.get('.stat-card')
+      .contains('Provider C')
+      .parent()
+      .within(() => {
+        cy.get('.stat-status').should('contain', 'success');
+      });
 
     // Header should show only successful providers
     cy.get('.federated-header p').should('contain', '1/3 providers');
@@ -293,19 +327,31 @@ describe('EdcFederatedCatalogDisplay', function () {
   it('sends correct API requests with proper headers', () => {
     cy.get('@catalogRequests').should((interception: any) => {
       expect(interception.request.method).to.equal('POST');
-      expect(interception.request.headers).to.have.property('x-api-key', 'test-api-key');
-      expect(interception.request.headers).to.have.property('content-type', 'application/json');
+      expect(interception.request.headers).to.have.property(
+        'x-api-key',
+        'test-api-key',
+      );
+      expect(interception.request.headers).to.have.property(
+        'content-type',
+        'application/json',
+      );
 
       // Check request body structure
-      expect(interception.request.body).to.have.property('@type', 'CatalogRequestMessage');
+      expect(interception.request.body).to.have.property(
+        '@type',
+        'CatalogRequestMessage',
+      );
       expect(interception.request.body).to.have.property('counterPartyAddress');
-      expect(interception.request.body).to.have.property('protocol', 'dataspace-protocol-http');
+      expect(interception.request.body).to.have.property(
+        'protocol',
+        'dataspace-protocol-http',
+      );
     });
   });
 
   it('handles empty catalogs appropriately', () => {
     // Set up all providers to return empty catalogs via the consumer connector
-    cy.intercept('POST', '/management/v3/catalog/request', (req) => {
+    cy.intercept('POST', '/management/v3/catalog/request', req => {
       const counterPartyAddress = req.body.counterPartyAddress;
 
       if (counterPartyAddress?.includes('provider-a.example.com')) {
@@ -332,13 +378,19 @@ describe('EdcFederatedCatalogDisplay', function () {
     cy.reload();
 
     // Wait for the empty state to appear
-    cy.get('.empty', { timeout: 10000 }).should('contain', 'No datasets found in federated catalog');
+    cy.get('.empty', { timeout: 10000 }).should(
+      'contain',
+      'No datasets found in federated catalog',
+    );
 
     // Should show empty state for federated catalog
-    cy.get('.empty').should('contain', 'No datasets found in federated catalog');
+    cy.get('.empty').should(
+      'contain',
+      'No datasets found in federated catalog',
+    );
 
     // Provider stats should show 0 datasets for all
-    cy.get('.stat-card').each(($card) => {
+    cy.get('.stat-card').each($card => {
       cy.wrap($card).within(() => {
         cy.get('.stat-count').should('contain', '0 datasets');
       });

@@ -309,6 +309,10 @@ export const EdcFederatedCatalogDisplay = {
   },
 
   getFilteredDatasets(): FederatedDataset[] {
+    console.log(
+      'getFilteredDatasets called with searchQuery:',
+      this.searchQuery,
+    );
     let filtered = this.federatedDatasets;
 
     // Filter by selected providers
@@ -321,6 +325,7 @@ export const EdcFederatedCatalogDisplay = {
     // Filter by search query
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.toLowerCase().trim();
+      console.log('Applying search filter for:', query);
       filtered = filtered.filter(item => {
         const dataset = item.dataset;
         const title = (
@@ -338,17 +343,19 @@ export const EdcFederatedCatalogDisplay = {
           .toLowerCase();
         const providername = item.provider.name.toLowerCase();
 
-        const matches = (
+        const matches =
           title.includes(query) ||
           description.includes(query) ||
           keywords.includes(query) ||
           providername.includes(query) ||
-          dataset['@id'].toLowerCase().includes(query)
-        );
+          dataset['@id'].toLowerCase().includes(query);
 
-        console.log(`Dataset ${dataset['@id']}: title="${title}", matches=${matches}`);
+        console.log(
+          `Dataset ${dataset['@id']}: title="${title}", matches=${matches}`,
+        );
         return matches;
       });
+      console.log('After search filtering:', filtered.length, 'datasets');
     }
 
     return filtered;
@@ -531,7 +538,9 @@ export const EdcFederatedCatalogDisplay = {
 
   handleSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
+    console.log('Search input changed:', input.value);
     this.searchQuery = input.value;
+    console.log('Updated searchQuery state:', this.searchQuery);
     this.render();
   },
 
