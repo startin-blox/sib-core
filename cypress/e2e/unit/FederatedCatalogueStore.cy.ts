@@ -24,7 +24,7 @@ describe('FederatedCatalogueStore', () => {
     },
     optionsServer: {
       kc_url:
-        'https://governance.tems-dataspace.eu.dallot.net/auth/realms/gaia-x/protocol/openid-connect/token',
+        'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
       kc_grant_type: 'password',
       kc_scope: 'openid',
     },
@@ -369,7 +369,7 @@ describe('FederatedCatalogueStoreAdapter', () => {
       },
       optionsServer: {
         kc_url:
-          'https://governance.tems-dataspace.eu.dallot.net/auth/realms/gaia-x/protocol/openid-connect/token',
+          'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
         kc_grant_type: 'password',
         kc_scope: 'openid',
       },
