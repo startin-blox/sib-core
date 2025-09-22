@@ -106,7 +106,7 @@ export const EdcFederatedCatalogDisplay = {
 
     // Convert providers array to registry format
     const providerInfos: ProviderInfo[] = this._providersArray.map(
-      (provider: Providerer) => ({
+      (provider: Provider) => ({
         name: provider.name,
         protocolAddress: provider.address,
         participantId: provider.participantId || '', // Will be discovered from catalog
