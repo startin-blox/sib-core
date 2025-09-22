@@ -312,11 +312,11 @@ export const EdcFederatedCatalogDisplay = {
     let filtered = this.federatedDatasets;
 
     // Filter by selected providers
-    if (this.selectedProviders.size > 0) {
-      filtered = filtered.filter(item =>
-        this.selectedProviders.has(item.provider.address),
-      );
-    }
+    // Always filter by selected providers - if none selected, show none
+    filtered = filtered.filter(item =>
+      this.selectedProviders.has(item.provider.address),
+    );
+    console.log('After provider filtering:', filtered.length, 'datasets');
 
     // Filter by search query
     if (this.searchQuery.trim()) {
@@ -338,13 +338,16 @@ export const EdcFederatedCatalogDisplay = {
           .toLowerCase();
         const providername = item.provider.name.toLowerCase();
 
-        return (
+        const matches = (
           title.includes(query) ||
           description.includes(query) ||
           keywords.includes(query) ||
           providername.includes(query) ||
           dataset['@id'].toLowerCase().includes(query)
         );
+
+        console.log(`Dataset ${dataset['@id']}: title="${title}", matches=${matches}`);
+        return matches;
       });
     }
 
@@ -657,11 +660,12 @@ export const EdcFederatedCatalogDisplay = {
   renderSearchBox() {
     return html`
       <div class="search-box">
-        <input 
-          type="text" 
+        <input
+          type="text"
           placeholder="Search datasets, descriptions, keywords, or providers..."
           .value=${this.searchQuery}
-          @input=${this.handleSearchInput}
+          @input=${(e: Event) => this.handleSearchInput(e)}
+          @keyup=${(e: Event) => this.handleSearchInput(e)}
           class="search-input"
         >
       </div>
@@ -691,7 +695,7 @@ export const EdcFederatedCatalogDisplay = {
       <div class="federated-dataset-item" data-dataset-id="${dataset['@id']}" data-provider="${provider.address}">
         <div class="dataset-header">
           <h3 class="dataset-title">
-            ${dataset['dct:title'] || dataset.properties?.name || dataset['@id']}
+            ${dataset['dcterms:title'] || dataset['dct:title'] || dataset.properties?.name || dataset['@id']}
           </h3>
           <div class="provider-badge" style="background-color: ${provider.color || '#1976d2'}">
             ${provider.name}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Federated Catalog Display Test</title>
+    <script type="module" src="../../dist/index.js"></script>
+    <style>
+        .federated-header {
+            background: #f0f8ff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e0e8f0;
+        }
+        .federated-header h2 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+        .federated-header p {
+            margin: 0;
+            color: #7f8c8d;
+        }
+        .loading-indicator {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .provider-stats {
+            margin-bottom: 2rem;
+        }
+        .provider-stats h3 {
+            margin: 0 0 1rem 0;
+            color: #2c3e50;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .stat-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fff;
+        }
+        .stat-card.success {
+            border-color: #27ae60;
+            background: #f8fff9;
+        }
+        .stat-card.error {
+            border-color: #e74c3c;
+            background: #fef8f8;
+        }
+        .stat-provider {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .stat-count {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        .stat-status {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .stat-error {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .provider-filter {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .provider-filter h3 {
+            margin: 0 0 1rem 0;
+        }
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .provider-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+        }
+        .search-input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .federated-datasets-list {
+            display: grid;
+            gap: 1rem;
+        }
+        .edc-dataset-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fff;
+        }
+        .dataset-title {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+        .dataset-description {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+        .dataset-metadata {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #95a5a6;
+            flex-wrap: wrap;
+        }
+        .dataset-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .provider-color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .loading, .error, .empty {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+        .error {
+            color: red;
+            border: 1px solid red;
+            background: #ffe6e6;
+            border-radius: 8px;
+        }
+        .empty {
+            color: #7f8c8d;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>EDC Federated Catalog Display Test</h1>
+
+    <edc-federated-catalog-display
+        consumer-connector="https://consumer.test-connector.example.com/management"
+        api-key="test-api-key"
+        providers='[
+            {
+                "name": "Provider A",
+                "address": "https://provider-a.example.com/management",
+                "color": "#3498db",
+                "participantId": "provider-a-did"
+            },
+            {
+                "name": "Provider B",
+                "address": "https://provider-b.example.com/management",
+                "color": "#e74c3c",
+                "participantId": "provider-b-did"
+            },
+            {
+                "name": "Provider C",
+                "address": "https://provider-c.example.com/management",
+                "color": "#27ae60",
+                "participantId": "provider-c-did"
+            }
+        ]'
+        show-provider-filter="true"
+        show-stats="true">
+    </edc-federated-catalog-display>
+
+    <script type="module">
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ EDC Federated Catalog Display component loaded');
+        });
+    </script>
+</body>
+</html>
