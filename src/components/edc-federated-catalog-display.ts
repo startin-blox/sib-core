@@ -1,11 +1,14 @@
 import { html, render } from 'lit';
 import { Sib } from '../libs/Sib.ts';
-import { StoreType } from '../libs/store/shared/types.ts';
+import {
+  type ProviderInfo,
+  ProviderRegistry,
+} from '../libs/provider-registry/ProviderRegistry.ts';
 import { StoreFactory } from '../libs/store/StoreFactory.ts';
 import type { DataspaceConnectorConfig } from '../libs/store/impl/dataspace-connector/types.ts';
+import { StoreType } from '../libs/store/shared/types.ts';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
-import { ProviderRegistry, type ProviderInfo } from '../libs/provider-registry/ProviderRegistry.ts';
 
 interface Provider {
   name: string;
@@ -52,7 +55,11 @@ export const EdcFederatedCatalogDisplay = {
           this._providersArray = value ? JSON.parse(value) : [];
           console.log('Providers parsed:', this._providersArray);
           this.initializeProviderRegistry(); // Initialize registry when providers are set
-          if (this._providersArray?.length > 0 && this.consumerConnector && this.apiKey) {
+          if (
+            this._providersArray?.length > 0 &&
+            this.consumerConnector &&
+            this.apiKey
+          ) {
             this.fetchFederatedCatalog();
           }
         } catch (error) {
@@ -91,7 +98,11 @@ export const EdcFederatedCatalogDisplay = {
   },
   created() {
     // Registry will be initialized when providers are parsed
-    if (this.consumerConnector && this.apiKey && this._providersArray?.length > 0) {
+    if (
+      this.consumerConnector &&
+      this.apiKey &&
+      this._providersArray?.length > 0
+    ) {
       this.fetchFederatedCatalog();
     }
   },
@@ -103,20 +114,32 @@ export const EdcFederatedCatalogDisplay = {
     }
 
     // Convert providers array to registry format
-    const providerInfos: ProviderInfo[] = this._providersArray.map((provider: Provider) => ({
-      name: provider.name,
-      protocolAddress: provider.address,
-      participantId: provider.participantId || '', // Will be discovered from catalog
-      description: `${provider.name} EDC Provider`,
-      status: 'unknown' as const,
-    }));
+    const providerInfos: ProviderInfo[] = this._providersArray.map(
+      (provider: Provider) => ({
+        name: provider.name,
+        protocolAddress: provider.address,
+        participantId: provider.participantId || '', // Will be discovered from catalog
+        description: `${provider.name} EDC Provider`,
+        status: 'unknown' as const,
+      }),
+    );
 
     this.providerRegistry = new ProviderRegistry(providerInfos);
-    console.log('✅ Provider registry initialized with', providerInfos.length, 'providers:', providerInfos);
+    console.log(
+      '✅ Provider registry initialized with',
+      providerInfos.length,
+      'providers:',
+      providerInfos,
+    );
   },
 
   async fetchFederatedCatalog() {
-    if (!this.consumerConnector || !this.apiKey || !this._providersArray?.length) return;
+    if (
+      !this.consumerConnector ||
+      !this.apiKey ||
+      !this._providersArray?.length
+    )
+      return;
 
     this.loading = true;
     this.error = null;
@@ -126,7 +149,7 @@ export const EdcFederatedCatalogDisplay = {
     this.loadingProviders.clear();
     this.errorProviders.clear();
     this.selectedProviders.clear();
-    
+
     // Initially select all providers
     this._providersArray.forEach((provider: Provider) => {
       this.selectedProviders.add(provider.address);
@@ -149,86 +172,100 @@ export const EdcFederatedCatalogDisplay = {
     const store = StoreFactory.create(config);
 
     // Fetch catalogs from all providers in parallel
-    const catalogPromises = this._providersArray.map(async (provider: Provider) => {
-      this.loadingProviders.add(provider.address);
-      this.render();
+    const catalogPromises = this._providersArray.map(
+      async (provider: Provider) => {
+        this.loadingProviders.add(provider.address);
+        this.render();
 
-      try {
-        console.log(`Fetching catalog from ${provider.name} (${provider.address})`);
-        const catalog = await (store as any).getCatalog(provider.address);
-        
-        if (catalog) {
-          this.catalogs.set(provider.address, { catalog, provider });
-          const datasets = catalog['dcat:dataset'] || [];
-          
-          // Update provider registry with discovered participant ID
-          if (catalog.participantId && this.providerRegistry) {
-            const registryProvider = this.providerRegistry.getProviderByAddress(provider.address);
-            if (registryProvider) {
-              registryProvider.participantId = catalog.participantId;
-              registryProvider.status = 'online';
-              registryProvider.lastSeen = new Date().toISOString();
-              console.log(`✅ Discovered participant ID for ${provider.name}: ${catalog.participantId}`);
+        try {
+          console.log(
+            `Fetching catalog from ${provider.name} (${provider.address})`,
+          );
+          const catalog = await (store as any).getCatalog(provider.address);
+
+          if (catalog) {
+            this.catalogs.set(provider.address, { catalog, provider });
+            const datasets = catalog['dcat:dataset'] || [];
+
+            // Update provider registry with discovered participant ID
+            if (catalog.participantId && this.providerRegistry) {
+              const registryProvider =
+                this.providerRegistry.getProviderByAddress(provider.address);
+              if (registryProvider) {
+                registryProvider.participantId = catalog.participantId;
+                registryProvider.status = 'online';
+                registryProvider.lastSeen = new Date().toISOString();
+                console.log(
+                  `✅ Discovered participant ID for ${provider.name}: ${catalog.participantId}`,
+                );
+              }
             }
+
+            // Track provider stats
+            this.providerStats.set(provider.address, {
+              provider,
+              datasetCount: datasets.length,
+              status: 'success',
+              lastUpdated: new Date().toISOString(),
+            });
+
+            // Add datasets to federated list with provider info
+            const federatedDatasets: FederatedDataset[] = datasets.map(
+              (dataset: any) => ({
+                dataset,
+                provider,
+                catalogId: catalog['@id'],
+                participantId: catalog.participantId,
+              }),
+            );
+
+            return federatedDatasets;
+          } else {
+            this.errorProviders.set(provider.address, 'No catalog received');
+            this.providerStats.set(provider.address, {
+              provider,
+              datasetCount: 0,
+              status: 'error',
+              error: 'No catalog received',
+              lastUpdated: new Date().toISOString(),
+            });
+            return [];
           }
-          
-          // Track provider stats
-          this.providerStats.set(provider.address, {
-            provider,
-            datasetCount: datasets.length,
-            status: 'success',
-            lastUpdated: new Date().toISOString(),
-          });
-
-          // Add datasets to federated list with provider info
-          const federatedDatasets: FederatedDataset[] = datasets.map((dataset: any) => ({
-            dataset,
-            provider,
-            catalogId: catalog['@id'],
-            participantId: catalog.participantId,
-          }));
-
-          return federatedDatasets;
-        } else {
-          this.errorProviders.set(provider.address, 'No catalog received');
+        } catch (error) {
+          const errorMessage = (error as Error).message;
+          console.error(
+            `Failed to fetch catalog from ${provider.name}:`,
+            error,
+          );
+          this.errorProviders.set(provider.address, errorMessage);
           this.providerStats.set(provider.address, {
             provider,
             datasetCount: 0,
             status: 'error',
-            error: 'No catalog received',
+            error: errorMessage,
             lastUpdated: new Date().toISOString(),
           });
           return [];
+        } finally {
+          this.loadingProviders.delete(provider.address);
         }
-      } catch (error) {
-        const errorMessage = (error as Error).message;
-        console.error(`Failed to fetch catalog from ${provider.name}:`, error);
-        this.errorProviders.set(provider.address, errorMessage);
-        this.providerStats.set(provider.address, {
-          provider,
-          datasetCount: 0,
-          status: 'error',
-          error: errorMessage,
-          lastUpdated: new Date().toISOString(),
-        });
-        return [];
-      } finally {
-        this.loadingProviders.delete(provider.address);
-      }
-    });
+      },
+    );
 
     try {
       const allFederatedDatasets = await Promise.all(catalogPromises);
-      
+
       // Flatten and deduplicate datasets
       this.federatedDatasets = this.deduplicateDatasets(
-        allFederatedDatasets.flat()
+        allFederatedDatasets.flat(),
       );
 
       // Store the store instance for later use in negotiations
       this.stores.set('default', store);
 
-      console.log(`Federated catalog loaded: ${this.federatedDatasets.length} unique datasets from ${this._providersArray.length} providers`);
+      console.log(
+        `Federated catalog loaded: ${this.federatedDatasets.length} unique datasets from ${this._providersArray.length} providers`,
+      );
     } catch (error) {
       console.error('Failed to fetch federated catalog:', error);
       this.error = (error as Error).message;
@@ -244,25 +281,32 @@ export const EdcFederatedCatalogDisplay = {
 
     for (const item of datasets) {
       const datasetId = item.dataset['@id'];
-      const participantId = item.participantId || item.provider.participantId || item.provider.address;
+      const participantId =
+        item.participantId ||
+        item.provider.participantId ||
+        item.provider.address;
       // Use composite key: participantId + datasetId to allow same asset from different providers
       const key = `${participantId}:${datasetId}`;
-      
+
       if (!seen.has(key)) {
         seen.set(key, item);
         deduplicated.push(item);
       } else {
-        // If we've seen this exact dataset from this exact provider before, 
+        // If we've seen this exact dataset from this exact provider before,
         // prefer the one with more complete data
         const existing = seen.get(key);
         const currentPolicies = item.dataset['odrl:hasPolicy']?.length || 0;
-        const existingPolicies = existing.dataset['odrl:hasPolicy']?.length || 0;
-        
+        const existingPolicies =
+          existing.dataset['odrl:hasPolicy']?.length || 0;
+
         if (currentPolicies > existingPolicies) {
           // Replace with better version and update in deduplicated array
           const index = deduplicated.findIndex(d => {
-            const dParticipantId = d.participantId || d.provider.participantId || d.provider.address;
-            return dParticipantId === participantId && d.dataset['@id'] === datasetId;
+            const dParticipantId =
+              d.participantId || d.provider.participantId || d.provider.address;
+            return (
+              dParticipantId === participantId && d.dataset['@id'] === datasetId
+            );
           });
           if (index !== -1) {
             deduplicated[index] = item;
@@ -280,8 +324,8 @@ export const EdcFederatedCatalogDisplay = {
 
     // Filter by selected providers
     if (this.selectedProviders.size > 0) {
-      filtered = filtered.filter(item => 
-        this.selectedProviders.has(item.provider.address)
+      filtered = filtered.filter(item =>
+        this.selectedProviders.has(item.provider.address),
       );
     }
 
@@ -290,16 +334,28 @@ export const EdcFederatedCatalogDisplay = {
       const query = this.searchQuery.toLowerCase().trim();
       filtered = filtered.filter(item => {
         const dataset = item.dataset;
-        const title = (dataset['dcterms:title'] || dataset.properties?.name || dataset['@id']).toLowerCase();
-        const description = (dataset['dcterms:description'] || dataset.properties?.description || '').toLowerCase();
-        const keywords = (dataset['dcat:keyword'] || []).join(' ').toLowerCase();
+        const title = (
+          dataset['dcterms:title'] ||
+          dataset.properties?.name ||
+          dataset['@id']
+        ).toLowerCase();
+        const description = (
+          dataset['dcterms:description'] ||
+          dataset.properties?.description ||
+          ''
+        ).toLowerCase();
+        const keywords = (dataset['dcat:keyword'] || [])
+          .join(' ')
+          .toLowerCase();
         const providername = item.provider.name.toLowerCase();
-        
-        return title.includes(query) || 
-               description.includes(query) || 
-               keywords.includes(query) || 
-               providername.includes(query) ||
-               dataset['@id'].toLowerCase().includes(query);
+
+        return (
+          title.includes(query) ||
+          description.includes(query) ||
+          keywords.includes(query) ||
+          providername.includes(query) ||
+          dataset['@id'].toLowerCase().includes(query)
+        );
       });
     }
 
@@ -308,7 +364,7 @@ export const EdcFederatedCatalogDisplay = {
 
   async negotiateAccess(federatedDataset: FederatedDataset) {
     const { dataset, provider } = federatedDataset;
-    
+
     if (!dataset['odrl:hasPolicy'] || dataset['odrl:hasPolicy'].length === 0) {
       console.error('No policies available for dataset:', dataset['@id']);
       return;
@@ -334,12 +390,12 @@ export const EdcFederatedCatalogDisplay = {
 
       // Create negotiation key that includes provider
       const negotiationKey = `${assetId}@${provider.address}`;
-      
-      this.negotiations.set(negotiationKey, { 
-        status: 'negotiating', 
+
+      this.negotiations.set(negotiationKey, {
+        status: 'negotiating',
         offerId,
         provider,
-        assetId
+        assetId,
       });
       this.render();
 
@@ -354,14 +410,19 @@ export const EdcFederatedCatalogDisplay = {
         target: assetId,
       };
 
-      console.log("Provider Registry:", this.providerRegistry);
-      console.log("Provider:", provider);
+      console.log('Provider Registry:', this.providerRegistry);
+      console.log('Provider:', provider);
       // Get participant ID from registry
-      const registryProvider = this.providerRegistry?.getProviderByAddress(provider.address);
-      const participantId = registryProvider?.participantId || federatedDataset.participantId;
-      
+      const registryProvider = this.providerRegistry?.getProviderByAddress(
+        provider.address,
+      );
+      const participantId =
+        registryProvider?.participantId || federatedDataset.participantId;
+
       if (!participantId) {
-        throw new Error(`No participant ID found for provider ${provider.name}`);
+        throw new Error(
+          `No participant ID found for provider ${provider.name}`,
+        );
       }
 
       const negotiationId = await (store as any).initiateNegotiation(
@@ -371,7 +432,9 @@ export const EdcFederatedCatalogDisplay = {
         participantId,
       );
 
-      console.log(`Negotiation initiated: ${negotiationId} with ${provider.name}`);
+      console.log(
+        `Negotiation initiated: ${negotiationId} with ${provider.name}`,
+      );
 
       this.negotiations.set(negotiationKey, {
         status: 'pending',
@@ -407,7 +470,7 @@ export const EdcFederatedCatalogDisplay = {
           console.error('Store not available for polling');
           return;
         }
-        
+
         const status = await (store as any).getNegotiationStatus(negotiationId);
         const negotiation = this.negotiations.get(negotiationKey);
 
@@ -459,7 +522,8 @@ export const EdcFederatedCatalogDisplay = {
     this.negotiations.set(negotiationKey, {
       ...negotiation,
       status: 'failed',
-      error: 'Negotiation timeout after 5 minutes - may still be processing on provider side',
+      error:
+        'Negotiation timeout after 5 minutes - may still be processing on provider side',
     });
     this.render();
   },
@@ -481,7 +545,10 @@ export const EdcFederatedCatalogDisplay = {
 
   render() {
     if (this.loading && this.federatedDatasets.length === 0) {
-      render(html`<div class="loading">Loading federated catalog...</div>`, this.element);
+      render(
+        html`<div class="loading">Loading federated catalog...</div>`,
+        this.element,
+      );
       return;
     }
 
@@ -508,9 +575,10 @@ export const EdcFederatedCatalogDisplay = {
   renderHeader() {
     const totalDatasets = this.federatedDatasets.length;
     const totalProviders = this._providersArray.length;
-    const activeProviders = Array.from(this.providerStats.values())
-      .filter(stat => stat.status === 'success').length;
-    
+    const activeProviders = Array.from(this.providerStats.values()).filter(
+      stat => stat.status === 'success',
+    ).length;
+
     // Get breakdown of datasets by provider
     const providerBreakdown = Array.from(this.providerStats.values())
       .filter(stat => stat.status === 'success' && stat.datasetCount > 0)
@@ -537,12 +605,15 @@ export const EdcFederatedCatalogDisplay = {
       <div class="provider-stats">
         <h3>Provider Status</h3>
         <div class="stats-grid">
-          ${Array.from(this.providerStats.values()).map(stat => html`
+          ${Array.from(this.providerStats.values()).map(
+            stat => html`
             <div class="stat-card ${stat.status}">
               <div class="stat-provider">
                 ${stat.provider.name}
-                ${this.loadingProviders.has(stat.provider.address) ? 
-                  html`<span class="loading-spinner">⏳</span>` : ''
+                ${
+                  this.loadingProviders.has(stat.provider.address)
+                    ? html`<span class="loading-spinner">⏳</span>`
+                    : ''
                 }
               </div>
               <div class="stat-count">${stat.datasetCount} datasets</div>
@@ -552,7 +623,8 @@ export const EdcFederatedCatalogDisplay = {
               </div>
               ${stat.error ? html`<div class="stat-error">${stat.error}</div>` : ''}
             </div>
-          `)}
+          `,
+          )}
         </div>
       </div>
     `;
@@ -565,7 +637,8 @@ export const EdcFederatedCatalogDisplay = {
       <div class="provider-filter">
         <h4>Filter by Provider</h4>
         <div class="provider-checkboxes">
-          ${this._providersArray.map(provider => html`
+          ${this._providersArray.map(
+            provider => html`
             <label class="provider-checkbox">
               <input 
                 type="checkbox" 
@@ -577,7 +650,8 @@ export const EdcFederatedCatalogDisplay = {
                 (${this.providerStats.get(provider.address)?.datasetCount || 0})
               </span>
             </label>
-          `)}
+          `,
+          )}
         </div>
       </div>
     `;
@@ -628,27 +702,31 @@ export const EdcFederatedCatalogDisplay = {
           </div>
         </div>
         
-        ${dataset['rdfs:comment'] || dataset.properties?.description
-          ? html`<p class="dataset-description">
+        ${
+          dataset['rdfs:comment'] || dataset.properties?.description
+            ? html`<p class="dataset-description">
               ${dataset['rdfs:comment'] || dataset.properties?.description}
             </p>`
-          : ''
+            : ''
         }
         
         <div class="dataset-metadata">
           <span class="dataset-id">ID: ${dataset['@id']}</span>
           <span class="dataset-provider">Provider: ${provider.address}</span>
-          ${dataset['dcterms:creator']
-            ? html`<span class="dataset-creator">Creator: ${dataset['dcterms:creator']}</span>`
-            : ''
+          ${
+            dataset['dcterms:creator']
+              ? html`<span class="dataset-creator">Creator: ${dataset['dcterms:creator']}</span>`
+              : ''
           }
-          ${dataset['dcat:keyword']?.length > 0
-            ? html`<span class="dataset-keywords">Keywords: ${dataset['dcat:keyword'].join(', ')}</span>`
-            : ''
+          ${
+            dataset['dcat:keyword']?.length > 0
+              ? html`<span class="dataset-keywords">Keywords: ${dataset['dcat:keyword'].join(', ')}</span>`
+              : ''
           }
-          ${dataset['odrl:hasPolicy']?.length > 0
-            ? html`<span class="dataset-policies">Policies: ${dataset['odrl:hasPolicy'].length}</span>`
-            : ''
+          ${
+            dataset['odrl:hasPolicy']?.length > 0
+              ? html`<span class="dataset-policies">Policies: ${dataset['odrl:hasPolicy'].length}</span>`
+              : ''
           }
         </div>
         

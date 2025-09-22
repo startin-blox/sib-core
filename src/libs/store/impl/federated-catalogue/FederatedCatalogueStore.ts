@@ -7,11 +7,7 @@ import type { IStore, StoreConfig } from '../../shared/types.ts';
 import type { Resource } from '../../shared/types.ts';
 import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
 import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
-import type {
-  DcatService,
-  Destination,
-  Source
-} from './interfaces.ts';
+import type { DcatService, Destination, Source } from './interfaces.ts';
 
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
@@ -173,7 +169,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   _getLanguage() {
     return '';
   }
-  selectLanguage(_selectedLanguageCode: string) { }
+  selectLanguage(_selectedLanguageCode: string) {}
 
   getExpandedPredicate(
     _property: string,
@@ -181,7 +177,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   ) {
     return null;
   }
-  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) { }
+  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) {}
   fetchAuthn(_iri: string, _options: any) {
     return Promise.resolve({} as Response);
   }
@@ -388,13 +384,12 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     return dest;
   }
-
 }
 
 export class FederatedCatalogueStoreAdapter {
   private static store: IStore<any>;
 
-  private constructor() { }
+  private constructor() {}
 
   private static validateConfiguration(cfg: StoreConfig): void {
     const requiredFields = [

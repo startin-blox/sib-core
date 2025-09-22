@@ -11,10 +11,10 @@ import {
   mergeContexts,
   normalizeContext,
 } from '../../../helpers.ts';
-import type { SearchProvider } from '../../search/SearchProvider.ts';
-import { SolidIndexingSearchProvider } from '../../search/SolidIndexingSearchProvider.ts';
 import type { CacheManagerInterface } from '../../cache/cache-manager.ts';
 import { InMemoryCacheManager } from '../../cache/in-memory.ts';
+import type { SearchProvider } from '../../search/SearchProvider.ts';
+import { SolidIndexingSearchProvider } from '../../search/SolidIndexingSearchProvider.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
 import { appendServerPaginationToIri } from '../../shared/options/server-pagination.ts';
 

@@ -11,7 +11,7 @@ export interface ProviderInfo {
 
 export class ProviderRegistry {
   private providers: Map<string, ProviderInfo> = new Map();
-  
+
   constructor(initialProviders?: ProviderInfo[]) {
     if (initialProviders) {
       initialProviders.forEach(provider => {
@@ -38,8 +38,9 @@ export class ProviderRegistry {
    * Get provider info by participant ID
    */
   getProviderByParticipantId(participantId: string): ProviderInfo | undefined {
-    return Array.from(this.providers.values())
-      .find(provider => provider.participantId === participantId);
+    return Array.from(this.providers.values()).find(
+      provider => provider.participantId === participantId,
+    );
   }
 
   /**
@@ -59,7 +60,10 @@ export class ProviderRegistry {
   /**
    * Update provider status (for health monitoring)
    */
-  updateProviderStatus(protocolAddress: string, status: 'online' | 'offline' | 'unknown'): void {
+  updateProviderStatus(
+    protocolAddress: string,
+    status: 'online' | 'offline' | 'unknown',
+  ): void {
     const provider = this.providers.get(protocolAddress);
     if (provider) {
       provider.status = status;
@@ -79,7 +83,7 @@ export class ProviderRegistry {
    */
   toConfig(): { providers: ProviderInfo[] } {
     return {
-      providers: this.getAllProviders()
+      providers: this.getAllProviders(),
     };
   }
 }
