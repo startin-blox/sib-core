@@ -9,21 +9,12 @@ import type { DataspaceConnectorConfig } from '../libs/store/impl/dataspace-conn
 import { StoreType } from '../libs/store/shared/types.ts';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
+import type {
+  FederatedDataset,
+  Provider,
+  ProviderStatus
+} from '../libs/store/impl/dataspace-connector/interfaces.ts';
 
-interface Provider {
-  name: string;
-  address: string;
-  color?: string;
-  logo?: string;
-  participantId?: string; // DID or participant ID if known
-}
-
-interface FederatedDataset {
-  dataset: any;
-  provider: Provider;
-  catalogId: string;
-  participantId: string;
-}
 
 export const EdcFederatedCatalogDisplay = {
   name: 'edc-federated-catalog-display',
@@ -115,7 +106,7 @@ export const EdcFederatedCatalogDisplay = {
 
     // Convert providers array to registry format
     const providerInfos: ProviderInfo[] = this._providersArray.map(
-      (provider: Provider) => ({
+      (provider: Providerer) => ({
         name: provider.name,
         protocolAddress: provider.address,
         participantId: provider.participantId || '', // Will be discovered from catalog
@@ -575,14 +566,14 @@ export const EdcFederatedCatalogDisplay = {
   renderHeader() {
     const totalDatasets = this.federatedDatasets.length;
     const totalProviders = this._providersArray.length;
-    const activeProviders = Array.from(this.providerStats.values()).filter(
-      stat => stat.status === 'success',
+    const activeProviders = (Array.from(this.providerStats.values()) as ProviderStatus[]).filter(
+      (stat: ProviderStatus) => stat.status === 'success',
     ).length;
 
     // Get breakdown of datasets by provider
-    const providerBreakdown = Array.from(this.providerStats.values())
-      .filter(stat => stat.status === 'success' && stat.datasetCount > 0)
-      .map(stat => `${stat.datasetCount} from ${stat.provider.name}`)
+    const providerBreakdown = (Array.from(this.providerStats.values()) as ProviderStatus[])
+      .filter((stat: ProviderStatus) => stat.status === 'success' && stat.datasetCount > 0)
+      .map((stat: ProviderStatus) => `${stat.datasetCount} from ${stat.provider.name}`)
       .join(', ');
 
     return html`
@@ -605,8 +596,8 @@ export const EdcFederatedCatalogDisplay = {
       <div class="provider-stats">
         <h3>Provider Status</h3>
         <div class="stats-grid">
-          ${Array.from(this.providerStats.values()).map(
-            stat => html`
+          ${(Array.from(this.providerStats.values()) as ProviderStatus[]).map(
+            (stat: ProviderStatus) => html`
             <div class="stat-card ${stat.status}">
               <div class="stat-provider">
                 ${stat.provider.name}
@@ -618,7 +609,7 @@ export const EdcFederatedCatalogDisplay = {
               </div>
               <div class="stat-count">${stat.datasetCount} datasets</div>
               <div class="stat-status">
-                ${stat.status === 'success' ? '✅' : '❌'} 
+                ${stat.status === 'success' ? '✅' : '❌'}
                 ${stat.status}
               </div>
               ${stat.error ? html`<div class="stat-error">${stat.error}</div>` : ''}
