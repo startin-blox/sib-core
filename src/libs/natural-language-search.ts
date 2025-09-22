@@ -1,4 +1,4 @@
-import type { IndexQueryOptions } from './store/implementations/ldp/LdpStore.ts';
+import type { IndexQueryOptions } from './store/impl/ldp/LdpStore.ts';
 import { hasQueryIndex } from './store/shared/types.ts';
 import { StoreService } from './store/storeService.ts';
 

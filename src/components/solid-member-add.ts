@@ -6,7 +6,7 @@ import { ValidationMixin } from '../mixins/validationMixin.ts';
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { normalizeContext } from '../libs/helpers.ts';
-import { base_context } from '../libs/store/implementations/ldp/LdpStore.ts';
+import { base_context } from '../libs/store/impl/ldp/LdpStore.ts';
 import { StoreMixin } from '../mixins/storeMixin.ts';
 import { newWidgetFactory } from '../new-widgets/new-widget-factory.ts';
 

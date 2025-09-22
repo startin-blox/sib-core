@@ -1,4 +1,4 @@
-import { LdpStore } from '../../../src/libs/store/implementations/ldp/LdpStore.ts';
+import { LdpStore } from '../../../src/libs/store/impl/ldp/LdpStore.ts';
 
 const baseUrl = Cypress.config().baseUrl;
 

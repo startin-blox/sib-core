@@ -1,7 +1,7 @@
 import type {
   ConjunctionQueryOptions,
   IndexQueryOptions,
-} from '../implementations/ldp/LdpStore.ts';
+} from '../impl/ldp/LdpStore.ts';
 
 export interface SearchProvider {
   /**

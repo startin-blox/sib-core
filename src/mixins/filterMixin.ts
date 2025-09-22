@@ -6,7 +6,7 @@ import { hasQueryIndex, hasSetLocalData } from '../libs/store/shared/types.ts';
 import { StoreService } from '../libs/store/storeService.ts';
 
 const store = StoreService.getInstance();
-import type { IndexQueryOptions } from '../libs/store/implementations/ldp/LdpStore.ts';
+import type { IndexQueryOptions } from '../libs/store/impl/ldp/LdpStore.ts';
 import '../libs/store/semantizer/semantizer.ts';
 
 // Semantizer imports

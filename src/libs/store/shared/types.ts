@@ -2,8 +2,8 @@ import type * as JSONLDContextParser from 'jsonld-context-parser';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
-} from '../implementations/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
-import type { IndexQueryOptions } from '../implementations/ldp/LdpStore.ts';
+} from '../impl/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
+import type { IndexQueryOptions } from '../impl/ldp/LdpStore.ts';
 import type { CacheManagerInterface } from './cache/cache-manager.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
 import type { ServerSearchOptions } from './options/server-search.ts';
