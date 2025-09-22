@@ -141,6 +141,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     counterPartyAddress: string,
     _offerId: string,
     policy: OdrlPolicy,
+    counterPartyId?: string,
   ): Promise<string> {
     await this.ensureAuthenticated();
 
@@ -150,13 +151,14 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       },
       '@type': 'ContractRequest',
       counterPartyAddress,
+      counterPartyId: counterPartyId,
       protocol: 'dataspace-protocol-http',
       policy: {
         '@context': 'http://www.w3.org/ns/odrl.jsonld',
         '@id': policy['@id'],
         '@type': 'Offer',
-        assigner: 'provider',
-        target: policy.target || 'assetId',
+        assigner: counterPartyId || 'provider',
+        target: policy.target,
       },
     };
 
@@ -170,8 +172,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     );
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Contract negotiation failed: ${response.status} ${response.statusText}`, errorText);
       throw new Error(
-        `Contract negotiation failed: ${response.status} ${response.statusText}`,
+        `Contract negotiation failed: ${response.status} ${response.statusText} - ${errorText}`,
       );
     }
 
@@ -192,8 +196,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     counterPartyAddress: string,
     assetId: string,
     policy: OdrlPolicy,
+    counterPartyId?: string,
   ): Promise<string> {
-    return this.negotiateContract(counterPartyAddress, assetId, policy);
+    return this.negotiateContract(counterPartyAddress, assetId, policy, counterPartyId);
   }
 
   /**

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Federated Catalog Demo</title>
+    <script type="module" src="../../src/index.ts"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .demo-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .demo-info h3 {
+            margin-top: 0;
+        }
+        .demo-info code {
+            background: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .demo-info pre {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+        
+        /* Federated Catalog Styles */
+        .federated-header {
+            background: #e8f5e8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .federated-header h2 {
+            margin: 0 0 0.5rem 0;
+            color: #2e7d32;
+        }
+        .federated-header p {
+            margin: 0.25rem 0;
+            color: #555;
+        }
+        .loading-indicator {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        
+        /* Provider Stats */
+        .provider-stats {
+            margin-bottom: 2rem;
+        }
+        .provider-stats h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card.success {
+            border-left-color: #4caf50;
+        }
+        .stat-card.error {
+            border-left-color: #f44336;
+        }
+        .stat-provider {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stat-count {
+            font-size: 1.125rem;
+            color: #1976d2;
+            margin-bottom: 0.25rem;
+        }
+        .stat-status {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        .stat-error {
+            font-size: 0.75rem;
+            color: #f44336;
+            margin-top: 0.5rem;
+            word-break: break-word;
+        }
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Provider Filter */
+        .provider-filter {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .provider-filter h4 {
+            margin: 0 0 0.75rem 0;
+            color: #333;
+        }
+        .provider-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .provider-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .provider-checkbox:hover {
+            background-color: #f5f5f5;
+        }
+        .provider-name {
+            font-weight: 500;
+        }
+        .provider-count {
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        /* Search Box */
+        .search-box {
+            margin-bottom: 1rem;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            display: block;
+            margin: 0 auto;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+        
+        /* Dataset List */
+        .federated-datasets-list {
+            display: grid;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .federated-dataset-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+        }
+        .federated-dataset-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .dataset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        .dataset-title {
+            margin: 0;
+            color: #1976d2;
+            font-size: 1.25rem;
+            flex: 1;
+        }
+        .provider-badge {
+            background: #1976d2;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        .dataset-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .dataset-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .dataset-metadata span {
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        /* Actions */
+        .dataset-actions {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        .negotiate-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .negotiate-btn:hover:not(:disabled) {
+            background: #1565c0;
+        }
+        .negotiate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .negotiate-btn.retry {
+            background: #f57c00;
+        }
+        .negotiate-btn.retry:hover {
+            background: #ef6c00;
+        }
+        .negotiation-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .negotiation-provider {
+            font-weight: 500;
+            color: #1976d2;
+        }
+        .negotiation-success {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .access-granted {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        .contract-id {
+            font-size: 0.75rem;
+            color: #666;
+            font-family: monospace;
+        }
+        .api-ready-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: default;
+        }
+        .negotiation-error {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: #d32f2f;
+            font-size: 0.875rem;
+        }
+        .no-policy {
+            color: #666;
+            font-style: italic;
+            font-size: 0.875rem;
+        }
+        
+        /* Loading and empty states */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.125rem;
+            color: #666;
+        }
+        .loading::after {
+            content: "...";
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+        .error {
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            background: #ffebee;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Provider color variations */
+        .provider-badge[style*="background-color: #e91e63"] { /* Dreamwall */ }
+        .provider-badge[style*="background-color: #9c27b0"] { /* France TV */ }
+        .provider-badge[style*="background-color: #ff5722"] { /* SwissTXT */ }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>EDC Federated Catalog Demo</h1>
+        <p>Displaying consolidated assets from multiple EDC connectors</p>
+    </div>
+
+    <div class="demo-info">
+        <h3>Federated Demo Configuration</h3>
+        <p>This demo fetches and consolidates catalogs from <strong>multiple EDC connectors</strong>:</p>
+        <ul>
+            <li><strong>Consumer Connector:</strong> <code>consumer.connector-dev.startinblox.com</code></li>
+            <li><strong>Provider Connectors:</strong>
+                <ul>
+                    <li><strong>Dreamwall:</strong> <code>dreamwall.connector.luminvent.com/protocol</code></li>
+                    <li><strong>France TV Access:</strong> <code>france-tv-access.connector.luminvent.com/protocol</code></li>
+                    <li><strong>SwissTXT:</strong> <code>swisstxt.connector.luminvent.com/protocol</code></li>
+                </ul>
+            </li>
+            <li><strong>Protocol:</strong> Dataspace Protocol HTTP (EDC v3 Management API)</li>
+        </ul>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>✅ <strong>Parallel catalog fetching</strong> from multiple connectors</li>
+            <li>✅ <strong>Dataset deduplication</strong> across providers</li>
+            <li>✅ <strong>Provider identification</strong> with color-coded badges</li>
+            <li>✅ <strong>Per-provider statistics</strong> and health monitoring</li>
+            <li>✅ <strong>Advanced filtering</strong> by provider and search terms</li>
+            <li>✅ <strong>Provider-aware contract negotiation</strong></li>
+            <li>✅ <strong>Graceful error handling</strong> when some connectors fail</li>
+        </ul>
+        <p>This is equivalent to running multiple parallel requests:</p>
+        <pre><code># Request 1 - Dreamwall
+curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catalog/request" \
+    -H 'Content-Type: application/json' \
+    -d '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"counterPartyAddress":"https://dreamwall.connector.luminvent.com/protocol","protocol":"dataspace-protocol-http"}'
+
+# Request 2 - France TV Access  
+curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catalog/request" \
+    -H 'Content-Type: application/json' \
+    -d '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"counterPartyAddress":"https://france-tv-access.connector.luminvent.com/protocol","protocol":"dataspace-protocol-http"}'
+
+# Request 3 - SwissTXT
+curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catalog/request" \
+    -H 'Content-Type: application/json' \
+    -d '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"counterPartyAddress":"https://swisstxt.connector.luminvent.com/protocol","protocol":"dataspace-protocol-http"}'</code></pre>
+    </div>
+
+    <edc-federated-catalog-display 
+        consumer-connector="https://consumer.connector-dev.startinblox.com/management"
+        api-key="password"
+        providers='[
+            {
+                "name": "Dreamwall",
+                "address": "https://dreamwall.connector.luminvent.com/protocol",
+                "color": "#e91e63",
+                "participantId": "dreamwall"
+            },
+            {
+                "name": "France TV Access",
+                "address": "https://france-tv-access.connector.luminvent.com/protocol",
+                "color": "#9c27b0",
+                "participantId": "francetv"
+            },
+            {
+                "name": "SwissTXT",
+                "address": "https://swisstxt.connector.luminvent.com/protocol",
+                "color": "#ff5722",
+                "participantId": "swisstxt"
+            }
+        ]'
+        show-provider-filter="true"
+        show-stats="true">
+    </edc-federated-catalog-display>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ EDC Federated Catalog Demo loaded');
+            
+            // Optional: Add some demo interactivity
+            const catalogDisplay = document.querySelector('edc-federated-catalog-display');
+            
+            if (catalogDisplay) {
+                // Listen for custom events if needed
+                catalogDisplay.addEventListener('catalog-loaded', (event) => {
+                    console.log('📊 Federated catalog loaded:', event.detail);
+                });
+                
+                catalogDisplay.addEventListener('negotiation-started', (event) => {
+                    console.log('🤝 Contract negotiation started:', event.detail);
+                });
+                
+                catalogDisplay.addEventListener('negotiation-completed', (event) => {
+                    console.log('✅ Contract negotiation completed:', event.detail);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

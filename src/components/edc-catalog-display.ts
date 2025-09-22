@@ -72,8 +72,8 @@ export const EdcCatalogDisplay = {
         transferProcessEndpoint: `${this.connectorUri}/v3/transferprocesses`,
         authMethod: 'edc-api-key',
         edcApiKey: this.apiKey,
-        retryAttempts: 60,
-        timeout: 30000,
+        retryAttempts: 8,
+        timeout: 10000,
       };
 
       const store = StoreFactory.create(config);
