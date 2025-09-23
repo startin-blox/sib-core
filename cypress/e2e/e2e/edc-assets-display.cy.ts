@@ -1,4 +1,3 @@
-
 describe('EdcAssetsDisplay', () => {
   beforeEach(() => {
     // Set up default intercept for EDC assets endpoint
@@ -63,7 +62,7 @@ describe('EdcAssetsDisplay', () => {
   it('sends correct EDC v3 API request', () => {
     let requestCapture: any;
 
-    cy.intercept('POST', '**/management/v3/assets/request', (req) => {
+    cy.intercept('POST', '**/management/v3/assets/request', req => {
       requestCapture = req;
       req.reply({
         fixture: 'edc-assets.json',
@@ -77,8 +76,14 @@ describe('EdcAssetsDisplay', () => {
     cy.then(() => {
       expect(requestCapture).to.not.be.undefined;
       expect(requestCapture.method).to.equal('POST');
-      expect(requestCapture.headers).to.have.property('x-api-key', 'test-api-key');
-      expect(requestCapture.headers).to.have.property('content-type', 'application/json');
+      expect(requestCapture.headers).to.have.property(
+        'x-api-key',
+        'test-api-key',
+      );
+      expect(requestCapture.headers).to.have.property(
+        'content-type',
+        'application/json',
+      );
 
       // Verify QuerySpec structure
       const body = requestCapture.body;
@@ -91,8 +96,14 @@ describe('EdcAssetsDisplay', () => {
 
       // Verify @context
       expect(body).to.have.property('@context');
-      expect(body['@context']).to.have.property('@vocab', 'https://w3id.org/edc/v0.0.1/ns/');
-      expect(body['@context']).to.have.property('edc', 'https://w3id.org/edc/v0.0.1/ns/');
+      expect(body['@context']).to.have.property(
+        '@vocab',
+        'https://w3id.org/edc/v0.0.1/ns/',
+      );
+      expect(body['@context']).to.have.property(
+        'edc',
+        'https://w3id.org/edc/v0.0.1/ns/',
+      );
     });
   });
 
@@ -105,7 +116,9 @@ describe('EdcAssetsDisplay', () => {
     cy.reload();
 
     // The component shows empty state when API fails (rather than error state)
-    cy.get('.empty', { timeout: 10000 }).should('be.visible').and('contain', 'No assets found');
+    cy.get('.empty', { timeout: 10000 })
+      .should('be.visible')
+      .and('contain', 'No assets found');
     cy.get('.edc-assets-list').should('not.exist');
   });
 
@@ -117,7 +130,9 @@ describe('EdcAssetsDisplay', () => {
 
     cy.reload();
 
-    cy.get('.empty', { timeout: 10000 }).should('be.visible').and('contain', 'No assets found');
+    cy.get('.empty', { timeout: 10000 })
+      .should('be.visible')
+      .and('contain', 'No assets found');
     cy.get('.edc-assets-list').should('not.exist');
   });
 
@@ -129,8 +144,12 @@ describe('EdcAssetsDisplay', () => {
 
     cy.reload();
 
-    cy.get('.edc-asset-item[data-asset-id="test-asset-1"]', { timeout: 10000 }).should('exist');
+    cy.get('.edc-asset-item[data-asset-id="test-asset-1"]', {
+      timeout: 10000,
+    }).should('exist');
     cy.get('.edc-asset-item[data-asset-id="test-asset-2"]').should('exist');
-    cy.get('.edc-asset-item[data-asset-id="asset-without-title"]').should('exist');
+    cy.get('.edc-asset-item[data-asset-id="asset-without-title"]').should(
+      'exist',
+    );
   });
 });
