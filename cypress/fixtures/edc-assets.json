@@ -1,0 +1,26 @@
+[
+  {
+    "@id": "test-asset-1",
+    "@type": "edc:Asset",
+    "dcterms:title": "Test Dataset 1",
+    "dcterms:description": "A test dataset for e2e testing",
+    "properties": {
+      "https://w3id.org/edc/v0.0.1/ns/type": "data"
+    }
+  },
+  {
+    "@id": "test-asset-2",
+    "@type": "edc:Asset",
+    "dcterms:title": "Test Dataset 2",
+    "properties": {
+      "https://w3id.org/edc/v0.0.1/ns/type": "service"
+    }
+  },
+  {
+    "@id": "asset-without-title",
+    "@type": "edc:Asset",
+    "properties": {
+      "https://w3id.org/edc/v0.0.1/ns/type": "data"
+    }
+  }
+]
