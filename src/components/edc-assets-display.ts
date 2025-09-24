@@ -69,9 +69,10 @@ export const EdcAssetsDisplay = {
       // Create temporary store instance for EDC
       const store = StoreFactory.create(config);
       console.log('store', store);
-      const assets = await (store as any).getAssets();
-      console.log('assets', assets);
-      this.assets = assets || [];
+      const assetsRaw = await (store as any).getAssets();
+
+      // Ensure assets is always an array (API might return single object when only one asset)
+      this.assets = Array.isArray(assetsRaw) ? assetsRaw : (assetsRaw ? [assetsRaw] : []);
     } catch (error) {
       console.error('Failed to fetch EDC assets:', error);
       this.error = (error as Error).message;

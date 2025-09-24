@@ -175,7 +175,9 @@ export const EdcFederatedCatalogDisplay = {
 
           if (catalog) {
             this.catalogs.set(provider.address, { catalog, provider });
-            const datasets = catalog['dcat:dataset'] || [];
+            // Ensure datasets is always an array (API returns single object when only one dataset)
+            const datasetsRaw = catalog['dcat:dataset'] || [];
+            const datasets = Array.isArray(datasetsRaw) ? datasetsRaw : [datasetsRaw];
 
             // Update provider registry with discovered participant ID
             if (catalog.participantId && this.providerRegistry) {
