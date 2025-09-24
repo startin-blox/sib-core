@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi-store example</title>
+  <script type="module">
+    import { StoreService, StoreType } from '../dist/index.js';
+
+    // Initialize a default LDP store
+    StoreService.init({ type: StoreType.LDP });
+
+    // Add data to the default store
+    const defaultStore = StoreService.getStore('default');
+    if (defaultStore && defaultStore.setLocalData) {
+        defaultStore.setLocalData({
+            '@id': 'store://local.1',
+            'rdfs:label': 'Hello from default store!'
+        }, 'store://local.1');
+    }
+
+    // Initialize a FederatedCatalogue store
+    const federatedStoreConfig = {
+      type: StoreType.FederatedCatalogue,
+      endpoint: 'https://governance.tems-dataspace.eu/fc',
+      login: {
+        kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
+        kc_grant_type: "password",
+        kc_client_id: "federated-catalogue",
+        kc_client_secret: "S5plMH471bbtKzW4yHZcZzZMgPbH3u3w",
+        kc_username: "fc_service_account",
+        kc_password: "Test123_"
+      },
+      optionsServer: {
+        kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
+        kc_grant_type: "password",
+        kc_scope: "openid"
+      },
+      temsServiceBase:"https://api.tems-stg.startinblox.com/services/",
+      temsCategoryBase: "https://api.tems-stg.startinblox.com/providers/categories/",
+      temsImageBase:  "https://api.tems-stg.startinblox.com/objects/images/",
+      temsProviderBase: "https://api.tems-stg.startinblox.com/providers/",
+    };
+    StoreService.addStore('federated', federatedStoreConfig);
+
+    const federatedStore = StoreService.getStore('federated');
+    if (federatedStore) {
+        // The getData method in FederatedCatalogueStore is mocked and will create a local container
+        // with a deterministic ID. We can just call it to trigger the creation.
+        federatedStore.getData({ targetType: 'services' });
+        const display = document.getElementById('federated-display');
+        // The deterministic ID is based on the endpoint, so we can construct it here.
+        const endpointHash = federatedStoreConfig.endpoint.replace(/[^a-zA-Z0-9]/g, '');
+        const dataSrc = `store://local.fc-${endpointHash}-default/`;
+        display.setAttribute('data-src', dataSrc);
+    }
+
+  </script>
+</head>
+<body>
+
+  <h1>Default Store</h1>
+  <solid-display data-src="store://local.1">
+    <template>
+      <p data-value="rdfs:label"></p>
+    </template>
+  </solid-display>
+
+  <h1>Federated Store</h1>
+  <solid-display id="federated-display" store="federated">
+    <template>
+      <p>Name: <span data-value="name"></span></p>
+      <p>Description: <span data-value="description"></span></p>
+    </template>
+  </solid-display>
+
+</body>
+</html>

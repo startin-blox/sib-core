@@ -9,6 +9,8 @@ import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { uniqID } from '../libs/helpers.ts';
 import type { FilterEventOptions, SearchQuery } from '../libs/interfaces.ts';
+import { hasSetLocalData } from '../libs/store/shared/types.ts';
+import { StoreService } from '../libs/store/storeService.ts';
 import { trackRenderAsync } from '../logger.ts';
 
 export const SolidFormSearch = {
@@ -16,6 +18,10 @@ export const SolidFormSearch = {
   use: [WidgetMixin, AttributeBinderMixin, ContextMixin],
   debounceTimeout: undefined as number | undefined,
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     defaultWidget: {
       type: String,
       default: 'solid-form-label-text',
@@ -49,8 +55,13 @@ export const SolidFormSearch = {
   },
   initialState: {
     error: '',
+    store: null,
   },
   created() {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
     this.autoRangeValues = {};
     this.rangeId = uniqID();
@@ -146,7 +157,9 @@ export const SolidFormSearch = {
         '@context': this.context,
         'ldp:contains': ldpContains,
       };
-      await sibStore.setLocalData(data, id);
+      if (hasSetLocalData(this.store)) {
+        await this.store.setLocalData(data, id);
+      }
     }
   },
   change(resource: object, eventOptions: FilterEventOptions): void {

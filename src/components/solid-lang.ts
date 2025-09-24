@@ -3,13 +3,15 @@ import { Sib } from '../libs/Sib.ts';
 import { html, render } from 'lit';
 
 import { StoreService } from '../libs/store/storeService.ts';
-const store = StoreService.getInstance();
-if (!store) throw new Error('Store is not available');
 
 export const SolidLang = {
   name: 'solid-lang',
   use: [],
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     lang: {
       type: String,
       default: null,
@@ -19,13 +21,19 @@ export const SolidLang = {
       default: null,
     },
   },
-
+  initialState: {
+    store: null,
+  },
   created(): void {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     this.render();
   },
 
   languageLoader() {
-    store.selectLanguage(this.lang);
+    this.store.selectLanguage(this.lang);
     location.reload();
   },
 

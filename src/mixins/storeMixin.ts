@@ -9,14 +9,14 @@ import { AttributeBinderMixin } from './attributeBinderMixin.ts';
 import { ContextMixin } from './contextMixin.ts';
 import { ServerPaginationMixin } from './serverPaginationMixin.ts';
 
-const store = StoreService.getInstance();
-
-if (!store) throw new Error('Store is not available');
-
 const StoreMixin = {
   name: 'store-mixin',
   use: [AttributeBinderMixin, ContextMixin, ServerPaginationMixin],
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     noRender: {
       type: String,
       default: null,
@@ -52,7 +52,7 @@ const StoreMixin = {
       default: null,
       callback: function (value: boolean) {
         if (value)
-          this.predicateName = store.getExpandedPredicate(
+          this.predicateName = this.store.getExpandedPredicate(
             this.arrayField,
             this.context,
           );
@@ -67,8 +67,13 @@ const StoreMixin = {
     resources: [],
     resourceId: null,
     subscription: null,
+    store: null,
   },
   created() {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     if (this.element.closest('[no-render]')) this.noRender = ''; // if embedded in no-render, apply no-render to himself
     this.loadResource();
   },
@@ -90,7 +95,7 @@ const StoreMixin = {
 
     if (id) {
       // 4) Await the async operation. Only _then_ do we assign into _resource.
-      const fetched = await store.get(id, serverPagination, serverSearch);
+      const fetched = await this.store.get(id, serverPagination, serverSearch);
       this._resource = fetched;
       return this._resource;
     }
@@ -107,11 +112,11 @@ const StoreMixin = {
 
     this.resourceId = value;
     if (this.nestedField) {
-      // First step: store.getData
-      const resource = await store.getData(value, this.context);
-      // Which internally triggers store.fetchData -> Fine
-      // Which triggers store.fetchAuthn -> Fine
-      // Once done it calls store.cacheGraph
+      // First step: this.store.getData
+      const resource = await this.store.getData(value, this.context);
+      // Which internally triggers this.store.fetchData -> Fine
+      // Which triggers this.store.fetchAuthn -> Fine
+      // Once done it calls this.store.cacheGraph
       const nestedResource = resource ? await resource[this.nestedField] : null;
       this.resourceId = nestedResource ? await nestedResource['@id'] : null;
 
@@ -139,7 +144,7 @@ const StoreMixin = {
       dynamicServerSearch,
     );
     const forceRefetch = !!dynamicServerSearch;
-    await store.getData(
+    await this.store.getData(
       this.resourceId,
       this.context,
       undefined,
@@ -148,12 +153,12 @@ const StoreMixin = {
       serverPagination,
       serverSearch,
     );
-    this._resource = await store.get(this.resourceId);
+    this._resource = await this.store.get(this.resourceId);
     this.updateDOM();
   },
 
   async syncResourceWithCache(): Promise<void> {
-    this._resource = await store.get(this.resourceId); // TODO: temp fix!!
+    this._resource = await this.store.get(this.resourceId); // TODO: temp fix!!
   },
   toggleLoaderHidden(toggle: boolean): void {
     if (this.loader) this.loader.toggleAttribute('hidden', toggle);
@@ -167,7 +172,7 @@ const StoreMixin = {
       !!this.element.getAttribute('data-src-index');
 
     if (!indexServerSearch) {
-      this._resource = await store.get(this.resourceId);
+      this._resource = await this.store.get(this.resourceId);
       this.toggleLoaderHidden(false);
     }
 

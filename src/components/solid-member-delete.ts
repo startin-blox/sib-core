@@ -11,11 +11,14 @@ import { base_context } from '../libs/store/impl/ldp/LdpStore.ts';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
-const store = StoreService.getInstance();
 export const SolidMemberDelete = {
   name: 'solid-member-delete',
   use: [NextMixin, ValidationMixin, ContextMixin],
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     // Data Source being a group URI in that case
     dataSrc: {
       type: String,
@@ -55,19 +58,24 @@ export const SolidMemberDelete = {
   },
   initialState: {
     renderPlanned: false,
+    store: null,
   },
   created(): void {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     this.planRender();
   },
   async populate() {
     if (!this.resourceId) return;
 
     // Retrieve the group resource
-    this.resource = await store.getData(this.resourceId);
+    this.resource = await this.store.getData(this.resourceId);
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    const memberPredicate = store.getExpandedPredicate(
+    const memberPredicate = this.store.getExpandedPredicate(
       'user_set',
       normalizeContext(base_context),
     );
@@ -112,7 +120,7 @@ export const SolidMemberDelete = {
       '@context': this.context,
       user_set: userSet,
     };
-    return store.patch(currentRes, this.dataSrc).then(response => {
+    return this.store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
         console.warn(
           `Error while removing user ${this.dataTargetSrc} from group ${this.dataSrc}`,

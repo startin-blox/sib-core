@@ -38,8 +38,16 @@ export class FederatedCatalogueStore implements IStore<any> {
     this.cache = new InMemoryCacheManager();
   }
 
+  private resolveTargetType(args: any): string {
+    if (typeof args === 'string') return args;
+    if (typeof args === 'object' && args !== null) {
+      return args.targetType ?? args.id ?? '';
+    }
+    return '';
+  }
+
   async getData(args: any) {
-    const targetType = 'targetType' in args ? args.targetType : args.id;
+    const targetType = this.resolveTargetType(args);
 
     // Mock implementation of getData
     // First case, we return a list of self-descriptions, each of them having a hash
