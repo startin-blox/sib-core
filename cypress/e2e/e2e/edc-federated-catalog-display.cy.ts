@@ -21,6 +21,28 @@ const mockCatalogProviderA = {
         'https://w3id.org/edc/v0.0.1/ns/type': 'data',
         'https://w3id.org/edc/v0.0.1/ns/version': '1.0',
       },
+      'dcat:distribution': [
+        {
+          '@type': 'dcat:Distribution',
+          'odrl:hasPolicy': {
+            '@id': 'offer-dataset-a1-policy',
+            '@type': 'odrl:Offer',
+            'odrl:permission': {
+              'odrl:action': {
+                '@id': 'use',
+              },
+            },
+            'odrl:prohibition': [],
+            'odrl:obligation': {
+              'odrl:action': {
+                '@id': 'attribute',
+              },
+            },
+            assigner: 'provider-a-did',
+            target: 'dataset-a1',
+          },
+        },
+      ],
     },
     {
       '@id': 'dataset-a2',
@@ -32,6 +54,28 @@ const mockCatalogProviderA = {
         'https://w3id.org/edc/v0.0.1/ns/type': 'api',
         'https://w3id.org/edc/v0.0.1/ns/version': '2.1',
       },
+      'dcat:distribution': [
+        {
+          '@type': 'dcat:Distribution',
+          'odrl:hasPolicy': {
+            '@id': 'offer-dataset-a2-policy',
+            '@type': 'odrl:Offer',
+            'odrl:permission': {
+              'odrl:action': {
+                '@id': 'use',
+              },
+            },
+            'odrl:prohibition': [],
+            'odrl:obligation': {
+              'odrl:action': {
+                '@id': 'attribute',
+              },
+            },
+            assigner: 'provider-a-did',
+            target: 'dataset-a2',
+          },
+        },
+      ],
     },
   ],
 };
@@ -58,6 +102,28 @@ const mockCatalogProviderB = {
         'https://w3id.org/edc/v0.0.1/ns/type': 'data',
         'https://w3id.org/edc/v0.0.1/ns/version': '1.5',
       },
+      'dcat:distribution': [
+        {
+          '@type': 'dcat:Distribution',
+          'odrl:hasPolicy': {
+            '@id': 'offer-dataset-b1-policy',
+            '@type': 'odrl:Offer',
+            'odrl:permission': {
+              'odrl:action': {
+                '@id': 'use',
+              },
+            },
+            'odrl:prohibition': [],
+            'odrl:obligation': {
+              'odrl:action': {
+                '@id': 'attribute',
+              },
+            },
+            assigner: 'provider-b-did',
+            target: 'dataset-b1',
+          },
+        },
+      ],
     },
   ],
 };

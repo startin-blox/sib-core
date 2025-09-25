@@ -177,7 +177,9 @@ export const EdcFederatedCatalogDisplay = {
             this.catalogs.set(provider.address, { catalog, provider });
             // Ensure datasets is always an array (API returns single object when only one dataset)
             const datasetsRaw = catalog['dcat:dataset'] || [];
-            const datasets = Array.isArray(datasetsRaw) ? datasetsRaw : [datasetsRaw];
+            const datasets = Array.isArray(datasetsRaw)
+              ? datasetsRaw
+              : [datasetsRaw];
 
             // Update provider registry with discovered participant ID
             if (catalog.participantId && this.providerRegistry) {
@@ -286,9 +288,10 @@ export const EdcFederatedCatalogDisplay = {
         // If we've seen this exact dataset from this exact provider before,
         // prefer the one with more complete data
         const existing = seen.get(key);
-        const currentPolicies = item.dataset['odrl:hasPolicy']?.length || 0;
+        const currentPolicies =
+          this.getPoliciesFromDataset(item.dataset).length || 0;
         const existingPolicies =
-          existing.dataset['odrl:hasPolicy']?.length || 0;
+          this.getPoliciesFromDataset(existing.dataset).length || 0;
 
         if (currentPolicies > existingPolicies) {
           // Replace with better version and update in deduplicated array
@@ -363,31 +366,72 @@ export const EdcFederatedCatalogDisplay = {
     return filtered;
   },
 
+  // Helper method to extract policies from dataset
+  getPoliciesFromDataset(dataset: any): any[] {
+    const policies: any[] = [];
+
+    // Check for policies directly on the dataset (standard EDC approach)
+    if (dataset['odrl:hasPolicy']) {
+      const datasetPolicies = Array.isArray(dataset['odrl:hasPolicy'])
+        ? dataset['odrl:hasPolicy']
+        : [dataset['odrl:hasPolicy']];
+      policies.push(...datasetPolicies);
+    }
+
+    // Fallback: check distributions for policies (some EDC implementations might use this)
+    if (policies.length === 0 && dataset['dcat:distribution']) {
+      const distributionsRaw = dataset['dcat:distribution'] || [];
+      const distributions = Array.isArray(distributionsRaw)
+        ? distributionsRaw
+        : distributionsRaw
+          ? [distributionsRaw]
+          : [];
+
+      for (const distribution of distributions) {
+        if (distribution['odrl:hasPolicy']) {
+          const distributionPolicies = Array.isArray(
+            distribution['odrl:hasPolicy'],
+          )
+            ? distribution['odrl:hasPolicy']
+            : [distribution['odrl:hasPolicy']];
+          policies.push(...distributionPolicies);
+        }
+      }
+    }
+
+    return policies;
+  },
+
   async negotiateAccess(federatedDataset: FederatedDataset) {
     const { dataset, provider } = federatedDataset;
 
-    if (!dataset['odrl:hasPolicy'] || dataset['odrl:hasPolicy'].length === 0) {
+    // Get policies using the helper method (supports both direct and distribution-based policies)
+    const policies = this.getPoliciesFromDataset(dataset);
+    if (policies.length === 0) {
       console.error('No policies available for dataset:', dataset['@id']);
       return;
     }
 
     try {
-      // Use the second policy instead of the first one
-      const offer = dataset['odrl:hasPolicy'];
-      console.log('Selected offer for negotiation:', dataset, offer);
-      if (!offer) {
-        throw new Error('No valid offer found for negotiation');
+      // Use the first available policy for negotiation
+      const policyDefinition = policies[0];
+      console.log(
+        'Selected policy for negotiation:',
+        dataset,
+        policyDefinition,
+      );
+
+      if (!policyDefinition) {
+        throw new Error('No valid policy found for negotiation');
       }
 
-      const offerId = offer['@id'];
       const assetId = dataset['@id'];
+      const offerId = policyDefinition['@id'];
 
-      const policyIndex = dataset['odrl:hasPolicy'][0] ? 0 : 0;
       console.log(
         `Starting negotiation for asset ${assetId} with provider ${provider.name} (${provider.address})`,
       );
-      console.log('Available policies for dataset:', dataset['odrl:hasPolicy']);
-      console.log(`Selected offer policy (index ${policyIndex}):`, offer);
+      console.log('Selected policy definition:', policyDefinition);
 
       // Create negotiation key that includes provider
       const negotiationKey = `${assetId}@${provider.address}`;
@@ -406,10 +450,22 @@ export const EdcFederatedCatalogDisplay = {
         return;
       }
 
-      const modifiedOffer = {
-        ...offer,
+      // Create the complete contract offer with the full policy structure
+      const contractOffer = {
+        '@context': 'http://www.w3.org/ns/odrl.jsonld',
+        '@type': 'odrl:Offer',
+        '@id': policyDefinition['@id'],
+        'odrl:permission': policyDefinition['odrl:permission'] || {
+          'odrl:action': { '@id': 'use' },
+        },
+        'odrl:prohibition': policyDefinition['odrl:prohibition'] || [],
+        'odrl:obligation': policyDefinition['odrl:obligation'] || [],
+        assigner:
+          policyDefinition['assigner'] || federatedDataset.participantId,
         target: assetId,
       };
+
+      console.log('Contract offer for negotiation:', contractOffer);
 
       console.log('Provider Registry:', this.providerRegistry);
       console.log('Provider:', provider);
@@ -429,7 +485,7 @@ export const EdcFederatedCatalogDisplay = {
       const negotiationId = await (store as any).initiateNegotiation(
         provider.address,
         assetId,
-        modifiedOffer,
+        contractOffer,
         participantId,
       );
 
@@ -735,8 +791,8 @@ export const EdcFederatedCatalogDisplay = {
               : ''
           }
           ${
-            dataset['odrl:hasPolicy']?.length > 0
-              ? html`<span class="dataset-policies">Policies: ${dataset['odrl:hasPolicy'].length}</span>`
+            this.getPoliciesFromDataset(dataset).length > 0
+              ? html`<span class="dataset-policies">Policies: ${this.getPoliciesFromDataset(dataset).length}</span>`
               : ''
           }
         </div>
@@ -752,7 +808,8 @@ export const EdcFederatedCatalogDisplay = {
     const { dataset, provider } = item;
     const negotiation = this.negotiations.get(negotiationKey);
 
-    if (!dataset['odrl:hasPolicy'] || dataset['odrl:hasPolicy'].length === 0) {
+    const policies = this.getPoliciesFromDataset(dataset);
+    if (policies.length === 0) {
       return html`<span class="no-policy">No policies available</span>`;
     }
 
@@ -794,7 +851,7 @@ export const EdcFederatedCatalogDisplay = {
     }
 
     return html`<button class="negotiate-btn" @click=${() => this.negotiateAccess(item)}>
-      Negotiate via ${provider.name} (${dataset['odrl:hasPolicy'].length} ${dataset['odrl:hasPolicy'].length === 1 ? 'policy' : 'policies'})
+      Negotiate via ${provider.name} (${policies.length} ${policies.length === 1 ? 'policy' : 'policies'})
     </button>`;
   },
 };
