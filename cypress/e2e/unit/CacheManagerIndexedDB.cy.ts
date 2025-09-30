@@ -1,4 +1,4 @@
-import { IndexedDBCacheManager } from '../../../src/libs/store/cache/indexed-db.ts';
+import { IndexedDBCacheManager } from '../../../src/libs/store/cache/IndexedDb.ts';
 
 describe('IndexedDBCacheManager', () => {
   let cache: IndexedDBCacheManager = new IndexedDBCacheManager();
