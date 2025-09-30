@@ -1,4 +1,4 @@
-import { InMemoryCacheManager } from '../../../src/libs/store/cache/in-memory.ts';
+import { InMemoryCacheManager } from '../../../src/libs/store/cache/InMemory.ts';
 
 describe('InMemoryCacheManager', () => {
   const cache: InMemoryCacheManager = new InMemoryCacheManager();

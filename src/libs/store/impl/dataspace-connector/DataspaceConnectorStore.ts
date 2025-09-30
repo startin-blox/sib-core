@@ -1,6 +1,6 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { CacheManagerInterface } from '../../cache/cache-manager.ts';
-import { InMemoryCacheManager } from '../../cache/in-memory.ts';
+import type { CacheManagerInterface } from '../../cache/CacheManager.ts';
+import { InMemoryCacheManager } from '../../cache/InMemory.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import type { IStore, Resource, StoreConfig } from '../../shared/types.ts';

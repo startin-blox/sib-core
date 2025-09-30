@@ -10,6 +10,6 @@ declare namespace Cypress {
 
 interface Window {
   sibStore: import('../src/libs/store/storeManager').Store;
-  cache: import('../src/libs/store/cache/in-memory').CacheManager;
+  cache: import('../src/libs/store/cache/InMemory').CacheManager;
   Sib: import('../../src/libs/Sib').Sib;
 }

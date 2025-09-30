@@ -1,6 +1,6 @@
 import { isUrlOrRelativePath } from '../../helpers.ts';
 import type { Resource } from '../shared/types.ts';
-import type { CacheManagerInterface } from './cache-manager.ts';
+import type { CacheManagerInterface } from './CacheManager.ts';
 
 /**
  * A centralized cache manager for JSON-LD resources.

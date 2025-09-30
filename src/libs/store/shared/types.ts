@@ -1,5 +1,5 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
-import type { CacheManagerInterface } from '../cache/cache-manager.ts';
+import type { CacheManagerInterface } from '../cache/CacheManager.ts';
 import type {
   KeycloakOptionsLogins,
   KeycloakOptionsServer,
