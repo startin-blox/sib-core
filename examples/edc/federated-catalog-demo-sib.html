@@ -119,6 +119,65 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Enhanced spinner animations */
+        .spinner {
+            display: inline-block;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Countdown styling */
+        .countdown {
+            font-size: 0.75rem;
+            color: #ff9800;
+            font-weight: bold;
+            animation: fadeInOut 1s ease-in-out infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Progress bar for long operations */
+        .progress-container {
+            margin-top: 0.5rem;
+            background: #f0f0f0;
+            border-radius: 4px;
+            height: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            transition: width 0.3s ease;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Enhanced negotiation status styling */
+        .negotiation-status.pending {
+            color: #1976d2;
+            font-weight: 500;
+        }
+
+        /* Disabled button styling improvements */
+        .negotiate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .negotiate-btn.negotiating {
+            background: #1976d2;
+            color: white;
+            opacity: 0.9;
+        }
         
         /* Provider Filter */
         .provider-filter {
@@ -269,6 +328,12 @@
         .negotiate-btn.retry:hover {
             background: #ef6c00;
         }
+        .negotiate-btn.existing-agreement {
+            background: #4caf50;
+        }
+        .negotiate-btn.existing-agreement:hover {
+            background: #45a049;
+        }
         .negotiation-info {
             display: flex;
             flex-direction: column;
@@ -313,6 +378,23 @@
             font-style: italic;
             font-size: 0.875rem;
         }
+        .api-access-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .edr-ready {
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+        }
+        .transfer-error {
+            color: #f44336;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
         
         /* Loading and empty states */
         .loading {
@@ -352,6 +434,7 @@
         .provider-badge[style*="background-color: #e91e63"] { /* Dreamwall */ }
         .provider-badge[style*="background-color: #9c27b0"] { /* France TV */ }
         .provider-badge[style*="background-color: #ff5722"] { /* SwissTXT */ }
+
     </style>
 </head>
 <body>
@@ -404,23 +487,24 @@ curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catal
         show-stats="true">
     </edc-federated-catalog-display>
 
+
     <script type="module">
         document.addEventListener('DOMContentLoaded', () => {
             console.log('✅ EDC Federated Catalog Demo loaded');
-            
+
             // Optional: Add some demo interactivity
             const catalogDisplay = document.querySelector('edc-federated-catalog-display');
-            
+
             if (catalogDisplay) {
                 // Listen for custom events if needed
                 catalogDisplay.addEventListener('catalog-loaded', (event) => {
                     console.log('📊 Federated catalog loaded:', event.detail);
                 });
-                
+
                 catalogDisplay.addEventListener('negotiation-started', (event) => {
                     console.log('🤝 Contract negotiation started:', event.detail);
                 });
-                
+
                 catalogDisplay.addEventListener('negotiation-completed', (event) => {
                     console.log('✅ Contract negotiation completed:', event.detail);
                 });

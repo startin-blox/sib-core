@@ -11,6 +11,8 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   assetsEndpoint?: string; // /v3/assets
   policiesEndpoint?: string; // /v3/policydefinitions
   contractDefinitionsEndpoint?: string; // /v3/contractdefinitions
+  edrsEndpoint?: string; // /v3/edrs
+  publicEndpoint?: string; // /public
 
   // API version
   apiVersion?: 'v2' | 'v3'; // Default to v3
@@ -276,3 +278,59 @@ export interface TransferProcessEvent {
 }
 
 export type DataspaceEvent = ContractNegotiationEvent | TransferProcessEvent;
+
+// Contract Agreement Types
+export interface ContractAgreement {
+  '@type': 'ContractAgreement';
+  '@id': string;
+  '@context': any;
+  assetId: string;
+  policy: OdrlPolicy;
+  contractSigningDate: number;
+  consumerId: string;
+  providerId: string;
+}
+
+// EDR (Endpoint Data Reference) Types
+export interface EDRRequest {
+  '@context'?: any;
+  '@type'?: 'https://w3id.org/edc/v0.0.1/ns/TransferRequest';
+  assetId: string;
+  protocol: 'dataspace-protocol-http';
+  counterPartyAddress: string;
+  contractId: string;
+  transferType: 'HttpData-PULL';
+  dataDestination: {
+    type: 'HttpProxy';
+  };
+}
+
+export interface EDRResponse {
+  '@type': 'IdResponse';
+  '@id': string;
+  '@context': any;
+  createdAt: number;
+}
+
+export interface EDRDataAddress {
+  '@type': 'DataAddress';
+  '@context': any;
+  type: 'https://w3id.org/idsa/v4.1/HTTP';
+  endpoint: string;
+  authType: 'bearer';
+  endpointType: 'https://w3id.org/idsa/v4.1/HTTP';
+  authorization: string; // JWT token
+}
+
+// Asset-Agreement mapping for storage
+export interface AssetAgreementMapping {
+  assetId: string;
+  catalogId?: string;
+  agreementId: string;
+  agreement: ContractAgreement;
+  negotiationId: string;
+  transferId?: string;
+  edrToken?: string;
+  createdAt: number;
+  lastUpdated: number;
+}

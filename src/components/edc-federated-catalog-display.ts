@@ -153,6 +153,7 @@ export const EdcFederatedCatalogDisplay = {
       catalogEndpoint: `${this.consumerConnector}/v3/catalog/request`,
       contractNegotiationEndpoint: `${this.consumerConnector}/v3/contractnegotiations`,
       transferProcessEndpoint: `${this.consumerConnector}/v3/transferprocesses`,
+      edrsEndpoint: `${this.consumerConnector}/v3/edrs`,
       authMethod: 'edc-api-key',
       edcApiKey: this.apiKey,
       retryAttempts: 8,
@@ -255,6 +256,11 @@ export const EdcFederatedCatalogDisplay = {
 
       // Store the store instance for later use in negotiations
       this.stores.set('default', store);
+
+      // Load existing agreements from EDC connector
+      console.log('🔄 Loading existing agreements...');
+      await (store as any).loadExistingAgreements();
+      this.render(); // Re-render to show existing agreement buttons
 
       console.log(
         `Federated catalog loaded: ${this.federatedDatasets.length} unique datasets from ${this._providersArray.length} providers`,
@@ -404,6 +410,42 @@ export const EdcFederatedCatalogDisplay = {
 
   async negotiateAccess(federatedDataset: FederatedDataset) {
     const { dataset, provider } = federatedDataset;
+    const assetId = dataset['@id'];
+    const negotiationKey = `${assetId}@${provider.address}`;
+
+    // Get store instance
+    const store = this.stores.get('default');
+    if (!store) {
+      console.error('Store not available for negotiation');
+      return;
+    }
+
+    // Check if we already have a valid agreement for this asset
+    console.log(`🔍 Checking for existing agreement for asset: ${assetId}`);
+    const existingAgreement = (store as any).getAssetAgreement(assetId);
+
+    if (existingAgreement) {
+      console.log('✅ Found existing agreement for asset:', existingAgreement);
+
+      // Set the negotiation state to granted with existing agreement
+      this.negotiations.set(negotiationKey, {
+        status: 'granted',
+        contractId: existingAgreement.agreementId,
+        agreement: existingAgreement.agreement,
+        provider,
+        assetId,
+        offerId: existingAgreement.agreement?.policy?.['@id'] || 'existing',
+        // Include transfer info if available
+        transferId: existingAgreement.transferId,
+        edrToken: existingAgreement.edrToken,
+      });
+      this.render();
+
+      console.log(`🎯 Reusing existing agreement for ${assetId} - no re-negotiation needed`);
+      return;
+    }
+
+    console.log(`📝 No existing agreement found for ${assetId}, starting new negotiation`);
 
     // Get policies using the helper method (supports both direct and distribution-based policies)
     const policies = this.getPoliciesFromDataset(dataset);
@@ -425,7 +467,6 @@ export const EdcFederatedCatalogDisplay = {
         throw new Error('No valid policy found for negotiation');
       }
 
-      const assetId = dataset['@id'];
       const offerId = policyDefinition['@id'];
 
       console.log(
@@ -434,8 +475,6 @@ export const EdcFederatedCatalogDisplay = {
       console.log('Selected policy definition:', policyDefinition);
 
       // Create negotiation key that includes provider
-      const negotiationKey = `${assetId}@${provider.address}`;
-
       this.negotiations.set(negotiationKey, {
         status: 'negotiating',
         offerId,
@@ -444,31 +483,11 @@ export const EdcFederatedCatalogDisplay = {
       });
       this.render();
 
-      const store = this.stores.get('default');
-      if (!store) {
-        console.error('Store not available for negotiation');
-        return;
-      }
+      console.log(
+        'Using policy from catalog for negotiation:',
+        policyDefinition,
+      );
 
-      // Create the complete contract offer with the full policy structure
-      const contractOffer = {
-        '@context': 'http://www.w3.org/ns/odrl.jsonld',
-        '@type': 'odrl:Offer',
-        '@id': policyDefinition['@id'],
-        'odrl:permission': policyDefinition['odrl:permission'] || {
-          'odrl:action': { '@id': 'use' },
-        },
-        'odrl:prohibition': policyDefinition['odrl:prohibition'] || [],
-        'odrl:obligation': policyDefinition['odrl:obligation'] || [],
-        assigner:
-          policyDefinition['assigner'] || federatedDataset.participantId,
-        target: assetId,
-      };
-
-      console.log('Contract offer for negotiation:', contractOffer);
-
-      console.log('Provider Registry:', this.providerRegistry);
-      console.log('Provider:', provider);
       // Get participant ID from registry
       const registryProvider = this.providerRegistry?.getProviderByAddress(
         provider.address,
@@ -482,10 +501,19 @@ export const EdcFederatedCatalogDisplay = {
         );
       }
 
-      const negotiationId = await (store as any).initiateNegotiation(
+      // Ensure the policy has the required target field
+      const processedPolicy = {
+        ...policyDefinition,
+        target: policyDefinition.target || assetId, // Set target to assetId if not present
+      };
+
+      console.log('Processed policy for negotiation:', processedPolicy);
+
+      // Use the processed policy with correct target field
+      const negotiationId = await (store as any).negotiateContract(
         provider.address,
         assetId,
-        contractOffer,
+        processedPolicy,
         participantId,
       );
 
@@ -545,11 +573,30 @@ export const EdcFederatedCatalogDisplay = {
         this.render();
 
         if (status.state === 'FINALIZED' || status.state === 'AGREED') {
-          this.negotiations.set(negotiationKey, {
-            ...negotiation,
-            status: 'granted',
-            contractId: status.contractAgreementId || negotiationId,
-          });
+          // Automatically retrieve contract agreement when finalized
+          try {
+            const agreement = await (store as any).getContractAgreement(
+              negotiationId,
+            );
+            const contractId = agreement
+              ? agreement['@id']
+              : status.contractAgreementId || negotiationId;
+
+            this.negotiations.set(negotiationKey, {
+              ...negotiation,
+              status: 'granted',
+              contractId,
+              agreement,
+            });
+            console.log(`✅ Contract agreement retrieved: ${contractId}`);
+          } catch (error) {
+            console.error('Failed to retrieve contract agreement:', error);
+            this.negotiations.set(negotiationKey, {
+              ...negotiation,
+              status: 'granted',
+              contractId: status.contractAgreementId || negotiationId,
+            });
+          }
           this.render();
           return;
         }
@@ -583,6 +630,234 @@ export const EdcFederatedCatalogDisplay = {
         'Negotiation timeout after 5 minutes - may still be processing on provider side',
     });
     this.render();
+  },
+
+  async initiateEDRTransfer(
+    federatedDataset: FederatedDataset,
+    negotiation: any,
+  ) {
+    const { dataset, provider } = federatedDataset;
+    const assetId = dataset['@id'];
+    const negotiationKey = `${assetId}@${provider.address}`;
+
+    try {
+      console.log(`🚀 Initiating EDR transfer for asset ${assetId}`);
+
+      // Update UI to show loading
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'transferring',
+      });
+      this.render();
+
+      const store = this.stores.get('default');
+      if (!store) {
+        throw new Error('Store not available for EDR transfer');
+      }
+
+      const transferId = await (store as any).initiateEDRTransfer(
+        assetId,
+        provider.address,
+        negotiation.contractId,
+      );
+
+      console.log(`✅ EDR transfer initiated: ${transferId}`);
+
+      // Get EDR token
+      const edrDataAddress = await (store as any).getEDRToken(transferId);
+      if (!edrDataAddress) {
+        throw new Error('Failed to retrieve EDR token');
+      }
+
+      console.log('🔑 EDR token retrieved successfully');
+
+      // Transform localhost endpoint to public provider address
+      let transformedEndpoint = edrDataAddress.endpoint;
+      if (transformedEndpoint.includes('localhost') || transformedEndpoint.includes('127.0.0.1')) {
+        // Extract the provider's public address from the protocol address
+        // provider.address is like "https://provider.connector-dev.startinblox.com/protocol"
+        const providerBase = provider.address.replace('/protocol', '');
+        const localUrl = new URL(transformedEndpoint);
+        transformedEndpoint = `${providerBase}${localUrl.pathname}${localUrl.search}`;
+
+        console.log(`🔄 Transformed localhost endpoint:`);
+        console.log(`   Original: ${edrDataAddress.endpoint}`);
+        console.log(`   Transformed: ${transformedEndpoint}`);
+      }
+
+      // Update negotiation with transfer and token info
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+        transferId,
+        edrToken: edrDataAddress.authorization,
+        edrEndpoint: transformedEndpoint,
+      });
+      this.render();
+    } catch (error) {
+      console.error('EDR transfer failed:', error);
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted', // Keep as granted but show error
+        transferError: (error as Error).message,
+      });
+      this.render();
+    }
+  },
+
+  async accessData(federatedDataset: FederatedDataset, negotiation: any) {
+    const { dataset, provider } = federatedDataset;
+    const assetId = dataset['@id'];
+    const negotiationKey = `${assetId}@${provider.address}`;
+
+    try {
+      console.log(`📁 Accessing data for asset ${assetId}`);
+
+      // Update UI to show data access in progress
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'accessing-data',
+      });
+      this.render();
+
+      const store = this.stores.get('default');
+      if (!store || !negotiation.edrToken || !negotiation.edrEndpoint) {
+        throw new Error('Missing store or EDR token information');
+      }
+
+      // Transform localhost endpoint to public provider address if needed
+      let transformedEndpoint = negotiation.edrEndpoint;
+      if (transformedEndpoint.includes('localhost') || transformedEndpoint.includes('127.0.0.1')) {
+        const providerBase = provider.address.replace('/protocol', '');
+        const localUrl = new URL(transformedEndpoint);
+        transformedEndpoint = `${providerBase}${localUrl.pathname}${localUrl.search}`;
+
+        console.log(`🔄 Transforming localhost endpoint for data access:`);
+        console.log(`   Original: ${negotiation.edrEndpoint}`);
+        console.log(`   Transformed: ${transformedEndpoint}`);
+      }
+
+      const edrDataAddress = {
+        endpoint: transformedEndpoint,
+        authorization: negotiation.edrToken,
+        authType: 'bearer',
+        type: 'https://w3id.org/idsa/v4.1/HTTP',
+        endpointType: 'https://w3id.org/idsa/v4.1/HTTP',
+      };
+
+      // Implement long-polling strategy with up to 1 minute timeout
+      const data = await this.fetchDataWithLongPolling(store, edrDataAddress, assetId, provider);
+
+      console.log('✅ Data access successful!', data);
+
+      // For demo purposes, show a simple preview
+      const preview = JSON.stringify(data, null, 2).substring(0, 500);
+      alert(
+        `Data retrieved successfully!\n\nPreview (first 500 chars):\n${preview}${JSON.stringify(data).length > 500 ? '...' : ''}`,
+      );
+
+      // Reset status back to granted after successful data access
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+      });
+      this.render();
+
+    } catch (error) {
+      console.error('Data access failed:', error);
+
+      // Reset status back to granted with error
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+        dataAccessError: (error as Error).message,
+      });
+      this.render();
+
+      alert(`Data access failed: ${(error as Error).message}`);
+    }
+  },
+
+  async fetchDataWithLongPolling(
+    store: any,
+    edrDataAddress: any,
+    assetId: string,
+    provider: any,
+    maxAttempts = 12, // 12 attempts over 1 minute
+    pollInterval = 5000, // 5 seconds between attempts
+  ) {
+    const negotiationKey = `${assetId}@${provider.address}`;
+    console.log(`🔄 Starting long-polling data access for asset ${assetId}`);
+    console.log(`⏱️ Will retry for up to ${maxAttempts * pollInterval / 1000} seconds`);
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      // Update UI with current attempt progress
+      const currentNegotiation = this.negotiations.get(negotiationKey);
+      if (currentNegotiation) {
+        this.negotiations.set(negotiationKey, {
+          ...currentNegotiation,
+          status: 'accessing-data',
+          dataAccessAttempt: attempt,
+          dataAccessMaxAttempts: maxAttempts,
+        });
+        this.render();
+      }
+
+      try {
+        console.log(`📡 Data access attempt ${attempt}/${maxAttempts}`);
+
+        const data = await store.fetchWithEDRToken(edrDataAddress);
+
+        if (data) {
+          console.log(`✅ Data retrieved successfully on attempt ${attempt}`);
+          return data;
+        }
+
+        console.log(`⚠️ No data returned on attempt ${attempt}, retrying...`);
+
+      } catch (error) {
+        const errorMessage = (error as Error).message;
+        console.warn(`⚠️ Data access attempt ${attempt}/${maxAttempts} failed:`, errorMessage);
+
+        // Check for specific error types that might resolve with waiting
+        const isRetryableError =
+          errorMessage.includes('404') ||
+          errorMessage.includes('503') ||
+          errorMessage.includes('502') ||
+          errorMessage.includes('timeout') ||
+          errorMessage.includes('not ready') ||
+          errorMessage.includes('processing');
+
+        // If this is the last attempt or not a retryable error, throw
+        if (attempt === maxAttempts || !isRetryableError) {
+          console.error(`❌ Final data access attempt failed: ${errorMessage}`);
+          throw error;
+        }
+      }
+
+      // Wait before next attempt (except on the last iteration)
+      if (attempt < maxAttempts) {
+        console.log(`⏳ Waiting ${pollInterval / 1000} seconds before retry...`);
+
+        // Show countdown in UI during wait
+        for (let countdown = pollInterval / 1000; countdown > 0; countdown--) {
+          const currentNegotiation = this.negotiations.get(negotiationKey);
+          if (currentNegotiation) {
+            this.negotiations.set(negotiationKey, {
+              ...currentNegotiation,
+              status: 'accessing-data',
+              dataAccessAttempt: attempt,
+              dataAccessMaxAttempts: maxAttempts,
+              countdown: countdown,
+            });
+            this.render();
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+    }
+
+    throw new Error(`Data access failed after ${maxAttempts} attempts over ${maxAttempts * pollInterval / 1000} seconds`);
   },
 
   toggleProvider(providerAddress: string) {
@@ -807,34 +1082,106 @@ export const EdcFederatedCatalogDisplay = {
   renderNegotiationButton(item: FederatedDataset, negotiationKey: string) {
     const { dataset, provider } = item;
     const negotiation = this.negotiations.get(negotiationKey);
+    const assetId = dataset['@id'];
 
     const policies = this.getPoliciesFromDataset(dataset);
     if (policies.length === 0) {
       return html`<span class="no-policy">No policies available</span>`;
     }
 
+    // Check for existing agreement if no current negotiation
+    if (!negotiation) {
+      const store = this.stores.get('default');
+      if (store) {
+        const existingAgreement = (store as any).getAssetAgreement(assetId);
+        if (existingAgreement) {
+          return html`<button class="negotiate-btn existing-agreement" @click=${() => this.negotiateAccess(item)}>
+            ♻️ Use Existing Agreement
+          </button>`;
+        }
+      }
+    }
+
     if (negotiation) {
       switch (negotiation.status) {
         case 'negotiating':
           return html`<button class="negotiate-btn negotiating" disabled>
-            Negotiating with ${provider.name}...
+            <span class="spinner">⏳</span> Negotiating with ${provider.name}...
           </button>`;
         case 'pending':
           return html`<div class="negotiation-info">
             <span class="negotiation-provider">Provider: ${provider.name}</span>
             <span class="negotiation-id">Negotiation: ${negotiation.negotiationId}</span>
             <span class="negotiation-status pending">
-              ${negotiation.currentState || 'Pending'} 
+              <span class="spinner">⏳</span>
+              ${negotiation.currentState || 'Pending'}
               ${negotiation.attempt ? `(${negotiation.attempt}/${negotiation.maxAttempts})` : ''}
             </span>
+          </div>`;
+        case 'transferring':
+          return html`<div class="negotiation-info">
+            <span class="negotiation-provider">Provider: ${provider.name}</span>
+            <span class="contract-id">Contract: ${negotiation.contractId}</span>
+            <span class="negotiation-status pending">
+              <span class="spinner">🚀</span> Getting EDR Token...
+            </span>
+          </div>`;
+        case 'accessing-data':
+          const progressPercent = negotiation.dataAccessAttempt && negotiation.dataAccessMaxAttempts
+            ? (negotiation.dataAccessAttempt / negotiation.dataAccessMaxAttempts) * 100
+            : 0;
+
+          return html`<div class="negotiation-info">
+            <span class="negotiation-provider">Provider: ${provider.name}</span>
+            <span class="contract-id">Contract: ${negotiation.contractId}</span>
+            <span class="negotiation-status pending">
+              <span class="spinner">📡</span> Accessing Data
+              ${negotiation.dataAccessAttempt ?
+                ` (${negotiation.dataAccessAttempt}/${negotiation.dataAccessMaxAttempts})` :
+                '...'
+              }
+              ${negotiation.countdown ?
+                html`<br><span class="countdown">⏳ Next retry in ${negotiation.countdown}s</span>` :
+                ''
+              }
+            </span>
+            ${negotiation.dataAccessAttempt ?
+              html`<div class="progress-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+              </div>` :
+              ''
+            }
           </div>`;
         case 'granted':
           return html`<div class="negotiation-success">
             <span class="access-granted">✅ Access Granted via ${provider.name}</span>
             <span class="contract-id">Contract: ${negotiation.contractId}</span>
-            <button class="api-ready-btn" disabled>
-              API Ready
-            </button>
+            ${
+              negotiation.transferError
+                ? html`
+              <span class="transfer-error">⚠️ ${negotiation.transferError}</span>
+              <button class="negotiate-btn retry" @click=${() => this.initiateEDRTransfer(item, negotiation)}>
+                🔄 Retry EDR
+              </button>
+            `
+                : ''
+            }
+            <div class="api-access-actions">
+              ${
+                !negotiation.edrToken
+                  ? html`
+                <button class="negotiate-btn" @click=${() => this.initiateEDRTransfer(item, negotiation)}>
+                  🚀 Get EDR Token
+                </button>
+              `
+                  : html`
+                <span class="edr-ready">🔑 EDR Token Ready</span>
+                <button class="negotiate-btn" @click=${() => this.accessData(item, negotiation)}>
+                  📁 Access Data
+                </button>
+              `
+              }
+            </div>
           </div>`;
         case 'failed':
           return html`<div class="negotiation-error">

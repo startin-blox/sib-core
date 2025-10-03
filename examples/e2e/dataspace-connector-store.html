@@ -13,15 +13,15 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Import StoreService from index.js which exports it
-                const { StoreService } = await import('../../dist/index.js');
-                
+                const { StoreService } = await import('../../dist/store.js');
+
                 // Force reset of StoreService to allow reinitialization
                 StoreService.currentStore = null;
                 StoreService.currentConfig = null;
-                
+
                 // Configure DataspaceConnector store
                 const config = {
-                    type: 'dataspaceConnector',
+                    type: 'DataspaceConnector',
                     endpoint: 'https://test-connector.example.com/management/',
                     catalogEndpoint: 'https://test-connector.example.com/management/v3/catalog/request',
                     contractNegotiationEndpoint: 'https://test-connector.example.com/management/v3/contractnegotiations',

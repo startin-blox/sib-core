@@ -6,12 +6,17 @@ import type { ServerSearchOptions } from '../../shared/options/server-search.ts'
 import type { IStore, Resource, StoreConfig } from '../../shared/types.ts';
 
 import type {
+  AssetAgreementMapping,
   CatalogRequest,
   CatalogResponse,
+  ContractAgreement,
   ContractNegotiationResponse,
   DataAddress,
   Dataset,
   DataspaceConnectorConfig,
+  EDRDataAddress,
+  EDRRequest,
+  EDRResponse,
   OdrlPolicy,
   TransferProcess,
   TransferRequest,
@@ -27,6 +32,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   private contractNegotiations: Map<string, ContractNegotiationResponse> =
     new Map();
   private transferProcesses: Map<string, TransferProcess> = new Map();
+  private contractAgreements: Map<string, ContractAgreement> = new Map();
+  private assetAgreements: Map<string, AssetAgreementMapping> = new Map();
+  private edrTokens: Map<string, EDRDataAddress> = new Map();
 
   constructor(config: DataspaceConnectorConfig) {
     this.validateConfig(config);
@@ -49,6 +57,21 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     const missing = required.filter(field => !config[field]);
     if (missing.length > 0) {
       throw new Error(`Missing required configuration: ${missing.join(', ')}`);
+    }
+
+    // Set default endpoints if not provided
+    if (!config.edrsEndpoint) {
+      config.edrsEndpoint = config.catalogEndpoint.replace(
+        '/catalog/request',
+        '/edrs',
+      );
+    }
+    if (!config.publicEndpoint) {
+      // Try to derive from config endpoint
+      if (config.endpoint) {
+        const baseUrl = config.endpoint.replace('/management', '');
+        config.publicEndpoint = `${baseUrl}/public`;
+      }
     }
   }
 
@@ -218,6 +241,190 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   }
 
   /**
+   * Get contract agreement after negotiation is finalized
+   */
+  async getContractAgreement(
+    negotiationId: string,
+  ): Promise<ContractAgreement | null> {
+    await this.ensureAuthenticated();
+
+    try {
+      const response = await this.fetchAuthn(
+        `${this.config.contractNegotiationEndpoint}/${negotiationId}/agreement`,
+        {
+          method: 'GET',
+          headers: this.headers,
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          `Failed to get contract agreement: ${response.status} ${response.statusText}`,
+        );
+        return null;
+      }
+
+      const agreement: ContractAgreement = await response.json();
+
+      // Store the agreement
+      this.contractAgreements.set(agreement['@id'], agreement);
+
+      // Update asset agreement mapping
+      const assetId = agreement.assetId;
+      if (assetId) {
+        const existing = this.assetAgreements.get(assetId);
+        const mapping: AssetAgreementMapping = {
+          assetId,
+          catalogId: existing?.catalogId,
+          agreementId: agreement['@id'],
+          agreement,
+          negotiationId,
+          transferId: existing?.transferId,
+          edrToken: existing?.edrToken,
+          createdAt: existing?.createdAt || Date.now(),
+          lastUpdated: Date.now(),
+        };
+        this.assetAgreements.set(assetId, mapping);
+      }
+
+      return agreement;
+    } catch (error) {
+      console.error('Error retrieving contract agreement:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get stored contract agreement for an asset
+   */
+  getStoredContractAgreement(assetId: string): ContractAgreement | null {
+    const mapping = this.assetAgreements.get(assetId);
+    return mapping?.agreement || null;
+  }
+
+  /**
+   * Fetch all contract negotiations from the EDC connector
+   */
+  async getAllContractNegotiations(): Promise<any[]> {
+    await this.ensureAuthenticated();
+
+    try {
+      // Try EDC v3 request endpoint format
+      const requestEndpoint = `${this.config.contractNegotiationEndpoint}/request`;
+
+      const response = await this.fetchAuthn(requestEndpoint, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify({
+          '@context': {
+            '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+          },
+          '@type': 'QuerySpec',
+          offset: 0,
+          limit: 1000,
+        }),
+      });
+
+      if (!response.ok) {
+        // If request endpoint fails, try simple GET
+        console.log(
+          'Request endpoint failed, trying simple GET...',
+        );
+
+        const getResponse = await this.fetchAuthn(
+          `${this.config.contractNegotiationEndpoint}?offset=0&limit=1000`,
+          {
+            method: 'GET',
+            headers: this.headers,
+          },
+        );
+
+        if (!getResponse.ok) {
+          console.warn(
+            `Failed to fetch contract negotiations: ${getResponse.status} ${getResponse.statusText}`,
+          );
+          return [];
+        }
+
+        const getData = await getResponse.json();
+        return Array.isArray(getData) ? getData : getData.items || [];
+      }
+
+      const data = await response.json();
+      return Array.isArray(data) ? data : data.items || [];
+    } catch (error) {
+      console.error('Error fetching contract negotiations:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Load existing agreements from EDC connector
+   */
+  async loadExistingAgreements(): Promise<void> {
+    console.log('🔍 Loading existing contract agreements from EDC connector...');
+
+    try {
+      const negotiations = await this.getAllContractNegotiations();
+      console.log(`📋 Found ${negotiations.length} contract negotiations`);
+
+      let loadedCount = 0;
+      for (const negotiation of negotiations) {
+        // Only process finalized/agreed negotiations
+        if (
+          negotiation.state === 'FINALIZED' ||
+          negotiation.state === 'AGREED'
+        ) {
+          try {
+            const agreement = await this.getContractAgreement(
+              negotiation['@id'],
+            );
+            if (agreement) {
+              loadedCount++;
+              console.log(
+                `✅ Loaded agreement for asset ${agreement.assetId}: ${agreement['@id']}`,
+              );
+            }
+          } catch (error) {
+            console.warn(
+              `⚠️ Failed to load agreement for negotiation ${negotiation['@id']}:`,
+              error,
+            );
+          }
+        }
+      }
+
+      console.log(
+        `🎯 Successfully loaded ${loadedCount} existing agreements from ${negotiations.length} negotiations`,
+      );
+    } catch (error) {
+      console.error('Error loading existing agreements:', error);
+    }
+  }
+
+  /**
+   * Get all stored asset-agreement mappings
+   */
+  getAllAssetAgreements(): AssetAgreementMapping[] {
+    return Array.from(this.assetAgreements.values());
+  }
+
+  /**
+   * Get existing agreement for a specific asset
+   */
+  getAssetAgreement(assetId: string): AssetAgreementMapping | null {
+    return this.assetAgreements.get(assetId) || null;
+  }
+
+  /**
+   * Check if there's an existing valid agreement for the given asset
+   */
+  hasValidAgreement(assetId: string): boolean {
+    const agreement = this.getAssetAgreement(assetId);
+    return agreement !== null;
+  }
+
+  /**
    * Initiate transfer process for contracted dataset
    */
   async initiateTransfer(
@@ -260,6 +467,316 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     this.transferProcesses.set(transferId, transfer);
 
     return transferId;
+  }
+
+  /**
+   * Initiate EDR transfer request for HttpProxy data destination
+   */
+  async initiateEDRTransfer(
+    assetId: string,
+    counterPartyAddress: string,
+    contractId: string,
+  ): Promise<string> {
+    await this.ensureAuthenticated();
+
+    const edrRequest: EDRRequest = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'https://w3id.org/edc/v0.0.1/ns/TransferRequest',
+      assetId,
+      protocol: 'dataspace-protocol-http',
+      counterPartyAddress,
+      contractId,
+      transferType: 'HttpData-PULL',
+      dataDestination: {
+        type: 'HttpProxy',
+      },
+    };
+
+    const response = await this.fetchAuthn(
+      this.config.transferProcessEndpoint,
+      {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(edrRequest),
+      },
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `EDR transfer initiation failed: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    const edrResponse: EDRResponse = await response.json();
+    const transferId = edrResponse['@id'];
+
+    console.log('✅ EDR transfer initiated successfully');
+    console.log(`🆔 Transfer Process ID: ${transferId}`);
+    console.log('📄 Full EDR Response:', edrResponse);
+
+    // Update asset agreement mapping with transfer ID
+    const mapping = this.assetAgreements.get(assetId);
+    if (mapping) {
+      mapping.transferId = transferId;
+      mapping.lastUpdated = Date.now();
+      this.assetAgreements.set(assetId, mapping);
+    }
+
+    return transferId;
+  }
+
+  /**
+   * Get EDR token using transfer process ID with polling
+   */
+  async getEDRToken(
+    transferId: string,
+    maxRetries = 10,
+    retryDelay = 2000,
+  ): Promise<EDRDataAddress | null> {
+    await this.ensureAuthenticated();
+
+    const edrsEndpoint =
+      this.config.edrsEndpoint ||
+      this.config.catalogEndpoint.replace('/catalog/request', '/edrs');
+
+    const requestUrl = `${edrsEndpoint}/${transferId}/dataaddress`;
+
+    console.log(`📡 Getting EDR token from: ${requestUrl}`);
+    console.log(`🔍 Transfer Process ID: ${transferId}`);
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`🔄 EDR token retrieval attempt ${attempt}/${maxRetries}`);
+
+        const response = await this.fetchAuthn(requestUrl, {
+          method: 'GET',
+          headers: this.headers,
+        });
+
+        if (response.ok) {
+          const edrDataAddress: EDRDataAddress = await response.json();
+
+          console.log('✅ EDR token retrieved successfully:', edrDataAddress);
+
+          // Store the EDR token
+          this.edrTokens.set(transferId, edrDataAddress);
+
+          // Update asset agreement mapping with EDR token
+          const assetMapping = Array.from(this.assetAgreements.values()).find(
+            mapping => mapping.transferId === transferId,
+          );
+          if (assetMapping) {
+            assetMapping.edrToken = edrDataAddress.authorization;
+            assetMapping.lastUpdated = Date.now();
+          }
+
+          return edrDataAddress;
+        }
+
+        const errorText = await response.text();
+        let errorObj: any;
+        try {
+          errorObj = JSON.parse(errorText);
+        } catch (e) {
+          errorObj = { message: errorText };
+        }
+
+        console.warn(
+          `⚠️ EDR token attempt ${attempt}/${maxRetries} failed: ${response.status} ${response.statusText}`,
+          errorObj,
+        );
+
+        // If this is a 404 (not found) and we have more retries, wait and try again
+        if (response.status === 404 && attempt < maxRetries) {
+          console.log(`⏳ Waiting ${retryDelay}ms before retry...`);
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+          continue;
+        }
+
+        // For other errors or final attempt, throw error
+        console.error(
+          `❌ Final EDR token retrieval failed: ${response.status} ${response.statusText}`,
+          errorObj,
+        );
+        console.error(`🔗 Request URL: ${requestUrl}`);
+        console.error(`🆔 Transfer ID used: ${transferId}`);
+
+        throw new Error(
+          `EDR token retrieval failed: ${response.status} ${response.statusText} - ${errorObj.message || errorText}`,
+        );
+
+      } catch (error) {
+        if (attempt === maxRetries) {
+          throw error;
+        }
+        console.warn(
+          `⚠️ EDR token attempt ${attempt}/${maxRetries} error:`,
+          error,
+        );
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+      }
+    }
+
+    // Should not reach here
+    throw new Error(
+      `Failed to retrieve EDR token after ${maxRetries} attempts`,
+    );
+  }
+
+  /**
+   * Get stored EDR token for a transfer ID
+   */
+  getStoredEDRToken(transferId: string): EDRDataAddress | null {
+    return this.edrTokens.get(transferId) || null;
+  }
+
+  /**
+   * Fetch data using EDR token through the provider's public endpoint
+   */
+  async fetchWithEDRToken(
+    edrDataAddress: EDRDataAddress,
+    additionalPath?: string,
+  ): Promise<any> {
+    const { endpoint, authorization } = edrDataAddress;
+
+    // Build the URL - if additionalPath is provided, append it to the endpoint
+    const url = additionalPath ? `${endpoint}${additionalPath}` : endpoint;
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: authorization, // Use the JWT token directly (not Bearer prefix)
+          Accept: 'application/json',
+        },
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `EDR data fetch failed: ${response.status} ${response.statusText}`,
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching data with EDR token:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Complete flow: negotiate -> agreement -> transfer -> EDR -> data access
+   */
+  async accessAssetData(
+    assetId: string,
+    counterPartyAddress: string,
+    policy: OdrlPolicy,
+    counterPartyId?: string,
+    additionalPath?: string,
+  ): Promise<any> {
+    try {
+      console.log(`Starting complete asset access flow for: ${assetId}`);
+
+      // Check if we already have an EDR token for this asset
+      const existingMapping = this.assetAgreements.get(assetId);
+      if (existingMapping?.edrToken && existingMapping.transferId) {
+        const edrDataAddress = this.edrTokens.get(existingMapping.transferId);
+        if (edrDataAddress) {
+          console.log('Using existing EDR token for asset access');
+          return await this.fetchWithEDRToken(edrDataAddress, additionalPath);
+        }
+      }
+
+      // 1. Negotiate contract
+      console.log('Step 1: Negotiating contract...');
+      const negotiationId = await this.negotiateContract(
+        counterPartyAddress,
+        assetId,
+        policy,
+        counterPartyId,
+      );
+
+      // 2. Wait for negotiation to complete (caller should handle this)
+      console.log('Step 2: Waiting for negotiation completion...');
+      // Note: In practice, the component should poll getNegotiationStatus()
+      // until state is FINALIZED before proceeding
+
+      return { negotiationId, status: 'negotiation_initiated' };
+    } catch (error) {
+      console.error('Error in complete asset access flow:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Continue asset access flow after negotiation is finalized
+   */
+  async continueAssetAccess(
+    negotiationId: string,
+    assetId: string,
+    counterPartyAddress: string,
+    additionalPath?: string,
+  ): Promise<any> {
+    try {
+      console.log(
+        `Continuing asset access flow for negotiation: ${negotiationId}`,
+      );
+
+      // 1. Get contract agreement
+      console.log('Step 1: Retrieving contract agreement...');
+      const agreement = await this.getContractAgreement(negotiationId);
+      if (!agreement) {
+        throw new Error('Failed to retrieve contract agreement');
+      }
+
+      // 2. Initiate EDR transfer
+      console.log('Step 2: Initiating EDR transfer...');
+      const transferId = await this.initiateEDRTransfer(
+        assetId,
+        counterPartyAddress,
+        agreement['@id'],
+      );
+
+      // 3. Get EDR token
+      console.log('Step 3: Retrieving EDR token...');
+      const edrDataAddress = await this.getEDRToken(transferId);
+      if (!edrDataAddress) {
+        throw new Error('Failed to retrieve EDR token');
+      }
+
+      // 4. Access data with EDR token
+      console.log('Step 4: Accessing data with EDR token...');
+      const data = await this.fetchWithEDRToken(edrDataAddress, additionalPath);
+
+      return data;
+    } catch (error) {
+      console.error('Error continuing asset access flow:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Access asset data for an asset that already has stored agreement and EDR token
+   */
+  async accessStoredAssetData(
+    assetId: string,
+    additionalPath?: string,
+  ): Promise<any> {
+    const mapping = this.assetAgreements.get(assetId);
+    if (!mapping?.transferId) {
+      throw new Error(`No stored transfer information for asset: ${assetId}`);
+    }
+
+    const edrDataAddress = this.edrTokens.get(mapping.transferId);
+    if (!edrDataAddress) {
+      throw new Error(`No stored EDR token for asset: ${assetId}`);
+    }
+
+    return await this.fetchWithEDRToken(edrDataAddress, additionalPath);
   }
 
   /**
