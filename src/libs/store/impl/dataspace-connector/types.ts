@@ -334,3 +334,58 @@ export interface AssetAgreementMapping {
   createdAt: number;
   lastUpdated: number;
 }
+
+// Asset Management Types (EDC v3)
+export interface Asset {
+  '@type': 'Asset';
+  '@id': string;
+  '@context'?: any;
+  properties?: Record<string, any>;
+  dataAddress?: DataAddress;
+  createdAt?: number;
+}
+
+export interface AssetInput {
+  '@id': string;
+  properties?: Record<string, any>;
+  dataAddress?: DataAddress;
+}
+
+// Policy Definition Management Types (EDC v3)
+export interface PolicyDefinition {
+  '@type': 'PolicyDefinition';
+  '@id': string;
+  '@context'?: any;
+  policy: OdrlPolicy;
+  createdAt?: number;
+}
+
+export interface PolicyDefinitionInput {
+  '@id': string;
+  policy: OdrlPolicy;
+}
+
+// Contract Definition Management Types (EDC v3)
+export interface ContractDefinition {
+  '@type': 'ContractDefinition';
+  '@id': string;
+  '@context'?: any;
+  accessPolicyId: string;
+  contractPolicyId: string;
+  assetsSelector?: AssetSelector[];
+  createdAt?: number;
+}
+
+export interface ContractDefinitionInput {
+  '@id': string;
+  accessPolicyId: string;
+  contractPolicyId: string;
+  assetsSelector?: AssetSelector[];
+}
+
+export interface AssetSelector {
+  '@type': 'CriterionDto';
+  operandLeft: string;
+  operator: string;
+  operandRight: any;
+}

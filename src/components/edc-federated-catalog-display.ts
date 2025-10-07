@@ -441,11 +441,15 @@ export const EdcFederatedCatalogDisplay = {
       });
       this.render();
 
-      console.log(`🎯 Reusing existing agreement for ${assetId} - no re-negotiation needed`);
+      console.log(
+        `🎯 Reusing existing agreement for ${assetId} - no re-negotiation needed`,
+      );
       return;
     }
 
-    console.log(`📝 No existing agreement found for ${assetId}, starting new negotiation`);
+    console.log(
+      `📝 No existing agreement found for ${assetId}, starting new negotiation`,
+    );
 
     // Get policies using the helper method (supports both direct and distribution-based policies)
     const policies = this.getPoliciesFromDataset(dataset);
@@ -673,7 +677,10 @@ export const EdcFederatedCatalogDisplay = {
 
       // Transform localhost endpoint to public provider address
       let transformedEndpoint = edrDataAddress.endpoint;
-      if (transformedEndpoint.includes('localhost') || transformedEndpoint.includes('127.0.0.1')) {
+      if (
+        transformedEndpoint.includes('localhost') ||
+        transformedEndpoint.includes('127.0.0.1')
+      ) {
         // Extract the provider's public address from the protocol address
         // provider.address is like "https://provider.connector-dev.startinblox.com/protocol"
         const providerBase = provider.address.replace('/protocol', '');
@@ -727,7 +734,10 @@ export const EdcFederatedCatalogDisplay = {
 
       // Transform localhost endpoint to public provider address if needed
       let transformedEndpoint = negotiation.edrEndpoint;
-      if (transformedEndpoint.includes('localhost') || transformedEndpoint.includes('127.0.0.1')) {
+      if (
+        transformedEndpoint.includes('localhost') ||
+        transformedEndpoint.includes('127.0.0.1')
+      ) {
         const providerBase = provider.address.replace('/protocol', '');
         const localUrl = new URL(transformedEndpoint);
         transformedEndpoint = `${providerBase}${localUrl.pathname}${localUrl.search}`;
@@ -746,7 +756,12 @@ export const EdcFederatedCatalogDisplay = {
       };
 
       // Implement long-polling strategy with up to 1 minute timeout
-      const data = await this.fetchDataWithLongPolling(store, edrDataAddress, assetId, provider);
+      const data = await this.fetchDataWithLongPolling(
+        store,
+        edrDataAddress,
+        assetId,
+        provider,
+      );
 
       console.log('✅ Data access successful!', data);
 
@@ -762,7 +777,6 @@ export const EdcFederatedCatalogDisplay = {
         status: 'granted',
       });
       this.render();
-
     } catch (error) {
       console.error('Data access failed:', error);
 
@@ -788,7 +802,9 @@ export const EdcFederatedCatalogDisplay = {
   ) {
     const negotiationKey = `${assetId}@${provider.address}`;
     console.log(`🔄 Starting long-polling data access for asset ${assetId}`);
-    console.log(`⏱️ Will retry for up to ${maxAttempts * pollInterval / 1000} seconds`);
+    console.log(
+      `⏱️ Will retry for up to ${(maxAttempts * pollInterval) / 1000} seconds`,
+    );
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       // Update UI with current attempt progress
@@ -814,10 +830,12 @@ export const EdcFederatedCatalogDisplay = {
         }
 
         console.log(`⚠️ No data returned on attempt ${attempt}, retrying...`);
-
       } catch (error) {
         const errorMessage = (error as Error).message;
-        console.warn(`⚠️ Data access attempt ${attempt}/${maxAttempts} failed:`, errorMessage);
+        console.warn(
+          `⚠️ Data access attempt ${attempt}/${maxAttempts} failed:`,
+          errorMessage,
+        );
 
         // Check for specific error types that might resolve with waiting
         const isRetryableError =
@@ -837,7 +855,9 @@ export const EdcFederatedCatalogDisplay = {
 
       // Wait before next attempt (except on the last iteration)
       if (attempt < maxAttempts) {
-        console.log(`⏳ Waiting ${pollInterval / 1000} seconds before retry...`);
+        console.log(
+          `⏳ Waiting ${pollInterval / 1000} seconds before retry...`,
+        );
 
         // Show countdown in UI during wait
         for (let countdown = pollInterval / 1000; countdown > 0; countdown--) {
@@ -857,7 +877,9 @@ export const EdcFederatedCatalogDisplay = {
       }
     }
 
-    throw new Error(`Data access failed after ${maxAttempts} attempts over ${maxAttempts * pollInterval / 1000} seconds`);
+    throw new Error(
+      `Data access failed after ${maxAttempts} attempts over ${(maxAttempts * pollInterval) / 1000} seconds`,
+    );
   },
 
   toggleProvider(providerAddress: string) {
@@ -1127,29 +1149,35 @@ export const EdcFederatedCatalogDisplay = {
             </span>
           </div>`;
         case 'accessing-data':
-          const progressPercent = negotiation.dataAccessAttempt && negotiation.dataAccessMaxAttempts
-            ? (negotiation.dataAccessAttempt / negotiation.dataAccessMaxAttempts) * 100
-            : 0;
+          const progressPercent =
+            negotiation.dataAccessAttempt && negotiation.dataAccessMaxAttempts
+              ? (negotiation.dataAccessAttempt /
+                  negotiation.dataAccessMaxAttempts) *
+                100
+              : 0;
 
           return html`<div class="negotiation-info">
             <span class="negotiation-provider">Provider: ${provider.name}</span>
             <span class="contract-id">Contract: ${negotiation.contractId}</span>
             <span class="negotiation-status pending">
               <span class="spinner">📡</span> Accessing Data
-              ${negotiation.dataAccessAttempt ?
-                ` (${negotiation.dataAccessAttempt}/${negotiation.dataAccessMaxAttempts})` :
-                '...'
+              ${
+                negotiation.dataAccessAttempt
+                  ? ` (${negotiation.dataAccessAttempt}/${negotiation.dataAccessMaxAttempts})`
+                  : '...'
               }
-              ${negotiation.countdown ?
-                html`<br><span class="countdown">⏳ Next retry in ${negotiation.countdown}s</span>` :
-                ''
+              ${
+                negotiation.countdown
+                  ? html`<br><span class="countdown">⏳ Next retry in ${negotiation.countdown}s</span>`
+                  : ''
               }
             </span>
-            ${negotiation.dataAccessAttempt ?
-              html`<div class="progress-container">
+            ${
+              negotiation.dataAccessAttempt
+                ? html`<div class="progress-container">
                 <div class="progress-bar" style="width: ${progressPercent}%"></div>
-              </div>` :
-              ''
+              </div>`
+                : ''
             }
           </div>`;
         case 'granted':

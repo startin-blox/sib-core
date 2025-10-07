@@ -6,10 +6,14 @@ import type { ServerSearchOptions } from '../../shared/options/server-search.ts'
 import type { IStore, Resource, StoreConfig } from '../../shared/types.ts';
 
 import type {
+  Asset,
   AssetAgreementMapping,
+  AssetInput,
   CatalogRequest,
   CatalogResponse,
   ContractAgreement,
+  ContractDefinition,
+  ContractDefinitionInput,
   ContractNegotiationResponse,
   DataAddress,
   Dataset,
@@ -18,6 +22,8 @@ import type {
   EDRRequest,
   EDRResponse,
   OdrlPolicy,
+  PolicyDefinition,
+  PolicyDefinitionInput,
   TransferProcess,
   TransferRequest,
 } from './types.ts';
@@ -327,9 +333,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
       if (!response.ok) {
         // If request endpoint fails, try simple GET
-        console.log(
-          'Request endpoint failed, trying simple GET...',
-        );
+        console.log('Request endpoint failed, trying simple GET...');
 
         const getResponse = await this.fetchAuthn(
           `${this.config.contractNegotiationEndpoint}?offset=0&limit=1000`,
@@ -362,7 +366,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
    * Load existing agreements from EDC connector
    */
   async loadExistingAgreements(): Promise<void> {
-    console.log('🔍 Loading existing contract agreements from EDC connector...');
+    console.log(
+      '🔍 Loading existing contract agreements from EDC connector...',
+    );
 
     try {
       const negotiations = await this.getAllContractNegotiations();
@@ -607,7 +613,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         throw new Error(
           `EDR token retrieval failed: ${response.status} ${response.statusText} - ${errorObj.message || errorText}`,
         );
-
       } catch (error) {
         if (attempt === maxRetries) {
           throw error;
@@ -1193,6 +1198,598 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       sortField: null,
       sortOrder: 'ASC',
     };
+  }
+
+  // =================== ASSETS MANAGEMENT METHODS ===================
+
+  /**
+   * Get all assets (alias for existing method)
+   */
+  async getAllAssets(querySpec?: any): Promise<Asset[]> {
+    return this.getAssets(querySpec);
+  }
+
+  /**
+   * Get single asset by ID
+   */
+  async getAsset(assetId: string): Promise<Asset | null> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const assetsEndpoint =
+      this.config.assetsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/assets' : '/assets',
+      );
+
+    const response = await this.fetchAuthn(`${assetsEndpoint}/${assetId}`, {
+      method: 'GET',
+      headers: this.headers,
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(
+        `Failed to get asset: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const asset: Asset = await response.json();
+
+    // Cache the asset (cast to Resource for compatibility)
+    if (asset['@id']) {
+      await this.cache.set(asset['@id'], asset as Resource);
+    }
+
+    return asset;
+  }
+
+  /**
+   * Create new asset
+   */
+  async createAsset(assetInput: AssetInput): Promise<Asset> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const assetsEndpoint =
+      this.config.assetsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/assets' : '/assets',
+      );
+
+    const assetData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'Asset',
+      '@id': assetInput['@id'],
+      properties: assetInput.properties || {},
+      dataAddress: assetInput.dataAddress,
+    };
+
+    const response = await this.fetchAuthn(assetsEndpoint, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(assetData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to create asset: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // EDC usually returns the created asset or just success
+    let createdAsset: Asset;
+    try {
+      createdAsset = await response.json();
+    } catch {
+      // If no response body, construct asset from input
+      createdAsset = {
+        '@type': 'Asset',
+        '@id': assetInput['@id'],
+        properties: assetInput.properties,
+        dataAddress: assetInput.dataAddress,
+        createdAt: Date.now(),
+      };
+    }
+
+    // Cache the created asset (cast to Resource for compatibility)
+    if (createdAsset['@id']) {
+      await this.cache.set(createdAsset['@id'], createdAsset as Resource);
+    }
+
+    return createdAsset;
+  }
+
+  /**
+   * Update existing asset
+   */
+  async updateAsset(assetId: string, assetInput: AssetInput): Promise<Asset> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const assetsEndpoint =
+      this.config.assetsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/assets' : '/assets',
+      );
+
+    const assetData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'Asset',
+      '@id': assetInput['@id'],
+      properties: assetInput.properties || {},
+      dataAddress: assetInput.dataAddress,
+    };
+
+    const response = await this.fetchAuthn(`${assetsEndpoint}/${assetId}`, {
+      method: 'PUT',
+      headers: this.headers,
+      body: JSON.stringify(assetData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to update asset: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Construct updated asset
+    const updatedAsset: Asset = {
+      '@type': 'Asset',
+      '@id': assetInput['@id'],
+      properties: assetInput.properties,
+      dataAddress: assetInput.dataAddress,
+      createdAt: Date.now(),
+    };
+
+    // Update cache (cast to Resource for compatibility)
+    await this.cache.set(assetId, updatedAsset as Resource);
+
+    return updatedAsset;
+  }
+
+  /**
+   * Delete asset
+   */
+  async deleteAsset(assetId: string): Promise<boolean> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const assetsEndpoint =
+      this.config.assetsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/assets' : '/assets',
+      );
+
+    const response = await this.fetchAuthn(`${assetsEndpoint}/${assetId}`, {
+      method: 'DELETE',
+      headers: this.headers,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to delete asset: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Remove from cache
+    await this.cache.delete(assetId);
+
+    return true;
+  }
+
+  // =================== POLICIES MANAGEMENT METHODS ===================
+
+  /**
+   * Get all policy definitions (alias for existing method)
+   */
+  async getAllPolicies(querySpec?: any): Promise<PolicyDefinition[]> {
+    return this.getPolicyDefinitions(querySpec);
+  }
+
+  /**
+   * Get single policy definition by ID
+   */
+  async getPolicy(policyId: string): Promise<PolicyDefinition | null> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const policiesEndpoint =
+      this.config.policiesEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/policydefinitions' : '/policydefinitions',
+      );
+
+    const response = await this.fetchAuthn(`${policiesEndpoint}/${policyId}`, {
+      method: 'GET',
+      headers: this.headers,
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(
+        `Failed to get policy: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const policy: PolicyDefinition = await response.json();
+
+    // Cache the policy (cast to Resource for compatibility)
+    if (policy['@id']) {
+      await this.cache.set(policy['@id'], policy as Resource);
+    }
+
+    return policy;
+  }
+
+  /**
+   * Create new policy definition
+   */
+  async createPolicy(
+    policyInput: PolicyDefinitionInput,
+  ): Promise<PolicyDefinition> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const policiesEndpoint =
+      this.config.policiesEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/policydefinitions' : '/policydefinitions',
+      );
+
+    const policyData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+        odrl: 'http://www.w3.org/ns/odrl/2/',
+      },
+      '@type': 'PolicyDefinition',
+      '@id': policyInput['@id'],
+      policy: policyInput.policy,
+    };
+
+    const response = await this.fetchAuthn(policiesEndpoint, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(policyData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to create policy: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Construct created policy
+    const createdPolicy: PolicyDefinition = {
+      '@type': 'PolicyDefinition',
+      '@id': policyInput['@id'],
+      policy: policyInput.policy,
+      createdAt: Date.now(),
+    };
+
+    // Cache the created policy (cast to Resource for compatibility)
+    if (createdPolicy['@id']) {
+      await this.cache.set(createdPolicy['@id'], createdPolicy as Resource);
+    }
+
+    return createdPolicy;
+  }
+
+  /**
+   * Update existing policy definition
+   */
+  async updatePolicy(
+    policyId: string,
+    policyInput: PolicyDefinitionInput,
+  ): Promise<PolicyDefinition> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const policiesEndpoint =
+      this.config.policiesEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/policydefinitions' : '/policydefinitions',
+      );
+
+    const policyData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+        odrl: 'http://www.w3.org/ns/odrl/2/',
+      },
+      '@type': 'PolicyDefinition',
+      '@id': policyInput['@id'],
+      policy: policyInput.policy,
+    };
+
+    const response = await this.fetchAuthn(`${policiesEndpoint}/${policyId}`, {
+      method: 'PUT',
+      headers: this.headers,
+      body: JSON.stringify(policyData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to update policy: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Construct updated policy
+    const updatedPolicy: PolicyDefinition = {
+      '@type': 'PolicyDefinition',
+      '@id': policyInput['@id'],
+      policy: policyInput.policy,
+      createdAt: Date.now(),
+    };
+
+    // Update cache (cast to Resource for compatibility)
+    await this.cache.set(policyId, updatedPolicy as Resource);
+
+    return updatedPolicy;
+  }
+
+  /**
+   * Delete policy definition
+   */
+  async deletePolicy(policyId: string): Promise<boolean> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const policiesEndpoint =
+      this.config.policiesEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/policydefinitions' : '/policydefinitions',
+      );
+
+    const response = await this.fetchAuthn(`${policiesEndpoint}/${policyId}`, {
+      method: 'DELETE',
+      headers: this.headers,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to delete policy: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Remove from cache
+    await this.cache.delete(policyId);
+
+    return true;
+  }
+
+  // =================== CONTRACT DEFINITIONS MANAGEMENT METHODS ===================
+
+  /**
+   * Get all contract definitions (alias for existing method)
+   */
+  async getAllContractDefinitions(
+    querySpec?: any,
+  ): Promise<ContractDefinition[]> {
+    return this.getContractDefinitions(querySpec);
+  }
+
+  /**
+   * Get single contract definition by ID
+   */
+  async getContractDefinition(
+    contractId: string,
+  ): Promise<ContractDefinition | null> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const contractDefsEndpoint =
+      this.config.contractDefinitionsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/contractdefinitions' : '/contractdefinitions',
+      );
+
+    const response = await this.fetchAuthn(
+      `${contractDefsEndpoint}/${contractId}`,
+      {
+        method: 'GET',
+        headers: this.headers,
+      },
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(
+        `Failed to get contract definition: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const contract: ContractDefinition = await response.json();
+
+    // Cache the contract definition (cast to Resource for compatibility)
+    if (contract['@id']) {
+      await this.cache.set(contract['@id'], contract as Resource);
+    }
+
+    return contract;
+  }
+
+  /**
+   * Create new contract definition
+   */
+  async createContractDefinition(
+    contractInput: ContractDefinitionInput,
+  ): Promise<ContractDefinition> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const contractDefsEndpoint =
+      this.config.contractDefinitionsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/contractdefinitions' : '/contractdefinitions',
+      );
+
+    const contractData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'ContractDefinition',
+      '@id': contractInput['@id'],
+      accessPolicyId: contractInput.accessPolicyId,
+      contractPolicyId: contractInput.contractPolicyId,
+      assetsSelector: contractInput.assetsSelector || [],
+    };
+
+    const response = await this.fetchAuthn(contractDefsEndpoint, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(contractData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to create contract definition: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Construct created contract definition
+    const createdContract: ContractDefinition = {
+      '@type': 'ContractDefinition',
+      '@id': contractInput['@id'],
+      accessPolicyId: contractInput.accessPolicyId,
+      contractPolicyId: contractInput.contractPolicyId,
+      assetsSelector: contractInput.assetsSelector,
+      createdAt: Date.now(),
+    };
+
+    // Cache the created contract definition (cast to Resource for compatibility)
+    if (createdContract['@id']) {
+      await this.cache.set(createdContract['@id'], createdContract as Resource);
+    }
+
+    return createdContract;
+  }
+
+  /**
+   * Update existing contract definition
+   */
+  async updateContractDefinition(
+    contractId: string,
+    contractInput: ContractDefinitionInput,
+  ): Promise<ContractDefinition> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const contractDefsEndpoint =
+      this.config.contractDefinitionsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/contractdefinitions' : '/contractdefinitions',
+      );
+
+    const contractData = {
+      '@context': {
+        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
+        edc: 'https://w3id.org/edc/v0.0.1/ns/',
+      },
+      '@type': 'ContractDefinition',
+      '@id': contractInput['@id'],
+      accessPolicyId: contractInput.accessPolicyId,
+      contractPolicyId: contractInput.contractPolicyId,
+      assetsSelector: contractInput.assetsSelector || [],
+    };
+
+    const response = await this.fetchAuthn(
+      `${contractDefsEndpoint}/${contractId}`,
+      {
+        method: 'PUT',
+        headers: this.headers,
+        body: JSON.stringify(contractData),
+      },
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to update contract definition: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Construct updated contract definition
+    const updatedContract: ContractDefinition = {
+      '@type': 'ContractDefinition',
+      '@id': contractInput['@id'],
+      accessPolicyId: contractInput.accessPolicyId,
+      contractPolicyId: contractInput.contractPolicyId,
+      assetsSelector: contractInput.assetsSelector,
+      createdAt: Date.now(),
+    };
+
+    // Update cache (cast to Resource for compatibility)
+    await this.cache.set(contractId, updatedContract as Resource);
+
+    return updatedContract;
+  }
+
+  /**
+   * Delete contract definition
+   */
+  async deleteContractDefinition(contractId: string): Promise<boolean> {
+    await this.ensureAuthenticated();
+
+    const apiVersion = this.config.apiVersion || 'v3';
+    const contractDefsEndpoint =
+      this.config.contractDefinitionsEndpoint ||
+      this.config.catalogEndpoint.replace(
+        '/catalog/request',
+        apiVersion === 'v3' ? '/contractdefinitions' : '/contractdefinitions',
+      );
+
+    const response = await this.fetchAuthn(
+      `${contractDefsEndpoint}/${contractId}`,
+      {
+        method: 'DELETE',
+        headers: this.headers,
+      },
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to delete contract definition: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    // Remove from cache
+    await this.cache.delete(contractId);
+
+    return true;
   }
 
   async fetchAuthn(iri: string, options: any): Promise<Response> {
