@@ -54,6 +54,7 @@ const WidgetMixin = {
    * Return field list of the component
    */
   async getFields(): Promise<string[]> {
+    this.nameWidgets = [];
     // TODO : improve code
     const attr = this.fields;
     if (attr === '') return [];
