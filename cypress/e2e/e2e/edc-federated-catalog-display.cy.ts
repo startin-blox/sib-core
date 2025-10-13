@@ -148,28 +148,20 @@ describe('EdcFederatedCatalogDisplay', () => {
     // Match requests based on counterPartyAddress to return correct provider data
     cy.intercept('POST', '/management/v3/catalog/request', req => {
       const counterPartyAddress = req.body?.counterPartyAddress;
-      console.log('Intercept - counterPartyAddress:', counterPartyAddress);
 
       let response: any;
       if (counterPartyAddress === 'https://provider-a.example.com/management') {
         response = mockCatalogProviderA;
-        console.log('Returning Provider A mock (2 datasets)');
       } else if (
         counterPartyAddress === 'https://provider-b.example.com/management'
       ) {
         response = mockCatalogProviderB;
-        console.log('Returning Provider B mock (1 dataset)');
       } else if (
         counterPartyAddress === 'https://provider-c.example.com/management'
       ) {
         response = mockCatalogProviderC;
-        console.log('Returning Provider C mock (0 datasets)');
       } else {
         response = mockCatalogProviderA;
-        console.log(
-          'Fallback to Provider A mock, counterPartyAddress was:',
-          counterPartyAddress,
-        );
       }
 
       req.reply({

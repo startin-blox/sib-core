@@ -62,18 +62,10 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     // Path 1: Direct index specification
     if (options.dataSrcIndex) {
       indexUri = options.dataSrcIndex;
-      console.log(
-        '📂 [SolidIndexingSearchProvider.queryIndex] Using direct index URI:',
-        indexUri,
-      );
     }
     // Path 2: Profile-based discovery
     else if (options.dataSrcProfile) {
       indexUri = await this.discoverIndexFromProfile(options.dataSrcProfile);
-      console.log(
-        '🔍 [SolidIndexingSearchProvider.queryIndex] Discovered index URI from profile:',
-        indexUri,
-      );
     } else {
       console.warn('Either dataSrcIndex or dataSrcProfile must be specified');
       return [];
@@ -87,21 +79,7 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       return [];
     }
 
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndex] Starting query with options:',
-      JSON.stringify(options, null, 2),
-    );
-
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndex] Filter values:',
-      JSON.stringify(options.filterValues, null, 2),
-    );
-
     const filterFields = Object.entries(options.filterValues);
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndex] Filter fields:',
-      filterFields,
-    );
 
     const firstField = filterFields[0];
     const firstFieldValue = firstField[1] as { value: string };
@@ -125,36 +103,12 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     }
 
     const searchPattern = firstFieldValue.value as string;
-
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndex] Parsed parameters:',
-    );
-    console.log('  - Path:', path);
-    console.log('  - Field name:', fieldName);
-    console.log('  - Search pattern:', searchPattern);
-    console.log('  - RDF type:', options.dataRdfType);
-    console.log('  - Exact match mapping:', options.exactMatchMapping);
-
-    // Generate shapes dynamically
-    console.log(
-      '🔧 [SolidIndexingSearchProvider.queryIndex] Generating SHACL shapes...',
-    );
     const { targetShape, subIndexShape, finalShape } = this.generateShapes(
       options.dataRdfType,
       fieldName,
       searchPattern,
       options.exactMatchMapping,
     );
-
-    console.log(
-      '📝 [SolidIndexingSearchProvider.queryIndex] Generated shapes:',
-    );
-    console.log('=== TARGET SHAPE ===');
-    console.log(targetShape);
-    console.log('=== SUBINDEX SHAPE ===');
-    console.log(subIndexShape);
-    console.log('=== FINAL SHAPE ===');
-    console.log(finalShape);
 
     const parser = new N3.Parser({ format: 'text/turtle' });
     const targetShapeGraph = SEMANTIZER.build();
@@ -181,18 +135,7 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       shaclValidator,
       entryTransformer,
     );
-
-    console.log(
-      '🔧 [SolidIndexingSearchProvider.queryIndex] Creating index with factory...',
-    );
     const index = await SEMANTIZER.load(indexUri, indexFactory);
-    console.log(
-      '✅ [SolidIndexingSearchProvider.queryIndex] Index created successfully',
-    );
-
-    console.log(
-      '🚀 [SolidIndexingSearchProvider.queryIndex] Starting query stream...',
-    );
     const resultStream = index.mixins.index.query(shaclStrategy);
 
     return new Promise<any[]>((resolve, reject) => {
@@ -203,37 +146,19 @@ export class SolidIndexingSearchProvider implements SearchProvider {
 
       const checkComplete = () => {
         if (streamEnded && pendingFetches === 0) {
-          console.log(
-            `🏁 [SolidIndexingSearchProvider.queryIndex] All resources fetched. Found ${resultIds.length} result IDs:`,
-            resultIds,
-          );
-          console.log(
-            `🎯 [SolidIndexingSearchProvider.queryIndex] Returning ${resources.length} resources for ldp:contains`,
-          );
           resolve(resources);
         }
       };
 
       resultStream.on('data', async (result: NamedNode) => {
-        console.log(
-          '📦 [SolidIndexingSearchProvider.queryIndex] Received result:',
-          result.value,
-        );
         if (result.value) {
           resultIds.push(result.value);
-          console.log(
-            '✅ [SolidIndexingSearchProvider.queryIndex] Added result ID:',
-            result.value,
-          );
 
           pendingFetches++;
           try {
             const resource = await this.dataFetcher(result.value);
             if (resource) {
               resources.push(resource);
-              console.log(
-                `✅ [SolidIndexingSearchProvider.queryIndex] Successfully fetched resource: ${result.value}`,
-              );
             } else {
               console.warn(
                 `⚠️ [SolidIndexingSearchProvider.queryIndex] Could not fetch resource: ${result.value}`,
@@ -260,10 +185,6 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       });
 
       resultStream.on('end', () => {
-        console.log(
-          `🏁 [SolidIndexingSearchProvider.queryIndex] Stream ended. Found ${resultIds.length} result IDs:`,
-          resultIds,
-        );
         streamEnded = true;
         checkComplete();
       });
@@ -286,16 +207,7 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       return [];
     }
 
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Starting conjunction query with options:',
-      JSON.stringify(options, null, 2),
-    );
-
     const filterFields = Object.entries(options.filterValues);
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Filter fields:',
-      filterFields,
-    );
 
     if (filterFields.length === 0) {
       return [];
@@ -311,20 +223,12 @@ export class SolidIndexingSearchProvider implements SearchProvider {
         },
         exactMatchMapping: options.exactMatchMapping,
       };
-
-      console.log(
-        `🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Executing query for ${propertyName}:`,
-        queryOptions,
-      );
       return this.query(queryOptions);
     });
 
     try {
       // Wait for all queries to complete
       const allResults = await Promise.all(queryPromises);
-      console.log(
-        '🔍 [SolidIndexingSearchProvider.queryIndexConjunction] All individual queries completed',
-      );
 
       // Find intersection (resources that appear in ALL result sets)
       if (allResults.length === 1) {
@@ -334,34 +238,16 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       // Get the first result set as the base
       const baseResults = allResults[0];
 
-      console.log(
-        `🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Base results count: ${baseResults.length}`,
-      );
-
       // Check which resources exist in ALL result sets
       const intersectionResults = baseResults.filter((resource: any) => {
         const resourceId = resource['@id'];
-        console.log(
-          `🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Checking resource: ${resourceId}`,
-        );
 
-        const existsInAllSets = allResults.every((resultSet, index) => {
+        const existsInAllSets = allResults.every((resultSet, _index) => {
           const found = resultSet.some((r: any) => r['@id'] === resourceId);
-          console.log(
-            `  - Set ${index}: ${found ? '✅' : '❌'} (${resultSet.length} items)`,
-          );
           return found;
         });
-
-        console.log(
-          `  - Final result: ${existsInAllSets ? '✅ IN INTERSECTION' : '❌ NOT IN INTERSECTION'}`,
-        );
         return existsInAllSets;
       });
-
-      console.log(
-        `🔍 [SolidIndexingSearchProvider.queryIndexConjunction] Conjunction results count: ${intersectionResults.length}`,
-      );
       return intersectionResults;
     } catch (error) {
       console.error(
@@ -386,14 +272,6 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     pattern: string,
     exactMatchMapping?: Record<string, boolean>,
   ) {
-    console.log(
-      '🔧 [SolidIndexingSearchProvider.generateShapes] Generating shapes with parameters:',
-    );
-    console.log('  - RDF Type:', rdfType);
-    console.log('  - Property Name:', propertyName);
-    console.log('  - Pattern:', pattern);
-    console.log('  - Exact Match Mapping:', exactMatchMapping);
-
     // Determine if this property should use exact matching
     const isExactMatch = exactMatchMapping?.[propertyName];
 
@@ -420,21 +298,9 @@ export class SolidIndexingSearchProvider implements SearchProvider {
         words.length > 0 ? words[0].substring(0, 3) : pattern.substring(0, 3);
 
       matchValue = `${prefix}.*`;
-
-      console.log('  - Cleaned pattern:', cleanPattern);
-      console.log('  - Extracted words:', words);
-      console.log('  - Generated prefix:', prefix);
     }
 
     const matchConstraint = 'sh:pattern';
-
-    console.log('  - Is Exact Match:', isExactMatch);
-    console.log('  - Match Value:', matchValue);
-    console.log('  - Match Constraint:', matchConstraint);
-    console.log(
-      '  - Generated SHACL constraint: [ sh:path',
-      `${matchConstraint}; sh:hasValue "${matchValue}" ]`,
-    );
 
     const targetShape = `
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -615,10 +481,6 @@ sh:property [
     // Look for the profile document with foaf:primaryTopic
     const profileDoc = profileData['@graph']?.find(
       (item: any) => item['@type'] === 'foaf:PersonalProfileDocument',
-    );
-    console.log(
-      '🔍 [SolidIndexingSearchProvider.extractPublicTypeIndexUrl] Profile document:',
-      profileDoc,
     );
 
     if (profileDoc?.['foaf:primaryTopic']) {

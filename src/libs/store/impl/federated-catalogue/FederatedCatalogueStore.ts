@@ -145,7 +145,6 @@ export class FederatedCatalogueStore implements IStore<any> {
     try {
       if (await this.cache.has(id)) {
         await this.cache.delete(id);
-        console.log(`[FederatedCatalogueStore] Cleared cache for ${id}`);
       }
     } catch (error) {
       console.error(
@@ -158,7 +157,6 @@ export class FederatedCatalogueStore implements IStore<any> {
   async cacheResource(key: string, resourceProxy: any) {
     try {
       await this.cache.set(key, resourceProxy);
-      console.log(`[FederatedCatalogueStore] Cached resource ${key}`);
     } catch (error) {
       console.error(
         `[FederatedCatalogueStore] Error caching resource ${key}:`,
@@ -193,7 +191,6 @@ export class FederatedCatalogueStore implements IStore<any> {
         '@id': id,
       };
       await this.cache.set(id, resourceWithId);
-      console.log(`[FederatedCatalogueStore] Stored local data for ${id}`);
       this.notifyComponents(id, resourceWithId); //??
       return id;
     } catch (error) {

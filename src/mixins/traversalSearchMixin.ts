@@ -18,10 +18,7 @@ const TraversalSearchMixin = {
       type: Array,
       default: [],
       callback(newValue: []) {
-        // if results are refreshed, re-populate
-        console.log('Results changed, repopulate');
         if (newValue) {
-          console.log('Results changed, repopulate');
           this.populate();
         }
       },
@@ -30,21 +27,13 @@ const TraversalSearchMixin = {
   created() {
     this.searchCount = new Map();
     this.engine = undefined; //new QueryEngine();
-    this.element.addEventListener('populate', () => {
-      console.log(this.results);
-    });
+    this.element.addEventListener('populate', () => {});
   },
   async triggerTraversalSearch(): Promise<void> {
-    console.log(this.element);
-    console.log('Fields', this.fields);
     // Get all values from all fields in the form
     // Add that to a values[] arrayconst fields = Object.keys(filters);
     const fields = parseFieldsString(this.fields);
     for (const field of fields) {
-      console.log(
-        field,
-        this.element.querySelector(`[name="${field}"] input`).value,
-      );
       this.values[field] = [];
 
       const valuesArray = parseFieldsString(
@@ -74,8 +63,6 @@ const TraversalSearchMixin = {
       sources: makeSources(this.values.skills),
     });
 
-    console.log('Start querying...');
-
     bindingsStream.on('data', (binding: any) => {
       const user = {
         '@id': binding.get('user').value,
@@ -83,10 +70,7 @@ const TraversalSearchMixin = {
         last_name: binding.get('last_name').value,
       };
 
-      console.log('Found new user', user);
-
       this.results.push(user);
-      console.log(this.results);
       this.populate();
     });
 

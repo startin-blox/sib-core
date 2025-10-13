@@ -21,11 +21,9 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    * Convert a Resource to the stored shape: move '@id' -> 'id'.
    */
   private toStored(resource: Resource): any {
-    console.log('[IndexedDB] Converting resource to stored format', resource);
     if (!resource) return resource;
     const { ['@id']: atId, ...rest } = resource;
     const result = this.deepUnwrap({ ...rest, id: atId });
-    console.log('[IndexedDB] Converted proxy to :', result);
     return result;
   }
 
@@ -101,7 +99,6 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    */
   async getByUrl(url: string): Promise<Resource | undefined> {
     const db = await this.dbPromise;
-    console.log('[CacheManager] Getting resource by URL', url, db);
     return new Promise((resolve, reject) => {
       const tx = db.transaction('urlToId', 'readonly');
       const store = tx.objectStore('urlToId');
@@ -151,7 +148,6 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
    */
   async get(ref: string): Promise<Resource | undefined> {
     const db = await this.dbPromise;
-    console.log('[CacheManager] Getting resource by REF', ref, db);
 
     return new Promise((resolve, reject) => {
       const tx = db.transaction(['resources', 'urlToId'], 'readonly');
@@ -233,12 +229,6 @@ export class IndexedDBCacheManager implements CacheManagerInterface {
       const tx = db.transaction(['resources', 'urlToId'], 'readwrite');
       const resourcesStore = tx.objectStore('resources');
       const urlToIdStore = tx.objectStore('urlToId');
-
-      // Put the resource under its @id
-      console.log(
-        '[IndexedDB] Storing resource',
-        this.toStored(await resource),
-      );
       const putResReq = resourcesStore.put(this.toStored(await resource));
       putResReq.onerror = () => {
         reject(putResReq.error);

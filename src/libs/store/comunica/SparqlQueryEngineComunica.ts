@@ -68,7 +68,6 @@ export class SparqlQueryEngineComunica {
       await this.updateCallback(binding.get('result').value);
     });
     await this.makeBindingsStreamPromise(bindingsStream);
-    console.log(count);
     if (count === 0) {
       this.resetCallback();
     }
@@ -95,7 +94,6 @@ export class SparqlQueryEngineComunica {
     metaIndex: string[],
   ): Promise<void> {
     const bindingsStream = await this.makeBindingsStream(query, metaIndex);
-    console.log('Query launched', query);
     bindingsStream.on('data', (binding: any) =>
       callback(binding.get('result').value),
     );
@@ -197,7 +195,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...skillIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
@@ -211,7 +208,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...skillIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     await this.getIndexResultsAsStream(query, callbackLastName, [
@@ -240,7 +236,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...cityIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
@@ -254,7 +249,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...cityIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     await this.getIndexResultsAsStream(query, callbackLastName, [
@@ -292,7 +286,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...skillIndexes, ...cityIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     const query = SparqlQueryFactory.makeMetaIndexNameQuery(patterns);
@@ -307,7 +300,6 @@ export class SparqlQueryEngineComunica {
         patterns,
       );
       const sources = [nameMetaIndex, ...skillIndexes, ...cityIndexes];
-      console.log(userQuery, sources);
       this.getUsers(userQuery, sources);
     };
     await this.getIndexResultsAsStream(query, callbackLastName, [

@@ -25,7 +25,6 @@ export default class LoaderQuadStreamCore
 
   public async load(uri: string, _otherFetch?: Fetch): Promise<Stream<Quad>> {
     const headers = store.headers;
-    console.log(`Loading·specific·URI·${uri}`);
     const response = await store.fetchAuthn(uri, {
       method: 'GET',
       headers: headers,

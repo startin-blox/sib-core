@@ -1,19 +1,25 @@
 // Minimal Node.js polyfills for browser environment - only what's actually needed
 if (typeof window !== 'undefined') {
   // Process polyfill - needed by semantizer for stdout/stderr
-  if (typeof (window as any).process === 'undefined') {
-    (window as any).process = {
+  if (
+    typeof (window as unknown as Record<string, unknown>).process ===
+    'undefined'
+  ) {
+    (window as unknown as Record<string, unknown>).process = {
       env: {},
       browser: true,
       stdout: {
-        write: (data: any) => console.log(data),
-        pipe: (dest: any) => dest,
+        write: (_data: unknown) => {},
+        pipe: (dest: unknown) => dest,
       },
       stderr: {
-        write: (data: any) => console.error(data),
-        pipe: (dest: any) => dest,
+        write: (data: unknown) => console.error(data),
+        pipe: (dest: unknown) => dest,
       },
-      nextTick: (callback: Function, ...args: any[]) => {
+      nextTick: (
+        callback: (...args: unknown[]) => void,
+        ...args: unknown[]
+      ) => {
         // Use setTimeout with 0 delay to simulate nextTick
         setTimeout(() => callback(...args), 0);
       },
@@ -21,8 +27,10 @@ if (typeof window !== 'undefined') {
   }
 
   // Global polyfill
-  if (typeof (window as any).global === 'undefined') {
-    (window as any).global = window;
+  if (
+    typeof (window as unknown as Record<string, unknown>).global === 'undefined'
+  ) {
+    (window as unknown as Record<string, unknown>).global = window;
   }
 }
 

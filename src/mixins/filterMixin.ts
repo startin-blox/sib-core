@@ -94,11 +94,6 @@ const FilterMixin = {
 
       // Create the local container to store search results
       await this.initLocalDataSourceContainerForSearchResults();
-      console.log(
-        'Init index based search',
-        this.dataSrcIndex,
-        this.dataSrcProfile,
-      );
 
       const filterValues = this.searchForm.component.value;
       this.triggerIndexSearch(filterValues);

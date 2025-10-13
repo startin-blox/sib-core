@@ -20,11 +20,8 @@ export class PostProcessorRegistry {
 
   public printCurrentCallbacks(): void {
     if (this.currentPostProcessors.length === 0) {
-      console.log('No post-processors registered.');
     } else {
-      console.log('Registered post-processors:');
-      for (const postProcessor of this.currentPostProcessors) {
-        console.log(`- ${postProcessor.name}`);
+      for (const _postProcessor of this.currentPostProcessors) {
       }
     }
   }

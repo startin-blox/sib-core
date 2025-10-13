@@ -105,12 +105,6 @@ export const EdcCatalogDisplay = {
       const offerId = offer['@id'];
       const assetId = dataset['@id'];
 
-      console.log(
-        `Starting negotiation for asset ${assetId} with offer ${offerId}`,
-      );
-      console.log('Dataset:', dataset);
-      console.log('Offer policy:', offer);
-
       // Mark this dataset as negotiating
       this.negotiations.set(assetId, { status: 'negotiating', offerId });
       this.render();
@@ -131,8 +125,6 @@ export const EdcCatalogDisplay = {
         assetId,
         modifiedOffer,
       );
-
-      console.log(`Negotiation initiated: ${negotiationId}`);
 
       // Update negotiation status to pending and start polling
       this.negotiations.set(assetId, {
@@ -166,10 +158,6 @@ export const EdcCatalogDisplay = {
         }
         const store = this.store;
         const status = await (store as any).getNegotiationStatus(negotiationId);
-
-        console.log(
-          `Polling attempt ${attempt + 1}: Negotiation ${negotiationId} state: ${status.state}`,
-        );
 
         // Update UI to show current state and progress
         this.negotiations.set(assetId, {

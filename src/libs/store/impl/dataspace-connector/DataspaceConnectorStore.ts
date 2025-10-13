@@ -123,10 +123,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     const catalogRequest: CatalogRequest =
       this.buildV3CatalogRequest(counterPartyAddress);
-    console.log(
-      'Sending v3 catalog request:',
-      JSON.stringify(catalogRequest, null, 2),
-    );
 
     const response = await this.fetchAuthn(this.config.catalogEndpoint, {
       method: 'POST',
@@ -332,9 +328,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       });
 
       if (!response.ok) {
-        // If request endpoint fails, try simple GET
-        console.log('Request endpoint failed, trying simple GET...');
-
         const getResponse = await this.fetchAuthn(
           `${this.config.contractNegotiationEndpoint}?offset=0&limit=1000`,
           {
@@ -366,15 +359,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
    * Load existing agreements from EDC connector
    */
   async loadExistingAgreements(): Promise<void> {
-    console.log(
-      '🔍 Loading existing contract agreements from EDC connector...',
-    );
-
     try {
       const negotiations = await this.getAllContractNegotiations();
-      console.log(`📋 Found ${negotiations.length} contract negotiations`);
 
-      let loadedCount = 0;
+      let _loadedCount = 0;
       for (const negotiation of negotiations) {
         // Only process finalized/agreed negotiations
         if (
@@ -386,10 +374,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
               negotiation['@id'],
             );
             if (agreement) {
-              loadedCount++;
-              console.log(
-                `✅ Loaded agreement for asset ${agreement.assetId}: ${agreement['@id']}`,
-              );
+              _loadedCount++;
             }
           } catch (error) {
             console.warn(
@@ -399,10 +384,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           }
         }
       }
-
-      console.log(
-        `🎯 Successfully loaded ${loadedCount} existing agreements from ${negotiations.length} negotiations`,
-      );
     } catch (error) {
       console.error('Error loading existing agreements:', error);
     }
@@ -519,10 +500,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     const edrResponse: EDRResponse = await response.json();
     const transferId = edrResponse['@id'];
 
-    console.log('✅ EDR transfer initiated successfully');
-    console.log(`🆔 Transfer Process ID: ${transferId}`);
-    console.log('📄 Full EDR Response:', edrResponse);
-
     // Update asset agreement mapping with transfer ID
     const mapping = this.assetAgreements.get(assetId);
     if (mapping) {
@@ -550,13 +527,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     const requestUrl = `${edrsEndpoint}/${transferId}/dataaddress`;
 
-    console.log(`📡 Getting EDR token from: ${requestUrl}`);
-    console.log(`🔍 Transfer Process ID: ${transferId}`);
-
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(`🔄 EDR token retrieval attempt ${attempt}/${maxRetries}`);
-
         const response = await this.fetchAuthn(requestUrl, {
           method: 'GET',
           headers: this.headers,
@@ -564,8 +536,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
         if (response.ok) {
           const edrDataAddress: EDRDataAddress = await response.json();
-
-          console.log('✅ EDR token retrieved successfully:', edrDataAddress);
 
           // Store the EDR token
           this.edrTokens.set(transferId, edrDataAddress);
@@ -586,7 +556,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         let errorObj: any;
         try {
           errorObj = JSON.parse(errorText);
-        } catch (e) {
+        } catch (_e) {
           errorObj = { message: errorText };
         }
 
@@ -597,7 +567,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
         // If this is a 404 (not found) and we have more retries, wait and try again
         if (response.status === 404 && attempt < maxRetries) {
-          console.log(`⏳ Waiting ${retryDelay}ms before retry...`);
           await new Promise(resolve => setTimeout(resolve, retryDelay));
           continue;
         }
@@ -684,29 +653,20 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     additionalPath?: string,
   ): Promise<any> {
     try {
-      console.log(`Starting complete asset access flow for: ${assetId}`);
-
       // Check if we already have an EDR token for this asset
       const existingMapping = this.assetAgreements.get(assetId);
       if (existingMapping?.edrToken && existingMapping.transferId) {
         const edrDataAddress = this.edrTokens.get(existingMapping.transferId);
         if (edrDataAddress) {
-          console.log('Using existing EDR token for asset access');
           return await this.fetchWithEDRToken(edrDataAddress, additionalPath);
         }
       }
-
-      // 1. Negotiate contract
-      console.log('Step 1: Negotiating contract...');
       const negotiationId = await this.negotiateContract(
         counterPartyAddress,
         assetId,
         policy,
         counterPartyId,
       );
-
-      // 2. Wait for negotiation to complete (caller should handle this)
-      console.log('Step 2: Waiting for negotiation completion...');
       // Note: In practice, the component should poll getNegotiationStatus()
       // until state is FINALIZED before proceeding
 
@@ -727,34 +687,19 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     additionalPath?: string,
   ): Promise<any> {
     try {
-      console.log(
-        `Continuing asset access flow for negotiation: ${negotiationId}`,
-      );
-
-      // 1. Get contract agreement
-      console.log('Step 1: Retrieving contract agreement...');
       const agreement = await this.getContractAgreement(negotiationId);
       if (!agreement) {
         throw new Error('Failed to retrieve contract agreement');
       }
-
-      // 2. Initiate EDR transfer
-      console.log('Step 2: Initiating EDR transfer...');
       const transferId = await this.initiateEDRTransfer(
         assetId,
         counterPartyAddress,
         agreement['@id'],
       );
-
-      // 3. Get EDR token
-      console.log('Step 3: Retrieving EDR token...');
       const edrDataAddress = await this.getEDRToken(transferId);
       if (!edrDataAddress) {
         throw new Error('Failed to retrieve EDR token');
       }
-
-      // 4. Access data with EDR token
-      console.log('Step 4: Accessing data with EDR token...');
       const data = await this.fetchWithEDRToken(edrDataAddress, additionalPath);
 
       return data;
@@ -791,8 +736,6 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     resourceId: string,
   ): Promise<Resource | null> {
     try {
-      console.log(`Fetching resource through dataspace: ${resourceId}`);
-
       // 1. Get catalog to find dataset
       const catalog = await this.getCatalog();
       if (!catalog) {
@@ -800,16 +743,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         return null;
       }
 
-      console.log('Catalog received:', catalog);
-
       // 2. Find dataset in catalog
       const dataset = this.findDatasetInCatalog(catalog, resourceId);
       if (!dataset) {
         console.error(`Dataset ${resourceId} not found in catalog`);
         return null;
       }
-
-      console.log('Dataset found:', dataset);
 
       // For demo purposes, return the catalog as a mock resource
       // In a real implementation, you would continue with contract negotiation

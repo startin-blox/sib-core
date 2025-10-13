@@ -64,18 +64,9 @@ export class FederatedCatalogueSearchProvider implements SearchProvider {
    * @returns Promise resolving to an array of matching resources
    */
   async query(options: IndexQueryOptions): Promise<any[]> {
-    console.log(
-      '🔍 [FederatedCatalogueSearchProvider.query] Starting query with options:',
-      JSON.stringify(options, null, 2),
-    );
-
     try {
       const queryStatement = this.buildQuery(options);
       const results = await this.executeQuery(queryStatement);
-
-      console.log(
-        `✅ [FederatedCatalogueSearchProvider.query] Found ${results.items.length} results`,
-      );
 
       return results.items;
     } catch (error) {
@@ -93,10 +84,6 @@ export class FederatedCatalogueSearchProvider implements SearchProvider {
    * @returns Promise<any[]> - Array of matching resources that satisfy ALL criteria
    */
   async queryConjunction(options: ConjunctionQueryOptions): Promise<any[]> {
-    console.log(
-      '🔍 [FederatedCatalogueSearchProvider.queryConjunction] Starting conjunction query',
-    );
-
     const filterFields = Object.entries(options.filterValues);
 
     if (filterFields.length === 0) {
@@ -107,10 +94,6 @@ export class FederatedCatalogueSearchProvider implements SearchProvider {
       // Build a single query with AND conditions for all filter fields
       const queryStatement = this.buildConjunctionQuery(options);
       const results = await this.executeQuery(queryStatement);
-
-      console.log(
-        `✅ [FederatedCatalogueSearchProvider.queryConjunction] Found ${results.items.length} results`,
-      );
 
       return results.items;
     } catch (error) {
@@ -135,11 +118,6 @@ export class FederatedCatalogueSearchProvider implements SearchProvider {
       queryLanguage: statement.queryLanguage || this.config.queryLanguage,
       timeout: statement.timeout || this.config.timeout,
     };
-
-    console.log(
-      '🌐 [FederatedCatalogueSearchProvider.querySearch] Executing distributed search:',
-      requestBody,
-    );
 
     const response = await fetch(url, {
       method: 'POST',

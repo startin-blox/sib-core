@@ -116,8 +116,7 @@ const StoreMixin = {
       this.resourceId = nestedResource ? await nestedResource['@id'] : null;
 
       if (resource && !this.resourceId && !nestedResource) {
-        for (const property in await resource) {
-          console.log(`${property}: ${await resource[property]}`);
+        for (const _property in await resource) {
         }
         throw `Error: the key "${this.nestedField}" does not exist on the resource at id "${resource['@id']}"`;
       }

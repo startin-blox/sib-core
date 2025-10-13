@@ -43,7 +43,6 @@ export const EdcFederatedCatalogDisplay = {
       callback: function (value: string) {
         try {
           this._providersArray = value ? JSON.parse(value) : [];
-          console.log('Providers parsed:', this._providersArray);
           this.initializeProviderRegistry(); // Initialize registry when providers are set
           if (
             this._providersArray?.length > 0 &&
@@ -99,7 +98,6 @@ export const EdcFederatedCatalogDisplay = {
 
   initializeProviderRegistry() {
     if (!this._providersArray || this._providersArray.length === 0) {
-      console.log('No providers available for registry initialization');
       return;
     }
 
@@ -115,12 +113,6 @@ export const EdcFederatedCatalogDisplay = {
     );
 
     this.providerRegistry = new ProviderRegistry(providerInfos);
-    console.log(
-      '✅ Provider registry initialized with',
-      providerInfos.length,
-      'providers:',
-      providerInfos,
-    );
   },
 
   async fetchFederatedCatalog() {
@@ -169,9 +161,6 @@ export const EdcFederatedCatalogDisplay = {
         this.render();
 
         try {
-          console.log(
-            `Fetching catalog from ${provider.name} (${provider.address})`,
-          );
           const catalog = await (store as any).getCatalog(provider.address);
 
           if (catalog) {
@@ -190,9 +179,6 @@ export const EdcFederatedCatalogDisplay = {
                 registryProvider.participantId = catalog.participantId;
                 registryProvider.status = 'online';
                 registryProvider.lastSeen = new Date().toISOString();
-                console.log(
-                  `✅ Discovered participant ID for ${provider.name}: ${catalog.participantId}`,
-                );
               }
             }
 
@@ -256,15 +242,8 @@ export const EdcFederatedCatalogDisplay = {
 
       // Store the store instance for later use in negotiations
       this.stores.set('default', store);
-
-      // Load existing agreements from EDC connector
-      console.log('🔄 Loading existing agreements...');
       await (store as any).loadExistingAgreements();
       this.render(); // Re-render to show existing agreement buttons
-
-      console.log(
-        `Federated catalog loaded: ${this.federatedDatasets.length} unique datasets from ${this._providersArray.length} providers`,
-      );
     } catch (error) {
       console.error('Failed to fetch federated catalog:', error);
       this.error = (error as Error).message;
@@ -320,10 +299,6 @@ export const EdcFederatedCatalogDisplay = {
   },
 
   getFilteredDatasets(): FederatedDataset[] {
-    console.log(
-      'getFilteredDatasets called with searchQuery:',
-      this.searchQuery,
-    );
     let filtered = this.federatedDatasets;
 
     // Filter by selected providers
@@ -331,12 +306,10 @@ export const EdcFederatedCatalogDisplay = {
     filtered = filtered.filter(item =>
       this.selectedProviders.has(item.provider.address),
     );
-    console.log('After provider filtering:', filtered.length, 'datasets');
 
     // Filter by search query
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.toLowerCase().trim();
-      console.log('Applying search filter for:', query);
       filtered = filtered.filter(item => {
         const dataset = item.dataset;
         const title = (
@@ -360,13 +333,8 @@ export const EdcFederatedCatalogDisplay = {
           keywords.includes(query) ||
           providername.includes(query) ||
           dataset['@id'].toLowerCase().includes(query);
-
-        console.log(
-          `Dataset ${dataset['@id']}: title="${title}", matches=${matches}`,
-        );
         return matches;
       });
-      console.log('After search filtering:', filtered.length, 'datasets');
     }
 
     return filtered;
@@ -419,14 +387,9 @@ export const EdcFederatedCatalogDisplay = {
       console.error('Store not available for negotiation');
       return;
     }
-
-    // Check if we already have a valid agreement for this asset
-    console.log(`🔍 Checking for existing agreement for asset: ${assetId}`);
     const existingAgreement = (store as any).getAssetAgreement(assetId);
 
     if (existingAgreement) {
-      console.log('✅ Found existing agreement for asset:', existingAgreement);
-
       // Set the negotiation state to granted with existing agreement
       this.negotiations.set(negotiationKey, {
         status: 'granted',
@@ -440,16 +403,8 @@ export const EdcFederatedCatalogDisplay = {
         edrToken: existingAgreement.edrToken,
       });
       this.render();
-
-      console.log(
-        `🎯 Reusing existing agreement for ${assetId} - no re-negotiation needed`,
-      );
       return;
     }
-
-    console.log(
-      `📝 No existing agreement found for ${assetId}, starting new negotiation`,
-    );
 
     // Get policies using the helper method (supports both direct and distribution-based policies)
     const policies = this.getPoliciesFromDataset(dataset);
@@ -461,22 +416,12 @@ export const EdcFederatedCatalogDisplay = {
     try {
       // Use the first available policy for negotiation
       const policyDefinition = policies[0];
-      console.log(
-        'Selected policy for negotiation:',
-        dataset,
-        policyDefinition,
-      );
 
       if (!policyDefinition) {
         throw new Error('No valid policy found for negotiation');
       }
 
       const offerId = policyDefinition['@id'];
-
-      console.log(
-        `Starting negotiation for asset ${assetId} with provider ${provider.name} (${provider.address})`,
-      );
-      console.log('Selected policy definition:', policyDefinition);
 
       // Create negotiation key that includes provider
       this.negotiations.set(negotiationKey, {
@@ -486,11 +431,6 @@ export const EdcFederatedCatalogDisplay = {
         assetId,
       });
       this.render();
-
-      console.log(
-        'Using policy from catalog for negotiation:',
-        policyDefinition,
-      );
 
       // Get participant ID from registry
       const registryProvider = this.providerRegistry?.getProviderByAddress(
@@ -511,18 +451,12 @@ export const EdcFederatedCatalogDisplay = {
         target: policyDefinition.target || assetId, // Set target to assetId if not present
       };
 
-      console.log('Processed policy for negotiation:', processedPolicy);
-
       // Use the processed policy with correct target field
       const negotiationId = await (store as any).negotiateContract(
         provider.address,
         assetId,
         processedPolicy,
         participantId,
-      );
-
-      console.log(
-        `Negotiation initiated: ${negotiationId} with ${provider.name}`,
       );
 
       this.negotiations.set(negotiationKey, {
@@ -563,10 +497,6 @@ export const EdcFederatedCatalogDisplay = {
         const status = await (store as any).getNegotiationStatus(negotiationId);
         const negotiation = this.negotiations.get(negotiationKey);
 
-        console.log(
-          `Polling attempt ${attempt + 1}: Negotiation ${negotiationId} state: ${status.state}`,
-        );
-
         this.negotiations.set(negotiationKey, {
           ...negotiation,
           status: 'pending',
@@ -592,7 +522,6 @@ export const EdcFederatedCatalogDisplay = {
               contractId,
               agreement,
             });
-            console.log(`✅ Contract agreement retrieved: ${contractId}`);
           } catch (error) {
             console.error('Failed to retrieve contract agreement:', error);
             this.negotiations.set(negotiationKey, {
@@ -645,8 +574,6 @@ export const EdcFederatedCatalogDisplay = {
     const negotiationKey = `${assetId}@${provider.address}`;
 
     try {
-      console.log(`🚀 Initiating EDR transfer for asset ${assetId}`);
-
       // Update UI to show loading
       this.negotiations.set(negotiationKey, {
         ...negotiation,
@@ -665,15 +592,11 @@ export const EdcFederatedCatalogDisplay = {
         negotiation.contractId,
       );
 
-      console.log(`✅ EDR transfer initiated: ${transferId}`);
-
       // Get EDR token
       const edrDataAddress = await (store as any).getEDRToken(transferId);
       if (!edrDataAddress) {
         throw new Error('Failed to retrieve EDR token');
       }
-
-      console.log('🔑 EDR token retrieved successfully');
 
       // Transform localhost endpoint to public provider address
       let transformedEndpoint = edrDataAddress.endpoint;
@@ -686,10 +609,6 @@ export const EdcFederatedCatalogDisplay = {
         const providerBase = provider.address.replace('/protocol', '');
         const localUrl = new URL(transformedEndpoint);
         transformedEndpoint = `${providerBase}${localUrl.pathname}${localUrl.search}`;
-
-        console.log(`🔄 Transformed localhost endpoint:`);
-        console.log(`   Original: ${edrDataAddress.endpoint}`);
-        console.log(`   Transformed: ${transformedEndpoint}`);
       }
 
       // Update negotiation with transfer and token info
@@ -718,8 +637,6 @@ export const EdcFederatedCatalogDisplay = {
     const negotiationKey = `${assetId}@${provider.address}`;
 
     try {
-      console.log(`📁 Accessing data for asset ${assetId}`);
-
       // Update UI to show data access in progress
       this.negotiations.set(negotiationKey, {
         ...negotiation,
@@ -741,10 +658,6 @@ export const EdcFederatedCatalogDisplay = {
         const providerBase = provider.address.replace('/protocol', '');
         const localUrl = new URL(transformedEndpoint);
         transformedEndpoint = `${providerBase}${localUrl.pathname}${localUrl.search}`;
-
-        console.log(`🔄 Transforming localhost endpoint for data access:`);
-        console.log(`   Original: ${negotiation.edrEndpoint}`);
-        console.log(`   Transformed: ${transformedEndpoint}`);
       }
 
       const edrDataAddress = {
@@ -762,8 +675,6 @@ export const EdcFederatedCatalogDisplay = {
         assetId,
         provider,
       );
-
-      console.log('✅ Data access successful!', data);
 
       // For demo purposes, show a simple preview
       const preview = JSON.stringify(data, null, 2).substring(0, 500);
@@ -801,10 +712,6 @@ export const EdcFederatedCatalogDisplay = {
     pollInterval = 5000, // 5 seconds between attempts
   ) {
     const negotiationKey = `${assetId}@${provider.address}`;
-    console.log(`🔄 Starting long-polling data access for asset ${assetId}`);
-    console.log(
-      `⏱️ Will retry for up to ${(maxAttempts * pollInterval) / 1000} seconds`,
-    );
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       // Update UI with current attempt progress
@@ -820,16 +727,11 @@ export const EdcFederatedCatalogDisplay = {
       }
 
       try {
-        console.log(`📡 Data access attempt ${attempt}/${maxAttempts}`);
-
         const data = await store.fetchWithEDRToken(edrDataAddress);
 
         if (data) {
-          console.log(`✅ Data retrieved successfully on attempt ${attempt}`);
           return data;
         }
-
-        console.log(`⚠️ No data returned on attempt ${attempt}, retrying...`);
       } catch (error) {
         const errorMessage = (error as Error).message;
         console.warn(
@@ -855,10 +757,6 @@ export const EdcFederatedCatalogDisplay = {
 
       // Wait before next attempt (except on the last iteration)
       if (attempt < maxAttempts) {
-        console.log(
-          `⏳ Waiting ${pollInterval / 1000} seconds before retry...`,
-        );
-
         // Show countdown in UI during wait
         for (let countdown = pollInterval / 1000; countdown > 0; countdown--) {
           const currentNegotiation = this.negotiations.get(negotiationKey);
@@ -893,9 +791,7 @@ export const EdcFederatedCatalogDisplay = {
 
   handleSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    console.log('Search input changed:', input.value);
     this.searchQuery = input.value;
-    console.log('Updated searchQuery state:', this.searchQuery);
     this.render();
   },
 
@@ -1148,7 +1044,7 @@ export const EdcFederatedCatalogDisplay = {
               <span class="spinner">🚀</span> Getting EDR Token...
             </span>
           </div>`;
-        case 'accessing-data':
+        case 'accessing-data': {
           const progressPercent =
             negotiation.dataAccessAttempt && negotiation.dataAccessMaxAttempts
               ? (negotiation.dataAccessAttempt /
@@ -1180,6 +1076,7 @@ export const EdcFederatedCatalogDisplay = {
                 : ''
             }
           </div>`;
+        }
         case 'granted':
           return html`<div class="negotiation-success">
             <span class="access-granted">✅ Access Granted via ${provider.name}</span>

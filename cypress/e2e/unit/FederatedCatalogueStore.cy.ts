@@ -344,9 +344,7 @@ describe('FederatedCatalogueStore', () => {
             expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
           });
         });
-      } catch (e) {
-        console.log('-------------------e', e);
-      }
+      } catch (_e) {}
     });
   });
 });

@@ -79,18 +79,12 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async getAllSelfDescriptions() {
-    console.log(
-      'Fetching all self-descriptions from Federated Catalogue...',
-      this.fcBaseUrl,
-    );
     const token = await this.connect();
-    console.log('Token received:', token);
 
     const url = `${this.fcBaseUrl}/self-descriptions`;
     const headers = new Headers({ Authorization: `Bearer ${token}` });
 
     const response = await fetch(url, { headers });
-    console.log('Response status:', response.status);
     return (await response.json()) as SelfDescriptions;
   }
 

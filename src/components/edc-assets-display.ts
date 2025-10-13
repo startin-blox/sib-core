@@ -45,7 +45,6 @@ export const EdcAssetsDisplay = {
   },
 
   async fetchAssets() {
-    console.log('fetchAssets', this.connectorUri, this.apiKey);
     if (!this.connectorUri || !this.apiKey) return;
 
     this.loading = true;
@@ -68,7 +67,6 @@ export const EdcAssetsDisplay = {
 
       // Create temporary store instance for EDC
       const store = StoreFactory.create(config);
-      console.log('store', store);
       const assetsRaw = await (store as any).getAssets();
 
       // Ensure assets is always an array (API might return single object when only one asset)
@@ -88,7 +86,6 @@ export const EdcAssetsDisplay = {
   },
 
   render() {
-    console.log('render', this.assets);
     if (this.loading) {
       render(html`<div class="loading">Loading assets...</div>`, this.element);
       return;

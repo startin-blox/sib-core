@@ -40,8 +40,6 @@ export default class IndexLoader extends LoaderBase implements Loader {
         input.push(null);
       },
     });
-
-    console.log('[IndexLoader] Input loaded', input);
     const parserJsonld = new ParserJsonld();
     const quads = parserJsonld.import(input);
     const resDataset = datasetFactory.dataset();

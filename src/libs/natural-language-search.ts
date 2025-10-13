@@ -60,8 +60,6 @@ export class NaturalLanguageSearch {
         modelPath = '/ner_model_quantized.onnx',
         ort = (window as any).ort,
       } = config;
-      console.log('tokenizerPath', tokenizerPath);
-      console.log('modelPath', modelPath);
 
       this.labels = [...labels];
       this.ort = ort;
@@ -78,7 +76,6 @@ export class NaturalLanguageSearch {
         'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.0';
       const { env, AutoTokenizer } = await import(transformersUrl);
       env.localModelPath = baseUrl;
-      console.log('ort', ort);
       this.tokenizer = await AutoTokenizer.from_pretrained(tokenizerPath);
       this.session = await this.ort.InferenceSession.create(modelPath);
       this.isInitialized = true;
