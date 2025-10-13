@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
       env: {},
       browser: true,
       stdout: {
-        write: (_data: unknown) => {},
+        write: (data: unknown) => console.log(data),
         pipe: (dest: unknown) => dest,
       },
       stderr: {

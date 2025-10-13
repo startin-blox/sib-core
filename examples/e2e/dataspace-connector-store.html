@@ -9,11 +9,19 @@
     <div id="status">Loading...</div>
 
     <script type="module">
-        // Wait for DOM to be ready
-        document.addEventListener('DOMContentLoaded', async () => {
+        (async () => {
             try {
-                // Import StoreService from index.js which exports it
-                const { StoreService } = await import('../../dist/store.js');
+                console.log('🔄 Starting store initialization...');
+
+                // Import StoreService from store.js which exports it
+                const storeModule = await import('../../dist/store.js');
+                console.log('✅ Store module imported:', Object.keys(storeModule));
+
+                const { StoreService } = storeModule;
+
+                if (!StoreService) {
+                    throw new Error('StoreService not found in module exports');
+                }
 
                 // Force reset of StoreService to allow reinitialization
                 StoreService.currentStore = null;
@@ -33,21 +41,35 @@
                     timeout: 30000
                 };
 
+                console.log('🔧 Initializing EDC store with config:', config);
+
                 // Initialize a new DataspaceConnector store
                 StoreService.init(config);
-                window.edcStore = StoreService.getInstance();
+                const storeInstance = StoreService.getInstance();
+
+                console.log('✅ Store instance created:', storeInstance);
+
+                // Set on window immediately
+                window.edcStore = storeInstance;
+
+                console.log('✅ window.edcStore set:', window.edcStore);
+
+                // Update status
                 document.getElementById('status').textContent = 'Store initialized successfully';
                 console.log('✅ DataspaceConnector store available as window.edcStore');
-                
+
             } catch (error) {
-                document.getElementById('status').textContent = 'Error: ' + error.message;
-                console.error('Store initialization error:', error);
+                const errorMsg = 'Error: ' + error.message;
+                console.error('❌ Store initialization error:', error);
                 console.error('Error stack:', error.stack);
-                
+
+                // Update status
+                document.getElementById('status').textContent = errorMsg;
+
                 // Also make the error details available on window for debugging
                 window.storeError = error;
             }
-        });
+        })();
     </script>
 </body>
 </html>

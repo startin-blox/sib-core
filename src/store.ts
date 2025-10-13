@@ -11,5 +11,6 @@ import { StoreService } from './libs/store/storeService.ts';
 const sibStore = StoreService.getInstance();
 if (!sibStore) throw new Error('Store is not available');
 
-const semantizer = (globalThis as any).SEMANTIZER;
+const semantizer = (globalThis as unknown as Record<string, unknown>)
+  .SEMANTIZER;
 export { semantizer as SEMANTIZER, StoreService, baseContext, sibStore };
