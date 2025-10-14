@@ -15,7 +15,7 @@ export class AssetValidationError extends Error {
     assetId: string,
     validationType: 'update' | 'delete',
     reason: 'agreements' | 'negotiations',
-    details?: any
+    details?: any,
   ) {
     super(message);
     this.name = 'AssetValidationError';

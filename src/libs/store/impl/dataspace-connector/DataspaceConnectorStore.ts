@@ -1259,34 +1259,35 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     // Check if asset has any agreements or negotiations
     const hasAgreement = this.hasValidAgreement(assetId);
     if (hasAgreement) {
-      const message = `Cannot update asset ${assetId}: Asset has active contract agreements. ` +
+      const message =
+        `Cannot update asset ${assetId}: Asset has active contract agreements. ` +
         `Deleting an asset with agreements would invalidate existing contracts. ` +
         `Please terminate or complete all negotiations first.`;
-      throw new AssetValidationError(
-        message,
-        assetId,
-        'update',
-        'agreements'
-      );
+      throw new AssetValidationError(message, assetId, 'update', 'agreements');
     }
 
     // Check if asset is involved in any negotiations
     const negotiations = await this.getAllContractNegotiations();
-    const activeNegotiations = negotiations.filter(neg =>
-      neg.state !== 'FINALIZED' &&
-      neg.state !== 'TERMINATED' &&
-      neg.assetId === assetId
+    const activeNegotiations = negotiations.filter(
+      neg =>
+        neg.state !== 'FINALIZED' &&
+        neg.state !== 'TERMINATED' &&
+        neg.assetId === assetId,
     );
 
     if (activeNegotiations.length > 0) {
-      const message = `Cannot update asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
+      const message =
+        `Cannot update asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
         `Please wait for negotiations to complete or terminate them first.`;
       throw new AssetValidationError(
         message,
         assetId,
         'update',
         'negotiations',
-        { negotiationCount: activeNegotiations.length, negotiations: activeNegotiations }
+        {
+          negotiationCount: activeNegotiations.length,
+          negotiations: activeNegotiations,
+        },
       );
     }
 
@@ -1296,7 +1297,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     try {
       const deleted = await this.deleteAsset(assetId, true);
       if (!deleted) {
-        throw new Error(`Failed to delete existing asset ${assetId} for update`);
+        throw new Error(
+          `Failed to delete existing asset ${assetId} for update`,
+        );
       }
     } catch (deleteError) {
       // If deleteAsset throws AssetValidationError (from 409), convert it to update operation
@@ -1306,7 +1309,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           assetId,
           'update',
           deleteError.reason,
-          deleteError.details
+          deleteError.details,
         );
       }
       throw deleteError;
@@ -1319,10 +1322,17 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       return updatedAsset;
     } catch (createError) {
       // If creation fails after deletion, we're in a bad state
-      console.error(`❌ Critical: Failed to recreate asset ${assetId} after deletion`, createError);
+      console.error(
+        `❌ Critical: Failed to recreate asset ${assetId} after deletion`,
+        createError,
+      );
+      const errorMessage =
+        createError instanceof Error
+          ? createError.message
+          : String(createError);
       throw new Error(
-        `Failed to recreate asset after deletion: ${createError.message}. ` +
-        `Asset ${assetId} has been deleted but not recreated.`
+        `Failed to recreate asset after deletion: ${errorMessage}. ` +
+          `Asset ${assetId} has been deleted but not recreated.`,
       );
     }
   }
@@ -1331,7 +1341,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
    * Delete asset
    * Prevents deletion if the asset has active contract agreements or negotiations
    */
-  async deleteAsset(assetId: string, skipAgreementCheck = false): Promise<boolean> {
+  async deleteAsset(
+    assetId: string,
+    skipAgreementCheck = false,
+  ): Promise<boolean> {
     await this.ensureAuthenticated();
 
     // Skip agreement check only when called internally from updateAsset
@@ -1339,34 +1352,40 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       // Check if asset has any agreements or negotiations
       const hasAgreement = this.hasValidAgreement(assetId);
       if (hasAgreement) {
-        const message = `Cannot delete asset ${assetId}: Asset has active contract agreements. ` +
+        const message =
+          `Cannot delete asset ${assetId}: Asset has active contract agreements. ` +
           `Deleting an asset with agreements would invalidate existing contracts. ` +
           `Please terminate or complete all negotiations first.`;
         throw new AssetValidationError(
           message,
           assetId,
           'delete',
-          'agreements'
+          'agreements',
         );
       }
 
       // Check if asset is involved in any negotiations
       const negotiations = await this.getAllContractNegotiations();
-      const activeNegotiations = negotiations.filter(neg =>
-        neg.state !== 'FINALIZED' &&
-        neg.state !== 'TERMINATED' &&
-        neg.assetId === assetId
+      const activeNegotiations = negotiations.filter(
+        neg =>
+          neg.state !== 'FINALIZED' &&
+          neg.state !== 'TERMINATED' &&
+          neg.assetId === assetId,
       );
 
       if (activeNegotiations.length > 0) {
-        const message = `Cannot delete asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
+        const message =
+          `Cannot delete asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
           `Please wait for negotiations to complete or terminate them first.`;
         throw new AssetValidationError(
           message,
           assetId,
           'delete',
           'negotiations',
-          { negotiationCount: activeNegotiations.length, negotiations: activeNegotiations }
+          {
+            negotiationCount: activeNegotiations.length,
+            negotiations: activeNegotiations,
+          },
         );
       }
     }
@@ -1392,9 +1411,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         try {
           const errorDetails = JSON.parse(errorText);
           // EDC returns array of error objects: [{"message":"...", "type":"ObjectConflict", ...}]
-          const errorMessage = Array.isArray(errorDetails) && errorDetails.length > 0
-            ? errorDetails[0].message
-            : errorText;
+          const errorMessage =
+            Array.isArray(errorDetails) && errorDetails.length > 0
+              ? errorDetails[0].message
+              : errorText;
 
           const message = `Cannot delete asset ${assetId}: ${errorMessage}`;
           throw new AssetValidationError(
@@ -1402,7 +1422,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
             assetId,
             'delete',
             'agreements',
-            { apiResponse: errorDetails }
+            { apiResponse: errorDetails },
           );
         } catch (parseError) {
           // If JSON parsing fails, throw AssetValidationError with raw text
@@ -1415,7 +1435,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
             assetId,
             'delete',
             'agreements',
-            { rawError: errorText }
+            { rawError: errorText },
           );
         }
       }
