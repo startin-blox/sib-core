@@ -27,6 +27,7 @@ import type {
   TransferProcess,
   TransferRequest,
 } from './types.ts';
+import { AssetValidationError } from './types.ts';
 
 export class DataspaceConnectorStore implements IStore<Resource> {
   cache: CacheManagerInterface;
@@ -1249,62 +1250,126 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Update existing asset
+   * Uses DELETE + POST pattern since PUT is not working with EDC v3 API
+   * Prevents updates if the asset has active contract agreements or negotiations
    */
   async updateAsset(assetId: string, assetInput: AssetInput): Promise<Asset> {
     await this.ensureAuthenticated();
 
-    const apiVersion = this.config.apiVersion || 'v3';
-    const assetsEndpoint =
-      this.config.assetsEndpoint ||
-      this.config.catalogEndpoint.replace(
-        '/catalog/request',
-        apiVersion === 'v3' ? '/assets' : '/assets',
-      );
-
-    const assetData = {
-      '@context': {
-        '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-        edc: 'https://w3id.org/edc/v0.0.1/ns/',
-      },
-      '@type': 'Asset',
-      '@id': assetInput['@id'],
-      properties: assetInput.properties || {},
-      dataAddress: assetInput.dataAddress,
-    };
-
-    const response = await this.fetchAuthn(`${assetsEndpoint}/${assetId}`, {
-      method: 'PUT',
-      headers: this.headers,
-      body: JSON.stringify(assetData),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Failed to update asset: ${response.status} ${response.statusText} - ${errorText}`,
+    // Check if asset has any agreements or negotiations
+    const hasAgreement = this.hasValidAgreement(assetId);
+    if (hasAgreement) {
+      const message = `Cannot update asset ${assetId}: Asset has active contract agreements. ` +
+        `Deleting an asset with agreements would invalidate existing contracts. ` +
+        `Please terminate or complete all negotiations first.`;
+      throw new AssetValidationError(
+        message,
+        assetId,
+        'update',
+        'agreements'
       );
     }
 
-    // Construct updated asset
-    const updatedAsset: Asset = {
-      '@type': 'Asset',
-      '@id': assetInput['@id'],
-      properties: assetInput.properties,
-      dataAddress: assetInput.dataAddress,
-      createdAt: Date.now(),
-    };
+    // Check if asset is involved in any negotiations
+    const negotiations = await this.getAllContractNegotiations();
+    const activeNegotiations = negotiations.filter(neg =>
+      neg.state !== 'FINALIZED' &&
+      neg.state !== 'TERMINATED' &&
+      neg.assetId === assetId
+    );
 
-    // Update cache (cast to Resource for compatibility)
-    await this.cache.set(assetId, updatedAsset as Resource);
+    if (activeNegotiations.length > 0) {
+      const message = `Cannot update asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
+        `Please wait for negotiations to complete or terminate them first.`;
+      throw new AssetValidationError(
+        message,
+        assetId,
+        'update',
+        'negotiations',
+        { negotiationCount: activeNegotiations.length, negotiations: activeNegotiations }
+      );
+    }
 
-    return updatedAsset;
+    console.log(`⚠️  Using DELETE + POST pattern to update asset ${assetId}`);
+
+    // Step 1: Delete the existing asset (skip agreement check since we already checked above)
+    try {
+      const deleted = await this.deleteAsset(assetId, true);
+      if (!deleted) {
+        throw new Error(`Failed to delete existing asset ${assetId} for update`);
+      }
+    } catch (deleteError) {
+      // If deleteAsset throws AssetValidationError (from 409), convert it to update operation
+      if (deleteError instanceof AssetValidationError) {
+        throw new AssetValidationError(
+          deleteError.message.replace('Cannot delete', 'Cannot update'),
+          assetId,
+          'update',
+          deleteError.reason,
+          deleteError.details
+        );
+      }
+      throw deleteError;
+    }
+
+    // Step 2: Create the asset with new data
+    try {
+      const updatedAsset = await this.createAsset(assetInput);
+      console.log(`✅ Asset ${assetId} updated successfully via DELETE + POST`);
+      return updatedAsset;
+    } catch (createError) {
+      // If creation fails after deletion, we're in a bad state
+      console.error(`❌ Critical: Failed to recreate asset ${assetId} after deletion`, createError);
+      throw new Error(
+        `Failed to recreate asset after deletion: ${createError.message}. ` +
+        `Asset ${assetId} has been deleted but not recreated.`
+      );
+    }
   }
 
   /**
    * Delete asset
+   * Prevents deletion if the asset has active contract agreements or negotiations
    */
-  async deleteAsset(assetId: string): Promise<boolean> {
+  async deleteAsset(assetId: string, skipAgreementCheck = false): Promise<boolean> {
     await this.ensureAuthenticated();
+
+    // Skip agreement check only when called internally from updateAsset
+    if (!skipAgreementCheck) {
+      // Check if asset has any agreements or negotiations
+      const hasAgreement = this.hasValidAgreement(assetId);
+      if (hasAgreement) {
+        const message = `Cannot delete asset ${assetId}: Asset has active contract agreements. ` +
+          `Deleting an asset with agreements would invalidate existing contracts. ` +
+          `Please terminate or complete all negotiations first.`;
+        throw new AssetValidationError(
+          message,
+          assetId,
+          'delete',
+          'agreements'
+        );
+      }
+
+      // Check if asset is involved in any negotiations
+      const negotiations = await this.getAllContractNegotiations();
+      const activeNegotiations = negotiations.filter(neg =>
+        neg.state !== 'FINALIZED' &&
+        neg.state !== 'TERMINATED' &&
+        neg.assetId === assetId
+      );
+
+      if (activeNegotiations.length > 0) {
+        const message = `Cannot delete asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
+          `Please wait for negotiations to complete or terminate them first.`;
+        throw new AssetValidationError(
+          message,
+          assetId,
+          'delete',
+          'negotiations',
+          { negotiationCount: activeNegotiations.length, negotiations: activeNegotiations }
+        );
+      }
+    }
 
     const apiVersion = this.config.apiVersion || 'v3';
     const assetsEndpoint =
@@ -1321,6 +1386,41 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     if (!response.ok) {
       const errorText = await response.text();
+
+      // Handle 409 Conflict - Asset has active agreements
+      if (response.status === 409) {
+        try {
+          const errorDetails = JSON.parse(errorText);
+          // EDC returns array of error objects: [{"message":"...", "type":"ObjectConflict", ...}]
+          const errorMessage = Array.isArray(errorDetails) && errorDetails.length > 0
+            ? errorDetails[0].message
+            : errorText;
+
+          const message = `Cannot delete asset ${assetId}: ${errorMessage}`;
+          throw new AssetValidationError(
+            message,
+            assetId,
+            'delete',
+            'agreements',
+            { apiResponse: errorDetails }
+          );
+        } catch (parseError) {
+          // If JSON parsing fails, throw AssetValidationError with raw text
+          if (parseError instanceof AssetValidationError) {
+            throw parseError; // Re-throw if it's already our custom error
+          }
+          const message = `Cannot delete asset ${assetId}: ${errorText}`;
+          throw new AssetValidationError(
+            message,
+            assetId,
+            'delete',
+            'agreements',
+            { rawError: errorText }
+          );
+        }
+      }
+
+      // For other errors, throw generic error
       throw new Error(
         `Failed to delete asset: ${response.status} ${response.statusText} - ${errorText}`,
       );
@@ -1328,6 +1428,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     // Remove from cache
     await this.cache.delete(assetId);
+
+    // Remove asset agreement mappings
+    this.assetAgreements.delete(assetId);
 
     return true;
   }

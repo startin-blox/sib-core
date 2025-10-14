@@ -1,5 +1,31 @@
 import type { StoreConfig } from '../../shared/types.ts';
 
+/**
+ * Custom error for asset validation failures (e.g., cannot update/delete due to agreements)
+ * This error is dispatched as an event that the UI can catch to show validation popups
+ */
+export class AssetValidationError extends Error {
+  public readonly assetId: string;
+  public readonly validationType: 'update' | 'delete';
+  public readonly reason: 'agreements' | 'negotiations';
+  public readonly details?: any;
+
+  constructor(
+    message: string,
+    assetId: string,
+    validationType: 'update' | 'delete',
+    reason: 'agreements' | 'negotiations',
+    details?: any
+  ) {
+    super(message);
+    this.name = 'AssetValidationError';
+    this.assetId = assetId;
+    this.validationType = validationType;
+    this.reason = reason;
+    this.details = details;
+  }
+}
+
 // Dataspace Protocol Configuration
 export interface DataspaceConnectorConfig extends StoreConfig {
   // Required endpoints (v3 API)
