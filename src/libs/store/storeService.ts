@@ -3,8 +3,6 @@ import { StoreFactory } from './StoreFactory.ts';
 import type { IStore, StoreConfig, StoreInstance } from './shared/types.ts';
 import { StoreType } from './shared/types.ts';
 
-
-
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
   private static readonly DEFAULT_STORE_NAME = 'default';
@@ -25,7 +23,7 @@ export class StoreService {
     if (!config) {
       throw new Error('[StoreService] Store configuration is required.');
     }
-    
+
     if (StoreService.stores.has(trimmedName)) {
       StoreService.logWarning(
         `Store with name "${trimmedName}" already exists. Overwriting.`,
@@ -106,7 +104,9 @@ export class StoreService {
   public static getInstance(): IStore<any> {
     const store = StoreService.getStore(StoreService.defaultStoreName);
     if (!store) {
-      throw new Error('[StoreService] Failed to get or create default store instance.');
+      throw new Error(
+        '[StoreService] Failed to get or create default store instance.',
+      );
     }
     return store;
   }
