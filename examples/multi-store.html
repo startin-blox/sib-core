@@ -34,9 +34,9 @@
         kc_grant_type: "password",
         kc_scope: "openid"
       },
-      temsServiceBase:"https://api.tems-stg.startinblox.com/services/",
+      temsServiceBase: "https://api.tems-stg.startinblox.com/services/",
       temsCategoryBase: "https://api.tems-stg.startinblox.com/providers/categories/",
-      temsImageBase:  "https://api.tems-stg.startinblox.com/objects/images/",
+      temsImageBase: "https://api.tems-stg.startinblox.com/objects/images/",
       temsProviderBase: "https://api.tems-stg.startinblox.com/providers/",
     };
     StoreService.addStore('federated', federatedStoreConfig);
@@ -54,23 +54,21 @@
     }
 
   </script>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
   <h1>Default Store</h1>
-  <solid-display data-src="store://local.1">
-    <template>
-      <p data-value="rdfs:label"></p>
-    </template>
+  <solid-display
+    data-src="/examples/data/list/users/users.jsonld"
+    fields="email">
   </solid-display>
 
   <h1>Federated Store</h1>
-  <solid-display id="federated-display" store="federated">
-    <template>
-      <p>Name: <span data-value="name"></span></p>
-      <p>Description: <span data-value="description"></span></p>
-    </template>
+  <solid-display id="federated-display" store="federated" fields="@id">
   </solid-display>
 
 </body>
+
 </html>

@@ -80,7 +80,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     document.dispatchEvent(
       new CustomEvent('save', {
-        detail: { resource: { '@id': resource['@id'] } },
+        detail: { resource: { '@id': resource?.['@id'] } },
         bubbles: true,
       }),
     );
@@ -188,18 +188,14 @@ export class FederatedCatalogueStore implements IStore<any> {
     return Promise.resolve({} as Response);
   }
 
-  async setLocalData(
-    resource: object,
-    id: string,
-    _skipFetch?: boolean,
-  ): Promise<string | null> {
+  async setLocalData(resource: object, id: string): Promise<string | null> {
     try {
       const resourceWithId = {
         ...resource,
         '@id': id,
       };
       await this.cache.set(id, resourceWithId);
-      this.notifyComponents(id, resourceWithId); //??
+      this.notifyComponents(id, resourceWithId);
       return id;
     } catch (error) {
       console.error(
