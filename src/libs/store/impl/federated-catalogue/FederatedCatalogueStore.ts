@@ -184,7 +184,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   _getLanguage() {
     return '';
   }
-  selectLanguage(_selectedLanguageCode: string) { }
+  selectLanguage(_selectedLanguageCode: string) {}
 
   getExpandedPredicate(
     _property: string,
@@ -192,7 +192,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   ) {
     return null;
   }
-  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) { }
+  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) {}
   fetchAuthn(_iri: string, _options: any) {
     return Promise.resolve({} as Response);
   }
@@ -399,7 +399,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 export class FederatedCatalogueStoreAdapter {
   private static store: IStore<any>;
 
-  private constructor() { }
+  private constructor() {}
 
   private static validateConfiguration(cfg: StoreConfig): void {
     const requiredFields = [
