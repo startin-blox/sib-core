@@ -197,10 +197,17 @@ describe('FederatedCatalogueStore', () => {
 
       cy.intercept(
         { method: 'POST', url: /\/protocol\/openid-connect\/token(\?.*)?$/ },
-        { statusCode: 200, body: { access_token: 'mock', token_type: 'Bearer', expires_in: 3600 } }
+        {
+          statusCode: 200,
+          body: {
+            access_token: 'mock',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          },
+        },
       ).as('auth');
 
-      cy.intercept('GET', fc('/\/self-descriptions(\?.*)?$/'), {
+      cy.intercept('GET', fc('//self-descriptions(?.*)?$/'), {
         statusCode: 200,
         body: {
           items: [
@@ -221,12 +228,12 @@ describe('FederatedCatalogueStore', () => {
         proof: {},
       };
 
-      cy.intercept('GET', fc('/\/self-descriptions\/hash-1(\?.*)?$/'), {
+      cy.intercept('GET', fc('//self-descriptions/hash-1(?.*)?$/'), {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD1');
 
-      cy.intercept('GET', fc('/\/self-descriptions\/hash-2(\?.*)?$/'), {
+      cy.intercept('GET', fc('//self-descriptions/hash-2(?.*)?$/'), {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD2');
@@ -344,7 +351,7 @@ describe('FederatedCatalogueStore', () => {
             expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
           });
         });
-      } catch (_e) { }
+      } catch (_e) {}
     });
   });
 });
