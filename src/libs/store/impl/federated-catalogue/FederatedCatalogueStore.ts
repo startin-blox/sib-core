@@ -30,11 +30,19 @@ export class FederatedCatalogueStore implements IStore<any> {
       );
     }
 
-    this.fcApi = getFederatedCatalogueAPIWrapper(
-      this.cfg.endpoint,
-      this.cfg.login,
-      this.cfg.optionsServer,
-    );
+    try {
+      this.fcApi = getFederatedCatalogueAPIWrapper(
+        this.cfg.endpoint,
+        this.cfg.login,
+        this.cfg.optionsServer,
+      );
+    } catch (e) {
+      console.error(
+        '[FederatedCatalogueStore] Failed to initialize API wrapper:',
+        e,
+      );
+    }
+
     this.cache = new InMemoryCacheManager();
   }
 
