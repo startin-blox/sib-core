@@ -168,3 +168,8 @@ export type StoreConfig = {
   options?: StoreOptions;
   optionsServer?: KeycloakOptionsServer;
 };
+
+export interface StoreInstance {
+  store: IStore<any>;
+  config: StoreConfig;
+}

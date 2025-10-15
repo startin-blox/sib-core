@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 import { StoreFactory } from './StoreFactory.ts';
-import type { IStore, StoreConfig } from './shared/types.ts';
+import type { IStore, StoreConfig, StoreInstance } from './shared/types.ts';
 import { StoreType } from './shared/types.ts';
 
-interface StoreInstance {
-  store: IStore<any>;
-  config: StoreConfig;
-}
+
 
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
