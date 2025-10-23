@@ -5,9 +5,8 @@ import { StoreType } from './shared/types.ts';
 
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
-  private static readonly DEFAULT_STORE_NAME = 'default';
   private static stores: Map<string, StoreInstance> = new Map();
-  private static defaultStoreName = StoreService.DEFAULT_STORE_NAME;
+  private static defaultStoreName = 'default';
 
   /**
    * Adds a new store instance to the manager.
@@ -94,7 +93,7 @@ export class StoreService {
    * @deprecated Use `getStore('default')` instead. Maintained for backward compatibility.
    */
   public static getInstance(): IStore<any> {
-    return StoreService.getStore('default') as IStore<any>;
+    return StoreService.getStore(StoreService.defaultStoreName) as IStore<any>;
   }
 
   /**
