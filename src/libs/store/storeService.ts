@@ -94,13 +94,7 @@ export class StoreService {
    * @deprecated Use `getStore('default')` instead. Maintained for backward compatibility.
    */
   public static getInstance(): IStore<any> {
-    const store = StoreService.getStore(StoreService.defaultStoreName);
-    if (!store) {
-      throw new Error(
-        '[StoreService] Failed to get or create default store instance.',
-      );
-    }
-    return store;
+    return StoreService.getStore('default') as IStore<any>;
   }
 
   /**
