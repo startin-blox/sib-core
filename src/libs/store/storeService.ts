@@ -96,9 +96,11 @@ export class StoreService {
   public static getInstance(): IStore<any> {
     const store = StoreService.getStore(StoreService.defaultStoreName);
     if (!store) {
-      throw new Error('[StoreService] Failed to get or create default store instance.');
+      throw new Error(
+        '[StoreService] Failed to get or create default store instance.',
+      );
     }
-    return store;;
+    return store;
   }
 
   /**
