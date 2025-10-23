@@ -5,8 +5,9 @@ import { StoreType } from './shared/types.ts';
 
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
+  private static readonly DEFAULT_STORE_NAME = 'default';
   private static stores: Map<string, StoreInstance> = new Map();
-  private static defaultStoreName = 'default';
+  private static defaultStoreName = StoreService.DEFAULT_STORE_NAME;
 
   /**
    * Adds a new store instance to the manager.
@@ -38,7 +39,7 @@ export class StoreService {
     const instance = StoreService.stores.get(storeName);
     if (!instance) {
       // Fallback for backward compatibility
-      if (storeName === 'default') {
+      if (storeName === StoreService.defaultStoreName) {
         return StoreService.fallbackInitIfNeeded();
       }
       console.warn(`[StoreService] Store with name "${storeName}" not found.`);
@@ -66,8 +67,8 @@ export class StoreService {
    */
   public static init(config?: StoreConfig): void {
     const storeConfig = config ?? { type: StoreType.LDP };
-    StoreService.addStore('default', storeConfig);
-    StoreService.setDefaultStore('default');
+    StoreService.addStore(StoreService.defaultStoreName, storeConfig);
+    StoreService.setDefaultStore(StoreService.defaultStoreName);
   }
 
   /**
@@ -77,12 +78,12 @@ export class StoreService {
    * @returns {IStore<any>}
    */
   private static fallbackInitIfNeeded(): IStore<any> {
-    let instance = StoreService.stores.get('default');
+    let instance = StoreService.stores.get(StoreService.defaultStoreName);
     if (!instance) {
       const defaultConfig: StoreConfig = { type: StoreType.LDP };
       const store = StoreFactory.create(defaultConfig);
       instance = { store, config: defaultConfig };
-      StoreService.stores.set('default', instance);
+      StoreService.stores.set(StoreService.defaultStoreName, instance);
     }
     return instance.store;
   }
@@ -93,7 +94,11 @@ export class StoreService {
    * @deprecated Use `getStore('default')` instead. Maintained for backward compatibility.
    */
   public static getInstance(): IStore<any> {
-    return StoreService.getStore('default') as IStore<any>;
+    const store = StoreService.getStore(StoreService.defaultStoreName);
+    if (!store) {
+      throw new Error('[StoreService] Failed to get or create default store instance.');
+    }
+    return store;;
   }
 
   /**
