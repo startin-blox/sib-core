@@ -15,13 +15,21 @@ export class StoreService {
    * @returns The created store instance.
    */
   public static addStore(name: string, config: StoreConfig): IStore<any> {
-    if (StoreService.stores.has(name)) {
-      console.warn(
-        `[StoreService] Store with name "${name}" already exists. Overwriting.`,
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      throw new Error('[StoreService] Store name cannot be empty.');
+    }
+    if (!config) {
+      throw new Error('[StoreService] Store configuration is required.');
+    }
+
+    if (StoreService.stores.has(trimmedName)) {
+      StoreService.logWarning(
+        `Store with name "${trimmedName}" already exists. Overwriting.`,
       );
     }
     const store = StoreFactory.create(config);
-    StoreService.stores.set(name, { store, config });
+    StoreService.stores.set(trimmedName, { store, config });
     return store;
   }
 
@@ -31,7 +39,7 @@ export class StoreService {
    * @returns The store instance or null if not found.
    */
   public static getStore(name?: string): IStore<any> | null {
-    const storeName = name || StoreService.defaultStoreName;
+    const storeName = StoreService.resolveStoreName(name);
     if (!storeName) {
       return null;
     }
@@ -41,7 +49,7 @@ export class StoreService {
       if (storeName === StoreService.defaultStoreName) {
         return StoreService.fallbackInitIfNeeded();
       }
-      console.warn(`[StoreService] Store with name "${storeName}" not found.`);
+      StoreService.logWarning(`Store with name "${storeName}" not found.`);
       return null;
     }
     return instance.store;
@@ -52,6 +60,9 @@ export class StoreService {
    * @param name - The name of the store to set as default.
    */
   public static setDefaultStore(name: string): void {
+    if (!name?.trim()) {
+      throw new Error('[StoreService] Store name cannot be empty.');
+    }
     if (!StoreService.stores.has(name)) {
       throw new Error(`[StoreService] Store with name "${name}" not found.`);
     }
@@ -93,7 +104,13 @@ export class StoreService {
    * @deprecated Use `getStore('default')` instead. Maintained for backward compatibility.
    */
   public static getInstance(): IStore<any> {
-    return StoreService.getStore(StoreService.defaultStoreName) as IStore<any>;
+    const store = StoreService.getStore(StoreService.defaultStoreName);
+    if (!store) {
+      throw new Error(
+        '[StoreService] Failed to get or create default store instance.',
+      );
+    }
+    return store;
   }
 
   /**
@@ -101,8 +118,22 @@ export class StoreService {
    * @returns {StoreConfig | null} The store configuration or null if not found.
    */
   public static getConfig(name?: string): StoreConfig | null {
-    const storeName = name || StoreService.defaultStoreName;
+    const storeName = StoreService.resolveStoreName(name);
     const instance = StoreService.stores.get(storeName);
     return instance?.config || null;
+  }
+
+  /**
+   * Resolves the store name, using default if not provided.
+   * @private
+   * @param name - The store name or undefined.
+   * @returns The resolved store name.
+   */
+  private static resolveStoreName(name?: string): string {
+    return name?.trim() || StoreService.defaultStoreName;
+  }
+
+  private static logWarning(message: string): void {
+    console.warn(`[StoreService] ${message}`);
   }
 }
