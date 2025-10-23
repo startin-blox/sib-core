@@ -1,7 +1,6 @@
+import { StoreFactory } from '../../../src/libs/store/StoreFactory.ts';
 import { StoreType } from '../../../src/libs/store/shared/types.ts';
 import { StoreService } from '../../../src/libs/store/storeService.ts';
-import { StoreFactory } from '../../../src/libs/store/StoreFactory.ts';
-
 
 /** Reusable configs */
 const LDP_CONFIG = { type: StoreType.LDP } as const;
@@ -9,23 +8,26 @@ const FC_CONFIG_MIN = {
   type: StoreType.FederatedCatalogue,
   endpoint: 'https://governance.tems-dataspace.eu/fc',
   login: {
-    kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
-    kc_grant_type: "password",
-    kc_client_id: "federated-catalogue",
-    kc_client_secret: "S5plMH471bbtKzW4yHZcZzZMgPbH3u3w",
-    kc_username: "fc_service_account",
-    kc_password: "Test123_"
+    kc_url:
+      'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
+    kc_grant_type: 'password',
+    kc_client_id: 'federated-catalogue',
+    kc_client_secret: 'S5plMH471bbtKzW4yHZcZzZMgPbH3u3w',
+    kc_username: 'fc_service_account',
+    kc_password: 'Test123_',
   },
   optionsServer: {
-    kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
-    kc_grant_type: "password",
-    kc_scope: "openid"
+    kc_url:
+      'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
+    kc_grant_type: 'password',
+    kc_scope: 'openid',
   },
-  temsServiceBase: "https://api.tems-stg.startinblox.com/services/",
-  temsCategoryBase: "https://api.tems-stg.startinblox.com/providers/categories/",
-  temsImageBase: "https://api.tems-stg.startinblox.com/objects/images/",
-  temsProviderBase: "https://api.tems-stg.startinblox.com/providers/",
-} as const ;
+  temsServiceBase: 'https://api.tems-stg.startinblox.com/services/',
+  temsCategoryBase:
+    'https://api.tems-stg.startinblox.com/providers/categories/',
+  temsImageBase: 'https://api.tems-stg.startinblox.com/objects/images/',
+  temsProviderBase: 'https://api.tems-stg.startinblox.com/providers/',
+} as const;
 
 /** Small helpers */
 const resetService = () => {
@@ -56,13 +58,21 @@ describe('StoreService', () => {
     });
 
     it('throws when name is empty/whitespace', () => {
-      expect(() => add('', LDP_CONFIG)).to.throw('[StoreService] Store name cannot be empty.');
-      expect(() => add('   ', LDP_CONFIG)).to.throw('[StoreService] Store name cannot be empty.');
+      expect(() => add('', LDP_CONFIG)).to.throw(
+        '[StoreService] Store name cannot be empty.',
+      );
+      expect(() => add('   ', LDP_CONFIG)).to.throw(
+        '[StoreService] Store name cannot be empty.',
+      );
     });
 
     it('throws when config is missing', () => {
-      expect(() => add('x', null as any)).to.throw('[StoreService] Store configuration is required.');
-      expect(() => add('y', undefined as any)).to.throw('[StoreService] Store configuration is required.');
+      expect(() => add('x', null as any)).to.throw(
+        '[StoreService] Store configuration is required.',
+      );
+      expect(() => add('y', undefined as any)).to.throw(
+        '[StoreService] Store configuration is required.',
+      );
     });
 
     it('warns when overwriting an existing store', () => {
@@ -74,7 +84,9 @@ describe('StoreService', () => {
     });
 
     it('delegates creation to StoreFactory.create with the given config', () => {
-      const stub = cy.stub(StoreFactory, 'create').callsFake((c: any) => ({ __mock: true, cfg: c } as AnyStore));
+      const stub = cy
+        .stub(StoreFactory, 'create')
+        .callsFake((c: any) => ({ __mock: true, cfg: c }) as AnyStore);
       const store = add('delegation', LDP_CONFIG);
       expect(stub).to.have.been.calledOnceWith(LDP_CONFIG);
       expect((store as any).__mock).to.equal(true);
@@ -133,8 +145,12 @@ describe('StoreService', () => {
     });
 
     it('throws for empty/whitespace name', () => {
-      expect(() => StoreService.setDefaultStore('')).to.throw('[StoreService] Store name cannot be empty.');
-      expect(() => StoreService.setDefaultStore('   ')).to.throw('[StoreService] Store name cannot be empty.');
+      expect(() => StoreService.setDefaultStore('')).to.throw(
+        '[StoreService] Store name cannot be empty.',
+      );
+      expect(() => StoreService.setDefaultStore('   ')).to.throw(
+        '[StoreService] Store name cannot be empty.',
+      );
     });
   });
 
