@@ -3,8 +3,6 @@ import { StoreFactory } from './StoreFactory.ts';
 import type { IStore, StoreConfig, StoreInstance } from './shared/types.ts';
 import { StoreType } from './shared/types.ts';
 
-
-
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
   private static stores: Map<string, StoreInstance> = new Map();
