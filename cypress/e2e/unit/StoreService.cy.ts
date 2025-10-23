@@ -86,7 +86,7 @@ describe('StoreService', () => {
     it('delegates creation to StoreFactory.create with the given config', () => {
       const stub = cy
         .stub(StoreFactory, 'create')
-        .callsFake((c: any) => ({ __mock: true, cfg: c }) as AnyStore);
+        .callsFake((c: any) => ({ __mock: true, cfg: c }) as any);
       const store = add('delegation', LDP_CONFIG);
       expect(stub).to.have.been.calledOnceWith(LDP_CONFIG);
       expect((store as any).__mock).to.equal(true);
