@@ -69,21 +69,22 @@ export class FederatedCatalogueStore implements IStore<any> {
     if (!resource || resource['ldp:contains'].length === 0) {
       resource = await this.initLocalDataSourceContainer(targetType);
       const dataset = await this.fcApi.getAllSelfDescriptions();
-      for (const item in dataset.items) {
-        const sd: Source = await this.fcApi.getSelfDescriptionByHash(
-          dataset.items[item].meta.sdHash,
-        );
-        if (sd) {
-          const mappedResource = this.mapSourceToDestination(sd, {
-            temsServiceBase: this.cfg.temsServiceBase as string,
-            temsCategoryBase: this.cfg.temsCategoryBase as string,
-            temsImageBase: this.cfg.temsImageBase as string,
-            temsProviderBase: this.cfg.temsProviderBase as string,
-          });
+      if (dataset)
+        for (const item in dataset.items) {
+          const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
+            dataset.items[item].meta.sdHash,
+          );
+          if (sd) {
+            const mappedResource = this.mapSourceToDestination(sd, {
+              temsServiceBase: this.cfg.temsServiceBase as string,
+              temsCategoryBase: this.cfg.temsCategoryBase as string,
+              temsImageBase: this.cfg.temsImageBase as string,
+              temsProviderBase: this.cfg.temsProviderBase as string,
+            });
 
-          resource['ldp:contains'].push(mappedResource);
+            resource['ldp:contains'].push(mappedResource);
+          }
         }
-      }
       this.setLocalData(resource, targetType);
     }
 
@@ -184,7 +185,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   _getLanguage() {
     return '';
   }
-  selectLanguage(_selectedLanguageCode: string) {}
+  selectLanguage(_selectedLanguageCode: string) { }
 
   getExpandedPredicate(
     _property: string,
@@ -192,7 +193,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   ) {
     return null;
   }
-  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) {}
+  subscribeResourceTo(_resourceId: string, _nestedResourceId: string) { }
   fetchAuthn(_iri: string, _options: any) {
     return Promise.resolve({} as Response);
   }
@@ -399,7 +400,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 export class FederatedCatalogueStoreAdapter {
   private static store: IStore<any>;
 
-  private constructor() {}
+  private constructor() { }
 
   private static validateConfiguration(cfg: StoreConfig): void {
     const requiredFields = [
