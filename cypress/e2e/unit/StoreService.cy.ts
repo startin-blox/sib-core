@@ -6,27 +6,24 @@ import { StoreService } from '../../../src/libs/store/storeService.ts';
 const LDP_CONFIG = { type: StoreType.LDP } as const;
 const FC_CONFIG_MIN = {
   type: StoreType.FederatedCatalogue,
-  endpoint: 'https://governance.tems-dataspace.eu/fc',
+  endpoint: 'https://mock-fc.test/fc',
   login: {
-    kc_url:
-      'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
+    kc_url: 'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
     kc_grant_type: 'password',
-    kc_client_id: 'federated-catalogue',
-    kc_client_secret: 'S5plMH471bbtKzW4yHZcZzZMgPbH3u3w',
-    kc_username: 'fc_service_account',
-    kc_password: 'Test123_',
+    kc_client_id: 'mock-client-id',
+    kc_client_secret: 'mock-secret',
+    kc_username: 'mock_user',
+    kc_password: 'mock_password',
   },
   optionsServer: {
-    kc_url:
-      'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
+    kc_url: 'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
     kc_grant_type: 'password',
     kc_scope: 'openid',
   },
-  temsServiceBase: 'https://api.tems-stg.startinblox.com/services/',
-  temsCategoryBase:
-    'https://api.tems-stg.startinblox.com/providers/categories/',
-  temsImageBase: 'https://api.tems-stg.startinblox.com/objects/images/',
-  temsProviderBase: 'https://api.tems-stg.startinblox.com/providers/',
+  temsServiceBase: 'https://mock-api.test/services/',
+  temsCategoryBase: 'https://mock-api.test/providers/categories/',
+  temsImageBase: 'https://mock-api.test/objects/images/',
+  temsProviderBase: 'https://mock-api.test/providers/',
 } as const;
 
 /** Small helpers */
