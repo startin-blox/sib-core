@@ -8,7 +8,8 @@ const FC_CONFIG_MIN = {
   type: StoreType.FederatedCatalogue,
   endpoint: 'https://mock-fc.test/fc',
   login: {
-    kc_url: 'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
+    kc_url:
+      'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
     kc_grant_type: 'password',
     kc_client_id: 'mock-client-id',
     kc_client_secret: 'mock-secret',
@@ -16,7 +17,8 @@ const FC_CONFIG_MIN = {
     kc_password: 'mock_password',
   },
   optionsServer: {
-    kc_url: 'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
+    kc_url:
+      'https://mock-fc.test/auth/realms/test/protocol/openid-connect/token',
     kc_grant_type: 'password',
     kc_scope: 'openid',
   },
