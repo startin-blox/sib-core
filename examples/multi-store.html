@@ -18,40 +18,22 @@
     }
 
     // Initialize a FederatedCatalogue store
-    const federatedStoreConfig = {
-      type: StoreType.FederatedCatalogue,
-      endpoint: 'https://governance.tems-dataspace.eu/fc',
-      login: {
-        kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
-        kc_grant_type: "password",
-        kc_client_id: "federated-catalogue",
-        kc_client_secret: "S5plMH471bbtKzW4yHZcZzZMgPbH3u3w",
-        kc_username: "fc_service_account",
-        kc_password: "Test123_"
-      },
-      optionsServer: {
-        kc_url: "https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token",
-        kc_grant_type: "password",
-        kc_scope: "openid"
-      },
-      temsServiceBase: "https://api.tems-stg.startinblox.com/services/",
-      temsCategoryBase: "https://api.tems-stg.startinblox.com/providers/categories/",
-      temsImageBase: "https://api.tems-stg.startinblox.com/objects/images/",
-      temsProviderBase: "https://api.tems-stg.startinblox.com/providers/",
-    };
-    StoreService.addStore('federated', federatedStoreConfig);
+    // const federatedStoreConfig = {
+    //   type: StoreType.FederatedCatalogue
+    // };
+    // StoreService.addStore('federated', federatedStoreConfig);
 
-    const federatedStore = StoreService.getStore('federated');
-    if (federatedStore) {
-        // The getData method in FederatedCatalogueStore is mocked and will create a local container
-        // with a deterministic ID. We can just call it to trigger the creation.
-        federatedStore.getData({ targetType: 'services' });
-        const display = document.getElementById('federated-display');
-        // The deterministic ID is based on the endpoint, so we can construct it here.
-        const endpointHash = federatedStoreConfig.endpoint.replace(/[^a-zA-Z0-9]/g, '');
-        const dataSrc = `store://local.fc-${endpointHash}-default/`;
-        display.setAttribute('data-src', dataSrc);
-    }
+    // const federatedStore = StoreService.getStore('federated');
+    // if (federatedStore) {
+    //     // The getData method in FederatedCatalogueStore is mocked and will create a local container
+    //     // with a deterministic ID. We can just call it to trigger the creation.
+    //     federatedStore.getData({ targetType: 'services' });
+    //     const display = document.getElementById('federated-display');
+    //     // The deterministic ID is based on the endpoint, so we can construct it here.
+    //     const endpointHash = federatedStoreConfig.endpoint.replace(/[^a-zA-Z0-9]/g, '');
+    //     const dataSrc = `store://local.fc-${endpointHash}-default/`;
+    //     display.setAttribute('data-src', dataSrc);
+    // }
 
   </script>
   <link rel="stylesheet" href="styles.css" />
@@ -65,9 +47,9 @@
     fields="email">
   </solid-display>
 
-  <h1>Federated Store</h1>
+  <!-- <h1>Federated Store</h1>
   <solid-display id="federated-display" store="federated" fields="@id">
-  </solid-display>
+  </solid-display> -->
 
 </body>
 
