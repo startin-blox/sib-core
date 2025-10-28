@@ -1,19 +1,11 @@
 import {
   FederatedCatalogueAPIWrapper,
-  type KeycloakOptions,
-  type KeycloakOptionsLogins,
-  type KeycloakOptionsServer,
+  type KeycloakLoginOptions
 } from './FederatedCatalogueAPIWrapper.ts';
 
 export function getFederatedCatalogueAPIWrapper(
   baseUrl: string,
-  optionLogin: KeycloakOptionsLogins,
-  optionsServer: KeycloakOptionsServer,
+  loginOptions: KeycloakLoginOptions
 ) {
-  const options: KeycloakOptions = Object.assign(
-    {},
-    optionsServer,
-    optionLogin,
-  );
-  return new FederatedCatalogueAPIWrapper(options, baseUrl);
+  return new FederatedCatalogueAPIWrapper(loginOptions, baseUrl);
 }

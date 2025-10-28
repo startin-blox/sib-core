@@ -1,8 +1,7 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
 import type { CacheManagerInterface } from '../cache/CacheManager.ts';
 import type {
-  KeycloakOptionsLogins,
-  KeycloakOptionsServer,
+  KeycloakLoginOptions
 } from '../impl/federated-catalogue/FederatedCatalogueAPIWrapper.ts';
 import type { IndexQueryOptions } from '../impl/ldp/LdpStore.ts';
 import type { ServerPaginationOptions } from './options/server-pagination.ts';
@@ -160,11 +159,10 @@ export interface StoreOptions {
 export type StoreConfig = {
   type: StoreType;
   endpoint?: string;
-  login?: KeycloakOptionsLogins;
+  login?: KeycloakLoginOptions;
   temsServiceBase?: string;
   temsCategoryBase?: string;
   temsImageBase?: string;
   temsProviderBase?: string;
   options?: StoreOptions;
-  optionsServer?: KeycloakOptionsServer;
 };
