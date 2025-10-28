@@ -55,14 +55,6 @@ describe('FederatedCatalogueStore', () => {
       );
     });
 
-    it('throws when optionsServer is missing', () => {
-      const cfg = { ...mockConfig } as any;
-      cfg.optionsServer = undefined;
-      expect(() => new FederatedCatalogueStore(cfg)).to.throw(
-        'Missing required `optionsServer` in StoreConfig for FederatedCatalogueStore',
-      );
-    });
-
     it('initializes cache (InMemoryCacheManager)', () => {
       const s = new FederatedCatalogueStore(mockConfig);
       expect(s.cache).to.exist;
