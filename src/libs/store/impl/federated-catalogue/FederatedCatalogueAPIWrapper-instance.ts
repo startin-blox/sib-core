@@ -5,7 +5,7 @@ import {
 
 export function getFederatedCatalogueAPIWrapper(
   baseUrl: string,
-  loginOptions: KeycloakLoginOptions
+  loginOptions: KeycloakLoginOptions,
 ) {
   return new FederatedCatalogueAPIWrapper(loginOptions, baseUrl);
 }
