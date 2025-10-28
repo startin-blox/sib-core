@@ -1,6 +1,6 @@
 import {
   FederatedCatalogueAPIWrapper,
-  type KeycloakLoginOptions
+  type KeycloakLoginOptions,
 } from './FederatedCatalogueAPIWrapper.ts';
 
 export function getFederatedCatalogueAPIWrapper(
