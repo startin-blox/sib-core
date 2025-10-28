@@ -28,7 +28,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     try {
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
-        this.cfg.login
+        this.cfg.login,
       );
     } catch (e) {
       console.error(
