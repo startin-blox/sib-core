@@ -1,72 +1,139 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 import { StoreFactory } from './StoreFactory.ts';
-import type { IStore, StoreConfig } from './shared/types.ts';
+import type { IStore, StoreConfig, StoreInstance } from './shared/types.ts';
 import { StoreType } from './shared/types.ts';
 
 // biome-ignore lint/complexity/noStaticOnlyClass: utility class intended
 export class StoreService {
-  private static currentStore: IStore<any> | null = null;
-  private static currentConfig: StoreConfig | null = null;
+  private static stores: Map<string, StoreInstance> = new Map();
+  private static defaultStoreName = 'default';
+
+  /**
+   * Adds a new store instance to the manager.
+   * @param name - The name for the new store instance.
+   * @param config - The configuration for the new store.
+   * @returns The created store instance.
+   */
+  public static addStore(name: string, config: StoreConfig): IStore<any> {
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      throw new Error('[StoreService] Store name cannot be empty.');
+    }
+    if (!config) {
+      throw new Error('[StoreService] Store configuration is required.');
+    }
+
+    if (StoreService.stores.has(trimmedName)) {
+      StoreService.logWarning(
+        `Store with name "${trimmedName}" already exists. Overwriting.`,
+      );
+    }
+    const store = StoreFactory.create(config);
+    StoreService.stores.set(trimmedName, { store, config });
+    return store;
+  }
+
+  /**
+   * Retrieves a store instance by name. If no name is provided, it returns the default store.
+   * @param name - The name of the store to retrieve.
+   * @returns The store instance or null if not found.
+   */
+  public static getStore(name?: string): IStore<any> | null {
+    const storeName = StoreService.resolveStoreName(name);
+    if (!storeName) {
+      return null;
+    }
+    const instance = StoreService.stores.get(storeName);
+    if (!instance) {
+      // Fallback for backward compatibility
+      if (storeName === StoreService.defaultStoreName) {
+        return StoreService.fallbackInitIfNeeded();
+      }
+      StoreService.logWarning(`Store with name "${storeName}" not found.`);
+      return null;
+    }
+    return instance.store;
+  }
+
+  /**
+   * Sets the default store.
+   * @param name - The name of the store to set as default.
+   */
+  public static setDefaultStore(name: string): void {
+    if (!name?.trim()) {
+      throw new Error('[StoreService] Store name cannot be empty.');
+    }
+    if (!StoreService.stores.has(name)) {
+      throw new Error(`[StoreService] Store with name "${name}" not found.`);
+    }
+    StoreService.defaultStoreName = name;
+  }
 
   /**
    * Initialize the store service with a specific configuration.
-   * If no configuration is provided, it defaults to a basic LDP store.
-   * This method should be called once, typically at application startup.
+   * This method is kept for backward compatibility and creates the 'default' store.
    * @param config
    * @returns
    */
   public static init(config?: StoreConfig): void {
-    if (StoreService.currentStore) {
-      console.warn(
-        '[StoreService] Store already initialized. Ignoring duplicate init.',
-      );
-      return;
-    }
-
-    StoreService.currentConfig = config ?? { type: StoreType.LDP };
-    const store = StoreFactory.create(StoreService.currentConfig);
-    StoreService.currentStore = store;
+    const storeConfig = config ?? { type: StoreType.LDP };
+    StoreService.addStore(StoreService.defaultStoreName, storeConfig);
+    StoreService.setDefaultStore(StoreService.defaultStoreName);
   }
 
   /**
    * Fallback initialization if no store has been set.
    * This creates a default LDP store instance and sets it as the global store.
-   * This is useful for cases where the store might not have been initialized
-   * before accessing it, such as in tests or early application load.
    * @private
-   * @returns {void}
-   * @remarks
-   * This method ensures that there is always a store instance available,
-   * even if the application did not explicitly initialize one.
+   * @returns {IStore<any>}
    */
   private static fallbackInitIfNeeded(): IStore<any> {
-    if (!StoreService.currentStore) {
+    let instance = StoreService.stores.get(StoreService.defaultStoreName);
+    if (!instance) {
       const defaultConfig: StoreConfig = { type: StoreType.LDP };
       const store = StoreFactory.create(defaultConfig);
-      StoreService.currentStore = store;
-      StoreService.currentConfig = defaultConfig;
+      instance = { store, config: defaultConfig };
+      StoreService.stores.set(StoreService.defaultStoreName, instance);
     }
-
-    return StoreService.currentStore; // If already initialized, return the current store
+    return instance.store;
   }
-
   /**
-   * Get the store synchronously (creates default if missing)
+   * Get the default store synchronously (creates default if missing)
    * @returns {IStore<any>} The current store instance.
    * @throws {Error} If the store type is not registered.
+   * @deprecated Use `getStore('default')` instead. Maintained for backward compatibility.
    */
   public static getInstance(): IStore<any> {
-    if (StoreService.currentStore) return StoreService.currentStore;
-
-    const store = StoreService.fallbackInitIfNeeded();
+    const store = StoreService.getStore(StoreService.defaultStoreName);
+    if (!store) {
+      throw new Error(
+        '[StoreService] Failed to get or create default store instance.',
+      );
+    }
     return store;
   }
 
   /**
-   * Get the current store configuration.
-   * @returns {StoreConfig | null} The current store configuration or null if not set.
+   * Get the configuration of a store.
+   * @returns {StoreConfig | null} The store configuration or null if not found.
    */
-  public static getConfig(): StoreConfig | null {
-    return StoreService.currentConfig;
+  public static getConfig(name?: string): StoreConfig | null {
+    const storeName = StoreService.resolveStoreName(name);
+    const instance = StoreService.stores.get(storeName);
+    return instance?.config || null;
+  }
+
+  /**
+   * Resolves the store name, using default if not provided.
+   * @private
+   * @param name - The store name or undefined.
+   * @returns The resolved store name.
+   */
+  private static resolveStoreName(name?: string): string {
+    return name?.trim() || StoreService.defaultStoreName;
+  }
+
+  private static logWarning(message: string): void {
+    console.warn(`[StoreService] ${message}`);
   }
 }

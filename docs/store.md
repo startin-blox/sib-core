@@ -466,13 +466,12 @@ Main configuration object for initializing stores.
 interface StoreConfig {
   type: StoreType;                    // Store type (LDP, FederatedCatalogue)
   endpoint?: string;                  // API endpoint URL
-  login?: KeycloakOptionsLogins;      // Authentication configuration
+  login?: KeycloakLoginOptions;       // Authentication configuration
   temsServiceBase?: string;           // TEMS service base URL
   temsCategoryBase?: string;          // TEMS category base URL
   temsImageBase?: string;             // TEMS image base URL
   temsProviderBase?: string;          // TEMS provider base URL
   options?: StoreOptions;             // General store options
-  optionsServer?: KeycloakOptionsServer; // Server-specific options
 }
 ```
 

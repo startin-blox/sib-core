@@ -2,23 +2,14 @@
 
 import type { SelfDescription } from './SelfDescription.d.ts';
 
-export interface KeycloakOptions
-  extends KeycloakOptionsServer,
-    KeycloakOptionsLogins {}
-
-export interface KeycloakOptionsServer {
-  kc_url: string;
-  kc_grant_type: string;
-  kc_scope: string;
-}
-
-export interface KeycloakOptionsLogins {
+export interface KeycloakLoginOptions {
   kc_url: string;
   kc_grant_type: string;
   kc_client_id: string;
   kc_client_secret: string;
   kc_username: string;
   kc_password: string;
+  kc_scope: string;
 }
 
 export interface SelfDescriptions {
@@ -46,14 +37,19 @@ export interface SelfDescriptionsMeta {
 
 export class FederatedCatalogueAPIWrapper {
   private fcBaseUrl: string;
-  connect: () => Promise<string>;
-  constructor(options: KeycloakOptions, fcBaseUrl: string) {
+  connect: (() => Promise<string>) | null;
+  constructor(options: KeycloakLoginOptions, fcBaseUrl: string) {
     this.fcBaseUrl = fcBaseUrl;
-    const connection = this.firstConnect(options);
-    this.connect = () => connection;
+    try {
+      const connection = this.firstConnect(options);
+      this.connect = () => connection;
+    } catch (e) {
+      console.log('Error while establishing the first connection', e);
+      this.connect = null;
+    }
   }
 
-  private async firstConnect(options: KeycloakOptions) {
+  private async firstConnect(options: KeycloakLoginOptions) {
     const body = new URLSearchParams({
       grant_type: options.kc_grant_type,
       client_id: options.kc_client_id,
@@ -79,6 +75,7 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async getAllSelfDescriptions() {
+    if (!this.connect) return null;
     const token = await this.connect();
 
     const url = `${this.fcBaseUrl}/self-descriptions`;
@@ -89,6 +86,7 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async getSelfDescriptionByHash(sdHash: string) {
+    if (!this.connect) return null;
     const token = await this.connect();
 
     const url = `${this.fcBaseUrl}/self-descriptions/${sdHash}`;
@@ -108,6 +106,7 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async postQuery(statement: string, parameters: Record<string, any> = {}) {
+    if (!this.connect) return null;
     const token = await this.connect();
 
     const url = `${this.fcBaseUrl}/query`;
@@ -141,6 +140,7 @@ export class FederatedCatalogueAPIWrapper {
     queryLanguage = 'OPENCYPHER',
     annotations?: Record<string, any>,
   ): Promise<any | null> {
+    if (!this.connect) return null;
     const token = await this.connect();
 
     const url = `${this.fcBaseUrl}/query/search`;

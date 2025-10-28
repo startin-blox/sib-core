@@ -8,13 +8,14 @@ import { html, render } from 'lit';
 import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
-const store = StoreService.getInstance();
-if (!store) throw new Error('Store is not available');
-
 export const SolidDelete = {
   name: 'solid-delete',
   use: [NextMixin, ValidationMixin, AttributeBinderMixin, ContextMixin],
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     dataSrc: {
       type: String,
       default: null,
@@ -32,8 +33,13 @@ export const SolidDelete = {
   },
   initialState: {
     renderPlanned: false,
+    store: null,
   },
   created(): void {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     this.planRender();
   },
   planRender() {
@@ -51,7 +57,7 @@ export const SolidDelete = {
     this.performAction(); // In validationMixin, method defining what to do according to the present attributes
   },
   deletion() {
-    return store.delete(this.dataSrc, this.context).then(response => {
+    return this.store.delete(this.dataSrc, this.context).then(response => {
       if (!response.ok) return;
       this.goToNext(null);
       const eventData = {

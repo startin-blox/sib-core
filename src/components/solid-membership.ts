@@ -10,11 +10,15 @@ import { trackRenderAsync } from '../logger.ts';
 import { ContextMixin } from '../mixins/contextMixin.ts';
 
 import { StoreService } from '../libs/store/storeService.ts';
-const store = StoreService.getInstance();
+
 export const SolidMembership = {
   name: 'solid-membership',
   use: [NextMixin, ValidationMixin, ContextMixin],
   attributes: {
+    store: {
+      type: String,
+      default: null,
+    },
     dataSrc: {
       type: String,
       default: null,
@@ -47,15 +51,20 @@ export const SolidMembership = {
   },
   initialState: {
     renderPlanned: false,
+    store: null,
   },
   created(): void {
+    this.store = StoreService.getStore(this.element.getAttribute('store'));
+    if (!this.store) {
+      this.store = StoreService.getInstance();
+    }
     this.planRender();
   },
   async populate() {
-    if (!store.session) return;
+    if (!this.store.session) return;
 
-    // Retrieve the current user from the current store authenticated session
-    const currentUserSession = await store.session;
+    // Retrieve the current user from the current this.store authenticated session
+    const currentUserSession = await this.store.session;
     if (!currentUserSession) return;
 
     if (!this.dataTargetSrc) this.userId = await currentUserSession.webId;
@@ -64,11 +73,11 @@ export const SolidMembership = {
     if (!this.userId) return;
 
     // Retrieve the group resource
-    this.resource = await store.getData(this.resourceId);
+    this.resource = await this.store.getData(this.resourceId);
     if (!this.resource) return;
 
     // Check if current user is member of this group ?
-    const memberPredicate = store.getExpandedPredicate(
+    const memberPredicate = this.store.getExpandedPredicate(
       'user_set',
       normalizeContext(base_context),
     );
@@ -108,7 +117,7 @@ export const SolidMembership = {
       '@context': this.context,
       user_set: this.currentMembers,
     };
-    return store.patch(currentRes, this.dataSrc).then(response => {
+    return this.store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
         console.warn(
           `Error while joining group ${this.dataSrc} for user ${this.userId}`,
@@ -136,7 +145,7 @@ export const SolidMembership = {
       '@context': this.context,
       user_set: userSet,
     };
-    return store.patch(currentRes, this.dataSrc).then(response => {
+    return this.store.patch(currentRes, this.dataSrc).then(response => {
       if (!response) {
         console.warn(
           `Error while leaving group ${this.dataSrc} for user ${this.userId}`,

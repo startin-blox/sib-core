@@ -12,7 +12,7 @@ import type { DcatService, Destination, Source } from './interfaces.ts';
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
   session: Promise<any> | undefined;
-  private fcApi: FederatedCatalogueAPIWrapper;
+  private fcApi: FederatedCatalogueAPIWrapper | null;
 
   constructor(private cfg: StoreConfig) {
     if (!this.cfg.login) {
@@ -24,22 +24,33 @@ export class FederatedCatalogueStore implements IStore<any> {
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
       );
     }
-    if (!this.cfg.optionsServer) {
-      throw new Error(
-        'Missing required `optionsServer` in StoreConfig for FederatedCatalogueStore',
+
+    try {
+      this.fcApi = getFederatedCatalogueAPIWrapper(
+        this.cfg.endpoint,
+        this.cfg.login,
       );
+    } catch (e) {
+      console.error(
+        '[FederatedCatalogueStore] Failed to initialize API wrapper:',
+        e,
+      );
+      this.fcApi = null;
     }
 
-    this.fcApi = getFederatedCatalogueAPIWrapper(
-      this.cfg.endpoint,
-      this.cfg.login,
-      this.cfg.optionsServer,
-    );
     this.cache = new InMemoryCacheManager();
   }
 
+  private resolveTargetType(args: any): string {
+    if (typeof args === 'string') return args;
+    if (typeof args === 'object' && args !== null) {
+      return args.targetType ?? args.id ?? '';
+    }
+    return '';
+  }
+
   async getData(args: any) {
-    const targetType = 'targetType' in args ? args.targetType : args.id;
+    const targetType = this.resolveTargetType(args);
 
     // Mock implementation of getData
     // First case, we return a list of self-descriptions, each of them having a hash
@@ -52,27 +63,28 @@ export class FederatedCatalogueStore implements IStore<any> {
     if (!resource || resource['ldp:contains'].length === 0) {
       resource = await this.initLocalDataSourceContainer(targetType);
       const dataset = await this.fcApi.getAllSelfDescriptions();
-      for (const item in dataset.items) {
-        const sd: Source = await this.fcApi.getSelfDescriptionByHash(
-          dataset.items[item].meta.sdHash,
-        );
-        if (sd) {
-          const mappedResource = this.mapSourceToDestination(sd, {
-            temsServiceBase: this.cfg.temsServiceBase as string,
-            temsCategoryBase: this.cfg.temsCategoryBase as string,
-            temsImageBase: this.cfg.temsImageBase as string,
-            temsProviderBase: this.cfg.temsProviderBase as string,
-          });
+      if (dataset)
+        for (const item in dataset.items) {
+          const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
+            dataset.items[item].meta.sdHash,
+          );
+          if (sd) {
+            const mappedResource = this.mapSourceToDestination(sd, {
+              temsServiceBase: this.cfg.temsServiceBase as string,
+              temsCategoryBase: this.cfg.temsCategoryBase as string,
+              temsImageBase: this.cfg.temsImageBase as string,
+              temsProviderBase: this.cfg.temsProviderBase as string,
+            });
 
-          resource['ldp:contains'].push(mappedResource);
+            resource['ldp:contains'].push(mappedResource);
+          }
         }
-      }
       this.setLocalData(resource, targetType);
     }
 
     document.dispatchEvent(
       new CustomEvent('save', {
-        detail: { resource: { '@id': resource['@id'] } },
+        detail: { resource: { '@id': resource?.['@id'] } },
         bubbles: true,
       }),
     );
@@ -180,18 +192,14 @@ export class FederatedCatalogueStore implements IStore<any> {
     return Promise.resolve({} as Response);
   }
 
-  async setLocalData(
-    resource: object,
-    id: string,
-    _skipFetch?: boolean,
-  ): Promise<string | null> {
+  async setLocalData(resource: object, id: string): Promise<string | null> {
     try {
       const resourceWithId = {
         ...resource,
         '@id': id,
       };
       await this.cache.set(id, resourceWithId);
-      this.notifyComponents(id, resourceWithId); //??
+      this.notifyComponents(id, resourceWithId);
       return id;
     } catch (error) {
       console.error(

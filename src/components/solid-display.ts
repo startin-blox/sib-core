@@ -168,6 +168,11 @@ export const SolidDisplay = {
    */
   getChildAttributes() {
     const attributes: { [key: string]: string } = {};
+    // Inherit store attribute from parent
+    const storeAttr = this.element.getAttribute('store');
+    if (storeAttr) {
+      attributes['store'] = storeAttr;
+    }
     for (const attr of this.element.attributes) {
       //copy widget and value attributes
       if (
