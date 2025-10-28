@@ -195,12 +195,19 @@ describe('FederatedCatalogueStore', () => {
       const fc = (path: string) =>
         `${mockConfig.endpoint?.replace(/\/$/, '')}${path}`;
 
-      cy.intercept('POST', '**/protocol/openid-connect/token', {
-        statusCode: 200,
-        body: { access_token: 'mock', token_type: 'Bearer', expires_in: 3600 },
-      }).as('auth');
+      cy.intercept(
+        { method: 'POST', url: /\/protocol\/openid-connect\/token(\?.*)?$/ },
+        {
+          statusCode: 200,
+          body: {
+            access_token: 'mock',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          },
+        },
+      ).as('auth');
 
-      cy.intercept('GET', fc('/self-descriptions'), {
+      cy.intercept('GET', fc('//self-descriptions(?.*)?$/'), {
         statusCode: 200,
         body: {
           items: [
@@ -221,12 +228,12 @@ describe('FederatedCatalogueStore', () => {
         proof: {},
       };
 
-      cy.intercept('GET', fc('/self-descriptions/hash-1'), {
+      cy.intercept('GET', fc('//self-descriptions/hash-1(?.*)?$/'), {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD1');
 
-      cy.intercept('GET', fc('/self-descriptions/hash-2'), {
+      cy.intercept('GET', fc('//self-descriptions/hash-2(?.*)?$/'), {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD2');
@@ -250,7 +257,7 @@ describe('FederatedCatalogueStore', () => {
       cy.wait('@fcSD1');
       cy.wait('@fcSD2');
 
-      cy.wrap(resultPromise, { timeout: 15000 }).then((result: any) => {
+      cy.wrap(resultPromise, { timeout: 1500 }).then((result: any) => {
         expect(result).to.exist;
         expect(result['@type']).to.equal('ldp:Container');
         expect(result['@id']).to.match(
@@ -259,7 +266,7 @@ describe('FederatedCatalogueStore', () => {
         expect(result['ldp:contains']).to.be.an('array').and.not.empty;
       });
 
-      cy.wrap(onSave, { timeout: 15000 }).then((payload: any) => {
+      cy.wrap(onSave, { timeout: 1500 }).then((payload: any) => {
         expect(payload)
           .to.have.property('@id')
           .that.matches(/^store:\/\/local\.fc-httpsapiexamplecom-default\/$/);

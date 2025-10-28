@@ -166,3 +166,8 @@ export type StoreConfig = {
   temsProviderBase?: string;
   options?: StoreOptions;
 };
+
+export interface StoreInstance {
+  store: IStore<any>;
+  config: StoreConfig;
+}
