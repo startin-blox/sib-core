@@ -37,7 +37,7 @@ export interface SelfDescriptionsMeta {
 
 export class FederatedCatalogueAPIWrapper {
   private fcBaseUrl: string;
-  connect: () => Promise<string> | null;
+  connect: (() => Promise<string>) | null;
   constructor(options: KeycloakLoginOptions, fcBaseUrl: string) {
     this.fcBaseUrl = fcBaseUrl;
     try {

@@ -24,17 +24,11 @@ export class FederatedCatalogueStore implements IStore<any> {
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
       );
     }
-    if (!this.cfg.optionsServer) {
-      throw new Error(
-        'Missing required `optionsServer` in StoreConfig for FederatedCatalogueStore',
-      );
-    }
 
     try {
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
-        this.cfg.login,
-        this.cfg.optionsServer,
+        this.cfg.login
       );
     } catch (e) {
       console.error(

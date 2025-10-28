@@ -21,11 +21,6 @@ describe('FederatedCatalogueStore', () => {
       kc_grant_type: 'password',
       kc_client_id: 'client',
       kc_client_secret: 'secret',
-    },
-    optionsServer: {
-      kc_url:
-        'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
-      kc_grant_type: 'password',
       kc_scope: 'openid',
     },
     temsServiceBase: 'https://tems.example.com/services/',
@@ -371,11 +366,6 @@ describe('FederatedCatalogueStoreAdapter', () => {
         kc_grant_type: 'password',
         kc_client_id: 'client',
         kc_client_secret: 'secret',
-      },
-      optionsServer: {
-        kc_url:
-          'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
-        kc_grant_type: 'password',
         kc_scope: 'openid',
       },
       temsServiceBase: 'https://tems.example.com/services/',
