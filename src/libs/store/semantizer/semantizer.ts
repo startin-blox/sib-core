@@ -30,6 +30,6 @@ if (!globalThis.SEMANTIZER) {
   Object.defineProperty(globalThis, 'SEMANTIZER', {
     value: semantizer,
     writable: false, // can't be modified
-    configurable: false, // can't be deleted
+    configurable: true, // can't be deleted
   });
 }
