@@ -7,10 +7,12 @@ import './libs/store/semantizer/semantizer.ts';
 import { base_context as baseContext } from './libs/store/impl/ldp/LdpStore.ts';
 
 import { StoreService } from './libs/store/storeService.ts';
+import { StoreType } from './libs/store/shared/types.ts';
+
 
 const sibStore = StoreService.getInstance();
 if (!sibStore) throw new Error('Store is not available');
 
 const semantizer = (globalThis as unknown as Record<string, unknown>)
   .SEMANTIZER;
-export { semantizer as SEMANTIZER, StoreService, baseContext, sibStore };
+export { semantizer as SEMANTIZER, StoreService, StoreType, baseContext, sibStore };
