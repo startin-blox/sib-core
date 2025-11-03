@@ -6,7 +6,17 @@ export function initLdpStore(_cfg?: StoreConfig): LdpStore {
     return window.sibStore;
   }
 
-  const store = new LdpStore(_cfg?.options || {});
+  let storeOptions: StoreOptions = {};
+  const sibAuth = document.querySelector('sib-auth') as any;
+  if (sibAuth) {
+    const sibAuthDefined = customElements.whenDefined(sibAuth.localName);
+    storeOptions.session = sibAuthDefined.then(() => (sibAuth).session);
+    storeOptions.fetchMethod = sibAuthDefined.then(() =>
+      (sibAuth).getFetch(),
+    );
+  }
+
+  const store = new LdpStore({..._cfg?.options, ...storeOptions});
   window.sibStore = store;
   return store;
 }
