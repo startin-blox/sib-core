@@ -26,8 +26,10 @@ const semantizer: Semantizer = new SemantizerImpl(
   }),
 );
 
-Object.defineProperty(globalThis, 'SEMANTIZER', {
-  value: semantizer,
-  writable: false, // can't be modified
-  configurable: false, // can't be deleted
-});
+if (!globalThis.SEMANTIZER) {
+  Object.defineProperty(globalThis, 'SEMANTIZER', {
+    value: semantizer,
+    writable: false, // can't be modified
+    configurable: true, // can't be deleted
+  });
+}
