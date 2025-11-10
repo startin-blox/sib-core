@@ -63,6 +63,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-1',
           },
         ],
       );
@@ -93,6 +94,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-2',
           },
         ],
       );
@@ -127,19 +129,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      // Set up valid cache with existing items
-      metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
-        [
-          {
-            sdHash: 'hash-existing',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-        ],
-      );
-
       // Create existing cached resource
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -154,11 +143,18 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'gax-trust-framework:ServiceOffering',
-        ),
+      // Set up valid cache with existing items
+      metadataManager?.updateCache(
+        existingResource,
+        [
+          {
+            sdHash: 'hash-existing',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-3',
+          },
+        ],
       );
 
       // API returns existing + new item
@@ -249,14 +245,28 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
+      const cachedResource = {
+        '@id': 'store://local.fc-httpsapiexamplecom-default/',
+        '@type': 'ldp:Container',
+        'ldp:contains': [
+          {
+            '@id': 'https://tems.example.com/services/old/',
+            '@type': 'tems:Service',
+            name: 'Old Service',
+          },
+        ],
+        permissions: ['view'],
+      };
+
       metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
+        cachedResource,
         [
           {
             sdHash: 'hash-old',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-4',
           },
         ],
       );
@@ -358,6 +368,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-5',
           },
         ],
       );
@@ -449,6 +460,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-6',
           },
         ],
       );
@@ -539,6 +551,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-7',
           },
         ],
       );
@@ -623,25 +636,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      // Cache has items that will be deleted
-      metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
-        [
-          {
-            sdHash: 'hash-kept',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-          {
-            sdHash: 'hash-deleted',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-        ],
-      );
-
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
         '@type': 'ldp:Container',
@@ -660,11 +654,25 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'gax-trust-framework:ServiceOffering',
-        ),
+      // Cache has items that will be deleted
+      metadataManager?.updateCache(
+        existingResource,
+        [
+          {
+            sdHash: 'hash-kept',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-1',
+          },
+          {
+            sdHash: 'hash-deleted',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-2',
+          },
+        ],
       );
 
       // API only returns one item (the other was deleted)
@@ -706,42 +714,42 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
+      const existingResource = {
+        '@id': 'store://local.fc-httpsapiexamplecom-default/',
+        '@type': 'ldp:Container',
+        'ldp:contains': [
+          { '@id': 'https://tems.example.com/services/1/', name: 'Service 1' },
+          { '@id': 'https://tems.example.com/services/2/', name: 'Service 2' },
+          { '@id': 'https://tems.example.com/services/3/', name: 'Service 3' },
+        ],
+        permissions: ['view'],
+      };
+
       metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
+        existingResource,
         [
           {
             sdHash: 'hash-1',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-3',
           },
           {
             sdHash: 'hash-2',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-4',
           },
           {
             sdHash: 'hash-3',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-5',
           },
         ],
-      );
-
-      const existingResource = {
-        '@id': 'store://local.fc-httpsapiexamplecom-default/',
-        '@type': 'ldp:Container',
-        'ldp:contains': [],
-        permissions: ['view'],
-      };
-
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'gax-trust-framework:ServiceOffering',
-        ),
       );
 
       // API only returns 1 out of 3 items
@@ -938,6 +946,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-6',
           },
         ],
       );
@@ -1001,14 +1010,28 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
+      const cachedResource = {
+        '@id': 'store://local.fc-httpsapiexamplecom-default/',
+        '@type': 'ldp:Container',
+        'ldp:contains': [
+          {
+            '@id': 'https://tems.example.com/services/1/',
+            '@type': 'tems:Service',
+            name: 'Service 1',
+          },
+        ],
+        permissions: ['view'],
+      };
+
       metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
+        cachedResource,
         [
           {
             sdHash: 'hash-1',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-7',
           },
         ],
       );
@@ -1083,31 +1106,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      // Initial cache: hash-keep, hash-update, hash-delete
-      metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
-        [
-          {
-            sdHash: 'hash-keep',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-          {
-            sdHash: 'hash-update',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-          {
-            sdHash: 'hash-delete',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-          },
-        ],
-      );
-
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
         '@type': 'ldp:Container',
@@ -1131,11 +1129,32 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'gax-trust-framework:ServiceOffering',
-        ),
+      // Initial cache: hash-keep, hash-update, hash-delete
+      metadataManager?.updateCache(
+        existingResource,
+        [
+          {
+            sdHash: 'hash-keep',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-8',
+          },
+          {
+            sdHash: 'hash-update',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-9',
+          },
+          {
+            sdHash: 'hash-delete',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-10',
+          },
+        ],
       );
 
       // API returns: keep (unchanged), update (newer), new (added), delete (removed)
@@ -1252,12 +1271,14 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-11',
           },
           {
             sdHash: 'hash-2',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-12',
           },
         ],
       );
@@ -1310,30 +1331,30 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
+      const existingResource = {
+        '@id': 'store://local.fc-httpsapiexamplecom-default/',
+        '@type': 'ldp:Container',
+        'ldp:contains': [
+          {
+            '@id': 'https://tems.example.com/services/1/',
+            '@type': 'tems:Service',
+            name: 'Service 1',
+          },
+        ],
+        permissions: ['view'],
+      };
+
       metadataManager?.updateCache(
-        { '@id': 'test-container', 'ldp:contains': [] },
+        existingResource,
         [
           {
             sdHash: 'hash-1',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
             cachedAt: Date.now(),
+            resourceId: 'urn:uuid:test-resource-13',
           },
         ],
-      );
-
-      const existingResource = {
-        '@id': 'store://local.fc-httpsapiexamplecom-default/',
-        '@type': 'ldp:Container',
-        'ldp:contains': [],
-        permissions: ['view'],
-      };
-
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'gax-trust-framework:ServiceOffering',
-        ),
       );
 
       cy.intercept('GET', fc('/self-descriptions'), {

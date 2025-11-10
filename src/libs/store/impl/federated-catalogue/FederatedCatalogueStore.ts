@@ -182,14 +182,13 @@ export class FederatedCatalogueStore implements IStore<any> {
       const knownHashes = this.metadataManager.getKnownHashes();
 
       // Safety check for apiList.items
-      if (!apiList.items || !Array.isArray(apiList.items)) {
-        console.warn(
-          '[FederatedCatalogueStore] apiList.items is not an array, falling back to full fetch',
-        );
-        return this.getFullData(targetType);
+      const items = apiList?.items || [];
+      if (!Array.isArray(items)) {
+        console.warn('[FederatedCatalogueStore] apiList.items is not an array');
+        return resource; // Return empty container instead of falling back
       }
 
-      const apiHashes = new Set(apiList.items.map(item => item.meta.sdHash));
+      const apiHashes = new Set(items.map(item => item.meta.sdHash));
 
       // Compute delta
       const newHashes: string[] = [];
@@ -197,7 +196,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       const deletedHashes: string[] = [];
 
       // Find new and updated items
-      for (const item of apiList.items) {
+      for (const item of items) {
         const hash = item.meta.sdHash;
         if (!knownHashes.has(hash)) {
           // New item

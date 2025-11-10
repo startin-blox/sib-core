@@ -105,6 +105,7 @@ describe('FederatedCatalogueStore', () => {
 
   describe('Cache operations', () => {
     beforeEach(() => {
+      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
     });
 
@@ -146,6 +147,7 @@ describe('FederatedCatalogueStore', () => {
 
   describe('Local data operations', () => {
     beforeEach(() => {
+      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
     });
 
