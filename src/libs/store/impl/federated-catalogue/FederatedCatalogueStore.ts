@@ -183,7 +183,9 @@ export class FederatedCatalogueStore implements IStore<any> {
 
       // Safety check for apiList.items
       if (!apiList.items || !Array.isArray(apiList.items)) {
-        console.warn('[FederatedCatalogueStore] apiList.items is not an array, falling back to full fetch');
+        console.warn(
+          '[FederatedCatalogueStore] apiList.items is not an array, falling back to full fetch',
+        );
         return this.getFullData(targetType);
       }
 
@@ -314,7 +316,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     const newMetadata: CacheItemMetadata[] = [];
 
-    if (dataset && dataset.items && Array.isArray(dataset.items)) {
+    if (dataset?.items && Array.isArray(dataset.items)) {
       for (const item of dataset.items) {
         const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
           item.meta.sdHash,
