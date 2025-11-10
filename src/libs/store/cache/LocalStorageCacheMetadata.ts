@@ -78,11 +78,9 @@ export class LocalStorageCacheMetadataManager {
       // Convert items object back to Map
       const items = new Map<string, CacheItemMetadata>();
       if (parsed.items) {
-        Object.entries(parsed.items).forEach(
-          ([hash, metadata]: [string, any]) => {
-            items.set(hash, metadata as CacheItemMetadata);
-          },
-        );
+        for (const [hash, metadata] of Object.entries(parsed.items)) {
+          items.set(hash, metadata as CacheItemMetadata);
+        }
       }
 
       return {
@@ -224,12 +222,12 @@ export class LocalStorageCacheMetadataManager {
     }
 
     // Update items
-    items.forEach(item => {
-      cacheData?.items.set(item.sdHash, {
+    for (const item of items) {
+      cacheData.items.set(item.sdHash, {
         ...item,
         cachedAt: now,
       });
-    });
+    }
 
     // Update timestamp
     cacheData.lastFetchTimestamp = now;
@@ -248,19 +246,19 @@ export class LocalStorageCacheMetadataManager {
     }
 
     // Remove from metadata
-    sdHashes.forEach(hash => {
+    for (const hash of sdHashes) {
       cacheData.items.delete(hash);
-    });
+    }
 
     // Remove from resource by matching resourceId
     if (cacheData.resource?.['ldp:contains']) {
       const resourceIdsToRemove = new Set<string>();
-      sdHashes.forEach(hash => {
+      for (const hash of sdHashes) {
         const meta = cacheData.items.get(hash);
         if (meta) {
           resourceIdsToRemove.add(meta.resourceId);
         }
-      });
+      }
 
       cacheData.resource['ldp:contains'] = cacheData.resource[
         'ldp:contains'

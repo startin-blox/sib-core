@@ -227,10 +227,12 @@ describe('LocalStorageCacheMetadataManager', () => {
       const storedJson = localStorage.getItem(key);
       expect(storedJson).to.exist;
 
-      const parsed = JSON.parse(storedJson!);
-      expect(parsed.items).to.be.an('object');
-      expect(parsed.items.hash1).to.exist;
-      expect(parsed.items.hash2).to.exist;
+      if (storedJson) {
+        const parsed = JSON.parse(storedJson);
+        expect(parsed.items).to.be.an('object');
+        expect(parsed.items.hash1).to.exist;
+        expect(parsed.items.hash2).to.exist;
+      }
     });
 
     it('handles localStorage quota exceeded error', () => {
