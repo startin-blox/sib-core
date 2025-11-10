@@ -1465,10 +1465,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     // Check if asset has any agreements or negotiations
     const hasAgreement = this.hasValidAgreement(assetId);
     if (hasAgreement) {
-      const message =
-        `Cannot update asset ${assetId}: Asset has active contract agreements. ` +
-        `Deleting an asset with agreements would invalidate existing contracts. ` +
-        `Please terminate or complete all negotiations first.`;
+      const message = `Cannot update asset ${assetId}: Asset has active contract agreements. Deleting an asset with agreements would invalidate existing contracts. Please terminate or complete all negotiations first.`;
       throw new AssetValidationError(message, assetId, 'update', 'agreements');
     }
 
@@ -1482,9 +1479,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     );
 
     if (activeNegotiations.length > 0) {
-      const message =
-        `Cannot update asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
-        `Please wait for negotiations to complete or terminate them first.`;
+      const message = `Cannot update asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). Please wait for negotiations to complete or terminate them first.`;
       throw new AssetValidationError(
         message,
         assetId,
@@ -1558,10 +1553,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       // Check if asset has any agreements or negotiations
       const hasAgreement = this.hasValidAgreement(assetId);
       if (hasAgreement) {
-        const message =
-          `Cannot delete asset ${assetId}: Asset has active contract agreements. ` +
-          `Deleting an asset with agreements would invalidate existing contracts. ` +
-          `Please terminate or complete all negotiations first.`;
+        const message = `Cannot delete asset ${assetId}: Asset has active contract agreements. Deleting an asset with agreements would invalidate existing contracts. Please terminate or complete all negotiations first.`;
         throw new AssetValidationError(
           message,
           assetId,
@@ -1580,9 +1572,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
       if (activeNegotiations.length > 0) {
-        const message =
-          `Cannot delete asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). ` +
-          `Please wait for negotiations to complete or terminate them first.`;
+        const message = `Cannot delete asset ${assetId}: Asset has ${activeNegotiations.length} active contract negotiation(s). Please wait for negotiations to complete or terminate them first.`;
         throw new AssetValidationError(
           message,
           assetId,

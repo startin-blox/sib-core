@@ -4,7 +4,7 @@
  * This file provides reusable mock data for testing the caching implementation.
  */
 
-import type { CacheItemMetadata } from '../../../src/libs/cache/LocalStorageCacheMetadata.ts';
+import type { CacheItemMetadata } from '../../src/libs/store/cache/LocalStorageCacheMetadata.ts';
 
 /**
  * Mock cache item metadata samples
@@ -15,24 +15,28 @@ export const mockCacheItems: Record<string, CacheItemMetadata> = {
     uploadDatetime: '2024-01-01T10:00:00Z',
     statusDatetime: '2024-01-01T10:00:00Z',
     cachedAt: 1704103200000, // 2024-01-01 10:00:00 UTC
+    resourceId: 'urn:uuid:resource-1',
   },
   item2: {
     sdHash: 'hash-def456',
     uploadDatetime: '2024-01-02T14:30:00Z',
     statusDatetime: '2024-01-02T14:30:00Z',
     cachedAt: 1704206200000, // 2024-01-02 14:30:00 UTC
+    resourceId: 'urn:uuid:resource-2',
   },
   item3: {
     sdHash: 'hash-ghi789',
     uploadDatetime: '2024-01-03T08:15:00Z',
     statusDatetime: '2024-01-03T08:15:00Z',
     cachedAt: 1704267300000, // 2024-01-03 08:15:00 UTC
+    resourceId: 'urn:uuid:resource-3',
   },
   updatedItem: {
     sdHash: 'hash-abc123', // Same hash as item1
     uploadDatetime: '2024-01-10T12:00:00Z', // Newer timestamp
     statusDatetime: '2024-01-10T12:00:00Z',
     cachedAt: 1704888000000, // 2024-01-10 12:00:00 UTC
+    resourceId: 'urn:uuid:resource-1', // Same resource as item1
   },
 };
 
@@ -321,7 +325,8 @@ export const createMockStoreConfig = (overrides = {}) => ({
   login: {
     kc_username: 'test-user',
     kc_password: 'test-password',
-    kc_url: 'https://auth.startinblox.com/realms/tems/protocol/openid-connect/token',
+    kc_url:
+      'https://auth.startinblox.com/realms/tems/protocol/openid-connect/token',
     kc_grant_type: 'password',
     kc_client_id: 'test-client',
     kc_client_secret: 'test-secret',
@@ -359,6 +364,7 @@ export const generateMockCacheItems = (count: number): CacheItemMetadata[] => {
       uploadDatetime: new Date(baseTime + i * 60000).toISOString(),
       statusDatetime: new Date(baseTime + i * 60000).toISOString(),
       cachedAt: baseTime + i * 60000,
+      resourceId: `urn:uuid:test-resource-${i}`,
     });
   }
 

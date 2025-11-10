@@ -28,7 +28,7 @@ export class LocalStorageCacheMetadataManager {
 
   constructor(
     private endpoint: string,
-    private ttlMs: number = LocalStorageCacheMetadataManager.DEFAULT_TTL_MS
+    private ttlMs: number = LocalStorageCacheMetadataManager.DEFAULT_TTL_MS,
   ) {
     // Clean up old cache format (v1.0.0 with different key prefix)
     this.cleanupOldCacheFormat();
@@ -43,11 +43,13 @@ export class LocalStorageCacheMetadataManager {
       const oldKey = `fc-cache-meta-${endpointHash}`;
 
       if (localStorage.getItem(oldKey)) {
-        console.log('[LocalStorageCache] Removing old cache format (v1.0.0)');
         localStorage.removeItem(oldKey);
       }
     } catch (error) {
-      console.warn('[LocalStorageCache] Error cleaning up old cache format:', error);
+      console.warn(
+        '[LocalStorageCache] Error cleaning up old cache format:',
+        error,
+      );
     }
   }
 
@@ -76,9 +78,11 @@ export class LocalStorageCacheMetadataManager {
       // Convert items object back to Map
       const items = new Map<string, CacheItemMetadata>();
       if (parsed.items) {
-        Object.entries(parsed.items).forEach(([hash, metadata]: [string, any]) => {
-          items.set(hash, metadata as CacheItemMetadata);
-        });
+        Object.entries(parsed.items).forEach(
+          ([hash, metadata]: [string, any]) => {
+            items.set(hash, metadata as CacheItemMetadata);
+          },
+        );
       }
 
       return {
@@ -221,7 +225,7 @@ export class LocalStorageCacheMetadataManager {
 
     // Update items
     items.forEach(item => {
-      cacheData!.items.set(item.sdHash, {
+      cacheData?.items.set(item.sdHash, {
         ...item,
         cachedAt: now,
       });
@@ -249,7 +253,7 @@ export class LocalStorageCacheMetadataManager {
     });
 
     // Remove from resource by matching resourceId
-    if (cacheData.resource && cacheData.resource['ldp:contains']) {
+    if (cacheData.resource?.['ldp:contains']) {
       const resourceIdsToRemove = new Set<string>();
       sdHashes.forEach(hash => {
         const meta = cacheData.items.get(hash);
@@ -258,9 +262,9 @@ export class LocalStorageCacheMetadataManager {
         }
       });
 
-      cacheData.resource['ldp:contains'] = cacheData.resource['ldp:contains'].filter(
-        (item: any) => !resourceIdsToRemove.has(item['@id'])
-      );
+      cacheData.resource['ldp:contains'] = cacheData.resource[
+        'ldp:contains'
+      ].filter((item: any) => !resourceIdsToRemove.has(item['@id']));
     }
 
     return this.setCacheData(cacheData);

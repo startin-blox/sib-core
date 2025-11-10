@@ -1,11 +1,8 @@
-import {
-  FederatedCatalogueStore,
-} from '../../../src/libs/store/impl/federated-catalogue/FederatedCatalogueStore.ts';
+import { FederatedCatalogueStore } from '../../../src/libs/store/impl/federated-catalogue/FederatedCatalogueStore.ts';
 import {
   type StoreConfig,
   StoreType,
 } from '../../../src/libs/store/shared/types.ts';
-import type { CacheItemMetadata } from '../../../src/libs/cache/LocalStorageCacheMetadata.ts';
 
 describe('FederatedCatalogueStore - Delta Update Logic', () => {
   let store: FederatedCatalogueStore;
@@ -669,7 +666,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wait('@auth');
       cy.wait('@fcList');
 
-      cy.wrap(resultPromise).then((result: any) => {
+      cy.wrap(resultPromise).then(() => {
         // Note: Current implementation doesn't remove items from container
         // for safety (conservative approach), but metadata is updated
         const knownHashes = metadataManager?.getKnownHashes();
@@ -985,7 +982,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
 
       // First call fails (delta update)
       let callCount = 0;
-      cy.intercept('GET', fc('/self-descriptions'), (req) => {
+      cy.intercept('GET', fc('/self-descriptions'), req => {
         callCount++;
         if (callCount === 1) {
           req.reply({ statusCode: 500, body: { error: 'Server error' } });
@@ -1312,7 +1309,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         },
       }).as('fcList');
 
-      const savePromise = new Promise<any>((resolve) => {
+      const savePromise = new Promise<any>(resolve => {
         const handler = (e: any) => {
           document.removeEventListener('save', handler);
           resolve(e.detail?.resource);

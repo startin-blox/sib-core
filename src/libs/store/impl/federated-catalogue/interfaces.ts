@@ -47,9 +47,11 @@ interface CredentialSubject {
    * will hold the DcatService fields.
    */
   'dcat:service'?: DcatService;
-  'dcat:dataset'?: Array<DcatService & {
-    'odrl:hasPolicy'?: any;
-  }>;
+  'dcat:dataset'?: Array<
+    DcatService & {
+      'odrl:hasPolicy'?: any;
+    }
+  >;
 
   // Dataspace Protocol fields for contract negotiation
   'dspace:participantId'?: string;

@@ -1,6 +1,10 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
 import type { CacheManagerInterface } from '../../cache/CacheManager.ts';
 import { InMemoryCacheManager } from '../../cache/InMemory.ts';
+import {
+  type CacheItemMetadata,
+  LocalStorageCacheMetadataManager,
+} from '../../cache/LocalStorageCacheMetadata.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import type { IStore, StoreConfig } from '../../shared/types.ts';
@@ -8,7 +12,6 @@ import type { Resource } from '../../shared/types.ts';
 import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
 import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
 import type { DcatService, Destination, Source } from './interfaces.ts';
-import { LocalStorageCacheMetadataManager, type CacheItemMetadata } from '../../cache/LocalStorageCacheMetadata.ts';
 
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
@@ -49,7 +52,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       const cacheTTL = this.cfg.cacheTTL || 2 * 60 * 60 * 1000; // Default 2 hours
       this.metadataManager = new LocalStorageCacheMetadataManager(
         this.cfg.endpoint,
-        cacheTTL
+        cacheTTL,
       );
 
       // Check for page reload and clear cache if needed
@@ -66,15 +69,12 @@ export class FederatedCatalogueStore implements IStore<any> {
     try {
       const stats = this.metadataManager?.getCacheStats();
       if (stats) {
-        console.log('[FederatedCatalogueStore] Cache initialized:', {
-          itemCount: stats.itemCount,
-          lastFetch: stats.lastFetch,
-          expiresAt: stats.expiresAt,
-          isValid: stats.isValid,
-        });
       }
     } catch (error) {
-      console.warn('[FederatedCatalogueStore] Error reading cache stats:', error);
+      console.warn(
+        '[FederatedCatalogueStore] Error reading cache stats:',
+        error,
+      );
     }
   }
 
@@ -89,34 +89,24 @@ export class FederatedCatalogueStore implements IStore<any> {
   async getData(args: any) {
     const targetType = this.resolveTargetType(args);
 
-    console.log(
-      '[FederatedCatalogueStore] getData called with:',
-      args,
-      'targetType:',
-      targetType,
-    );
-
     if (!this.fcApi) {
       throw new Error('Federated API not initialized, returning empty data.');
     }
 
     // Check if we have cached data and metadata is valid
-    const cacheIsValid = this.enableCaching && this.metadataManager?.isCacheValid();
+    const cacheIsValid =
+      this.enableCaching && this.metadataManager?.isCacheValid();
     const hasCached = this.hasCachedData();
 
     if (cacheIsValid && hasCached) {
-      console.log('[FederatedCatalogueStore] Cache is valid with data, performing delta update');
       return await this.getDeltaUpdatedData(targetType);
-    } else {
-      // Clear invalid cache if metadata exists but no resource data
-      if (cacheIsValid && !hasCached && this.metadataManager) {
-        console.log('[FederatedCatalogueStore] Cache metadata valid but no resource data - clearing invalid cache');
-        this.metadataManager.clear();
-      } else if (!cacheIsValid) {
-        console.log('[FederatedCatalogueStore] Cache invalid or disabled, performing full fetch');
-      }
-      return await this.getFullData(targetType);
     }
+    // Clear invalid cache if metadata exists but no resource data
+    if (cacheIsValid && !hasCached && this.metadataManager) {
+      this.metadataManager.clear();
+    } else if (!cacheIsValid) {
+    }
+    return await this.getFullData(targetType);
   }
 
   /**
@@ -129,20 +119,18 @@ export class FederatedCatalogueStore implements IStore<any> {
       }
 
       const resource = this.metadataManager.getResource();
-      const hasResourceData = !!(resource && resource['ldp:contains'] && resource['ldp:contains'].length > 0);
-      const metadataItemCount = this.metadataManager.getCacheStats().itemCount || 0;
-
-      console.log('[FederatedCatalogueStore] Cache data check:', {
-        hasResourceData,
-        resourceExists: !!resource,
-        hasLdpContains: !!(resource && resource['ldp:contains']),
-        resourceItemCount: resource?.['ldp:contains']?.length || 0,
-        metadataItemCount,
-      });
+      const hasResourceData = !!(
+        resource?.['ldp:contains'] && resource['ldp:contains'].length > 0
+      );
+      const metadataItemCount =
+        this.metadataManager.getCacheStats().itemCount || 0;
 
       return hasResourceData && metadataItemCount > 0;
     } catch (error) {
-      console.error('[FederatedCatalogueStore] Error checking cached data:', error);
+      console.error(
+        '[FederatedCatalogueStore] Error checking cached data:',
+        error,
+      );
       return false;
     }
   }
@@ -152,15 +140,11 @@ export class FederatedCatalogueStore implements IStore<any> {
    */
   private async getDeltaUpdatedData(targetType: string): Promise<Resource> {
     if (!this.fcApi || !this.metadataManager) {
-      console.log('[FederatedCatalogueStore] Delta update: No fcApi or metadataManager');
       return await this.getFullData(targetType);
     }
 
     try {
-      // Get current list from API
-      console.log('[FederatedCatalogueStore] Delta update: Calling getAllSelfDescriptions()...');
       const apiList = await this.fcApi.getAllSelfDescriptions();
-      console.log('[FederatedCatalogueStore] Delta update - API list:', apiList?.items?.length, 'items');
 
       if (!apiList || !apiList.items) {
         console.warn('[FederatedCatalogueStore] No items returned from API');
@@ -168,9 +152,8 @@ export class FederatedCatalogueStore implements IStore<any> {
       }
 
       // Get existing cached resource from localStorage
-      let resource = this.metadataManager.getResource();
+      const resource = this.metadataManager.getResource();
       if (!resource) {
-        console.log('[FederatedCatalogueStore] No cached resource found, switching to full fetch');
         return await this.getFullData(targetType);
       }
 
@@ -201,8 +184,10 @@ export class FederatedCatalogueStore implements IStore<any> {
           // Check if updated
           const cachedMeta = this.metadataManager.getItemMetadata(hash);
           if (cachedMeta) {
-            if (item.meta.uploadDatetime > cachedMeta.uploadDatetime ||
-                item.meta.statusDatetime > cachedMeta.statusDatetime) {
+            if (
+              item.meta.uploadDatetime > cachedMeta.uploadDatetime ||
+              item.meta.statusDatetime > cachedMeta.statusDatetime
+            ) {
               updatedHashes.push(hash);
             }
           }
@@ -216,22 +201,15 @@ export class FederatedCatalogueStore implements IStore<any> {
         }
       }
 
-      console.log('[FederatedCatalogueStore] Delta:', {
-        new: newHashes.length,
-        updated: updatedHashes.length,
-        deleted: deletedHashes.length,
-      });
-
       // Fetch new and updated items
       const toFetch = [...newHashes, ...updatedHashes];
       const newMetadata: CacheItemMetadata[] = [];
 
       if (toFetch.length > 0) {
-        console.log(`[FederatedCatalogueStore] Fetching ${toFetch.length} changed items`);
-
         for (const hash of toFetch) {
           try {
-            const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(hash);
+            const sd: Source | null =
+              await this.fcApi.getSelfDescriptionByHash(hash);
             if (sd) {
               const mappedResource = this.mapSourceToDestination(sd, {
                 temsServiceBase: this.cfg.temsServiceBase as string,
@@ -243,7 +221,7 @@ export class FederatedCatalogueStore implements IStore<any> {
               // Find and remove old version if updated
               if (updatedHashes.includes(hash)) {
                 const index = resource['ldp:contains'].findIndex(
-                  (r: any) => r['@id'] === mappedResource['@id']
+                  (r: any) => r['@id'] === mappedResource['@id'],
                 );
                 if (index !== -1) {
                   resource['ldp:contains'].splice(index, 1);
@@ -266,19 +244,18 @@ export class FederatedCatalogueStore implements IStore<any> {
               }
             }
           } catch (error) {
-            console.error(`[FederatedCatalogueStore] Error fetching hash ${hash}:`, error);
+            console.error(
+              `[FederatedCatalogueStore] Error fetching hash ${hash}:`,
+              error,
+            );
           }
         }
       }
 
-      // Remove deleted items
+      // Remove deleted items from metadata
       if (deletedHashes.length > 0) {
-        console.log(`[FederatedCatalogueStore] Removing ${deletedHashes.length} deleted items`);
-        resource['ldp:contains'] = resource['ldp:contains'].filter((item: any) => {
-          // We don't have direct hash-to-id mapping, so we'll keep items for safety
-          // In production, you might want to store hash in mapped resource
-          return true; // Conservative approach
-        });
+        // Note: We keep items in resource for safety (conservative approach)
+        // In production, you might want to implement actual removal using hash-to-id mapping
         this.metadataManager.removeItems(deletedHashes);
       }
 
@@ -286,8 +263,6 @@ export class FederatedCatalogueStore implements IStore<any> {
       if (newMetadata.length > 0) {
         this.metadataManager.updateCache(resource, newMetadata);
       }
-
-      console.log('[FederatedCatalogueStore] Delta update complete:', resource['ldp:contains'].length, 'total items');
 
       document.dispatchEvent(
         new CustomEvent('save', {
@@ -298,7 +273,10 @@ export class FederatedCatalogueStore implements IStore<any> {
 
       return resource;
     } catch (error) {
-      console.error('[FederatedCatalogueStore] Delta update failed, falling back to full fetch:', error);
+      console.error(
+        '[FederatedCatalogueStore] Delta update failed, falling back to full fetch:',
+        error,
+      );
       return await this.getFullData(targetType);
     }
   }
@@ -311,30 +289,15 @@ export class FederatedCatalogueStore implements IStore<any> {
       throw new Error('Federated API not initialized');
     }
 
-    console.log('[FederatedCatalogueStore] Performing full fetch');
-
-    let resource = await this.initLocalDataSourceContainer(targetType);
+    const resource = await this.initLocalDataSourceContainer(targetType);
     const dataset = await this.fcApi.getAllSelfDescriptions();
-    console.log('[FederatedCatalogueStore] Got dataset from API:', dataset);
-    console.log(
-      '[FederatedCatalogueStore] Dataset items count:',
-      dataset?.items?.length,
-    );
 
     const newMetadata: CacheItemMetadata[] = [];
 
     if (dataset) {
       for (const item of dataset.items) {
-        console.log(
-          `[FederatedCatalogueStore] Processing item, hash:`,
-          item.meta.sdHash,
-        );
         const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
           item.meta.sdHash,
-        );
-        console.log(
-          `[FederatedCatalogueStore] Got self-description:`,
-          sd ? 'Success' : 'Failed',
         );
         if (sd) {
           try {
@@ -344,10 +307,6 @@ export class FederatedCatalogueStore implements IStore<any> {
               temsImageBase: this.cfg.temsImageBase as string,
               temsProviderBase: this.cfg.temsProviderBase as string,
             });
-            console.log(
-              `[FederatedCatalogueStore] Mapped resource:`,
-              mappedResource,
-            );
             resource['ldp:contains'].push(mappedResource);
 
             // Track metadata if caching is enabled
@@ -362,7 +321,7 @@ export class FederatedCatalogueStore implements IStore<any> {
             }
           } catch (error) {
             console.error(
-              `[FederatedCatalogueStore] Error mapping resource:`,
+              '[FederatedCatalogueStore] Error mapping resource:',
               error,
             );
           }
@@ -370,19 +329,9 @@ export class FederatedCatalogueStore implements IStore<any> {
       }
     }
 
-    console.log(
-      '[FederatedCatalogueStore] Final resource with items:',
-      resource,
-    );
-    console.log(
-      '[FederatedCatalogueStore] Total items:',
-      resource['ldp:contains'].length,
-    );
-
     // Update localStorage cache if caching is enabled
     if (this.enableCaching && this.metadataManager && newMetadata.length > 0) {
       this.metadataManager.updateCache(resource, newMetadata);
-      console.log('[FederatedCatalogueStore] Updated localStorage cache with', newMetadata.length, 'items');
     }
 
     document.dispatchEvent(
@@ -530,7 +479,7 @@ export class FederatedCatalogueStore implements IStore<any> {
    * Helper function to strip URN prefixes from strings
    */
   private stripUrnPrefix(id: string, prefix: string): string {
-    if (id && id.startsWith(prefix)) {
+    if (id?.startsWith(prefix)) {
       return id.substring(prefix.length);
     }
     return id;
@@ -770,11 +719,6 @@ export class FederatedCatalogueStore implements IStore<any> {
         if (datasetId) {
           policy.target = datasetId;
         }
-
-        console.log(
-          '[FederatedCatalogueStore] Processed policy with all ODRL fields:',
-          JSON.stringify(policy, null, 2),
-        );
       }
     }
 

@@ -1323,7 +1323,7 @@ export const EdcFederatedCatalogDisplay = {
               <span class="spinner">📡</span> Accessing Data via API Gateway...
             </span>
           </div>`;
-        case 'granted':
+        case 'granted': {
           // Check if API Gateway is configured
           const useApiGateway = !!this._apiGatewayConfig;
 
@@ -1388,6 +1388,7 @@ export const EdcFederatedCatalogDisplay = {
               }
             </div>
           </div>`;
+        }
         case 'failed':
           return html`<div class="negotiation-error">
             <span>Failed with ${provider.name}: ${negotiation.error}</span>

@@ -1,8 +1,8 @@
 import {
-  LocalStorageCacheMetadataManager,
-  type CacheMetadata,
+  type CacheData,
   type CacheItemMetadata,
-} from '../../../src/libs/cache/LocalStorageCacheMetadata.ts';
+  LocalStorageCacheMetadataManager,
+} from '../../../src/libs/store/cache/LocalStorageCacheMetadata.ts';
 
 describe('LocalStorageCacheMetadataManager', () => {
   let manager: LocalStorageCacheMetadataManager;
@@ -38,8 +38,9 @@ describe('LocalStorageCacheMetadataManager', () => {
       const mgr2 = new LocalStorageCacheMetadataManager(testEndpoint);
 
       // Both should produce same storage key (tested indirectly)
-      mgr1.updateCache([
+      mgr1.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -56,8 +57,9 @@ describe('LocalStorageCacheMetadataManager', () => {
       const mgr1 = new LocalStorageCacheMetadataManager('https://api1.com');
       const mgr2 = new LocalStorageCacheMetadataManager('https://api2.com');
 
-      mgr1.updateCache([
+      mgr1.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -78,18 +80,22 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('retrieves existing cache metadata', () => {
       const testItem: CacheItemMetadata = {
+        resourceId: 'urn:uuid:test-resource-1',
         sdHash: 'test-hash-1',
         uploadDatetime: '2024-01-01T00:00:00Z',
         statusDatetime: '2024-01-01T00:00:00Z',
         cachedAt: Date.now(),
       };
 
-      manager.updateCache([testItem]);
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
+        testItem,
+      ]);
 
       const metadata = manager.getCacheMetadata();
       expect(metadata).to.exist;
       expect(metadata?.items.size).to.equal(1);
       expect(metadata?.items.get('test-hash-1')).to.deep.include({
+        resourceId: 'urn:uuid:test-resource-1',
         sdHash: 'test-hash-1',
         uploadDatetime: '2024-01-01T00:00:00Z',
         statusDatetime: '2024-01-01T00:00:00Z',
@@ -99,12 +105,14 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('converts items object to Map correctly', () => {
       const testItems: CacheItemMetadata[] = [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
@@ -112,7 +120,10 @@ describe('LocalStorageCacheMetadataManager', () => {
         },
       ];
 
-      manager.updateCache(testItems);
+      manager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        testItems,
+      );
 
       const metadata = manager.getCacheMetadata();
       expect(metadata?.items).to.be.instanceOf(Map);
@@ -148,14 +159,16 @@ describe('LocalStorageCacheMetadataManager', () => {
   describe('setCacheMetadata', () => {
     it('stores cache metadata successfully', () => {
       const now = Date.now();
-      const testMetadata: CacheMetadata = {
+      const testMetadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map([
           [
             'hash1',
             {
+              resourceId: 'urn:uuid:test-resource-1',
               sdHash: 'hash1',
               uploadDatetime: '2024-01-01T00:00:00Z',
               statusDatetime: '2024-01-01T00:00:00Z',
@@ -180,6 +193,7 @@ describe('LocalStorageCacheMetadataManager', () => {
         [
           'hash1',
           {
+            resourceId: 'urn:uuid:test-resource-1',
             sdHash: 'hash1',
             uploadDatetime: '2024-01-01T00:00:00Z',
             statusDatetime: '2024-01-01T00:00:00Z',
@@ -189,6 +203,7 @@ describe('LocalStorageCacheMetadataManager', () => {
         [
           'hash2',
           {
+            resourceId: 'urn:uuid:test-resource-2',
             sdHash: 'hash2',
             uploadDatetime: '2024-01-02T00:00:00Z',
             statusDatetime: '2024-01-02T00:00:00Z',
@@ -197,10 +212,11 @@ describe('LocalStorageCacheMetadataManager', () => {
         ],
       ]);
 
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items,
       };
 
@@ -229,10 +245,11 @@ describe('LocalStorageCacheMetadataManager', () => {
         throw err;
       });
 
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: Date.now(),
         cacheExpirationTimestamp: Date.now() + testTTL,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items,
       };
 
@@ -251,10 +268,11 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('returns true for valid cache within TTL', () => {
       const now = Date.now();
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map(),
       };
 
@@ -264,10 +282,11 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('returns false for expired cache', () => {
       const now = Date.now();
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: now - 1000, // Expired 1 second ago
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map(),
       };
 
@@ -277,10 +296,11 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('returns false for cache version mismatch', () => {
       const now = Date.now();
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '0.9.0', // Old version
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map(),
       };
 
@@ -290,10 +310,11 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('validates cache at exact expiration boundary', () => {
       const now = Date.now();
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now, // Expires exactly now
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map(),
       };
 
@@ -317,18 +338,21 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('returns all cached hashes', () => {
       const testItems: CacheItemMetadata[] = [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-3',
           sdHash: 'hash3',
           uploadDatetime: '2024-01-03T00:00:00Z',
           statusDatetime: '2024-01-03T00:00:00Z',
@@ -336,7 +360,10 @@ describe('LocalStorageCacheMetadataManager', () => {
         },
       ];
 
-      manager.updateCache(testItems);
+      manager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        testItems,
+      );
 
       const hashes = manager.getKnownHashes();
       expect(hashes.size).to.equal(3);
@@ -353,8 +380,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     });
 
     it('returns null when item does not exist', () => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -368,13 +396,16 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('returns existing item metadata', () => {
       const testItem: CacheItemMetadata = {
+        resourceId: 'urn:uuid:test-resource-1',
         sdHash: 'hash1',
         uploadDatetime: '2024-01-01T00:00:00Z',
         statusDatetime: '2024-01-01T00:00:00Z',
         cachedAt: Date.now(),
       };
 
-      manager.updateCache([testItem]);
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
+        testItem,
+      ]);
 
       const item = manager.getItemMetadata('hash1');
       expect(item).to.exist;
@@ -388,6 +419,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('creates new cache when none exists', () => {
       const testItems: CacheItemMetadata[] = [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -395,7 +427,10 @@ describe('LocalStorageCacheMetadataManager', () => {
         },
       ];
 
-      const success = manager.updateCache(testItems);
+      const success = manager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        testItems,
+      );
       expect(success).to.be.true;
 
       const metadata = manager.getCacheMetadata();
@@ -405,8 +440,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     });
 
     it('adds new items to existing cache', () => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -414,8 +450,9 @@ describe('LocalStorageCacheMetadataManager', () => {
         },
       ]);
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
@@ -432,8 +469,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('updates existing items', () => {
       const now = Date.now();
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -443,8 +481,9 @@ describe('LocalStorageCacheMetadataManager', () => {
 
       cy.wait(10).then(() => {
         const laterTime = Date.now();
-        manager.updateCache([
+        manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
           {
+            resourceId: 'urn:uuid:test-resource-1',
             sdHash: 'hash1',
             uploadDatetime: '2024-01-02T00:00:00Z', // Updated
             statusDatetime: '2024-01-02T00:00:00Z', // Updated
@@ -462,8 +501,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('updates lastFetchTimestamp', () => {
       const before = Date.now();
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -477,14 +517,16 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('recreates cache when expired', () => {
       const now = Date.now();
-      const expiredMetadata: CacheMetadata = {
+      const expiredMetadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: now - 1000, // Expired
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map([
           [
             'old-hash',
             {
+              resourceId: 'urn:uuid:test-resource-old',
               sdHash: 'old-hash',
               uploadDatetime: '2024-01-01T00:00:00Z',
               statusDatetime: '2024-01-01T00:00:00Z',
@@ -496,8 +538,9 @@ describe('LocalStorageCacheMetadataManager', () => {
 
       manager.setCacheMetadata(expiredMetadata);
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-new',
           sdHash: 'new-hash',
           uploadDatetime: '2024-02-01T00:00:00Z',
           statusDatetime: '2024-02-01T00:00:00Z',
@@ -514,14 +557,16 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('sets cachedAt timestamp for all items', () => {
       const before = Date.now();
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
           cachedAt: 0, // Should be overwritten
         },
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
@@ -539,20 +584,23 @@ describe('LocalStorageCacheMetadataManager', () => {
 
   describe('removeItems', () => {
     beforeEach(() => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-3',
           sdHash: 'hash3',
           uploadDatetime: '2024-01-03T00:00:00Z',
           statusDatetime: '2024-01-03T00:00:00Z',
@@ -608,8 +656,9 @@ describe('LocalStorageCacheMetadataManager', () => {
 
   describe('clear', () => {
     it('removes cache metadata from localStorage', () => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -655,14 +704,16 @@ describe('LocalStorageCacheMetadataManager', () => {
       const now = Date.now();
       const expiresAt = now + testTTL;
 
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: expiresAt,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map([
           [
             'hash1',
             {
+              resourceId: 'urn:uuid:test-resource-1',
               sdHash: 'hash1',
               uploadDatetime: '2024-01-01T00:00:00Z',
               statusDatetime: '2024-01-01T00:00:00Z',
@@ -672,6 +723,7 @@ describe('LocalStorageCacheMetadataManager', () => {
           [
             'hash2',
             {
+              resourceId: 'urn:uuid:test-resource-2',
               sdHash: 'hash2',
               uploadDatetime: '2024-01-02T00:00:00Z',
               statusDatetime: '2024-01-02T00:00:00Z',
@@ -697,14 +749,16 @@ describe('LocalStorageCacheMetadataManager', () => {
       const now = Date.now();
       const expiredAt = now - 1000;
 
-      const metadata: CacheMetadata = {
+      const metadata: CacheData = {
         version: '1.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: expiredAt,
+        resource: { '@id': 'test-container', 'ldp:contains': [] },
         items: new Map([
           [
             'hash1',
             {
+              resourceId: 'urn:uuid:test-resource-1',
               sdHash: 'hash1',
               uploadDatetime: '2024-01-01T00:00:00Z',
               statusDatetime: '2024-01-01T00:00:00Z',
@@ -725,8 +779,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     });
 
     it('tracks item count accurately', () => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -736,14 +791,16 @@ describe('LocalStorageCacheMetadataManager', () => {
 
       expect(manager.getCacheStats().itemCount).to.equal(1);
 
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
           cachedAt: Date.now(),
         },
         {
+          resourceId: 'urn:uuid:test-resource-3',
           sdHash: 'hash3',
           uploadDatetime: '2024-01-03T00:00:00Z',
           statusDatetime: '2024-01-03T00:00:00Z',
@@ -767,14 +824,18 @@ describe('LocalStorageCacheMetadataManager', () => {
         shortTTL,
       );
 
-      shortManager.updateCache([
-        {
-          sdHash: 'hash1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      shortManager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            resourceId: 'urn:uuid:test-resource-1',
+            sdHash: 'hash1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       expect(shortManager.isCacheValid()).to.be.true;
 
@@ -786,14 +847,18 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('uses default TTL when not specified', () => {
       const defaultManager = new LocalStorageCacheMetadataManager(testEndpoint);
 
-      defaultManager.updateCache([
-        {
-          sdHash: 'hash1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      defaultManager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            resourceId: 'urn:uuid:test-resource-1',
+            sdHash: 'hash1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const metadata = defaultManager.getCacheMetadata();
       const expectedExpiration = Date.now() + 2 * 60 * 60 * 1000; // 2 hours
@@ -808,7 +873,10 @@ describe('LocalStorageCacheMetadataManager', () => {
 
   describe('Edge Cases', () => {
     it('handles empty items array', () => {
-      const success = manager.updateCache([]);
+      const success = manager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [],
+      );
       expect(success).to.be.true;
 
       const metadata = manager.getCacheMetadata();
@@ -817,8 +885,9 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('handles items with special characters in sdHash', () => {
       const specialHash = 'hash-with-special!@#$%^&*()_+=[]{}|;:,.<>?';
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: specialHash,
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -833,8 +902,9 @@ describe('LocalStorageCacheMetadataManager', () => {
 
     it('handles very long sdHash values', () => {
       const longHash = 'a'.repeat(1000);
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: longHash,
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -848,19 +918,24 @@ describe('LocalStorageCacheMetadataManager', () => {
     });
 
     it('handles endpoints with special characters', () => {
-      const specialEndpoint = 'https://api.example.com/path?query=1&foo=bar#hash';
+      const specialEndpoint =
+        'https://api.example.com/path?query=1&foo=bar#hash';
       const specialManager = new LocalStorageCacheMetadataManager(
         specialEndpoint,
       );
 
-      specialManager.updateCache([
-        {
-          sdHash: 'hash1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      specialManager.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            resourceId: 'urn:uuid:test-resource-1',
+            sdHash: 'hash1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const metadata = specialManager.getCacheMetadata();
       expect(metadata).to.exist;
@@ -868,8 +943,9 @@ describe('LocalStorageCacheMetadataManager', () => {
     });
 
     it('handles concurrent updates correctly', () => {
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-1',
           sdHash: 'hash1',
           uploadDatetime: '2024-01-01T00:00:00Z',
           statusDatetime: '2024-01-01T00:00:00Z',
@@ -878,8 +954,9 @@ describe('LocalStorageCacheMetadataManager', () => {
       ]);
 
       // Simulate concurrent update with different data
-      manager.updateCache([
+      manager.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
         {
+          resourceId: 'urn:uuid:test-resource-2',
           sdHash: 'hash2',
           uploadDatetime: '2024-01-02T00:00:00Z',
           statusDatetime: '2024-01-02T00:00:00Z',
