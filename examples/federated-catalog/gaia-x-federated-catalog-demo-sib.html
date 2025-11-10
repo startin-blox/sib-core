@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaia-X Federated Catalog Demo</title>
+    <script type="module" src="../../src/index.ts"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .demo-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .demo-info h3 {
+            margin-top: 0;
+        }
+        .demo-info code {
+            background: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .demo-info pre {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+
+        /* Catalog Styles */
+        .catalog-header {
+            background: #e8f5e8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .catalog-header h2 {
+            margin: 0 0 0.5rem 0;
+            color: #2e7d32;
+        }
+        .catalog-header p {
+            margin: 0.25rem 0;
+            color: #555;
+        }
+        .loading-indicator {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        /* Service/DataOffer List */
+        .catalog-list {
+            display: grid;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .catalog-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+        }
+        .catalog-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        .item-title {
+            margin: 0;
+            color: #1976d2;
+            font-size: 1.25rem;
+            flex: 1;
+        }
+        .type-badge {
+            background: #1976d2;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .type-badge.service {
+            background: #4caf50;
+        }
+        .type-badge.data-offer {
+            background: #ff9800;
+        }
+
+        .item-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .item-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .item-metadata span {
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .item-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        .provider-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .provider-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .item-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .category-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .item-images {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* Loading and empty states */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.125rem;
+            color: #666;
+        }
+        .loading::after {
+            content: "...";
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+        .error {
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            background: #ffebee;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Service/DataOffer specific styles */
+        .service-url, .documentation-url, .contact-url {
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        .service-url:hover, .documentation-url:hover, .contact-url:hover {
+            text-decoration: underline;
+        }
+
+        .activation-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .activation-status::before {
+            content: "●";
+            font-size: 1.5rem;
+        }
+        .activation-status.active::before {
+            color: #4caf50;
+        }
+        .activation-status.inactive::before {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>Gaia-X Federated Catalog Demo</h1>
+        <p>Displaying services and data offers from the Gaia-X Federated Catalogue</p>
+    </div>
+
+    <div class="demo-info">
+        <h3>Gaia-X Federated Catalogue Configuration</h3>
+        <p>This demo connects to the <strong>TEMS Dataspace Gaia-X Federated Catalogue</strong>:</p>
+        <ul>
+            <li><strong>Endpoint:</strong> <code>https://governance.tems-dataspace.eu/fc</code></li>
+            <li><strong>Authentication:</strong> Keycloak OAuth2 (TEMS realm)</li>
+            <li><strong>Protocol:</strong> Gaia-X Federated Catalogue API</li>
+        </ul>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>✅ <strong>Self-Description Discovery</strong> from the federated catalogue</li>
+            <li>✅ <strong>Automatic Mapping</strong> to TEMS-style resources (Services and Data Offers)</li>
+            <li>✅ <strong>Provider Information</strong> extraction from Gaia-X credentials</li>
+            <li>✅ <strong>Category/Keyword Mapping</strong> from DCAT metadata</li>
+            <li>✅ <strong>Image & Logo Extraction</strong> from FOAF thumbnails</li>
+            <li>✅ <strong>Service Endpoints</strong> and documentation links</li>
+        </ul>
+        <p><strong>Implementation:</strong></p>
+        <ul>
+            <li>Uses <code>FederatedCatalogueStore</code> for data fetching</li>
+            <li>Maps Gaia-X Self-Descriptions (dcat:service, dcat:dataset) to TEMS format</li>
+            <li>Supports both Services and Data Offers</li>
+        </ul>
+    </div>
+
+    <div class="catalog-header">
+        <h2>Federated Catalogue Items</h2>
+        <p id="catalog-status" class="loading-indicator">Loading catalogue...</p>
+        <p id="catalog-count"></p>
+    </div>
+
+    <div id="catalog-display" class="catalog-list">
+        <!-- Cards will be rendered here -->
+    </div>
+
+    <script type="module">
+        import { StoreService, StoreType } from '../../src/index.ts';
+
+        // Function to render catalog cards
+        function renderCatalogCards(items) {
+            const catalogDisplay = document.getElementById('catalog-display');
+            catalogDisplay.innerHTML = ''; // Clear existing content
+
+            if (!items || items.length === 0) {
+                catalogDisplay.innerHTML = '<div class="empty">No items found</div>';
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'catalog-item';
+
+                // Build card HTML
+                const typeBadgeClass = item['@type'] === 'tems:Service' ? 'service' : 'data-offer';
+                const typeName = item['@type'] === 'tems:Service' ? 'Service' : 'Data Offer';
+
+                let cardHTML = `
+                    <div class="item-header">
+                        <h3 class="item-title">${item.name || 'Untitled'}</h3>
+                        <span class="type-badge ${typeBadgeClass}">${typeName}</span>
+                    </div>
+                `;
+
+                if (item.description) {
+                    cardHTML += `<div class="item-description">${item.description}</div>`;
+                }
+
+                if (item.long_description) {
+                    cardHTML += `<div class="item-description"><em>${item.long_description}</em></div>`;
+                }
+
+                // Metadata
+                if (item.activation_status || item.is_api || item.creation_date) {
+                    cardHTML += '<div class="item-metadata">';
+                    if (item.activation_status) {
+                        cardHTML += '<span class="activation-status active">Active</span>';
+                    }
+                    if (item.is_api) {
+                        cardHTML += '<span>API Available</span>';
+                    }
+                    if (item.creation_date) {
+                        const date = new Date(item.creation_date).toLocaleDateString();
+                        cardHTML += `<span>Created: ${date}</span>`;
+                    }
+                    cardHTML += '</div>';
+                }
+
+                // URLs
+                if (item.url) {
+                    cardHTML += `<div><a href="${item.url}" class="service-url" target="_blank">Visit Service ↗</a></div>`;
+                }
+                if (item.documentation_url && item.documentation_url !== item.url) {
+                    cardHTML += `<div><a href="${item.documentation_url}" class="documentation-url" target="_blank">Documentation ↗</a></div>`;
+                }
+
+                // Categories
+                if (item.categories && item.categories['ldp:contains'] && item.categories['ldp:contains'].length > 0) {
+                    cardHTML += '<div class="item-categories">';
+                    item.categories['ldp:contains'].forEach(cat => {
+                        if (cat.name) {
+                            cardHTML += `<span class="category-tag">${cat.name}</span>`;
+                        }
+                    });
+                    cardHTML += '</div>';
+                }
+
+                // Provider
+                if (item.provider && item.provider.name) {
+                    cardHTML += '<div class="item-provider">';
+                    if (item.provider.image && item.provider.image.url) {
+                        cardHTML += `<img src="${item.provider.image.url}" alt="${item.provider.name}" class="provider-logo" />`;
+                    }
+                    cardHTML += `<span class="provider-name">${item.provider.name}</span>`;
+                    cardHTML += '</div>';
+                }
+
+                card.innerHTML = cardHTML;
+                catalogDisplay.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('✅ Gaia-X Federated Catalog Demo loaded');
+
+            const statusElement = document.getElementById('catalog-status');
+
+            try {
+                // Initialize FederatedCatalogue store with TEMS configuration
+                const federatedCatalogueConfig = {
+                    type: StoreType.FederatedCatalogue,
+                    endpoint: 'https://governance.tems-dataspace.eu/fc',
+                    login: {
+                        kc_url: 'https://governance.tems-dataspace.eu/auth/realms/gaia-x/protocol/openid-connect/token',
+                        kc_grant_type: "password",
+                        kc_client_id: "federated-catalogue",
+                        kc_client_secret: "S5plMH471bbtKzW4yHZcZzZMgPbH3u3w",
+                        kc_username: "fc_service_account",
+                        kc_password: "Test123_",
+                        kc_scope: "openid"
+                    },
+                    temsServiceBase: 'https://api.tems-stg.startinblox.com/services/',
+                    temsCategoryBase: 'https://api.tems-stg.startinblox.com/providers/categories/',
+                    temsImageBase: 'https://api.tems-stg.startinblox.com/objects/images/',
+                    temsProviderBase: 'https://api.tems-stg.startinblox.com/providers/'
+                };
+
+                StoreService.addStore('federatedCatalogue', federatedCatalogueConfig);
+                console.log('📊 FederatedCatalogue store initialized');
+
+                // Set the data source path
+                const endpointHash = federatedCatalogueConfig.endpoint.replace(/[^a-zA-Z0-9]/g, '');
+                const dataSrc = `store://local.fc-${endpointHash}-default/`;
+
+                statusElement.textContent = 'Loading catalogue items...';
+
+                // Get the store instance and call getData to fetch from the Federated Catalogue
+                const federatedStore = StoreService.getStore('federatedCatalogue');
+                if (federatedStore) {
+                    console.log('🔄 Fetching data from Federated Catalogue...');
+                    console.log('Store instance:', federatedStore);
+                    try {
+                        // Call getData with the target type to trigger fetching from the API
+                        const result = await federatedStore.getData(dataSrc);
+                        console.log('✅ Data fetching completed');
+                        console.log('Result from getData:', result);
+
+                        // Check what's in the result
+                        if (result && result['ldp:contains']) {
+                            const itemCount = result['ldp:contains'].length;
+                            console.log(`Found ${itemCount} items`);
+
+                            statusElement.textContent = `Catalogue loaded successfully - ${itemCount} items`;
+                            statusElement.classList.remove('loading-indicator');
+                            statusElement.style.color = '#4caf50';
+
+                            if (itemCount > 0) {
+                                console.log('Sample item:', result['ldp:contains'][0]);
+                                // Render the cards
+                                renderCatalogCards(result['ldp:contains']);
+                            } else {
+                                renderCatalogCards([]);
+                            }
+                        } else {
+                            console.warn('No ldp:contains in result');
+                            statusElement.textContent = 'No items found in catalogue';
+                            statusElement.style.color = '#ff9800';
+                            renderCatalogCards([]);
+                        }
+                    } catch (error) {
+                        console.error('❌ Error fetching catalogue data:', error);
+                        statusElement.textContent = `Error fetching data: ${error.message}`;
+                        statusElement.style.color = '#d32f2f';
+                        renderCatalogCards([]);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Failed to initialize FederatedCatalogue store:', error);
+                statusElement.textContent = `Error: ${error.message}`;
+                statusElement.style.color = '#d32f2f';
+            }
+        });
+    </script>
+</body>
+</html>

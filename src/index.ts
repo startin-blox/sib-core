@@ -1,10 +1,10 @@
 import { SolidAcChecker } from './components/solid-ac-checker.ts';
 import { SolidDelete } from './components/solid-delete.ts';
 
+import { EdcFederatedCatalogDisplay } from './components/dsp-catalog-display.ts';
 // Components
 import { EdcAssetsDisplay } from './components/edc-assets-display.ts';
 import { EdcCatalogDisplay } from './components/edc-catalog-display.ts';
-import { EdcFederatedCatalogDisplay } from './components/edc-federated-catalog-display.ts';
 import { SolidDisplay } from './components/solid-display.ts';
 import { SolidFormSearch } from './components/solid-form-search.ts';
 import { SolidForm } from './components/solid-form.ts';

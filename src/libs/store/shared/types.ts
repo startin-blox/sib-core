@@ -163,6 +163,9 @@ export type StoreConfig = {
   temsImageBase?: string;
   temsProviderBase?: string;
   options?: StoreOptions;
+  // LocalStorage caching configuration (for FederatedCatalogueStore)
+  enableLocalStorageMetadata?: boolean;
+  cacheTTL?: number; // Cache TTL in milliseconds
 };
 
 export interface StoreInstance {

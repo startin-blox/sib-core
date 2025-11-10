@@ -172,11 +172,11 @@ describe('EdcFederatedCatalogDisplay', () => {
     }).as('catalogRequests');
 
     // Visit the page for each test to ensure clean state
-    cy.visit('/examples/e2e/edc-federated-catalog-display.html');
+    cy.visit('/examples/e2e/dsp-catalog-display.html');
   });
 
   it('displays loading state initially', () => {
-    cy.get('edc-federated-catalog-display').should('exist');
+    cy.get('dsp-catalog-display').should('exist');
     // cy.get('.loading-indicator').should('contain', '⏳ Loading...');
   });
 

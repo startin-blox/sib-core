@@ -16,7 +16,7 @@ import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
 export const EdcFederatedCatalogDisplay = {
-  name: 'edc-federated-catalog-display',
+  name: 'dsp-catalog-display',
   use: [WidgetMixin, AttributeBinderMixin],
   attributes: {
     consumerConnector: {
@@ -57,6 +57,18 @@ export const EdcFederatedCatalogDisplay = {
         }
       },
     },
+    apiGateway: {
+      type: String,
+      default: null,
+      callback: function (value: string) {
+        try {
+          this._apiGatewayConfig = value ? JSON.parse(value) : null;
+        } catch (error) {
+          console.error('Failed to parse api-gateway JSON:', error);
+          this._apiGatewayConfig = null;
+        }
+      },
+    },
     defaultWidget: {
       type: String,
       default: 'edc-federated-dataset-item',
@@ -78,6 +90,7 @@ export const EdcFederatedCatalogDisplay = {
     negotiations: new Map(),
     stores: new Map(),
     _providersArray: [],
+    _apiGatewayConfig: null,
     providerStats: new Map(),
     selectedProviders: new Set(),
     searchQuery: '',
@@ -565,6 +578,221 @@ export const EdcFederatedCatalogDisplay = {
     this.render();
   },
 
+  async getKeycloakAccessToken(): Promise<string> {
+    if (!this._apiGatewayConfig) {
+      throw new Error('API Gateway configuration not provided');
+    }
+
+    const { keycloakUrl, realm, clientId, clientSecret, username, password } =
+      this._apiGatewayConfig;
+
+    if (
+      !keycloakUrl ||
+      !realm ||
+      !clientId ||
+      !clientSecret ||
+      !username ||
+      !password
+    ) {
+      throw new Error('Incomplete API Gateway configuration');
+    }
+
+    const tokenUrl = `${keycloakUrl}/realms/${realm}/protocol/openid-connect/token`;
+
+    const params = new URLSearchParams({
+      grant_type: 'password',
+      client_id: clientId,
+      client_secret: clientSecret,
+      scope: 'openid',
+      username: username,
+      password: password,
+    });
+
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString(),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to get Keycloak access token: ${response.status} - ${errorText}`,
+      );
+    }
+
+    const data = await response.json();
+    return data.access_token;
+  },
+
+  async getApiGatewayToken(
+    accessToken: string,
+    contractAgreementId: string,
+  ): Promise<string> {
+    if (!this._apiGatewayConfig) {
+      throw new Error('API Gateway configuration not provided');
+    }
+
+    const { apiGatewayBaseUrl } = this._apiGatewayConfig;
+
+    if (!apiGatewayBaseUrl) {
+      throw new Error('API Gateway base URL not configured');
+    }
+
+    const tokenUrl = `${apiGatewayBaseUrl}/token`;
+
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        agreementId: contractAgreementId,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to get API Gateway token: ${response.status} - ${errorText}`,
+      );
+    }
+
+    const data = await response.json();
+    return data.apiGatewayToken || data.token;
+  },
+
+  async accessDataViaApiGateway(
+    federatedDataset: FederatedDataset,
+    negotiation: any,
+  ) {
+    const { dataset, provider } = federatedDataset;
+    const assetId = dataset['@id'];
+    const negotiationKey = `${assetId}@${provider.address}`;
+
+    try {
+      // Update UI to show API Gateway token retrieval in progress
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'getting-api-gateway-token',
+      });
+      this.render();
+
+      // Step 1: Get Keycloak access token
+      const keycloakAccessToken = await this.getKeycloakAccessToken();
+
+      // Step 2: Get API Gateway token using the contract agreement ID
+      const apiGatewayToken = await this.getApiGatewayToken(
+        keycloakAccessToken,
+        negotiation.contractId,
+      );
+
+      // Update negotiation with API Gateway token
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+        apiGatewayToken: apiGatewayToken,
+      });
+      this.render();
+    } catch (error) {
+      console.error('API Gateway token retrieval failed:', error);
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+        apiGatewayError: (error as Error).message,
+      });
+      this.render();
+    }
+  },
+
+  async fetchDataViaApiGateway(
+    federatedDataset: FederatedDataset,
+    negotiation: any,
+  ) {
+    const { dataset, provider } = federatedDataset;
+    const assetId = dataset['@id'];
+    const negotiationKey = `${assetId}@${provider.address}`;
+
+    try {
+      // Update UI to show data access in progress
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'accessing-data-via-gateway',
+      });
+      this.render();
+
+      if (!negotiation.apiGatewayToken) {
+        throw new Error('API Gateway token not available');
+      }
+
+      if (!this._apiGatewayConfig?.apiGatewayBaseUrl) {
+        throw new Error('API Gateway base URL not configured');
+      }
+
+      // Get the asset endpoint URL from the dataset
+      const distributionsRaw = dataset['dcat:distribution'] || [];
+      const distributions = Array.isArray(distributionsRaw)
+        ? distributionsRaw
+        : [distributionsRaw];
+
+      let endpointUrl = '';
+      if (distributions.length > 0 && distributions[0]['dcat:accessService']) {
+        endpointUrl =
+          distributions[0]['dcat:accessService']['dcat:endpointUrl'] ||
+          distributions[0]['dcat:accessService'];
+      }
+
+      if (!endpointUrl) {
+        throw new Error('No endpoint URL found in dataset distribution');
+      }
+
+      // Step 3: Access the data via API Gateway
+      const response = await fetch(endpointUrl, {
+        method: 'GET',
+        headers: {
+          'X-API-Gateway-Token': negotiation.apiGatewayToken,
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to fetch data via API Gateway: ${response.status} - ${errorText}`,
+        );
+      }
+
+      const data = await response.json();
+
+      // For demo purposes, show a simple preview
+      const preview = JSON.stringify(data, null, 2).substring(0, 500);
+      alert(
+        `Data retrieved successfully via API Gateway!\n\nPreview (first 500 chars):\n${preview}${JSON.stringify(data).length > 500 ? '...' : ''}`,
+      );
+
+      // Reset status back to granted after successful data access
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+      });
+      this.render();
+    } catch (error) {
+      console.error('Data access via API Gateway failed:', error);
+
+      // Reset status back to granted with error
+      this.negotiations.set(negotiationKey, {
+        ...negotiation,
+        status: 'granted',
+        dataAccessError: (error as Error).message,
+      });
+      this.render();
+
+      alert(`Data access failed: ${(error as Error).message}`);
+    }
+  },
+
   async initiateEDRTransfer(
     federatedDataset: FederatedDataset,
     negotiation: any,
@@ -955,7 +1183,7 @@ export const EdcFederatedCatalogDisplay = {
       <div class="federated-dataset-item" data-dataset-id="${dataset['@id']}" data-provider="${provider.address}">
         <div class="dataset-header">
           <h3 class="dataset-title">
-            ${dataset['dcterms:title'] || dataset['dct:title'] || dataset.properties?.name || dataset['@id']}
+            ${dataset['dcterms:title'] || dataset['dct:title'] || dataset['dcat:service']['dct:title'] || dataset.properties?.name || dataset['@id']}
           </h3>
           <div class="provider-badge" style="background-color: ${provider.color || '#1976d2'}">
             ${provider.name}
@@ -963,9 +1191,11 @@ export const EdcFederatedCatalogDisplay = {
         </div>
         
         ${
-          dataset['rdfs:comment'] || dataset.properties?.description
+          dataset['rdfs:comment'] ||
+          dataset['dcat:service']['rdfs:comment'] ||
+          dataset.properties?.description
             ? html`<p class="dataset-description">
-              ${dataset['rdfs:comment'] || dataset.properties?.description}
+              ${dataset['rdfs:comment'] || dataset['dcat:service']['rdfs:comment'] || dataset.properties?.description}
             </p>`
             : ''
         }
@@ -1077,7 +1307,26 @@ export const EdcFederatedCatalogDisplay = {
             }
           </div>`;
         }
+        case 'getting-api-gateway-token':
+          return html`<div class="negotiation-info">
+            <span class="negotiation-provider">Provider: ${provider.name}</span>
+            <span class="contract-id">Contract: ${negotiation.contractId}</span>
+            <span class="negotiation-status pending">
+              <span class="spinner">🔑</span> Getting API Gateway Token...
+            </span>
+          </div>`;
+        case 'accessing-data-via-gateway':
+          return html`<div class="negotiation-info">
+            <span class="negotiation-provider">Provider: ${provider.name}</span>
+            <span class="contract-id">Contract: ${negotiation.contractId}</span>
+            <span class="negotiation-status pending">
+              <span class="spinner">📡</span> Accessing Data via API Gateway...
+            </span>
+          </div>`;
         case 'granted':
+          // Check if API Gateway is configured
+          const useApiGateway = !!this._apiGatewayConfig;
+
           return html`<div class="negotiation-success">
             <span class="access-granted">✅ Access Granted via ${provider.name}</span>
             <span class="contract-id">Contract: ${negotiation.contractId}</span>
@@ -1091,20 +1340,51 @@ export const EdcFederatedCatalogDisplay = {
             `
                 : ''
             }
+            ${
+              negotiation.apiGatewayError
+                ? html`
+              <span class="transfer-error">⚠️ ${negotiation.apiGatewayError}</span>
+              <button class="negotiate-btn retry" @click=${() => this.accessDataViaApiGateway(item, negotiation)}>
+                🔄 Retry API Gateway
+              </button>
+            `
+                : ''
+            }
             <div class="api-access-actions">
               ${
-                !negotiation.edrToken
+                useApiGateway
                   ? html`
-                <button class="negotiate-btn" @click=${() => this.initiateEDRTransfer(item, negotiation)}>
-                  🚀 Get EDR Token
-                </button>
-              `
+                    ${
+                      !negotiation.apiGatewayToken
+                        ? html`
+                      <button class="negotiate-btn" @click=${() => this.accessDataViaApiGateway(item, negotiation)}>
+                        🔑 Get API Gateway Token
+                      </button>
+                    `
+                        : html`
+                      <span class="edr-ready">🔑 API Gateway Token Ready</span>
+                      <button class="negotiate-btn" @click=${() => this.fetchDataViaApiGateway(item, negotiation)}>
+                        📁 Access Data via API Gateway
+                      </button>
+                    `
+                    }
+                  `
                   : html`
-                <span class="edr-ready">🔑 EDR Token Ready</span>
-                <button class="negotiate-btn" @click=${() => this.accessData(item, negotiation)}>
-                  📁 Access Data
-                </button>
-              `
+                    ${
+                      !negotiation.edrToken
+                        ? html`
+                      <button class="negotiate-btn" @click=${() => this.initiateEDRTransfer(item, negotiation)}>
+                        🚀 Get EDR Token
+                      </button>
+                    `
+                        : html`
+                      <span class="edr-ready">🔑 EDR Token Ready</span>
+                      <button class="negotiate-btn" @click=${() => this.accessData(item, negotiation)}>
+                        📁 Access Data
+                      </button>
+                    `
+                    }
+                  `
               }
             </div>
           </div>`;

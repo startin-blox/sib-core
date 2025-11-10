@@ -401,7 +401,7 @@ curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catal
     -d '{"@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/"},"counterPartyAddress":"https://swisstxt.connector.luminvent.com/protocol","protocol":"dataspace-protocol-http"}'</code></pre>
     </div>
 
-    <edc-federated-catalog-display 
+    <dsp-catalog-display 
         consumer-connector="https://consumer.connector-dev.startinblox.com/management"
         api-key="password"
         providers='[
@@ -426,14 +426,14 @@ curl -X POST "https://consumer.connector-dev.startinblox.com/management/v3/catal
         ]'
         show-provider-filter="true"
         show-stats="true">
-    </edc-federated-catalog-display>
+    </dsp-catalog-display>
 
     <script type="module">
         document.addEventListener('DOMContentLoaded', () => {
             console.log('✅ EDC Federated Catalog Demo loaded');
             
             // Optional: Add some demo interactivity
-            const catalogDisplay = document.querySelector('edc-federated-catalog-display');
+            const catalogDisplay = document.querySelector('dsp-catalog-display');
             
             if (catalogDisplay) {
                 // Listen for custom events if needed

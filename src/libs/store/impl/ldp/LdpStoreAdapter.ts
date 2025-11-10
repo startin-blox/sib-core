@@ -1,4 +1,5 @@
 import type { IStore, StoreConfig } from '../../shared/types.ts';
+
 import { LdpStore } from './LdpStore.ts';
 
 export function initLdpStore(_cfg?: StoreConfig): LdpStore {

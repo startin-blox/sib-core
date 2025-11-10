@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDC Fetch Protected Resource Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      color: #34495e;
+      margin-top: 30px;
+    }
+
+    .info-box {
+      background: #e8f4f8;
+      border-left: 4px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+    }
+
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+    }
+
+    .form-group {
+      margin: 15px 0;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #34495e;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .button-group {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button.primary {
+      background: #3498db;
+      color: white;
+    }
+
+    button.primary:hover {
+      background: #2980b9;
+    }
+
+    button.secondary {
+      background: #95a5a6;
+      color: white;
+    }
+
+    button.secondary:hover {
+      background: #7f8c8d;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .log-container {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 4px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px 0;
+    }
+
+    .log-entry.info { color: #3498db; }
+    .log-entry.success { color: #2ecc71; }
+    .log-entry.warning { color: #f39c12; }
+    .log-entry.error { color: #e74c3c; }
+
+    .result-container {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px 0;
+      max-height: 500px;
+      overflow: auto;
+    }
+
+    .result-container pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .status-indicator.idle {
+      background: #95a5a6;
+      color: white;
+    }
+
+    .status-indicator.loading {
+      background: #f39c12;
+      color: white;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .status-indicator.success {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .status-indicator.error {
+      background: #e74c3c;
+      color: white;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .code-snippet {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 15px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #dee2e6;
+      margin: 20px 0;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #7f8c8d;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .tab:hover {
+      color: #34495e;
+    }
+
+    .tab.active {
+      color: #3498db;
+      border-bottom: 3px solid #3498db;
+      margin-bottom: -2px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      🔐 EDC Fetch Protected Resource Demo
+      <span class="status-indicator idle" id="status">Idle</span>
+    </h1>
+
+    <div class="info-box">
+      <strong>📋 What this demo does:</strong>
+      <p>This demonstrates the <code>fetchProtectedResource()</code> method which automatically handles contract negotiation when accessing protected resources in a dataspace.</p>
+      <p><strong>Flow:</strong> Request → 449 Response → Policy Discovery → Contract Negotiation → Wait → Retry with Agreement → Success</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('config')">⚙️ Configuration</button>
+      <button class="tab" onclick="showTab('logs')">📜 Logs</button>
+      <button class="tab" onclick="showTab('result')">📊 Result</button>
+      <button class="tab" onclick="showTab('code')">💻 Code</button>
+    </div>
+
+    <!-- Configuration Tab -->
+    <div id="tab-config" class="tab-content active">
+      <h2>Consumer Configuration</h2>
+      <div class="form-group">
+        <label for="consumerEdcUrl">Consumer EDC URL:</label>
+        <input type="text" id="consumerEdcUrl" value="https://consumer.connector-dev.startinblox.com/management" placeholder="https://consumer.connector-dev.startinblox.com/management">
+      </div>
+
+      <div class="form-group">
+        <label for="consumerApiKey">Consumer API Key:</label>
+        <input type="text" id="consumerApiKey" value="password" placeholder="Your consumer's EDC API key">
+      </div>
+
+      <div class="form-group">
+        <label for="consumerParticipantId">Consumer Participant ID (DID):</label>
+        <input type="text" id="consumerParticipantId" value="stbx-consumer" placeholder="stbx-consumer">
+      </div>
+
+      <h2>Provider Information</h2>
+      <div class="form-group">
+        <label for="resourceUrl">Protected Resource URL:</label>
+        <input type="text" id="resourceUrl" value="hhttp://localhost:8000/objects/trial6/" placeholder="hhttp://localhost:8000/objects/trial6/">
+      </div>
+
+      <div class="form-group">
+        <label for="providerConnectorUrl">Provider Connector URL (DSP endpoint):</label>
+        <input type="text" id="providerConnectorUrl" value="https://provider.connector-dev.startinblox.com/protocol" placeholder="https://provider.connector-dev.startinblox.com/protocol">
+      </div>
+
+      <h2>Advanced Options</h2>
+      <div class="form-group">
+        <label for="existingAgreementId">Existing Agreement ID (optional):</label>
+        <input type="text" id="existingAgreementId" value="" placeholder="Leave empty to trigger negotiation">
+      </div>
+
+      <div class="form-group">
+        <label for="maxRetries">Max Negotiation Retries:</label>
+        <input type="number" id="maxRetries" value="30" min="5" max="100">
+      </div>
+
+      <div class="form-group">
+        <label for="retryDelay">Retry Delay (ms):</label>
+        <input type="number" id="retryDelay" value="2000" min="500" max="10000" step="500">
+      </div>
+
+      <div class="button-group">
+        <button class="primary" onclick="fetchResource()" id="fetchBtn">
+          🚀 Fetch Protected Resource
+        </button>
+        <button class="secondary" onclick="clearLogs()">
+          🗑️ Clear Logs
+        </button>
+      </div>
+    </div>
+
+    <!-- Logs Tab -->
+    <div id="tab-logs" class="tab-content">
+      <div class="log-container" id="logContainer">
+        <div class="log-entry info">Ready to fetch protected resource...</div>
+      </div>
+    </div>
+
+    <!-- Result Tab -->
+    <div id="tab-result" class="tab-content">
+      <div class="result-container" id="resultContainer">
+        <em>No result yet. Click "Fetch Protected Resource" to start.</em>
+      </div>
+    </div>
+
+    <!-- Code Tab -->
+    <div id="tab-code" class="tab-content">
+      <h2>Implementation Example</h2>
+      <div class="code-snippet">
+<pre>import { StoreFactory } from './StoreFactory';
+import { StoreType } from './shared/types';
+
+// 1. Initialize store with consumer's EDC connector using StoreFactory
+const store = StoreFactory.create({
+  type: StoreType.DataspaceConnector,
+  catalogEndpoint: 'https://consumer.connector-dev.startinblox.com/management/v3/catalog/request',
+  contractNegotiationEndpoint: 'https://consumer.connector-dev.startinblox.com/management/v3/contractnegotiations',
+  transferProcessEndpoint: 'https://consumer.connector-dev.startinblox.com/management/v3/transferprocesses',
+  authMethod: 'edc-api-key',
+  edcApiKey: 'password', // Consumer's own key
+  endpoint: 'https://consumer.connector-dev.startinblox.com/management',
+  apiVersion: 'v3',
+});
+
+// 2. Fetch protected resource (automatically negotiates if needed)
+try {
+  const data = await store.fetchProtectedResource(
+    'http://localhost:8000/objects/trial6/',  // Resource URL
+    'stbx-consumer',            // Consumer DID
+    'https://provider.connector-dev.startinblox.com/protocol',   // Provider DSP endpoint
+    undefined,  // No existing agreement (triggers negotiation)
+    30,         // Max negotiation retries
+    2000,       // Retry delay (2 seconds)
+  );
+
+  console.log('✅ Successfully accessed resource:', data);
+  return data;
+} catch (error) {
+  console.error('❌ Failed to access resource:', error);
+  throw error;
+}</pre>
+      </div>
+
+      <h2>What Happens Behind the Scenes</h2>
+      <ol>
+        <li><strong>Initial Request:</strong> Sends GET request with DSP headers (DSP-PARTICIPANT-ID, DSP-CONSUMER-CONNECTORURL)</li>
+        <li><strong>If 200 OK:</strong> Returns data immediately ✅</li>
+        <li><strong>If 449 Retry With:</strong> Provider returns suggested policies</li>
+        <li><strong>Policy Selection:</strong> Picks policy with highest "openness" score</li>
+        <li><strong>Contract Negotiation:</strong> Consumer's EDC initiates negotiation with provider</li>
+        <li><strong>Polling:</strong> Waits for negotiation state to reach FINALIZED</li>
+        <li><strong>Get Agreement:</strong> Retrieves the contract agreement ID</li>
+        <li><strong>Retry Request:</strong> Sends request again with DSP-AGREEMENT-ID header</li>
+        <li><strong>Success:</strong> Returns protected resource data ✅</li>
+      </ol>
+
+      <h2>Security Note</h2>
+      <div class="warning-box">
+        <strong>⚠️ API Key Security:</strong>
+        <p>Each party uses ONLY their own API key:</p>
+        <ul>
+          <li>Consumer's store uses <strong>consumer's edcApiKey</strong></li>
+          <li>Provider's Django uses <strong>provider's EDC_API_KEY</strong></li>
+          <li>No API keys are shared between parties</li>
+          <li>Only public identifiers (DIDs, URLs) are transmitted</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { StoreFactory } from '../../src/libs/store/StoreFactory.ts';
+    import { StoreType } from '../../src/libs/store/shared/types.ts';
+
+    // Make functions globally available
+    window.store = null;
+    window.fetchResource = fetchResource;
+    window.clearLogs = clearLogs;
+    window.showTab = showTab;
+
+    function log(message, type = 'info') {
+      const logContainer = document.getElementById('logContainer');
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      const timestamp = new Date().toLocaleTimeString();
+      entry.textContent = `[${timestamp}] ${message}`;
+      logContainer.appendChild(entry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function updateStatus(status, type) {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = status;
+      statusEl.className = `status-indicator ${type}`;
+    }
+
+    function clearLogs() {
+      const logContainer = document.getElementById('logContainer');
+      logContainer.innerHTML = '<div class="log-entry info">Logs cleared. Ready for new request...</div>';
+
+      const resultContainer = document.getElementById('resultContainer');
+      resultContainer.innerHTML = '<em>No result yet. Click "Fetch Protected Resource" to start.</em>';
+
+      updateStatus('Idle', 'idle');
+    }
+
+    function showTab(tabName) {
+      // Hide all tabs
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+
+      // Show selected tab
+      document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+    async function fetchResource() {
+      const fetchBtn = document.getElementById('fetchBtn');
+      fetchBtn.disabled = true;
+      updateStatus('Loading...', 'loading');
+
+      // Get form values
+      const consumerEdcUrl = document.getElementById('consumerEdcUrl').value;
+      const consumerApiKey = document.getElementById('consumerApiKey').value;
+      const consumerParticipantId = document.getElementById('consumerParticipantId').value;
+      const resourceUrl = document.getElementById('resourceUrl').value;
+      const providerConnectorUrl = document.getElementById('providerConnectorUrl').value;
+      const existingAgreementId = document.getElementById('existingAgreementId').value || undefined;
+      const maxRetries = parseInt(document.getElementById('maxRetries').value);
+      const retryDelay = parseInt(document.getElementById('retryDelay').value);
+
+      // Switch to logs tab
+      showTab('logs');
+
+      log('🚀 Starting protected resource fetch...', 'info');
+      log(`📍 Resource URL: ${resourceUrl}`, 'info');
+      log(`🆔 Consumer DID: ${consumerParticipantId}`, 'info');
+      log(`🔌 Provider Connector: ${providerConnectorUrl}`, 'info');
+
+      if (existingAgreementId) {
+        log(`📜 Using existing agreement: ${existingAgreementId}`, 'info');
+      } else {
+        log('📋 No existing agreement - will negotiate if needed', 'warning');
+      }
+
+      try {
+        // Initialize store
+        log('⚙️ Initializing DataspaceConnectorStore via StoreFactory...', 'info');
+        window.store = StoreFactory.create({
+          type: StoreType.DataspaceConnector,
+          catalogEndpoint: `${consumerEdcUrl}/v3/catalog/request`,
+          contractNegotiationEndpoint: `${consumerEdcUrl}/v3/contractnegotiations`,
+          transferProcessEndpoint: `${consumerEdcUrl}/v3/transferprocesses`,
+          authMethod: 'edc-api-key',
+          edcApiKey: consumerApiKey,
+          endpoint: consumerEdcUrl,
+          apiVersion: 'v3',
+        });
+
+        log('✅ Store initialized successfully', 'success');
+
+        // Intercept console.log to capture negotiation progress
+        const originalLog = console.log;
+        console.log = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('🔐') || message.includes('📋') || message.includes('📜') ||
+              message.includes('🤝') || message.includes('📝') || message.includes('⏳') ||
+              message.includes('✅') || message.includes('🔄')) {
+
+            let type = 'info';
+            if (message.includes('✅')) type = 'success';
+            else if (message.includes('⏳')) type = 'warning';
+
+            log(message, type);
+          }
+          originalLog.apply(console, args);
+        };
+
+        // Fetch protected resource
+        log('🌐 Calling fetchProtectedResource()...', 'info');
+        const data = await window.store.fetchProtectedResource(
+          resourceUrl,
+          consumerParticipantId,
+          providerConnectorUrl,
+          existingAgreementId,
+          maxRetries,
+          retryDelay,
+        );
+
+        // Restore console.log
+        console.log = originalLog;
+
+        log('🎉 Successfully retrieved protected resource!', 'success');
+        updateStatus('Success', 'success');
+
+        // Display result
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = `
+          <h3 style="margin-top: 0; color: #2ecc71;">✅ Resource Data Retrieved</h3>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+
+        // Switch to result tab
+        showTab('result');
+
+      } catch (error) {
+        console.error('Error:', error);
+        log(`❌ Error: ${error.message}`, 'error');
+        updateStatus('Error', 'error');
+
+        // Display error
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = `
+          <h3 style="margin-top: 0; color: #e74c3c;">❌ Error</h3>
+          <p><strong>Message:</strong> ${error.message}</p>
+          <pre>${error.stack || 'No stack trace available'}</pre>
+        `;
+
+        // Switch to result tab
+        showTab('result');
+      } finally {
+        fetchBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -180,12 +180,19 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       protocol: 'dataspace-protocol-http',
       policy: {
         '@context': 'http://www.w3.org/ns/odrl.jsonld',
-        '@id': policy['@id'],
-        '@type': 'Offer',
-        assigner: counterPartyId || 'provider',
+        ...policy, // Spread all policy fields (including permission, prohibition, obligation, etc.)
+        // Override specific fields if needed
+        '@type': policy['@type'] || 'Offer',
+        assigner: policy.assigner || counterPartyId || 'provider',
+        // Ensure target is set
         target: policy.target,
       },
     };
+
+    console.log(
+      '[DataspaceConnectorStore] Contract negotiation request:',
+      JSON.stringify(negotiationRequest, null, 2),
+    );
 
     const response = await this.fetchAuthn(
       this.config.contractNegotiationEndpoint,
@@ -728,6 +735,205 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
 
     return await this.fetchWithEDRToken(edrDataAddress, additionalPath);
+  }
+
+  /**
+   * Fetch a protected resource from a provider using the Policy Discovery Pattern (449 Retry With).
+   * This method automatically handles contract negotiation if the resource requires an agreement.
+   *
+   * Flow:
+   * 1. Request resource with DSP headers (DSP-PARTICIPANT-ID, DSP-CONSUMER-CONNECTORURL)
+   * 2. If 200 OK → Return data
+   * 3. If 449 Retry With → Extract suggested policies
+   * 4. Select best policy (highest openness score)
+   * 5. Initiate contract negotiation
+   * 6. Poll negotiation status until FINALIZED
+   * 7. Get contract agreement ID
+   * 8. Retry original request with DSP-AGREEMENT-ID header
+   * 9. Return data
+   *
+   * @param resourceUrl - The full URL of the protected resource on the provider
+   * @param consumerParticipantId - The consumer's decentralized identifier (DID)
+   * @param providerConnectorUrl - The provider's EDC connector DSP endpoint
+   * @param existingAgreementId - Optional existing agreement ID to skip negotiation
+   * @param maxNegotiationRetries - Maximum attempts to poll negotiation status (default: 30)
+   * @param negotiationRetryDelay - Milliseconds between negotiation status checks (default: 2000)
+   * @returns The protected resource data
+   * @throws Error if the resource cannot be accessed or negotiation fails
+   */
+  async fetchProtectedResource(
+    resourceUrl: string,
+    consumerParticipantId: string,
+    providerConnectorUrl: string,
+    existingAgreementId?: string,
+    maxNegotiationRetries = 30,
+    negotiationRetryDelay = 2000,
+  ): Promise<any> {
+    console.log(`🔐 Requesting protected resource: ${resourceUrl}`);
+
+    // Step 1: Try to fetch with existing agreement if provided
+    if (existingAgreementId) {
+      console.log(`📜 Using existing agreement: ${existingAgreementId}`);
+      return await this._fetchWithAgreement(
+        resourceUrl,
+        consumerParticipantId,
+        providerConnectorUrl,
+        existingAgreementId,
+      );
+    }
+
+    // Step 2: Try initial fetch - might succeed without agreement or return 449
+    const initialResponse = await fetch(resourceUrl, {
+      method: 'GET',
+      headers: {
+        'DSP-PARTICIPANT-ID': consumerParticipantId,
+        'DSP-CONSUMER-CONNECTORURL': providerConnectorUrl,
+        Accept: 'application/json',
+      },
+      mode: 'cors',
+    });
+
+    // If 200 OK, resource doesn't require agreement
+    if (initialResponse.ok) {
+      const data = await initialResponse.json();
+      console.log('✅ Resource accessed successfully (no agreement required)');
+      return data;
+    }
+
+    // If not 449, throw error
+    if (initialResponse.status !== 449) {
+      const errorText = await initialResponse.text();
+      throw new Error(
+        `Unexpected response: ${initialResponse.status} ${initialResponse.statusText} - ${errorText}`,
+      );
+    }
+
+    // Step 3: Handle 449 - negotiate and retry
+    const agreementId = await this._handlePolicyDiscovery(
+      initialResponse,
+      providerConnectorUrl,
+      maxNegotiationRetries,
+      negotiationRetryDelay,
+    );
+
+    // Step 4: Fetch with the obtained agreement
+    console.log('🔄 Retrying resource request with agreement...');
+    return await this._fetchWithAgreement(
+      resourceUrl,
+      consumerParticipantId,
+      providerConnectorUrl,
+      agreementId,
+    );
+  }
+
+  /**
+   * Handle Policy Discovery Pattern (449 response) - negotiate and obtain agreement
+   */
+  private async _handlePolicyDiscovery(
+    initialResponse: Response,
+    providerConnectorUrl: string,
+    maxNegotiationRetries: number,
+    negotiationRetryDelay: number,
+  ): Promise<string> {
+    // Parse the 449 response
+    console.log('📋 Contract negotiation required (449 response)');
+    const errorResponse = await initialResponse.json();
+
+    // Extract suggested policies
+    const suggestedPolicies = errorResponse.suggested_policies;
+    if (!suggestedPolicies || suggestedPolicies.length === 0) {
+      throw new Error('No suggested policies returned in 449 response');
+    }
+
+    // Select the best policy (highest openness score)
+    const bestPolicy = suggestedPolicies.reduce((best: any, current: any) => {
+      return current.openness_score > best.openness_score ? current : best;
+    });
+
+    console.log(
+      `📜 Selected policy: ${bestPolicy.policy_id} (openness: ${bestPolicy.openness_score})`,
+    );
+
+    // Initiate contract negotiation
+    console.log('🤝 Initiating contract negotiation...');
+    const negotiationId = await this.negotiateContract(
+      providerConnectorUrl,
+      errorResponse.asset_id,
+      bestPolicy.policy,
+      errorResponse.participant_id,
+    );
+
+    console.log(`📝 Negotiation initiated: ${negotiationId}`);
+
+    // Poll for negotiation completion
+    for (let attempt = 1; attempt <= maxNegotiationRetries; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, negotiationRetryDelay));
+
+      const status = await this._getNegotiationStatus(negotiationId);
+      console.log(
+        `⏳ Negotiation status (${attempt}/${maxNegotiationRetries}): ${status.state}`,
+      );
+
+      if (status.state === 'FINALIZED') {
+        const agreement = await this.getContractAgreement(negotiationId);
+        if (!agreement) {
+          throw new Error(
+            `Failed to retrieve contract agreement for negotiation ${negotiationId}`,
+          );
+        }
+
+        console.log(`✅ Agreement obtained: ${agreement['@id']}`);
+
+        return agreement['@id'];
+      }
+
+      if (status.state === 'TERMINATED') {
+        throw new Error(
+          `Negotiation terminated: ${status.errorDetail || 'Unknown reason'}`,
+        );
+      }
+    }
+
+    throw new Error(
+      `Negotiation ${negotiationId} failed or timed out after ${maxNegotiationRetries} attempts`,
+    );
+  }
+
+  /**
+   * Fetch a resource using an agreement ID
+   */
+  private async _fetchWithAgreement(
+    resourceUrl: string,
+    consumerParticipantId: string,
+    providerConnectorUrl: string,
+    agreementId: string,
+  ): Promise<any> {
+    console.log(
+      `🔐 Requesting protected resource: ${resourceUrl} (with agreement)`,
+    );
+
+    const response = await fetch(resourceUrl, {
+      method: 'GET',
+      headers: {
+        'DSP-PARTICIPANT-ID': consumerParticipantId,
+        'DSP-CONSUMER-CONNECTORURL': providerConnectorUrl,
+        'DSP-AGREEMENT-ID': agreementId,
+        Accept: 'application/json',
+      },
+      mode: 'cors',
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to access protected resource: ${response.status} ${response.statusText} - ${errorText}`,
+      );
+    }
+
+    const data = await response.json();
+    console.log('✅ Resource accessed successfully');
+
+    return data;
   }
 
   /**

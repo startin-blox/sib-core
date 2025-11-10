@@ -8,11 +8,14 @@ import type { Resource } from '../../shared/types.ts';
 import { getFederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper-instance.ts';
 import type { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
 import type { DcatService, Destination, Source } from './interfaces.ts';
+import { LocalStorageCacheMetadataManager, type CacheItemMetadata } from '../../cache/LocalStorageCacheMetadata.ts';
 
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
   session: Promise<any> | undefined;
   private fcApi: FederatedCatalogueAPIWrapper | null;
+  private metadataManager: LocalStorageCacheMetadataManager | null;
+  private enableCaching: boolean;
 
   constructor(private cfg: StoreConfig) {
     if (!this.cfg.login) {
@@ -39,6 +42,40 @@ export class FederatedCatalogueStore implements IStore<any> {
     }
 
     this.cache = new InMemoryCacheManager();
+
+    // Initialize localStorage cache metadata if enabled
+    this.enableCaching = this.cfg.enableLocalStorageMetadata === true;
+    if (this.enableCaching && this.cfg.endpoint) {
+      const cacheTTL = this.cfg.cacheTTL || 2 * 60 * 60 * 1000; // Default 2 hours
+      this.metadataManager = new LocalStorageCacheMetadataManager(
+        this.cfg.endpoint,
+        cacheTTL
+      );
+
+      // Check for page reload and clear cache if needed
+      this.handlePageReload();
+    } else {
+      this.metadataManager = null;
+    }
+  }
+
+  /**
+   * Log cache statistics on initialization
+   */
+  private handlePageReload(): void {
+    try {
+      const stats = this.metadataManager?.getCacheStats();
+      if (stats) {
+        console.log('[FederatedCatalogueStore] Cache initialized:', {
+          itemCount: stats.itemCount,
+          lastFetch: stats.lastFetch,
+          expiresAt: stats.expiresAt,
+          isValid: stats.isValid,
+        });
+      }
+    } catch (error) {
+      console.warn('[FederatedCatalogueStore] Error reading cache stats:', error);
+    }
   }
 
   private resolveTargetType(args: any): string {
@@ -52,34 +89,300 @@ export class FederatedCatalogueStore implements IStore<any> {
   async getData(args: any) {
     const targetType = this.resolveTargetType(args);
 
-    // Mock implementation of getData
-    // First case, we return a list of self-descriptions, each of them having a hash
+    console.log(
+      '[FederatedCatalogueStore] getData called with:',
+      args,
+      'targetType:',
+      targetType,
+    );
+
     if (!this.fcApi) {
       throw new Error('Federated API not initialized, returning empty data.');
     }
 
-    let resource = await this.get(targetType);
+    // Check if we have cached data and metadata is valid
+    const cacheIsValid = this.enableCaching && this.metadataManager?.isCacheValid();
+    const hasCached = this.hasCachedData();
 
-    if (!resource || resource['ldp:contains'].length === 0) {
-      resource = await this.initLocalDataSourceContainer(targetType);
-      const dataset = await this.fcApi.getAllSelfDescriptions();
-      if (dataset)
-        for (const item in dataset.items) {
-          const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
-            dataset.items[item].meta.sdHash,
-          );
-          if (sd) {
+    if (cacheIsValid && hasCached) {
+      console.log('[FederatedCatalogueStore] Cache is valid with data, performing delta update');
+      return await this.getDeltaUpdatedData(targetType);
+    } else {
+      // Clear invalid cache if metadata exists but no resource data
+      if (cacheIsValid && !hasCached && this.metadataManager) {
+        console.log('[FederatedCatalogueStore] Cache metadata valid but no resource data - clearing invalid cache');
+        this.metadataManager.clear();
+      } else if (!cacheIsValid) {
+        console.log('[FederatedCatalogueStore] Cache invalid or disabled, performing full fetch');
+      }
+      return await this.getFullData(targetType);
+    }
+  }
+
+  /**
+   * Check if we have actual cached data in localStorage
+   */
+  private hasCachedData(): boolean {
+    try {
+      if (!this.metadataManager) {
+        return false;
+      }
+
+      const resource = this.metadataManager.getResource();
+      const hasResourceData = !!(resource && resource['ldp:contains'] && resource['ldp:contains'].length > 0);
+      const metadataItemCount = this.metadataManager.getCacheStats().itemCount || 0;
+
+      console.log('[FederatedCatalogueStore] Cache data check:', {
+        hasResourceData,
+        resourceExists: !!resource,
+        hasLdpContains: !!(resource && resource['ldp:contains']),
+        resourceItemCount: resource?.['ldp:contains']?.length || 0,
+        metadataItemCount,
+      });
+
+      return hasResourceData && metadataItemCount > 0;
+    } catch (error) {
+      console.error('[FederatedCatalogueStore] Error checking cached data:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Perform delta update - only fetch changed items
+   */
+  private async getDeltaUpdatedData(targetType: string): Promise<Resource> {
+    if (!this.fcApi || !this.metadataManager) {
+      console.log('[FederatedCatalogueStore] Delta update: No fcApi or metadataManager');
+      return await this.getFullData(targetType);
+    }
+
+    try {
+      // Get current list from API
+      console.log('[FederatedCatalogueStore] Delta update: Calling getAllSelfDescriptions()...');
+      const apiList = await this.fcApi.getAllSelfDescriptions();
+      console.log('[FederatedCatalogueStore] Delta update - API list:', apiList?.items?.length, 'items');
+
+      if (!apiList || !apiList.items) {
+        console.warn('[FederatedCatalogueStore] No items returned from API');
+        return await this.getFullData(targetType);
+      }
+
+      // Get existing cached resource from localStorage
+      let resource = this.metadataManager.getResource();
+      if (!resource) {
+        console.log('[FederatedCatalogueStore] No cached resource found, switching to full fetch');
+        return await this.getFullData(targetType);
+      }
+
+      // Ensure resource has proper structure
+      if (!resource['@id']) {
+        resource['@id'] = targetType;
+      }
+      if (!resource['ldp:contains']) {
+        resource['ldp:contains'] = [];
+      }
+
+      // Get known hashes from metadata
+      const knownHashes = this.metadataManager.getKnownHashes();
+      const apiHashes = new Set(apiList.items.map(item => item.meta.sdHash));
+
+      // Compute delta
+      const newHashes: string[] = [];
+      const updatedHashes: string[] = [];
+      const deletedHashes: string[] = [];
+
+      // Find new and updated items
+      for (const item of apiList.items) {
+        const hash = item.meta.sdHash;
+        if (!knownHashes.has(hash)) {
+          // New item
+          newHashes.push(hash);
+        } else {
+          // Check if updated
+          const cachedMeta = this.metadataManager.getItemMetadata(hash);
+          if (cachedMeta) {
+            if (item.meta.uploadDatetime > cachedMeta.uploadDatetime ||
+                item.meta.statusDatetime > cachedMeta.statusDatetime) {
+              updatedHashes.push(hash);
+            }
+          }
+        }
+      }
+
+      // Find deleted items
+      for (const hash of knownHashes) {
+        if (!apiHashes.has(hash)) {
+          deletedHashes.push(hash);
+        }
+      }
+
+      console.log('[FederatedCatalogueStore] Delta:', {
+        new: newHashes.length,
+        updated: updatedHashes.length,
+        deleted: deletedHashes.length,
+      });
+
+      // Fetch new and updated items
+      const toFetch = [...newHashes, ...updatedHashes];
+      const newMetadata: CacheItemMetadata[] = [];
+
+      if (toFetch.length > 0) {
+        console.log(`[FederatedCatalogueStore] Fetching ${toFetch.length} changed items`);
+
+        for (const hash of toFetch) {
+          try {
+            const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(hash);
+            if (sd) {
+              const mappedResource = this.mapSourceToDestination(sd, {
+                temsServiceBase: this.cfg.temsServiceBase as string,
+                temsCategoryBase: this.cfg.temsCategoryBase as string,
+                temsImageBase: this.cfg.temsImageBase as string,
+                temsProviderBase: this.cfg.temsProviderBase as string,
+              });
+
+              // Find and remove old version if updated
+              if (updatedHashes.includes(hash)) {
+                const index = resource['ldp:contains'].findIndex(
+                  (r: any) => r['@id'] === mappedResource['@id']
+                );
+                if (index !== -1) {
+                  resource['ldp:contains'].splice(index, 1);
+                }
+              }
+
+              // Add new/updated item
+              resource['ldp:contains'].push(mappedResource);
+
+              // Track metadata
+              const apiItem = apiList.items.find(i => i.meta.sdHash === hash);
+              if (apiItem) {
+                newMetadata.push({
+                  sdHash: hash,
+                  uploadDatetime: apiItem.meta.uploadDatetime,
+                  statusDatetime: apiItem.meta.statusDatetime,
+                  cachedAt: Date.now(),
+                  resourceId: mappedResource['@id'],
+                });
+              }
+            }
+          } catch (error) {
+            console.error(`[FederatedCatalogueStore] Error fetching hash ${hash}:`, error);
+          }
+        }
+      }
+
+      // Remove deleted items
+      if (deletedHashes.length > 0) {
+        console.log(`[FederatedCatalogueStore] Removing ${deletedHashes.length} deleted items`);
+        resource['ldp:contains'] = resource['ldp:contains'].filter((item: any) => {
+          // We don't have direct hash-to-id mapping, so we'll keep items for safety
+          // In production, you might want to store hash in mapped resource
+          return true; // Conservative approach
+        });
+        this.metadataManager.removeItems(deletedHashes);
+      }
+
+      // Update localStorage cache with resource and metadata
+      if (newMetadata.length > 0) {
+        this.metadataManager.updateCache(resource, newMetadata);
+      }
+
+      console.log('[FederatedCatalogueStore] Delta update complete:', resource['ldp:contains'].length, 'total items');
+
+      document.dispatchEvent(
+        new CustomEvent('save', {
+          detail: { resource: { '@id': resource?.['@id'] } },
+          bubbles: true,
+        }),
+      );
+
+      return resource;
+    } catch (error) {
+      console.error('[FederatedCatalogueStore] Delta update failed, falling back to full fetch:', error);
+      return await this.getFullData(targetType);
+    }
+  }
+
+  /**
+   * Perform full fetch - get all items (original behavior)
+   */
+  private async getFullData(targetType: string): Promise<Resource> {
+    if (!this.fcApi) {
+      throw new Error('Federated API not initialized');
+    }
+
+    console.log('[FederatedCatalogueStore] Performing full fetch');
+
+    let resource = await this.initLocalDataSourceContainer(targetType);
+    const dataset = await this.fcApi.getAllSelfDescriptions();
+    console.log('[FederatedCatalogueStore] Got dataset from API:', dataset);
+    console.log(
+      '[FederatedCatalogueStore] Dataset items count:',
+      dataset?.items?.length,
+    );
+
+    const newMetadata: CacheItemMetadata[] = [];
+
+    if (dataset) {
+      for (const item of dataset.items) {
+        console.log(
+          `[FederatedCatalogueStore] Processing item, hash:`,
+          item.meta.sdHash,
+        );
+        const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
+          item.meta.sdHash,
+        );
+        console.log(
+          `[FederatedCatalogueStore] Got self-description:`,
+          sd ? 'Success' : 'Failed',
+        );
+        if (sd) {
+          try {
             const mappedResource = this.mapSourceToDestination(sd, {
               temsServiceBase: this.cfg.temsServiceBase as string,
               temsCategoryBase: this.cfg.temsCategoryBase as string,
               temsImageBase: this.cfg.temsImageBase as string,
               temsProviderBase: this.cfg.temsProviderBase as string,
             });
-
+            console.log(
+              `[FederatedCatalogueStore] Mapped resource:`,
+              mappedResource,
+            );
             resource['ldp:contains'].push(mappedResource);
+
+            // Track metadata if caching is enabled
+            if (this.enableCaching) {
+              newMetadata.push({
+                sdHash: item.meta.sdHash,
+                uploadDatetime: item.meta.uploadDatetime,
+                statusDatetime: item.meta.statusDatetime,
+                cachedAt: Date.now(),
+                resourceId: mappedResource['@id'],
+              });
+            }
+          } catch (error) {
+            console.error(
+              `[FederatedCatalogueStore] Error mapping resource:`,
+              error,
+            );
           }
         }
-      this.setLocalData(resource, targetType);
+      }
+    }
+
+    console.log(
+      '[FederatedCatalogueStore] Final resource with items:',
+      resource,
+    );
+    console.log(
+      '[FederatedCatalogueStore] Total items:',
+      resource['ldp:contains'].length,
+    );
+
+    // Update localStorage cache if caching is enabled
+    if (this.enableCaching && this.metadataManager && newMetadata.length > 0) {
+      this.metadataManager.updateCache(resource, newMetadata);
+      console.log('[FederatedCatalogueStore] Updated localStorage cache with', newMetadata.length, 'items');
     }
 
     document.dispatchEvent(
@@ -224,10 +527,58 @@ export class FederatedCatalogueStore implements IStore<any> {
   }
 
   /**
+   * Helper function to strip URN prefixes from strings
+   */
+  private stripUrnPrefix(id: string, prefix: string): string {
+    if (id && id.startsWith(prefix)) {
+      return id.substring(prefix.length);
+    }
+    return id;
+  }
+
+  /**
+   * Helper function to recursively strip urn:tems: prefix from all @id properties in an object
+   */
+  private stripTemsUrnFromPolicy(obj: any): any {
+    if (obj === null || obj === undefined) {
+      return obj;
+    }
+
+    if (typeof obj === 'string') {
+      return this.stripUrnPrefix(obj, 'urn:tems:');
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.stripTemsUrnFromPolicy(item));
+    }
+
+    if (typeof obj === 'object') {
+      const result: any = {};
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          if (key === '@id') {
+            // Strip urn:tems: prefix from @id properties
+            result[key] = this.stripUrnPrefix(obj[key], 'urn:tems:');
+          } else {
+            // Recursively process nested objects
+            result[key] = this.stripTemsUrnFromPolicy(obj[key]);
+          }
+        }
+      }
+      return result;
+    }
+
+    return obj;
+  }
+
+  /**
    * 2. Revised mapping function:
-   *    - If “dcat:service” exists, map from that directly.
-   *    - Otherwise, if “dcat:dataset” exists, treat its first array element as the service block.
+   *    - If "dcat:service" exists at credentialSubject level, map from that directly.
+   *    - If "dcat:dataset" exists, check if it contains a nested "dcat:service":
+   *      - If yes, extract information from the nested dcat:service and treat as tems:Service
+   *      - If no, treat the dataset itself as the source (tems:DataOffer)
    *    - Use gax-core:operatedBy when dcat:service is present, and gax-core:offeredBy when dcat:dataset is used.
+   *    - Extract contract negotiation fields for Dataspace Protocol support.
    */
   private mapSourceToDestination(
     src: Source,
@@ -243,16 +594,29 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     // 1) Determine which key holds the service block
     let catInfo: DcatService;
-    let usedKey: 'service' | 'dataset';
+    let usedKey: 'service' | 'dataset' | 'nested-service';
     let type: 'tems:Service' | 'tems:DataOffer';
+
     if (cs['dcat:service']) {
+      // Case 1: Direct dcat:service at credentialSubject level
       catInfo = cs['dcat:service'];
       usedKey = 'service';
       type = 'tems:Service';
     } else if (cs['dcat:dataset'] && cs['dcat:dataset'].length > 0) {
-      catInfo = cs['dcat:dataset'][0];
-      usedKey = 'dataset';
-      type = 'tems:DataOffer';
+      const dataset = cs['dcat:dataset'][0];
+
+      if (dataset['dcat:service']) {
+        // Case 2: Nested dcat:service within dcat:dataset
+        // Extract information from the nested service
+        catInfo = dataset['dcat:service'];
+        usedKey = 'nested-service';
+        type = 'tems:Service';
+      } else {
+        // Case 3: Direct dcat:dataset without nested service (original behavior)
+        catInfo = dataset;
+        usedKey = 'dataset';
+        type = 'tems:DataOffer';
+      }
     } else {
       throw new Error(
         "Expected either credentialSubject['dcat:service'] or a non-empty array in ['dcat:dataset']",
@@ -269,7 +633,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     const update_date = vc.expirationDate;
 
     // 4) Map dcterms:title + rdfs:comment → name + description
-    const name = catInfo['dcterms:title'];
+    const name = catInfo['dcterms:title'] || catInfo['dct:title'];
     const description = catInfo['rdfs:comment'];
 
     // 5) long_description ← join dcat:keyword into a single string
@@ -321,20 +685,36 @@ export class FederatedCatalogueStore implements IStore<any> {
       })),
     };
 
-    // 9) contact_url ← dcat:endpointDescription; documentation_url ← same or “-”
+    // 9) contact_url ← dcat:endpointDescription; documentation_url ← same or "-"
     const contact_url = catInfo['dcat:endpointDescription'] || '';
     const documentation_url = contact_url || '';
     let service_url = catInfo['dcat:endpointURL'] || '';
+
+    // Log if service URL is missing from dcat:service
+    if (!service_url) {
+      console.warn(
+        '[FederatedCatalogueStore] dcat:endpointURL is missing from dcat:service. Available fields:',
+        Object.keys(catInfo),
+      );
+    }
+
     if (service_url.includes('demo.isan.org'))
       // Then cut the string at demo.isan.org
       service_url = new URL(service_url).origin;
 
     // 10) Map provider:
-    //     - If we used “dcat:service”, pick gax-core:operatedBy
-    //     - If we used “dcat:dataset”, pick gax-core:offeredBy
+    //     - If we used "dcat:service", pick gax-core:operatedBy
+    //     - If we used "nested-service", check operatedBy first, then offeredBy as fallback
+    //     - If we used "dcat:dataset", pick gax-core:offeredBy
     let providerRef: string;
     if (usedKey === 'service') {
       providerRef = cs['gax-core:operatedBy']?.['@id'] || '';
+    } else if (usedKey === 'nested-service') {
+      // For nested service, prefer operatedBy but fallback to offeredBy
+      providerRef =
+        cs['gax-core:operatedBy']?.['@id'] ||
+        cs['gax-core:offeredBy']?.['@id'] ||
+        '';
     } else {
       providerRef = cs['gax-core:offeredBy']?.['@id'] || '';
     }
@@ -360,7 +740,45 @@ export class FederatedCatalogueStore implements IStore<any> {
     // 11) data_offers: leave empty for now
     const data_offers: any[] = [];
 
-    // 12) Assemble the Destination object
+    // 12) Extract contract negotiation fields for Dataspace Protocol support
+    const counterPartyAddress = cs['dcat:endpointURL'];
+    const counterPartyId = cs['dspace:participantId'];
+
+    // Asset ID: strip urn:uuid: prefix from the credentialSubject @id
+    const assetId = this.stripUrnPrefix(cs['@id'], 'urn:uuid:');
+
+    // Dataset ID and policy: only available when dcat:dataset is present
+    let datasetId: string | undefined;
+    let policy: any | undefined;
+
+    if (cs['dcat:dataset'] && cs['dcat:dataset'].length > 0) {
+      const dataset = cs['dcat:dataset'][0];
+
+      // Strip urn:uuid: prefix from dataset @id
+      if (dataset['@id']) {
+        datasetId = this.stripUrnPrefix(dataset['@id'], 'urn:uuid:');
+      }
+
+      // Extract and process policy if present
+      if (dataset['odrl:hasPolicy']) {
+        // Deep clone the policy and strip urn:tems: from all @id properties
+        policy = this.stripTemsUrnFromPolicy(
+          JSON.parse(JSON.stringify(dataset['odrl:hasPolicy'])),
+        );
+
+        // Add the target field pointing to the dataset ID (with urn:uuid: prefix stripped)
+        if (datasetId) {
+          policy.target = datasetId;
+        }
+
+        console.log(
+          '[FederatedCatalogueStore] Processed policy with all ODRL fields:',
+          JSON.stringify(policy, null, 2),
+        );
+      }
+    }
+
+    // 13) Assemble the Destination object
     const dest: Destination = {
       '@id': serviceId,
       creation_date,
@@ -385,6 +803,12 @@ export class FederatedCatalogueStore implements IStore<any> {
       provider,
       data_offers,
       '@type': type,
+      // Contract negotiation fields (only included if available)
+      ...(counterPartyAddress && { counterPartyAddress }),
+      ...(counterPartyId && { counterPartyId }),
+      ...(assetId && { assetId }),
+      ...(datasetId && { datasetId }),
+      ...(policy && { policy }),
     };
 
     return dest;

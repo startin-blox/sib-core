@@ -43,11 +43,17 @@ interface CredentialSubject {
   };
 
   /**
-   * Either “dcat:service” (single object) or “dcat:dataset” (array containing one object)
+   * Either "dcat:service" (single object) or "dcat:dataset" (array containing one object)
    * will hold the DcatService fields.
    */
   'dcat:service'?: DcatService;
-  'dcat:dataset'?: DcatService[];
+  'dcat:dataset'?: Array<DcatService & {
+    'odrl:hasPolicy'?: any;
+  }>;
+
+  // Dataspace Protocol fields for contract negotiation
+  'dspace:participantId'?: string;
+  'dcat:endpointURL'?: string;
 }
 
 interface VerifiableCredential {
@@ -111,4 +117,11 @@ export interface Destination {
   };
   data_offers: any[];
   '@type': string;
+
+  // Contract negotiation fields (optional, only present for dataspace protocol)
+  counterPartyAddress?: string;
+  counterPartyId?: string;
+  assetId?: string;
+  datasetId?: string;
+  policy?: any;
 }
