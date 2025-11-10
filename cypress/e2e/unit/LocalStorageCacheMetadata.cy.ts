@@ -183,7 +183,7 @@ describe('LocalStorageCacheMetadataManager', () => {
 
       const retrieved = manager.getCacheMetadata();
       expect(retrieved).to.exist;
-      expect(retrieved?.version).to.equal('1.0.0');
+      expect(retrieved?.version).to.equal('2.0.0');
       expect(retrieved?.items.size).to.equal(1);
     });
 
@@ -438,7 +438,7 @@ describe('LocalStorageCacheMetadataManager', () => {
       const metadata = manager.getCacheMetadata();
       expect(metadata).to.exist;
       expect(metadata?.items.size).to.equal(1);
-      expect(metadata?.version).to.equal('1.0.0');
+      expect(metadata?.version).to.equal('2.0.0');
     });
 
     it('adds new items to existing cache', () => {
