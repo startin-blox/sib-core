@@ -1230,6 +1230,27 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         },
       }).as('fcSDNew');
 
+      cy.intercept('GET', fc('/self-descriptions/hash-keep'), {
+        statusCode: 200,
+        body: {
+          verifiableCredential: {
+            issuanceDate: '2024-01-01T00:00:00Z',
+            expirationDate: '2024-12-31T23:59:59Z',
+            credentialSubject: {
+              '@id': 'urn:svc:keep',
+              '@type': ['gax-trust-framework:ServiceOffering'],
+              'dcat:service': {
+                'dcterms:title': 'Keep Service',
+                'rdfs:comment': 'Unchanged',
+                'dcat:keyword': [],
+              },
+              'gax-core:operatedBy': { '@id': 'did:example:provider' },
+            },
+          },
+          proof: {},
+        },
+      }).as('fcSDKeep');
+
       const resultPromise = store.getData({
         targetType: 'gax-trust-framework:ServiceOffering',
       });
@@ -1371,6 +1392,27 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
           ],
         },
       }).as('fcList');
+
+      cy.intercept('GET', fc('/self-descriptions/hash-1'), {
+        statusCode: 200,
+        body: {
+          verifiableCredential: {
+            issuanceDate: '2024-01-01T00:00:00Z',
+            expirationDate: '2024-12-31T23:59:59Z',
+            credentialSubject: {
+              '@id': 'urn:svc:1',
+              '@type': ['gax-trust-framework:ServiceOffering'],
+              'dcat:service': {
+                'dcterms:title': 'Service 1',
+                'rdfs:comment': 'Unchanged',
+                'dcat:keyword': [],
+              },
+              'gax-core:operatedBy': { '@id': 'did:example:provider' },
+            },
+          },
+          proof: {},
+        },
+      }).as('fcSD1');
 
       const savePromise = new Promise<any>(resolve => {
         const handler = (e: any) => {
