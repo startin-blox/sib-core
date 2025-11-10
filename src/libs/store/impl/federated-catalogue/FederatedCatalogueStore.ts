@@ -63,16 +63,29 @@ export class FederatedCatalogueStore implements IStore<any> {
   }
 
   /**
-   * Log cache statistics on initialization
+   * Handle page reload detection and clear cache if it's a new session
    */
   private handlePageReload(): void {
     try {
+      const SESSION_KEY = 'fc-session-id';
+
+      // Generate or retrieve session ID
+      let sessionId = sessionStorage.getItem(SESSION_KEY);
+      if (!sessionId) {
+        // New session - generate unique ID and clear cache
+        sessionId = `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        sessionStorage.setItem(SESSION_KEY, sessionId);
+
+        // Clear localStorage cache on fresh page load (new session)
+        this.metadataManager?.clear();
+      }
+
       const stats = this.metadataManager?.getCacheStats();
       if (stats) {
       }
     } catch (error) {
       console.warn(
-        '[FederatedCatalogueStore] Error reading cache stats:',
+        '[FederatedCatalogueStore] Error handling page reload:',
         error,
       );
     }
@@ -167,6 +180,13 @@ export class FederatedCatalogueStore implements IStore<any> {
 
       // Get known hashes from metadata
       const knownHashes = this.metadataManager.getKnownHashes();
+
+      // Safety check for apiList.items
+      if (!apiList.items || !Array.isArray(apiList.items)) {
+        console.warn('[FederatedCatalogueStore] apiList.items is not an array, falling back to full fetch');
+        return this.getFullData(targetType);
+      }
+
       const apiHashes = new Set(apiList.items.map(item => item.meta.sdHash));
 
       // Compute delta
@@ -294,7 +314,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     const newMetadata: CacheItemMetadata[] = [];
 
-    if (dataset) {
+    if (dataset && dataset.items && Array.isArray(dataset.items)) {
       for (const item of dataset.items) {
         const sd: Source | null = await this.fcApi.getSelfDescriptionByHash(
           item.meta.sdHash,
