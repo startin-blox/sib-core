@@ -143,7 +143,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('handles missing items field', () => {
       const key = (manager as any).getStorageKey();
       const corruptedData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: Date.now(),
         cacheExpirationTimestamp: Date.now() + 1000,
         // items field is missing
@@ -160,7 +160,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('stores cache metadata successfully', () => {
       const now = Date.now();
       const testMetadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -213,7 +213,7 @@ describe('LocalStorageCacheMetadataManager', () => {
       ]);
 
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -248,7 +248,7 @@ describe('LocalStorageCacheMetadataManager', () => {
       });
 
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: Date.now(),
         cacheExpirationTimestamp: Date.now() + testTTL,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -271,7 +271,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('returns true for valid cache within TTL', () => {
       const now = Date.now();
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now + testTTL,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -285,7 +285,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('returns false for expired cache', () => {
       const now = Date.now();
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: now - 1000, // Expired 1 second ago
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -313,7 +313,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('validates cache at exact expiration boundary', () => {
       const now = Date.now();
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: now, // Expires exactly now
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -520,7 +520,7 @@ describe('LocalStorageCacheMetadataManager', () => {
     it('recreates cache when expired', () => {
       const now = Date.now();
       const expiredMetadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: now - 1000, // Expired
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -707,7 +707,7 @@ describe('LocalStorageCacheMetadataManager', () => {
       const expiresAt = now + testTTL;
 
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now,
         cacheExpirationTimestamp: expiresAt,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
@@ -752,7 +752,7 @@ describe('LocalStorageCacheMetadataManager', () => {
       const expiredAt = now - 1000;
 
       const metadata: CacheData = {
-        version: '1.0.0',
+        version: '2.0.0',
         lastFetchTimestamp: now - testTTL * 2,
         cacheExpirationTimestamp: expiredAt,
         resource: { '@id': 'test-container', 'ldp:contains': [] },
