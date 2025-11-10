@@ -55,14 +55,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       expect(metadataManager?.getCacheMetadata()).to.exist;
 
@@ -82,14 +85,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       // Second store instance (same session)
       const newStore = new FederatedCatalogueStore(mockConfig);
@@ -122,14 +128,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       const metadataManager = (store as any).metadataManager;
 
       // Set up valid cache with existing items
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-existing',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-existing',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       // Create existing cached resource
       const existingResource = {
@@ -240,14 +249,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-old',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-old',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       cy.intercept('GET', fc('/self-descriptions'), {
         statusCode: 200,
@@ -338,14 +350,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       const metadataManager = (store as any).metadataManager;
 
       // Existing item with old timestamp
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-updated',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-updated',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -426,14 +441,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-status',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-status',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -513,14 +531,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -603,20 +624,23 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       const metadataManager = (store as any).metadataManager;
 
       // Cache has items that will be deleted
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-kept',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-deleted',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-kept',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-deleted',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -682,26 +706,29 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-2',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-3',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-2',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-3',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -903,14 +930,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       const metadataManager = (store as any).metadataManager;
 
       // Valid metadata but no cached resource
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       // Don't set any cached resource
 
@@ -971,14 +1001,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       // First call fails (delta update)
       let callCount = 0;
@@ -1051,26 +1084,29 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       const metadataManager = (store as any).metadataManager;
 
       // Initial cache: hash-keep, hash-update, hash-delete
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-keep',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-update',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-delete',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-keep',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-update',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-delete',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -1208,20 +1244,23 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-        {
-          sdHash: 'hash-2',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+          {
+            sdHash: 'hash-2',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
@@ -1271,14 +1310,17 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       store = new FederatedCatalogueStore(mockConfig);
       const metadataManager = (store as any).metadataManager;
 
-      metadataManager?.updateCache({ '@id': 'test-container', 'ldp:contains': [] }, [
-        {
-          sdHash: 'hash-1',
-          uploadDatetime: '2024-01-01T00:00:00Z',
-          statusDatetime: '2024-01-01T00:00:00Z',
-          cachedAt: Date.now(),
-        },
-      ]);
+      metadataManager?.updateCache(
+        { '@id': 'test-container', 'ldp:contains': [] },
+        [
+          {
+            sdHash: 'hash-1',
+            uploadDatetime: '2024-01-01T00:00:00Z',
+            statusDatetime: '2024-01-01T00:00:00Z',
+            cachedAt: Date.now(),
+          },
+        ],
+      );
 
       const existingResource = {
         '@id': 'store://local.fc-httpsapiexamplecom-default/',
