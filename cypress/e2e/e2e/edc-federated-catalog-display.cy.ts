@@ -172,7 +172,7 @@ describe('EdcFederatedCatalogDisplay', () => {
     }).as('catalogRequests');
 
     // Visit the page for each test to ensure clean state
-    cy.visit('/examples/e2e/dsp-catalog-display.html');
+    cy.visit('/examples/e2e/edc-federated-catalog-display.html');
   });
 
   it('displays loading state initially', () => {
