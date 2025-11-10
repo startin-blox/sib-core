@@ -144,18 +144,15 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       };
 
       // Set up valid cache with existing items
-      metadataManager?.updateCache(
-        existingResource,
-        [
-          {
-            sdHash: 'hash-existing',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-3',
-          },
-        ],
-      );
+      metadataManager?.updateCache(existingResource, [
+        {
+          sdHash: 'hash-existing',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-3',
+        },
+      ]);
 
       // API returns existing + new item
       cy.intercept('GET', fc('/self-descriptions'), {
@@ -258,18 +255,15 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      metadataManager?.updateCache(
-        cachedResource,
-        [
-          {
-            sdHash: 'hash-old',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-4',
-          },
-        ],
-      );
+      metadataManager?.updateCache(cachedResource, [
+        {
+          sdHash: 'hash-old',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-4',
+        },
+      ]);
 
       cy.intercept('GET', fc('/self-descriptions'), {
         statusCode: 200,
@@ -655,25 +649,22 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       };
 
       // Cache has items that will be deleted
-      metadataManager?.updateCache(
-        existingResource,
-        [
-          {
-            sdHash: 'hash-kept',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-1',
-          },
-          {
-            sdHash: 'hash-deleted',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-2',
-          },
-        ],
-      );
+      metadataManager?.updateCache(existingResource, [
+        {
+          sdHash: 'hash-kept',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-1',
+        },
+        {
+          sdHash: 'hash-deleted',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-2',
+        },
+      ]);
 
       // API only returns one item (the other was deleted)
       cy.intercept('GET', fc('/self-descriptions'), {
@@ -725,32 +716,29 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      metadataManager?.updateCache(
-        existingResource,
-        [
-          {
-            sdHash: 'hash-1',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-3',
-          },
-          {
-            sdHash: 'hash-2',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-4',
-          },
-          {
-            sdHash: 'hash-3',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-5',
-          },
-        ],
-      );
+      metadataManager?.updateCache(existingResource, [
+        {
+          sdHash: 'hash-1',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-3',
+        },
+        {
+          sdHash: 'hash-2',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-4',
+        },
+        {
+          sdHash: 'hash-3',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-5',
+        },
+      ]);
 
       // API only returns 1 out of 3 items
       cy.intercept('GET', fc('/self-descriptions'), {
@@ -1023,18 +1011,15 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      metadataManager?.updateCache(
-        cachedResource,
-        [
-          {
-            sdHash: 'hash-1',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-7',
-          },
-        ],
-      );
+      metadataManager?.updateCache(cachedResource, [
+        {
+          sdHash: 'hash-1',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-7',
+        },
+      ]);
 
       // First call fails (delta update)
       let callCount = 0;
@@ -1130,32 +1115,29 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       };
 
       // Initial cache: hash-keep, hash-update, hash-delete
-      metadataManager?.updateCache(
-        existingResource,
-        [
-          {
-            sdHash: 'hash-keep',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-8',
-          },
-          {
-            sdHash: 'hash-update',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-9',
-          },
-          {
-            sdHash: 'hash-delete',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-10',
-          },
-        ],
-      );
+      metadataManager?.updateCache(existingResource, [
+        {
+          sdHash: 'hash-keep',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-8',
+        },
+        {
+          sdHash: 'hash-update',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-9',
+        },
+        {
+          sdHash: 'hash-delete',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-10',
+        },
+      ]);
 
       // API returns: keep (unchanged), update (newer), new (added), delete (removed)
       cy.intercept('GET', fc('/self-descriptions'), {
@@ -1365,18 +1347,15 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      metadataManager?.updateCache(
-        existingResource,
-        [
-          {
-            sdHash: 'hash-1',
-            uploadDatetime: '2024-01-01T00:00:00Z',
-            statusDatetime: '2024-01-01T00:00:00Z',
-            cachedAt: Date.now(),
-            resourceId: 'urn:uuid:test-resource-13',
-          },
-        ],
-      );
+      metadataManager?.updateCache(existingResource, [
+        {
+          sdHash: 'hash-1',
+          uploadDatetime: '2024-01-01T00:00:00Z',
+          statusDatetime: '2024-01-01T00:00:00Z',
+          cachedAt: Date.now(),
+          resourceId: 'urn:uuid:test-resource-13',
+        },
+      ]);
 
       cy.intercept('GET', fc('/self-descriptions'), {
         statusCode: 200,
