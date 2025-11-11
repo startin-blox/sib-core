@@ -70,12 +70,9 @@ describe('FederatedCatalogueStore', () => {
   };
 
   describe('initLocalDataSourceContainer', () => {
-    beforeEach(() => {
+    it('creates local container with deterministic ID and caches it', async () => {
       interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
-    });
-
-    it('creates local container with deterministic ID and caches it', async () => {
       const container = await store.initLocalDataSourceContainer();
 
       expect(container).to.have.property(
@@ -97,6 +94,8 @@ describe('FederatedCatalogueStore', () => {
     });
 
     it('produces different IDs for different container types', async () => {
+      interceptAuthToken();
+      store = new FederatedCatalogueStore(mockConfig);
       const c1 = await store.initLocalDataSourceContainer('default');
       const c2 = await store.initLocalDataSourceContainer('custom');
       expect(c1['@id']).to.not.equal(c2['@id']);
@@ -227,120 +226,121 @@ describe('FederatedCatalogueStore', () => {
         body: SD_BODY,
       }).as('fcSD2');
 
-      const store = new FederatedCatalogueStore(mockConfig);
+      cy.window().then(() => {
+        const store = new FederatedCatalogueStore(mockConfig);
 
-      const onSave = new Promise<any>(resolve => {
-        const handler = (e: any) => {
-          document.removeEventListener('save', handler);
-          resolve(e.detail?.resource);
-        };
-        document.addEventListener('save', handler);
-      });
+        const onSave = new Promise<any>(resolve => {
+          const handler = (e: any) => {
+            document.removeEventListener('save', handler);
+            resolve(e.detail?.resource);
+          };
+          document.addEventListener('save', handler);
+        });
 
-      const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
-      });
+        const resultPromise = store.getData({
+          targetType: 'gax-trust-framework:ServiceOffering',
+        });
 
-      cy.wait('@auth');
-      cy.wait('@fcList');
-      cy.wait('@fcSD1');
-      cy.wait('@fcSD2');
+        cy.wait('@auth');
+        cy.wait('@fcList');
+        cy.wait('@fcSD1');
+        cy.wait('@fcSD2');
 
-      cy.wrap(resultPromise, { timeout: 1500 }).then((result: any) => {
-        expect(result).to.exist;
-        expect(result['@type']).to.equal('ldp:Container');
-        expect(result['@id']).to.match(
-          /^store:\/\/local\.fc-httpsapiexamplecom-default\/$/,
-        );
-        expect(result['ldp:contains']).to.be.an('array').and.not.empty;
-      });
+        cy.wrap(resultPromise, { timeout: 1500 }).then((result: any) => {
+          expect(result).to.exist;
+          expect(result['@type']).to.equal('ldp:Container');
+          expect(result['@id']).to.match(
+            /^store:\/\/local\.fc-httpsapiexamplecom-default\/$/,
+          );
+          expect(result['ldp:contains']).to.be.an('array').and.not.empty;
+        });
 
-      cy.wrap(onSave, { timeout: 1500 }).then((payload: any) => {
-        expect(payload)
-          .to.have.property('@id')
-          .that.matches(/^store:\/\/local\.fc-httpsapiexamplecom-default\/$/);
+        cy.wrap(onSave, { timeout: 1500 }).then((payload: any) => {
+          expect(payload)
+            .to.have.property('@id')
+            .that.matches(/^store:\/\/local\.fc-httpsapiexamplecom-default\/$/);
+        });
       });
     });
 
     it('reuses cached container on subsequent call (does not refetch list)', () => {
-      try {
-        const fc = (p: string) =>
-          `${mockConfig.endpoint?.replace(/\/$/, '')}${p}`;
+      const fc = (p: string) =>
+        `${mockConfig.endpoint?.replace(/\/$/, '')}${p}`;
 
-        cy.intercept('POST', '**/protocol/openid-connect/token', {
-          statusCode: 200,
-          body: {
-            access_token: 'mock',
-            token_type: 'Bearer',
-            expires_in: 3600,
-          },
-        }).as('auth');
+      cy.intercept('POST', '**/protocol/openid-connect/token', {
+        statusCode: 200,
+        body: {
+          access_token: 'mock',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        },
+      }).as('auth');
 
-        const VC_BODY = {
-          verifiableCredential: {
-            issuanceDate: '2024-01-01T00:00:00Z',
-            expirationDate: '2024-12-31T23:59:59Z',
-            credentialSubject: {
-              '@id': 'urn:svc:svc-1',
-              'dcat:service': {
-                'dcterms:title': 'Service A',
-                'rdfs:comment': 'Desc',
-                'dcat:keyword': ['kw'],
-                'dcat:endpointURL': 'https://example.com/api',
-                'dcterms:creator': {
-                  'foaf:name': 'Org',
-                  'foaf:thumbnail': { 'rdf:resource': 'https://img/logo.png' },
-                },
+      const VC_BODY = {
+        verifiableCredential: {
+          issuanceDate: '2024-01-01T00:00:00Z',
+          expirationDate: '2024-12-31T23:59:59Z',
+          credentialSubject: {
+            '@id': 'urn:svc:svc-1',
+            'dcat:service': {
+              'dcterms:title': 'Service A',
+              'rdfs:comment': 'Desc',
+              'dcat:keyword': ['kw'],
+              'dcat:endpointURL': 'https://example.com/api',
+              'dcterms:creator': {
+                'foaf:name': 'Org',
+                'foaf:thumbnail': { 'rdf:resource': 'https://img/logo.png' },
               },
-              'gax-core:operatedBy': { '@id': 'did:example:provider-1' },
             },
+            'gax-core:operatedBy': { '@id': 'did:example:provider-1' },
           },
-          proof: {},
-        };
+        },
+        proof: {},
+      };
 
-        cy.intercept('GET', fc('/self-descriptions'), {
-          statusCode: 200,
-          body: { items: [{ meta: { sdHash: 'hash-1' } }] },
-        }).as('fcList');
+      cy.intercept('GET', fc('/self-descriptions'), {
+        statusCode: 200,
+        body: { items: [{ meta: { sdHash: 'hash-1' } }] },
+      }).as('fcList');
 
-        cy.intercept('GET', fc('/self-descriptions/hash-1'), {
-          statusCode: 200,
-          body: VC_BODY,
-        }).as('fcSD1');
-        cy.window().then(async () => {
-          const store = new FederatedCatalogueStore(mockConfig);
+      cy.intercept('GET', fc('/self-descriptions/hash-1'), {
+        statusCode: 200,
+        body: VC_BODY,
+      }).as('fcSD1');
 
-          const first = store.getData({
-            targetType: 'gax-trust-framework:ServiceOffering',
-          });
+      cy.window().then(() => {
+        const store = new FederatedCatalogueStore(mockConfig);
 
-          cy.wait('@auth');
-          cy.wait('@fcList');
-          cy.wait('@fcSD1');
-
-          cy.wrap(first).then((res: any) => {
-            expect(res).to.exist;
-            expect(res['@type']).to.equal('ldp:Container');
-            expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
-          });
-
-          cy.intercept('GET', fc('/self-descriptions')).as('fcListAgain');
-
-          const second = store.getData({
-            targetType: 'gax-trust-framework:ServiceOffering',
-          });
-
-          cy.wrap(second).then((res: any) => {
-            expect(res).to.exist;
-            expect(res['@type']).to.equal('ldp:Container');
-            expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
-          });
-
-          cy.get('@fcListAgain.all').should(($calls: any) => {
-            expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
-          });
+        const first = store.getData({
+          targetType: 'gax-trust-framework:ServiceOffering',
         });
-      } catch (_e) {}
+
+        cy.wait('@auth');
+        cy.wait('@fcList');
+        cy.wait('@fcSD1');
+
+        cy.wrap(first).then((res: any) => {
+          expect(res).to.exist;
+          expect(res['@type']).to.equal('ldp:Container');
+          expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
+        });
+
+        cy.intercept('GET', fc('/self-descriptions')).as('fcListAgain');
+
+        const second = store.getData({
+          targetType: 'gax-trust-framework:ServiceOffering',
+        });
+
+        cy.wrap(second).then((res: any) => {
+          expect(res).to.exist;
+          expect(res['@type']).to.equal('ldp:Container');
+          expect(res['ldp:contains']).to.be.an('array').and.have.length(1);
+        });
+
+        cy.get('@fcListAgain.all').should(($calls: any) => {
+          expect($calls, 'no extra GET /self-descriptions').to.have.length(0);
+        });
+      });
     });
   });
 });
