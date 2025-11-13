@@ -1183,7 +1183,7 @@ export const EdcFederatedCatalogDisplay = {
       <div class="federated-dataset-item" data-dataset-id="${dataset['@id']}" data-provider="${provider.address}">
         <div class="dataset-header">
           <h3 class="dataset-title">
-            ${dataset['dcterms:title'] || dataset['dct:title'] || dataset['dcat:service']['dct:title'] || dataset.properties?.name || dataset['@id']}
+            ${dataset['dcterms:title'] || dataset['dct:title'] || dataset['dcat:service']?.['dct:title'] || dataset.properties?.name || dataset['@id']}
           </h3>
           <div class="provider-badge" style="background-color: ${provider.color || '#1976d2'}">
             ${provider.name}
@@ -1192,10 +1192,10 @@ export const EdcFederatedCatalogDisplay = {
         
         ${
           dataset['rdfs:comment'] ||
-          dataset['dcat:service']['rdfs:comment'] ||
+          dataset['dcat:service']?.['rdfs:comment'] ||
           dataset.properties?.description
             ? html`<p class="dataset-description">
-              ${dataset['rdfs:comment'] || dataset['dcat:service']['rdfs:comment'] || dataset.properties?.description}
+              ${dataset['rdfs:comment'] || dataset['dcat:service']?.['rdfs:comment'] || dataset.properties?.description}
             </p>`
             : ''
         }
