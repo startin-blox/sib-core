@@ -720,6 +720,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     // Dataset ID and policy: only available when dcat:dataset is present
     let datasetId: string | undefined;
     let policy: any | undefined;
+    let policies: any[] = [];
 
     if (cs['dcat:dataset'] && cs['dcat:dataset'].length > 0) {
       const dataset = cs['dcat:dataset'][0];
@@ -729,16 +730,33 @@ export class FederatedCatalogueStore implements IStore<any> {
         datasetId = this.stripUrnPrefix(dataset['@id'], 'urn:uuid:');
       }
 
-      // Extract and process policy if present
+      // Extract and process policy/policies if present
       if (dataset['odrl:hasPolicy']) {
-        // Deep clone the policy and strip urn:tems: from all @id properties
-        policy = this.stripTemsUrnFromPolicy(
-          JSON.parse(JSON.stringify(dataset['odrl:hasPolicy'])),
-        );
+        const rawPolicy = dataset['odrl:hasPolicy'];
 
-        // Add the target field pointing to the dataset ID (with urn:uuid: prefix stripped)
-        if (datasetId) {
-          policy.target = datasetId;
+        // Helper to process a single policy
+        const processSinglePolicy = (policyObj: any) => {
+          // Deep clone the policy and strip urn:tems: from all @id properties
+          const processedPolicy = this.stripTemsUrnFromPolicy(
+            JSON.parse(JSON.stringify(policyObj)),
+          );
+
+          // Add the target field pointing to the dataset ID (with urn:uuid: prefix stripped)
+          if (datasetId) {
+            processedPolicy.target = datasetId;
+          }
+
+          return processedPolicy;
+        };
+
+        // Handle both single policy and array of policies
+        if (Array.isArray(rawPolicy)) {
+          policies = rawPolicy.map(processSinglePolicy);
+          // Use first policy as default for backwards compatibility
+          policy = policies[0];
+        } else {
+          policy = processSinglePolicy(rawPolicy);
+          policies = [policy];
         }
       }
     }
@@ -774,6 +792,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       ...(assetId && { assetId }),
       ...(datasetId && { datasetId }),
       ...(policy && { policy }),
+      ...(policies.length > 0 && { policies }), // Store all available policies
     };
 
     return dest;

@@ -170,6 +170,22 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   ): Promise<string> {
     await this.ensureAuthenticated();
 
+    console.log('[DataspaceConnectorStore] Received policy for negotiation:', policy);
+    console.log('[DataspaceConnectorStore] Policy keys:', Object.keys(policy));
+
+    // Clean policy object - remove numeric keys that might come from array conversion
+    const cleanPolicy: any = {};
+    for (const key in policy) {
+      // Skip numeric string keys (from array indices like "0", "1", etc.)
+      if (!/^\d+$/.test(key)) {
+        cleanPolicy[key] = policy[key];
+      } else {
+        console.warn(`[DataspaceConnectorStore] Removing numeric key "${key}" from policy`);
+      }
+    }
+
+    console.log('[DataspaceConnectorStore] Cleaned policy keys:', Object.keys(cleanPolicy));
+
     const negotiationRequest = {
       '@context': {
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
@@ -180,12 +196,13 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       protocol: 'dataspace-protocol-http',
       policy: {
         '@context': 'http://www.w3.org/ns/odrl.jsonld',
-        ...policy, // Spread all policy fields (including permission, prohibition, obligation, etc.)
+        ...cleanPolicy, // Spread cleaned policy fields (no numeric keys)
         // Override specific fields if needed
-        '@type': policy['@type'] || 'Offer',
-        assigner: policy.assigner || counterPartyId || 'provider',
-        // Ensure target is set
-        target: policy.target,
+        '@type': cleanPolicy['@type'] || policy['@type'] || 'Offer',
+        assigner: cleanPolicy.assigner || policy.assigner || counterPartyId || 'provider',
+        // Ensure target is set (use both forms for compatibility)
+        target: cleanPolicy.target || cleanPolicy['odrl:target'] || policy.target || policy['odrl:target'],
+        'odrl:target': cleanPolicy['odrl:target'] || cleanPolicy.target || policy['odrl:target'] || policy.target,
       },
     };
 
