@@ -179,10 +179,10 @@ export class FederatedCatalogueAPIWrapper {
    * Gets a valid token, refreshing if necessary
    * Implements proactive token refresh before expiration
    */
-  private getValidToken(): Promise<string> {
+  private async getValidToken(): Promise<string> {
     // If no token state, do initial authentication
     if (!this.tokenState) {
-      return this.firstConnect(this.loginOptions);
+      return await this.firstConnect(this.loginOptions);
     }
 
     // Check if token is expired or will expire soon
@@ -191,7 +191,7 @@ export class FederatedCatalogueAPIWrapper {
       now >= this.tokenState.expires_at - this.tokenRefreshBuffer;
 
     if (isExpiringSoon) {
-      return this.refreshToken();
+      return await this.refreshToken();
     }
 
     return this.tokenState.access_token;
