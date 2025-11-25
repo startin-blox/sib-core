@@ -170,7 +170,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   ): Promise<string> {
     await this.ensureAuthenticated();
 
-    console.log('[DataspaceConnectorStore] Received policy for negotiation:', policy);
+    console.log(
+      '[DataspaceConnectorStore] Received policy for negotiation:',
+      policy,
+    );
     console.log('[DataspaceConnectorStore] Policy keys:', Object.keys(policy));
 
     // Clean policy object - remove numeric keys that might come from array conversion
@@ -180,11 +183,16 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       if (!/^\d+$/.test(key)) {
         cleanPolicy[key] = policy[key];
       } else {
-        console.warn(`[DataspaceConnectorStore] Removing numeric key "${key}" from policy`);
+        console.warn(
+          `[DataspaceConnectorStore] Removing numeric key "${key}" from policy`,
+        );
       }
     }
 
-    console.log('[DataspaceConnectorStore] Cleaned policy keys:', Object.keys(cleanPolicy));
+    console.log(
+      '[DataspaceConnectorStore] Cleaned policy keys:',
+      Object.keys(cleanPolicy),
+    );
 
     const negotiationRequest = {
       '@context': {
@@ -199,10 +207,22 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         ...cleanPolicy, // Spread cleaned policy fields (no numeric keys)
         // Override specific fields if needed
         '@type': cleanPolicy['@type'] || policy['@type'] || 'Offer',
-        assigner: cleanPolicy.assigner || policy.assigner || counterPartyId || 'provider',
+        assigner:
+          cleanPolicy.assigner ||
+          policy.assigner ||
+          counterPartyId ||
+          'provider',
         // Ensure target is set (use both forms for compatibility)
-        target: cleanPolicy.target || cleanPolicy['odrl:target'] || policy.target || policy['odrl:target'],
-        'odrl:target': cleanPolicy['odrl:target'] || cleanPolicy.target || policy['odrl:target'] || policy.target,
+        target:
+          cleanPolicy.target ||
+          cleanPolicy['odrl:target'] ||
+          policy.target ||
+          policy['odrl:target'],
+        'odrl:target':
+          cleanPolicy['odrl:target'] ||
+          cleanPolicy.target ||
+          policy['odrl:target'] ||
+          policy.target,
       },
     };
 

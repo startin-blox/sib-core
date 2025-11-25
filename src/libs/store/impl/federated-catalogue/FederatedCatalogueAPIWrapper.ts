@@ -89,7 +89,7 @@ export class FederatedCatalogueAPIWrapper {
     this.tokenState = {
       access_token: token,
       refresh_token: data.refresh_token || null,
-      expires_at: Date.now() + ((data.expires_in || 3600) * 1000),
+      expires_at: Date.now() + (data.expires_in || 3600) * 1000,
     };
 
     return token;
@@ -120,7 +120,9 @@ export class FederatedCatalogueAPIWrapper {
   private async _performRefresh(): Promise<string> {
     // If no refresh token available, re-authenticate with credentials
     if (!this.tokenState?.refresh_token) {
-      console.log('No refresh token available, re-authenticating with credentials');
+      console.log(
+        'No refresh token available, re-authenticating with credentials',
+      );
       return this.firstConnect(this.loginOptions);
     }
 
@@ -143,7 +145,9 @@ export class FederatedCatalogueAPIWrapper {
       });
 
       if (!response.ok) {
-        console.warn('Token refresh failed, re-authenticating with credentials');
+        console.warn(
+          'Token refresh failed, re-authenticating with credentials',
+        );
         return this.firstConnect(this.loginOptions);
       }
 
@@ -160,7 +164,7 @@ export class FederatedCatalogueAPIWrapper {
       this.tokenState = {
         access_token: token,
         refresh_token: data.refresh_token || this.tokenState.refresh_token,
-        expires_at: Date.now() + ((data.expires_in || 3600) * 1000),
+        expires_at: Date.now() + (data.expires_in || 3600) * 1000,
       };
 
       return token;
@@ -175,7 +179,7 @@ export class FederatedCatalogueAPIWrapper {
    * Gets a valid token, refreshing if necessary
    * Implements proactive token refresh before expiration
    */
-  private async getValidToken(): Promise<string> {
+  private getValidToken(): Promise<string> {
     // If no token state, do initial authentication
     if (!this.tokenState) {
       return this.firstConnect(this.loginOptions);
@@ -183,7 +187,8 @@ export class FederatedCatalogueAPIWrapper {
 
     // Check if token is expired or will expire soon
     const now = Date.now();
-    const isExpiringSoon = now >= this.tokenState.expires_at - this.tokenRefreshBuffer;
+    const isExpiringSoon =
+      now >= this.tokenState.expires_at - this.tokenRefreshBuffer;
 
     if (isExpiringSoon) {
       return this.refreshToken();
