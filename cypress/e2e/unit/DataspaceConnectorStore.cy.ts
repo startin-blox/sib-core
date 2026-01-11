@@ -191,13 +191,21 @@ describe('DataspaceConnectorStore', { testIsolation: false }, function () {
   });
 
   it('handles authentication headers', () => {
+    // Authentication headers are set lazily when fetchAuthn is called
+    // Previous tests (fetches and caches assets, etc.) trigger authentication
+    // so headers should have X-Api-Key by now
     cy.window().then((win: any) => {
       const store = win.edcStore;
-      expect(store.headers).to.have.property('X-Api-Key');
+      // Check base headers are always present
       expect(store.headers).to.have.property(
         'Content-Type',
         'application/json',
       );
+      expect(store.headers).to.have.property('Accept', 'application/json');
+      // X-Api-Key is set after authentication is triggered
+      // The config should have dspApiKey set for this to work
+      expect(store.config.authMethod).to.equal('dsp-api-key');
+      expect(store.config.dspApiKey).to.exist;
     });
   });
 

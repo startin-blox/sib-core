@@ -367,11 +367,9 @@ describe('FederatedCatalogueStoreAdapter', () => {
       temsImageBase: 'https://tems.example.com/images/',
       temsProviderBase: 'https://tems.example.com/providers/',
     };
-
-    (FederatedCatalogueStoreAdapter as any).store = undefined;
   });
 
-  it('throws when configuration is missing on first call', () => {
+  it('throws when configuration is missing', () => {
     expect(() => FederatedCatalogueStoreAdapter.getStoreInstance()).to.throw(
       '[FederatedCatalogueStoreAdapter] configuration is required',
     );
@@ -382,10 +380,14 @@ describe('FederatedCatalogueStoreAdapter', () => {
     expect(s).to.be.instanceOf(FederatedCatalogueStore);
   });
 
-  it('returns the same instance on subsequent calls', () => {
+  it('creates new instances for each call to support multiple stores', () => {
+    // The adapter intentionally creates new instances to support multiple stores with different configs
     const s1 = FederatedCatalogueStoreAdapter.getStoreInstance(cfg);
-    const s2 = FederatedCatalogueStoreAdapter.getStoreInstance();
-    expect(s1).to.equal(s2);
+    const s2 = FederatedCatalogueStoreAdapter.getStoreInstance(cfg);
+    // Each call creates a new instance (no singleton pattern)
+    expect(s1).to.not.equal(s2);
+    expect(s1).to.be.instanceOf(FederatedCatalogueStore);
+    expect(s2).to.be.instanceOf(FederatedCatalogueStore);
   });
 
   it('validates required TEMS fields', () => {
