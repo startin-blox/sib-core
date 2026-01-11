@@ -13,16 +13,6 @@ describe('FederatedCatalogueStore', () => {
   const mockConfig: StoreConfig = {
     type: StoreType.FederatedCatalogue,
     endpoint: 'https://api.example.com',
-    login: {
-      kc_username: 'u',
-      kc_password: 'p',
-      kc_url:
-        'https://auth.startinblox.com/realms/tems/protocol/openid-connect/token',
-      kc_grant_type: 'password',
-      kc_client_id: 'client',
-      kc_client_secret: 'secret',
-      kc_scope: 'openid',
-    },
     temsServiceBase: 'https://tems.example.com/services/',
     temsCategoryBase: 'https://tems.example.com/categories/',
     temsImageBase: 'https://tems.example.com/images/',
@@ -32,14 +22,6 @@ describe('FederatedCatalogueStore', () => {
   describe('Constructor', () => {
     it('creates with valid config', () => {
       expect(() => new FederatedCatalogueStore(mockConfig)).to.not.throw();
-    });
-
-    it('throws when login is missing', () => {
-      const cfg = { ...mockConfig } as any;
-      cfg.login = undefined;
-      expect(() => new FederatedCatalogueStore(cfg)).to.throw(
-        'Login must be provided for FederatedCatalogueStore',
-      );
     });
 
     it('throws when endpoint is missing', () => {
@@ -57,21 +39,8 @@ describe('FederatedCatalogueStore', () => {
     });
   });
 
-  const interceptAuthToken = () => {
-    cy.intercept('POST', '**/protocol/openid-connect/token', {
-      statusCode: 200,
-      body: {
-        access_token: 'mock-access-token',
-        token_type: 'Bearer',
-        expires_in: 3600,
-      },
-      headers: { 'content-type': 'application/json' },
-    }).as('auth');
-  };
-
   describe('initLocalDataSourceContainer', () => {
     it('creates local container with deterministic ID and caches it', async () => {
-      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
       const container = await store.initLocalDataSourceContainer();
 
@@ -94,7 +63,6 @@ describe('FederatedCatalogueStore', () => {
     });
 
     it('produces different IDs for different container types', async () => {
-      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
       const c1 = await store.initLocalDataSourceContainer('default');
       const c2 = await store.initLocalDataSourceContainer('custom');
@@ -104,7 +72,6 @@ describe('FederatedCatalogueStore', () => {
 
   describe('Cache operations', () => {
     beforeEach(() => {
-      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
     });
 
@@ -146,7 +113,6 @@ describe('FederatedCatalogueStore', () => {
 
   describe('Local data operations', () => {
     beforeEach(() => {
-      interceptAuthToken();
       store = new FederatedCatalogueStore(mockConfig);
     });
 
@@ -180,22 +146,9 @@ describe('FederatedCatalogueStore', () => {
 
   describe('getData', () => {
     it('creates a local container, populates it and dispatches "save"', () => {
-      const fc = (path: string) =>
-        `${mockConfig.endpoint?.replace(/\/$/, '')}${path}`;
-
-      cy.intercept(
-        { method: 'POST', url: /\/protocol\/openid-connect\/token(\?.*)?$/ },
-        {
-          statusCode: 200,
-          body: {
-            access_token: 'mock',
-            token_type: 'Bearer',
-            expires_in: 3600,
-          },
-        },
-      ).as('auth');
-
-      cy.intercept('GET', fc('//self-descriptions(?.*)?$/'), {
+      // const fc = (path: string) =>
+      //   `${mockConfig.endpoint?.replace(/\/$/, '')}${path}`;
+      cy.intercept('GET', '**/self-descriptions', {
         statusCode: 200,
         body: {
           items: [
@@ -207,21 +160,35 @@ describe('FederatedCatalogueStore', () => {
 
       const SD_BODY = {
         verifiableCredential: {
+          issuanceDate: '2024-01-01T00:00:00Z',
+          expirationDate: '2024-12-31T23:59:59Z',
           credentialSubject: {
             '@id': 'urn:svc:1',
             '@type': ['gax-trust-framework:ServiceOffering'],
-            name: 'Service A',
+            'dcat:service': {
+              'dcterms:title': 'Service A',
+              'rdfs:comment': 'Desc',
+              'dcat:keyword': ['kw'],
+              'dcat:endpointURL': 'https://example.com/api',
+              'dcterms:creator': {
+                'foaf:name': 'Org',
+                'foaf:thumbnail': {
+                  'rdf:resource': 'https://example.com/logo.png',
+                },
+              },
+            },
+            'gax-core:operatedBy': { '@id': 'did:example:provider-1' },
           },
         },
         proof: {},
       };
 
-      cy.intercept('GET', fc('//self-descriptions/hash-1(?.*)?$/'), {
+      cy.intercept('GET', '**/self-descriptions/hash-1*', {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD1');
 
-      cy.intercept('GET', fc('//self-descriptions/hash-2(?.*)?$/'), {
+      cy.intercept('GET', '**/self-descriptions/hash-2*', {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD2');
@@ -241,7 +208,6 @@ describe('FederatedCatalogueStore', () => {
           targetType: 'gax-trust-framework:ServiceOffering',
         });
 
-        cy.wait('@auth');
         cy.wait('@fcList');
         cy.wait('@fcSD1');
         cy.wait('@fcSD2');
@@ -266,15 +232,6 @@ describe('FederatedCatalogueStore', () => {
     it('reuses cached container on subsequent call (does not refetch list)', () => {
       const fc = (p: string) =>
         `${mockConfig.endpoint?.replace(/\/$/, '')}${p}`;
-
-      cy.intercept('POST', '**/protocol/openid-connect/token', {
-        statusCode: 200,
-        body: {
-          access_token: 'mock',
-          token_type: 'Bearer',
-          expires_in: 3600,
-        },
-      }).as('auth');
 
       const VC_BODY = {
         verifiableCredential: {
@@ -315,7 +272,6 @@ describe('FederatedCatalogueStore', () => {
           targetType: 'gax-trust-framework:ServiceOffering',
         });
 
-        cy.wait('@auth');
         cy.wait('@fcList');
         cy.wait('@fcSD1');
 
@@ -352,16 +308,6 @@ describe('FederatedCatalogueStoreAdapter', () => {
     cfg = {
       type: StoreType.FederatedCatalogue,
       endpoint: 'https://api.example.com',
-      login: {
-        kc_username: 'u',
-        kc_password: 'p',
-        kc_url:
-          'https://auth.startinblox.com/realms/tems/protocol/openid-connect/token',
-        kc_grant_type: 'password',
-        kc_client_id: 'client',
-        kc_client_secret: 'secret',
-        kc_scope: 'openid',
-      },
       temsServiceBase: 'https://tems.example.com/services/',
       temsCategoryBase: 'https://tems.example.com/categories/',
       temsImageBase: 'https://tems.example.com/images/',

@@ -1,11 +1,11 @@
-import {
-  FederatedCatalogueAPIWrapper,
-  type KeycloakLoginOptions,
-} from './FederatedCatalogueAPIWrapper.ts';
+import { FederatedCatalogueAPIWrapper } from './FederatedCatalogueAPIWrapper.ts';
 
 export function getFederatedCatalogueAPIWrapper(
   baseUrl: string,
-  loginOptions: KeycloakLoginOptions,
+  fetch?: (
+    input: RequestInfo,
+    init?: RequestInit | undefined,
+  ) => Promise<Response>,
 ) {
-  return new FederatedCatalogueAPIWrapper(loginOptions, baseUrl);
+  return new FederatedCatalogueAPIWrapper(baseUrl, fetch);
 }

@@ -1,4 +1,5 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
+import { AuthFetchResolver } from '../../auth/AuthFetchResolver.ts';
 import type { CacheManagerInterface } from '../../cache/CacheManager.ts';
 import { InMemoryCacheManager } from '../../cache/InMemory.ts';
 import {
@@ -15,32 +16,27 @@ import type { DcatService, Destination, Source } from './interfaces.ts';
 
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
-  session: Promise<any> | undefined;
   private fcApi: FederatedCatalogueAPIWrapper | null;
   private metadataManager: LocalStorageCacheMetadataManager | null;
   private enableCaching: boolean;
-
+  private cleanupAuth?: () => void;
   constructor(private cfg: StoreConfig) {
-    if (!this.cfg.login) {
-      throw new Error('Login must be provided for FederatedCatalogueStore');
-    }
-
     if (!this.cfg.endpoint) {
       throw new Error(
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
       );
     }
+    const fetchAuth = AuthFetchResolver.getAuthFetch();
+    this.cleanupAuth = AuthFetchResolver.onAuthActivated(
+      this.resolveFetch.bind(this),
+    );
 
-    try {
+    if (fetchAuth) {
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
-        this.cfg.login,
+        fetchAuth,
       );
-    } catch (e) {
-      console.error(
-        '[FederatedCatalogueStore] Failed to initialize API wrapper:',
-        e,
-      );
+    } else {
       this.fcApi = null;
     }
 
@@ -61,6 +57,28 @@ export class FederatedCatalogueStore implements IStore<any> {
       this.metadataManager = null;
     }
   }
+
+  disconnectedCallback() {
+    this.cleanupAuth?.();
+  }
+
+  /**
+   * Resolve fetch and session from auth activation event
+   * @param event - sib-auth:activated event
+   */
+  resolveFetch = (event: any) => {
+    if (!this.cfg.endpoint) {
+      throw new Error(
+        'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
+      );
+    }
+    if (event.detail.fetch) {
+      this.fcApi = getFederatedCatalogueAPIWrapper(
+        this.cfg.endpoint,
+        event.detail.fetch,
+      );
+    }
+  };
 
   /**
    * Handle page reload detection and clear cache if it's a new session
@@ -97,6 +115,15 @@ export class FederatedCatalogueStore implements IStore<any> {
       return args.targetType ?? args.id ?? '';
     }
     return '';
+  }
+
+  /**
+   * Build deterministic local container id based on endpoint and container type.
+   */
+  private buildContainerId(containerType = 'default'): string {
+    const endpointHash =
+      this.cfg.endpoint?.replace(/[^a-zA-Z0-9]/g, '') || 'unknown';
+    return `store://local.fc-${endpointHash}-${containerType}/`;
   }
 
   async getData(args: any) {
@@ -172,7 +199,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
       // Ensure resource has proper structure
       if (!resource['@id']) {
-        resource['@id'] = targetType;
+        resource['@id'] = this.buildContainerId();
       }
       if (!resource['ldp:contains']) {
         resource['ldp:contains'] = [];
@@ -305,12 +332,12 @@ export class FederatedCatalogueStore implements IStore<any> {
   /**
    * Perform full fetch - get all items (original behavior)
    */
-  private async getFullData(targetType: string): Promise<Resource> {
+  private async getFullData(_targetType: string): Promise<Resource> {
     if (!this.fcApi) {
       throw new Error('Federated API not initialized');
     }
 
-    const resource = await this.initLocalDataSourceContainer(targetType);
+    const resource = await this.initLocalDataSourceContainer();
     const dataset = await this.fcApi.getAllSelfDescriptions();
 
     const newMetadata: CacheItemMetadata[] = [];
@@ -373,12 +400,8 @@ export class FederatedCatalogueStore implements IStore<any> {
    * @returns A local data source container with a deterministic ID.
    */
   async initLocalDataSourceContainer(dataSrc = '', containerType = 'default') {
-    const endpointHash =
-      this.cfg.endpoint?.replace(/[^a-zA-Z0-9]/g, '') || 'unknown';
-    const idField = `fc-${endpointHash}-${containerType}`;
-
     if (!dataSrc) {
-      dataSrc = `store://local.${idField}/`;
+      dataSrc = this.buildContainerId(containerType);
     }
     const localContainer: Resource = {
       '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
@@ -461,8 +484,28 @@ export class FederatedCatalogueStore implements IStore<any> {
     return null;
   }
   subscribeResourceTo(_resourceId: string, _nestedResourceId: string) {}
-  fetchAuthn(_iri: string, _options: any) {
-    return Promise.resolve({} as Response);
+
+  async fetchAuthn(_iri: string, _options: any) {
+    // if (!this.fetch) {
+    //   console.warn('No fetch method available');
+    // }
+
+    // // Check if the session is available
+    // // If not, wait for it to be available
+    // let authenticated = false;
+    // if (this.session) authenticated = await this.session;
+
+    // if (this.fetch && authenticated) {
+    //   // authenticated
+    //   return this.fetch(iri, options);
+    // }
+
+    // // anonymous
+    // if (options.headers) {
+    //   options.headers = new Headers(options.headers);
+    // }
+    // return fetch(iri, options).then(response => response);
+    return await Promise.resolve({} as Response);
   }
 
   async setLocalData(resource: object, id: string): Promise<string | null> {

@@ -42,6 +42,11 @@ import * as TemplatesDependenciesMixins from './new-widgets/templatesDependencie
 
 import { Sib } from './libs/Sib.ts';
 import * as Helpers from './libs/helpers.ts';
+// Auth
+import {
+  AuthFetchResolver,
+  DEFAULT_AUTH_SELECTORS,
+} from './libs/store/auth/AuthFetchResolver.ts';
 import { StoreType } from './libs/store/shared/types.ts';
 // Libs
 import SolidTemplateElement from './solid-template-element.ts';
@@ -95,6 +100,9 @@ export {
   // Libs
   StoreService,
   StoreType,
+  // Auth
+  AuthFetchResolver,
+  DEFAULT_AUTH_SELECTORS,
   Sib,
   SolidTemplateElement,
   widgetFactory,

@@ -1,6 +1,7 @@
 import jsonld from 'jsonld';
 import * as JSONLDContextParser from 'jsonld-context-parser';
 import PubSub from 'pubsub-js';
+import { AuthFetchResolver } from '../../auth/AuthFetchResolver.ts';
 import type { ServerSearchOptions } from '../../shared/options/server-search.ts';
 import { appendServerSearchToIri } from '../../shared/options/server-search.ts';
 import type { IStore, Resource } from '../../shared/types.ts';
@@ -83,10 +84,13 @@ export class LdpStore implements IStore<Resource> {
   subscriptionVirtualContainersIndex: Map<string, any>; // index of all the containers per resource
   loadingList: Set<string>;
   headers: object;
-  fetch: Promise<any> | undefined;
-  session: Promise<any> | undefined;
+  fetch: (
+    input: RequestInfo,
+    init?: RequestInit | undefined,
+  ) => Promise<Response>;
   contextParser: JSONLDContextParser.ContextParser;
   private searchProvider: SearchProvider;
+  private cleanupAuth?: () => void;
 
   constructor(private storeOptions: StoreOptions) {
     this.cache = this.storeOptions.cacheManager ?? new InMemoryCacheManager();
@@ -98,12 +102,30 @@ export class LdpStore implements IStore<Resource> {
       'Content-Type': 'application/ld+json',
       'Cache-Control': 'must-revalidate',
     };
-    this.fetch = this.storeOptions.fetchMethod;
-    this.session = this.storeOptions.session;
     this.contextParser = new JSONLDContextParser.ContextParser();
     this.searchProvider = new SolidIndexingSearchProvider(
       this.getData.bind(this),
     );
+
+    if (this.storeOptions.fetchMethod) {
+      this.fetch = this.storeOptions.fetchMethod.bind(globalThis);
+    } else {
+      // Fallback: if no authFetchProvider provided within options, use the old lookUpAuthFetch approach
+      const authFetch = AuthFetchResolver.getAuthFetch();
+      this.fetch = authFetch.bind ? authFetch.bind(globalThis) : authFetch;
+      this.cleanupAuth = AuthFetchResolver.onAuthActivated(
+        this.resolveFetch.bind(this),
+      );
+    }
+    if (!this.fetch) {
+      this.fetch = fetch;
+    }
+    const event = new CustomEvent('sib-core:loaded', {
+      bubbles: true,
+      composed: true,
+      detail: { store: this },
+    });
+    window.dispatchEvent(event);
   }
 
   /**
@@ -112,6 +134,10 @@ export class LdpStore implements IStore<Resource> {
   async initGetter() {
     const { CustomGetter } = await import('./custom-getter.ts');
     return CustomGetter;
+  }
+
+  disconnectedCallback() {
+    this.cleanupAuth?.();
   }
 
   /**
@@ -244,24 +270,7 @@ export class LdpStore implements IStore<Resource> {
     if (!this.fetch) {
       console.warn('No fetch method available');
     }
-
-    // Check if the session is available
-    // If not, wait for it to be available
-    let authenticated = false;
-    if (this.session) authenticated = await this.session;
-
-    if (this.fetch && authenticated) {
-      // authenticated
-      return this.fetch.then(fn => {
-        return fn(iri, options);
-      });
-    }
-
-    // anonymous
-    if (options.headers) {
-      options.headers = this._convertHeaders(options.headers);
-    }
-    return fetch(iri, options).then(response => response);
+    return await this.fetch(iri, options);
   }
 
   /**
@@ -820,21 +829,15 @@ export class LdpStore implements IStore<Resource> {
   ): string {
     let iri = normalizeContext(context, base_context).expandTerm(id); // expand if reduced ids
     if (!iri) return '';
-    if (parentId && !parentId.startsWith('store://local')) {
-      // and get full URL from parent caller for local files
-      const parentIri = new URL(parentId, document.location.href).href;
-      iri = new URL(iri, parentIri).href;
-    } else {
-      iri = new URL(iri, document.location.href).href;
+    try {
+      const baseHref = document?.location?.href || '';
+      const canUseParent = parentId && !parentId.startsWith('store://local');
+      const base = canUseParent ? new URL(parentId, baseHref).href : baseHref;
+      iri = new URL(iri, base).href;
+    } catch (err) {
+      console.log('[LDPStore _getAbsoluteIri()]', err);
     }
     return iri;
-  }
-
-  /**
-   * Return the user session information
-   */
-  async getSession() {
-    return await this.session;
   }
 
   /**
@@ -873,6 +876,18 @@ export class LdpStore implements IStore<Resource> {
       }
     };
     return handler;
+  };
+
+  /**
+   * Resolve fetch and session from auth activation event
+   * @param event - sib-auth:activated event
+   */
+  resolveFetch = event => {
+    if (event.detail.fetch) {
+      this.fetch = event.detail.fetch.bind
+        ? event.detail.fetch.bind(globalThis)
+        : event.detail.fetch;
+    }
   };
 
   /**

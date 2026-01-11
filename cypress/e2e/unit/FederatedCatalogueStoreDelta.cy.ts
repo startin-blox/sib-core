@@ -9,16 +9,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
   const mockConfig: StoreConfig = {
     type: StoreType.FederatedCatalogue,
     endpoint: 'https://api.example.com',
-    login: {
-      kc_username: 'u',
-      kc_password: 'p',
-      kc_url:
-        'https://auth.startinblox.com/realms/tems/protocol/openid-connect/token',
-      kc_grant_type: 'password',
-      kc_client_id: 'client',
-      kc_client_secret: 'secret',
-      kc_scope: 'openid',
-    },
     temsServiceBase: 'https://tems.example.com/services/',
     temsCategoryBase: 'https://tems.example.com/categories/',
     temsImageBase: 'https://tems.example.com/images/',
@@ -27,21 +17,9 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
     cacheTTL: 2 * 60 * 60 * 1000, // 2 hours
   };
 
-  const interceptAuth = () => {
-    cy.intercept('POST', '**/protocol/openid-connect/token', {
-      statusCode: 200,
-      body: {
-        access_token: 'mock-access-token',
-        token_type: 'Bearer',
-        expires_in: 3600,
-      },
-    }).as('auth');
-  };
-
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
-    interceptAuth();
   });
 
   afterEach(() => {
@@ -210,7 +188,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSDNew');
 
@@ -332,7 +309,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSDNew');
 
@@ -428,7 +404,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSDUpdated');
 
@@ -519,7 +494,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSDStatus');
 
@@ -610,7 +584,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSD');
 
@@ -686,7 +659,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
 
       cy.wrap(resultPromise).then(() => {
@@ -760,7 +732,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
 
       cy.wrap(resultPromise).then(() => {
@@ -842,7 +813,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSD');
 
@@ -908,7 +878,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSD');
 
@@ -981,7 +950,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSD');
 
@@ -1070,7 +1038,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList'); // First call (fails)
       cy.wait('@fcList'); // Second call (succeeds - full fetch)
       cy.wait('@fcSD');
@@ -1237,7 +1204,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
       cy.wait('@fcSDUpdate');
       cy.wait('@fcSDNew');
@@ -1315,7 +1281,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
 
       cy.wrap(resultPromise).then(() => {
@@ -1405,7 +1370,6 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         targetType: 'gax-trust-framework:ServiceOffering',
       });
 
-      cy.wait('@auth');
       cy.wait('@fcList');
 
       cy.wrap(Promise.all([resultPromise, savePromise])).then(
