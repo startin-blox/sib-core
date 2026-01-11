@@ -26,7 +26,7 @@ export class StoreService {
     console.log(`🔧 [StoreService.addStore] Adding store "${trimmedName}":`, {
       storeType: config.type,
       endpoint: config.endpoint,
-      alreadyExists: StoreService.stores.has(trimmedName)
+      alreadyExists: StoreService.stores.has(trimmedName),
     });
 
     if (StoreService.stores.has(trimmedName)) {
@@ -35,11 +35,14 @@ export class StoreService {
       );
     }
     const store = StoreFactory.create(config);
-    console.log(`✅ [StoreService.addStore] Created store for "${trimmedName}":`, {
-      storeType: typeof store,
-      storeConfig: (store as any).config,
-      storeEndpoint: (store as any).config?.endpoint
-    });
+    console.log(
+      `✅ [StoreService.addStore] Created store for "${trimmedName}":`,
+      {
+        storeType: typeof store,
+        storeConfig: (store as any).config,
+        storeEndpoint: (store as any).config?.endpoint,
+      },
+    );
     StoreService.stores.set(trimmedName, { store, config });
     return store;
   }
@@ -66,7 +69,7 @@ export class StoreService {
     console.log(`📦 [StoreService.getStore] Retrieving store "${storeName}":`, {
       found: !!instance,
       storeEndpoint: (instance.store as any).config?.endpoint,
-      configEndpoint: instance.config.endpoint
+      configEndpoint: instance.config.endpoint,
     });
     return instance.store;
   }

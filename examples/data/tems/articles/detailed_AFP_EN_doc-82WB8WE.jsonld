@@ -72,9 +72,7 @@
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
         "tc:descriptionContent": "This article covers recent developments in international affairs and their global implications. The report provides detailed analysis from multiple sources and expert perspectives. Key stakeholders have been interviewed to offer comprehensive coverage of the events.",
-        "tc:tags": [
-          "multimedia"
-        ]
+        "tc:tags": ["multimedia"]
       },
       "tc:hasRights": {
         "@type": "tc:Rights",

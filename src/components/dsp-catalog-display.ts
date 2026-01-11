@@ -293,10 +293,9 @@ export const DspCatalogDisplay = {
         if (currentPolicies > existingPolicies) {
           // Replace with better version and update in deduplicated array
           const index = deduplicated.findIndex(d => {
-            const dParticipantId =
-              d.participantId || d.provider.participantId || d.provider.address;
             return (
-              dParticipantId === participantId && d.dataset['@id'] === datasetId
+              d.provider.address === providerAddress &&
+              d.dataset['@id'] === datasetId
             );
           });
           if (index !== -1) {

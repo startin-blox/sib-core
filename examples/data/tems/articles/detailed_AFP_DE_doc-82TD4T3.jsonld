@@ -71,9 +71,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:tags": [
-          "multimedia"
-        ],
+        "tc:tags": ["multimedia"],
         "tc:descriptionContent": "Dieser Artikel behandelt aktuelle Entwicklungen in Wirtschaft und Politik mit Auswirkungen auf die internationale Gemeinschaft. Experten und Entscheidungsträger teilen ihre Einschätzungen zu den wichtigsten Herausforderungen. Die Analyse beleuchtet sowohl kurzfristige als auch langfristige Perspektiven.",
         "tc:descriptionLanguage": "de"
       },

@@ -68,9 +68,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:tags": [
-          "multimedia"
-        ],
+        "tc:tags": ["multimedia"],
         "tc:descriptionContent": "International diplomatic coverage examining cross-border relations and cooperation initiatives. This article presents perspectives from government officials and foreign policy analysts. The implications for regional stability and economic partnerships are thoroughly examined.",
         "tc:descriptionLanguage": "en"
       },

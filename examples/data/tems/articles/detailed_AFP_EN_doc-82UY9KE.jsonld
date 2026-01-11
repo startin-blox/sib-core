@@ -73,9 +73,7 @@
         "@type": "tc:ContentDescription",
         "tc:descriptionContent": "Breaking news coverage of significant economic developments affecting global markets. This report examines the latest policy decisions and their potential impact on international trade relations. Expert commentary provides context for understanding the broader implications.",
         "tc:descriptionLanguage": "en",
-        "tc:tags": [
-          "multimedia"
-        ]
+        "tc:tags": ["multimedia"]
       },
       "tc:hasRights": {
         "@type": "tc:Rights",

@@ -762,12 +762,22 @@ export class FederatedCatalogueStore implements IStore<any> {
     }
 
     // DEBUG: Log policy processing results
-    console.log('[FederatedCatalogueStore] 🔍 Policy processing for', name, ':', {
-      hasPolicy: !!policy,
-      policiesCount: policies.length,
-      policy: policy ? { '@id': policy['@id'], hasTarget: !!policy.target } : null,
-      policies: policies.map(p => ({ '@id': p['@id'], hasTarget: !!p.target }))
-    });
+    console.log(
+      '[FederatedCatalogueStore] 🔍 Policy processing for',
+      name,
+      ':',
+      {
+        hasPolicy: !!policy,
+        policiesCount: policies.length,
+        policy: policy
+          ? { '@id': policy['@id'], hasTarget: !!policy.target }
+          : null,
+        policies: policies.map(p => ({
+          '@id': p['@id'],
+          hasTarget: !!p.target,
+        })),
+      },
+    );
 
     // 13) Assemble the Destination object
     const dest: Destination = {
@@ -803,19 +813,20 @@ export class FederatedCatalogueStore implements IStore<any> {
       ...(policies.length > 0 && { policies }), // Store all available policies
     };
 
-    console.log('[FederatedCatalogueStore] 🔍 Destination object contract fields:', {
-      hasPolicy: 'policy' in dest,
-      hasPolicies: 'policies' in dest,
-      policiesValue: (dest as any).policies
-    });
+    console.log(
+      '[FederatedCatalogueStore] 🔍 Destination object contract fields:',
+      {
+        hasPolicy: 'policy' in dest,
+        hasPolicies: 'policies' in dest,
+        policiesValue: (dest as any).policies,
+      },
+    );
 
     return dest;
   }
 }
 
 export class FederatedCatalogueStoreAdapter {
-  private static store: IStore<any>;
-
   private constructor() {}
 
   private static validateConfiguration(cfg: StoreConfig): void {

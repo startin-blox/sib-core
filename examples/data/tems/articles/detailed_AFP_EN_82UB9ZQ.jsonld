@@ -68,12 +68,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:keywords": [
-          "politics",
-          "fact-checking",
-          "local",
-          "culture"
-        ],
+        "tc:keywords": ["politics", "fact-checking", "local", "culture"],
         "tc:descriptionContent": "Fact-checking investigation examining claims circulating in public discourse. Journalists and researchers provide evidence-based analysis to clarify the factual accuracy of recent statements. The article aims to promote informed civic engagement and media literacy.",
         "tc:descriptionLanguage": "en"
       },

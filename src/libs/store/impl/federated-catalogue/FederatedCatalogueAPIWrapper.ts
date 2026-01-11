@@ -74,7 +74,9 @@ export class FederatedCatalogueAPIWrapper {
     if (this.tokenState) {
       try {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.tokenState));
-        console.log('💾 [FederatedCatalogueAPIWrapper] Token state saved to localStorage');
+        console.log(
+          '💾 [FederatedCatalogueAPIWrapper] Token state saved to localStorage',
+        );
       } catch (error) {
         console.error('Failed to save token state to localStorage:', error);
       }
@@ -89,12 +91,17 @@ export class FederatedCatalogueAPIWrapper {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         this.tokenState = JSON.parse(stored);
-        console.log('📂 [FederatedCatalogueAPIWrapper] Token state loaded from localStorage:', {
-          hasAccessToken: !!this.tokenState?.access_token,
-          hasRefreshToken: !!this.tokenState?.refresh_token,
-          expiresAt: this.tokenState?.expires_at,
-          isExpired: this.tokenState ? Date.now() >= this.tokenState.expires_at : 'N/A'
-        });
+        console.log(
+          '📂 [FederatedCatalogueAPIWrapper] Token state loaded from localStorage:',
+          {
+            hasAccessToken: !!this.tokenState?.access_token,
+            hasRefreshToken: !!this.tokenState?.refresh_token,
+            expiresAt: this.tokenState?.expires_at,
+            isExpired: this.tokenState
+              ? Date.now() >= this.tokenState.expires_at
+              : 'N/A',
+          },
+        );
       }
     } catch (error) {
       console.error('Failed to load token state from localStorage:', error);
@@ -281,15 +288,22 @@ export class FederatedCatalogueAPIWrapper {
       console.log(
         `🔐 [FederatedCatalogueAPIWrapper] Authentication failed (${response.status}) for ${url}`,
       );
-      console.log('🔄 [FederatedCatalogueAPIWrapper] Attempting token refresh...', {
-        hasRefreshToken: !!this.tokenState?.refresh_token,
-        tokenExpired: this.tokenState ? Date.now() >= this.tokenState.expires_at : 'N/A'
-      });
+      console.log(
+        '🔄 [FederatedCatalogueAPIWrapper] Attempting token refresh...',
+        {
+          hasRefreshToken: !!this.tokenState?.refresh_token,
+          tokenExpired: this.tokenState
+            ? Date.now() >= this.tokenState.expires_at
+            : 'N/A',
+        },
+      );
 
       try {
         // Force token refresh
         const newToken = await this.refreshToken();
-        console.log('✅ [FederatedCatalogueAPIWrapper] Token refreshed successfully, retrying request...');
+        console.log(
+          '✅ [FederatedCatalogueAPIWrapper] Token refreshed successfully, retrying request...',
+        );
 
         // Retry request with new token
         headers.set('Authorization', `Bearer ${newToken}`);
@@ -300,10 +314,15 @@ export class FederatedCatalogueAPIWrapper {
             `❌ [FederatedCatalogueAPIWrapper] Authentication still failed after token refresh (${response.status}). Please check credentials.`,
           );
         } else {
-          console.log(`✅ [FederatedCatalogueAPIWrapper] Retry succeeded with status ${response.status}`);
+          console.log(
+            `✅ [FederatedCatalogueAPIWrapper] Retry succeeded with status ${response.status}`,
+          );
         }
       } catch (error) {
-        console.error('❌ [FederatedCatalogueAPIWrapper] Failed to refresh token:', error);
+        console.error(
+          '❌ [FederatedCatalogueAPIWrapper] Failed to refresh token:',
+          error,
+        );
         // Return the original failed response
       }
     }

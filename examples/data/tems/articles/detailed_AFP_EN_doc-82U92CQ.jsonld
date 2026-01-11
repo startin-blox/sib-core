@@ -71,9 +71,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:tags": [
-          "multimedia"
-        ],
+        "tc:tags": ["multimedia"],
         "tc:descriptionContent": "In-depth analysis of current political developments and their societal implications. The article features interviews with key decision-makers and policy experts. Regional perspectives are included to provide a comprehensive overview of the situation.",
         "tc:descriptionLanguage": "en"
       },

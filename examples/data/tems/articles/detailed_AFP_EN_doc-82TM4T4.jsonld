@@ -71,9 +71,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:tags": [
-          "multimedia"
-        ],
+        "tc:tags": ["multimedia"],
         "tc:descriptionContent": "Comprehensive report on technological innovations reshaping industry standards. This piece explores emerging trends and their potential applications across various sectors. Business leaders share their perspectives on adapting to these rapid changes.",
         "tc:descriptionLanguage": "en"
       },

@@ -73,9 +73,7 @@
         "@type": "tc:ContentDescription",
         "tc:descriptionContent": "Este artículo examina los acontecimientos recientes en el contexto internacional y sus implicaciones para la región. Los periodistas presentan análisis de expertos y testimonios de los principales actores involucrados. Se abordan tanto las causas como las posibles consecuencias de estos desarrollos.",
         "tc:descriptionLanguage": "es",
-        "tc:tags": [
-          "multimedia"
-        ]
+        "tc:tags": ["multimedia"]
       },
       "tc:hasRights": {
         "@type": "tc:Rights",

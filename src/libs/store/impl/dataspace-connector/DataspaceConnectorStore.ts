@@ -2173,17 +2173,25 @@ export class DataspaceConnectorStoreAdapter {
     if (!cfg) {
       throw new Error('DataspaceConnectorStore configuration is required');
     }
-    console.log('🏭 [DataspaceConnectorStoreAdapter.getStoreInstance] Creating new store with config:', {
-      endpoint: cfg.endpoint,
-      catalogEndpoint: cfg.catalogEndpoint,
-      negotiationEndpoint: cfg.contractNegotiationEndpoint
-    });
+    console.log(
+      '🏭 [DataspaceConnectorStoreAdapter.getStoreInstance] Creating new store with config:',
+      {
+        endpoint: cfg.endpoint,
+        catalogEndpoint: cfg.catalogEndpoint,
+        negotiationEndpoint: cfg.contractNegotiationEndpoint,
+      },
+    );
     // Always create a new instance to support multiple stores with different configs
-    const newStore = new DataspaceConnectorStore(cfg as DataspaceConnectorConfig);
-    console.log('✅ [DataspaceConnectorStoreAdapter.getStoreInstance] Created store:', {
-      storeType: typeof newStore,
-      configEndpoint: (newStore as any).config?.endpoint
-    });
+    const newStore = new DataspaceConnectorStore(
+      cfg as DataspaceConnectorConfig,
+    );
+    console.log(
+      '✅ [DataspaceConnectorStoreAdapter.getStoreInstance] Created store:',
+      {
+        storeType: typeof newStore,
+        configEndpoint: (newStore as any).config?.endpoint,
+      },
+    );
     return newStore;
   }
 }

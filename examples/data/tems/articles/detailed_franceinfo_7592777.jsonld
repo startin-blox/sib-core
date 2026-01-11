@@ -73,9 +73,7 @@
         "@type": "tc:ContentDescription",
         "tc:descriptionContent": "Enquête journalistique sur un sujet d'actualité internationale avec un focus particulier sur les enjeux humanitaires. L'article présente des témoignages de terrain et des analyses d'experts en géopolitique. Les implications pour la communauté internationale sont également abordées.",
         "tc:descriptionLanguage": "fr",
-        "tc:tags": [
-          "Soudan"
-        ]
+        "tc:tags": ["Soudan"]
       },
       "tc:hasRights": {
         "@type": "tc:Rights",

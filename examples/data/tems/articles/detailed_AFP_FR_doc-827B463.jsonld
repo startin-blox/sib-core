@@ -73,9 +73,7 @@
         "@type": "tc:ContentDescription",
         "tc:descriptionContent": "Cet article analyse les développements récents dans le contexte politique et économique français. Des experts et des acteurs clés partagent leurs perspectives sur les enjeux actuels. L'article examine également les implications pour les citoyens et les entreprises.",
         "tc:descriptionLanguage": "fr",
-        "tc:tags": [
-          "multimedia"
-        ]
+        "tc:tags": ["multimedia"]
       },
       "tc:hasRights": {
         "@type": "tc:Rights",

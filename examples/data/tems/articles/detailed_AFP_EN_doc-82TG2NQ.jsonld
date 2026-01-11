@@ -68,9 +68,7 @@
       },
       "tc:hasDescription": {
         "@type": "tc:ContentDescription",
-        "tc:tags": [
-          "multimedia"
-        ],
+        "tc:tags": ["multimedia"],
         "tc:descriptionContent": "Environmental reporting on climate-related events and sustainability initiatives. Scientists and environmental advocates discuss the latest findings and recommended actions. The article highlights both challenges and opportunities in addressing ecological concerns.",
         "tc:descriptionLanguage": "en"
       },
