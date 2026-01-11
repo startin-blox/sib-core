@@ -231,6 +231,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       JSON.stringify(negotiationRequest, null, 2),
     );
 
+    console.log(
+      '[DataspaceConnectorStore] 🔍 POSTing negotiation to consumer connector:',
+      this.config.contractNegotiationEndpoint,
+    );
+
     const response = await this.fetchAuthn(
       this.config.contractNegotiationEndpoint,
       {
@@ -1057,13 +1062,13 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     if (this.authToken && this.headers) return;
 
     switch (this.config.authMethod) {
-      case 'edc-api-key':
-        if (!this.config.edcApiKey) {
+      case 'dsp-api-key':
+        if (!this.config.dspApiKey) {
           throw new Error(
-            'EDC API key required but not provided. Set edcApiKey in configuration.',
+            'DSP API key required but not provided. Set dspApiKey in configuration.',
           );
         }
-        this.authToken = this.config.edcApiKey;
+        this.authToken = this.config.dspApiKey;
         this.headers = {
           ...this.headers,
           'X-Api-Key': this.authToken,
@@ -2162,19 +2167,23 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
 // Adapter for factory registration
 export class DataspaceConnectorStoreAdapter {
-  private static store: IStore<any>;
-
   private constructor() {}
 
   public static getStoreInstance(cfg?: StoreConfig): IStore<any> {
-    if (!DataspaceConnectorStoreAdapter.store) {
-      if (!cfg) {
-        throw new Error('DataspaceConnectorStore configuration is required');
-      }
-      DataspaceConnectorStoreAdapter.store = new DataspaceConnectorStore(
-        cfg as DataspaceConnectorConfig,
-      );
+    if (!cfg) {
+      throw new Error('DataspaceConnectorStore configuration is required');
     }
-    return DataspaceConnectorStoreAdapter.store;
+    console.log('🏭 [DataspaceConnectorStoreAdapter.getStoreInstance] Creating new store with config:', {
+      endpoint: cfg.endpoint,
+      catalogEndpoint: cfg.catalogEndpoint,
+      negotiationEndpoint: cfg.contractNegotiationEndpoint
+    });
+    // Always create a new instance to support multiple stores with different configs
+    const newStore = new DataspaceConnectorStore(cfg as DataspaceConnectorConfig);
+    console.log('✅ [DataspaceConnectorStoreAdapter.getStoreInstance] Created store:', {
+      storeType: typeof newStore,
+      configEndpoint: (newStore as any).config?.endpoint
+    });
+    return newStore;
   }
 }

@@ -761,6 +761,14 @@ export class FederatedCatalogueStore implements IStore<any> {
       }
     }
 
+    // DEBUG: Log policy processing results
+    console.log('[FederatedCatalogueStore] 🔍 Policy processing for', name, ':', {
+      hasPolicy: !!policy,
+      policiesCount: policies.length,
+      policy: policy ? { '@id': policy['@id'], hasTarget: !!policy.target } : null,
+      policies: policies.map(p => ({ '@id': p['@id'], hasTarget: !!p.target }))
+    });
+
     // 13) Assemble the Destination object
     const dest: Destination = {
       '@id': serviceId,
@@ -795,6 +803,12 @@ export class FederatedCatalogueStore implements IStore<any> {
       ...(policies.length > 0 && { policies }), // Store all available policies
     };
 
+    console.log('[FederatedCatalogueStore] 🔍 Destination object contract fields:', {
+      hasPolicy: 'policy' in dest,
+      hasPolicies: 'policies' in dest,
+      policiesValue: (dest as any).policies
+    });
+
     return dest;
   }
 }
@@ -822,16 +836,14 @@ export class FederatedCatalogueStoreAdapter {
   }
 
   public static getStoreInstance(cfg?: StoreConfig): IStore<any> {
-    if (!FederatedCatalogueStoreAdapter.store) {
-      if (!cfg) {
-        throw new Error(
-          '[FederatedCatalogueStoreAdapter] configuration is required',
-        );
-      }
-
-      FederatedCatalogueStoreAdapter.validateConfiguration(cfg);
-      FederatedCatalogueStoreAdapter.store = new FederatedCatalogueStore(cfg);
+    if (!cfg) {
+      throw new Error(
+        '[FederatedCatalogueStoreAdapter] configuration is required',
+      );
     }
-    return FederatedCatalogueStoreAdapter.store;
+
+    FederatedCatalogueStoreAdapter.validateConfiguration(cfg);
+    // Always create a new instance to support multiple stores with different configs
+    return new FederatedCatalogueStore(cfg);
   }
 }

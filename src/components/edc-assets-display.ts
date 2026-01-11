@@ -59,8 +59,8 @@ export const EdcAssetsDisplay = {
         contractNegotiationEndpoint: `${this.connectorUri}/v3/contractnegotiations`,
         transferProcessEndpoint: `${this.connectorUri}/v3/transferprocesses`,
         assetsEndpoint: `${this.connectorUri}/v3/assets/request`,
-        authMethod: 'edc-api-key',
-        edcApiKey: this.apiKey,
+        authMethod: 'dsp-api-key',
+        dspApiKey: this.apiKey,
         retryAttempts: 3,
         timeout: 30000,
       };

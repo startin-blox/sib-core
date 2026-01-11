@@ -1,0 +1,88 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:MediaWork"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#en",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:originalLanguage",
+            "sh:value": "en"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/languages/en.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#fr",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:originalLanguage",
+            "sh:value": "fr"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/languages/fr.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#de",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:originalLanguage",
+            "sh:value": "de"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/languages/de.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#es",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:originalLanguage",
+            "sh:value": "es"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/languages/es.jsonld"
+    }
+  ]
+}

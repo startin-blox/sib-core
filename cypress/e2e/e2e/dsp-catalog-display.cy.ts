@@ -142,7 +142,7 @@ const mockCatalogProviderC = {
   'dcat:dataset': [],
 };
 
-describe('EdcFederatedCatalogDisplay', () => {
+describe('DspCatalogDisplay', () => {
   beforeEach(() => {
     // Set up intercept for the consumer connector catalog requests
     // Match requests based on counterPartyAddress to return correct provider data

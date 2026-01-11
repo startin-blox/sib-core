@@ -23,12 +23,23 @@ export class StoreService {
       throw new Error('[StoreService] Store configuration is required.');
     }
 
+    console.log(`🔧 [StoreService.addStore] Adding store "${trimmedName}":`, {
+      storeType: config.type,
+      endpoint: config.endpoint,
+      alreadyExists: StoreService.stores.has(trimmedName)
+    });
+
     if (StoreService.stores.has(trimmedName)) {
       StoreService.logWarning(
         `Store with name "${trimmedName}" already exists. Overwriting.`,
       );
     }
     const store = StoreFactory.create(config);
+    console.log(`✅ [StoreService.addStore] Created store for "${trimmedName}":`, {
+      storeType: typeof store,
+      storeConfig: (store as any).config,
+      storeEndpoint: (store as any).config?.endpoint
+    });
     StoreService.stores.set(trimmedName, { store, config });
     return store;
   }
@@ -52,6 +63,11 @@ export class StoreService {
       StoreService.logWarning(`Store with name "${storeName}" not found.`);
       return null;
     }
+    console.log(`📦 [StoreService.getStore] Retrieving store "${storeName}":`, {
+      found: !!instance,
+      storeEndpoint: (instance.store as any).config?.endpoint,
+      configEndpoint: instance.config.endpoint
+    });
     return instance.store;
   }
 

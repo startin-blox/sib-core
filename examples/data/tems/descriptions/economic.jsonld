@@ -1,0 +1,53 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:MediaWork"
+          }
+        },
+        {
+          "sh:path": "tc:hasDescription",
+          "sh:property": {
+            "sh:path": "tc:descriptionContent",
+            "sh:pattern": "(?i)economic|économique|wirtschaft"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82UY9KE.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_FR_doc-827B463.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_franceinfo_7593107.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_DE_doc-82TD4T3.jsonld"
+    }
+  ]
+}

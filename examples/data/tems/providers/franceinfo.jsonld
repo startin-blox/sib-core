@@ -1,0 +1,44 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:MediaWork"
+          }
+        },
+        {
+          "sh:path": "tc:provider",
+          "sh:value": "tems/agent/franceinfo"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_franceinfo_7593107.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_franceinfo_7592777.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/franceinfo.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_franceinfo_7593215.jsonld"
+    }
+  ]
+}

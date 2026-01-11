@@ -1,0 +1,615 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/franceinfo/7592777",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/article/7592777",
+        "tc:identifierValue": "7592777",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:originalLanguage": "fr",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "Simon Soubieux, Agence de vérification de l'information Radio France, Thomas  Pontillon (Radio France)"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/franceinfo"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+        },
+        {
+          "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56",
+      "tc:contentLanguage": "fr",
+      "tc:locator": "https://fake-domain-7eaec187.com/fake-path/7eaec187",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/version/Lu8amJPjrWVC2CjxC4DH56",
+        "tc:identifierValue": "Lu8amJPjrWVC2CjxC4DH56",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/franceinfo/7592777"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Les forces militaires renforcent leur présence au Soudan pour la lutte d'El-Fasher entre le 15 et le 30 octobre",
+        "tc:titleLanguage": "fr"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-03T15:42:34+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Enquête journalistique sur un sujet d'actualité internationale avec un focus particulier sur les enjeux humanitaires. L'article présente des témoignages de terrain et des analyses d'experts en géopolitique. Les implications pour la communauté internationale sont également abordées.",
+        "tc:descriptionLanguage": "fr",
+        "tc:tags": [
+          "Soudan"
+        ]
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-7eaec187.com/fake-path/7eaec187",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-03T15:42:34+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/franceinfo"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXX XXXXXX XXXXXXXXX XXXXXXXX XXX XXXXXXXXX XXXXXXXXX XX XXXXXX XXXX XX XX XXXXX X’XX-XXXXXX XXXXX XX 00 XX XX 00 XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 1",
+          "tc:segmentContent": "XXX XXXXXX XX XXX, XXX XXXXXXXXXX X XX XXXXXXXXX, XXXXXXXX X’XXXXXXX XXX XXXXXXXXX XXXXXX XXX XXX XXXXXX XX XXXXXXX XXXXXX (XXX) XXXX XX XX XXXXX X’XX-XXXXXX, XXXXXXXX XX XXXX-XXXXXXX, XX XXXXXX, XXXXX XX 00 XX XX 00 XXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 2",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/679bd849-4208-4394-bb2d-ccc9412fb6ce"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXX XXXXXX XXXXXXXXXX XXXXXXXX XXX XXXXXXXX XXXXX XXXXXXXX X’XXXXXXX XXX XXXXXXXXX XXXXXX XXX XXX XXXXXX XX XXXXXXX XXXXXX (XXX) XXXX XX XX XXXXX X’XX-XXXXXX, XXXXXXXX XX XXXX-XXXXXXX, XX XXXXXX, XXXXX XX 00 XX XX 00 XXXXXXX. XXX XXXXXXXX XXXX XXXXX XX XXXXXXX XXXXXXX XX XXXXXXXXXXXX XXXXXXXX XXX (XXX) XX X’XXXXXXXXXX XXXXXXXXXX XX XXXX (XXXXXXXXXXX), XXXX XX 00 XXXXXXX, XXXXXX X’XXXXXX XX XXXXXXXXXXXX XX XXXXX XXXXXX X XX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XXXXX XXX XXXXXXXX XX XXX, XXXXXXX XXX XXX XXXXXX XXXXXXXXX XXXXXX XXXXX XX XXXXX XX XXXXX XX XX XXXXX, XX-XXXXXX X XXX XX XXXXXXX XX XXXXXXXXX X’XXX XXXXXXX XXXXXXXXXXXX. X’XXXXXXXXXXXX XXXXXXXXXXXXXX XXXX XXX XXXXXXXXXX (XXX) XXXXXXX XXX 00 000 XXXXXXXXX — XXXX XXXXXXX 00% XXX 000 000 XXXXXXXXX — XXX XXX XX XXXXX XXXXX XX 00 XX XX 00 XXXXXXX XXXXXXX. XXXX XX XXX XXXXXXX X’XXXXX XXXXXXX XXXXX XXXXXXXXX XXXXXX XX XXXXXXXXXX. \"XXXX XXXXXXXX XX XXXXXXXXXXX XXX XX XXXXXXXX XXX XXXXXX XXXXXX XXXXX, XXXXXXXX XX XXXXXX\", XXXXXXX XX XXXXXXX. XXXX XXX XXXXX XXXXXXX X’XXXXXXXXXX, XXX XXXXXX XXXXXXXXX XXXXXXXX XXX XXXXXXXX XXXXXXX XXXXX XXXXXXXXXXX. XXX XXXXX XXXXXXXXXXXX XXXXXXXX XXXXXXXXXX XXX XXXXXXX XXXXXXXXXX. XXXX XXX XXXXXXXXXX XX XXXX, XXXXX XXXXXXX X’XXXXX XXXXXXX XX'\"XX XXXXX XXX XX XXXXXX XX XXX XX XXXXXXXX XX X’XXXXXXXX\"."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXX XXXXXX XXXXXXXXX XXXXXXXXX XXX XX XXXXXXXXXXX, XXX XXXXXXXX XXXXXXXXXX XXX XXXXXX XX XXXXXXXXXX XXXXXXXXX XXX XXX XXXXXXX XXXXXXX XXX XXX, XXXXXXXXX XX XXXXX 00 XXXXXXXXXXXXX XXXXXXXXXXXXX X XXX XXXXX XXXXXXX XXXX XX XXXXXX XX XX XXXXX. \"XXX XXXXXXX XXXXXXXXXXXXX X XX XXXXXXXX XX XXXXX XXXXXXX XX XXX XXXXXXXXXX XX XX XXXXXXXXXX\", XXXXXXX XX XXX. XXX XXXXXX XXXXXXXXXX XX XXXXXXXX XX XX XXXXXXXXX XXXXXXXX XXXXXXXXX XXX XXXXXXXXXX XXXXXXXXX XX XXX XXXXXXXX XXXXXX XXX XXXXXXX XXXXXX. XXX XXXXXXXXXX XXXXXXXXXXX XXXXX XXX XXXXXX XXXXXX XX XXX, XXXXXXXXXXX XXXXX XXX \"XXXXX XX XXXX\", XXX X’XXXXXXXXX XX XXX XXX XXXXX, XXXXX XX XXXXXXXXXXXXX XX XX XXXXXXXXXXX XXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/6",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 6,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 6",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/f364fe74-0f49-45fc-8a60-72bad57d47bb"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/7",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 7,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 7",
+          "tc:segmentContent": "XXX \"XXXXXXXX\" XXXXXXXXXXXX XXXX XXXXXXXXX XXXXX, XXXXXXXXX XXX XX XXXXXX XX X’XXXXXXXXXX X’XX-XXXXXX. XXX XXXXXX XX 00 XXXXXXX XXXXXXXX XXXXXXXXX XXXXXXXXX, XXXX XX XXXXXXXX XX XXXXXXXXXXXX XXXXXXXXXX XX \"0,0 X 0,0 XXXXX XX XXXX XXXX XXX XXXXX XX XXXX\". XX XXXX XX XXXXXXX XXXXXXXX XX XX XXXXX XXXXXXXX, XXXX, XXX XXXXXX XX XXXXXXXX XXX XXX XXXXX XX XXX XXXXXXXXX XXXXXXX XXXXXXXX XX XXXXXX. XXXX XX XXXXXXXX XX XXXXXX XXXX, XXXXXXX XXXXXX XXXXX XXXXX XX XXXXX XX XX XXXXX, XXX XXXXXXXXXX XXXXXXXXXXX \"XX XXXXXXXXX XXXXXXXXXXXXX (…) XXXXXXXXXXXXX X XXX XXXXX\"."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/8",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 8,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 8",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/cbcd95d8-b6d6-449d-b56c-c5b5b54273fe"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/9",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 9,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 9",
+          "tc:segmentContent": "XX XXXX-XXXXX X’XX-XXXXXX, XXXX XX XXXXXXX XX XXXXX, XXX XXXXXXXXXX XXXXXXXX XXX XXXXXXXXXXX XXXXXXXXXXXXX XXXXX XXXXXX XX XXXXXX. \"XXX XXXXXX XX XXX XXXXXXX XXX XXXXXXX XXXXX XXX XXXXXXX XXX XXXXXX, XX’XXX X’XXX XXXXXX XXXXX\", XXXXXXXX XX XXX. XXX XXXXX XXX XXXXXXXXX XXX XXXXXXXX XX XXXX XXX XXXXXX XXXXXXX XXXXX X XXXXXXX, XXXXXXXX XXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/10",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 10,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 10",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/9afc8378-a97f-47ce-965a-e1f72846ed72"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/11",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 11,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 11",
+          "tc:segmentContent": "XX XXXXXX XX XXXXXXXXX XX XX XXXX XXXXXX XXXXXXXXXXXXXX (XXX) X XXXXXXX XXX \"XX XXXX XXXXX, X’XXX XXXX XXXXXX, XXXXXXXXXX XXXXXXXXXX XXX XXXXXX XX XXXXXX XX XXX XXXXXX XXXXXX X’XXXXXXXX XX XXXX XX XXXXXX XX XXXX\". XXX XXXXXXX X XXX XXXXXX XXXX XXXXXXXXXX XXX XXXXXXXX XXX XXX XXXXXXXXX XXXXXXXXX XX XXXXX. XX XXX, XXXXXX XXX XX XXXXXXX XX XXXXXXXX XXX XXXXXXX XXXXX, XXXXXXX XXXXXX 0000 XXX XXX XXXXXXXX XX XXXXXXXX, XXXXXX XX XXXXXX XX XXXXXX XXXXXX X'XXXXXXXX XXXXXX XX XXXXXXX XXXX XX XXXXXXXXXXX XXXXXXXXX X XXXXXXXXX XXXXXXXX, XXXX XXXXX XX XXXXX XX X'XXXXXX XXXXXXX XXX X XXXXXX XX 0000."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/12",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 12,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 12",
+          "tc:segmentContent": "XX XXXXXXX XX XXX X’XXXXXXX XXXX XX XXXXXXXXXX XX XXXXXXX XXX, XXXXXX XXXXX 0000, XXXXXX XX XXXXXX XX X XXXX XXX XXXXXXXXX XX XXXXXXXX XX XXXXX XX XXXXXXXX. XX XXXX XXX XXXXXXX’XXX XXXXXX XXXXX X’XXXXX XX XXXXXXX XXXXX XXXXXX XX-XXXXXXX, XXX XXXXXXXX XX XXXX XX X’XXX (XXXX-XXXXXX, XXXXXXXX) XX XXX XXXXXX XX XXXXXXX XXXXXX XX XXXXXXX XXXXXX XXXXX, XXXXXXXXX XXXXXXX XX XXXXXXX, X X’XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/13",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56"
+          },
+          "tc:order": 13,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 13",
+          "tc:segmentContent": "XX XXXXXXX X XX XXXXXXX XXXXXXXXXXXX XXX XX XXXXXXXXXX. XXXXX, XX XXXXXXX XX X'XXX XXXXX XX XXXXXX X XXXX XXXXXXXXX XXXXXXX XX XXXX, XXXXXXXXX XXXXXX XX XX-XXXXXX. XXX XXXXXXXXX X'XXXXXX XXXXXXX XX XXXXXXX XX XX XXXXXXXX XXXXXX XXXX XXXXXXXXX XXXXXXXX XXX XX XXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-d59e1bf4.com/fake-path/d59e1bf4",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/version/KJzYpfQPgnxNz5nULf4KwG",
+        "tc:identifierValue": "KJzYpfQPgnxNz5nULf4KwG",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/franceinfo/7592777"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Military forces boost their presence in Sudan region for fighting at El-Fasher between October 15 and 30",
+        "tc:titleLanguage": "en"
+      },
+      "tc:translatedFrom": {
+        "@id": "tems/article/franceinfo/7592777/SVo3WxJCEVkVPHRLqVm86p"
+      },
+      "tc:sourceLanguage": "fr",
+      "tc:translatedBy": {
+        "@type": "tc:DigitalTool",
+        "rdfs:label": "DEEPL"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-04T10:48:22.846000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Enquête journalistique sur un sujet d'actualité internationale avec un focus particulier sur les enjeux humanitaires. L'article présente des témoignages de terrain et des analyses d'experts en géopolitique. Les implications pour la communauté internationale sont également abordées.",
+        "tc:descriptionLanguage": "fr"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-d59e1bf4.com/fake-path/d59e1bf4",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-04T10:48:22.846000+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/franceinfo"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXXXXXX XXXXXX XXXXX XXX XXXXXXXXX XXXXXXXXXXX XX XXXXX XXXXXX XXX XXXXXXX XX XX-XXXXXX XXXXXXX XXXXXXX 00 XXX 00"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 1",
+          "tc:segmentContent": "XXXXX XXXXX, XXXXX XXXXX XXXXXX'X XXXXXXXXXXXX XXXXXX XXX XXXX XX XXXX, XXXXXX XXX XXXXX XX XXX XXXXXXXXX XXXXXXXXX XX XXX XXXXX XXXXXXX XXXXXX (XXX) XXXXXX XXX XXXXXXX XX XX-XXXXXX, XXXXXXX XX XXXXX XXXXXX, XXXXX, XXXXXXX XXXXXXX 00 XXX 00."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 2",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/7325e0fd-82bc-40b9-8db1-bf7112c02f22"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXXXXXX XXXXXX XXXXXXXXX XX XXXXXX XXXX XXXXXX XXX XXXXX XX XXX XXXXXXXXX XXXXXXXXX XX XXX XXXXX XXXXXXX XXXXXX (XXX) XXXXXX XXX XXXXXXX XX XX-XXXXXX, XXXXXXX XX XXXXX XXXXXX, XXXXX, XXXXXXX XXXXXXX 00 XXX 00. XXXXX XXXXXXXX XXXX XXXX XXX XXXXXX XXXXXX XX XXX XXXXXXXXXXXX XXXXXXXX XXX (XXX) XX XXX XXXXXXXX XXXXXXXXXX XX XXXX (XXXXXXXXXXX), XXXXX XXXXXXX 00, XX XXXXX XXXXX XXXXXX'X XXXXXXXXXXXX XXXXXX XXX XXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XXXXXXXXX XX XXX XXXXXXXX, XXXXX XX XXXXXXXXX XXXXXX XXXXX XXXXXX XXX XXXXX XXX XXXX XX XXX XXXX, XX-XXXXXX XXX XXX XXXXX XX XXXXXXXXX XX X XXXXXXX XXXXX. XXX XXXXXXXXXXXXX XXXXXXXXXXXX XXX XXXXXXXXX (XXX) XXXXXXX XXXX 00,000 XXXXXX - XXXXXX 00% XX XXX 000,000 XXXXXXXXXXX - XXXX XXX XXXX XXXXXXX XXXXXXX 00 XXX 00. XXX XXX XXX XXXXXX XX XXXX XXXXXXXX XX XXXXXXX XXXXXXXXXX XXXXXXXXX. \"XXXX XXXXXXXXX XXX XXXXXXXXXX XXXX XXX XXXXXXXX XX XXXXXXXXX XXX XXXX, XXXXXXXX XX XX XXXXXX\", XXX XXXXXX XXXXXX. XX XXX XXXX XXXXXXXXX XXX XXXXXXXXXX, XXXXXXXXX XXXXXX XXXX XXXXXXXXX XX XXXXX XXXXXXXX. XXX XXXX XXXXXXX XXXXXXXXX XXXX XXXXXXXX XXXXXXX. XXX XXX XXXX XXXXXXXXXXX, XXXX XXXX XX XXXXXX XXXXXXXX XXXX \"XXXXX XXX XXX XXXXXXXXX XXXX XXXXX XXX XXXX XX XXXXXX\"."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXXXXXXXX XXXXXX XXXXXXXX XX XXX XXXXXXXXXX, XXXXX XXXX XX XXXXXXXXXXX XXX XXXXXXXXXX XXXXXX XXXXXXXXXX XX XXX XXX'X XXXXXX XXXXXXXX, XXXXX XX XXXXX 00 XXXXXXXX XXXXXXXXXXXXX XX XXXXX XXXXXX XX XXX XXXXXX XXX XXXX. \"XXXXXXXX XX XXXXX XXXXXX XX XXX XXXXXX XXXXXXXXX XX XXXXXXXX\", XXXX XXX XXX. XXXXXXX XXXXXX XX XXXXX XXX XXXXXXXXX XXXXXXXX XXXXXXX XXXXXXX XXXXXXXXXX XXX XXXXXXX XX XXXXXXXX XXXXXXX. XXX XXXXXXXXXXX XXXX XXXXXXX XXX XXXXXX XX XXX XXXXXX, XXXXXXXXXX XX \"XXXXX XX XXXXX\", XXXXX XXXX XXXX XXX XXXX, X XXXX XX XXXXXXXXXXXXX XX XXXXXXXXXXXX XX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/6",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 6,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 6",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/10ae4440-9ce4-447e-8b84-77d0f06a1f8a"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/7",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 7,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 7",
+          "tc:segmentContent": "XXXXX \"XXXXXXXX\" XXXXXX XX XXXXXXX XXXXX, XXXXXXX XX XXX XXXXXX XX XX-XXXXXX XXXXXXXXXX. XXXXXX XXXX XXXXXXX 00 XXXX XXXXXXX XXXX XXXXXX, XXXX XXXXXXXXX XXXXXXX \"0.0 XX 0.0 XXXXXX XXXX XX XXXXX XX XXXXX\". XXX XXXX'X XXX XXXXXXX XXXX XXXXX XXXX XXXXX XX XXXXX XXXXX XXXXXX XXXX XXXXXXX XXX XXXXXXXX XXX. XX XXX XXXXXX XXXX XXXXXXXX, XXX XXXX XXXXXXXX XXXXXX XXXXXX XXX XXXX XX XXX XXXX, XXX XXXXXXXXXXX XXXXXXXXXX \"XXXXXXXX XXXXXXXXX (...) XXXXXXXXXXXXX XX XXXXXX\"."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/8",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 8,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 8",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/4437ae7c-5e64-44b5-94dd-e91c7cb5231a"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/9",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 9,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 9",
+          "tc:segmentContent": "XXXXX-XXXX XX XX-XXXXXX, XX XXX XXXXXXX XX XXXXX, XXXXXXXXX XXXXX XX XXXXXXXXXX XXXXXXXXXXX XXXXXXX XXX XXX XXXXX. \"XXXXX XXX XXXXXXXX XXXXXXXX XXXXX XXXXXXXXX XXXX XXX, XXXX XXXX XXXXX XXX XXXXX\", XXXXXXX XXX. XXXXXX XXXX XXXX XXXX XXXXX XXX XXXXX XXXXXXX XXXXX XX XXXXXXX, XXXXXXXXXX XXXXX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/10",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 10,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 10",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7592777/d836dc10-6ac4-47b7-b230-7df81704f621"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/11",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 11,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 11",
+          "tc:segmentContent": "XXX XXXXXX XX XXX XXXXXXXXXX XX XXX XXXXXXXXXXXXX XXXXXXXX XXXXX (XXX) XXXXXXXX XXXX \"XXXX XXXX, XX XXXXXX, XXXXX XXXXXXXXXX XXX XXXXXX XXX XXXXXX XXXXXXX XXXXXXXX XXXXXX XXX XXXXXXX XX XXX XXXX XXXXXXX\". XX XXXXXXXXXXXXX XXX XXXX XXXXXXXX XX XXXXXX XXXXXXXXXXX XX XXXXX XXXXXXXX XXXXXXXXX XXX XXXXX. XXX XXX, XXXXXX XX XXX XXXXXX XXXXXXX XXXXXXXX XXXXXXX, XXX XXXX XXXXXXXXXXXXX XXXXXXXXX XXXXXXXX, XXX XXXXXX XXX XXXXXX XXXXXXX XXXXXXXX XXXXXXXXX XX XXXXXX XXXXXX XXXXXXXX XXXXXX XXXXXXXX XXXXX 0000, XXXX XXXXXX XXX XXXXXXX XXXXXXXX XXXXXXX XX 0000."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/12",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 12,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 12",
+          "tc:segmentContent": "XXX'X XXXXXX XXXXXXX XX XXXX XXX XXXXXXXX XXXX XXX XXXXXXX XXXXX XXXXX XXXXX 0000, XXXXXXX XXXXXXXX XX XXXXXXXXX XXXX XXX XXXXXXXXX. XXX XXXXXXX XX XXX XXXXXXX XXXXXXX XXXXXXX XXXXX XXXXXX XX-XXXXXXX'X XXXX, XXXXX XXXXXXXX XXX XXXXX XXX XXXX (XXXX XXXXX, XXXXXXXX), XXX XXXXXXX XXXXXX XXXXX'X XXXXX XXXXXXX XXXXXX, XXXXX XXX XXXXXXX XXXXXX XX XXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/13",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG"
+          },
+          "tc:order": 13,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 13",
+          "tc:segmentContent": "XXX XXXXXXXX XX XXXXXX X XXXXX XXXX XX XXX XXXXXXXXXX. XX XXXXXX, X XX XXXXXX XXXXXXXX XXX XXXXXX XX XXX XXX XXXXXXX XX XXX XXXXXXX, XXXXXXX XXXXXX XX-XXXXXX. XXXX XXXXXX XXXXX XXXXXXX XX XXXXXX XXX XXXXXXXXXXX XXXXXXXX XXX XXXX XXXXXXXXXX XX XXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/679bd849-4208-4394-bb2d-ccc9412fb6ce",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/2"
+      },
+      "tc:caption": "XXX XXXXXX XX 00 XXXXXXX 0000 XXXXXXXX XXXXXXXXX XXXXXXXXX, XXXX XX XXXXXXXX XX XXXXXXXXXXXX XXXXXXXXXX XX \"0,0 X 0,0 XXXXX XX XXXX XXXX XXX XXXXX XX XXXX\"",
+      "tc:locator": "https://fake-domain-e71ce00b.com/fake-path/e71ce00b"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/f364fe74-0f49-45fc-8a60-72bad57d47bb",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/6"
+      },
+      "tc:caption": "XXX XXX XXXXXX XXXXXXXXX, XXXXXX XX 00 XXXXXXX 0000, XXX XXXXXXXXXX XXXXXXXXXXX XXX XXXXXX XXXXXX XX XXX, XXXXXXXXXXX XXXXX XXX \"XXXXX XX XXXX\".",
+      "tc:locator": "https://fake-domain-8432826e.com/fake-path/8432826e"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/cbcd95d8-b6d6-449d-b56c-c5b5b54273fe",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/8"
+      },
+      "tc:caption": "\"XXX XXXXXXX XXXXXXXXXXXXX X XX XXXXXXXX XX XXXXX XXXXXXX XX XXX XXXXXXXXXX XX XX XXXXXXXXXX\", XXXXXXX XX XXX.",
+      "tc:locator": "https://fake-domain-f317f30c.com/fake-path/f317f30c"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/9afc8378-a97f-47ce-965a-e1f72846ed72",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/Lu8amJPjrWVC2CjxC4DH56/10"
+      },
+      "tc:caption": "XXX XXXXX XXX XXXXXXXXX XXX XXXXXXXX XX XXXX XXX XXXXXX XXXXXXX XXXXX X XXXXXXX (XXX XX XXXX XXXXXXXXXXXX XX 00 XXXXXXX XX XX 00 XXXXXXX).",
+      "tc:locator": "https://fake-domain-119e7a75.com/fake-path/119e7a75"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/7325e0fd-82bc-40b9-8db1-bf7112c02f22",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/2"
+      },
+      "tc:caption": "XXXXXX XXXX XXXXXXX 00, 0000 XXXX XXXXXXX XXXX XXXXXX, XXXX XXX XXXXXXXX XX XXXXXXXXX XXXXXXX \"0.0 XX 0.0 XXXXXX XXXX XX XXXXX XX XXXXX.\"",
+      "tc:locator": "https://fake-domain-e71ce00b.com/fake-path/e71ce00b"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/10ae4440-9ce4-447e-8b84-77d0f06a1f8a",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/6"
+      },
+      "tc:caption": "XX XXXXX XXXXXXXXX XXXXXX, XXXXX XXXXXXX 00, 0000, XXX XXXXXXXXXXX XXXXXXX XXX XXXXX XX XXX XXXXXX, XXXXXXXXXX XX \"XXXXX XX XXXXX\".",
+      "tc:locator": "https://fake-domain-8432826e.com/fake-path/8432826e"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/4437ae7c-5e64-44b5-94dd-e91c7cb5231a",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/8"
+      },
+      "tc:caption": "\"XXXXXXXX XXXXXXXXXXXXX XX XXX XXXXXXXX XX XXXXX XXXXXX XX XXX XXXXXX XXXXXXXXX XX XXXXXXXX\", XXXX XXX XXX.",
+      "tc:locator": "https://fake-domain-f317f30c.com/fake-path/f317f30c"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7592777/d836dc10-6ac4-47b7-b230-7df81704f621",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7592777/KJzYpfQPgnxNz5nULf4KwG/10"
+      },
+      "tc:caption": "XXXXXX XXXX XXXX XXXX XXXXX XXX XXXXX XXXXXXX XXXXX XXX XXXXXXX (XX XXX XXXX XXXXXXXX XX XXXXXXX 00 XXX XXXXXXX 00).",
+      "tc:locator": "https://fake-domain-119e7a75.com/fake-path/119e7a75"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/franceinfo",
+      "rdfs:label": "franceinfo"
+    }
+  ]
+}

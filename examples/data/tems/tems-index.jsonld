@@ -1,0 +1,90 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:MediaWork"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#language",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:originalLanguage"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/tems-language-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#provider",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:provider"
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/tems-provider-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#title",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasTitle",
+            "sh:property": {
+              "sh:path": "tc:titleContent"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#description",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasDescription",
+            "sh:property": {
+              "sh:path": "tc:descriptionContent"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld"
+    }
+  ]
+}

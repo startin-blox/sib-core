@@ -1,0 +1,35 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/tems/titles/climate.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/titles/climate.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:MediaWork"
+          }
+        },
+        {
+          "sh:path": "tc:hasTitle",
+          "sh:property": {
+            "sh:path": "tc:titleContent",
+            "sh:pattern": "(?i)climate|climat"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/titles/climate.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/titles/climate.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82WB8WE.jsonld"
+    }
+  ]
+}

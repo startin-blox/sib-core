@@ -15,7 +15,7 @@ import { StoreType } from '../libs/store/shared/types.ts';
 import { AttributeBinderMixin } from '../mixins/attributeBinderMixin.ts';
 import { WidgetMixin } from '../mixins/widgetMixin.ts';
 
-export const EdcFederatedCatalogDisplay = {
+export const DspCatalogDisplay = {
   name: 'dsp-catalog-display',
   use: [WidgetMixin, AttributeBinderMixin],
   attributes: {
@@ -159,8 +159,8 @@ export const EdcFederatedCatalogDisplay = {
       contractNegotiationEndpoint: `${this.consumerConnector}/v3/contractnegotiations`,
       transferProcessEndpoint: `${this.consumerConnector}/v3/transferprocesses`,
       edrsEndpoint: `${this.consumerConnector}/v3/edrs`,
-      authMethod: 'edc-api-key',
-      edcApiKey: this.apiKey,
+      authMethod: 'dsp-api-key',
+      dspApiKey: this.apiKey,
       retryAttempts: 8,
       timeout: 30000,
     };
@@ -272,12 +272,11 @@ export const EdcFederatedCatalogDisplay = {
 
     for (const item of datasets) {
       const datasetId = item.dataset['@id'];
-      const participantId =
-        item.participantId ||
-        item.provider.participantId ||
-        item.provider.address;
-      // Use composite key: participantId + datasetId to allow same asset from different providers
-      const key = `${participantId}:${datasetId}`;
+      // Always use provider.address to ensure assets from different providers are never de-duplicated
+      // This allows negotiation with different providers even if they have assets with the same @id
+      const providerAddress = item.provider.address;
+      // Use composite key: providerAddress + datasetId to allow same asset from different providers
+      const key = `${providerAddress}:${datasetId}`;
 
       if (!seen.has(key)) {
         seen.set(key, item);
@@ -1409,4 +1408,4 @@ export const EdcFederatedCatalogDisplay = {
   },
 };
 
-Sib.register(EdcFederatedCatalogDisplay);
+Sib.register(DspCatalogDisplay);

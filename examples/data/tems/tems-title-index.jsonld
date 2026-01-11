@@ -1,0 +1,100 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:MediaWork"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#climate",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasTitle",
+            "sh:property": {
+              "sh:path": "tc:titleContent",
+              "sh:pattern": "(?i)climate|climat"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/titles/climate.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#market",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasTitle",
+            "sh:property": {
+              "sh:path": "tc:titleContent",
+              "sh:pattern": "(?i)market|trade|économ|wirtschaft"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/titles/market.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#technology",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasTitle",
+            "sh:property": {
+              "sh:path": "tc:titleContent",
+              "sh:pattern": "(?i)tech|digital|AI"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/titles/technology.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#health",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-title-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasTitle",
+            "sh:property": {
+              "sh:path": "tc:titleContent",
+              "sh:pattern": "(?i)health|santé|healthcare"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/titles/health.jsonld"
+    }
+  ]
+}

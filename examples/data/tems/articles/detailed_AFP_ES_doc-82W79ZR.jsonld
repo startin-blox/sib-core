@@ -1,0 +1,341 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/AFP_ES/doc-82W79ZR",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_ES/article/doc-82W79ZR",
+        "tc:identifierValue": "doc-82W79ZR",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_ES"
+        }
+      },
+      "tc:originalLanguage": "es",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "AFP"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/AFP_ES"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+        },
+        {
+          "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm",
+      "tc:contentLanguage": "es",
+      "tc:locator": "https://fake-domain-74a49bc0.com/fake-path/74a49bc0",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_ES/version/UE3XyZRBZDqJACH4Q2JnEm",
+        "tc:identifierValue": "UE3XyZRBZDqJACH4Q2JnEm",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_ES"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_ES/doc-82W79ZR"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Líderes europeos se comprometen, según, para crear las bases y reforzar la cooperación internacional económica y social",
+        "tc:titleLanguage": "es"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-04T14:08:43.328000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Este artículo examina los acontecimientos recientes en el contexto internacional y sus implicaciones para la región. Los periodistas presentan análisis de expertos y testimonios de los principales actores involucrados. Se abordan tanto las causas como las posibles consecuencias de estos desarrollos.",
+        "tc:descriptionLanguage": "es",
+        "tc:tags": [
+          "multimedia"
+        ]
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-74a49bc0.com/fake-path/74a49bc0",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-04T14:08:22+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_ES"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXXXX XXXXXXXXX X XXXXXXXXXX, XXXXX, XXXX X XXXX XXX XX XXXXX X XXXXXXXX XX XXXXXXXXXX XXXXXXXXXXXXX XXXXXXXXXX X XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_ES/doc-82W79ZR/626c1b86-7770-4cbb-a60b-7d805629bd94"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XXXXXXX XXXXXXXXX X XXXXXXXXXX, XXXXX, XXXX X XXXX XXX XX XXXXX X XXXXXXXX XX XXXXXXXXXX XXXXXXXXXXXXX XXXXXXXXXX X XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XX XXXXXXXXX XXXXXXX XX XXXXXXXXXXX, XXXXXXX X XXXXXXXXX XX XXXXXXX XX XXXXXXX XXXXXXXX XXX XX XXXXXXXX XXXX \"XXXXXXXXX XX XXXXXXXXXXXXXXXX XX XXXXXXX XX XXXXXXXX XXXXXXXXXXXXXXXX XXX XXXXX XX XXXXXXXXXX\", XXX XXXX XXXXXXX XXXXXXX XX XXXXX XXXX XX XXXXXX XX XX XXXXXXXXXX XXXXX. XX \"XXXXXXXXXXX X XX XXXXXXXXXXXXX\" XX XXXXX XXXXXXX XX XX XXXXXX XXX \"XXXXX XXX XXX XXXXXXX XXXXX XXX XXXXXXXX XXXXXXXXXXXXXXXX XXX XXXXXXXXX\", XXXXXX XXX XXXXXXXXX XX XX XXXXXXXXXX XX XXXXX. \"XXX XXXXXXXX XX XXXXXXXX XXXXXX XXXXXXXXX XXX XXXXXX XXXX XXXXXXX XXXXXXXXXXXX XX XXXXX\", XXXXXX XXXXXXXXXX XX XX XXXXXXXXXX XXXXXXX X XX XXX, XXXXXXX XX XXX XX XXXXX XXX XXXXXXXX XX XXXXX XX XXXX XXXX XX XXXXXXXXX XX XX XXXXXXXXXX XXXXXXXX. XX XXXXXXXXX XXXXXXXXXX XXXXXXX XXXXXXXX XX XXXXXXXXXXXXXXXX XX \"XXXXXX XXXXXXXXXX XXXXXXXXXXXXX\" XX XXXXXXXXXX X XX \"XXXXX XXXXXXXXXXX, XXX XXXXXXX XXXXXX XX XXXXXXXX\" XXX XXXXXX XX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XX XXXXXXXXXX XX XXXXXXXX XXXXXXX X XX XXXXXX XXX XXXX X XXXX, XXXXX XXX XXXXXXXXXXX XX XXXXX XX XXXXX, XXXXXXX XXXXXXX XXXXXX XXXXXXXXXXXX XXX XX XXXXXXXX XX XXXXXXXXXX XXXXXXXXXXXXX XXX XXXXXXX XX XXXXXXXXXXXX XX XXXX, XXXXXXXXXXX XXX XXXXXXXXXXX XXXXXXXXX XXX XXX XXXXXXX XX XXXXXXXX X XX XXXXXX. \"XX XXXXXXXX XX XXXXXXX XX XXXXXXXX XXXXXXXX XXXXXXXXXX X XXXXXXXX X XXX XXXXXXX, XX XXX XXXXX XXXXX XX XXXXX 0 XXXX XX XXXXXXX X XXXXXX XX 00.000 XXXXX (00.000 XXXXXXX)\", XXXXXXXX XX XXXXXXXXX XXXXXXXXXX XX XX XXXXXXXXXX. \"XXXXX XXXXX XXXXXX XXXXXX XXXXXXX XX XXXXXXXXXXXX XX XXX XXXXXXXXXXX XXXXXXXXXX X XXXXXXXXX XX XXXXXX XX XX XXXXXXXXX X X XXXXX\", XXXXXXXXX XXXXXXXXX XXXXXXXXXX XX XX XXXXXXX, XXXXXX. XXXX XX XXXXXXXX, XX XXXXXXXX XX XXXXX XXXXX XXXXXX XXXXXXXXXXXXXXX XXXXXXXXX, XXX XXX XXXX XXXXXXXXXX: XXXXX, XXXXXXXXXX, XXXX X XXXX. "
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXXXX XXX \"XXXXXXXX XX XXXXXXXX XXXXXXXXX, XXXXXXXXXXXXX X XXXXXXXXXX X XX XXXXXXXX XXXXXXXXXX X XXXXXXX\".  XXXXXX XX XXXXX XXXXXXXXXXXXXXX XXXX XXX XXXXXXXXXXX XXXXX X XXXXXXXXXX XXXXX XXXXXX XXXXXXXXXXXX XXX \"XXXXXXXX XX XXXXXX X XXXXXXXXXXXXXX XX XX XXXXX XXX XXXXXXXX XXXXXXXXXXXX\", XX XXXXX, XXX XX XXXXX XX XXXXX XXXXXXX XXX XXXXXXXXXX XXXXXXXX, XXXXXXX XX XXXXXXXX. XX XXXXXXXXXXXXX XX XXXX \"XX XXXXX XXXX XXX XXX XXX XX XXXXX XX XXXXXXX XXXXXXXX XXX XXXXXXXXXX XX XXXXX\", XXXXXX XXX XX XXXXX XXX XXXXXXXX XX XXX XXXXXXXXXXX XXXXXXX X XX XXX XX XXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-72f23784.com/fake-path/72f23784",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_ES/version/BsVpa4rSQgywXYdx6HcAMx",
+        "tc:identifierValue": "BsVpa4rSQgywXYdx6HcAMx",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_ES"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_ES/doc-82W79ZR"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "European leaders commit, say, that the bases are created for strengthening international economic cooperation in Europe",
+        "tc:titleLanguage": "en"
+      },
+      "tc:translatedFrom": {
+        "@id": "tems/article/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm"
+      },
+      "tc:sourceLanguage": "es",
+      "tc:translatedBy": {
+        "@type": "tc:DigitalTool",
+        "rdfs:label": "DEEPL"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-04T14:09:04.507000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Este artículo examina los acontecimientos recientes en el contexto internacional y sus implicaciones para la región. Los periodistas presentan análisis de expertos y testimonios de los principales actores involucrados. Se abordan tanto las causas como las posibles consecuencias de estos desarrollos.",
+        "tc:descriptionLanguage": "es"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-72f23784.com/fake-path/72f23784",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-04T14:09:04.507000+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_ES"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXXX XXXXXXXXXXXX XXXXXXXXXX, XXXXX, XXXX XXX XXXX XXX XXXXXXX XXX XXXXXXXXXXXX XXXXXXXXXXXX XXXXXXX XXXXXXXXXX XX XXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_ES/doc-82W79ZR/626c1b86-7770-4cbb-a60b-7d805629bd94"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XXXXXX XXXXXXXXXXXX XXXXXXXXXX, XXXXX, XXXX XXX XXXX XXX XXXXXXX XXX XXXXXXXXXXXX XXXXXXXXXXXX XXXXXXX XXXXXXXXXX XX XXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXXX'X XXXXXXXXXXX XXXXXXX XXX XXXXXXXXXXX, XXXXXXXX XXXXXXX XXX XXXXX XXXXXXXXXX XXXXXXXXX XXX XXXXXXXXXX'X XXXXXX XXXXX \"XXXXXX XXX XXXXXXXXX XX XXXXX XX X XXXXXXXXXXXXXXXX XXXXXX XX XXXXXXXXXX,\" XXX XXXX XXXXX XXXXXX XXX XXXX XXXX XX XXXXX XX XXX XXXXX XXXXXXXX. XXX \"XXXXXXXXXXX XXX XXXXXXXXXXXXXX\" XX XXXXX XXXXX XX XXX XXXXXXX \"XXXX XX XXXXXXXXX XX XXXXX XXX XXXXXXXXXXXXXXXX XXXXXX XX XXX XXXXXXX,\" XXXX XXXXXX XXXX XX X XXXXXXXXX XX XXXXXX. \"XXX XXX XX XXXXXXXX XXXX XXXXXXX XX XXXX XX XX XXXXXX XXXXX XX XXXX,\" XXXXXXXXXX XXXX XX X XXXXXXXXX XXXX XX XXX, XXXXX XXX XXXXX XXXXXXXX XXX XXXX XX XXXX XXXXXXXX XX XXX XXXXX XXXXXXXX. XXX XXXX-XXXXX XXXXXXXXX XXXX XXXXX XXX XXXXXXXXX XX \"XXXXXXX XXXXXXXXXXXX XXXXXXX\" XX XXXXXXXXXX XXX \"XXXXX XXXXXXXXX, XXXXXXX XXX XXXXXXXXX XXXXXXXX\" XX XXXXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XXX XXXXXXX XXXXXXXX XXXXXXXXX XX XXX XXXXX XXXX XXXX XXX XXXX, XXX XXXXX XXXXXX XXXXX XXXXXXXXX, XXXX XXXX XXXXX XXXXXXXXXXXX XXX XXX XXXXXXXXXXXXX XX XXXXXXXXXXXX XXXXXXX XXXXXXX XXX XXXXXXXXXXXX XXXXXXXX, XXXXXXXXXX X XXXXXX XXXXXXXXX XX XX XXXXXXXX XXX XX XXXXXX XXXXXXXXXX. \"XX XXX XXXXXXX XX XXXXXXXXX XXXXXXXXX XXXXXXXX XXXXX XX XXXXXXXXXX XXXXXX, XXX XXX XXXXXXXX XXX XXXXXXXXX XX XX XX 0 XXXXX XX XXXXXX XXX XXXXX XX 00,000 XXXXX ($00,000),\" XXX XXXX-XXXXX XXXXXXXXX XXXXXX XX XXX XXXXXXXXX. \"XXX XXXXX XXXXX XXXX XXXXXXX XX XXX XXXXXXXXX XX XXX XXXXXXXXX XXXXXXXX XXX XXXXXXX XX XXX XXXXXXXXX XX XXX XXXXXX XXXXXXXXXX XX XXX XXXXXXXX XXX XXXXX,\" XXX XXXXXXXXX XXXXXXXXXX XXXX XX XXX XXXXXX, XX XXXXX. XXXXXXXXX XXX XXXXXXXXX, XXX XXXXX XXXXXXXXXX'X XXXXXX XXXXXX XXXX XXXXXXXX XXXXXXXXXXXXXX, XXX XXX XXXX XXXXXXXX: XXXXX, XXXXXXXXXX, XXXX XXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXX XX XXXX XXX \"XXXXXXXXXXXXX XX XXXXXXX, XXXXXXXXXXXX XX XXXX-XXXXXXX XXXXXXXX XXXXXXXXXX XX XXXXXX\".  XXXXXX XXXXX XXXXXXXXXXXXXX, XXXX XXX XXXXX XXX XXXXXXXXXX XXXXXXXXX XXX XXXXX XXXXXXXXXXXX XXX \"XXXXXXXXXXXXX XX XXXXX XX XXXXXXXXXXXXXX XX X XXXXX XXXX XXXXXXXXXXXX XXXXXXXXX\", XXXX XX, XXX XXX XXXX XX XXXXX XXXXX XXXX XXXXXXXXX XXXXXXXXXX, XXXX XXX XXXXXXXXXX'X XXXXXX. XXX XXXX XXXXXXXXXXXXX \"XXX XXXXXXX XX XX XXXX XXX XXXX XX XXX XXXXX XXXX XXXX XXXX XXXXXXXX,\" XXX XXXXXXX XXXX XX X XXXXXXXXX XXXX XX XXX XX XXXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_ES/doc-82W79ZR/626c1b86-7770-4cbb-a60b-7d805629bd94",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_ES/doc-82W79ZR/UE3XyZRBZDqJACH4Q2JnEm/1"
+      },
+      "tc:caption": "XX XXXXXXXX XX XX XXXXXXXXXX XX XXXXXXXX XXXXXXXXXXX XXXXXXXXXX, XXXXXXXXXXXX XX XXX XXXXXX XXXXXXXX XX XXXXX XX 00 XX XXXXXXXXXX XX 0000",
+      "tc:locator": "https://fake-domain-3339dff3.com/fake-path/3339dff3"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_ES/doc-82W79ZR/626c1b86-7770-4cbb-a60b-7d805629bd94",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_ES/doc-82W79ZR/BsVpa4rSQgywXYdx6HcAMx/1"
+      },
+      "tc:caption": "XXX XXXX XX XXX X-XXXXXXXX XXXXXXXX XXXXXXXXXX, XXXXXXXXXXXX XX X XXXXXXXXX XXXXX XX XXXXX XX XXXXXXXXX 00, 0000.",
+      "tc:locator": "https://fake-domain-3339dff3.com/fake-path/3339dff3"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/AFP_ES",
+      "rdfs:label": "AFP_ES"
+    }
+  ]
+}

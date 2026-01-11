@@ -1,0 +1,65 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:MediaWork"
+          }
+        },
+        {
+          "sh:path": "tc:hasDescription",
+          "sh:property": {
+            "sh:path": "tc:descriptionContent",
+            "sh:pattern": "(?i)international|internationale"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82WB8WE.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-78Y73NQ.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82UY9KE.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_franceinfo_7592777.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_ES_doc-82W79ZR.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_DE_doc-82TD4T3.jsonld"
+    }
+  ]
+}

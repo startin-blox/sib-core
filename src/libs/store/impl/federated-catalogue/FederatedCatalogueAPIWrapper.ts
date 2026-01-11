@@ -48,17 +48,70 @@ export class FederatedCatalogueAPIWrapper {
   private tokenRefreshBuffer = 5 * 60 * 1000; // Refresh 5 minutes before expiration
   private isRefreshing = false;
   private refreshPromise: Promise<string> | null = null;
+  private readonly STORAGE_KEY = 'fc_token_state';
   connect: (() => Promise<string>) | null;
 
   constructor(options: KeycloakLoginOptions, fcBaseUrl: string) {
     this.fcBaseUrl = fcBaseUrl;
     this.loginOptions = options;
+
+    // Try to load existing token state from localStorage
+    this.loadTokenState();
+
     try {
       const connection = this.firstConnect(options);
       this.connect = () => connection;
     } catch (e) {
       console.log('Error while establishing the first connection', e);
       this.connect = null;
+    }
+  }
+
+  /**
+   * Save token state to localStorage for persistence across page reloads
+   */
+  private saveTokenState(): void {
+    if (this.tokenState) {
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.tokenState));
+        console.log('💾 [FederatedCatalogueAPIWrapper] Token state saved to localStorage');
+      } catch (error) {
+        console.error('Failed to save token state to localStorage:', error);
+      }
+    }
+  }
+
+  /**
+   * Load token state from localStorage
+   */
+  private loadTokenState(): void {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored) {
+        this.tokenState = JSON.parse(stored);
+        console.log('📂 [FederatedCatalogueAPIWrapper] Token state loaded from localStorage:', {
+          hasAccessToken: !!this.tokenState?.access_token,
+          hasRefreshToken: !!this.tokenState?.refresh_token,
+          expiresAt: this.tokenState?.expires_at,
+          isExpired: this.tokenState ? Date.now() >= this.tokenState.expires_at : 'N/A'
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load token state from localStorage:', error);
+      this.clearTokenState();
+    }
+  }
+
+  /**
+   * Clear token state from memory and localStorage
+   */
+  private clearTokenState(): void {
+    this.tokenState = null;
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+      console.log('🗑️ [FederatedCatalogueAPIWrapper] Token state cleared');
+    } catch (error) {
+      console.error('Failed to clear token state from localStorage:', error);
     }
   }
 
@@ -91,6 +144,9 @@ export class FederatedCatalogueAPIWrapper {
       refresh_token: data.refresh_token || null,
       expires_at: Date.now() + (data.expires_in || 3600) * 1000,
     };
+
+    // Persist to localStorage
+    this.saveTokenState();
 
     return token;
   }
@@ -167,9 +223,14 @@ export class FederatedCatalogueAPIWrapper {
         expires_at: Date.now() + (data.expires_in || 3600) * 1000,
       };
 
+      // Persist to localStorage
+      this.saveTokenState();
+
       return token;
     } catch (error) {
       console.error('Error refreshing token:', error);
+      // Clear invalid token state
+      this.clearTokenState();
       // Fall back to password grant
       return this.firstConnect(this.loginOptions);
     }
@@ -218,12 +279,17 @@ export class FederatedCatalogueAPIWrapper {
     // If authentication failed, try refreshing token and retry once
     if (response.status === 401 || response.status === 403) {
       console.log(
-        `Authentication failed (${response.status}), refreshing token and retrying...`,
+        `🔐 [FederatedCatalogueAPIWrapper] Authentication failed (${response.status}) for ${url}`,
       );
+      console.log('🔄 [FederatedCatalogueAPIWrapper] Attempting token refresh...', {
+        hasRefreshToken: !!this.tokenState?.refresh_token,
+        tokenExpired: this.tokenState ? Date.now() >= this.tokenState.expires_at : 'N/A'
+      });
 
       try {
         // Force token refresh
         const newToken = await this.refreshToken();
+        console.log('✅ [FederatedCatalogueAPIWrapper] Token refreshed successfully, retrying request...');
 
         // Retry request with new token
         headers.set('Authorization', `Bearer ${newToken}`);
@@ -231,11 +297,13 @@ export class FederatedCatalogueAPIWrapper {
 
         if (response.status === 401 || response.status === 403) {
           console.error(
-            'Authentication still failed after token refresh. Please check credentials.',
+            `❌ [FederatedCatalogueAPIWrapper] Authentication still failed after token refresh (${response.status}). Please check credentials.`,
           );
+        } else {
+          console.log(`✅ [FederatedCatalogueAPIWrapper] Retry succeeded with status ${response.status}`);
         }
       } catch (error) {
-        console.error('Failed to refresh token:', error);
+        console.error('❌ [FederatedCatalogueAPIWrapper] Failed to refresh token:', error);
         // Return the original failed response
       }
     }

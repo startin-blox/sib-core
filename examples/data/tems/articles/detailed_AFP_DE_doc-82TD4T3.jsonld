@@ -1,0 +1,315 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/AFP_DE/doc-82TD4T3",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_DE/article/doc-82TD4T3",
+        "tc:identifierValue": "doc-82TD4T3",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_DE"
+        }
+      },
+      "tc:originalLanguage": "de",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "AFP"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/AFP_DE"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+        },
+        {
+          "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ",
+      "tc:contentLanguage": "de",
+      "tc:locator": "https://fake-domain-11cb04ee.com/fake-path/11cb04ee",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_DE/version/eZPvvV6ugVdqwJUnqBsTaQ",
+        "tc:identifierValue": "eZPvvV6ugVdqwJUnqBsTaQ",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_DE"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_DE/doc-82TD4T3"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Regierung plant neue Maßnahmen zur Förderung von 3,5 Prozent Wirtschaftswachstum",
+        "tc:titleLanguage": "de"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-03T04:44:12.841000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:tags": [
+          "multimedia"
+        ],
+        "tc:descriptionContent": "Dieser Artikel behandelt aktuelle Entwicklungen in Wirtschaft und Politik mit Auswirkungen auf die internationale Gemeinschaft. Experten und Entscheidungsträger teilen ihre Einschätzungen zu den wichtigsten Herausforderungen. Die Analyse beleuchtet sowohl kurzfristige als auch langfristige Perspektiven.",
+        "tc:descriptionLanguage": "de"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-11cb04ee.com/fake-path/11cb04ee",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-03T04:40:47+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_DE"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXXXXXXX XXXX XXXX XXX XXXXXXXX XXX XXXXXX 0,0 XX XXXXXX XXXXXXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_DE/doc-82TD4T3/4f2b67d0-46ca-48d0-a745-cc587802c9d1"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XXXXXXXXXX XXXX XXXX XXX XXXXXXXX XXX XXXXXX 0,0 XX XXXXXX XXXXXXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXX XXXXX XXXXXXXX XXX XXXXXX 0,0 XX XXXXXX XXXXXXXXXXXX XXXX XXXX XXXXXXXXXXXXXXX XXXXXXXXXX XXXX XXXXXXXX XXX XXXXX XXXXXXXX. XX XXX XXXXXXX XXXXXXXX XXXXX XXXX XXXXXXXX XXXXXXX XXXXXX, XXXXXX XXX XXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXX XX XXXXXX XXX. XX XXX XXXXXXX XXXXX XXXXXXXX XXX XXXXXXXX XXXX XXXXXXXXXX. XXX XXXX XXX XXXX XXXX XXXXXX XXX XXXXX XXXXXXXX XXXXXXXX XXX XXXX XXX 0000 XXXXXXXXXXX XXXXXXXXXXX XXXXXX. XXX XXXXX XXX XXXXXX 0,0 XXXXX XXXX XXXX XXXXXXX XXX XX-XXXXXXXXXXXXX XXXX XX XXXXXX XXXXXXXXXXXX XXXX XXX XXXXX XXXXX-X-XXXXXXX XX XXXXX XXXXX XXX 00 XXXXXXXXXX XXXXX XXX XXXXXXXXXXXXX XXXXXXXX. XX XXX XXXXXXX XXXXXXXX XXXXXX XXXX XXXXXXX XXX XXXXXXXXXXXXXXXXXXXXXXXXX XXXX XXX 000 XXXXXXXX XXXXXXXX. XXX XXXXXXX XXX XXXXX XXXXX XXXX XXXXXXXXXX XXXXXXXXXX XXXX XXXXX XXXXXXXXXXXXX. XX XXX XXXXXXX XXXXX XXX XX XXXX XXXXXXX XXX XXXXXXXXXXXXXXXXXXX 000 XXXXXXXXX. XXX XXXXX XXX XXX XX XXX XXXXXXXX XXXXXXXXX XXXXXXXXX XXXXXXXXXX XXXXX XX XXXXXX, XXX XXX-XXXXXXXXXXXXXXX XXXXXXXXXXX. XX XXXXX-X-XXXXXXX XXXXXXX XXXXX XXXXXXXX XXX XXXXX, XXXX XXXXXX XXXXXXX XXXXXXXXXX, XXXXXX XX XXX XXXXX XXX XXX XXXXXX, XXX XXX XXX-XXXXXXXXXXXXX XXXXXXXXXX. XXX XXXXXXXXXX XXXXXXXXXXXXXXXXXXX XXX XXX XXXXXX XXXXXXXXXXXXX XXXXX XX XXX XXXXXXXXXXXXX XXX XXXXXXXXXXXXXXXXX XX XXX XXXXXXXX XXXX XXXXXXXXX. XXXXXXXXXXXXX XXXXXXX XXXXXXXXXX XXXXXX XXXXXXX XXXX XXXX XXXXXXXX XXXXXXX XXXX XXXXX XXXXX XXXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XXXX XXXXXX XXXXX XXX XXXXX XXXXX XXX XXXXXX 0,0 XX XXXXX XXXXXXXXXXXX XXXX XXX 0000 XXXXXXXX XXX XXXXX XXXXXXXX. XXX XXXX XXXXXX XXXXXXX XXX XXXXX XXXXX XX XXX XXXXXX XX XXXXX XXXX XXX XXXXXX XXX XXXX XXXX XXX 0000 XXXXXXXX, XXXX XXX 00.000 XXXXXXXXXX XXXXXX XXXXXX XXXXXXXX. XX XXX XX XXXXXXXXXXXX XXXXXX XXXXXXXXXXXX XXXXXXX XXXXXXXXX XXXX XX XXXXXXXXXX XXXXX XX XXXXXX XX XXXXXXXXX. XXXX XXX XXXX 0000 XXXXXX XXXX XXX XXXXXXX XXXXXXXXXX XXXXXX XXXXXX XXXXX XXXXX XXX XXXXX XXXXXX XXX XXXX 0,0 XXXXXXXX. XXXXXXXXXXX XXX XXX XXXXXXXXXXXXXXXX XXXXX XXXXXXXXXX. XX XXXXXX 0000 XXXXXXX XXX XXXXXXXXXXXXXXXXXX XXXXXXX XXXXXXXX XXX XXXXXX XXXXXXXXXX XXXXXXXXXXXX XX XXX XXXXX XXXXXX, XXXXX XXXXXXX XXX XXXXXXXXXXXXXX XXXXXX XXXX XXXXXX XXX XXX XXXX XXXXXX. XXX XXXXXXXXX XXXXXXXX XXX XXXXXXXXXXXXXXXXXXX XXXXXX XXX XXXXX XXXX XXXXXXXXXXXXXX XXXXXXXXXXX XX XXXXXXXXXXX. "
+        }
+      ]
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-ab462ed3.com/fake-path/ab462ed3",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_DE/version/hNFwbjH4AaTMouzrpCbgFx",
+        "tc:identifierValue": "hNFwbjH4AaTMouzrpCbgFx",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_DE"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_DE/doc-82TD4T3"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Government aims for new measures to stimulate 3.5 percentage point economic development",
+        "tc:titleLanguage": "en"
+      },
+      "tc:translatedFrom": {
+        "@id": "tems/article/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ"
+      },
+      "tc:sourceLanguage": "de",
+      "tc:translatedBy": {
+        "@type": "tc:DigitalTool",
+        "rdfs:label": "DEEPL"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-03T04:44:25.099000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Dieser Artikel behandelt aktuelle Entwicklungen in Wirtschaft und Politik mit Auswirkungen auf die internationale Gemeinschaft. Experten und Entscheidungsträger teilen ihre Einschätzungen zu den wichtigsten Herausforderungen. Die Analyse beleuchtet sowohl kurzfristige als auch langfristige Perspektiven.",
+        "tc:descriptionLanguage": "de"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-ab462ed3.com/fake-path/ab462ed3",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-03T04:44:25.099000+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_DE"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XX XXXXX XXXX XXXX XX XXXXXXXXX 0.0 XXXXXXXXXX XX XXXXXXXX XXXXXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_DE/doc-82TD4T3/4f2b67d0-46ca-48d0-a745-cc587802c9d1"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XX XXXXX XXXX XXXX XX XXXXXXXXX 0.0 XXXXXXXXXX XX XXXXXXXX XXXXXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XX XXXXX XXXX XXXXXX XXXX XXXX XXXXXX XX X XXXXXXXXX 0.0 XXXXXXXXXX XX XXXXXXXX XXXXXXXXXXX, XXXXXXXXX XX XXX XXXXXXXXXXX. XXXX XXXXXX XXXX XXXXXX XX XXX XXXXXXXX XX XXXXXXXX, XXX XXXXXX XXXXXXXX XXXXXXXXXX XXXXXXXXX XXXXXXXXX XX XXXXXX. XX XXXXX XXXXXXXX, XXX XXXXXXXXXXX XXXXXXXX XXXX XXXXXXXXXX. XXX XXXXXXX XXX XXXX XXXX XXXXXX XX X XXXXXX XXXXXXXXXX XX XXX XXX XX XXXXXX, XXXXXXX XXXX XXXX 0,000 XXXXXX. XXXXXXXXX XX XXX XX XXXXXXXXXX XXXXXXXXXXX XXXX, XXX XXXXXXXXX 0.0 XXXXX XXXXXXXX XXXX XX XXXXXX XXXXXXX XXXX XXX XXXX XX XXXXX-X-XXXXXX XX X XXXXX XX 00 XXXXXXXXXX XXXXX XXX XXXXX'X XXXXXXX. XXXXXXXXX XX XXX XXXXXXXX XXXXXXX XXXXXXXXX, XXXX XXXX 000 XXXXXX XXXX XXXXXXX XX XXX XXXXXXXX XX XXXXXXXX. XXXX XX XXXX XXXXXXXX XXXX XXXXX XXXXXXXXX XXXXXXX XXXXXXXXX. XXXXXXXXX XX XXX XXXXXX XXXXXXXXXXX, 000 XXXXXX XXXX XXXXXXX XX XXXXX XXXXXXXX. XXX XXXXX XXX XXXX XX XXX XXXX XX XXX XXXXXXX XXXXX, XXXXXXXX XX XXXXXXXXXX XXXX, XXX XXXXXXXXXXXXXX XXXXXXXX. XX XXXXX-X-XXXXXX, XXXX XXXXXX XXX XXX XXXX XXX XXXXXXX XX XXX XXXXXX XX XXX XXXXX XXX XXXX XXXX XXXXX XXXXXX XXXXX XXXXXXXX, XX XX XXX XXXXXXXXXXXXX XXXXXXXX. XXX XXXX XXXXXXXXXXXXX XXXXXXXX XXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXX XXXXXXXX XXXXXXXX XXXXXX XXXXXXX XX XXX XXXXXXXXXXX XXXXXXX XX XXX XXXX. XXXXXXXXX XXXXXXXX XXXX XXXXX XXXX XXXX XX XXXXX XXXXXX XXXXXXXX XXXXX XXXXXXX XXXXX XX XXXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XX XXX XXX XX XXXXXX, XXXX XXXX 0,000 XXXXXX XXXX XXXXXX XX X XXXXXXXXX 0.0 XXXXX XX XXXXXXX XXXXXXXXXXX. XXX XXXXX XXX, XX XXXXXXXXXX XX XXX XXXXX XXXXXX XXXX XXX XXXXXX XXXX XXXX XXXXXX XXXX XXXX 0,000 XXXXXX XXX XXXXXXXXX XXXX XXXX 00,000 XXXXX. XXXXXXXXXXX XXXXX XXXXXXXXXX XX XXX XXXXXXX XX XXX XXXXX XXXX, XXXXX XXXX XX XXX XXXXXXXXX XX XXX XXXXXXXX XXXXXX. XXXXXXXXX XX XXX XXXXXXX XXXXXXXXXX XXXXXX, XXXXXX XXXXXX XXXX X XXXXXXXXX XX XXXX 0.0 XXXX XXXX XXXXXXXX XXXXX 0000 XXXXX. XXXXXXXXXXX XX XXXXXXX XX XXXXXXX XX XXX. XX XXX XXXXXX XX 0000, XXX XXXXXXX XXXXXXX XXXXXXX XXXXXXXX XX XXXXX XXXX XXX XXXXXXXXXX XX XXXXXXX XXXXXX, XXX XXXX XXXXXX XXX XXXXXXXXXXXXX XXX XXXX XXXXX XXX XX XXX XXXXXXX. XXX XXXXXX XXXXXXX XXX XXX XXXXXXXXXXXXX XXXX XX X XXXXXXXXX XXXXXX XXXXXX XX XXXXXXXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_DE/doc-82TD4T3/4f2b67d0-46ca-48d0-a745-cc587802c9d1",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_DE/doc-82TD4T3/eZPvvV6ugVdqwJUnqBsTaQ/1"
+      },
+      "tc:caption": "XXX XXXXX XXXXXXXX XXX XXXXXX 0,0 XX XXXXXX XXXXXXXXXXXX XXXX XXXX XXXXXXXXXXXXXXX XXXXXXXXXX XXXX XXXXXXXX XXX XXXXX XXXXXXXX. XXX XXXX XXX XXXX XXXX XXXXXX XXX XXXXX XXXXXXXX XXXXXXXX XXX XXXX XXX 0000 XXXXXXXXXXX XXXXXXXXXXX XXXXXX.",
+      "tc:locator": "https://fake-domain-32a50092.com/fake-path/32a50092"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_DE/doc-82TD4T3/4f2b67d0-46ca-48d0-a745-cc587802c9d1",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_DE/doc-82TD4T3/hNFwbjH4AaTMouzrpCbgFx/1"
+      },
+      "tc:caption": "XXXXXXXXX XX XXX XXXXXXXXXXX, XX XXXXX XXXX XXXXXX XXXX XXXX XX X 0.0-XXXXXXXXX XXXXXXXXXX XX XXXXXXXX XXXXXXXXXXX. XXX XXXXXXX XXX XXXX XXXX XXXXXX XX X XXXXXX XXXXXXXXXX XX XXX XXX XX XXXXXX XXXX XXXX XXXX 0,000 XXXXXXXXXX.",
+      "tc:locator": "https://fake-domain-32a50092.com/fake-path/32a50092"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/AFP_DE",
+      "rdfs:label": "AFP_DE"
+    }
+  ]
+}

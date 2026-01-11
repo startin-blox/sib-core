@@ -146,11 +146,11 @@
 }'</code></pre>
     </div>
 
-    <edc-catalog-display 
-        connector-uri="https://consumer.connector-dev.startinblox.com/management"
+    <dsp-catalog-display
+        consumer-connector="https://consumer.connector-dev.startinblox.com/management"
         api-key="password"
-        counter-party-address="https://france-tv-access.connector.luminvent.com/protocol">
-    </edc-catalog-display>
+        providers='[{"name": "France TV Access", "address": "https://france-tv-access.connector.luminvent.com/protocol"}]'>
+    </dsp-catalog-display>
 
     <script type="module">
         document.addEventListener('DOMContentLoaded', () => {

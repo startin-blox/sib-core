@@ -1,0 +1,68 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld",
+      "@type": "idx:Index"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "@type": "sh:NodeShape",
+      "sh:closed": "false",
+      "sh:property": [
+        {
+          "sh:path": "rdf:type",
+          "sh:hasValue": {
+            "@id": "tc:MediaWork"
+          }
+        },
+        {
+          "sh:path": "tc:provider",
+          "sh:value": "tems/agent/AFP_EN"
+        }
+      ]
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#0",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82WB8WE.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#1",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82UY9KE.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#2",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_82UB9ZQ.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#3",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-78Y73NQ.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#4",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82TG2NQ.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#5",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82TM4T4.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#6",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": "http://localhost:5173/examples/data/tems/providers/afp-en.jsonld#target",
+      "idx:hasTarget": "http://localhost:5173/examples/data/tems/articles/detailed_AFP_EN_doc-82U92CQ.jsonld"
+    }
+  ]
+}

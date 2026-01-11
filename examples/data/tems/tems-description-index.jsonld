@@ -1,0 +1,100 @@
+{
+  "@context": "https://cdn.startinblox.com/owl/context-bis.jsonld",
+  "@graph": [
+    {
+      "@type": "idx:Index",
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#target",
+      "sh:path": "rdf:type",
+      "sh:hasValue": {
+        "@id": "tc:MediaWork"
+      }
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#economic",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasDescription",
+            "sh:property": {
+              "sh:path": "tc:descriptionContent",
+              "sh:pattern": "(?i)economic|économique|wirtschaft"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/descriptions/economic.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#political",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasDescription",
+            "sh:property": {
+              "sh:path": "tc:descriptionContent",
+              "sh:pattern": "(?i)political|politique|politik|político"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/descriptions/political.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#international",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasDescription",
+            "sh:property": {
+              "sh:path": "tc:descriptionContent",
+              "sh:pattern": "(?i)international|internationale"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/descriptions/international.jsonld"
+    },
+    {
+      "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#technology",
+      "@type": "idx:IndexEntry",
+      "idx:hasShape": {
+        "@type": "sh:NodeShape",
+        "sh:closed": "false",
+        "sh:property": [
+          {
+            "@id": "http://localhost:5173/examples/data/tems/tems-description-index.jsonld#target"
+          },
+          {
+            "sh:path": "tc:hasDescription",
+            "sh:property": {
+              "sh:path": "tc:descriptionContent",
+              "sh:pattern": "(?i)technology|technological|technolog"
+            }
+          }
+        ]
+      },
+      "idx:hasSubIndex": "http://localhost:5173/examples/data/tems/descriptions/technology.jsonld"
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/franceinfo/7593107",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/article/7593107",
+        "tc:identifierValue": "7593107",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:originalLanguage": "fr",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "franceinfo avec AFP (France Télévisions)"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/franceinfo"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+        },
+        {
+          "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet",
+      "tc:contentLanguage": "fr",
+      "tc:locator": "https://fake-domain-5fdb02ba.com/fake-path/5fdb02ba",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/version/jPnqX7BWaHdcAH8aUumBet",
+        "tc:identifierValue": "jPnqX7BWaHdcAH8aUumBet",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/franceinfo/7593107"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "Après une augmentation des salaires de seulement les 2% d'inflation, notamment le choix du gouvernement contre l'indexation au niveau",
+        "tc:titleLanguage": "fr"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-03T17:44:56+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Reportage approfondi sur les questions économiques et sociales qui touchent la société française. Les journalistes présentent une analyse détaillée des dernières évolutions et de leurs conséquences. Des témoignages et des données chiffrées illustrent les propos de cet article.",
+        "tc:descriptionLanguage": "fr"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-5fdb02ba.com/fake-path/5fdb02ba",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-03T17:44:56+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/franceinfo"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXX XXX X XXXXXXX XXX XXXXXX XX XXXXXXX XX XXXXX XXX 0% X'XXXXXXXX, XXXXXXXXXX XX XXXXX XX XXXXXXXX XXXXXX X'XXXXXXXXXXX XX XXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 1",
+          "tc:segmentContent": "XX XXXXXXX, XXXXX X'XXX XXXXXXX XXXXXXXXX XXXXXX XXXXXXXXX, X 0 XXXXXX XXXXXXXX XX XXXXXXXXXXX X0 (0%). XX0 XXXXX XXXXXXXX, X 00,0%"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 2",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7593107/486cd92b-4e01-4c60-936f-62d8a3fd8986"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXX X XXXXXXXXX XXX XXXXXXXXX XXXXX XXXXXXXX XXXXXX XXXX XX XXXXXX XX XXXXXXX XX XXXXXXX X XXXXXXX XXX XXXXXX X'XXXXXXXX XXXXXXX, XXX X XXXXXXXXX XXXXXXX XX XXXXX XXX 0%, XXXXX XXX XXXXXXXX XX XXXXXXXXXXX XXXXXXX XXXXX 0 XXXXXXXX. XX XXXXXXXXX XXXXXX (0,0% XX XXXX X'XXXXXXXX) XX XX XXXXXX XXXX XX XXXXX XX XXXXXXXXXXXX XXXXXXXXXXXX XXXXXXX XXXXXXX XXXXXX XX XXXX XX XXXXXXXXX, XX XXXXX X'XXXXX (0,0%) XX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XX XXXXXXX, XXXXX X'XXX XXXXXXX XXXXXXXXX XXXXXX XXXXXXXXX, X 0 XXXXXX XXXXXXXX XX XXXXXXXXXXX X0 (0%). XX0 XXXXX XXXXXXXX, X 00,0%. XX XXXX XXX XXXXXXX XXXX, XXXX XXXX XXX XX XXXXXXXX XXXX XX XXXXXXX XXXX XX XXXXX, XXXXX XXXXXXX XXXXX (0,0%), XXX (0,0%) XX XXXXXXXXXX (0,0%)."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXXXX XXXXXX XXXXXXXX XX XXXX XXXXX XXXXXX XX XXXXXXXXXXXXXXX (00,0 XXXXXXXX XXX XX XXXX X'XXXXXXX XXXXXX 00 XXXXXXXX XXXX XXXXX), XXXX XX XXXX X'XXXXXXXX XX XX XXXXXXXXXXX XXX XXXXXXXXXX, XXX XXX XXXX XX XXXXXXXXX XXXX XXXXXXXXX. XXXXXXXXX XX XXXXXX XXXXX +, XXXXX XXX XXXXXXXXXXXXX XXXXXX XX XXXXXXXX XXX XXXXX X'XXXXXXX XXXXXX, XX XX'XXXX XXXXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-a39e4c7f.com/fake-path/a39e4c7f",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/franceinfo/version/GkfuPHpXR7ahNkfSoQGSrc",
+        "tc:identifierValue": "GkfuPHpXR7ahNkfSoQGSrc",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/franceinfo"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/franceinfo/7593107"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "After a smaller pay raise, inflation with 2% increase from the government's decision away from France's minimum wage benefit",
+        "tc:titleLanguage": "en"
+      },
+      "tc:translatedFrom": {
+        "@id": "tems/article/franceinfo/7593107/dE2k7BCZ8P8HfvciEa3rtr"
+      },
+      "tc:sourceLanguage": "fr",
+      "tc:translatedBy": {
+        "@type": "tc:DigitalTool",
+        "rdfs:label": "DEEPL"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-03T22:00:51.584000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:descriptionContent": "Reportage approfondi sur les questions économiques et sociales qui touchent la société française. Les journalistes présentent une analyse détaillée des dernières évolutions et de leurs conséquences. Des témoignages et des données chiffrées illustrent les propos de cet article.",
+        "tc:descriptionLanguage": "fr"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-a39e4c7f.com/fake-path/a39e4c7f",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-03T22:00:51.584000+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/franceinfo"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXX XXXXX XXX XXXXXX XXXXX, XXXXXXXX XXX 0% XXXXXXXX XXXX XXX XXXXXXXXXXXXX XXX XXXXXXXX XX XXXXXX'X XXXXXXX XXXX XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 1",
+          "tc:segmentContent": "XX XXXXXXX, XXX XXXXXXX, XXXXX XX XXXXXXX XXXXXXX'X XXXXX+ XXXXX, XXXXXX XXXXX XXXXXXXXXX, XXXX XXXXXX XXXXXX XXXXXXXXXX X0 (0%). XX0 XXXXXXX XXXXX, XX 00.0%."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 2",
+          "tc:containsMedia": {
+            "@id": "tems/image/franceinfo/7593107/bffa6ca4-1394-46d1-ab13-61ec63c293db"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXX XXXXXXXXX XXX XXXXXX XX XXXXXX'X XXXXXXX XXXX XXXXXXX XX XXXXXXX, XXXXXXX XXX XXXXXXX XXXXXXXX XXXXXX XXXX XXXXX XX XXXXX XXX 0% XXXX, XXXXXXXXX XX XXXXXXXXXXX XXXXXXX XXXXXXXXX XX XXXXXX XXXXXXXX 0. XXX XXXXXXXX XXXXXX (0.0% XXXXXXXX XXXXX) XXX XXX XXXXXXX XXXXX XX XXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXX XXXXXXX XXX XXX XX XXXXXXXXX, XXX XXX XXXXXXXX XXXXXX (0.0%) XX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XX XXXXXXX, XXXXX XXXXXX XXXXX XXXXXXXXXX, XXXX XXXXXX XXXXXX XXXXXXXXXX X0 (0%). XX0 XXXXXXX XXXXX, XX 00.0%. XXXXX XXXX XXXXXXXX, XXXXX XXXXXX XXX XXXX XXX XXX XXXXX XXXXX XXXXXXX, XXXXX XX XXXXX (0.0%), XXX (0.0%) XXX XXXXXXXXXX (0.0%)."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXXXXXXX XXXXX XXXXXXX XXXX XXXXXXX (00.0 XXXXXXX XX XXXXXXX XXXXXX 00 XXXXXXX XXX XXXXX), XXX XXXXXXXXXX'X XXXXXXXX XXXXX XX XXXXXX, XXXXXXX XXXXXX XXXXX XX XXX XXXXXX. XXXXX XX XXX XXXXX+ XXXXX, XXXXX XX XXXXXXXXX XXXXXXX XX XXXXXXXXXXX XXX-XXXXX XXXXX, XXXXX XX XXXXXX."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7593107/486cd92b-4e01-4c60-936f-62d8a3fd8986",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7593107/jPnqX7BWaHdcAH8aUumBet/2"
+      },
+      "tc:caption": "XX XXXXX XX XX XXXXXX X'XXXXXXXXXXX XXXXX, X XXXXX, XX 0 XXXXXXX 0000.",
+      "tc:locator": "https://fake-domain-09acadca.com/fake-path/09acadca"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/franceinfo/7593107/bffa6ca4-1394-46d1-ab13-61ec63c293db",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/franceinfo/7593107/GkfuPHpXR7ahNkfSoQGSrc/2"
+      },
+      "tc:caption": "X XXXXXXXXXX XX XXX XXXXX XXXX XXXXXXX, XXXXX, XXXXXXX 0, 0000.",
+      "tc:locator": "https://fake-domain-09acadca.com/fake-path/09acadca"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/franceinfo",
+      "rdfs:label": "franceinfo"
+    }
+  ]
+}

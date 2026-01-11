@@ -1,0 +1,294 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/AFP_EN/doc-82TG2NQ",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_EN/article/doc-82TG2NQ",
+        "tc:identifierValue": "doc-82TG2NQ",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_EN"
+        }
+      },
+      "tc:originalLanguage": "en",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "AFP"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/AFP_EN"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-11cb04ee.com/fake-path/11cb04ee",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_EN/version/LoueDfKaojfDfdAAeWwcHP",
+        "tc:identifierValue": "LoueDfKaojfDfdAAeWwcHP",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_EN"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_EN/doc-82TG2NQ"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "World's Tech Leaders Anticipate Rise in Digital Trade",
+        "tc:titleLanguage": "en"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-05T04:22:37.480000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:tags": [
+          "multimedia"
+        ],
+        "tc:descriptionContent": "Environmental reporting on climate-related events and sustainability initiatives. Scientists and environmental advocates discuss the latest findings and recommended actions. The article highlights both challenges and opportunities in addressing ecological concerns.",
+        "tc:descriptionLanguage": "en"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-11cb04ee.com/fake-path/11cb04ee",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-05T04:16:38+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_EN"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXXXX'X XXXX XXXXXXX XXXXXXXXXX XXXX XX XXXXXXX XXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/doc-82TG2NQ/99497532-27b5-4186-819a-1f194452bf99"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XXXXX'X XXXX XXXXXXX XXXXXXXXXX XXXX XX XXXXXXX XXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXX'X XXXXXXX XXXXX XXXXX XXXX XX XXX XXXXX XX XXXXXXXX, XXX XXX XXXX XX XXX 000 XXXXXXX XXXXXX, XXX XXXXX XXXXXXXXXXX XXX XXXXXX: XXXXX. XXXX'X XXXX XXXXX XXXXXXXX XXXXXXXX XXXX'X XXXXXXXXX XXXXXX XXXXX (XXX) XXXXX XX XXXXXXXXXX XX, XXXXXX XXXXXX XXXX XXXXXXXX XXXXXXXXXX XX X XXX XX XXX XXXX XXXXXXX. X XXX XXXX, XXXXXXXXXXX XXX, XXXXX \"XXXXXXXX\" XXX XXX'X XXXXXXXXX XX XXXXX XXX XXXXXX XXXXXXX XXXX XXXX XXXX'X XXXXXXXXX. XXXXX-XXXXXXXX XXXXX, XXX XXXXXXX'X XXXXX XXXX XXXXXXXX XXXXX -- XXXXXXX XXXXX XX XXXXXX -- XX X XXXXXXXXXX XXXXXXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XX XXXXXXX XXX XXXX XXXXX XX XXX XXXXX-XXXXXXXX XXXXX XXXXX XXXX'X XXXXX XXXXXXXXXXX XXXXX XXX XXXXX XXXXX XXXXX. XXX XXXXXXXXX XXXXXXXXX XXXX, XXXXXXX XXX XXXXX XXXXXXXX XXXXXXX XX XXX XXXXX XXXX XXX XXXXXXX XXXXX XX X XXXXXXXX XX XXX XXXXXXXXXXX XXXXXXXX. XX XXXXX XXXX XXXXX 000 XX 000 XXXXXX (XXXXXX $0) XX XXX XXXX XX XXXX XXXX XXXX. \"XXXXX XX XX XXXXXXXXX,\" XXXX XXX 00-XXXX-XXX, XXXXXXX XXX XXXXXX XXX-XXXX XXXX XXXXXXXXXXX XXXXXXXXXXXX XXXX. "
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "\"XXXXX XXXX XXXX XXXXX XXXX XX XXX XXX XXX XXXX XXX XXXX -- XX XX XXXXXXX XXX XXXXXX XXXXX XX XXXX,\" XXX XXXXX. \"XXXXX XX XXXXXXXXXXXX XXXXXXXXXX.\" XXXXX XXXXX XXXXX XX XXXXX XX XXXXXXX XXXXXXXXXX, XXXXXXXXX XX XXX XXXXXXXXXX'X XXXX XXXXX XXXXXX XXXXX XXXX, XXXX X XXX XXX XXXXXX XX 00,000 XXXXXX, XXXX XXXXX XX X XXXXXXX XXXX XXX XXXXXXX XXXXXXX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/6",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 6,
+          "tc:hasSegmentType": {
+            "@id": "tc:HeaderType"
+          },
+          "tc:segmentDescription": "Header 6",
+          "tc:segmentContent": "XXXX XXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/7",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 7,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 7",
+          "tc:segmentContent": "XXX XX XXX XXXX XXXXXXXX XXXX XXX XXXX XXXXXX. XXX XXXXX XX XXXXXXXX XXXXXX XX \"XXXXXXXXXXXXXXXX XXXXXXX\" -- XXXXXXXX XX XXXXXX, XXXXXXXXX XXX XXXXXX XXXXXXXXX -- XXXX XXXX XXXX XXXX X XXXX XX 0000, XX XXXXX X XXXXX XX 0000, XXXXXXXXX XX XXX XXXXXX XXXX XXXXXXXX XXXX XXXX.  XX XXXXXXXXX, XXXX XXXXXXXXX XXXXXXXXXX XXXXXXXX XXXXX $0 XXXXXXX, XXXXXXXXX XXXX XXX XXXX XXXXXXXX, XXX XXXXXXXXXXXX XXXXXXX XXX XX XXXXXXX XXXXXXXX. XX XXXX XXXXXXXX XX $000 XXXXXXX XXXXXXXXXX XX XXXXXXX XXXXX XXXXXXXXXXXXX, XXXXXXXX 0.0 XXXXXXX XXXXX XXXX XXXXXXXXX XX 00,000 XXXXXX XXXX. "
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/8",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 8,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 8",
+          "tc:segmentContent": "XXX XXX, XXXXXX XXXX XXXXX XXXXXXXX XXXXXX XXXXX'X XXXXXX XXX (XXXXXX) XX XXX XXXXXX XXXXXXXX XXXXXXXXXX XXXXXXXX (XXX), XXXXX X XXXXX XXXXXXXXX XXXX XXX XXXXXXXXXX. XX X XXXXX XX XXX XXXXX XXXXXXX XXXXX XX XXXXXX, XXXX XXXXX XXXXXX XX \"XXXXX XXX XXX\". X XXX XXXXXXX XX XXXXX XXXXX, XXXXXXXX XXX, XXXXX XXX XXXXXXXX XX XXXXXXXXXX-XXXX XXXXXX, XXXX XX XXXXXXXXXXXX XXXX XXXXXX, XX XXXX XX XXXXX XXXX XX XXX XXXXX. \"XXXX XX XXX XXXXXXXX XXXXX XXXX XXXXXX XXXXXXX XXX XXX XXX XXXX X XXXXXXXXXX XX XXX XXX,\" XXXX XXXXXXXXXX, X XXXXXXXXX XXXXXXX XXX XXXX XXXX XXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/9",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 9,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 9",
+          "tc:segmentContent": "X XXX XXX XXXXX \"XXXXXXXX\" XXX XXXXX XXXXXXXXX, XX XXXX. XXX XXXXXXXX XXXX XX XXXX XX XXX XXXXXX, XX XXXXXXXX 0 XXX 00. XXXXXXX XXX XXX XX XXXXXXXX 00."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/10",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 10,
+          "tc:hasSegmentType": {
+            "@id": "tc:HeaderType"
+          },
+          "tc:segmentDescription": "Header 10",
+          "tc:segmentContent": "'XXXXXXX XXXXXX'"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/11",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 11,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 11",
+          "tc:segmentContent": "XXX XXX'X XXXX XXXXX XX XX XXXXXXXXXX XXXXXXXX XXX XX XXX XXXXXXXXX XXXXXX XXX (XXX) XXX XXX XXXXXXXX XXXXX. \"XXXX XX XXXXX XXX XXXXX,\" XXX XXXXXX XXXXXXXX XXXXX XXXX XXXX XXXX, XXXXXXXXX XXX XXXXXXXXXX XXX XXX XXXXXX, XXXXX XXXXXXXX XXXX XX X XXXXXXXXXX XX XXXXXXXXX XXXXXXXX, XXXXX XXXXXX XXXXX XXXX XXXXXXX XXX XXX XXXXXX-XXXX XXXXX. XXXXXX XXX XXXX XXXXXXXXXX XXXXXXXX XXXXXX XXX XXXXXXXX X XXXXX, XXX XXXXXX, XX \"XXXXXX'X XXXX XXXXXXXXXX\". XXXXXXXXXX XXXXXX XXX XX XXXXXXXX XXXXXXXX XX XX XXXXXXX XXXXXXX XXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/12",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 12,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 12",
+          "tc:segmentContent": "\"XXX XXXX XXX XX XXXX XXXXX X XXXX,\" XXXX XXXXXXXXX XXXXXXXX, X 00-XXXX-XXX XXXXXXX XXX XXXX XX XXX XXXX. \"XX'X XXXXXXX XX XX XXXXX'X XXX XXX XXXX XXXX.\" XXXXXXXXXX XXXX XXXX XXX XXXXXX XXXX XXXXX XX XXXXX XXXXX XXXXXX XXXXXXX XXXX XXXX XXXXX XXXXXX, XXXXXX XXXX XX XX \"XXXXXX\" XXX XXXXXX X XXXXXX XXX \"XXXXXXX XXXXXX\". XXXXXX XXXXX, 00, XXXX XXXXX X XXXXXX XXX XXXXXXX XXXX XX XXXXX XXXXXX, XXX XXXXX XXXXXXXXX XX XXXX X XXXXXX XXXXXX. \"XX XXXXXXXXX XXXXX XX XXXXXXXXXXX XXXX, XXXXXX XXXX XXXXXX'X XXX XX XXXXXX,\" XXX XXXXXXXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/13",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP"
+          },
+          "tc:order": 13,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 13",
+          "tc:segmentContent": "\"XXXX XXXX XXXX XXXXX, XXX XX XXXX, XXXX XXXXXXXXXXX, XXX XXX XXXXX XXXXX.\""
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/doc-82TG2NQ/99497532-27b5-4186-819a-1f194452bf99",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/doc-82TG2NQ/LoueDfKaojfDfdAAeWwcHP/1"
+      },
+      "tc:caption": "XXXXXXXXX XXXXXXX XXXXXXXXXX XXXX XXXX XXX XXXXXX XXXX XXXXX XX XXXXX XXXXX XXXXXX XX XXXXX'X XXXXX XXXXXXX XXXX XXXX XXXXX XXXXXX",
+      "tc:locator": "https://fake-domain-ece7e45a.com/fake-path/ece7e45a"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/AFP_EN",
+      "rdfs:label": "AFP_EN"
+    }
+  ]
+}

@@ -43,11 +43,11 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   // API version
   apiVersion?: 'v2' | 'v3'; // Default to v3
 
-  // Authentication - Eclipse EDC specific
-  authMethod: 'edc-api-key' | 'bearer' | 'oauth2' | 'delegated';
+  // Authentication - Dataspace Protocol specific
+  authMethod: 'dsp-api-key' | 'bearer' | 'oauth2' | 'delegated';
 
-  // EDC API Key authentication (most common)
-  edcApiKey?: string;
+  // DSP API Key authentication (most common)
+  dspApiKey?: string;
 
   // Standard authentication methods
   bearerToken?: string;

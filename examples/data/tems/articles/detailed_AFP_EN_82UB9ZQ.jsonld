@@ -1,0 +1,1319 @@
+{
+  "@context": {
+    "tc": "http://tems.org/2024/temscore#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@type": "tc:MediaWork",
+      "@id": "tems/work/AFP_EN/82UB9ZQ",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_EN/article/82UB9ZQ",
+        "tc:identifierValue": "82UB9ZQ",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/article"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_EN"
+        }
+      },
+      "tc:originalLanguage": "en",
+      "tc:hasCreator": {
+        "@type": "tc:Organization",
+        "rdfs:label": "Peris GACHAHI / AFP Kenya"
+      },
+      "tc:hasProvider": {
+        "@id": "tems/agent/AFP_EN"
+      },
+      "tc:hasVersion": [
+        {
+          "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+        }
+      ],
+      "tc:hasCanonicalVersion": {
+        "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+      }
+    },
+    {
+      "@type": "tc:Article",
+      "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s",
+      "tc:contentLanguage": "en",
+      "tc:locator": "https://fake-domain-824dc656.com/fake-path/824dc656",
+      "tc:hasIdentifier": {
+        "@type": "tc:Identifier",
+        "@id": "tems/identifier/AFP_EN/version/ADH5eEnRPUHTRceAwRrh9s",
+        "tc:identifierValue": "ADH5eEnRPUHTRceAwRrh9s",
+        "tc:identifierScheme": {
+          "@id": "tems/scheme/version"
+        },
+        "tc:issuedBy": {
+          "@id": "tems/agent/AFP_EN"
+        }
+      },
+      "tc:isVersionOf": {
+        "@id": "tems/work/AFP_EN/82UB9ZQ"
+      },
+      "tc:hasTitle": {
+        "@type": "tc:Title",
+        "tc:titleContent": "New Aid Agreement Brings International Relief During Regional Emergency",
+        "tc:titleLanguage": "en"
+      },
+      "tc:hasProvenance": {
+        "@type": "tc:Provenance",
+        "tc:modificationDate": "2025-11-04T11:36:19.836000+00:00"
+      },
+      "tc:hasDescription": {
+        "@type": "tc:ContentDescription",
+        "tc:keywords": [
+          "politics",
+          "fact-checking",
+          "local",
+          "culture"
+        ],
+        "tc:descriptionContent": "Fact-checking investigation examining claims circulating in public discourse. Journalists and researchers provide evidence-based analysis to clarify the factual accuracy of recent statements. The article aims to promote informed civic engagement and media literacy.",
+        "tc:descriptionLanguage": "en"
+      },
+      "tc:hasRights": {
+        "@type": "tc:Rights",
+        "tc:license": "unknown"
+      },
+      "tc:hasInstance": {
+        "@type": "tc:MediaInstance",
+        "tc:locator": "https://fake-domain-824dc656.com/fake-path/824dc656",
+        "tc:hasPublication": {
+          "@type": "tc:Publication",
+          "tc:publicationDate": "2025-11-04T11:27:20+00:00",
+          "tc:hasPublisher": {
+            "@id": "tems/agent/AFP_EN"
+          }
+        }
+      },
+      "tc:hasOrderedSegments": [
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/0",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 0,
+          "tc:hasSegmentType": {
+            "@id": "tc:TitleType"
+          },
+          "tc:segmentDescription": "Title 0",
+          "tc:segmentContent": "XXX XXX XXXXXXXXX XXXXXX XXXXXXXXXXXX XXXXXX XXXXXX XXXXXXXX’X XXXXXXX XXXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/1",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 1,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 1",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/16e8d412-9175-41e7-bb36-83d350802314"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/2",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 2,
+          "tc:hasSegmentType": {
+            "@id": "tc:LeadType"
+          },
+          "tc:segmentDescription": "Lead 2",
+          "tc:segmentContent": "XXXXXXXXXX XXXX XX XXX XXXXX XX XXXXXXX 0000 XX XX XXXXXXXX XXXXX XXX XXXX XXXXXXXXXX XXXXXXX XXXX XXXXXXXXXXX XXXXXXXXX XX XXXXXXXXX XXXXX XXXXXX XXXXXX’X XXXXXXXXXX, XXXX X XXXXXXXXXX XXXXXXXX XXXXXXXX. XXXXXX XXX XXXXXXXXXX, XXXXXX XXXXX XXX XXXXXXX XXXX XXXXXX XXX XXXXX XXXXXX XX XXXXX XX XXXXXXXXXXXX XXXXXXXXX, XXXXXXXXXXX XXXXXXX XXXXXXXX XX XXXXXXXX. XXXXXXXX XXXXXX XXX XXXXX XXXXXX, XXX XXXXXX XX XXXXXXXX XXX XXX XXX XXXXXXXXX XX XXX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/3",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 3,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 3",
+          "tc:segmentContent": "XXXXXXXX XXXX XXXXXXX XXXXXXXXX XX XXXXXXX 00, 0000, XXXXX XXX XXXXX XXXXXXX XX X XXXXXXXXXX [XXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXX-XXXXXX-XXXXXXXXXX-XXX-XXX-XXXXXX-XX-XXXXXXXX-XXXXXXXX-X0X000X0\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXX XXXXXX XXXXXX, XXXXXXXXX XXXXXX, XXXXXXXXX XXXXXXX XXX XXXXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/X00X-0XX0\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/4",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 4,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 4",
+          "tc:segmentContent": "XXXXX XX XXX XXXX, X [XXXXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXX-XXXXXXXXXX-XXXX-XXXXX-XXXXXX-XXXXX-XX-XXXXXXXX-00000000\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXX XXXXXXXXXX XXXXXXX XXXX XXX XXXXXX XXXXX XXX XXXXXXXXX (XXX) XXX XXXXXX XXXX XXXXXX XX XX XXXXXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/X00X-XXX0\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/5",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 5,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 5",
+          "tc:segmentContent": "XXXXX XXXXX, XXXXXX XX XXX XXXX XXXXXXXXXX XXXXX XXXXXXX, XXX XXXXXXXX XX XXXXX XX XXXXXXX XXXXXXX XXXXX XXXXXXX XXX XXXXXXXXX XXXXXXX, XXX XXX XXXXX XXX XXXXXX XXXX XXXXXXXXXX. XXXXXXXXX, XXXXXX XXXXX XX XXX XXXXXXXX XXX XXXXXX XXX XXXXXXXXXXXX (XXX XXXXXXXXX), XXX XXXXXXX'X XXXXX-XXXXXXX XXXXX, XXX XXXX XXXXXXXXXXXX XXXX XXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/6",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 6,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 6",
+          "tc:segmentContent": "XX XXXXXXXX XXX, X XXXXXXXXXX XXXXXXXX [XXXXXXXX](XXXXX://XXX.XXXXXXXXXXXXX.XX.XX/XXXXXX/XXXXXXX/0000000000/XXXXXXXX-XXXXXXXX-XXXXX-XXXXXXXX-XXXXX-XXXXXX-XXXXXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX XXXXXX XX XXXXXX XXXXX XXX XXXXXXXXX XXXX, XXXXXXXX XXXXXXXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/00XX-XXX0\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/7",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 7,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 7",
+          "tc:segmentContent": "XXXXXXXX XXXXX [XXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXX-XXXXXXX-XXXXXX-XXXXXXX-XXXXXX-XXXXXX-XXXXXXXX-XXXXXXXX-XXX-00X00XXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXX XX XXX XXXXXXX’X XXXXXXX XXXX XXX XX XXXXXX, XXXXXXXXX X [XXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXX-XXXXXX-XXXXXXX-XXXXXXX-XXXXXX-XX-XXXXXXX-XXXX-XXXXX-XXXXXXXX-XXXXXX-X00000X0\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX XXXXX XXXXXXXX XXXXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/0XXX-XX0X\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX [XXXX](XXXXX://XXXXX.XX/XX0X-0XX0\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX)). XXX XXXX XXXXXXXXXX XXXXX XXX XXXXX [XXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXX-XXXXXX-XXXX-XX-XXXXXXXXXX-XXXXXXX-XXXXXXXX-XXXXXXX-00X0X0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXX XXXXXX 000 XXXXXX XXXX XXXX XXXXXX XX XXX XXXXXXX XXXXXXXX XXXXXXXX, XXXXXX XXX XXXXXXX XXX XXX XX XX XXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/0XXX-X0XX\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/8",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 8,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 8",
+          "tc:segmentContent": "XXXX XXXXX XXXXXX, XXXXXX XXXXX XXX XXXXXXX XXXX XXX XXX XXXXXXXXX XXXXXX XXXXXXX XXXXXXXX XX XXXX XXXXXXXXX XXXXXXXX XX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/9",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 9,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 9",
+          "tc:segmentContent": "XX XXXXXXXX XXX, XX XXXXX XXXXXXXXXXX XXXXXXX X XXXXXXXXX XX XXXXXXXX XXXXXXX X XXXX XXX XXXXXXXX XXX XXXXXX XXXXXX XXXXXX. XXXXXX XXX, XXXXXXX XXXXXX XX XXXX XXXXXXX XXX XXXXXXXXX XXXX, XXXXX XXXXXX XX XXX XXXXXXXXXX XXXXXX XXXXXXXX XX XXXX XXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/10",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 10,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 10",
+          "tc:segmentContent": "“XXXX XX XXXX XXX XXXXXXXXXX. XXXX XX XX XXXX X XXXXXXXXX XXXXXXX XX XXXXXXX?” XXXXX XXX XXXX [XXXX](XXXXX://XXXXX.XX/XX00-XXXX\" XXX=\"XXXXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXXXX XX X, XXXXXX XX XXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/11",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 11,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 11",
+          "tc:segmentContent": "“XXXXX XX XXX XXX,” [XXXXXXX](XXXXX://XXXXX.XX/XX00-XXX0\" XXX=\"XXXXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/12",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 12,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 12",
+          "tc:segmentContent": "XXXXXXXXXXX XX XXX XXXXX XXXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/13",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 13,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 13",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/8a7ef56c-2e44-4bc7-993f-1f5b171f41e6"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/14",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 14,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 14",
+          "tc:segmentContent": "XXX XXXXX XXX XXXX XXXXXXXX XX XX XXXXXXX 00 [XXXXXXX](XXXXX://XXXXX.XX/X00X-0XXX\" XXX=\"XXXXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXX XXXX XXXXXX XXX XXXX XXXXX XXXX XXX XXXXXXXX: “XXX XXXXXX XXXXXX XXXXXXX XX XXXXXXXX XXXXXXXX XXXX XXXX XXXXX”."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/15",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 15,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 15",
+          "tc:segmentContent": "“X XXXXXXXXX XX XXX XXXXXXX XX XXX XX XXXXXX XXXX X XXXX XXX XXXXXXXX XX XXXXXXXX XXX, XXXXXXX 00, 0000. /XXXXXXXXXX (XXX),” XXX XXXXX XXXXXXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/16",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 16,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 16",
+          "tc:segmentContent": "XXXXXXXXXX XXXX XXX XXXX XXXXX XXXXXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/17",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 17,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 17",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/d94c1952-0efe-41c7-a7ae-d24ba4adcaf0"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/18",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 18,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 18",
+          "tc:segmentContent": "XX XXXXXXXXX [XXXXXXX XXXXX XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX XXXXX XXX XXXXXXXX XXXXX XX XXX’X XXXXXXXX. XX XXX XXXXX XX 0000 XX XXXXX XXXXXX XXX XXXXXXXXXX XXXX-XXX [XXXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXXX?X=XXXXX0XXXXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXX XXXXXX XXX XXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/0X0X-XX0X\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/19",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 19,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 19",
+          "tc:segmentContent": "XXX XXXXX XXX [XXXXXXXX](XXXXX://XXX.XXXX.XXX/0000/00/00/XXXXX-XXXXXXXXX-XXXXX-XXXX-XX-XXX-XXXXX-XXXXX-XXXXXX-XXXXXXXX.XXXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXXX [XXXXXXX](XXXXX://XXXXXXX.XX.XXX/XXXXXXXXXXXXX/XXXXX-XXX-XXXXXXXX-XXXXXXX/XXXXX?XX=000000000\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXX [XXXXXXXXXXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXXXXXX-XXXXXXXX-XX-XXXXX-XXXX-XXXXX-XXX-XXXX-XX-XXXX-XXXX/\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXX XXX XXXX 0000 (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/X000-XXXX\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX), [XXXX](XXXXX://XXXXX.XX/0XXX-XX0X\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX [XXXX](XXXXX://XXXXX.XX/XX0X-0XX0\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/20",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 20,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 20",
+          "tc:segmentContent": "XXX XXX XXXXXXX XXXXX: “X XXXXXXXXX XXXXX X XXXX XXX XXXXXXXX XXXXX XXXXXXXXXXXXX XXXXXX X XXXXXXXXXX XXXXXX XX XXXXXXX XXXXXXX XXX XXXXX XXX XXX XXXXXXX XXXX 0000 XX XXXXXXXX XXXXXXX, XX XXXX 00, 0000”."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/21",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 21,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 21",
+          "tc:segmentContent": "XXX XXXXX XX X XXX XXXXXXX XX XXXXXXX XXX XXXXXX XXXX XXXX XXX XXXXXXXXX XXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/22",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 22,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 22",
+          "tc:segmentContent": "XXXX-XX-XXXX XXXXXXXXXX XX XXX XXXXXXX XXXXX (XXXX) XXX XXX XXXXXXXX XXX XXXXX XXXX XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/23",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 23,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 23",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/f9f1b47b-afb4-488d-913b-12039d130784"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/24",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 24,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 24",
+          "tc:segmentContent": "XX XXX XXXX XXXXXXX XXXXXXXX XX XXX XXX XX XXXX XXX XXXXXXX XXXX XXX “XXXXX XXXXXXXXXX” XX XXX XXXXXXXXXX. XXX XXXXXXXXXX XX XXXXXXX XX XXXXXXX’X XXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/25",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 25,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 25",
+          "tc:segmentContent": "XXXXXXX X XXXX XXXXXX XXX XXXX XXX XXXXXXX XX XXXX X XXXXX XX XXXXXXXXXX XXXXXXXXX XXXXX X XXXXXX XX XXXXXXXX XXXXX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/26",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 26,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 26",
+          "tc:segmentContent": "“XXX XXXX XXXX XXXXX XX XXXXXX XXX XXXXXX XX XXXXXXXX. XX XX XXXXXXX XXXXXX!” XX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/27",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 27,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 27",
+          "tc:segmentContent": "“XXX XXXX XXXX” XX X XXXXXXX XXXX XX XXXXX XX XXXXXX, XXXXXXXX XXX XX XXX XXXX XXXXXXX XXXXXXXX XXX XXXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/28",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 28,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 28",
+          "tc:segmentContent": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/29",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 29,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 29",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/3f981117-b080-4f52-8012-8a5433b0782a"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/30",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 30,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 30",
+          "tc:segmentContent": "XXXXXXX, XXXXXXX XXXXX [XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXXXXX XXXX XXX XXXX XXX XX X XXXXXX XXXX XXXXXXXXX XX XXXX 00, 0000, XXXX XX XXXXXXXXXX XXXX XXXXX'X XXXX-XXX XXXXXXXXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/31",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 31,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 31",
+          "tc:segmentContent": "“XXXXXX XXXX XXXXXXXXXXX. #XXXXXXXXXXXXXXXXX0000,” XXXXX XXX XXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/32",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 32,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 32",
+          "tc:segmentContent": "XXXXXXXXXX XX XXX XXXXXX XXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/33",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 33,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 33",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/f88f0cac-1ff4-4902-b56c-106a200b3489"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/34",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 34,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 34",
+          "tc:segmentContent": "XXXXX XXX \"XXXXX\" XXXX XXXXXXX XX XXX XXXX XXX XXX XXXXXXX \"XXXXXX\", XX XXXXXXXXX XXX XXXXXX XXXX XXXX XXX XXXXXX XXXX XXX XXXXXX XXXX XX XXXXX’X XXXXX XXXXXX XXXX XX XXXXXX XXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/35",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 35,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 35",
+          "tc:segmentContent": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXX) XXX XXXXXX’X XXXXX XXXXXX XXXX XX XXXXXX XXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/36",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 36,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 36",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/1716ae9a-6ce5-48bb-b2ea-2d473e6e1379"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/37",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 37,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 37",
+          "tc:segmentContent": "XXX XXXX XXXXX XXX XXXXXXXXXX [XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0X0\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXXXX XXXXXXX XXX XXXX XXXX XX XXXXXXXX XX XXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/38",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 38,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 38",
+          "tc:segmentContent": "X XXXX  XXXXXXXXX XX X XX XXXXXXX 00 XXXXXXX XX XXXX XXXXX XX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/39",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 39,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 39",
+          "tc:segmentContent": "“XXXXXXXX!!! XXXXXXXX XXXX XX XX XXXXXX XX XXX XXX-XX XXX XXXXXXXXXX XXXXXXX XXX XXX XXXXXXXXXX.. XXX XXXXXXXXX XX XXXX XXXXXXX, XXXXX XXXXXX XXXXXXX XXX XXXXX XXXXXXX XXX XXXXX XX XXX XXXXXX XX XXXXXXXXX XXX XXXXXXX XXXXXXXXXX XXXX XXXX XXXXXXX XXX XXXXX, XXXX XX XXX.. (XXX),” XXX XXXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/40",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 40,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 40",
+          "tc:segmentContent": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/41",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 41,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 41",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/c24063b3-8d06-40fd-8ba5-08843ecc9e07"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/42",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 42,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 42",
+          "tc:segmentContent": "XXX XXXXX XXXXXXX XX XXXX XXXX XXXXXX XXXX X XXXXXX XXXXXXX XXXX XXX XXXXXXXX “XXXXX0XXXX_”, XXXXX XXXXXXXXX XXX XXXX XX XXXXXXX 00, 0000."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/43",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 43,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 43",
+          "tc:segmentContent": "XXX XXXX XXXXX XXXXXXXXX [XXXXXXX XXXXX XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXXXXX XXXX XXX XXXX XXX XXXXX XXXX XX XXX XXXX XX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/44",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 44,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 44",
+          "tc:segmentContent": "XX XXXXXXXXX XXXX XXX XXXXXXXXX XX XX XXXXXXX XX XXXXXXX XX XXXXXXXXX 0, 0000, XXXX XXX XXXXX, “XXXXX XXXXXXXXXX XXX XXXXXX XXXX XXXX-XXXXXXXXXX XXXXXXXX”."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/45",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 45,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 45",
+          "tc:segmentContent": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXXX) XXX XXX XXXXXXXX XXXXXXXXX XX XX XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/46",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 46,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 46",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/b8820bb1-15d5-42fa-ba77-85d42eb9c070"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/47",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 47,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 47",
+          "tc:segmentContent": "XXX XXXXXXXX [XXXXXXXXXXXXXX](XXXXX://XXX.XXX.XXX/XXXX/XXXXXXXX/X0X0XXXXXXXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX), XXXXXXXXX XX X XXXXXXXXXX XXX XX XXXXXX XXXXX XXXXXXXXX XXX XXX XXXXX XX XX XXXXX 00 XXXXXXXXXX XXXXXX XXXXXXX XXXX XXXXXXXX XXXXXX, XXXXXXXXXX XX XXX XXXXXXXX XX XXX XXXXXXX’X XXXXXXXXXX XXX XXXXXXXXXXX XX XXXXX XXXXXXXX XXXXXX XXXXXX XXXXXX XXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/XX00-XX0X\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/48",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 48,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 48",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/72f116ad-d4f7-4f25-ac77-f3917bb1ad6b"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/49",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 49,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 49",
+          "tc:segmentContent": "XXXXXXX XXXX, XXXXXX XX X X XXX XXXXX XXX XXXXX XXXXXX, XXXXXXX XX XXXX XXXXXXXX XXXXXXXX XX XXX XXXXXXX XX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/50",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 50,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 50",
+          "tc:segmentContent": "“XXXXXXXX XX XXXXXXXX XXXX XXXX XXXXXXXXXXX XXXXXXX XXXXXXXXXX XXX XXXXXX (XXX),” XX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/51",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 51,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 51",
+          "tc:segmentContent": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/52",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 52,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 52",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/5e8174ad-9ef6-4dbf-aacd-dd8852f6b5d5"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/53",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 53,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 53",
+          "tc:segmentContent": "XX XXXXXXXXX [XXXXXXX XXXXX XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXXXXX XXXX XXX XXXX XXX XXXXXXXXXXX XXXX XXX XXXXXXX XXX XXXX XX XXXXXX, XXXXX XXXXXX, XXX XXXX XXXXXX XXX XXXXXXXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/54",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 54,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 54",
+          "tc:segmentContent": "X XXXX XXXX XXXXXXX XXXXXXXX XXX XXXXXXXXX XX XXXXX XXXXX XXXXXXX XXXX XXXXXX XXXXXXXX XXXXX, XX XXXXXXX 00, 0000."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/55",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 55,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 55",
+          "tc:segmentContent": "“XXXXXX XX XXXXXX XXXX XXXXXXX XX XXX XXXXX XXXXXXXX XX XXX XXXXXX XXXX XXXXXX XXXXXXXXX XXXX XXX XXXXXXXX XXXXXXX XXXX XXXXXXX XXXXXXX XXXX XXXXXXXX XX XXX XXX XXX XXXXXXX XXXXX XXXX XXXXXXX,” XXXXX XXX XXXX XX XXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/56",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 56,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 56",
+          "tc:segmentContent": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXXX) XXX XXX XXXXXXX XXXXXXXXX XX XXXXXXXX XXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/57",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 57,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 57",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/32536968-6c31-4066-94ac-42844e9fe09b"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/58",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 58,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 58",
+          "tc:segmentContent": "XXXXX XXXXXXX XXXXXXXXX -- XXXXXXXXX XXX XXXXXX XXXXXXXXX, XXXXXXX XXXXX, XXXXXXXXX XXXXX XXX XXXXXX -- XX XXXXXXXXXX XXX XXXXX XXXXXXXX XXX XXXXX XXX XXXX XX XXXXXX’X 000 XXXX XXXXXX XX [XXXXXX XXXX](XXXXX://XXX.XXXXXX.XXX/XXXX/XXXXX/XXXXXXXXX+XXXXXX+000+XXXX+XXXXXX/@-00.0000000,00.0000000,0X,00X,000.00X,00.00X/XXXX=!0X0!0X0!0X0!0XXXXX0XXXXXXXXX0XXXXXXX!0X0!0XXXXXX:%0X%0XXXXXXXXXXXXXXXXX-XX.XXXXXXXXXX.XXX%0XX0%0XXXXXXXXXX%0XXX_XXXXXX%0XXXXX_XX.XXXXXXX%00X%0X000%00X%0X000%00XXXXX%0X-0.0000000000000000%00XXXXXX%0XXXXX0XXXXXXXXX0XXXXXXX%00XXX%0X000.00000000000000!0X00000!0X0000!0X00!0X0!0X0!0X0X0XX0X0X00000XXXX:0X00000X0XX0X0X00X!0XXXXX+XX,+0000,+XXXXX+XXXXXX!0X0!0X0!0X-00.0000000!0X00.000000!00X0!00X%0XX%0X00_XX0XX0!0X0!0X0X0XX0X0X00XXXXXX0:0XX0X00X000X0XX000!0X0!0X-00.00000!0X00.00000!00X%0XX%0X0XXXX_X0?XXXXX=XXX&X_XX=XXXXXXX0XXXXXX0XXXXXXXXXXXXXXX%0X%0X\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX)."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/59",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 59,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 59",
+          "tc:segmentContent": "XXX XXXXXXXXXX XXXX [XXXXXXXXX](XXXXX://XXX.XXX.XX.XX/0000/00/00/XXXXXX-XXX-XXXXXXXXXX-XX-XXXXXXXXXX-XXXXXX-XXXXXXX-XXX-XXXXXXX-XXXXX-XXXXXXX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXXXXX XXXXXXXXX X XXXXX XXXXXXXX XX X XXXXXXXX XXXXX XXXXX-XXXX-XXX XXXXX XXXXXXXX XXX XXXXXX XXXXXXX XXXX XXXX XX XXXX XXXX XXXXX XX XXX XXXXXXXXXXX XXXXXXX, XXXXXXX XX XXX XXXXX XX XXX XX XXX XXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/XXX0-00XX\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/60",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 60,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 60",
+          "tc:segmentContent": "XXX XXXXXXXX XXXX XX XXX XXXX XXX XXXX XXXXXXX XXXXXXXX XXXXXXXXXX XXXX XXXXX XX XXX XXXXX XXXXXXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/61",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 61,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 61",
+          "tc:segmentContent": "XXXXX XX XXXXX XXXXXXX XXXXXX XXXX XXX XXX XXXXXXXX XXXXXXX XXXXXXX XXXXXXXX (XXXXXXXX XXXXXX/XXX)"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/62",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 62,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 62",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/b736545f-d54d-4e50-a997-ff16cfa37fe8"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/63",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 63,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 63",
+          "tc:segmentContent": "XXXXXXX XXXX XXX XXXXXX XX XXXXXX XXXXXXXX XX XXXX X XXXXX XXXXX XXXXXXXX XX XXXXXXX XX XXXXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/64",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 64,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 64",
+          "tc:segmentContent": "“XXXXXXXXXX XXXX XXXXXXX XXX XXXXXXXX XXXXXX XXXXXXX XXXXXXXXXXXXX XXXXXXX, XXXXXXXXXX XXXXXXX XXXXX’X XXXX,” XXXXX XXX XXXX XXXXXXXX XX XXX XXXX XXXXXXXXX XX XXXXXXX 00."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/65",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 65,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 65",
+          "tc:segmentContent": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/66",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 66,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 66",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/8befe934-45cb-4f01-a3c9-0961905c62a4"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/67",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 67,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 67",
+          "tc:segmentContent": "XXXXXXX XXXXX [XXXXXXXX](XXXXX://XXXXXXXXX.XXX.XXX/XXX.XXX.XXX.00XX0XX\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXXXXX XXXX XXX XXXX XXX XXXXX XXXX XXXXX XX XXX XXXXXX XXXX XX XXXXXXXX, XX XXXXXXXX XXXXXXX XXXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/68",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 68,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 68",
+          "tc:segmentContent": "X XXXXXX XXXXXXX XX XXX XXXX XXX XXXXXXXXX XX XXXXXXXXX XX XXXXX XXXXXXXXX XXXXX XXXXXX XXXXXXX XX XXXXX 00, 0000."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/69",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 69,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 69",
+          "tc:segmentContent": "“XXX XXXXXXXX XXXXXXX XXXXXXX XXXXXXX XXXXXXXXXXXXX XXXXXXX XX XXX XXXXXXXX XX XXX XXXX XXXXXXXXX XX. XXXX XXXXX XXXXXXXX XX XXX XXXX XXX XXXXX XXXXXXXXXXX XX XXXXXX,” XXXXX XXX XXXXXXX XXXX. “XXXX XX XXXXX, XXXXXXXX XXX”."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/70",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 70,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 70",
+          "tc:segmentContent": "X XXXX XXXXXX XX XXXXXXXXX (@XXXXXXX_XXXXXX)"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/71",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 71,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 71",
+          "tc:segmentContent": "XXX XXXXX XX XXXXXX XXXXXXX XXX XXX XXXX XXX XXXXX XXX XXXXXXXX XXXXX XXXX XXXXXXX XXXXXXXX’X XXXXXXX XXX XX XXXX XX XXXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/72",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 72,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 72",
+          "tc:segmentContent": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX XXX XXX XXXXXXX XXXXXXXXX XX XXXXXXX"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/73",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 73,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 73",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/afe9d3a0-0a00-453a-ab48-4c1439ad3691"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/74",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 74,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 74",
+          "tc:segmentContent": "XXX XXX XXXX [XXXXXXXX](XXXXX://XXX.XXX.XXX/XXXXXX/XXXX-00000000\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXXXXX XXXX XXX [XXXXXXXX](XXXXX://XXX.XXX.XXX/XXXX/XXXXX-XXXXXX-00000000\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXX XXXXXXX XX XXXXXXXX’X XXXXX XXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/XXX0-XXXX\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XXX [XXXX](XXXXX://XXXXX.XX/XX0X-XXXX\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/75",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 75,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 75",
+          "tc:segmentContent": "XXXXXXXXXX XX X XXX XXXXXXX XXXXXXX XXXXXXXX XX XXX XXXXXXX, XXXXX XX XXXXXXX 00, 0000"
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/76",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 76,
+          "tc:hasSegmentType": {
+            "@id": "tc:ImageType"
+          },
+          "tc:segmentDescription": "Image 76",
+          "tc:containsMedia": {
+            "@id": "tems/image/AFP_EN/82UB9ZQ/648ec055-8510-4dd6-b5f8-05bacb63e6e3"
+          }
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/77",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 77,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 77",
+          "tc:segmentContent": "XXXXXXXX, XXXXXXXX’X XXXXX XXXXXXXXX, [XXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXXX-XXXXXXXXX-XXXX-XXXXXXXX-XX-XXXX-XXXX-XXXXXXXXX-00000000000\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXXXXX XX XXX XXX XX 00, XXXXXXXXXX XXXX XXXXX XXXXXXXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/0XXX-X000\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/78",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 78,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 78",
+          "tc:segmentContent": "XX XXXXX XX XXXXXXXX XXXXXX XX XXXXXXXX XXXXXXXXXX XX XXXXXXX XXXXXX XX XXXXXXXXXX XX XXX XXXXXXXXX XX XXX XXXXXX XXXXXXXXX XXXXX."
+        },
+        {
+          "@type": "tc:OrderedSegment",
+          "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/79",
+          "tc:isOrderedSegmentOf": {
+            "@id": "tems/article/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s"
+          },
+          "tc:order": 79,
+          "tc:hasSegmentType": {
+            "@id": "tc:ParagraphType"
+          },
+          "tc:segmentDescription": "Text 79",
+          "tc:segmentContent": "XXXXXX XXX XXXXXXXX XXX [XXXXXX](XXXXX://XXX.XXXXXXX.XXX/XXXX/XXXXXXXX-XXXXXXXXX-XXXXXX-XXXX-XXXXXXXX-XXXX-00-00-XX-XXXX-XXXXXXXXXX-X000XXX0\" XXX=\"XXXXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX) XX XXX XXXXXX XXXXX XX XXXXXXXX 0, 0000, XXXX X XXXXXXXXX 00.00 XXXXXXX XX XXX XXXX XX X XXXXXXXX XXXXXXXX, XXXX XXXXXXX XXXXXXXX (XXXXXXXX [XXXX](XXXXX://XXXXX.XX/00XX-0X0X\" XXX=\"XXXXXXXX XXXXXX XXXXXXXX XXXXXXXX\"  XXXXXX=\"_XXXXX))."
+        }
+      ]
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/16e8d412-9175-41e7-bb36-83d350802314",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/1"
+      },
+      "tc:locator": "https://fake-domain-60088d14.com/fake-path/60088d14"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/8a7ef56c-2e44-4bc7-993f-1f5b171f41e6",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/13"
+      },
+      "tc:caption": "XXXXXXXXXXX XX XXX XXXXX XXXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-f6ef7965.com/fake-path/f6ef7965"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/d94c1952-0efe-41c7-a7ae-d24ba4adcaf0",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/17"
+      },
+      "tc:caption": "XXXXXXXXXX XXXX XXX XXXX XXXXX XXXXXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-c6f95d31.com/fake-path/c6f95d31"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/f9f1b47b-afb4-488d-913b-12039d130784",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/23"
+      },
+      "tc:caption": "XXXX-XX-XXXX XXXXXXXXXX XX XXX XXXXXXX XXXXX (XXXX) XXX XXX XXXXXXXX XXX XXXXX",
+      "tc:locator": "https://fake-domain-62c93b13.com/fake-path/62c93b13"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/3f981117-b080-4f52-8012-8a5433b0782a",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/29"
+      },
+      "tc:caption": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-324d3c61.com/fake-path/324d3c61"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/f88f0cac-1ff4-4902-b56c-106a200b3489",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/33"
+      },
+      "tc:caption": "XXXXXXXXXX XX XXX XXXXXX XXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-4c5b11ab.com/fake-path/4c5b11ab"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/1716ae9a-6ce5-48bb-b2ea-2d473e6e1379",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/36"
+      },
+      "tc:caption": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXX) XXX XXXXXX’X XXXXX XXXXXX XXXX XX XXXXXX XXXX",
+      "tc:locator": "https://fake-domain-ee39da1f.com/fake-path/ee39da1f"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/c24063b3-8d06-40fd-8ba5-08843ecc9e07",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/41"
+      },
+      "tc:caption": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-5fa7b658.com/fake-path/5fa7b658"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/b8820bb1-15d5-42fa-ba77-85d42eb9c070",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/46"
+      },
+      "tc:caption": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXXX) XXX XXX XXXXXXXX XXXXXXXXX XX XX XXXXXXX",
+      "tc:locator": "https://fake-domain-4ce197dd.com/fake-path/4ce197dd"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/72f116ad-d4f7-4f25-ac77-f3917bb1ad6b",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/48"
+      },
+      "tc:caption": "XX XXXXXX XXXX XXXXX XXX XXXXXXX XXXXXXXXXX XXXXXXXX XX XXXXXXXXX XX XXXXXXXXX 00, 0000 (XXXXXX XXXXXXXX/XXX)",
+      "tc:locator": "https://fake-domain-98fb87cb.com/fake-path/98fb87cb"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/5e8174ad-9ef6-4dbf-aacd-dd8852f6b5d5",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/52"
+      },
+      "tc:caption": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-ee7e8494.com/fake-path/ee7e8494"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/32536968-6c31-4066-94ac-42844e9fe09b",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/57"
+      },
+      "tc:caption": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX (XXXX) XXX XXX XXXXXXX XXXXXXXXX XX XXXXXXXX XXXXX",
+      "tc:locator": "https://fake-domain-2c65af92.com/fake-path/2c65af92"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/b736545f-d54d-4e50-a997-ff16cfa37fe8",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/62"
+      },
+      "tc:caption": "XXXXX XX XXXXX XXXXXXX XXXXXX XXXX XXX XXX XXXXXXXX XXXXXXX XXXXXXX XXXXXXXX (XXXXXXXX XXXXXX/XXX)",
+      "tc:locator": "https://fake-domain-b8347157.com/fake-path/b8347157"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/8befe934-45cb-4f01-a3c9-0961905c62a4",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/66"
+      },
+      "tc:caption": "XXXXXXXXXX XX XXX XXXXX XXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-c66d30b7.com/fake-path/c66d30b7"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/afe9d3a0-0a00-453a-ab48-4c1439ad3691",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/73"
+      },
+      "tc:caption": "XXXXXXXXXXX XXXXX XX XXXXXXX 00, 0000, XXXXXXXXX XXX XXXXX XXXX XXX XXX XXXXXXX XXXXXXXXX XX XXXXXXX",
+      "tc:locator": "https://fake-domain-aa7ff1cf.com/fake-path/aa7ff1cf"
+    },
+    {
+      "@type": "tc:Image",
+      "@id": "tems/image/AFP_EN/82UB9ZQ/648ec055-8510-4dd6-b5f8-05bacb63e6e3",
+      "tc:isContainedInSegment": {
+        "@id": "tems/segment/AFP_EN/82UB9ZQ/ADH5eEnRPUHTRceAwRrh9s/76"
+      },
+      "tc:caption": "XXXXXXXXXX XX X XXX XXXXXXX XXXXXXX XXXXXXXX XX XXX XXXXXXX, XXXXX XX XXXXXXX 00, 0000",
+      "tc:locator": "https://fake-domain-50385ed9.com/fake-path/50385ed9"
+    },
+    {
+      "@type": "tc:Organization",
+      "@id": "tems/agent/AFP_EN",
+      "rdfs:label": "AFP_EN"
+    }
+  ]
+}
