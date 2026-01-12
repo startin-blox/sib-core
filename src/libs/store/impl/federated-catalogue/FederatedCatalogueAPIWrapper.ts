@@ -160,7 +160,7 @@ export class FederatedCatalogueAPIWrapper {
     const headers = new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-    const response = await fetch(options.kc_url, {
+    const response = await this._fetch(options.kc_url, {
       method: 'POST',
       headers,
       body,
@@ -227,7 +227,7 @@ export class FederatedCatalogueAPIWrapper {
         'Content-Type': 'application/x-www-form-urlencoded',
       });
 
-      const response = await fetch(this.loginOptions.kc_url, {
+      const response = await this._fetch(this.loginOptions.kc_url, {
         method: 'POST',
         headers,
         body,
