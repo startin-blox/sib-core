@@ -65,7 +65,6 @@ export type GetDataArgs = ListArgs | FetchArgs;
 // TODO: T might be Resource / Container
 export interface IStore<T> {
   cache: CacheManagerInterface;
-  session: Promise<any> | undefined;
   headers?: object;
 
   getData(...GetDataArgs): Promise<Resource | null> | Promise<Container<T>>;
@@ -148,21 +147,15 @@ export enum StoreType {
   DataspaceConnector = 'dataspaceConnector',
 }
 
-export interface StoreOptions {
-  fetchMethod?: Promise<any>;
-  session?: Promise<any>;
-  cacheManager?: CacheManagerInterface;
-}
-
 export type StoreConfig = {
   type: StoreType;
   endpoint?: string;
-  login?: KeycloakLoginOptions;
   temsServiceBase?: string;
   temsCategoryBase?: string;
   temsImageBase?: string;
   temsProviderBase?: string;
   options?: StoreOptions;
+  login?: KeycloakLoginOptions;
   // LocalStorage caching configuration (for FederatedCatalogueStore)
   enableLocalStorageMetadata?: boolean;
   cacheTTL?: number; // Cache TTL in milliseconds

@@ -12,12 +12,6 @@ export interface KeycloakLoginOptions {
   kc_scope: string;
 }
 
-interface TokenState {
-  access_token: string;
-  refresh_token: string | null;
-  expires_at: number; // timestamp in milliseconds
-}
-
 export interface SelfDescriptions {
   totalCount: number;
   items: SelfDescriptionsItem[];
@@ -41,6 +35,12 @@ export interface SelfDescriptionsMeta {
   statusDatetime: string;
 }
 
+interface TokenState {
+  access_token: string;
+  refresh_token: string | null;
+  expires_at: number; // timestamp in milliseconds
+}
+
 export class FederatedCatalogueAPIWrapper {
   private fcBaseUrl: string;
   private loginOptions: KeycloakLoginOptions;
@@ -49,21 +49,47 @@ export class FederatedCatalogueAPIWrapper {
   private isRefreshing = false;
   private refreshPromise: Promise<string> | null = null;
   private readonly STORAGE_KEY = 'fc_token_state';
-  connect: (() => Promise<string>) | null;
 
-  constructor(options: KeycloakLoginOptions, fcBaseUrl: string) {
+  // Custom fetch function (authenticated fetch from Solid or global fetch)
+  private _fetch: (
+    input: RequestInfo | URL,
+    init?: RequestInit | undefined,
+  ) => Promise<Response>;
+
+  // Whether to use Keycloak authentication (false when using external authenticated fetch)
+  private useKeycloakAuth: boolean;
+
+  constructor(
+    options: KeycloakLoginOptions,
+    fcBaseUrl: string,
+    fetchAuth?: (
+      input: RequestInfo | URL,
+      init?: RequestInit | undefined,
+    ) => Promise<Response>,
+  ) {
     this.fcBaseUrl = fcBaseUrl;
     this.loginOptions = options;
 
-    // Try to load existing token state from localStorage
-    this.loadTokenState();
+    // If fetchAuth is provided and no login options, use the authenticated fetch directly
+    // Otherwise, use global fetch with Keycloak token management
+    if (fetchAuth && (!options.kc_url || options.kc_url === '')) {
+      this._fetch = fetchAuth;
+      this.useKeycloakAuth = false;
+    } else {
+      // Ensure fetch is called with the correct global context (avoids "Illegal invocation" in tests)
+      this._fetch = fetch.bind(globalThis);
+      this.useKeycloakAuth = true;
+      // Try to load existing token state from localStorage
+      this.loadTokenState();
+    }
 
-    try {
-      const connection = this.firstConnect(options);
-      this.connect = () => connection;
-    } catch (e) {
-      console.log('Error while establishing the first connection', e);
-      this.connect = null;
+    // Only attempt Keycloak connection if using Keycloak auth
+    if (this.useKeycloakAuth) {
+      try {
+        this.firstConnect(options);
+      } catch (e) {
+        console.log('Error while establishing the first connection', e);
+      }
     }
   }
 
@@ -268,11 +294,17 @@ export class FederatedCatalogueAPIWrapper {
   /**
    * Wrapper for fetch with automatic token refresh on 401/403 errors
    * Implements both proactive (before expiration) and reactive (on error) token refresh
+   * If useKeycloakAuth is false, uses the authenticated fetch directly without token management
    */
   private async fetchWithAuth(
     url: string,
     options: RequestInit = {},
   ): Promise<Response> {
+    // If not using Keycloak auth, use the authenticated fetch directly
+    if (!this.useKeycloakAuth) {
+      return this._fetch(url, options);
+    }
+
     // Get a valid token (proactive refresh if needed)
     const token = await this.getValidToken();
 
@@ -280,8 +312,8 @@ export class FederatedCatalogueAPIWrapper {
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${token}`);
 
-    // Make the request
-    let response = await fetch(url, { ...options, headers });
+    // Make the request using the configured fetch
+    let response = await this._fetch(url, { ...options, headers });
 
     // If authentication failed, try refreshing token and retry once
     if (response.status === 401 || response.status === 403) {
@@ -307,7 +339,7 @@ export class FederatedCatalogueAPIWrapper {
 
         // Retry request with new token
         headers.set('Authorization', `Bearer ${newToken}`);
-        response = await fetch(url, { ...options, headers });
+        response = await this._fetch(url, { ...options, headers });
 
         if (response.status === 401 || response.status === 403) {
           console.error(
@@ -331,19 +363,19 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async getAllSelfDescriptions() {
-    if (!this.connect) return null;
-
     const url = `${this.fcBaseUrl}/self-descriptions`;
+    // const response = await this.fetch(url);
     const response = await this.fetchWithAuth(url);
-
     return (await response.json()) as SelfDescriptions;
   }
 
   async getSelfDescriptionByHash(sdHash: string) {
-    if (!this.connect) return null;
-
     const url = `${this.fcBaseUrl}/self-descriptions/${sdHash}`;
+
     const response = await this.fetchWithAuth(url, { method: 'GET' });
+    // const response = await this.fetch(url, {
+    //   method: 'GET',
+    // });
 
     if (!response.ok)
       throw new Error(
@@ -355,8 +387,6 @@ export class FederatedCatalogueAPIWrapper {
   }
 
   async postQuery(statement: string, parameters: Record<string, any> = {}) {
-    if (!this.connect) return null;
-
     const url = `${this.fcBaseUrl}/query`;
     const body = JSON.stringify({
       statement,
@@ -384,8 +414,6 @@ export class FederatedCatalogueAPIWrapper {
     queryLanguage = 'OPENCYPHER',
     annotations?: Record<string, any>,
   ): Promise<any | null> {
-    if (!this.connect) return null;
-
     const url = `${this.fcBaseUrl}/query/search`;
     const body = JSON.stringify({
       statement,

@@ -12,6 +12,10 @@ The StartinBlox Store is a powerful data management layer that handles Linked Da
   - [Cache Management](#cache-management)
   - [Language Support](#language-support)
   - [Advanced Querying](#advanced-querying)
+  - [Authentication & HTTP](#authentication--http)
+    - [Authentication with AuthFetchResolver](#authentication-with-authfetchresolver)
+  - [Resource Relationships](#resource-relationships)
+  - [Context & Expansion](#context--expansion)
 - [Configuration](#configuration)
 - [Interfaces and Types](#interfaces-and-types)
 - [Examples](#examples)
@@ -397,6 +401,170 @@ const conjunctionResults = await store.queryIndexConjunction({
 
 ### Authentication & HTTP
 
+The store provides flexible authentication mechanisms through the `AuthFetchResolver` utility class and authenticated HTTP methods.
+
+#### Authentication with AuthFetchResolver
+
+The `AuthFetchResolver` is a universal authentication resolver that automatically discovers and integrates with any authentication component in your application's DOM. It provides a zero-dependency approach to authentication that works with any auth implementation following simple conventions.
+
+##### How It Works
+
+`AuthFetchResolver` searches for authentication elements in the DOM that expose a `getFetch()` method. By default, it looks for:
+- `sib-auth-oidc` - OpenID Connect authentication component
+- `sib-auth` - Standard authentication component
+
+The resolver automatically:
+1. Discovers auth elements in the DOM
+2. Retrieves the authenticated fetch function via the `getFetch()` method
+3. Falls back to standard `fetch` if no auth element is found
+4. Listens for dynamic auth activation via `sib-auth:activated` events
+
+##### Static Methods
+
+**`findAuthElement(selectors?: string[]): Element | null`**
+
+Finds any authentication element in the DOM that has a `getFetch()` method.
+
+**Parameters:**
+- `selectors` (optional): Array of CSS selectors to check, defaults to `['sib-auth-oidc', 'sib-auth']`
+
+**Returns:** The auth element or null if not found
+
+```javascript
+import { AuthFetchResolver } from '@startinblox/core';
+
+// Find with default selectors
+const authElement = AuthFetchResolver.findAuthElement();
+
+// Find with custom selectors
+const customAuth = AuthFetchResolver.findAuthElement(['my-auth', 'custom-auth']);
+```
+
+**`getAuthFetch(selectors?: string[]): (input: RequestInfo, init?: RequestInit) => Promise<Response>`**
+
+Gets an authenticated fetch function from any compatible auth component.
+
+**Parameters:**
+- `selectors` (optional): Custom selectors to check
+
+**Returns:** Authenticated fetch function or regular fetch as fallback
+
+```javascript
+// Get authenticated fetch (used automatically by LdpStore)
+const authFetch = AuthFetchResolver.getAuthFetch();
+
+// Use it for requests
+const response = await authFetch('/api/protected-resource', {
+  method: 'GET',
+  headers: { 'Accept': 'application/ld+json' }
+});
+```
+
+**`onAuthActivated(callback: Function, eventName?: string): () => void`**
+
+Sets up an event listener for dynamic authentication activation. Useful when auth components initialize after store creation.
+
+**Parameters:**
+- `callback`: Function to call when auth is activated, receives the fetch function
+- `eventName` (optional): Custom event name, defaults to `'sib-auth:activated'`
+
+**Returns:** Cleanup function to remove the event listener
+
+```javascript
+// Listen for auth activation
+const cleanup = AuthFetchResolver.onAuthActivated((fetchFn) => {
+  console.log('Authentication activated!');
+  // Update your store or components with the new fetch function
+  myStore.fetch = fetchFn;
+});
+
+// Later, cleanup when no longer needed
+cleanup();
+```
+
+**`waitForAuthElement(selectors?: string[], timeout?: number): Promise<Element>`**
+
+Waits for an authentication element to appear in the DOM. Returns immediately if the element already exists.
+
+**Parameters:**
+- `selectors` (optional): Selectors to watch for, defaults to `['sib-auth-oidc', 'sib-auth']`
+- `timeout` (optional): Maximum wait time in milliseconds, defaults to 5000ms
+
+**Returns:** Promise that resolves with the auth element or rejects on timeout
+
+```javascript
+try {
+  // Wait for auth element to appear
+  const authElement = await AuthFetchResolver.waitForAuthElement();
+  console.log('Auth element ready!');
+
+  // Now you can safely get the auth fetch
+  const authFetch = AuthFetchResolver.getAuthFetch();
+} catch (error) {
+  console.error('Auth element not found:', error);
+}
+
+// With custom timeout
+const authElement = await AuthFetchResolver.waitForAuthElement(
+  ['sib-auth-oidc'],
+  10000 // 10 seconds
+);
+```
+
+##### Integration with LdpStore
+
+The `LdpStore` automatically uses `AuthFetchResolver` when no custom `fetchMethod` is provided in the store options:
+
+```javascript
+import { StoreService, StoreType } from '@startinblox/core';
+
+// Store will automatically use AuthFetchResolver
+StoreService.init({
+  type: StoreType.LDP,
+  options: {
+    // No fetchMethod specified - AuthFetchResolver is used automatically
+  }
+});
+
+// Or provide a custom fetch method
+StoreService.init({
+  type: StoreType.LDP,
+  options: {
+    fetchMethod: customAuthenticatedFetch
+  }
+});
+```
+
+When using the automatic resolution, the store:
+1. Calls `AuthFetchResolver.getAuthFetch()` on initialization
+2. Listens for `sib-auth:activated` events to update the fetch method when auth components initialize later
+
+##### HTML Integration Example
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="@startinblox/core"></script>
+</head>
+<body>
+  <!-- Authentication component -->
+  <sib-auth-oidc auto-login>
+    <sib-auth-provider-oidc
+      data-authority="https://auth.example.com/realms/app/"
+      data-client-id="my-app"
+      data-scope="openid profile"
+    ></sib-auth-provider-oidc>
+  </sib-auth-oidc>
+
+  <!-- Store automatically uses auth from sib-auth-oidc -->
+  <solid-display
+    data-src="https://api.example.com/protected-resource/"
+  ></solid-display>
+</body>
+</html>
+```
+
 #### `fetchAuthn(iri: string, options: any): Promise<Response>`
 
 Make an authenticated HTTP request. Handles authentication automatically if configured.
@@ -513,6 +681,59 @@ interface ServerSearchOptions {
 
 ## Interfaces and Types
 
+### AuthFetchResolver
+
+A utility class for resolving authenticated fetch functions from authentication components in the DOM.
+
+```typescript
+class AuthFetchResolver {
+  /**
+   * Finds any auth element in DOM that has a getFetch method
+   * @param selectors - Array of CSS selectors to check (defaults to ['sib-auth-oidc', 'sib-auth'])
+   * @returns Auth element or null
+   */
+  static findAuthElement(selectors?: string[]): Element | null;
+
+  /**
+   * Gets authenticated fetch function from any compatible auth component
+   * @param selectors - Optional custom selectors to check
+   * @returns Authenticated fetch function or regular fetch as fallback
+   */
+  static getAuthFetch(
+    selectors?: string[]
+  ): (input: RequestInfo, init?: RequestInit) => Promise<Response>;
+
+  /**
+   * Sets up event listener for dynamic auth activation
+   * @param callback - Function to call when auth is activated (receives fetch function)
+   * @param eventName - Custom event name (defaults to 'sib-auth:activated')
+   * @returns Cleanup function to remove the event listener
+   */
+  static onAuthActivated(
+    callback: (fetchFn: (input: RequestInfo, init?: RequestInit) => Promise<Response>) => void,
+    eventName?: string
+  ): () => void;
+
+  /**
+   * Waits for any auth element to appear in DOM
+   * @param selectors - Selectors to watch for (defaults to ['sib-auth-oidc', 'sib-auth'])
+   * @param timeout - Maximum wait time in milliseconds (defaults to 5000ms)
+   * @returns Promise that resolves with auth element or rejects on timeout
+   */
+  static async waitForAuthElement(
+    selectors?: string[],
+    timeout?: number
+  ): Promise<Element>;
+}
+```
+
+**Auth Component Requirements:**
+
+For a component to work with `AuthFetchResolver`, it must:
+1. Be discoverable via CSS selector (e.g., `sib-auth-oidc`, `sib-auth`, or custom selector)
+2. Implement a `getFetch()` method that returns an authenticated fetch function
+3. Optionally dispatch `sib-auth:activated` events with `{ fetch }` detail when authentication is ready
+
 ### Resource
 
 The main resource interface representing a Linked Data resource.
@@ -522,14 +743,14 @@ interface Resource {
   '@id': string;                      // Resource identifier
   '@type'?: string | string[];        // Resource type(s)
   '@context'?: object;                // JSON-LD context
-  
+
   // Methods
   isContainer?(): boolean;            // Check if resource is a container
   isFullResource?(): boolean;         // Check if resource is fully loaded
   getResourceData(): object;          // Get raw resource data
   clientContext: object;              // Client-side context
   serverContext: object;              // Server-side context
-  
+
   // Dynamic properties based on JSON-LD context
   [key: string]: any;
 }
@@ -697,6 +918,95 @@ try {
   console.error('Error creating user:', error.message);
   // Handle validation errors, network errors, etc.
 }
+```
+
+### Authentication Examples
+
+#### Basic Auth Integration
+
+```javascript
+import { AuthFetchResolver } from '@startinblox/core';
+
+// Check if auth element exists
+const authElement = AuthFetchResolver.findAuthElement();
+if (authElement) {
+  console.log('Auth component found:', authElement.tagName);
+} else {
+  console.log('No auth component available');
+}
+
+// Get authenticated fetch
+const authFetch = AuthFetchResolver.getAuthFetch();
+
+// Use it for API calls
+const response = await authFetch('https://api.example.com/protected', {
+  method: 'GET',
+  headers: { 'Accept': 'application/ld+json' }
+});
+```
+
+#### Dynamic Auth Activation
+
+```javascript
+import { StoreService, AuthFetchResolver } from '@startinblox/core';
+
+const store = StoreService.getInstance();
+
+// Listen for auth activation and update store
+const cleanup = AuthFetchResolver.onAuthActivated((authFetch) => {
+  console.log('Auth activated! Updating store...');
+  store.fetch = authFetch;
+
+  // Optionally refetch protected resources
+  store.clearCache('/protected-resource');
+  store.getData('/protected-resource', null, null, null, true);
+});
+
+// Cleanup when component unmounts
+window.addEventListener('beforeunload', cleanup);
+```
+
+#### Waiting for Auth Component
+
+```javascript
+import { AuthFetchResolver } from '@startinblox/core';
+
+async function initializeApp() {
+  try {
+    // Wait for auth component to be ready
+    await AuthFetchResolver.waitForAuthElement(['sib-auth-oidc'], 10000);
+
+    // Auth is ready, initialize your app
+    const authFetch = AuthFetchResolver.getAuthFetch();
+
+    // Make authenticated requests
+    const userData = await authFetch('/api/user/profile');
+    console.log('User data:', await userData.json());
+
+  } catch (error) {
+    console.error('Auth initialization failed:', error);
+    // Fallback to non-authenticated mode or show error
+  }
+}
+
+initializeApp();
+```
+
+#### Custom Auth Selectors
+
+```javascript
+import { AuthFetchResolver, StoreService } from '@startinblox/core';
+
+// If you have a custom auth component
+const customAuthFetch = AuthFetchResolver.getAuthFetch(['my-custom-auth', 'sib-auth-oidc']);
+
+// Use it with the store
+StoreService.init({
+  type: 'ldp',
+  options: {
+    fetchMethod: customAuthFetch
+  }
+});
 ```
 
 ## Type Guards
