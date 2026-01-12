@@ -38,8 +38,8 @@ export function getAuthFetch(
     }
   }
 
-  // Fallback to regular fetch
-  return fetch;
+  // Fallback to regular fetch (bind to globalThis to avoid "Illegal invocation" errors)
+  return fetch.bind(globalThis);
 }
 
 /**

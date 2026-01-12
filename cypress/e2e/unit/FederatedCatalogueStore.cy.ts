@@ -225,15 +225,17 @@ describe('FederatedCatalogueStore', () => {
         cy.wrap(resultPromise, { timeout: 1500 }).then((result: any) => {
           expect(result).to.exist;
           expect(result['@type']).to.equal('ldp:Container');
-          // When targetType is provided, it becomes the container's @id
-          expect(result['@id']).to.equal('gax-trust-framework:ServiceOffering');
+          // Container @id is generated from endpoint hash
+          expect(result['@id']).to.match(
+            /^store:\/\/local\.fc-[a-z0-9]+-default\/$/i,
+          );
           expect(result['ldp:contains']).to.be.an('array').and.not.empty;
         });
 
         cy.wrap(onSave, { timeout: 1500 }).then((payload: any) => {
           expect(payload)
             .to.have.property('@id')
-            .that.equals('gax-trust-framework:ServiceOffering');
+            .that.matches(/^store:\/\/local\.fc-[a-z0-9]+-default\/$/i);
         });
       });
     });
