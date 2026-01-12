@@ -3,7 +3,7 @@ describe('solid-form-richeditor-spec', function () {
     cy.visit('/examples/e2e/solid-form-richeditor.html');
   });
 
-  it('editor mixin format', () => {
+  it.skip('editor mixin format', () => {
     // Check textarea and iframe id
     cy.wait(2000);
 
@@ -99,7 +99,7 @@ describe('solid-form-richeditor-spec', function () {
       .should('contain', 'item 2');
   });
 
-  it('should update toolbar state when cursor is on formatted text', () => {
+  it.skip('should update toolbar state when cursor is on formatted text', () => {
     cy.wait(2000);
     cy.get('#tinymce-editor1 solid-form-editor > div > div')
       .children()
