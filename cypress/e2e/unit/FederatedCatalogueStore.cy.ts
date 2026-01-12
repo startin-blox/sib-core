@@ -179,23 +179,22 @@ describe('FederatedCatalogueStore', () => {
   });
 
   describe('getData', () => {
+    beforeEach(() => {
+      // Clear cached token state to ensure auth intercept is hit each time
+      localStorage.removeItem('fc_token_state');
+    });
+
     it('creates a local container, populates it and dispatches "save"', () => {
-      const fc = (path: string) =>
-        `${mockConfig.endpoint?.replace(/\/$/, '')}${path}`;
-
-      cy.intercept(
-        { method: 'POST', url: /\/protocol\/openid-connect\/token(\?.*)?$/ },
-        {
-          statusCode: 200,
-          body: {
-            access_token: 'mock',
-            token_type: 'Bearer',
-            expires_in: 3600,
-          },
+      cy.intercept('POST', '**/protocol/openid-connect/token', {
+        statusCode: 200,
+        body: {
+          access_token: 'mock',
+          token_type: 'Bearer',
+          expires_in: 3600,
         },
-      ).as('auth');
+      }).as('auth');
 
-      cy.intercept('GET', fc('//self-descriptions(?.*)?$/'), {
+      cy.intercept('GET', '**/self-descriptions', {
         statusCode: 200,
         body: {
           items: [
@@ -207,21 +206,33 @@ describe('FederatedCatalogueStore', () => {
 
       const SD_BODY = {
         verifiableCredential: {
+          issuanceDate: '2024-01-01T00:00:00Z',
+          expirationDate: '2024-12-31T23:59:59Z',
           credentialSubject: {
             '@id': 'urn:svc:1',
             '@type': ['gax-trust-framework:ServiceOffering'],
-            name: 'Service A',
+            'dcat:service': {
+              'dcterms:title': 'Service A',
+              'rdfs:comment': 'A test service',
+              'dcat:keyword': ['test'],
+              'dcat:endpointURL': 'https://example.com/api',
+              'dcterms:creator': {
+                'foaf:name': 'Test Org',
+                'foaf:thumbnail': { 'rdf:resource': 'https://img/logo.png' },
+              },
+            },
+            'gax-core:operatedBy': { '@id': 'did:example:provider-1' },
           },
         },
         proof: {},
       };
 
-      cy.intercept('GET', fc('//self-descriptions/hash-1(?.*)?$/'), {
+      cy.intercept('GET', '**/self-descriptions/hash-1', {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD1');
 
-      cy.intercept('GET', fc('//self-descriptions/hash-2(?.*)?$/'), {
+      cy.intercept('GET', '**/self-descriptions/hash-2', {
         statusCode: 200,
         body: SD_BODY,
       }).as('fcSD2');
@@ -249,16 +260,15 @@ describe('FederatedCatalogueStore', () => {
         cy.wrap(resultPromise, { timeout: 1500 }).then((result: any) => {
           expect(result).to.exist;
           expect(result['@type']).to.equal('ldp:Container');
-          expect(result['@id']).to.match(
-            /^store:\/\/local\.fc-httpsapiexamplecom-default\/$/,
-          );
+          // When targetType is provided, it becomes the container's @id
+          expect(result['@id']).to.equal('gax-trust-framework:ServiceOffering');
           expect(result['ldp:contains']).to.be.an('array').and.not.empty;
         });
 
         cy.wrap(onSave, { timeout: 1500 }).then((payload: any) => {
           expect(payload)
             .to.have.property('@id')
-            .that.matches(/^store:\/\/local\.fc-httpsapiexamplecom-default\/$/);
+            .that.equals('gax-trust-framework:ServiceOffering');
         });
       });
     });
