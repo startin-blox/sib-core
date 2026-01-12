@@ -47,7 +47,7 @@ prepare:
   image: node:24
   before_script:
     - npm cache clean -f
-    - npm ci --force --cache .npm --prefer-offline --omit=optional
+    - npm install --force --cache .npm --prefer-offline
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
   script:
     - npm run build
