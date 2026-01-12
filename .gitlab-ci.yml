@@ -27,7 +27,7 @@ stages:
   - publish
 
 test:
-  image: cypress/base:18.16.0
+  image: cypress/base:24.12.0
   stage: test
   before_script:
     - npm ci --omit=optional
@@ -47,7 +47,7 @@ prepare:
   image: node:24
   before_script:
     - npm cache clean -f
-    - npm install --force --cache .npm --prefer-offline
+    - npm ci --force --cache .npm --prefer-offline
     - npm install -g semantic-release@v17.1 @semantic-release/gitlab@6.0.5
   script:
     - npm run build
