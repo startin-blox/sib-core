@@ -30,7 +30,7 @@ test:
   image: cypress/base:24.12.0
   stage: test
   before_script:
-    - npm ci --omit=optional
+    - npm ci
   script:
     - npm run lint
     - npm run check-types
