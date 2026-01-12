@@ -27,10 +27,6 @@ export class FederatedCatalogueStore implements IStore<any> {
   private pendingGetData: Promise<any> | null = null;
 
   constructor(private cfg: StoreConfig) {
-    if (!this.cfg.login) {
-      throw new Error('Login must be provided for FederatedCatalogueStore');
-    }
-
     if (!this.cfg.endpoint) {
       throw new Error(
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
@@ -51,7 +47,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     } else {
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
-        this.cfg.login,
+        this.cfg.login as KeycloakLoginOptions,
         fetchAuth,
       );
     }
