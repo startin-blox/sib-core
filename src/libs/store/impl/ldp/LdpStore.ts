@@ -48,12 +48,24 @@ export const base_context = {
   control: 'acl:Control',
 };
 
+/**
+ * DSP Headers for protected index access
+ */
+export interface DSPHeaders {
+  agreementId?: string; // DSP-AGREEMENT-ID header
+  participantId?: string; // DSP-PARTICIPANT-ID header
+  consumerConnectorUrl?: string; // DSP-CONSUMER-CONNECTORURL header
+}
+
 export interface IndexQueryOptions {
   dataSrcProfile?: string;
   dataSrcIndex?: string;
+  indexData?: object; // Direct JSON-LD index data (alternative to dataSrcIndex URL)
   dataRdfType: string;
   filterValues: Record<string, any>;
   exactMatchMapping?: Record<string, boolean>; // Mapping of property names to exact match flags
+  dspHeaders?: DSPHeaders; // DSP authentication headers for protected indexes
+  skipResourceFetch?: boolean; // If true, return resource IDs only (as {\"@id\": string} objects) without fetching full resources
 }
 
 // New interface for conjunction queries
@@ -64,6 +76,7 @@ export interface ConjunctionQueryOptions {
   filterValues: Record<string, any>; // Multiple fields
   useConjunction?: boolean; // Flag to enable conjunction strategy
   exactMatchMapping?: Record<string, boolean>; // Mapping of property names to exact match flags
+  dspHeaders?: DSPHeaders; // DSP authentication headers for protected indexes
 }
 
 export interface IndexQueryResult {
@@ -103,8 +116,25 @@ export class LdpStore implements IStore<Resource> {
       'Cache-Control': 'must-revalidate',
     };
     this.contextParser = new JSONLDContextParser.ContextParser();
+    // Create a headers-aware data fetcher for the search provider
+    // This wrapper properly passes DSP headers for protected resource access
+    const headersAwareDataFetcher = (
+      id: string,
+      customHeaders?: Record<string, string>,
+    ): Promise<any> => {
+      return this.getData(
+        id,
+        undefined, // context
+        undefined, // parentId
+        undefined, // localData
+        false, // forceFetch
+        undefined, // serverPagination
+        undefined, // serverSearch
+        customHeaders, // headers - DSP headers for protected resources
+      );
+    };
     this.searchProvider = new SolidIndexingSearchProvider(
-      this.getData.bind(this),
+      headersAwareDataFetcher,
     );
 
     if (this.storeOptions.fetchMethod) {

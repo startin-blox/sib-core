@@ -10,12 +10,13 @@ import type {
 } from '@semantizer/types';
 import { LoaderBase } from '@semantizer/util-loader-base';
 import { StoreService } from '../storeService.ts';
-const store = StoreService.getInstance();
 
 export default class LoaderQuadStreamCore
   extends LoaderBase
   implements LoaderQuadStream
 {
+  private customHeaders: Record<string, string> = {};
+
   public getLoggingComponent(): LoggingComponent {
     return {
       type: 'PACKAGE',
@@ -23,8 +24,31 @@ export default class LoaderQuadStreamCore
     };
   }
 
+  /**
+   * Set custom headers for DSP-protected index loading
+   * These headers will be merged with default store headers
+   */
+  public setCustomHeaders(headers: Record<string, string>): void {
+    console.log('[LoaderQuadStreamCore] setCustomHeaders called:', headers);
+    this.customHeaders = headers;
+  }
+
+  /**
+   * Clear custom headers
+   */
+  public clearCustomHeaders(): void {
+    console.log('[LoaderQuadStreamCore] clearCustomHeaders called');
+    this.customHeaders = {};
+  }
+
   public async load(uri: string, _otherFetch?: Fetch): Promise<Stream<Quad>> {
-    const headers = store.headers;
+    // Get store instance lazily to avoid circular dependency issues
+    const store = StoreService.getInstance();
+    // Merge store headers with custom DSP headers
+    const headers = { ...store.headers, ...this.customHeaders };
+    console.log('[LoaderQuadStreamCore] Loading URI:', uri);
+    console.log('[LoaderQuadStreamCore] Custom headers:', this.customHeaders);
+    console.log('[LoaderQuadStreamCore] Final headers:', headers);
     const response = await store.fetchAuthn(uri, {
       method: 'GET',
       headers: headers,

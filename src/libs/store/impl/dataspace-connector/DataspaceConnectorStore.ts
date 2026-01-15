@@ -54,6 +54,21 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     };
   }
 
+  /**
+   * Create a composite key for asset agreements to avoid collisions
+   * when different providers have assets with the same ID.
+   * Format: "assetId:providerParticipantId" or just "assetId" if no provider specified
+   */
+  private _makeAssetAgreementKey(
+    assetId: string,
+    providerParticipantId?: string,
+  ): string {
+    if (providerParticipantId) {
+      return `${assetId}:${providerParticipantId}`;
+    }
+    return assetId;
+  }
+
   private validateConfig(config: DataspaceConnectorConfig): void {
     const required = [
       'catalogEndpoint',
@@ -194,6 +209,20 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       Object.keys(cleanPolicy),
     );
 
+    // Determine the target (asset ID) - use _offerId parameter or extract from policy
+    const targetAssetId =
+      _offerId ||
+      cleanPolicy.target ||
+      cleanPolicy['odrl:target'] ||
+      policy.target ||
+      policy['odrl:target'];
+
+    if (!targetAssetId) {
+      console.warn(
+        '[DataspaceConnectorStore] No target asset ID found for negotiation',
+      );
+    }
+
     const negotiationRequest = {
       '@context': {
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
@@ -205,24 +234,16 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       policy: {
         '@context': 'http://www.w3.org/ns/odrl.jsonld',
         ...cleanPolicy, // Spread cleaned policy fields (no numeric keys)
-        // Override specific fields if needed
-        '@type': cleanPolicy['@type'] || policy['@type'] || 'Offer',
+        // MUST be Offer for contract negotiations (not Set)
+        '@type': 'odrl:Offer',
         assigner:
           cleanPolicy.assigner ||
           policy.assigner ||
           counterPartyId ||
           'provider',
-        // Ensure target is set (use both forms for compatibility)
-        target:
-          cleanPolicy.target ||
-          cleanPolicy['odrl:target'] ||
-          policy.target ||
-          policy['odrl:target'],
-        'odrl:target':
-          cleanPolicy['odrl:target'] ||
-          cleanPolicy.target ||
-          policy['odrl:target'] ||
-          policy.target,
+        // MUST have target set to the asset ID
+        target: targetAssetId,
+        'odrl:target': targetAssetId,
       },
     };
 
@@ -294,9 +315,13 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Get contract agreement after negotiation is finalized
+   * @param negotiationId - The negotiation ID
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
   async getContractAgreement(
     negotiationId: string,
+    providerParticipantId?: string,
   ): Promise<ContractAgreement | null> {
     await this.ensureAuthenticated();
 
@@ -321,12 +346,15 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       // Store the agreement
       this.contractAgreements.set(agreement['@id'], agreement);
 
-      // Update asset agreement mapping
+      // Update asset agreement mapping using composite key to avoid collisions
+      // when different providers have assets with the same ID
       const assetId = agreement.assetId;
       if (assetId) {
-        const existing = this.assetAgreements.get(assetId);
+        const key = this._makeAssetAgreementKey(assetId, providerParticipantId);
+        const existing = this.assetAgreements.get(key);
         const mapping: AssetAgreementMapping = {
           assetId,
+          providerParticipantId, // Store provider info in mapping
           catalogId: existing?.catalogId,
           agreementId: agreement['@id'],
           agreement,
@@ -336,7 +364,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           createdAt: existing?.createdAt || Date.now(),
           lastUpdated: Date.now(),
         };
-        this.assetAgreements.set(assetId, mapping);
+        this.assetAgreements.set(key, mapping);
       }
 
       return agreement;
@@ -348,9 +376,16 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Get stored contract agreement for an asset
+   * @param assetId - The asset ID
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
-  getStoredContractAgreement(assetId: string): ContractAgreement | null {
-    const mapping = this.assetAgreements.get(assetId);
+  getStoredContractAgreement(
+    assetId: string,
+    providerParticipantId?: string,
+  ): ContractAgreement | null {
+    const key = this._makeAssetAgreementKey(assetId, providerParticipantId);
+    const mapping = this.assetAgreements.get(key);
     return mapping?.agreement || null;
   }
 
@@ -448,16 +483,26 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Get existing agreement for a specific asset
+   * @param assetId - The asset ID
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
-  getAssetAgreement(assetId: string): AssetAgreementMapping | null {
-    return this.assetAgreements.get(assetId) || null;
+  getAssetAgreement(
+    assetId: string,
+    providerParticipantId?: string,
+  ): AssetAgreementMapping | null {
+    const key = this._makeAssetAgreementKey(assetId, providerParticipantId);
+    return this.assetAgreements.get(key) || null;
   }
 
   /**
    * Check if there's an existing valid agreement for the given asset
+   * @param assetId - The asset ID
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
-  hasValidAgreement(assetId: string): boolean {
-    const agreement = this.getAssetAgreement(assetId);
+  hasValidAgreement(assetId: string, providerParticipantId?: string): boolean {
+    const agreement = this.getAssetAgreement(assetId, providerParticipantId);
     return agreement !== null;
   }
 
@@ -508,11 +553,17 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Initiate EDR transfer request for HttpProxy data destination
+   * @param assetId - The asset ID
+   * @param counterPartyAddress - The counter party address
+   * @param contractId - The contract ID
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
   async initiateEDRTransfer(
     assetId: string,
     counterPartyAddress: string,
     contractId: string,
+    providerParticipantId?: string,
   ): Promise<string> {
     await this.ensureAuthenticated();
 
@@ -550,12 +601,13 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     const edrResponse: EDRResponse = await response.json();
     const transferId = edrResponse['@id'];
 
-    // Update asset agreement mapping with transfer ID
-    const mapping = this.assetAgreements.get(assetId);
+    // Update asset agreement mapping with transfer ID using composite key
+    const key = this._makeAssetAgreementKey(assetId, providerParticipantId);
+    const mapping = this.assetAgreements.get(key);
     if (mapping) {
       mapping.transferId = transferId;
       mapping.lastUpdated = Date.now();
-      this.assetAgreements.set(assetId, mapping);
+      this.assetAgreements.set(key, mapping);
     }
 
     return transferId;
@@ -694,6 +746,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Complete flow: negotiate -> agreement -> transfer -> EDR -> data access
+   * @param assetId - The asset ID
+   * @param counterPartyAddress - The counter party address
+   * @param policy - The ODRL policy
+   * @param counterPartyId - Optional counter party ID (provider participant ID)
+   * @param additionalPath - Optional additional path
    */
   async accessAssetData(
     assetId: string,
@@ -703,8 +760,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     additionalPath?: string,
   ): Promise<any> {
     try {
-      // Check if we already have an EDR token for this asset
-      const existingMapping = this.assetAgreements.get(assetId);
+      // Check if we already have an EDR token for this asset (using composite key)
+      const key = this._makeAssetAgreementKey(assetId, counterPartyId);
+      const existingMapping = this.assetAgreements.get(key);
       if (existingMapping?.edrToken && existingMapping.transferId) {
         const edrDataAddress = this.edrTokens.get(existingMapping.transferId);
         if (edrDataAddress) {
@@ -729,15 +787,25 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Continue asset access flow after negotiation is finalized
+   * @param negotiationId - The negotiation ID
+   * @param assetId - The asset ID
+   * @param counterPartyAddress - The counter party address
+   * @param additionalPath - Optional additional path
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
   async continueAssetAccess(
     negotiationId: string,
     assetId: string,
     counterPartyAddress: string,
     additionalPath?: string,
+    providerParticipantId?: string,
   ): Promise<any> {
     try {
-      const agreement = await this.getContractAgreement(negotiationId);
+      const agreement = await this.getContractAgreement(
+        negotiationId,
+        providerParticipantId,
+      );
       if (!agreement) {
         throw new Error('Failed to retrieve contract agreement');
       }
@@ -745,6 +813,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         assetId,
         counterPartyAddress,
         agreement['@id'],
+        providerParticipantId,
       );
       const edrDataAddress = await this.getEDRToken(transferId);
       if (!edrDataAddress) {
@@ -761,12 +830,18 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   /**
    * Access asset data for an asset that already has stored agreement and EDR token
+   * @param assetId - The asset ID
+   * @param additionalPath - Optional additional path
+   * @param providerParticipantId - Optional provider participant ID to differentiate
+   *        assets with the same ID from different providers
    */
   async accessStoredAssetData(
     assetId: string,
     additionalPath?: string,
+    providerParticipantId?: string,
   ): Promise<any> {
-    const mapping = this.assetAgreements.get(assetId);
+    const key = this._makeAssetAgreementKey(assetId, providerParticipantId);
+    const mapping = this.assetAgreements.get(key);
     if (!mapping?.transferId) {
       throw new Error(`No stored transfer information for asset: ${assetId}`);
     }
@@ -778,6 +853,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     return await this.fetchWithEDRToken(edrDataAddress, additionalPath);
   }
+
+  /**
+   * Auto-negotiated contract info returned when fetchProtectedResource triggers negotiation
+   */
+  public static readonly AUTO_NEGOTIATED_CONTRACT_KEY =
+    '__autoNegotiatedContract';
 
   /**
    * Fetch a protected resource from a provider using the Policy Discovery Pattern (449 Retry With).
@@ -792,20 +873,23 @@ export class DataspaceConnectorStore implements IStore<Resource> {
    * 6. Poll negotiation status until FINALIZED
    * 7. Get contract agreement ID
    * 8. Retry original request with DSP-AGREEMENT-ID header
-   * 9. Return data
+   * 9. Return data with contract info (if auto-negotiated)
    *
    * @param resourceUrl - The full URL of the protected resource on the provider
    * @param consumerParticipantId - The consumer's decentralized identifier (DID)
-   * @param providerConnectorUrl - The provider's EDC connector DSP endpoint
+   * @param consumerConnectorUrl - The consumer's connector URL (sent as DSP-CONSUMER-CONNECTORURL header)
+   * @param providerConnectorUrl - The provider's connector URL (used for negotiation)
    * @param existingAgreementId - Optional existing agreement ID to skip negotiation
    * @param maxNegotiationRetries - Maximum attempts to poll negotiation status (default: 30)
    * @param negotiationRetryDelay - Milliseconds between negotiation status checks (default: 2000)
-   * @returns The protected resource data
+   * @returns The protected resource data. If auto-negotiation occurred, the result will have
+   *          an __autoNegotiatedContract property with contract details for storage.
    * @throws Error if the resource cannot be accessed or negotiation fails
    */
   async fetchProtectedResource(
     resourceUrl: string,
     consumerParticipantId: string,
+    consumerConnectorUrl: string,
     providerConnectorUrl: string,
     existingAgreementId?: string,
     maxNegotiationRetries = 30,
@@ -819,7 +903,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       return await this._fetchWithAgreement(
         resourceUrl,
         consumerParticipantId,
-        providerConnectorUrl,
+        consumerConnectorUrl,
         existingAgreementId,
       );
     }
@@ -829,8 +913,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       method: 'GET',
       headers: {
         'DSP-PARTICIPANT-ID': consumerParticipantId,
-        'DSP-CONSUMER-CONNECTORURL': providerConnectorUrl,
-        Accept: 'application/json',
+        'DSP-CONSUMER-CONNECTORURL': consumerConnectorUrl,
+        Accept: 'application/ld+json',
       },
       mode: 'cors',
     });
@@ -851,7 +935,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
 
     // Step 3: Handle 449 - negotiate and retry
-    const agreementId = await this._handlePolicyDiscovery(
+    const contractInfo = await this._handlePolicyDiscovery(
       initialResponse,
       providerConnectorUrl,
       maxNegotiationRetries,
@@ -860,23 +944,45 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     // Step 4: Fetch with the obtained agreement
     console.log('🔄 Retrying resource request with agreement...');
-    return await this._fetchWithAgreement(
+    const data = await this._fetchWithAgreement(
       resourceUrl,
       consumerParticipantId,
-      providerConnectorUrl,
-      agreementId,
+      consumerConnectorUrl,
+      contractInfo.agreementId,
     );
+
+    // Attach auto-negotiated contract info to the result for callers to save
+    if (data && typeof data === 'object') {
+      data[DataspaceConnectorStore.AUTO_NEGOTIATED_CONTRACT_KEY] = {
+        agreementId: contractInfo.agreementId,
+        negotiationId: contractInfo.negotiationId,
+        assetId: contractInfo.assetId,
+        providerId: contractInfo.providerId,
+        providerConnectorUrl,
+        policy: contractInfo.policy,
+        resourceUrl,
+      };
+    }
+
+    return data;
   }
 
   /**
    * Handle Policy Discovery Pattern (449 response) - negotiate and obtain agreement
+   * Returns full contract info for storage by callers
    */
   private async _handlePolicyDiscovery(
     initialResponse: Response,
     providerConnectorUrl: string,
     maxNegotiationRetries: number,
     negotiationRetryDelay: number,
-  ): Promise<string> {
+  ): Promise<{
+    agreementId: string;
+    negotiationId: string;
+    assetId: string;
+    providerId: string;
+    policy: any;
+  }> {
     // Parse the 449 response
     console.log('📋 Contract negotiation required (449 response)');
     const errorResponse = await initialResponse.json();
@@ -896,13 +1002,20 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       `📜 Selected policy: ${bestPolicy.policy_id} (openness: ${bestPolicy.openness_score})`,
     );
 
+    // Use provider_id from 449 response as the counterPartyId (assigner)
+    // The participant_id in 449 response is the consumer's ID, not the provider's
+    const providerId =
+      errorResponse.provider_id || errorResponse.participant_id;
+    const assetId = errorResponse.asset_id;
+    console.log(`🏢 Provider ID for negotiation: ${providerId}`);
+
     // Initiate contract negotiation
     console.log('🤝 Initiating contract negotiation...');
     const negotiationId = await this.negotiateContract(
       providerConnectorUrl,
-      errorResponse.asset_id,
+      assetId,
       bestPolicy.policy,
-      errorResponse.participant_id,
+      providerId, // Use provider_id, not participant_id (consumer)
     );
 
     console.log(`📝 Negotiation initiated: ${negotiationId}`);
@@ -917,7 +1030,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
       if (status.state === 'FINALIZED') {
-        const agreement = await this.getContractAgreement(negotiationId);
+        // Pass providerId to properly key the agreement mapping
+        const agreement = await this.getContractAgreement(
+          negotiationId,
+          providerId,
+        );
         if (!agreement) {
           throw new Error(
             `Failed to retrieve contract agreement for negotiation ${negotiationId}`,
@@ -926,7 +1043,14 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
         console.log(`✅ Agreement obtained: ${agreement['@id']}`);
 
-        return agreement['@id'];
+        // Return full contract info for storage
+        return {
+          agreementId: agreement['@id'],
+          negotiationId,
+          assetId,
+          providerId,
+          policy: bestPolicy.policy,
+        };
       }
 
       if (status.state === 'TERMINATED') {
@@ -960,7 +1084,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         'DSP-PARTICIPANT-ID': consumerParticipantId,
         'DSP-CONSUMER-CONNECTORURL': providerConnectorUrl,
         'DSP-AGREEMENT-ID': agreementId,
-        Accept: 'application/json',
+        Accept: 'application/ld+json',
       },
       mode: 'cors',
     });

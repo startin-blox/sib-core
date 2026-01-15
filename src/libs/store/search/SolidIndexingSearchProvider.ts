@@ -1,5 +1,6 @@
 import type {
   ConjunctionQueryOptions,
+  DSPHeaders,
   IndexQueryOptions,
 } from '../impl/ldp/LdpStore.ts';
 import type { SearchProvider } from './SearchProvider.ts';
@@ -16,9 +17,57 @@ import {
 } from '@semantizer/util-index-querying-strategy-shacl-final';
 import { ValidatorImpl } from '@semantizer/util-shacl-validator-default';
 import N3 from 'n3';
+import type LoaderQuadStreamCore from '../semantizer/index-loader-quad.ts';
+import type IndexLoader from '../semantizer/index-loader.ts';
+
+// Import the global loader types
+declare global {
+  var SEMANTIZER_INDEX_LOADER: IndexLoader;
+  var SEMANTIZER_QUAD_STREAM_LOADER: LoaderQuadStreamCore;
+}
 
 export class SolidIndexingSearchProvider implements SearchProvider {
-  constructor(private dataFetcher: (id: string) => Promise<any>) {}
+  constructor(
+    private dataFetcher: (
+      id: string,
+      headers?: Record<string, string>,
+    ) => Promise<any>,
+  ) {}
+
+  /**
+   * Get the global index loader used by SEMANTIZER
+   * This allows setting custom headers for protected index access
+   */
+  private getGlobalIndexLoader(): IndexLoader {
+    return globalThis.SEMANTIZER_INDEX_LOADER;
+  }
+
+  /**
+   * Get the global quad stream loader used by SEMANTIZER
+   * This allows setting custom headers for protected sub-index access
+   */
+  private getGlobalQuadStreamLoader(): LoaderQuadStreamCore {
+    return globalThis.SEMANTIZER_QUAD_STREAM_LOADER;
+  }
+
+  /**
+   * Build HTTP headers from DSP headers configuration
+   * @param dspHeaders - DSP headers configuration
+   * @returns Record of header name to value
+   */
+  private buildHttpHeaders(dspHeaders?: DSPHeaders): Record<string, string> {
+    const headers: Record<string, string> = {};
+    if (dspHeaders?.agreementId) {
+      headers['DSP-AGREEMENT-ID'] = dspHeaders.agreementId;
+    }
+    if (dspHeaders?.participantId) {
+      headers['DSP-PARTICIPANT-ID'] = dspHeaders.participantId;
+    }
+    if (dspHeaders?.consumerConnectorUrl) {
+      headers['DSP-CONSUMER-CONNECTORURL'] = dspHeaders.consumerConnectorUrl;
+    }
+    return headers;
+  }
 
   /**
    * Validate if a string is a valid URL
@@ -51,32 +100,86 @@ export class SolidIndexingSearchProvider implements SearchProvider {
   }
 
   /**
+   * Check if options have valid index source (URL or direct data)
+   * @param options - Query options
+   * @returns true if either URL or indexData is provided
+   */
+  hasValidIndexSource(options: IndexQueryOptions): boolean {
+    return (
+      this.hasValidIndexUrl(options) ||
+      (options.indexData !== undefined && options.indexData !== null)
+    );
+  }
+
+  /**
+   * Build an index from JSON-LD data directly
+   * Uses a data URL to avoid blob URL security restrictions
+   * @param jsonLdData - The JSON-LD object to parse
+   * @returns Promise resolving to the index with mixins applied
+   */
+  private async buildIndexFromJsonLd(jsonLdData: object): Promise<any> {
+    const jsonString = JSON.stringify(jsonLdData);
+
+    // Create a data URL from the JSON-LD string
+    // Data URLs are not subject to the same CSP restrictions as blob URLs
+    const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
+    const dataUrl = `data:application/ld+json;base64,${base64Data}`;
+
+    // Load through SEMANTIZER with indexFactory to get proper index mixins
+    const index = await SEMANTIZER.load(dataUrl, indexFactory);
+    return index;
+  }
+
+  /**
    * Query an index using SHACL shapes and return matching resources
    * @param options - Query options including data source, RDF type, and filter values
    * @returns Promise resolving to an array of matching resources
    */
   async query(options: IndexQueryOptions): Promise<any[]> {
-    // Validate dataSrcIndex before proceeding
-    let indexUri: string;
+    // Build DSP headers if provided
+    const dspHttpHeaders = this.buildHttpHeaders(options.dspHeaders);
+    const hasDspHeaders = Object.keys(dspHttpHeaders).length > 0;
 
-    // Path 1: Direct index specification
-    if (options.dataSrcIndex) {
-      indexUri = options.dataSrcIndex;
-    }
-    // Path 2: Profile-based discovery
-    else if (options.dataSrcProfile) {
-      indexUri = await this.discoverIndexFromProfile(options.dataSrcProfile);
-    } else {
-      console.warn('Either dataSrcIndex or dataSrcProfile must be specified');
-      return [];
-    }
-
-    // Validate the discovered/resolved URI
-    if (!this.isValidUrl(indexUri)) {
-      console.warn(
-        '⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid index URI, returning empty results',
+    // Set DSP headers on BOTH global loaders for protected index/sub-index access
+    // This must be done BEFORE any index loading, including sub-indexes
+    // - IndexLoader is used for the main index
+    // - LoaderQuadStreamCore is used for sub-indexes
+    if (hasDspHeaders) {
+      console.log(
+        '[SolidIndexingSearchProvider] Setting DSP headers on global loaders:',
+        dspHttpHeaders,
       );
-      return [];
+      this.getGlobalIndexLoader().setCustomHeaders(dspHttpHeaders);
+      this.getGlobalQuadStreamLoader().setCustomHeaders(dspHttpHeaders);
+    }
+
+    // Determine index source: direct JSON-LD data or URL
+    let indexUri: string | null = null;
+    const hasDirectData =
+      options.indexData !== undefined && options.indexData !== null;
+
+    if (!hasDirectData) {
+      // Path 1: Direct index specification via URL
+      if (options.dataSrcIndex) {
+        indexUri = options.dataSrcIndex;
+      }
+      // Path 2: Profile-based discovery
+      else if (options.dataSrcProfile) {
+        indexUri = await this.discoverIndexFromProfile(options.dataSrcProfile);
+      } else {
+        console.warn(
+          'Either dataSrcIndex, dataSrcProfile, or indexData must be specified',
+        );
+        return [];
+      }
+
+      // Validate the discovered/resolved URI
+      if (!this.isValidUrl(indexUri)) {
+        console.warn(
+          '⚠️ [SolidIndexingSearchProvider.queryIndex] Invalid index URI, returning empty results',
+        );
+        return [];
+      }
     }
 
     const filterFields = Object.entries(options.filterValues);
@@ -123,6 +226,15 @@ export class SolidIndexingSearchProvider implements SearchProvider {
     const shaclValidator = new ValidatorImpl();
     const entryTransformer = new EntryStreamTransformerDefaultImpl(SEMANTIZER);
 
+    // Debug: log the generated shapes
+    console.log('[SolidIndexingSearchProvider] Generated shapes for query:');
+    console.log('[SolidIndexingSearchProvider] - targetShape:', targetShape);
+    console.log(
+      '[SolidIndexingSearchProvider] - subIndexShape:',
+      subIndexShape,
+    );
+    console.log('[SolidIndexingSearchProvider] - finalShape:', finalShape);
+
     const finalIndexStrategy = new IndexStrategyFinalShapeDefaultImpl(
       finalIndexShapeGraph,
       subIndexShapeGraph,
@@ -135,8 +247,36 @@ export class SolidIndexingSearchProvider implements SearchProvider {
       shaclValidator,
       entryTransformer,
     );
-    const index = await SEMANTIZER.load(indexUri, indexFactory);
+
+    // Load index from JSON-LD data or URL
+    let index: any;
+    if (hasDirectData && options.indexData) {
+      // Build index from direct JSON-LD data
+      index = await this.buildIndexFromJsonLd(options.indexData);
+    } else if (indexUri) {
+      // Load index from URL
+      index = await SEMANTIZER.load(indexUri, indexFactory);
+    } else {
+      console.warn(
+        '⚠️ [SolidIndexingSearchProvider.queryIndex] No index source available',
+      );
+      return [];
+    }
+
+    console.log('[SolidIndexingSearchProvider] Starting index query...');
+    console.log(
+      '[SolidIndexingSearchProvider] Index loaded, starting query with shaclStrategy',
+    );
+
     const resultStream = index.mixins.index.query(shaclStrategy);
+
+    // Add error listener to catch any strategy errors
+    resultStream.on('error', (err: any) => {
+      console.error('[SolidIndexingSearchProvider] Stream error:', err);
+    });
+
+    // Check if we should skip fetching full resources (return IDs only)
+    const skipResourceFetch = options.skipResourceFetch === true;
 
     return new Promise<any[]>((resolve, reject) => {
       const resultIds: string[] = [];
@@ -146,7 +286,12 @@ export class SolidIndexingSearchProvider implements SearchProvider {
 
       const checkComplete = () => {
         if (streamEnded && pendingFetches === 0) {
-          resolve(resources);
+          // If skipResourceFetch, return IDs as objects; otherwise return full resources
+          if (skipResourceFetch) {
+            resolve(resultIds.map(id => ({ '@id': id })));
+          } else {
+            resolve(resources);
+          }
         }
       };
 
@@ -154,9 +299,18 @@ export class SolidIndexingSearchProvider implements SearchProvider {
         if (result.value) {
           resultIds.push(result.value);
 
+          // Skip fetching full resources if option is set
+          if (skipResourceFetch) {
+            return;
+          }
+
           pendingFetches++;
           try {
-            const resource = await this.dataFetcher(result.value);
+            // Pass DSP headers to dataFetcher for protected resource access
+            const resource = await this.dataFetcher(
+              result.value,
+              hasDspHeaders ? dspHttpHeaders : undefined,
+            );
             if (resource) {
               resources.push(resource);
             } else {
@@ -186,6 +340,11 @@ export class SolidIndexingSearchProvider implements SearchProvider {
 
       resultStream.on('end', () => {
         streamEnded = true;
+        // Clear DSP headers after query completes
+        if (hasDspHeaders) {
+          this.getGlobalIndexLoader().clearCustomHeaders();
+          this.getGlobalQuadStreamLoader().clearCustomHeaders();
+        }
         checkComplete();
       });
     });
@@ -222,6 +381,7 @@ export class SolidIndexingSearchProvider implements SearchProvider {
           [propertyName]: filterValue,
         },
         exactMatchMapping: options.exactMatchMapping,
+        dspHeaders: options.dspHeaders, // Pass DSP headers to sub-queries
       };
       return this.query(queryOptions);
     });

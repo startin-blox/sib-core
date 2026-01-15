@@ -351,6 +351,8 @@ export interface EDRDataAddress {
 // Asset-Agreement mapping for storage
 export interface AssetAgreementMapping {
   assetId: string;
+  /** Provider participant ID to differentiate assets with the same ID from different providers */
+  providerParticipantId?: string;
   catalogId?: string;
   agreementId: string;
   agreement: ContractAgreement;

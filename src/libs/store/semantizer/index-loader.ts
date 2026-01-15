@@ -10,9 +10,10 @@ import type {
 } from '@semantizer/types';
 import { LoaderBase } from '@semantizer/util-loader-base';
 import { StoreService } from '../storeService.ts';
-const store = StoreService.getInstance();
 
 export default class IndexLoader extends LoaderBase implements Loader {
+  private customHeaders: Record<string, string> = {};
+
   override getLoggingComponent(): LoggingComponent {
     return {
       type: 'PACKAGE',
@@ -20,8 +21,31 @@ export default class IndexLoader extends LoaderBase implements Loader {
     };
   }
 
+  /**
+   * Set custom headers for DSP-protected index loading
+   * These headers will be merged with default store headers
+   */
+  public setCustomHeaders(headers: Record<string, string>): void {
+    console.log('[IndexLoader] setCustomHeaders called:', headers);
+    this.customHeaders = headers;
+  }
+
+  /**
+   * Clear custom headers
+   */
+  public clearCustomHeaders(): void {
+    console.log('[IndexLoader] clearCustomHeaders called');
+    this.customHeaders = {};
+  }
+
   public async load(uri: string): Promise<DatasetCoreRdfjs<Quad, Quad>> {
-    const headers = store.headers;
+    // Get store instance lazily to avoid circular dependency issues
+    const store = StoreService.getInstance();
+    // Merge store headers with custom DSP headers
+    const headers = { ...store.headers, ...this.customHeaders };
+    console.log('[IndexLoader] Loading URI:', uri);
+    console.log('[IndexLoader] Custom headers:', this.customHeaders);
+    console.log('[IndexLoader] Final headers:', headers);
     const response = await store.fetchAuthn(uri, {
       method: 'GET',
       headers: headers,
