@@ -374,7 +374,9 @@ export class FederatedCatalogueStore implements IStore<any> {
    */
   private async getFullData(_targetType: string): Promise<Resource> {
     if (!this.fcApi) {
-      console.warn('[FederatedCatalogueStore] API not initialized yet, waiting for auth');
+      console.warn(
+        '[FederatedCatalogueStore] API not initialized yet, waiting for auth',
+      );
       return await this.initLocalDataSourceContainer();
     }
 
