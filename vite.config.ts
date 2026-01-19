@@ -15,16 +15,15 @@ export default defineConfig({
   },
   define: {
     global: 'globalThis',
+    'process.env': '{}',
   },
   optimizeDeps: {
-    include: ['stream-browserify', 'buffer'],
+    include: ['stream-browserify', 'buffer', 'loglevel'],
     esbuildOptions: {
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-          process: true,
-        }),
-      ],
+      define: {
+        global: 'globalThis',
+        'process.env': '{}',
+      },
     },
   },
   plugins: [

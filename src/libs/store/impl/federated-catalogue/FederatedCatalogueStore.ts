@@ -39,18 +39,21 @@ export class FederatedCatalogueStore implements IStore<any> {
     );
 
     if (fetchAuth && !this.cfg.login) {
+      // Use sib-auth's authenticated fetch directly (no Keycloak login)
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
         {} as KeycloakLoginOptions,
         fetchAuth,
       );
-    } else {
+    } else if (this.cfg.login) {
+      // Use configured Keycloak credentials
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
         this.cfg.login as KeycloakLoginOptions,
         fetchAuth,
       );
     }
+    // If neither fetchAuth nor login is available, fcApi will be set by resolveFetch when auth activates
 
     this.cache = new InMemoryCacheManager();
 
@@ -85,8 +88,12 @@ export class FederatedCatalogueStore implements IStore<any> {
       );
     }
     if (event.detail.fetch) {
+      // When using authenticated fetch from sib-auth, pass empty login options
+      // This tells FederatedCatalogueAPIWrapper to use the fetch directly
+      // instead of doing its own Keycloak token management
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
+        {} as KeycloakLoginOptions,
         event.detail.fetch,
       );
     }
@@ -367,7 +374,8 @@ export class FederatedCatalogueStore implements IStore<any> {
    */
   private async getFullData(_targetType: string): Promise<Resource> {
     if (!this.fcApi) {
-      throw new Error('Federated API not initialized');
+      console.warn('[FederatedCatalogueStore] API not initialized yet, waiting for auth');
+      return await this.initLocalDataSourceContainer();
     }
 
     const resource = await this.initLocalDataSourceContainer();
