@@ -150,6 +150,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   /**
    * Initialize the store with OIDC authentication
    * Only proceeds once auth is confirmed ready with a valid token
+   * Falls back to unauthenticated fetch if no auth element is present (e.g., test environment)
    */
   private async initializeWithOidcAuth(): Promise<void> {
     if (!this.cfg.endpoint) {
@@ -161,8 +162,15 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     const authElement = AuthFetchResolver.findAuthElement();
     if (!authElement) {
+      // No auth element found - initialize with basic fetch for test/anonymous mode
+      // This allows the store to work in test environments or when no auth is required
       console.log(
-        '[FederatedCatalogueStore] No auth element found, waiting for auth activation event',
+        '[FederatedCatalogueStore] No auth element found, initializing with basic fetch (anonymous mode)',
+      );
+      this.fcApi = getFederatedCatalogueAPIWrapper(
+        this.cfg.endpoint,
+        {} as KeycloakLoginOptions,
+        fetch.bind(window),
       );
       return;
     }
