@@ -17,9 +17,44 @@ import type {
 } from './FederatedCatalogueAPIWrapper.ts';
 import type { DcatService, Destination, Source } from './interfaces.ts';
 
+/**
+ * Check if auth element has a valid OIDC session ready in localStorage
+ */
+function checkOidcAuthReady(authElement: Element): boolean {
+  try {
+    const provider = authElement.querySelector(
+      'sib-auth-provider-oidc',
+    ) as HTMLElement | null;
+    if (provider?.dataset?.authority && provider?.dataset?.clientId) {
+      const storageKey = `oidc.user:${provider.dataset.authority}:${provider.dataset.clientId}`;
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        const user = JSON.parse(stored);
+        if (user.expires_at && user.expires_at * 1000 > Date.now()) {
+          return true;
+        }
+      }
+    }
+    // Also check for alternative client-name attribute
+    if (provider?.dataset?.authority && provider?.dataset?.clientName) {
+      const storageKey = `oidc.user:${provider.dataset.authority}:${provider.dataset.clientName}`;
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        const user = JSON.parse(stored);
+        if (user.expires_at && user.expires_at * 1000 > Date.now()) {
+          return true;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('[FederatedCatalogueStore] Error checking auth ready:', error);
+  }
+  return false;
+}
+
 export class FederatedCatalogueStore implements IStore<any> {
   cache: CacheManagerInterface;
-  private fcApi: FederatedCatalogueAPIWrapper | null;
+  private fcApi: FederatedCatalogueAPIWrapper | null = null;
   private metadataManager: LocalStorageCacheMetadataManager | null;
   private enableCaching: boolean;
   private cleanupAuth?: () => void;
@@ -33,27 +68,35 @@ export class FederatedCatalogueStore implements IStore<any> {
       );
     }
 
-    const fetchAuth = AuthFetchResolver.getAuthFetch();
+    // Always listen for auth activation events
     this.cleanupAuth = AuthFetchResolver.onAuthActivated(
       this.resolveFetch.bind(this),
     );
 
-    if (fetchAuth && !this.cfg.login) {
-      // Use sib-auth's authenticated fetch directly (no Keycloak login)
-      this.fcApi = getFederatedCatalogueAPIWrapper(
-        this.cfg.endpoint,
-        {} as KeycloakLoginOptions,
-        fetchAuth,
-      );
-    } else if (this.cfg.login) {
-      // Use configured Keycloak credentials
+    if (this.cfg.login) {
+      // Use configured Keycloak credentials - can initialize immediately
+      const fetchAuth = AuthFetchResolver.getAuthFetch();
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
         this.cfg.login as KeycloakLoginOptions,
         fetchAuth,
       );
+    } else {
+      // No login config - we rely on sib-auth OIDC
+      // Only initialize fcApi if auth is already ready (has valid token in localStorage)
+      const authElement = AuthFetchResolver.findAuthElement();
+      if (authElement && checkOidcAuthReady(authElement)) {
+        const fetchAuth = (authElement as any).getFetch?.();
+        if (typeof fetchAuth === 'function') {
+          this.fcApi = getFederatedCatalogueAPIWrapper(
+            this.cfg.endpoint,
+            {} as KeycloakLoginOptions,
+            fetchAuth,
+          );
+        }
+      }
+      // If auth is not ready, fcApi stays null and will be set by resolveFetch when auth activates
     }
-    // If neither fetchAuth nor login is available, fcApi will be set by resolveFetch when auth activates
 
     this.cache = new InMemoryCacheManager();
 
@@ -96,8 +139,45 @@ export class FederatedCatalogueStore implements IStore<any> {
         {} as KeycloakLoginOptions,
         event.detail.fetch,
       );
+
+      // Trigger a refetch now that auth is ready
+      // This fixes the race condition where initial fetch returned empty due to missing auth
+      console.log(
+        '[FederatedCatalogueStore] Auth activated, triggering data refetch',
+      );
+      this.triggerRefetch();
     }
   };
+
+  /**
+   * Trigger a refetch of data by dispatching a save event for the container
+   * This causes components bound to this store to refresh their data
+   */
+  private async triggerRefetch(): Promise<void> {
+    // Small delay to ensure fcApi is fully ready
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Use the endpoint URL for the save event - this contains "fc" keyword
+    // and doesn't start with "store://" which would be filtered out
+    const resourceId = this.cfg.endpoint || this.buildContainerId();
+
+    // Dispatch save event to trigger component refresh
+    // The fc-catalog component listens for 'save' events with keywords like "fc"
+    document.dispatchEvent(
+      new CustomEvent('save', {
+        detail: { resource: { '@id': resourceId } },
+        bubbles: true,
+      }),
+    );
+
+    // Also dispatch a specific event for stores that need explicit refresh
+    document.dispatchEvent(
+      new CustomEvent('fc-store-auth-ready', {
+        detail: { storeEndpoint: this.cfg.endpoint, containerId: resourceId },
+        bubbles: true,
+      }),
+    );
+  }
 
   /**
    * Handle page reload detection and clear cache if it's a new session
@@ -162,7 +242,11 @@ export class FederatedCatalogueStore implements IStore<any> {
       const targetType = this.resolveTargetType(args);
 
       if (!this.fcApi) {
-        throw new Error('Federated API not initialized, returning empty data.');
+        // API not initialized yet (waiting for auth), return empty container
+        console.warn(
+          '[FederatedCatalogueStore] API not initialized yet, waiting for auth activation',
+        );
+        return await this.initLocalDataSourceContainer();
       }
 
       // Check if we have cached data and metadata is valid

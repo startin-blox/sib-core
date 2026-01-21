@@ -1183,7 +1183,18 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   // Authentication management
   private async ensureAuthenticated(): Promise<void> {
-    if (this.authToken && this.headers) return;
+    console.log('🔐 [DSP Store] ensureAuthenticated called:', {
+      hasAuthToken: !!this.authToken,
+      authMethod: this.config.authMethod,
+      hasDspApiKey: !!this.config.dspApiKey,
+      currentHeaders: Object.keys(this.headers || {}),
+    });
+
+    // Only skip if already authenticated with the correct method
+    if (this.authToken && this.headers?.['X-Api-Key']) {
+      console.log('🔐 [DSP Store] Already authenticated, skipping');
+      return;
+    }
 
     switch (this.config.authMethod) {
       case 'dsp-api-key':
@@ -1197,6 +1208,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           ...this.headers,
           'X-Api-Key': this.authToken,
         };
+        console.log('🔐 [DSP Store] Set X-Api-Key header');
         break;
 
       case 'bearer':
