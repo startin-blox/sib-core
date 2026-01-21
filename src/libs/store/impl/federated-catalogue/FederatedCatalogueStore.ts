@@ -18,30 +18,45 @@ import type {
 import type { DcatService, Destination, Source } from './interfaces.ts';
 
 /**
- * Check if auth element has a valid OIDC session ready in localStorage
+ * Check if auth element has a valid authenticated session
+ * Uses the auth element's isAuthenticated() method if available, otherwise checks localStorage
  */
-function checkOidcAuthReady(authElement: Element): boolean {
+async function checkAuthElementReady(authElement: Element): Promise<boolean> {
   try {
+    // First, try using the auth element's isAuthenticated method
+    if (typeof (authElement as any).isAuthenticated === 'function') {
+      const isAuth = await (authElement as any).isAuthenticated();
+      if (isAuth) {
+        return true;
+      }
+    }
+
+    // Also check if getAccessToken returns a value
+    if (typeof (authElement as any).getAccessToken === 'function') {
+      const token = await (authElement as any).getAccessToken();
+      if (token) {
+        return true;
+      }
+    }
+
+    // Fallback: check localStorage for OIDC token
     const provider = authElement.querySelector(
       'sib-auth-provider-oidc',
     ) as HTMLElement | null;
-    if (provider?.dataset?.authority && provider?.dataset?.clientId) {
-      const storageKey = `oidc.user:${provider.dataset.authority}:${provider.dataset.clientId}`;
+    const authority = provider?.dataset?.authority;
+    const clientId =
+      provider?.dataset?.clientId || provider?.dataset?.clientName;
+
+    if (authority && clientId) {
+      const storageKey = `oidc.user:${authority}:${clientId}`;
       const stored = localStorage.getItem(storageKey);
       if (stored) {
         const user = JSON.parse(stored);
-        if (user.expires_at && user.expires_at * 1000 > Date.now()) {
-          return true;
-        }
-      }
-    }
-    // Also check for alternative client-name attribute
-    if (provider?.dataset?.authority && provider?.dataset?.clientName) {
-      const storageKey = `oidc.user:${provider.dataset.authority}:${provider.dataset.clientName}`;
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        const user = JSON.parse(stored);
-        if (user.expires_at && user.expires_at * 1000 > Date.now()) {
+        if (
+          user.expires_at &&
+          user.expires_at * 1000 > Date.now() &&
+          user.access_token
+        ) {
           return true;
         }
       }
@@ -49,6 +64,29 @@ function checkOidcAuthReady(authElement: Element): boolean {
   } catch (error) {
     console.warn('[FederatedCatalogueStore] Error checking auth ready:', error);
   }
+  return false;
+}
+
+/**
+ * Wait for auth element to have an active authenticated session
+ * This handles the race condition where sib-auth:activated fires before token exchange completes
+ */
+async function waitForAuthReady(maxWaitMs = 5000): Promise<boolean> {
+  const startTime = Date.now();
+  const checkInterval = 100;
+
+  while (Date.now() - startTime < maxWaitMs) {
+    const authElement = AuthFetchResolver.findAuthElement();
+    if (authElement && (await checkAuthElementReady(authElement))) {
+      console.log('[FederatedCatalogueStore] Auth is now ready');
+      return true;
+    }
+    await new Promise(resolve => setTimeout(resolve, checkInterval));
+  }
+
+  console.warn(
+    `[FederatedCatalogueStore] Timed out waiting for auth after ${maxWaitMs}ms`,
+  );
   return false;
 }
 
@@ -83,19 +121,8 @@ export class FederatedCatalogueStore implements IStore<any> {
       );
     } else {
       // No login config - we rely on sib-auth OIDC
-      // Only initialize fcApi if auth is already ready (has valid token in localStorage)
-      const authElement = AuthFetchResolver.findAuthElement();
-      if (authElement && checkOidcAuthReady(authElement)) {
-        const fetchAuth = (authElement as any).getFetch?.();
-        if (typeof fetchAuth === 'function') {
-          this.fcApi = getFederatedCatalogueAPIWrapper(
-            this.cfg.endpoint,
-            {} as KeycloakLoginOptions,
-            fetchAuth,
-          );
-        }
-      }
-      // If auth is not ready, fcApi stays null and will be set by resolveFetch when auth activates
+      // Initialize fcApi asynchronously once auth is confirmed ready
+      this.initializeWithOidcAuth();
     }
 
     this.cache = new InMemoryCacheManager();
@@ -121,16 +148,71 @@ export class FederatedCatalogueStore implements IStore<any> {
   }
 
   /**
+   * Initialize the store with OIDC authentication
+   * Only proceeds once auth is confirmed ready with a valid token
+   */
+  private async initializeWithOidcAuth(): Promise<void> {
+    if (!this.cfg.endpoint) {
+      console.warn(
+        '[FederatedCatalogueStore] No endpoint configured, skipping OIDC initialization',
+      );
+      return;
+    }
+
+    const authElement = AuthFetchResolver.findAuthElement();
+    if (!authElement) {
+      console.log(
+        '[FederatedCatalogueStore] No auth element found, waiting for auth activation event',
+      );
+      return;
+    }
+
+    // Check if auth is already ready
+    const isReady = await checkAuthElementReady(authElement);
+    if (isReady) {
+      const fetchAuth = (authElement as any).getFetch?.();
+      if (typeof fetchAuth === 'function') {
+        console.log(
+          '[FederatedCatalogueStore] Auth is ready, initializing fcApi',
+        );
+        this.fcApi = getFederatedCatalogueAPIWrapper(
+          this.cfg.endpoint,
+          {} as KeycloakLoginOptions,
+          fetchAuth,
+        );
+      }
+    } else {
+      console.log(
+        '[FederatedCatalogueStore] Auth not ready yet, will wait for activation event',
+      );
+    }
+  }
+
+  /**
    * Resolve fetch and session from auth activation event
    * @param event - sib-auth:activated event
    */
-  resolveFetch = (event: any) => {
+  resolveFetch = async (event: any) => {
     if (!this.cfg.endpoint) {
       throw new Error(
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
       );
     }
     if (event.detail.fetch) {
+      // Wait for auth to be truly ready (token available) before initializing
+      // This handles the race condition where the event fires before token exchange completes
+      console.log(
+        '[FederatedCatalogueStore] Auth activation event received, verifying token is ready...',
+      );
+
+      const isReady = await waitForAuthReady(5000);
+      if (!isReady) {
+        console.warn(
+          '[FederatedCatalogueStore] Auth activation event received but token not ready, skipping initialization',
+        );
+        return;
+      }
+
       // When using authenticated fetch from sib-auth, pass empty login options
       // This tells FederatedCatalogueAPIWrapper to use the fetch directly
       // instead of doing its own Keycloak token management
@@ -143,7 +225,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       // Trigger a refetch now that auth is ready
       // This fixes the race condition where initial fetch returned empty due to missing auth
       console.log(
-        '[FederatedCatalogueStore] Auth activated, triggering data refetch',
+        '[FederatedCatalogueStore] Auth verified and ready, triggering data refetch',
       );
       this.triggerRefetch();
     }
