@@ -1,4 +1,5 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
+import { AuthFetchResolver } from '../../auth/AuthFetchResolver.ts';
 import type { CacheManagerInterface } from '../../cache/CacheManager.ts';
 import { InMemoryCacheManager } from '../../cache/InMemory.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
@@ -42,6 +43,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   private contractAgreements: Map<string, ContractAgreement> = new Map();
   private assetAgreements: Map<string, AssetAgreementMapping> = new Map();
   private edrTokens: Map<string, EDRDataAddress> = new Map();
+  private _fetch: typeof fetch;
+  // @ts-ignore assigned in constructor, used for cleanup lifecycle
+  private cleanupAuth?: () => void;
+  private _oauth2BearerToken: string | null = null;
+  private _oauth2TokenExpiresAt = 0;
 
   constructor(config: DataspaceConnectorConfig) {
     this.validateConfig(config);
@@ -52,7 +58,27 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     };
+
+    const authFetch = AuthFetchResolver.getAuthFetch();
+    this._fetch = authFetch.bind ? authFetch.bind(globalThis) : authFetch;
+    console.debug(
+      '[DSC] constructor: authFetch resolved, is native fetch?',
+      authFetch === fetch,
+    );
+    this.cleanupAuth = AuthFetchResolver.onAuthActivated(
+      this._resolveFetch.bind(this),
+    );
   }
+
+  private _resolveFetch = (event: any) => {
+    console.debug('[DSC] onAuthActivated fired, detail:', event.detail);
+    if (event.detail?.fetch) {
+      this._fetch = event.detail.fetch.bind
+        ? event.detail.fetch.bind(globalThis)
+        : event.detail.fetch;
+      console.debug('[DSC] _fetch updated from auth event');
+    }
+  };
 
   /**
    * Create a composite key for asset agreements to avoid collisions
@@ -1192,8 +1218,17 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     // Only skip if already authenticated with the correct method
     if (this.authToken && this.headers?.['X-Api-Key']) {
-      console.log('🔐 [DSP Store] Already authenticated, skipping');
-      return;
+      // In dual-header mode (dsp-api-key + bearerTokenProxyEndpoint), check if Bearer token needs refresh
+      if (
+        this.config.bearerTokenProxyEndpoint &&
+        this._isOAuth2TokenExpired()
+      ) {
+        console.log('🔐 [DSP Store] Bearer token expired, refreshing...');
+        // Fall through to refresh Bearer token
+      } else {
+        console.log('🔐 [DSP Store] Already authenticated, skipping');
+        return;
+      }
     }
 
     switch (this.config.authMethod) {
@@ -1209,6 +1244,26 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           'X-Api-Key': this.authToken,
         };
         console.log('🔐 [DSP Store] Set X-Api-Key header');
+
+        // If bearerTokenProxyEndpoint is provided, acquire a Bearer token via
+        // the server-side proxy (nginx injects the client secret, browser never sees it)
+        if (this.config.bearerTokenProxyEndpoint) {
+          try {
+            const bearerToken = await this._getOrRefreshProxiedToken();
+            this.headers = {
+              ...this.headers,
+              Authorization: `Bearer ${bearerToken}`,
+            };
+            console.log(
+              '🔐 [DSP Store] Set Bearer token header (server-side proxy, dual-header mode)',
+            );
+          } catch (error) {
+            console.warn(
+              '[DSP Store] Failed to acquire Bearer token via proxy, continuing with X-Api-Key only:',
+              error,
+            );
+          }
+        }
         break;
 
       case 'bearer':
@@ -1273,6 +1328,45 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     const data = await response.json();
     return data.access_token;
+  }
+
+  /**
+   * Acquire a Bearer token via the server-side proxy endpoint.
+   * Nginx handles the client_credentials grant and injects the client secret,
+   * so no secret ever reaches the browser.
+   */
+  private async _getOrRefreshProxiedToken(): Promise<string> {
+    if (this._oauth2BearerToken && !this._isOAuth2TokenExpired()) {
+      return this._oauth2BearerToken;
+    }
+
+    if (!this.config.bearerTokenProxyEndpoint) {
+      throw new Error('Bearer token proxy endpoint required');
+    }
+
+    const response = await fetch(this.config.bearerTokenProxyEndpoint, {
+      method: 'POST',
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Bearer token proxy request failed: ${response.status} - ${errorText}`,
+      );
+    }
+
+    const data = await response.json();
+    const token: string = data.access_token;
+    this._oauth2BearerToken = token;
+    // Cache with 30s safety margin before actual expiry
+    const expiresIn = data.expires_in || 300;
+    this._oauth2TokenExpiresAt = Date.now() + (expiresIn - 30) * 1000;
+
+    return token;
+  }
+
+  private _isOAuth2TokenExpired(): boolean {
+    return !this._oauth2BearerToken || Date.now() >= this._oauth2TokenExpiresAt;
   }
 
   private async getDelegatedAuthToken(): Promise<string> {
@@ -2230,9 +2324,25 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
   async fetchAuthn(iri: string, options: any): Promise<Response> {
     await this.ensureAuthenticated();
-    return fetch(iri, {
+    const mergedHeaders = { ...this.headers, ...options.headers };
+
+    // In dual-header mode (bearerTokenProxyEndpoint), use plain fetch to avoid
+    // sib-auth's authenticated fetch overwriting our Authorization header
+    // with the governance OIDC token (wrong audience for oauth2-proxy).
+    const usePlainFetch = !!this.config.bearerTokenProxyEndpoint;
+    const fetchFn = usePlainFetch ? fetch.bind(globalThis) : this._fetch;
+
+    console.debug(
+      '[DSC] fetchAuthn:',
+      iri,
+      'headers:',
+      Object.keys(mergedHeaders),
+      'using plain fetch?',
+      usePlainFetch,
+    );
+    return fetchFn(iri, {
       ...options,
-      headers: { ...this.headers, ...options.headers },
+      headers: mergedHeaders,
       mode: 'cors',
     });
   }

@@ -188,6 +188,9 @@ export class FederatedCatalogueStore implements IStore<any> {
           {} as KeycloakLoginOptions,
           fetchAuth,
         );
+        // Trigger refetch since getData() may have already been called
+        // and returned empty while fcApi was still null
+        this.triggerRefetch();
       }
     } else {
       console.log(

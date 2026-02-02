@@ -53,6 +53,11 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   bearerToken?: string;
   oauth2Config?: OAuth2Config;
 
+  // Server-side token proxy endpoint for dual-header mode (dsp-api-key + Bearer).
+  // Nginx proxies a client_credentials grant to participant Keycloak,
+  // injecting the client secret server-side. The browser never sees the secret.
+  bearerTokenProxyEndpoint?: string;
+
   // EDC Delegated Authentication Service
   delegatedAuthConfig?: DelegatedAuthConfig;
 
