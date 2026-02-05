@@ -58,6 +58,17 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   // injecting the client secret server-side. The browser never sees the secret.
   bearerTokenProxyEndpoint?: string;
 
+  // Local Keycloak configuration for silent OIDC token acquisition.
+  // Uses iframe-based silent auth to get user-specific tokens (not service account).
+  // This leverages the user's existing SSO session with local Keycloak.
+  // DEPRECATED: Use linkedProviderId with sib-auth-linked-provider instead.
+  localKeycloakConfig?: LocalKeycloakConfig;
+
+  // ID of the sib-auth linked provider to use for Bearer token acquisition.
+  // This is the preferred approach - configure a <sib-auth-linked-provider data-id="...">
+  // in your HTML and reference it here. The linked provider handles silent OIDC auth.
+  linkedProviderId?: string;
+
   // EDC Delegated Authentication Service
   delegatedAuthConfig?: DelegatedAuthConfig;
 
@@ -72,6 +83,24 @@ export interface OAuth2Config {
   clientId: string;
   clientSecret: string;
   scope?: string;
+}
+
+/**
+ * Configuration for local Keycloak silent OIDC authentication.
+ * Used to acquire user-specific tokens via iframe-based silent auth,
+ * leveraging the user's existing SSO session.
+ */
+export interface LocalKeycloakConfig {
+  /** Keycloak realm URL, e.g., "http://localhost:8080/auth/realms/edc" */
+  authority: string;
+  /** Public OIDC client ID, e.g., "catalog-ui-silent" */
+  clientId: string;
+  /** OIDC scopes to request, defaults to "openid profile" */
+  scope?: string;
+  /** Silent callback URL - must be served and registered in Keycloak redirect URIs.
+   * Defaults to window.location.origin + '/silent-callback.html'.
+   * For dev environments where serving static files is difficult, point this to nginx. */
+  silentRedirectUri?: string;
 }
 
 // EDC Delegated Authentication Configuration

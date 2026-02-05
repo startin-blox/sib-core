@@ -1,5 +1,6 @@
 import type * as JSONLDContextParser from 'jsonld-context-parser';
 import { AuthFetchResolver } from '../../auth/AuthFetchResolver.ts';
+import { LocalKeycloakAuthManager } from '../../auth/LocalKeycloakAuthManager.ts';
 import type { CacheManagerInterface } from '../../cache/CacheManager.ts';
 import { InMemoryCacheManager } from '../../cache/InMemory.ts';
 import type { ServerPaginationOptions } from '../../shared/options/server-pagination.ts';
@@ -48,6 +49,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   private cleanupAuth?: () => void;
   private _oauth2BearerToken: string | null = null;
   private _oauth2TokenExpiresAt = 0;
+  // Local Keycloak auth manager for user-specific silent auth
+  private _localKeycloakAuth: LocalKeycloakAuthManager | null = null;
 
   constructor(config: DataspaceConnectorConfig) {
     this.validateConfig(config);
@@ -68,6 +71,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     this.cleanupAuth = AuthFetchResolver.onAuthActivated(
       this._resolveFetch.bind(this),
     );
+
+    // Initialize LocalKeycloakAuthManager if config is provided
+    if (config.localKeycloakConfig) {
+      console.log('[DSC] Initializing LocalKeycloakAuthManager for silent user-specific auth');
+      this._localKeycloakAuth = new LocalKeycloakAuthManager(config.localKeycloakConfig);
+    }
   }
 
   private _resolveFetch = (event: any) => {
@@ -1245,24 +1254,86 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         };
         console.log('🔐 [DSP Store] Set X-Api-Key header');
 
-        // If bearerTokenProxyEndpoint is provided, acquire a Bearer token via
-        // the server-side proxy (nginx injects the client secret, browser never sees it)
-        if (this.config.bearerTokenProxyEndpoint) {
+        // Try to acquire a Bearer token for dual-header mode (X-Api-Key + Bearer)
+        // Priority: 1) sib-auth linked provider, 2) Local Keycloak silent auth (deprecated), 3) Proxy endpoint (service account)
+        let bearerTokenAcquired = false;
+
+        // 1) Try sib-auth linked provider first (preferred approach)
+        if (this.config.linkedProviderId) {
           try {
-            const bearerToken = await this._getOrRefreshProxiedToken();
+            const sibAuth = document.querySelector('sib-auth-oidc') as any;
+            if (sibAuth?.getLinkedToken) {
+              const linkedToken = await sibAuth.getLinkedToken(this.config.linkedProviderId);
+              if (linkedToken) {
+                this.headers = {
+                  ...this.headers,
+                  Authorization: `Bearer ${linkedToken}`,
+                };
+                const linkedProvider = sibAuth.getLinkedProvider(this.config.linkedProviderId);
+                const userSub = linkedProvider?.getUserSubject?.() || 'unknown';
+                console.log(
+                  `🔐 [DSP Store] Set Bearer token header (sib-auth linked provider: ${this.config.linkedProviderId}, user: ${userSub})`,
+                );
+                bearerTokenAcquired = true;
+              }
+            } else {
+              console.warn('[DSP Store] sib-auth-oidc not found or missing getLinkedToken method');
+            }
+          } catch (error) {
+            console.warn(
+              '[DSP Store] sib-auth linked provider failed:',
+              error,
+            );
+          }
+        }
+
+        // 2) Try local Keycloak silent auth (deprecated, for backward compatibility)
+        if (!bearerTokenAcquired && this._localKeycloakAuth) {
+          try {
+            const userToken = await this._localKeycloakAuth.getAccessToken();
+            if (userToken) {
+              this.headers = {
+                ...this.headers,
+                Authorization: `Bearer ${userToken}`,
+              };
+              const userSub = this._localKeycloakAuth.getUserSubject();
+              console.log(
+                `🔐 [DSP Store] Set Bearer token header (localKeycloakConfig, user: ${userSub})`,
+              );
+              bearerTokenAcquired = true;
+            }
+          } catch (error) {
+            console.warn(
+              '[DSP Store] Local Keycloak silent auth failed, will try proxy fallback:',
+              error,
+            );
+          }
+        }
+
+        // 2) Fallback to bearerTokenProxyEndpoint (service account token)
+        if (!bearerTokenAcquired && this.config.bearerTokenProxyEndpoint) {
+          try {
+            const proxyToken = await this._getOrRefreshProxiedToken();
             this.headers = {
               ...this.headers,
-              Authorization: `Bearer ${bearerToken}`,
+              Authorization: `Bearer ${proxyToken}`,
             };
             console.log(
-              '🔐 [DSP Store] Set Bearer token header (server-side proxy, dual-header mode)',
+              '🔐 [DSP Store] Set Bearer token header (server-side proxy fallback, service account)',
             );
+            bearerTokenAcquired = true;
           } catch (error) {
             console.warn(
               '[DSP Store] Failed to acquire Bearer token via proxy, continuing with X-Api-Key only:',
               error,
             );
           }
+        }
+
+        if (!bearerTokenAcquired && (this.config.linkedProviderId || this._localKeycloakAuth || this.config.bearerTokenProxyEndpoint)) {
+          console.warn(
+            '🔐 [DSP Store] No Bearer token acquired, continuing with X-Api-Key only',
+          );
         }
         break;
 
@@ -2326,10 +2397,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     await this.ensureAuthenticated();
     const mergedHeaders = { ...this.headers, ...options.headers };
 
-    // In dual-header mode (bearerTokenProxyEndpoint), use plain fetch to avoid
-    // sib-auth's authenticated fetch overwriting our Authorization header
-    // with the governance OIDC token (wrong audience for oauth2-proxy).
-    const usePlainFetch = !!this.config.bearerTokenProxyEndpoint;
+    // Use plain fetch when we have our own Bearer token (from linkedProviderId,
+    // localKeycloakConfig, or bearerTokenProxyEndpoint) to avoid sib-auth's authenticated
+    // fetch overwriting our Authorization header with the governance OIDC token.
+    const usePlainFetch = !!this.config.linkedProviderId || !!this.config.bearerTokenProxyEndpoint || !!this.config.localKeycloakConfig;
     const fetchFn = usePlainFetch ? fetch.bind(globalThis) : this._fetch;
 
     console.debug(
