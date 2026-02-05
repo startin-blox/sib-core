@@ -74,8 +74,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     // Initialize LocalKeycloakAuthManager if config is provided
     if (config.localKeycloakConfig) {
-      console.log('[DSC] Initializing LocalKeycloakAuthManager for silent user-specific auth');
-      this._localKeycloakAuth = new LocalKeycloakAuthManager(config.localKeycloakConfig);
+      console.log(
+        '[DSC] Initializing LocalKeycloakAuthManager for silent user-specific auth',
+      );
+      this._localKeycloakAuth = new LocalKeycloakAuthManager(
+        config.localKeycloakConfig,
+      );
     }
   }
 
@@ -1241,7 +1245,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
 
     switch (this.config.authMethod) {
-      case 'dsp-api-key':
+      case 'dsp-api-key': {
         if (!this.config.dspApiKey) {
           throw new Error(
             'DSP API key required but not provided. Set dspApiKey in configuration.',
@@ -1263,13 +1267,17 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           try {
             const sibAuth = document.querySelector('sib-auth-oidc') as any;
             if (sibAuth?.getLinkedToken) {
-              const linkedToken = await sibAuth.getLinkedToken(this.config.linkedProviderId);
+              const linkedToken = await sibAuth.getLinkedToken(
+                this.config.linkedProviderId,
+              );
               if (linkedToken) {
                 this.headers = {
                   ...this.headers,
                   Authorization: `Bearer ${linkedToken}`,
                 };
-                const linkedProvider = sibAuth.getLinkedProvider(this.config.linkedProviderId);
+                const linkedProvider = sibAuth.getLinkedProvider(
+                  this.config.linkedProviderId,
+                );
                 const userSub = linkedProvider?.getUserSubject?.() || 'unknown';
                 console.log(
                   `🔐 [DSP Store] Set Bearer token header (sib-auth linked provider: ${this.config.linkedProviderId}, user: ${userSub})`,
@@ -1277,13 +1285,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
                 bearerTokenAcquired = true;
               }
             } else {
-              console.warn('[DSP Store] sib-auth-oidc not found or missing getLinkedToken method');
+              console.warn(
+                '[DSP Store] sib-auth-oidc not found or missing getLinkedToken method',
+              );
             }
           } catch (error) {
-            console.warn(
-              '[DSP Store] sib-auth linked provider failed:',
-              error,
-            );
+            console.warn('[DSP Store] sib-auth linked provider failed:', error);
           }
         }
 
@@ -1330,12 +1337,18 @@ export class DataspaceConnectorStore implements IStore<Resource> {
           }
         }
 
-        if (!bearerTokenAcquired && (this.config.linkedProviderId || this._localKeycloakAuth || this.config.bearerTokenProxyEndpoint)) {
+        if (
+          !bearerTokenAcquired &&
+          (this.config.linkedProviderId ||
+            this._localKeycloakAuth ||
+            this.config.bearerTokenProxyEndpoint)
+        ) {
           console.warn(
             '🔐 [DSP Store] No Bearer token acquired, continuing with X-Api-Key only',
           );
         }
         break;
+      }
 
       case 'bearer':
         if (!this.config.bearerToken) {
@@ -2400,7 +2413,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     // Use plain fetch when we have our own Bearer token (from linkedProviderId,
     // localKeycloakConfig, or bearerTokenProxyEndpoint) to avoid sib-auth's authenticated
     // fetch overwriting our Authorization header with the governance OIDC token.
-    const usePlainFetch = !!this.config.linkedProviderId || !!this.config.bearerTokenProxyEndpoint || !!this.config.localKeycloakConfig;
+    const usePlainFetch =
+      !!this.config.linkedProviderId ||
+      !!this.config.bearerTokenProxyEndpoint ||
+      !!this.config.localKeycloakConfig;
     const fetchFn = usePlainFetch ? fetch.bind(globalThis) : this._fetch;
 
     console.debug(

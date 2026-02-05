@@ -1,4 +1,4 @@
-import { UserManager, WebStorageStateStore, User } from 'oidc-client-ts';
+import { type User, UserManager, WebStorageStateStore } from 'oidc-client-ts';
 import type { LocalKeycloakConfig } from '../impl/dataspace-connector/types.ts';
 
 /**
@@ -23,9 +23,9 @@ export class LocalKeycloakAuthManager {
    * Initialize the OIDC UserManager.
    * Called lazily on first token request.
    */
-  async initialize(): Promise<void> {
+  initialize(): Promise<void> {
     if (this.userManager) {
-      return;
+      return Promise.resolve();
     }
 
     // Prevent multiple concurrent initializations
@@ -39,7 +39,9 @@ export class LocalKeycloakAuthManager {
 
   private async _doInitialize(): Promise<void> {
     // Use configured silentRedirectUri or default to same origin
-    const silentRedirectUri = this.config.silentRedirectUri || `${window.location.origin}/silent-callback.html`;
+    const silentRedirectUri =
+      this.config.silentRedirectUri ||
+      `${window.location.origin}/silent-callback.html`;
 
     console.log('[LocalKeycloakAuth] Initializing with config:', {
       authority: this.config.authority,
@@ -66,12 +68,15 @@ export class LocalKeycloakAuthManager {
     });
 
     // Set up event handlers for token refresh
-    this.userManager.events.addUserLoaded((user) => {
-      console.log('[LocalKeycloakAuth] User loaded/refreshed:', user.profile?.sub);
+    this.userManager.events.addUserLoaded(user => {
+      console.log(
+        '[LocalKeycloakAuth] User loaded/refreshed:',
+        user.profile?.sub,
+      );
       this.localUser = user;
     });
 
-    this.userManager.events.addSilentRenewError((error) => {
+    this.userManager.events.addSilentRenewError(error => {
       console.warn('[LocalKeycloakAuth] Silent renew error:', error);
       this.localUser = null;
     });
@@ -86,9 +91,12 @@ export class LocalKeycloakAuthManager {
       const existingUser = await this.userManager.getUser();
       if (existingUser && !existingUser.expired) {
         this.localUser = existingUser;
-        console.log('[LocalKeycloakAuth] Loaded existing user from storage:', existingUser.profile?.sub);
+        console.log(
+          '[LocalKeycloakAuth] Loaded existing user from storage:',
+          existingUser.profile?.sub,
+        );
       }
-    } catch (error) {
+    } catch (_error) {
       console.debug('[LocalKeycloakAuth] No existing user in storage');
     }
   }
@@ -106,17 +114,23 @@ export class LocalKeycloakAuthManager {
 
     // Check if we have a valid cached token (with 60s buffer before expiry)
     if (this.localUser && !this.isTokenExpiringSoon()) {
-      console.debug('[LocalKeycloakAuth] Using cached token for user:', this.localUser.profile?.sub);
+      console.debug(
+        '[LocalKeycloakAuth] Using cached token for user:',
+        this.localUser.profile?.sub,
+      );
       return this.localUser.access_token;
     }
 
     // Try silent sign-in via iframe
     try {
       console.log('[LocalKeycloakAuth] Attempting silent sign-in...');
-      this.localUser = await this.userManager!.signinSilent();
+      this.localUser = (await this.userManager?.signinSilent()) ?? null;
 
       if (this.localUser) {
-        console.log('[LocalKeycloakAuth] Silent auth successful for user:', this.localUser.profile?.sub);
+        console.log(
+          '[LocalKeycloakAuth] Silent auth successful for user:',
+          this.localUser.profile?.sub,
+        );
         return this.localUser.access_token;
       }
 
