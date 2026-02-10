@@ -975,7 +975,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     // 12) Extract contract negotiation fields for Dataspace Protocol support
     const counterPartyAddress = cs['dcat:endpointURL'];
-    const counterPartyId = cs['dspace:participantId'];
+    const counterPartyId = cs['dspace:participantId'] || cs['participantId'];
 
     // Asset ID: strip urn:uuid: prefix from the credentialSubject @id
     const assetId = this.stripUrnPrefix(cs['@id'], 'urn:uuid:');
