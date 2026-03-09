@@ -4,6 +4,11 @@
   "description": "This is a series of web component respecting both the web components standards and the Linked Data Platform convention.",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./store": "./dist/store.js",
+    "./helpers": "./dist/helpers.js"
+  },
   "type": "module",
   "directories": {
     "example": "examples"
