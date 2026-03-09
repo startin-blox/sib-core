@@ -1004,6 +1004,11 @@ export class FederatedCatalogueStore implements IStore<any> {
             JSON.parse(JSON.stringify(policyObj)),
           );
 
+          // Strip urn:uuid: prefix from the policy @id (EDC expects raw offer ID, not URN)
+          if (processedPolicy['@id']) {
+            processedPolicy['@id'] = this.stripUrnPrefix(processedPolicy['@id'], 'urn:uuid:');
+          }
+
           // Add the target field pointing to the dataset ID (with urn:uuid: prefix stripped)
           if (datasetId) {
             processedPolicy.target = datasetId;
