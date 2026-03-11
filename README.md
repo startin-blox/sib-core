@@ -36,6 +36,16 @@ You can now write HTML using `sib-core` and test it in your browser.
 
 - **[Store API Documentation](./docs/store.md)** - Comprehensive guide to the StartinBlox Store API, including data retrieval, manipulation, and advanced querying capabilities.
 
+### Lightweight Store Import
+
+If you only need the store (without the full component framework), use the dedicated store entry point for a much smaller bundle:
+
+```javascript
+import { sibStore, StoreService, StoreType } from '@startinblox/core/store';
+```
+
+When loaded via a `<script>` tag, the store is also accessible via the `window.sib` namespace (e.g., `window.sib.store`, `window.sib.storeService`). See the [Store API Documentation](./docs/store.md) for details.
+
 ## Testing
 
 You can test the API by running:

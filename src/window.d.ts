@@ -1,4 +1,9 @@
-import type { IStore } from './libs/store/shared/types.ts';
+import type {
+  IStore,
+  StoreConfig,
+  StoreType,
+} from './libs/store/shared/types.ts';
+import type { StoreService } from './libs/store/storeService.ts';
 
 export declare global {
   interface Window {
@@ -10,5 +15,13 @@ export declare global {
       };
     };
     sibStore: IStore<any>;
+    sib: {
+      store: IStore<any>;
+      storeService: typeof StoreService;
+      storeType: typeof StoreType;
+      hasQueryIndex: (store: IStore<any>) => boolean;
+      hasSetLocalData: (store: IStore<any>) => boolean;
+      hasQueryIndexConjunction: (store: IStore<any>) => boolean;
+    };
   }
 }

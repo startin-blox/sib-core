@@ -22,7 +22,47 @@ The StartinBlox Store is a powerful data management layer that handles Linked Da
 
 ## Getting Started
 
-The store can be accessed through the global `StoreService` singleton or by creating store instances directly.
+### Lightweight Store Import
+
+If you only need the store layer (without components, mixins, and widgets), import from `store` directly. This is significantly smaller than the full framework (~1.5 MB vs ~4.4 MB):
+
+```javascript
+// ES module import (bundler or npm)
+import { StoreService, StoreType, sibStore } from '@startinblox/core/store';
+
+// CDN import
+import { StoreService, StoreType, sibStore } from 'https://cdn.jsdelivr.net/npm/@startinblox/core@0.19/dist/store.js';
+```
+
+Or in a plain HTML page:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@startinblox/core@0.19/dist/store.js"></script>
+<script type="module">
+  // Available on the window.sib namespace after import
+  const store = window.sib.store;
+  const data = await store.getData('/api/resources');
+</script>
+```
+
+### `window.sib` Namespace
+
+When `store.js` is loaded, the following are exposed globally on `window.sib`:
+
+| Property | Description |
+|----------|-------------|
+| `window.sib.store` | Default store instance (same as `sibStore` ES export) |
+| `window.sib.storeService` | `StoreService` class for managing multiple stores |
+| `window.sib.storeType` | `StoreType` enum (`LDP`, `FederatedCatalogue`, `DataspaceConnector`) |
+| `window.sib.hasQueryIndex(store)` | Type guard: checks if store supports `queryIndex` |
+| `window.sib.hasSetLocalData(store)` | Type guard: checks if store supports `setLocalData` |
+| `window.sib.hasQueryIndexConjunction(store)` | Type guard: checks if store supports `queryIndexConjunction` |
+
+`window.sibStore` is also kept for backward compatibility and references the same instance as `window.sib.store`.
+
+### Full Framework Import
+
+If you need the complete framework (components, mixins, widgets, and store):
 
 ```javascript
 import { StoreService } from '@startinblox/core';
@@ -37,6 +77,23 @@ StoreService.init({
     cacheManager: new InMemoryCacheManager()
   }
 });
+```
+
+### TypeScript Support
+
+The store entry point also exports all relevant types for TypeScript consumers:
+
+```typescript
+import type {
+  IStore,
+  Resource,
+  LimitedResource,
+  Container,
+  StoreConfig,
+  StoreInstance,
+  GetDataArgs,
+  ConjunctionQueryOptions,
+} from '@startinblox/core/store';
 ```
 
 ## StoreService
@@ -762,8 +819,9 @@ Enumeration of available store types.
 
 ```typescript
 enum StoreType {
-  LDP = 'ldp',                        // Linked Data Platform store
-  FederatedCatalogue = 'federatedCatalogue' // Federated catalogue store
+  LDP = 'ldp',                                    // Linked Data Platform store
+  FederatedCatalogue = 'federatedCatalogue',       // Federated catalogue store
+  DataspaceConnector = 'dataspaceConnector',       // Eclipse Dataspace Connector store
 }
 ```
 
@@ -1011,10 +1069,12 @@ StoreService.init({
 
 ## Type Guards
 
-The store provides type guard functions to check for optional functionality:
+The store provides type guard functions to check for optional functionality. These are available from both the lightweight store import and the full framework:
 
 ```javascript
-import { hasQueryIndex, hasSetLocalData, hasQueryIndexConjunction } from '@startinblox/core';
+import { hasQueryIndex, hasSetLocalData, hasQueryIndexConjunction } from '@startinblox/core/store';
+// or: import { ... } from '@startinblox/core';
+// or: window.sib.hasQueryIndex / window.sib.hasSetLocalData / window.sib.hasQueryIndexConjunction
 
 const store = StoreService.getInstance();
 
