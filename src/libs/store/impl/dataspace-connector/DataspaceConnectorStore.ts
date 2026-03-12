@@ -94,6 +94,21 @@ export class DataspaceConnectorStore implements IStore<Resource> {
   };
 
   /**
+   * Merge the config's additionalContext (if any) into a given @context value.
+   * Handles both object and array forms of @context.
+   */
+  private mergeContext(
+    base: Record<string, string> | string[],
+  ): Record<string, string> | (string | Record<string, string>)[] {
+    const extra = this.config.additionalContext;
+    if (!extra || Object.keys(extra).length === 0) return base;
+    if (Array.isArray(base)) {
+      return [...base, extra];
+    }
+    return { ...base, ...extra };
+  }
+
+  /**
    * Create a composite key for asset agreements to avoid collisions
    * when different providers have assets with the same ID.
    * Format: "assetId:providerParticipantId" or just "assetId" if no provider specified
@@ -263,9 +278,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
 
     const negotiationRequest = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+      }),
       '@type': 'ContractRequest',
       counterPartyAddress,
       counterPartyId: counterPartyId,
@@ -442,9 +457,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         method: 'POST',
         headers: this.headers,
         body: JSON.stringify({
-          '@context': {
+          '@context': this.mergeContext({
             '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-          },
+          }),
           '@type': 'QuerySpec',
           offset: 0,
           limit: 1000,
@@ -556,10 +571,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     await this.ensureAuthenticated();
 
     const transferRequest: TransferRequest = {
-      '@context': [
+      '@context': this.mergeContext([
         'https://w3id.org/edc/v0.0.1/ns/',
         'https://w3id.org/dspace/2024/1/context.json',
-      ],
+      ]),
       '@type': 'https://w3id.org/edc/v0.0.1/ns/TransferRequestMessage',
       counterPartyAddress,
       contractId,
@@ -607,9 +622,9 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     await this.ensureAuthenticated();
 
     const edrRequest: EDRRequest = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+      }),
       '@type': 'https://w3id.org/edc/v0.0.1/ns/TransferRequest',
       assetId,
       protocol: 'dataspace-protocol-http',
@@ -1494,13 +1509,13 @@ export class DataspaceConnectorStore implements IStore<Resource> {
 
     if (apiVersion === 'v3') {
       return {
-        '@context': {
+        '@context': this.mergeContext({
           '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
           edc: 'https://w3id.org/edc/v0.0.1/ns/',
           dcat: 'https://www.w3.org/ns/dcat#',
           dct: 'https://purl.org/dc/terms/',
           odrl: 'http://www.w3.org/ns/odrl/2/',
-        },
+        }),
         '@type': 'CatalogRequestMessage',
         counterPartyAddress: counterPartyAddress || this.getProtocolEndpoint(),
         protocol: 'dataspace-protocol-http',
@@ -1508,10 +1523,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     }
     // v2 format (legacy)
     return {
-      '@context': [
+      '@context': this.mergeContext([
         'https://w3id.org/edc/v0.0.1/ns/',
         'https://w3id.org/dspace/2024/1/context.json',
-      ],
+      ]),
       '@type': 'https://w3id.org/edc/v0.0.1/ns/CatalogRequestMessage',
       counterPartyAddress: counterPartyAddress || this.config.endpoint || '',
       protocol: 'dataspace-protocol-http',
@@ -1689,10 +1704,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
    */
   private buildV3QuerySpec(offset = 0, limit = 50): any {
     return {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+      }),
       '@type': 'QuerySpec',
       offset,
       limit,
@@ -1764,10 +1779,12 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
     const assetData = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+        dcterms: 'http://purl.org/dc/terms/',
+        dcat: 'http://www.w3.org/ns/dcat#',
+      }),
       '@type': 'Asset',
       '@id': assetInput['@id'],
       properties: assetInput.properties || {},
@@ -2071,11 +2088,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
     const policyData = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
         odrl: 'http://www.w3.org/ns/odrl/2/',
-      },
+      }),
       '@type': 'PolicyDefinition',
       '@id': policyInput['@id'],
       policy: policyInput.policy,
@@ -2128,11 +2145,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
     const policyData = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
         odrl: 'http://www.w3.org/ns/odrl/2/',
-      },
+      }),
       '@type': 'PolicyDefinition',
       '@id': policyInput['@id'],
       policy: policyInput.policy,
@@ -2268,10 +2285,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
     const contractData = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+      }),
       '@type': 'ContractDefinition',
       '@id': contractInput['@id'],
       accessPolicyId: contractInput.accessPolicyId,
@@ -2328,10 +2345,10 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       );
 
     const contractData = {
-      '@context': {
+      '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
-      },
+      }),
       '@type': 'ContractDefinition',
       '@id': contractInput['@id'],
       accessPolicyId: contractInput.accessPolicyId,

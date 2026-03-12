@@ -825,6 +825,32 @@ enum StoreType {
 }
 ```
 
+### DataspaceConnectorStore Configuration
+
+When creating a `DataspaceConnectorStore` (via `StoreService.addStore` or directly), you can pass a `DataspaceConnectorConfig` object. Among its options, `additionalContext` lets you inject extra JSON-LD context entries into every outgoing request's `@context`:
+
+```javascript
+import { StoreService, StoreType } from '@startinblox/core/store';
+
+StoreService.addStore(StoreType.DataspaceConnector, {
+  endpoint: 'https://edc.example.com/management',
+  catalogEndpoint: 'https://edc.example.com/management/v3/catalog/request',
+  contractNegotiationEndpoint: 'https://edc.example.com/management/v3/contractnegotiations',
+  transferProcessEndpoint: 'https://edc.example.com/management/v3/transferprocesses',
+  authMethod: 'dsp-api-key',
+  dspApiKey: 'my-api-key',
+
+  // Extra context entries merged into every request's @context
+  additionalContext: {
+    dcterms: 'http://purl.org/dc/terms/',
+    dcat: 'http://www.w3.org/ns/dcat#',
+    myns: 'https://my-namespace.example.com/',
+  },
+});
+```
+
+The `additionalContext` entries are merged on top of each request's base `@context`. This is useful when your EDC instance requires additional namespace prefixes (e.g., `dcterms`, `dcat`) to properly interpret properties in assets, policies, or contract definitions.
+
 ## Examples
 
 ### Basic Resource Management

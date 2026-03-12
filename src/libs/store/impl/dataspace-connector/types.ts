@@ -76,6 +76,10 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   participantId?: string;
   timeout?: number;
   retryAttempts?: number;
+
+  // Optional additional JSON-LD context entries merged into every request's @context.
+  // Example: { 'dcterms': 'http://purl.org/dc/terms/', 'dcat': 'http://www.w3.org/ns/dcat#' }
+  additionalContext?: Record<string, string>;
 }
 
 export interface OAuth2Config {
@@ -134,7 +138,10 @@ export interface ContractNegotiationResponse {
 }
 
 export interface TransferRequest {
-  '@context': string[];
+  '@context':
+    | string[]
+    | Record<string, string>
+    | (string | Record<string, string>)[];
   '@type': 'https://w3id.org/edc/v0.0.1/ns/TransferRequestMessage';
   counterPartyAddress: string;
   contractId: string;
@@ -155,8 +162,13 @@ export interface TransferProcess {
 }
 
 export interface CatalogRequest {
-  '@context': string[];
-  '@type': 'https://w3id.org/edc/v0.0.1/ns/CatalogRequestMessage';
+  '@context':
+    | string[]
+    | Record<string, string>
+    | (string | Record<string, string>)[];
+  '@type':
+    | 'https://w3id.org/edc/v0.0.1/ns/CatalogRequestMessage'
+    | 'CatalogRequestMessage';
   counterPartyAddress: string;
   protocol: 'dataspace-protocol-http';
   querySpec?: QuerySpec;
