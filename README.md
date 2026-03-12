@@ -44,7 +44,7 @@ If you only need the store (without the full component framework), use the dedic
 import { sibStore, StoreService, StoreType } from '@startinblox/core/store';
 ```
 
-When loaded via a `<script>` tag, the store is also accessible via the `window.sib` namespace (e.g., `window.sib.store`, `window.sib.storeService`). See the [Store API Documentation](./docs/store.md) for details.
+When loaded via a `<script>` tag, the store is also accessible via the `window.sib.store` namespace (e.g., `window.sib.store.ldp`, `window.sib.store.service`). See the [Store API Documentation](./docs/store.md) for details.
 
 ## Testing
 

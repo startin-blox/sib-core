@@ -16,12 +16,14 @@ export declare global {
     };
     sibStore: IStore<any>;
     sib: {
-      store: IStore<any>;
-      storeService: typeof StoreService;
-      storeType: typeof StoreType;
-      hasQueryIndex: (store: IStore<any>) => boolean;
-      hasSetLocalData: (store: IStore<any>) => boolean;
-      hasQueryIndexConjunction: (store: IStore<any>) => boolean;
+      store: {
+        ldp: IStore<any>;
+        service: typeof StoreService;
+        type: typeof StoreType;
+        hasQueryIndex: (store: IStore<any>) => boolean;
+        hasSetLocalData: (store: IStore<any>) => boolean;
+        hasQueryIndexConjunction: (store: IStore<any>) => boolean;
+      };
     };
   }
 }
