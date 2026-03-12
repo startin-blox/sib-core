@@ -39,26 +39,26 @@ Or in a plain HTML page:
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/@startinblox/core@0.19/dist/store.js"></script>
 <script type="module">
-  // Available on the window.sib namespace after import
-  const store = window.sib.store;
+  // Available on the window.sib.store namespace after import
+  const store = window.sib.store.ldp;
   const data = await store.getData('/api/resources');
 </script>
 ```
 
-### `window.sib` Namespace
+### `window.sib.store` Namespace
 
-When `store.js` is loaded, the following are exposed globally on `window.sib`:
+When `store.js` is loaded, the following are exposed globally on `window.sib.store`:
 
 | Property | Description |
 |----------|-------------|
-| `window.sib.store` | Default store instance (same as `sibStore` ES export) |
-| `window.sib.storeService` | `StoreService` class for managing multiple stores |
-| `window.sib.storeType` | `StoreType` enum (`LDP`, `FederatedCatalogue`, `DataspaceConnector`) |
-| `window.sib.hasQueryIndex(store)` | Type guard: checks if store supports `queryIndex` |
-| `window.sib.hasSetLocalData(store)` | Type guard: checks if store supports `setLocalData` |
-| `window.sib.hasQueryIndexConjunction(store)` | Type guard: checks if store supports `queryIndexConjunction` |
+| `window.sib.store.ldp` | LDP store instance (same as `sibStore` ES export) |
+| `window.sib.store.service` | `StoreService` class for managing multiple stores |
+| `window.sib.store.type` | `StoreType` enum (`LDP`, `FederatedCatalogue`, `DataspaceConnector`) |
+| `window.sib.store.hasQueryIndex(store)` | Type guard: checks if store supports `queryIndex` |
+| `window.sib.store.hasSetLocalData(store)` | Type guard: checks if store supports `setLocalData` |
+| `window.sib.store.hasQueryIndexConjunction(store)` | Type guard: checks if store supports `queryIndexConjunction` |
 
-`window.sibStore` is also kept for backward compatibility and references the same instance as `window.sib.store`.
+`window.sibStore` is also kept for backward compatibility and references the same instance as `window.sib.store.ldp`.
 
 ### Full Framework Import
 
@@ -1074,7 +1074,7 @@ The store provides type guard functions to check for optional functionality. The
 ```javascript
 import { hasQueryIndex, hasSetLocalData, hasQueryIndexConjunction } from '@startinblox/core/store';
 // or: import { ... } from '@startinblox/core';
-// or: window.sib.hasQueryIndex / window.sib.hasSetLocalData / window.sib.hasQueryIndexConjunction
+// or: window.sib.store.hasQueryIndex / window.sib.store.hasSetLocalData / window.sib.store.hasQueryIndexConjunction
 
 const store = StoreService.getInstance();
 

@@ -30,17 +30,19 @@ if (!sibStore) throw new Error('Store is not available');
 const semantizer = (globalThis as unknown as Record<string, unknown>)
   .SEMANTIZER;
 
-// Expose store utilities globally via window.sib namespace
+// Expose store utilities globally via window.sib.store namespace
 if (!window.sib) {
   window.sib = {} as typeof window.sib;
 }
 
-window.sib.store = sibStore;
-window.sib.storeService = StoreService;
-window.sib.storeType = StoreType;
-window.sib.hasQueryIndex = hasQueryIndex;
-window.sib.hasSetLocalData = hasSetLocalData;
-window.sib.hasQueryIndexConjunction = hasQueryIndexConjunction;
+window.sib.store = {
+  ldp: sibStore,
+  service: StoreService,
+  type: StoreType,
+  hasQueryIndex,
+  hasSetLocalData,
+  hasQueryIndexConjunction,
+};
 
 // Keep backward compatibility
 if (!window.sibStore) {
