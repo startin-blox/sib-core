@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EDC Additional Context Test</title>
+</head>
+<body>
+    <h1>EDC Additional Context Test</h1>
+    <div id="status">loading</div>
+
+    <script type="module">
+        import { StoreService, StoreType } from '../../dist/store.js';
+
+        // Create a DSC store with additionalContext
+        const dscStore = StoreService.addStore('dsc-with-context', {
+            type: StoreType.DataspaceConnector,
+            endpoint: 'https://test-connector.example.com/management',
+            catalogEndpoint: 'https://test-connector.example.com/management/v3/catalog/request',
+            contractNegotiationEndpoint: 'https://test-connector.example.com/management/v3/contractnegotiations',
+            transferProcessEndpoint: 'https://test-connector.example.com/management/v3/transferprocesses',
+            authMethod: 'dsp-api-key',
+            dspApiKey: 'test-api-key',
+            additionalContext: {
+                dcterms: 'http://purl.org/dc/terms/',
+                dcat: 'http://www.w3.org/ns/dcat#',
+                myns: 'https://my-namespace.example.com/',
+            },
+        });
+
+        // Also create one without additionalContext for comparison
+        const dscStoreNoCtx = StoreService.addStore('dsc-without-context', {
+            type: StoreType.DataspaceConnector,
+            endpoint: 'https://test-connector-noctx.example.com/management',
+            catalogEndpoint: 'https://test-connector-noctx.example.com/management/v3/catalog/request',
+            contractNegotiationEndpoint: 'https://test-connector-noctx.example.com/management/v3/contractnegotiations',
+            transferProcessEndpoint: 'https://test-connector-noctx.example.com/management/v3/transferprocesses',
+            authMethod: 'dsp-api-key',
+            dspApiKey: 'test-api-key',
+        });
+
+        window.dscStore = dscStore;
+        window.dscStoreNoCtx = dscStoreNoCtx;
+        document.getElementById('status').textContent = 'ready';
+    </script>
+</body>
+</html>
