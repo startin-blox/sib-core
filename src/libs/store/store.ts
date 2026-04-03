@@ -18,6 +18,17 @@ import { CacheManager } from './cache-manager.ts';
 import type { ServerPaginationOptions } from './server-pagination.ts';
 import { appendServerPaginationToIri } from './server-pagination.ts';
 
+const RDF_CONTENT_TYPES = [
+  'application/ld+json',
+  'application/json',
+  'application/rdf+xml',
+  'text/turtle',
+  'application/n-triples',
+  'application/n-quads',
+  'text/n3',
+  'application/trig',
+];
+
 export const base_context = {
   '@vocab': 'https://cdn.startinblox.com/owl#',
   foaf: 'http://xmlns.com/foaf/0.1/',
@@ -238,19 +249,13 @@ export class Store {
       credentials: 'include',
     }).then(response => {
       if (!response.ok) return;
-      const contentType = (response.headers.get('content-type') || '').toLowerCase();
-      const rdfContentTypes = [
-        'application/ld+json',
-        'application/json',
-        'application/rdf+xml',
-        'text/turtle',
-        'application/n-triples',
-        'application/n-quads',
-        'text/n3',
-        'application/trig',
-      ];
-      if (!rdfContentTypes.some(type => contentType.includes(type))) {
-        console.warn(`Store: skipping non-RDF response (${contentType}) for ${iri}`);
+      const contentType = (
+        response.headers.get('content-type') || ''
+      ).toLowerCase();
+      if (!RDF_CONTENT_TYPES.some(type => contentType.includes(type))) {
+        console.warn(
+          `Store: skipping non-RDF response (${contentType}) for ${iri}`,
+        );
         return;
       }
       return response.json();

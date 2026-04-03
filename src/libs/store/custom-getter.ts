@@ -2,6 +2,49 @@ import type { Resource } from '../../mixins/interfaces.ts';
 import { getRawContext, mergeContexts, normalizeContext } from '../helpers.ts';
 import { store } from './store.ts';
 
+const NON_RDF_EXTENSIONS = [
+  'png',
+  'jpg',
+  'jpeg',
+  'gif',
+  'svg',
+  'webp',
+  'ico',
+  'bmp',
+  'tiff',
+  'pdf',
+  'doc',
+  'docx',
+  'xls',
+  'xlsx',
+  'ppt',
+  'pptx',
+  'odt',
+  'mp3',
+  'mp4',
+  'wav',
+  'ogg',
+  'webm',
+  'avi',
+  'mov',
+  'flac',
+  'zip',
+  'tar',
+  'gz',
+  'bz2',
+  'rar',
+  '7z',
+  'css',
+  'js',
+  'mjs',
+  'ts',
+  'wasm',
+  'woff',
+  'woff2',
+  'ttf',
+  'eot',
+];
+
 export class CustomGetter {
   resource: any; // content of the requested resource
   resourceId: string;
@@ -370,15 +413,7 @@ export class CustomGetter {
     try {
       const parsed = new URL(url, document.location.href);
       const ext = parsed.pathname.split('.').pop()?.toLowerCase();
-      const nonRdfExtensions = [
-        'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'bmp', 'tiff',
-        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt',
-        'mp3', 'mp4', 'wav', 'ogg', 'webm', 'avi', 'mov', 'flac',
-        'zip', 'tar', 'gz', 'bz2', 'rar', '7z',
-        'css', 'js', 'mjs', 'ts', 'wasm',
-        'woff', 'woff2', 'ttf', 'eot',
-      ];
-      if (ext && nonRdfExtensions.includes(ext)) return false;
+      if (ext && NON_RDF_EXTENSIONS.includes(ext)) return false;
       return true;
     } catch {
       return false;
