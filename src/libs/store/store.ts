@@ -238,6 +238,21 @@ export class Store {
       credentials: 'include',
     }).then(response => {
       if (!response.ok) return;
+      const contentType = (response.headers.get('content-type') || '').toLowerCase();
+      const rdfContentTypes = [
+        'application/ld+json',
+        'application/json',
+        'application/rdf+xml',
+        'text/turtle',
+        'application/n-triples',
+        'application/n-quads',
+        'text/n3',
+        'application/trig',
+      ];
+      if (!rdfContentTypes.some(type => contentType.includes(type))) {
+        console.warn(`Store: skipping non-RDF response (${contentType}) for ${iri}`);
+        return;
+      }
       return response.json();
     });
   }

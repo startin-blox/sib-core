@@ -151,6 +151,9 @@ export class CustomGetter {
           }
 
           // If not explicitly @type: @id or context check failed, try to fetch the resource
+          if (!this._isResolvableAsRdf(value['@id'])) {
+            return value['@id']; // non-RDF URL, return as string
+          }
           const resource = await this.getResource(
             value['@id'],
             mergeContexts(this.clientContext, this.serverContext),
@@ -163,6 +166,9 @@ export class CustomGetter {
           return resource; // return complete resource if it exists
         }
 
+        if (!this._isResolvableAsRdf(value['@id'])) {
+          return value['@id']; // non-RDF URL, return as string
+        }
         return await this.getResource(
           value['@id'],
           mergeContexts(this.clientContext, this.serverContext),
@@ -353,6 +359,30 @@ export class CustomGetter {
     }
 
     return null;
+  }
+
+  /**
+   * Check if a URL is likely resolvable as an RDF/JSON-LD resource
+   * Avoids fetching images, scripts, stylesheets, etc.
+   */
+  _isResolvableAsRdf(url: string): boolean {
+    if (!url || url.startsWith('_:b')) return false;
+    try {
+      const parsed = new URL(url, document.location.href);
+      const ext = parsed.pathname.split('.').pop()?.toLowerCase();
+      const nonRdfExtensions = [
+        'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico', 'bmp', 'tiff',
+        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt',
+        'mp3', 'mp4', 'wav', 'ogg', 'webm', 'avi', 'mov', 'flac',
+        'zip', 'tar', 'gz', 'bz2', 'rar', '7z',
+        'css', 'js', 'mjs', 'ts', 'wasm',
+        'woff', 'woff2', 'ttf', 'eot',
+      ];
+      if (ext && nonRdfExtensions.includes(ext)) return false;
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   /**
