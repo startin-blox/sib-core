@@ -99,12 +99,41 @@ export class FederatedCatalogueStore implements IStore<any> {
   private isFetching = false; // Guard against concurrent/recursive getData calls
   private pendingGetData: Promise<any> | null = null;
 
+  // Resolves once `fcApi` is wired (via configured login, OIDC auth, or the
+  // 5s anonymous fallback). `getData()` awaits this, so callers no longer
+  // need to implement their own auth-wait before invoking the store.
+  private apiReady: Promise<void>;
+  private resolveApiReady!: () => void;
+  private apiReadyTimer?: ReturnType<typeof setTimeout>;
+
   constructor(private cfg: StoreConfig) {
     if (!this.cfg.endpoint) {
       throw new Error(
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueStore',
       );
     }
+
+    this.apiReady = new Promise<void>(resolve => {
+      this.resolveApiReady = resolve;
+    });
+
+    // Hard ceiling: if neither a configured login nor sib-auth produces an
+    // authenticated fetch within 5s, fall back to an unauthenticated fetch
+    // so the store doesn't block forever on environments without OIDC.
+    this.apiReadyTimer = setTimeout(() => {
+      if (!this.fcApi && this.cfg.endpoint) {
+        console.warn(
+          '[FederatedCatalogueStore] Auth did not activate within 5s; ' +
+            'falling back to unauthenticated fetch.',
+        );
+        this.fcApi = getFederatedCatalogueAPIWrapper(
+          this.cfg.endpoint,
+          {} as KeycloakLoginOptions,
+          fetch.bind(globalThis),
+        );
+      }
+      this.resolveApiReady();
+    }, 5000);
 
     // Always listen for auth activation events
     this.cleanupAuth = AuthFetchResolver.onAuthActivated(
@@ -119,6 +148,7 @@ export class FederatedCatalogueStore implements IStore<any> {
         this.cfg.login as KeycloakLoginOptions,
         fetchAuth,
       );
+      this.markApiReady();
     } else {
       // No login config - we rely on sib-auth OIDC
       // Initialize fcApi asynchronously once auth is confirmed ready
@@ -145,6 +175,22 @@ export class FederatedCatalogueStore implements IStore<any> {
 
   disconnectedCallback() {
     this.cleanupAuth?.();
+    if (this.apiReadyTimer !== undefined) {
+      clearTimeout(this.apiReadyTimer);
+      this.apiReadyTimer = undefined;
+    }
+  }
+
+  /**
+   * Cancel the fallback timer and resolve the ready-promise. Safe to call
+   * multiple times — Promise resolution is idempotent.
+   */
+  private markApiReady(): void {
+    if (this.apiReadyTimer !== undefined) {
+      clearTimeout(this.apiReadyTimer);
+      this.apiReadyTimer = undefined;
+    }
+    this.resolveApiReady();
   }
 
   /**
@@ -172,6 +218,7 @@ export class FederatedCatalogueStore implements IStore<any> {
         {} as KeycloakLoginOptions,
         fetch.bind(window),
       );
+      this.markApiReady();
       return;
     }
 
@@ -188,9 +235,7 @@ export class FederatedCatalogueStore implements IStore<any> {
           {} as KeycloakLoginOptions,
           fetchAuth,
         );
-        // Trigger refetch since getData() may have already been called
-        // and returned empty while fcApi was still null
-        this.triggerRefetch();
+        this.markApiReady();
       }
     } else {
       console.log(
@@ -227,18 +272,22 @@ export class FederatedCatalogueStore implements IStore<any> {
       // When using authenticated fetch from sib-auth, pass empty login options
       // This tells FederatedCatalogueAPIWrapper to use the fetch directly
       // instead of doing its own Keycloak token management
+      const wasAlreadyReady = this.fcApi !== null;
       this.fcApi = getFederatedCatalogueAPIWrapper(
         this.cfg.endpoint,
         {} as KeycloakLoginOptions,
         event.detail.fetch,
       );
+      this.markApiReady();
 
-      // Trigger a refetch now that auth is ready
-      // This fixes the race condition where initial fetch returned empty due to missing auth
-      console.log(
-        '[FederatedCatalogueStore] Auth verified and ready, triggering data refetch',
-      );
-      this.triggerRefetch();
+      // Only refetch on subsequent re-activations (e.g. token refresh). The
+      // initial activation is already covered by getData() awaiting apiReady.
+      if (wasAlreadyReady) {
+        console.log(
+          '[FederatedCatalogueStore] Auth re-activated, triggering data refetch',
+        );
+        this.triggerRefetch();
+      }
     }
   };
 
@@ -332,12 +381,18 @@ export class FederatedCatalogueStore implements IStore<any> {
     this.isFetching = true;
 
     const executeGetData = async (): Promise<any> => {
+      // Block until fcApi is wired (configured login, OIDC auth event, or
+      // the 5s anonymous fallback). Avoids the old pattern where callers
+      // had to wait for `sib-auth:activated` themselves before invoking.
+      await this.apiReady;
+
       const targetType = this.resolveTargetType(args);
 
       if (!this.fcApi) {
-        // API not initialized yet (waiting for auth), return empty container
+        // Defensive fallback: apiReady resolved but fcApi is still null.
+        // Should not happen — the 5s timer always sets an anonymous fetch.
         console.warn(
-          '[FederatedCatalogueStore] API not initialized yet, waiting for auth activation',
+          '[FederatedCatalogueStore] apiReady resolved without fcApi, returning empty container',
         );
         return await this.initLocalDataSourceContainer();
       }
