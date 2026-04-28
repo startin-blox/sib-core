@@ -77,6 +77,9 @@ export interface DataspaceConnectorConfig extends StoreConfig {
   timeout?: number;
   retryAttempts?: number;
 
+  /** DSP wire protocol identifier sent in negotiation/transfer requests. Defaults to "dataspace-protocol-http" (v0.8). Set to "dataspace-protocol-http:2025-1" to use the 2025-1 binding. */
+  dspProtocol?: string;
+
   // Optional additional JSON-LD context entries merged into every request's @context.
   // Example: { 'dcterms': 'http://purl.org/dc/terms/', 'dcat': 'http://www.w3.org/ns/dcat#' }
   additionalContext?: Record<string, string>;
@@ -121,7 +124,7 @@ export interface ContractNegotiationRequest {
   '@context': string[];
   '@type': 'https://w3id.org/edc/v0.0.1/ns/ContractRequestMessage';
   counterPartyAddress: string;
-  protocol: 'dataspace-protocol-http';
+  protocol: string;
   policy: OdrlPolicy;
   callbackAddresses?: string[];
 }
@@ -170,7 +173,7 @@ export interface CatalogRequest {
     | 'https://w3id.org/edc/v0.0.1/ns/CatalogRequestMessage'
     | 'CatalogRequestMessage';
   counterPartyAddress: string;
-  protocol: 'dataspace-protocol-http';
+  protocol: string;
   querySpec?: QuerySpec;
 }
 
@@ -368,7 +371,7 @@ export interface EDRRequest {
   '@context'?: any;
   '@type'?: 'https://w3id.org/edc/v0.0.1/ns/TransferRequest';
   assetId: string;
-  protocol: 'dataspace-protocol-http';
+  protocol: string;
   counterPartyAddress: string;
   contractId: string;
   transferType: 'HttpData-PULL';

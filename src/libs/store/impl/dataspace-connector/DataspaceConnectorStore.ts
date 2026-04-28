@@ -236,6 +236,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     _offerId: string,
     policy: OdrlPolicy,
     counterPartyId?: string,
+    protocol?: string,
   ): Promise<string> {
     await this.ensureAuthenticated();
 
@@ -284,7 +285,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       '@type': 'ContractRequest',
       counterPartyAddress,
       counterPartyId: counterPartyId,
-      protocol: 'dataspace-protocol-http',
+      protocol:
+        protocol ?? this.config.dspProtocol ?? 'dataspace-protocol-http',
       policy: {
         '@context': 'http://www.w3.org/ns/odrl.jsonld',
         ...cleanPolicy, // Spread cleaned policy fields (no numeric keys)
@@ -349,12 +351,14 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     assetId: string,
     policy: OdrlPolicy,
     counterPartyId?: string,
+    protocol?: string,
   ): Promise<string> {
     return this.negotiateContract(
       counterPartyAddress,
       assetId,
       policy,
       counterPartyId,
+      protocol,
     );
   }
 
@@ -618,6 +622,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
     counterPartyAddress: string,
     contractId: string,
     providerParticipantId?: string,
+    protocol?: string,
   ): Promise<string> {
     await this.ensureAuthenticated();
 
@@ -627,7 +632,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       }),
       '@type': 'https://w3id.org/edc/v0.0.1/ns/TransferRequest',
       assetId,
-      protocol: 'dataspace-protocol-http',
+      protocol:
+        protocol ?? this.config.dspProtocol ?? 'dataspace-protocol-http',
       counterPartyAddress,
       contractId,
       transferType: 'HttpData-PULL',
@@ -1518,7 +1524,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         }),
         '@type': 'CatalogRequestMessage',
         counterPartyAddress: counterPartyAddress || this.getProtocolEndpoint(),
-        protocol: 'dataspace-protocol-http',
+        protocol: this.config.dspProtocol ?? 'dataspace-protocol-http',
       } as any;
     }
     // v2 format (legacy)
@@ -1529,7 +1535,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       ]),
       '@type': 'https://w3id.org/edc/v0.0.1/ns/CatalogRequestMessage',
       counterPartyAddress: counterPartyAddress || this.config.endpoint || '',
-      protocol: 'dataspace-protocol-http',
+      protocol: this.config.dspProtocol ?? 'dataspace-protocol-http',
     };
   }
 
