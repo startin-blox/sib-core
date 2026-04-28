@@ -300,6 +300,17 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         // MUST have target set to the asset ID
         target: targetAssetId,
         'odrl:target': targetAssetId,
+        // EDC compares the offer's policy against the agreement's policy by
+        // strict equality. Visions returns an Agreement with all three rule
+        // arrays present (empty), so the offer must also include them or the
+        // provider raises "Policy in the contract agreement is not equal to
+        // the one in the contract offer".
+        'odrl:permission':
+          cleanPolicy['odrl:permission'] ?? cleanPolicy.permission ?? [],
+        'odrl:prohibition':
+          cleanPolicy['odrl:prohibition'] ?? cleanPolicy.prohibition ?? [],
+        'odrl:obligation':
+          cleanPolicy['odrl:obligation'] ?? cleanPolicy.obligation ?? [],
       },
     };
 
