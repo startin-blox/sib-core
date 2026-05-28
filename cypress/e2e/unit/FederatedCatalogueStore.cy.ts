@@ -215,7 +215,7 @@ describe('FederatedCatalogueStore', () => {
         });
 
         const resultPromise = store.getData({
-          targetType: 'gax-trust-framework:ServiceOffering',
+          targetType: 'tems:Service',
         });
 
         cy.wait('@fcList');
@@ -280,7 +280,7 @@ describe('FederatedCatalogueStore', () => {
         const store = new FederatedCatalogueStore(mockConfig);
 
         const first = store.getData({
-          targetType: 'gax-trust-framework:ServiceOffering',
+          targetType: 'tems:Service',
         });
 
         cy.wait('@fcList');
@@ -295,7 +295,7 @@ describe('FederatedCatalogueStore', () => {
         cy.intercept('GET', fc('/self-descriptions')).as('fcListAgain');
 
         const second = store.getData({
-          targetType: 'gax-trust-framework:ServiceOffering',
+          targetType: 'tems:Service',
         });
 
         cy.wrap(second).then((res: any) => {
