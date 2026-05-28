@@ -298,12 +298,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'tems:Service',
-        ),
-      );
+      cy.wrap(store.setLocalData(existingResource, 'tems:Service'));
 
       const resultPromise = store.getData({
         targetType: 'tems:Service',
@@ -356,12 +351,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'tems:Service',
-        ),
-      );
+      cy.wrap(store.setLocalData(existingResource, 'tems:Service'));
 
       // API returns item with newer timestamp
       cy.intercept('GET', fc('/self-descriptions'), {
@@ -447,12 +437,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'tems:Service',
-        ),
-      );
+      cy.wrap(store.setLocalData(existingResource, 'tems:Service'));
 
       cy.intercept('GET', fc('/self-descriptions'), {
         statusCode: 200,
@@ -537,12 +522,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'tems:Service',
-        ),
-      );
+      cy.wrap(store.setLocalData(existingResource, 'tems:Service'));
 
       cy.intercept('GET', fc('/self-descriptions'), {
         statusCode: 200,
@@ -1262,12 +1242,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
         permissions: ['view'],
       };
 
-      cy.wrap(
-        store.setLocalData(
-          existingResource,
-          'tems:Service',
-        ),
-      );
+      cy.wrap(store.setLocalData(existingResource, 'tems:Service'));
 
       // API returns empty items array
       cy.intercept('GET', fc('/self-descriptions'), {
