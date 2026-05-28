@@ -1024,30 +1024,6 @@ export class FederatedCatalogueStore implements IStore<any> {
     const slug = resourceId.split('/').pop() || 'unknown';
     const serviceId = `${opts.temsServiceBase}${encodeURIComponent(slug)}/`;
 
-    // FC may return JSON-LD properties in either compact ("foaf:thumbnail") or
-    // expanded ("http://xmlns.com/foaf/0.1/thumbnail") form depending on the
-    // outbound context. These helpers read either.
-    const FOAF_THUMBNAIL_KEYS = [
-      'foaf:thumbnail',
-      'http://xmlns.com/foaf/0.1/thumbnail',
-    ];
-    const DCTERMS_CREATOR_KEYS = [
-      'dcterms:creator',
-      'dct:creator',
-      'http://purl.org/dc/terms/creator',
-    ];
-    const pickKey = (obj: any, keys: string[]): any => {
-      if (!obj) return undefined;
-      for (const k of keys) if (obj[k] !== undefined) return obj[k];
-      return undefined;
-    };
-    const getThumbnailUrl = (obj: any): string | undefined =>
-      pickKey(obj, FOAF_THUMBNAIL_KEYS)?.['rdf:resource'] ??
-      pickKey(obj, FOAF_THUMBNAIL_KEYS)?.[
-        'http://www.w3.org/1999/02/22-rdf-syntax-ns#resource'
-      ];
-    const getCreator = (obj: any): any => pickKey(obj, DCTERMS_CREATOR_KEYS);
-
     // 3) Map issuanceDate → creation_date; expirationDate → update_date
     const creation_date = vc.issuanceDate;
     const update_date = vc.expirationDate;
