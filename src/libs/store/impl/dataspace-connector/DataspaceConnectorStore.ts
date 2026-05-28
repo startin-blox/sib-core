@@ -300,11 +300,8 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         // MUST have target set to the asset ID
         target: targetAssetId,
         'odrl:target': targetAssetId,
-        // EDC compares the offer's policy against the agreement's policy by
-        // strict equality. Visions returns an Agreement with all three rule
-        // arrays present (empty), so the offer must also include them or the
-        // provider raises "Policy in the contract agreement is not equal to
-        // the one in the contract offer".
+        // EDC checks offer ≡ agreement by strict equality — all three rule
+        // arrays must be present (empty), else "Policy ... is not equal" raises.
         'odrl:permission':
           cleanPolicy['odrl:permission'] ?? cleanPolicy.permission ?? [],
         'odrl:prohibition':
@@ -482,23 +479,14 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       });
 
       if (!response.ok) {
-        const getResponse = await this.fetchAuthn(
-          `${this.config.contractNegotiationEndpoint}?offset=0&limit=1000`,
-          {
-            method: 'GET',
-            headers: this.headers,
-          },
+        //Surface the real POST failure instead (e.g. 401/403 = bad X-Api-Key / bearer.
+        const body = await response.text().catch(() => '');
+        console.warn(
+          `Failed to fetch contract negotiations: ${response.status} ${response.statusText}${
+            body ? ` — ${body}` : ''
+          }`,
         );
-
-        if (!getResponse.ok) {
-          console.warn(
-            `Failed to fetch contract negotiations: ${getResponse.status} ${getResponse.statusText}`,
-          );
-          return [];
-        }
-
-        const getData = await getResponse.json();
-        return Array.isArray(getData) ? getData : getData.items || [];
+        return [];
       }
 
       const data = await response.json();

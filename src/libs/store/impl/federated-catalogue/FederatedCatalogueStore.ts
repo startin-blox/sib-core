@@ -367,6 +367,32 @@ export class FederatedCatalogueStore implements IStore<any> {
     return `store://local.fc-${endpointHash}-${containerType}/`;
   }
 
+  /**
+   * Build the container view returned to callers. The cache always holds the
+   * full set (needed for delta updates), but each catalogue tab requests a
+   * single rdf-type via getData({ targetType }) — wired by OrbitFCComponent
+   * from the route's `rdf-type`. Honour that here, and also drop entries with
+   * no displayable name so incomplete self-descriptions never render as blank
+   * cards. The cached resource is left untouched (a filtered copy is returned).
+   */
+  private buildOutputContainer(
+    resource: Resource,
+    targetType: string,
+  ): Resource {
+    const items = resource?.['ldp:contains'];
+    if (!Array.isArray(items)) return resource;
+    const filtered = items.filter((item: any) => {
+      const name = item?.name;
+      if (!name || String(name).trim().length === 0) return false;
+      if (!targetType) return true;
+      const t = item?.['@type'];
+      const last = Array.isArray(t) ? t[t.length - 1] : t;
+      return last === targetType;
+    });
+    if (filtered.length === items.length) return resource;
+    return { ...resource, 'ldp:contains': filtered };
+  }
+
   async getData(args: any) {
     // Guard against recursive/concurrent calls (e.g., from save event triggering cache invalidation)
     if (this.isFetching) {
@@ -484,7 +510,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       const items = apiList?.items || [];
       if (!Array.isArray(items)) {
         console.warn('[FederatedCatalogueStore] apiList.items is not an array');
-        return resource; // Return empty container instead of falling back
+        return this.buildOutputContainer(resource, targetType); // partial container
       }
 
       const apiHashes = new Set(items.map(item => item.meta.sdHash));
@@ -591,7 +617,7 @@ export class FederatedCatalogueStore implements IStore<any> {
         }),
       );
 
-      return resource;
+      return this.buildOutputContainer(resource, targetType);
     } catch (error) {
       console.error(
         '[FederatedCatalogueStore] Delta update failed, falling back to full fetch:',
@@ -604,7 +630,7 @@ export class FederatedCatalogueStore implements IStore<any> {
   /**
    * Perform full fetch - get all items (original behavior)
    */
-  private async getFullData(_targetType: string): Promise<Resource> {
+  private async getFullData(targetType: string): Promise<Resource> {
     if (!this.fcApi) {
       console.warn(
         '[FederatedCatalogueStore] API not initialized yet, waiting for auth',
@@ -664,7 +690,7 @@ export class FederatedCatalogueStore implements IStore<any> {
       }),
     );
 
-    return resource;
+    return this.buildOutputContainer(resource, targetType);
   }
 
   /**
@@ -880,34 +906,116 @@ export class FederatedCatalogueStore implements IStore<any> {
     const vc = src.verifiableCredential;
     const cs = vc.credentialSubject;
 
-    // 1) Determine which key holds the service block
+    // FC may return JSON-LD properties in either compact ("foaf:thumbnail",
+    // "dcterms:creator") or fully-expanded ("http://xmlns.com/foaf/0.1/thumbnail")
+    // form depending on the outbound context. These helpers read either form.
+    const FOAF_THUMBNAIL_KEYS = [
+      'foaf:thumbnail',
+      'http://xmlns.com/foaf/0.1/thumbnail',
+    ];
+    const FOAF_NAME_KEYS = ['foaf:name', 'http://xmlns.com/foaf/0.1/name'];
+    const DCTERMS_CREATOR_KEYS = [
+      'dcterms:creator',
+      'dct:creator',
+      'http://purl.org/dc/terms/creator',
+    ];
+    const RDF_RESOURCE_KEYS = [
+      'rdf:resource',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#resource',
+    ];
+    const pickKey = (obj: any, keys: string[]): any => {
+      if (!obj) return undefined;
+      for (const k of keys) if (obj[k] !== undefined) return obj[k];
+      return undefined;
+    };
+    const getThumbnailUrl = (obj: any): string =>
+      pickKey(pickKey(obj, FOAF_THUMBNAIL_KEYS), RDF_RESOURCE_KEYS) || '';
+    const getCreator = (obj: any): any => pickKey(obj, DCTERMS_CREATOR_KEYS);
+
+    // 1) Determine which child of the credentialSubject holds the offering
+    //    block. TEMS distinguishes the two catalogue tabs by the child found
+    //    under credentialSubject['dcat:dataset'][0]:
+    //      - a nested 'dcat:dataset' (catalog asset) → tems:DataOffer
+    //      - a nested 'dcat:service'                 → tems:Service
+    //    A top-level cs['dcat:service'] is also honoured as a service.
+    //    NB: catalog entries carry BOTH a rich nested 'dcat:dataset' and a stub
+    //    'dcat:service' (a bare connector endpoint). The nested dataset wins
+    //    because that is where the descriptive metadata actually lives.
     let catInfo: DcatService;
-    let usedKey: 'service' | 'dataset' | 'nested-service';
+    let usedKey: 'service' | 'dataset' | 'nested-service' | 'nested-dataset';
     let type: 'tems:Service' | 'tems:DataOffer';
+    // credentialSubject['dcat:dataset'][0], kept around so the endpoint /
+    // distribution / policy siblings can still be read regardless of which
+    // child supplied the descriptive metadata.
+    const datasetBlock: any =
+      cs['dcat:dataset'] && cs['dcat:dataset'].length > 0
+        ? cs['dcat:dataset'][0]
+        : undefined;
+
+    // tems-sd-signer wraps every offering under a nested 'dcat:service', so
+    // producers flag a data-offering via @type=dcat:Dataset or tc:offeringKind.
+    const detectIsDataOffer = (block: any): boolean => {
+      if (!block || typeof block !== 'object') return false;
+      const rawType = block['@type'];
+      const types = Array.isArray(rawType) ? rawType : rawType ? [rawType] : [];
+      const datasetTypeHit = types.some(
+        (t: any) =>
+          typeof t === 'string' &&
+          (t === 'dcat:Dataset' ||
+            t === 'http://www.w3.org/ns/dcat#Dataset' ||
+            t === 'tems:DataOffer' ||
+            t === 'temscore:DataOffer' ||
+            t === 'http://tems.org/2024/temscore#DataOffer'),
+      );
+      if (datasetTypeHit) return true;
+      const kind =
+        block['tc:offeringKind'] ||
+        block['temscore:offeringKind'] ||
+        block['http://tems.org/2024/temscore#offeringKind'];
+      return typeof kind === 'string' && /dataoffer/i.test(kind);
+    };
 
     if (cs['dcat:service']) {
       // Case 1: Direct dcat:service at credentialSubject level
       catInfo = cs['dcat:service'];
       usedKey = 'service';
-      type = 'tems:Service';
-    } else if (cs['dcat:dataset'] && cs['dcat:dataset'].length > 0) {
-      const dataset = cs['dcat:dataset'][0];
+      type = detectIsDataOffer(catInfo) ? 'tems:DataOffer' : 'tems:Service';
+    } else if (datasetBlock) {
+      const nestedDataset = datasetBlock['dcat:dataset'];
+      // The FC ships catalogs with an EMPTY 'dcat:dataset': [] (truthy but with
+      // no [0]). Resolve the first entry up front so an empty array falls
+      // through to the nested 'dcat:service' instead of yielding undefined.
+      const firstNestedDataset = Array.isArray(nestedDataset)
+        ? nestedDataset[0]
+        : nestedDataset;
 
-      if (dataset['dcat:service']) {
-        // Case 2: Nested dcat:service within dcat:dataset
-        // Extract information from the nested service
-        catInfo = dataset['dcat:service'];
+      if (firstNestedDataset) {
+        // Case 2: dcat:dataset[0] is a dcat:Catalog wrapping a dataset. The
+        // descriptive metadata lives in the nested dataset; the sibling
+        // dcat:service is only a bare connector-endpoint stub.
+        catInfo = firstNestedDataset;
+        usedKey = 'nested-dataset';
+        type = 'tems:DataOffer';
+      } else if (datasetBlock['dcat:service']) {
+        // Case 3: nested dcat:service — the default tems-sd-signer shape.
+        catInfo = datasetBlock['dcat:service'];
         usedKey = 'nested-service';
-        type = 'tems:Service';
+        type = detectIsDataOffer(catInfo) ? 'tems:DataOffer' : 'tems:Service';
       } else {
-        // Case 3: Direct dcat:dataset without nested service (original behavior)
-        catInfo = dataset;
+        // Case 4: treat the dataset block itself as the source.
+        catInfo = datasetBlock;
         usedKey = 'dataset';
         type = 'tems:DataOffer';
       }
     } else {
       throw new Error(
         "Expected either credentialSubject['dcat:service'] or a non-empty array in ['dcat:dataset']",
+      );
+    }
+
+    if (!catInfo) {
+      throw new Error(
+        `Could not locate an offering block (used key: ${usedKey}); resolved catInfo is empty`,
       );
     }
 
@@ -948,8 +1056,16 @@ export class FederatedCatalogueStore implements IStore<any> {
     const name = catInfo['dcterms:title'] || catInfo['dct:title'];
     const description = catInfo['rdfs:comment'];
 
-    // 5) long_description ← join dcat:keyword into a single string
-    const keywords = catInfo['dcat:keyword'] || [];
+    // 5) long_description ← join dcat:keyword into a single string.
+    //    The FC collapses single-element arrays to scalars, so normalise first
+    //    (a bare string would otherwise crash keywords.join / keywords.map and
+    //    drop the whole offering).
+    const rawKeywords: any = catInfo['dcat:keyword'];
+    const keywords: string[] = Array.isArray(rawKeywords)
+      ? rawKeywords
+      : rawKeywords != null
+        ? [rawKeywords]
+        : [];
     const long_description =
       keywords.length > 0 ? `Keywords: ${keywords.join(', ')}` : '';
 
@@ -964,7 +1080,9 @@ export class FederatedCatalogueStore implements IStore<any> {
       })),
     };
 
-    // 7) Determine activation_status / is_in_app / is_external / is_api
+    // 7) Determine activation_status / is_in_app / is_external / is_api.
+    //    NB: do NOT fall back to the catalog's stub dcat:service endpoint — it
+    //    is a placeholder ("http://tems.com") and must not surface as a URL.
     const endpointURL = catInfo['dcat:endpointURL'] || '';
     const hasEndpoint = endpointURL.trim().length > 0;
     const activation_status = hasEndpoint;
@@ -972,7 +1090,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     const is_external = hasEndpoint;
     const is_api = hasEndpoint;
 
-    // 8) Collect thumbnail URLs “as-is”
+    // 8) Collect thumbnail URLs “as-is” (compact or expanded foaf:thumbnail)
     const imageUrls: string[] = [];
     const catThumbnail = getThumbnailUrl(catInfo);
     if (catThumbnail) imageUrls.push(catThumbnail);
@@ -996,7 +1114,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     // 9) contact_url ← dcat:endpointDescription; documentation_url ← same or "-"
     const contact_url = catInfo['dcat:endpointDescription'] || '';
     const documentation_url = contact_url || '';
-    let service_url = catInfo['dcat:endpointURL'] || '';
+    let service_url = endpointURL;
 
     // Log if service URL is missing from dcat:service
     if (!service_url) {
@@ -1017,8 +1135,8 @@ export class FederatedCatalogueStore implements IStore<any> {
     let providerRef: string;
     if (usedKey === 'service') {
       providerRef = cs['gax-core:operatedBy']?.['@id'] || '';
-    } else if (usedKey === 'nested-service') {
-      // For nested service, prefer operatedBy but fallback to offeredBy
+    } else if (usedKey === 'nested-service' || usedKey === 'nested-dataset') {
+      // For nested blocks, prefer operatedBy but fallback to offeredBy
       providerRef =
         cs['gax-core:operatedBy']?.['@id'] ||
         cs['gax-core:offeredBy']?.['@id'] ||
@@ -1029,14 +1147,11 @@ export class FederatedCatalogueStore implements IStore<any> {
     const providerSlug =
       providerRef.split(':').pop() + String(Math.random()) || '0';
     const creator = getCreator(catInfo);
-    const providerLogo = getThumbnailUrl(creator) || '';
+    const providerLogo = getThumbnailUrl(creator);
     const provider = {
       '@id': `${opts.temsProviderBase}${encodeURIComponent(providerSlug)}/`,
       '@type': 'tems:Provider',
-      name:
-        creator?.['foaf:name'] ||
-        creator?.['http://xmlns.com/foaf/0.1/name'] ||
-        '',
+      name: pickKey(creator, FOAF_NAME_KEYS) || '',
       image: {
         '@id': `${opts.temsImageBase}${encodeURIComponent(
           providerLogo.split('/').pop() || '0',
