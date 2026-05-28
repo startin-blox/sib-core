@@ -185,7 +185,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSDExisting');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -301,12 +301,12 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wrap(
         store.setLocalData(
           existingResource,
-          'gax-trust-framework:ServiceOffering',
+          'tems:Service',
         ),
       );
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -359,7 +359,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wrap(
         store.setLocalData(
           existingResource,
-          'gax-trust-framework:ServiceOffering',
+          'tems:Service',
         ),
       );
 
@@ -401,7 +401,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSDUpdated');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -450,7 +450,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wrap(
         store.setLocalData(
           existingResource,
-          'gax-trust-framework:ServiceOffering',
+          'tems:Service',
         ),
       );
 
@@ -491,7 +491,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSDStatus');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -540,7 +540,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wrap(
         store.setLocalData(
           existingResource,
-          'gax-trust-framework:ServiceOffering',
+          'tems:Service',
         ),
       );
 
@@ -581,7 +581,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSD');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -656,7 +656,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcList');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -729,7 +729,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcList');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -810,7 +810,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSD');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -875,7 +875,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSD');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -947,7 +947,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSD');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -1035,7 +1035,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSD');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList'); // First call (fails)
@@ -1201,7 +1201,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcSDKeep');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -1265,7 +1265,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       cy.wrap(
         store.setLocalData(
           existingResource,
-          'gax-trust-framework:ServiceOffering',
+          'tems:Service',
         ),
       );
 
@@ -1278,7 +1278,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       }).as('fcList');
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
@@ -1367,7 +1367,7 @@ describe('FederatedCatalogueStore - Delta Update Logic', () => {
       });
 
       const resultPromise = store.getData({
-        targetType: 'gax-trust-framework:ServiceOffering',
+        targetType: 'tems:Service',
       });
 
       cy.wait('@fcList');
