@@ -2,7 +2,13 @@
   "@id": "/examples/data/catalog/users/users-long.jsonld",
   "@type": "dcat:Catalog",
   "permissions": ["view"],
-  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
+  "@context": {
+    "@vocab": "https://cdn.startinblox.com/owl#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "title": "dct:title",
+    "description": "dct:description"
+  },
   "dcat:dataset": [
     {
       "@id": "/examples/data/list/--user-0.jsonld",

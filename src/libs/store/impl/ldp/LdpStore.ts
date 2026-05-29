@@ -32,7 +32,8 @@ export const base_context = {
   acl: 'http://www.w3.org/ns/auth/acl#',
   hd: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
   sib: 'http://cdn.startinblox.com/owl/ttl/vocab.ttl#',
-  dcat: 'https://www.w3.org/ns/dcat3.jsonld#',
+  dcat: 'http://www.w3.org/ns/dcat#',
+  dct: 'http://purl.org/dc/terms/',
   tems: 'https://cdn.startinblox.com/owl/tems.jsonld#',
   name: 'rdfs:label',
   deadline: 'xsd:dateTime',
@@ -258,20 +259,25 @@ export class LdpStore implements IStore<Resource> {
         return;
       }
 
-      const rawCtx = resource['@context'] || base_context;
+      // Layer base_context UNDER any resource @context so shared prefixes /
+      // aliases (acl:, dct:, permissions → acl:accessControl, …) are always
+      // available — fixtures with their own @context would otherwise lose them.
+      const resourceCtx = resource['@context'];
+      const rawCtx: any[] = resourceCtx
+        ? [
+            base_context,
+            ...(Array.isArray(resourceCtx) ? resourceCtx : [resourceCtx]),
+          ]
+        : [base_context];
       const normalizedRawContext: JSONLDContextParser.JsonLdContextNormalized =
-        await this.contextParser.parse(
-          Array.isArray(rawCtx) ? rawCtx : [rawCtx],
-        );
+        await this.contextParser.parse(rawCtx);
 
       if (resource)
         clientContext = normalizeContext(
           mergeContexts(clientContext, normalizedRawContext),
         );
 
-      const serverContext = await this.contextParser.parse([
-        resource['@context'] || base_context,
-      ]);
+      const serverContext = await this.contextParser.parse(rawCtx);
 
       // Cache proxy
       await this.cacheGraph(

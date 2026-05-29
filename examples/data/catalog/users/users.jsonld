@@ -1,5 +1,11 @@
 {
-  "@context": "https://www.w3.org/ns/dcat3.jsonld#",
+  "@context": {
+    "@vocab": "https://cdn.startinblox.com/owl#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "title": "dct:title",
+    "description": "dct:description"
+  },
   "@id": "/examples/data/catalog/users/users.jsonld",
   "@type": "dcat:Catalog",
   "permissions": ["view"],

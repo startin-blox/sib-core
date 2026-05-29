@@ -14,6 +14,13 @@
       }
     ]
   },
-  "permissions": ["view"],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "permissions": [
+    "view"
+  ],
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "dcat": "http://www.w3.org/ns/dcat#"
+    }
+  ]
 }

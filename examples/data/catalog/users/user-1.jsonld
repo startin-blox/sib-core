@@ -1,5 +1,10 @@
 {
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld",
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "dcat": "http://www.w3.org/ns/dcat#"
+    }
+  ],
   "@id": "/examples/data/catalog/users/user-1.jsonld",
   "@type": "foaf:user",
   "permissions": ["view"],

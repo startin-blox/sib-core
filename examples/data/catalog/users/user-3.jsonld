@@ -9,7 +9,13 @@
   "name": "Not A Paris Member",
   "available": false,
   "domain": {
-    "@context": "https://www.w3.org/ns/dcat3.jsonld#",
+    "@context": {
+      "@vocab": "https://cdn.startinblox.com/owl#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dct": "http://purl.org/dc/terms/",
+      "title": "dct:title",
+      "description": "dct:description"
+    },
     "@id": "/examples/data/catalog/users/user-3-skills.jsonld",
     "@type": "dcat:Catalog",
     "dcat:dataset": [],
@@ -20,5 +26,10 @@
   },
   "@type": "foaf:user",
   "permissions": ["view"],
-  "@context": "https://cdn.startinblox.com/owl/context.jsonld"
+  "@context": [
+    "https://cdn.startinblox.com/owl/context.jsonld",
+    {
+      "dcat": "http://www.w3.org/ns/dcat#"
+    }
+  ]
 }
