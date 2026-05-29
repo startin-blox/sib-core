@@ -259,25 +259,20 @@ export class LdpStore implements IStore<Resource> {
         return;
       }
 
-      // Layer base_context UNDER any resource @context so shared prefixes /
-      // aliases (acl:, dct:, permissions → acl:accessControl, …) are always
-      // available — fixtures with their own @context would otherwise lose them.
-      const resourceCtx = resource['@context'];
-      const rawCtx: any[] = resourceCtx
-        ? [
-            base_context,
-            ...(Array.isArray(resourceCtx) ? resourceCtx : [resourceCtx]),
-          ]
-        : [base_context];
+      const rawCtx = resource['@context'] || base_context;
       const normalizedRawContext: JSONLDContextParser.JsonLdContextNormalized =
-        await this.contextParser.parse(rawCtx);
+        await this.contextParser.parse(
+          Array.isArray(rawCtx) ? rawCtx : [rawCtx],
+        );
 
       if (resource)
         clientContext = normalizeContext(
           mergeContexts(clientContext, normalizedRawContext),
         );
 
-      const serverContext = await this.contextParser.parse(rawCtx);
+      const serverContext = await this.contextParser.parse([
+        resource['@context'] || base_context,
+      ]);
 
       // Cache proxy
       await this.cacheGraph(
