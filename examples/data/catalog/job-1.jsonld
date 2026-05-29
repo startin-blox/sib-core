@@ -14,9 +14,7 @@
       }
     ]
   },
-  "permissions": [
-    "view"
-  ],
+  "permissions": ["view"],
   "@context": [
     "https://cdn.startinblox.com/owl/context.jsonld",
     {
