@@ -1783,7 +1783,7 @@ export class DataspaceConnectorStore implements IStore<Resource> {
         apiVersion === 'v3' ? '/assets' : '/assets',
       );
 
-    const assetData = {
+    const assetData: Record<string, unknown> = {
       '@context': this.mergeContext({
         '@vocab': 'https://w3id.org/edc/v0.0.1/ns/',
         edc: 'https://w3id.org/edc/v0.0.1/ns/',
@@ -1795,6 +1795,11 @@ export class DataspaceConnectorStore implements IStore<Resource> {
       properties: assetInput.properties || {},
       dataAddress: assetInput.dataAddress,
     };
+    // privateProperties carries secret fields (e.g. oauth2:clientSecret) that
+    // the management API never echoes back. Forward only when present.
+    if (assetInput.privateProperties) {
+      assetData.privateProperties = assetInput.privateProperties;
+    }
 
     const response = await this.fetchAuthn(assetsEndpoint, {
       method: 'POST',

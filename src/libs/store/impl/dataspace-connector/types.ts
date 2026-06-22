@@ -425,6 +425,8 @@ export interface Asset {
 export interface AssetInput {
   '@id': string;
   properties?: Record<string, any>;
+  // Secrets that never echo back from the management API (e.g. oauth2:clientSecret).
+  privateProperties?: Record<string, any>;
   dataAddress?: DataAddress;
 }
 
