@@ -1019,10 +1019,16 @@ export class FederatedCatalogueStore implements IStore<any> {
       );
     }
 
-    // 2) Build TEMS‐style @id from the Resource’s @id
+    // 2) Build TEMS-style @id from the Resource's @id.
+    //    sib-router treats @id as opaque, so a bare URN keeps the address bar
+    //    short and avoids the double-encoded synthetic host previously baked
+    //    in via opts.temsServiceBase. Container children below (categories,
+    //    images) hang off the URN with a `/…` separator, which is legal in
+    //    the URN NSS (RFC 8141).
     const resourceId = cs['@id'];
-    const slug = resourceId.split('/').pop() || 'unknown';
-    const serviceId = `${opts.temsServiceBase}${encodeURIComponent(slug)}/`;
+    const rawSlug = resourceId.split('/').pop() || 'unknown';
+    const bareUuid = rawSlug.replace(/^urn:uuid:/i, '');
+    const serviceId = `urn:uuid:${bareUuid}`;
 
     // 3) Map issuanceDate → creation_date; expirationDate → update_date
     const creation_date = vc.issuanceDate;
@@ -1047,7 +1053,7 @@ export class FederatedCatalogueStore implements IStore<any> {
 
     // 6) Build categories container from keywords
     const categories = {
-      '@id': `${serviceId}categories/`,
+      '@id': `${serviceId}/categories`,
       '@type': 'ldp:Container' as const,
       'ldp:contains': keywords.map(kw => ({
         '@id': `${opts.temsCategoryBase}${encodeURIComponent(kw)}/`,
@@ -1073,7 +1079,7 @@ export class FederatedCatalogueStore implements IStore<any> {
     const creatorThumbnail = getThumbnailUrl(getCreator(catInfo));
     if (creatorThumbnail) imageUrls.push(creatorThumbnail);
     const images = {
-      '@id': `${serviceId}images/`,
+      '@id': `${serviceId}/images`,
       '@type': 'ldp:Container' as const,
       'ldp:contains': imageUrls.map(url => ({
         // Keep the URL exactly as-is
