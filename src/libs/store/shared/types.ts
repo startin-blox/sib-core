@@ -144,6 +144,7 @@ export function hasQueryIndexConjunction(
 export enum StoreType {
   LDP = 'ldp',
   FederatedCatalogue = 'federatedCatalogue',
+  FederatedCatalogueDcp = 'federatedCatalogueDcp',
   DataspaceConnector = 'dataspaceConnector',
 }
 

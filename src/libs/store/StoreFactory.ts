@@ -1,4 +1,5 @@
 import { DataspaceConnectorStoreAdapter } from './impl/dataspace-connector/DataspaceConnectorStore.ts';
+import { FederatedCatalogueDcpStoreAdapter } from './impl/federated-catalogue-dcp/FederatedCatalogueDcpStore.ts';
 import { FederatedCatalogueStoreAdapter } from './impl/federated-catalogue/FederatedCatalogueStore.ts';
 import { LdpStoreAdapter } from './impl/ldp/LdpStoreAdapter.ts';
 import { type IStore, type StoreConfig, StoreType } from './shared/types.ts';
@@ -25,6 +26,10 @@ StoreFactory.register(StoreType.LDP, LdpStoreAdapter);
 StoreFactory.register(
   StoreType.FederatedCatalogue,
   FederatedCatalogueStoreAdapter,
+);
+StoreFactory.register(
+  StoreType.FederatedCatalogueDcp,
+  FederatedCatalogueDcpStoreAdapter,
 );
 StoreFactory.register(
   StoreType.DataspaceConnector,
