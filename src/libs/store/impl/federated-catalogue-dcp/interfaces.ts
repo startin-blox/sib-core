@@ -19,18 +19,60 @@ export interface DcpCatalog {
   '@context'?: Record<string, string>;
 }
 
+/** URI-object shape used across the DCP JSON-LD payload. */
+export type UriObject = { '@id': string } | string;
+
+export interface DcpPublisher {
+  '@id'?: string;
+  'foaf:name'?: string;
+  'foaf:depiction'?: UriObject;
+}
+
+export interface DcpDistribution {
+  'dcat:accessURL'?: UriObject;
+  'dcat:byteSize'?: number;
+  [k: string]: unknown;
+}
+
+export interface DcpContactPoint {
+  'vcard:fn'?: string;
+  'vcard:hasEmail'?: string;
+}
+
+export interface DcpConformsTo {
+  '@id': string;
+  'dcterms:title'?: string;
+  'dcterms:description'?: string;
+}
+
 export interface DcpDataset {
   '@id': string;
   '@type': 'dcat:Dataset' | string;
   id?: string;
   'odrl:hasPolicy'?: unknown;
-  'dcat:distribution'?: unknown[];
+  'dcat:distribution'?: DcpDistribution[] | DcpDistribution;
   'dcat:service'?: DcpDataService | DcpDataService[];
+  // Legacy short-form (kept for back-compat with pre-v0.2.0 seeds).
   'dct:title'?: string;
   'rdfs:comment'?: string;
+  'dct:creator'?: unknown;
+  // v0.2.0 fields (flattened onto the dataset by the FC crawler).
+  'rdf:type'?: string | { '@id': string };
+  'dcterms:title'?: string;
+  'dcterms:description'?: string;
   'dcat:keyword'?: string | string[];
   'dcat:version'?: string;
-  'dct:creator'?: unknown;
+  'dcterms:issued'?: string | { '@value': string; '@type'?: string };
+  'dcterms:publisher'?: DcpPublisher;
+  'dcterms:language'?: UriObject | UriObject[];
+  'dcat:theme'?: UriObject | UriObject[];
+  'dcterms:conformsTo'?: DcpConformsTo | DcpConformsTo[];
+  'dcat:contactPoint'?: DcpContactPoint;
+  'foaf:depiction'?: UriObject;
+  'tc:hostingCountry'?: string;
+  'tc:dataQualityLevel1'?: string;
+  'dcat:endpointURL'?: UriObject;
+  'dcat:endpointDescription'?: UriObject;
   [k: string]: unknown;
 }
 
@@ -57,6 +99,7 @@ export type DcpCatalogQueryResponse = DcpCatalog[];
  */
 export interface Destination {
   '@id': string;
+  // Includes tems:Object plus tems:Service or tems:DataOffer (per rdf:type).
   '@type': string[];
   name?: string;
   description?: string;
@@ -66,9 +109,23 @@ export interface Destination {
     '@id'?: string;
     name?: string;
     address?: string;
+    logoUrl?: string;
   };
   categories?: unknown[];
-  images?: unknown[];
+  images?: string[];
+  // v0.2.0 pass-through fields (used by the fc-catalog view; safe to ignore).
+  identifier?: string;
+  rdfType?: 'dcat:Dataset' | 'dcat:DataService';
+  issued?: string;
+  themes?: { uri: string }[];
+  languages?: { uri: string }[];
+  hostingCountry?: string;
+  conformsTo?: { '@id': string; 'dcterms:title'?: string; 'dcterms:description'?: string }[];
+  contactPoint?: { name: string; email: string };
+  distributions?: { accessUrl: string; byteSize?: number }[];
+  endpointUrl?: string;
+  endpointDescription?: string;
+  bannerUrl?: string;
   // Contract-negotiation surface preserved from the XFSC store so tems-modal
   // still finds what it needs when the user negotiates against a DCP-sourced
   // offer.

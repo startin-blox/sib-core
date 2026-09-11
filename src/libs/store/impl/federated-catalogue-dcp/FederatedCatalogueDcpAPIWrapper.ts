@@ -11,6 +11,15 @@ import type { DcpCatalogQueryResponse } from './interfaces.ts';
  * OIDC/bearer token (e.g. from `sib-auth`), we attach it via the injected
  * `fetch` function so future gated deployments work without a code change.
  */
+export interface GetAggregatedCatalogOptions {
+  /**
+   * `flatten=true` (default) asks the FC to normalize nested `dcat:catalog`
+   * sub-entries into a single-level `dcat:dataset` list per source catalog.
+   * The response is still one catalog per source participant.
+   */
+  flatten?: boolean;
+}
+
 export class FederatedCatalogueDcpAPIWrapper {
   private baseUrl: string;
   private fetchImpl: typeof fetch;
@@ -21,8 +30,11 @@ export class FederatedCatalogueDcpAPIWrapper {
     this.fetchImpl = fetchImpl;
   }
 
-  async getAggregatedCatalog(): Promise<DcpCatalogQueryResponse> {
-    const url = `${this.baseUrl}/v1alpha/catalog/query`;
+  async getAggregatedCatalog(
+    opts: GetAggregatedCatalogOptions = {},
+  ): Promise<DcpCatalogQueryResponse> {
+    const { flatten = true } = opts;
+    const url = `${this.baseUrl}/v1alpha/catalog/query${flatten ? '?flatten=true' : ''}`;
     const body = JSON.stringify({
       '@context': { edc: 'https://w3id.org/edc/v0.0.1/ns/' },
       '@type': 'QuerySpec',

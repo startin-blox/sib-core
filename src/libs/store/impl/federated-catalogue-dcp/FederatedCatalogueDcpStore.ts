@@ -14,6 +14,95 @@ import type {
   MapperOptions,
 } from './interfaces.ts';
 
+// --- module-level JSON-LD extraction helpers --------------------------------
+function toArray<T>(v: T | T[] | undefined | null): T[] {
+  if (v === undefined || v === null) return [];
+  return Array.isArray(v) ? v : [v];
+}
+
+/** Accepts a URI-object (`{"@id": ...}`) or bare string; returns the URI or undefined. */
+function readObjectId(v: unknown): string | undefined {
+  if (typeof v === 'string' && v.length > 0) return v;
+  if (v && typeof v === 'object' && !Array.isArray(v)) {
+    const id = (v as { '@id'?: unknown })['@id'];
+    if (typeof id === 'string' && id.length > 0) return id;
+  }
+  return undefined;
+}
+
+function readString(v: unknown): string | undefined {
+  if (typeof v === 'string') return v.length > 0 ? v : undefined;
+  if (v && typeof v === 'object' && !Array.isArray(v)) {
+    const value = (v as { '@value'?: unknown })['@value'];
+    if (typeof value === 'string' && value.length > 0) return value;
+  }
+  return undefined;
+}
+
+function readIsoDate(v: unknown): string | undefined {
+  const s = readString(v);
+  return s && /^\d{4}-\d{2}-\d{2}/.test(s) ? s : undefined;
+}
+
+/** Normalize `dcat:theme` / `dcterms:language` (scalar OR array of URI-objects) to string[]. */
+function normalizeUriObjects(v: unknown): string[] {
+  return toArray(v as unknown[])
+    .map(readObjectId)
+    .filter((u): u is string => !!u);
+}
+
+/**
+ * Extract the v0.2.0 rdf:type discriminator from a DCP dataset. The crawler
+ * flattens `properties.rdf:type` as a sibling of the dcat:Dataset wrapper,
+ * but different @context expansions may leave it as a bare string or as a
+ * `{"@id": "dcat:DataService"}` object. The wrapper `@type` is always
+ * `"dcat:Dataset"` regardless of the underlying asset — do not use it.
+ */
+function extractRdfType(ds: DcpDataset): string | undefined {
+  const raw = ds['rdf:type'];
+  const s = typeof raw === 'string' ? raw : readObjectId(raw);
+  if (!s) return undefined;
+  const norm = s.replace(
+    /^http:\/\/www\.w3\.org\/ns\/dcat#/,
+    'dcat:',
+  );
+  return norm;
+}
+
+/**
+ * DSP JSON-LD serialization from EDC connectors emits fields under EXPANDED
+ * URIs whenever the emitting context lacks the relevant prefix. TEMS assets
+ * carry `tc:`, `foaf:`, `rdf:` fields that the connector's baked-in context
+ * doesn't know, so those come across as full URIs. Normalize both directions
+ * on a shallow copy so downstream readers can use the compact forms.
+ */
+const URI_TO_PREFIX: Record<string, string> = {
+  'http://www.w3.org/1999/02/22-rdf-syntax-ns#': 'rdf:',
+  'http://purl.org/dc/terms/': 'dct:',
+  'http://xmlns.com/foaf/0.1/': 'foaf:',
+  'http://tems.org/2024/temscore#': 'tc:',
+  'http://www.w3.org/ns/dcat#': 'dcat:',
+  'http://www.w3.org/2006/vcard/ns#': 'vcard:',
+  'http://www.w3.org/ns/odrl/2/': 'odrl:',
+};
+
+function normalizeJsonLdKeys<T>(v: T): T {
+  if (Array.isArray(v)) return v.map(normalizeJsonLdKeys) as unknown as T;
+  if (!v || typeof v !== 'object') return v;
+  const out: Record<string, unknown> = {};
+  for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+    let key = k;
+    for (const uri of Object.keys(URI_TO_PREFIX)) {
+      if (k.startsWith(uri)) {
+        key = URI_TO_PREFIX[uri] + k.slice(uri.length);
+        break;
+      }
+    }
+    out[key] = normalizeJsonLdKeys(val);
+  }
+  return out as unknown as T;
+}
+
 /**
  * IStore implementation backed by the DCP-flavored EDC Federated Catalog
  * extension.
@@ -58,10 +147,11 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
   }
 
   private resolveTargetType(args: any): string {
-    if (args && typeof args === 'object' && 'rdf-type' in args) {
-      return String(args['rdf-type']);
-    }
-    // Default: no filter — the container returns all datasets.
+    if (!args || typeof args !== 'object') return '';
+    // orbitFcComponent's _getProxyValue passes { targetType }; the
+    // sib-router path passes { 'rdf-type' } — accept both.
+    if ('targetType' in args && args.targetType) return String(args.targetType);
+    if ('rdf-type' in args) return String(args['rdf-type']);
     return '';
   }
 
@@ -97,8 +187,10 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         temsProviderBase: this.cfg.temsProviderBase as string | undefined,
       };
 
+      const own = this.cfg.ownParticipantId?.toLowerCase();
       const items: Destination[] = [];
       for (const catalog of payload) {
+        if (own && this.isOwnCatalog(catalog, own)) continue;
         const datasets = this.normalizeDatasets(catalog['dcat:dataset']);
         for (const ds of datasets) {
           const mapped = this.mapDatasetToDestination(ds, catalog, opts);
@@ -143,13 +235,19 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     return Array.isArray(v) ? v : [v];
   }
 
+  private isOwnCatalog(catalog: DcpCatalog, ownLower: string): boolean {
+    const pid = String(catalog['dspace:participantId'] ?? '').toLowerCase();
+    return pid !== '' && pid === ownLower;
+  }
+
   private mapDatasetToDestination(
-    ds: DcpDataset,
+    rawDs: DcpDataset,
     catalog: DcpCatalog,
     _opts: MapperOptions,
   ): Destination {
-    // @id: bare urn:uuid per project_tems_transition_state — the router
-    // treats it opaquely and the mapping stays URL-encodable.
+    // Normalize expanded URIs (rdf:, foaf:, tc:, …) to compact form.
+    const ds = normalizeJsonLdKeys(rawDs) as DcpDataset;
+    // bare urn:uuid — sib-router treats @id opaquely (project_tems_transition_state).
     const rawId = String(ds['@id'] ?? ds.id ?? '');
     const bareUuid = rawId.replace(/^urn:uuid:/i, '');
     const id = bareUuid ? `urn:uuid:${bareUuid}` : rawId;
@@ -161,12 +259,21 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     const serviceForMeta =
       datasetServices[0] ?? catalogServices[0] ?? ({} as DcpDataService);
 
-    const title =
-      String(ds['dct:title'] ?? serviceForMeta['dct:title'] ?? '') || undefined;
-    const description =
-      String(
-        ds['rdfs:comment'] ?? serviceForMeta['rdfs:comment'] ?? '',
-      ) || undefined;
+    // Title/description: prefer v0.2.0 dcterms:*, fall back to legacy dct:*/rdfs:comment.
+    const title = readString(
+      ds['dcterms:title'] ??
+        ds['dct:title'] ??
+        serviceForMeta['dcterms:title'] ??
+        serviceForMeta['dct:title'],
+    );
+    const description = readString(
+      ds['dcterms:description'] ??
+        (ds as any)['dct:description'] ??
+        ds['rdfs:comment'] ??
+        serviceForMeta['dcterms:description'] ??
+        (serviceForMeta as any)['dct:description'] ??
+        serviceForMeta['rdfs:comment'],
+    );
 
     const rawKeywords = ds['dcat:keyword'] ?? serviceForMeta['dcat:keyword'];
     const keywords = Array.isArray(rawKeywords)
@@ -175,23 +282,76 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         ? [String(rawKeywords)]
         : undefined;
 
-    const version = ds['dcat:version']
-      ? String(ds['dcat:version'])
-      : serviceForMeta['dcat:version']
-        ? String(serviceForMeta['dcat:version'])
-        : undefined;
+    const version = readString(ds['dcat:version'] ?? serviceForMeta['dcat:version']);
 
-    const providerId = catalog['dspace:participantId'];
+    // rdf:type discrimination — enables the modal's Negotiate CTA.
+    const rdfType = extractRdfType(ds);
+
+    // Publisher preferred over raw DID for human-readable display.
+    const publisher = ds['dcterms:publisher'] ?? (ds as any)['dct:publisher'];
+    const providerId = publisher?.['@id'] ?? catalog['dspace:participantId'];
+    const providerName = publisher?.['foaf:name'] ?? providerId;
+    const providerLogo = readObjectId(publisher?.['foaf:depiction']);
+
+    const endpointUrl = readObjectId(ds['dcat:endpointURL']);
+    const endpointDescription = readObjectId(ds['dcat:endpointDescription']);
+
     const providerAddress =
+      endpointUrl ??
       (catalogServices[0]?.['dcat:endpointURL'] as string | undefined) ??
       (catalogServices[0]?.['dcat:endpointUrl'] as string | undefined) ??
       catalog.originator;
 
-    // Type discrimination — DCP DCAT payloads don't natively carry the
-    // TEMS Service vs DataOffer distinction, so downstream consumers filter
-    // via other properties. The MVP tags both with tems:Object; the
-    // v0.2.0 schema alignment work (#28) reads rdf:type / tc:offeringKind.
-    const type = ['tems:Object'];
+    // Types: always tems:Object, plus tems:Service or tems:DataOffer per rdf:type.
+    const type: string[] = ['tems:Object'];
+    if (rdfType === 'dcat:DataService') type.push('tems:Service');
+    else if (rdfType === 'dcat:Dataset') type.push('tems:DataOffer');
+
+    const bannerUrl = readObjectId(ds['foaf:depiction']);
+    const images: string[] = [];
+    if (bannerUrl) images.push(bannerUrl);
+
+    const themes = normalizeUriObjects(ds['dcat:theme']).map(uri => ({ uri }));
+    const languages = normalizeUriObjects(
+      ds['dcterms:language'] ?? (ds as any)['dct:language'],
+    ).map(uri => ({ uri }));
+    const conformsTo = toArray(
+      ds['dcterms:conformsTo'] ?? (ds as any)['dct:conformsTo'],
+    ).map(c => {
+      const cAny = c as any;
+      const title = c['dcterms:title'] ?? cAny['dct:title'];
+      const desc = cAny['dcterms:description'] ?? cAny['dct:description'];
+      return {
+        '@id': String(c['@id']),
+        ...(title ? { 'dcterms:title': String(title) } : {}),
+        ...(desc ? { 'dcterms:description': String(desc) } : {}),
+      };
+    });
+    const contact = ds['dcat:contactPoint'];
+    const contactPoint = contact?.['vcard:fn']
+      ? {
+          name: String(contact['vcard:fn']),
+          email: String(contact['vcard:hasEmail'] ?? '').replace(/^mailto:/i, ''),
+        }
+      : undefined;
+
+    const distributions =
+      rdfType === 'dcat:Dataset'
+        ? toArray(ds['dcat:distribution']).map(d => {
+            const accessUrl = readObjectId((d as any)['dcat:accessURL']) ?? '';
+            const byteSize = (d as any)['dcat:byteSize'];
+            return {
+              accessUrl,
+              ...(typeof byteSize === 'number' ? { byteSize } : {}),
+            };
+          })
+        : undefined;
+
+    const hostingCountry = readString(ds['tc:hostingCountry'])?.toUpperCase();
+    const issued = readIsoDate(ds['dcterms:issued'] ?? (ds as any)['dct:issued']);
+    const identifier = readString(
+      ds['dcterms:identifier'] ?? (ds as any)['dct:identifier'],
+    );
 
     return {
       '@id': id,
@@ -203,11 +363,25 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       provider: providerId || providerAddress
         ? {
             '@id': providerId,
-            name: providerId,
+            name: providerName ?? providerId,
             address: providerAddress as string | undefined,
+            ...(providerLogo ? { logoUrl: providerLogo } : {}),
           }
         : undefined,
-      images: [],
+      images,
+      // v0.2.0 pass-through
+      identifier,
+      rdfType: rdfType as Destination['rdfType'],
+      issued,
+      themes: themes.length ? themes : undefined,
+      languages: languages.length ? languages : undefined,
+      hostingCountry,
+      conformsTo: conformsTo.length ? conformsTo : undefined,
+      contactPoint,
+      distributions: distributions?.length ? distributions : undefined,
+      endpointUrl,
+      endpointDescription,
+      bannerUrl,
       // Contract-negotiation surface — preserve fields tems-modal expects
       // when negotiating an offer sourced from this store.
       counterPartyId: providerId,
@@ -215,7 +389,7 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       assetId: id,
       datasetId: id,
       policy: ds['odrl:hasPolicy'],
-      _rawDataset: ds,
+      _rawDataset: rawDs,
       _rawCatalog: {
         '@id': catalog['@id'],
         'dspace:participantId': catalog['dspace:participantId'],

@@ -160,6 +160,9 @@ export type StoreConfig = {
   // LocalStorage caching configuration (for FederatedCatalogueStore)
   enableLocalStorageMetadata?: boolean;
   cacheTTL?: number; // Cache TTL in milliseconds
+  // FederatedCatalogueDcpStore: skip catalogs published by this participant
+  // (case-insensitive match against catalog['dspace:participantId']).
+  ownParticipantId?: string;
 };
 
 export interface StoreInstance {

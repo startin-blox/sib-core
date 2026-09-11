@@ -99,7 +99,7 @@ describe('FederatedCatalogueDcpAPIWrapper', () => {
       );
       await wrapper.getAggregatedCatalog();
       expect(captured.url).to.equal(
-        'https://api.example.com/v1alpha/catalog/query',
+        'https://api.example.com/v1alpha/catalog/query?flatten=true',
       );
     });
   });
@@ -120,7 +120,7 @@ describe('FederatedCatalogueDcpAPIWrapper', () => {
       await wrapper.getAggregatedCatalog();
 
       expect(captured.url).to.equal(
-        'https://api.example.com/v1alpha/catalog/query',
+        'https://api.example.com/v1alpha/catalog/query?flatten=true',
       );
       expect(captured.init?.method).to.equal('POST');
 
@@ -133,6 +133,22 @@ describe('FederatedCatalogueDcpAPIWrapper', () => {
         '@context': { edc: 'https://w3id.org/edc/v0.0.1/ns/' },
         '@type': 'QuerySpec',
       });
+    });
+
+    it('omits ?flatten=true when opts.flatten is false', async () => {
+      const captured: { url?: string } = {};
+      const stubFetch: typeof fetch = ((url: string) => {
+        captured.url = url;
+        return Promise.resolve(jsonResponse([]));
+      }) as any;
+      const wrapper = new FederatedCatalogueDcpAPIWrapper(
+        'https://api.example.com',
+        stubFetch,
+      );
+      await wrapper.getAggregatedCatalog({ flatten: false });
+      expect(captured.url).to.equal(
+        'https://api.example.com/v1alpha/catalog/query',
+      );
     });
 
     it('returns an array payload unchanged', async () => {
@@ -502,6 +518,259 @@ describe('FederatedCatalogueDcpStore', () => {
       );
       expect(containerEvent, 'expected container dispatch').to.exist;
       expect(containerEvent.resource['@type']).to.equal('ldp:Container');
+    });
+  });
+
+  describe('getData — v0.2.0 mapping (rdf:type, publisher, self-filter)', () => {
+    const buildV02Fixture = (): DcpCatalog[] => [
+      {
+        '@id': 'urn:cat:v02-a',
+        '@type': 'dcat:Catalog',
+        'dspace:participantId': 'did:web:host.docker.internal%3A8080',
+        originator: 'https://a.example/dsp',
+        'dcat:dataset': [
+          {
+            // Full v0.2.0 DataService entry.
+            '@id': 'urn:uuid:11111111-1111-4111-8111-111111111111',
+            '@type': 'dcat:Dataset',
+            'rdf:type': 'dcat:DataService',
+            'dcterms:title': 'AFP Photo Search',
+            'dcterms:description': 'Search over the AFP photo archive.',
+            'dcat:keyword': ['Images', 'Search'],
+            'dcterms:publisher': {
+              '@id': 'did:web:host.docker.internal%3A8080',
+              'foaf:name': 'Agence France-Presse',
+              'foaf:depiction': { '@id': 'https://picsum.photos/seed/afp/128' },
+            },
+            'dcat:theme': [
+              { '@id': 'http://publications.europa.eu/resource/authority/data-theme/GOVE' },
+            ],
+            'dcterms:language': [
+              { '@id': 'http://publications.europa.eu/resource/authority/language/ENG' },
+            ],
+            'dcterms:issued': '2026-01-22',
+            'tc:hostingCountry': 'be',
+            'foaf:depiction': { '@id': 'https://picsum.photos/seed/afp-photo/400' },
+            'dcat:endpointURL': { '@id': 'https://api.afp.example/photos/v1/search' },
+            'dcat:endpointDescription': { '@id': 'https://api.afp.example/photos/v1/openapi.yaml' },
+            'odrl:hasPolicy': { '@id': 'urn:policy:afp' },
+          },
+          {
+            // Full v0.2.0 Dataset entry with a distribution.
+            '@id': 'urn:uuid:44444444-4444-4444-8444-444444444444',
+            '@type': 'dcat:Dataset',
+            'rdf:type': { '@id': 'dcat:Dataset' },
+            'dcterms:title': 'DW Fact-Check Registry',
+            'dcterms:description': 'Public claims fact-checked by Deutsche Welle.',
+            'dcat:keyword': 'Fact-check',
+            'dcterms:publisher': {
+              '@id': 'did:web:host.docker.internal%3A8080',
+              'foaf:name': 'Agence France-Presse',
+            },
+            'dcat:distribution': [
+              {
+                'dcat:accessURL': { '@id': 'https://data.dw.example/registry.parquet' },
+                'dcat:byteSize': 104857600,
+              },
+            ],
+            'tc:hostingCountry': 'ES',
+          } as unknown as DcpDataset,
+        ],
+      },
+      {
+        '@id': 'urn:cat:v02-b',
+        '@type': 'dcat:Catalog',
+        'dspace:participantId': 'did:web:host.docker.internal%3A8081',
+        originator: 'https://b.example/dsp',
+        'dcat:dataset': {
+          '@id': 'urn:uuid:22222222-2222-4222-8222-222222222222',
+          '@type': 'dcat:Dataset',
+          'rdf:type': 'dcat:DataService',
+          'dcterms:title': 'DW Live Stream',
+          'dcat:endpointURL': { '@id': 'https://stream.dw.example/hls/master.m3u8' },
+        } as DcpDataset,
+      },
+    ];
+
+    it('appends tems:Service to @type when rdf:type is dcat:DataService', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const svc = items.find(
+        i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
+      );
+      expect(svc['@type']).to.include('tems:Object');
+      expect(svc['@type']).to.include('tems:Service');
+      expect(svc['@type']).to.not.include('tems:DataOffer');
+    });
+
+    it('appends tems:DataOffer to @type when rdf:type is dcat:Dataset (object form)', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const ds = items.find(
+        i => i['@id'] === 'urn:uuid:44444444-4444-4444-8444-444444444444',
+      );
+      expect(ds['@type']).to.include('tems:Object');
+      expect(ds['@type']).to.include('tems:DataOffer');
+      expect(ds['@type']).to.not.include('tems:Service');
+    });
+
+    it('keeps @type = [tems:Object] only when rdf:type is absent (back-compat)', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildDcpFixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      for (const item of items) {
+        expect(item['@type']).to.deep.equal(['tems:Object']);
+      }
+    });
+
+    it('uses dcterms:publisher.foaf:name for provider.name and foaf:depiction for logoUrl', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const svc = items.find(
+        i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
+      );
+      expect(svc.provider.name).to.equal('Agence France-Presse');
+      expect(svc.provider.logoUrl).to.equal('https://picsum.photos/seed/afp/128');
+      // counterPartyId still tracks the publisher DID for negotiation.
+      expect(svc.counterPartyId).to.equal('did:web:host.docker.internal%3A8080');
+    });
+
+    it('pushes dataset-level foaf:depiction into images[] and bannerUrl', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const svc = items.find(
+        i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
+      );
+      expect(svc.images).to.deep.equal(['https://picsum.photos/seed/afp-photo/400']);
+      expect(svc.bannerUrl).to.equal('https://picsum.photos/seed/afp-photo/400');
+    });
+
+    it('passes through v0.2.0 fields: themes, languages, hostingCountry (uppercased), distributions, endpointUrl', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const svc = items.find(
+        i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
+      );
+      expect(svc.themes).to.deep.equal([
+        { uri: 'http://publications.europa.eu/resource/authority/data-theme/GOVE' },
+      ]);
+      expect(svc.languages).to.deep.equal([
+        { uri: 'http://publications.europa.eu/resource/authority/language/ENG' },
+      ]);
+      expect(svc.hostingCountry).to.equal('BE');
+      expect(svc.endpointUrl).to.equal('https://api.afp.example/photos/v1/search');
+      expect(svc.endpointDescription).to.equal('https://api.afp.example/photos/v1/openapi.yaml');
+      expect(svc.rdfType).to.equal('dcat:DataService');
+      expect(svc.issued).to.equal('2026-01-22');
+
+      const ds = items.find(
+        i => i['@id'] === 'urn:uuid:44444444-4444-4444-8444-444444444444',
+      );
+      expect(ds.distributions).to.deep.equal([
+        {
+          accessUrl: 'https://data.dw.example/registry.parquet',
+          byteSize: 104857600,
+        },
+      ]);
+      expect(ds.hostingCountry).to.equal('ES');
+    });
+
+    it('skips catalogs whose participantId matches ownParticipantId (case-insensitive)', async () => {
+      const store = new FederatedCatalogueDcpStore({
+        ...mockConfig,
+        ownParticipantId: 'DID:WEB:HOST.docker.internal%3A8080', // upper-case on purpose
+      });
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      // participant-a's 2 datasets are filtered; only participant-b's DW stream remains.
+      expect(items).to.have.length(1);
+      expect(items[0]['@id']).to.equal(
+        'urn:uuid:22222222-2222-4222-8222-222222222222',
+      );
+    });
+
+    it('normalizes expanded-URI DSP payloads (rdf:type, tc:*, foaf:*, dct:*)', async () => {
+      // Real-world shape: EDC connectors emit our custom-vocab fields under
+      // expanded URIs whenever their DSP @context lacks the prefix.
+      const expandedFixture: DcpCatalog[] = [
+        {
+          '@id': 'urn:cat:exp',
+          '@type': 'dcat:Catalog',
+          'dspace:participantId': 'did:web:host.docker.internal%3A8080',
+          'dcat:dataset': [
+            {
+              '@id': 'urn:uuid:99999999-9999-4999-8999-999999999999',
+              '@type': 'dcat:Dataset',
+              'http://www.w3.org/1999/02/22-rdf-syntax-ns#type': 'dcat:DataService',
+              'dct:title': 'Expanded-form AFP Service',
+              'dct:description': 'Emitted with dct: alias, not dcterms:',
+              'dct:publisher': {
+                '@id': 'did:web:host.docker.internal%3A8080',
+                'http://xmlns.com/foaf/0.1/name': 'Agence France-Presse',
+              },
+              'http://tems.org/2024/temscore#hostingCountry': 'FR',
+              'http://xmlns.com/foaf/0.1/depiction': {
+                '@id': 'https://picsum.photos/seed/exp/400',
+              },
+            } as unknown as DcpDataset,
+          ],
+        },
+      ];
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(expandedFixture),
+      });
+      const container = await store.getData({});
+      const items = container['ldp:contains'] as any[];
+      const one = items[0];
+      // rdf:type expanded → tems:Service on @type.
+      expect(one['@type']).to.include('tems:Service');
+      // dct:title → name.
+      expect(one.name).to.equal('Expanded-form AFP Service');
+      // dct:description → description.
+      expect(one.description).to.equal('Emitted with dct: alias, not dcterms:');
+      // dct:publisher + expanded foaf:name → provider.name.
+      expect(one.provider.name).to.equal('Agence France-Presse');
+      // Expanded tc:hostingCountry uppercased.
+      expect(one.hostingCountry).to.equal('FR');
+      // Expanded foaf:depiction → bannerUrl + images.
+      expect(one.bannerUrl).to.equal('https://picsum.photos/seed/exp/400');
+      expect(one.images).to.deep.equal(['https://picsum.photos/seed/exp/400']);
+    });
+
+    it('does not filter when ownParticipantId is unset (default)', async () => {
+      const store = new FederatedCatalogueDcpStore(mockConfig);
+      withFakeApi(store, {
+        getAggregatedCatalog: () => Promise.resolve(buildV02Fixture()),
+      });
+      const container = await store.getData({});
+      expect((container['ldp:contains'] as any[]).length).to.equal(3);
     });
   });
 
