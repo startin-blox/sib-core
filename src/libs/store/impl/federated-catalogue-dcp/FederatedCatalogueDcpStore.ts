@@ -385,7 +385,8 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       hostingCountry,
       conformsTo: conformsTo.length > 0 ? conformsTo : undefined,
       contactPoint,
-      distributions: (distributions?.length ?? 0) > 0 ? distributions : undefined,
+      distributions:
+        (distributions?.length ?? 0) > 0 ? distributions : undefined,
       endpointUrl,
       endpointDescription,
       bannerUrl,
