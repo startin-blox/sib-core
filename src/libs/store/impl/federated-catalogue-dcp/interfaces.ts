@@ -120,7 +120,11 @@ export interface Destination {
   themes?: { uri: string }[];
   languages?: { uri: string }[];
   hostingCountry?: string;
-  conformsTo?: { '@id': string; 'dcterms:title'?: string; 'dcterms:description'?: string }[];
+  conformsTo?: {
+    '@id': string;
+    'dcterms:title'?: string;
+    'dcterms:description'?: string;
+  }[];
   contactPoint?: { name: string; email: string };
   distributions?: { accessUrl: string; byteSize?: number }[];
   endpointUrl?: string;

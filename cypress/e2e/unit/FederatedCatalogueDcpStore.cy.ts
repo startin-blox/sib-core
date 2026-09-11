@@ -543,16 +543,28 @@ describe('FederatedCatalogueDcpStore', () => {
               'foaf:depiction': { '@id': 'https://picsum.photos/seed/afp/128' },
             },
             'dcat:theme': [
-              { '@id': 'http://publications.europa.eu/resource/authority/data-theme/GOVE' },
+              {
+                '@id':
+                  'http://publications.europa.eu/resource/authority/data-theme/GOVE',
+              },
             ],
             'dcterms:language': [
-              { '@id': 'http://publications.europa.eu/resource/authority/language/ENG' },
+              {
+                '@id':
+                  'http://publications.europa.eu/resource/authority/language/ENG',
+              },
             ],
             'dcterms:issued': '2026-01-22',
             'tc:hostingCountry': 'be',
-            'foaf:depiction': { '@id': 'https://picsum.photos/seed/afp-photo/400' },
-            'dcat:endpointURL': { '@id': 'https://api.afp.example/photos/v1/search' },
-            'dcat:endpointDescription': { '@id': 'https://api.afp.example/photos/v1/openapi.yaml' },
+            'foaf:depiction': {
+              '@id': 'https://picsum.photos/seed/afp-photo/400',
+            },
+            'dcat:endpointURL': {
+              '@id': 'https://api.afp.example/photos/v1/search',
+            },
+            'dcat:endpointDescription': {
+              '@id': 'https://api.afp.example/photos/v1/openapi.yaml',
+            },
             'odrl:hasPolicy': { '@id': 'urn:policy:afp' },
           },
           {
@@ -561,7 +573,8 @@ describe('FederatedCatalogueDcpStore', () => {
             '@type': 'dcat:Dataset',
             'rdf:type': { '@id': 'dcat:Dataset' },
             'dcterms:title': 'DW Fact-Check Registry',
-            'dcterms:description': 'Public claims fact-checked by Deutsche Welle.',
+            'dcterms:description':
+              'Public claims fact-checked by Deutsche Welle.',
             'dcat:keyword': 'Fact-check',
             'dcterms:publisher': {
               '@id': 'did:web:host.docker.internal%3A8080',
@@ -569,7 +582,9 @@ describe('FederatedCatalogueDcpStore', () => {
             },
             'dcat:distribution': [
               {
-                'dcat:accessURL': { '@id': 'https://data.dw.example/registry.parquet' },
+                'dcat:accessURL': {
+                  '@id': 'https://data.dw.example/registry.parquet',
+                },
                 'dcat:byteSize': 104857600,
               },
             ],
@@ -587,7 +602,9 @@ describe('FederatedCatalogueDcpStore', () => {
           '@type': 'dcat:Dataset',
           'rdf:type': 'dcat:DataService',
           'dcterms:title': 'DW Live Stream',
-          'dcat:endpointURL': { '@id': 'https://stream.dw.example/hls/master.m3u8' },
+          'dcat:endpointURL': {
+            '@id': 'https://stream.dw.example/hls/master.m3u8',
+          },
         } as DcpDataset,
       },
     ];
@@ -645,9 +662,13 @@ describe('FederatedCatalogueDcpStore', () => {
         i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
       );
       expect(svc.provider.name).to.equal('Agence France-Presse');
-      expect(svc.provider.logoUrl).to.equal('https://picsum.photos/seed/afp/128');
+      expect(svc.provider.logoUrl).to.equal(
+        'https://picsum.photos/seed/afp/128',
+      );
       // counterPartyId still tracks the publisher DID for negotiation.
-      expect(svc.counterPartyId).to.equal('did:web:host.docker.internal%3A8080');
+      expect(svc.counterPartyId).to.equal(
+        'did:web:host.docker.internal%3A8080',
+      );
     });
 
     it('pushes dataset-level foaf:depiction into images[] and bannerUrl', async () => {
@@ -660,8 +681,12 @@ describe('FederatedCatalogueDcpStore', () => {
       const svc = items.find(
         i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
       );
-      expect(svc.images).to.deep.equal(['https://picsum.photos/seed/afp-photo/400']);
-      expect(svc.bannerUrl).to.equal('https://picsum.photos/seed/afp-photo/400');
+      expect(svc.images).to.deep.equal([
+        'https://picsum.photos/seed/afp-photo/400',
+      ]);
+      expect(svc.bannerUrl).to.equal(
+        'https://picsum.photos/seed/afp-photo/400',
+      );
     });
 
     it('passes through v0.2.0 fields: themes, languages, hostingCountry (uppercased), distributions, endpointUrl', async () => {
@@ -675,14 +700,22 @@ describe('FederatedCatalogueDcpStore', () => {
         i => i['@id'] === 'urn:uuid:11111111-1111-4111-8111-111111111111',
       );
       expect(svc.themes).to.deep.equal([
-        { uri: 'http://publications.europa.eu/resource/authority/data-theme/GOVE' },
+        {
+          uri: 'http://publications.europa.eu/resource/authority/data-theme/GOVE',
+        },
       ]);
       expect(svc.languages).to.deep.equal([
-        { uri: 'http://publications.europa.eu/resource/authority/language/ENG' },
+        {
+          uri: 'http://publications.europa.eu/resource/authority/language/ENG',
+        },
       ]);
       expect(svc.hostingCountry).to.equal('BE');
-      expect(svc.endpointUrl).to.equal('https://api.afp.example/photos/v1/search');
-      expect(svc.endpointDescription).to.equal('https://api.afp.example/photos/v1/openapi.yaml');
+      expect(svc.endpointUrl).to.equal(
+        'https://api.afp.example/photos/v1/search',
+      );
+      expect(svc.endpointDescription).to.equal(
+        'https://api.afp.example/photos/v1/openapi.yaml',
+      );
       expect(svc.rdfType).to.equal('dcat:DataService');
       expect(svc.issued).to.equal('2026-01-22');
 
@@ -727,7 +760,8 @@ describe('FederatedCatalogueDcpStore', () => {
             {
               '@id': 'urn:uuid:99999999-9999-4999-8999-999999999999',
               '@type': 'dcat:Dataset',
-              'http://www.w3.org/1999/02/22-rdf-syntax-ns#type': 'dcat:DataService',
+              'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
+                'dcat:DataService',
               'dct:title': 'Expanded-form AFP Service',
               'dct:description': 'Emitted with dct: alias, not dcterms:',
               'dct:publisher': {

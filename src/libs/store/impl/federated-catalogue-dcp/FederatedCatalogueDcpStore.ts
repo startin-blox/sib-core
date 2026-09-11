@@ -62,10 +62,7 @@ function extractRdfType(ds: DcpDataset): string | undefined {
   const raw = ds['rdf:type'];
   const s = typeof raw === 'string' ? raw : readObjectId(raw);
   if (!s) return undefined;
-  const norm = s.replace(
-    /^http:\/\/www\.w3\.org\/ns\/dcat#/,
-    'dcat:',
-  );
+  const norm = s.replace(/^http:\/\/www\.w3\.org\/ns\/dcat#/, 'dcat:');
   return norm;
 }
 
@@ -223,7 +220,9 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     return this.pendingGetData;
   }
 
-  private normalizeDatasets(v: DcpDataset | DcpDataset[] | undefined): DcpDataset[] {
+  private normalizeDatasets(
+    v: DcpDataset | DcpDataset[] | undefined,
+  ): DcpDataset[] {
     if (!v) return [];
     return Array.isArray(v) ? v : [v];
   }
@@ -282,7 +281,9 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         ? [String(rawKeywords)]
         : undefined;
 
-    const version = readString(ds['dcat:version'] ?? serviceForMeta['dcat:version']);
+    const version = readString(
+      ds['dcat:version'] ?? serviceForMeta['dcat:version'],
+    );
 
     // rdf:type discrimination — enables the modal's Negotiate CTA.
     const rdfType = extractRdfType(ds);
@@ -331,7 +332,10 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     const contactPoint = contact?.['vcard:fn']
       ? {
           name: String(contact['vcard:fn']),
-          email: String(contact['vcard:hasEmail'] ?? '').replace(/^mailto:/i, ''),
+          email: String(contact['vcard:hasEmail'] ?? '').replace(
+            /^mailto:/i,
+            '',
+          ),
         }
       : undefined;
 
@@ -348,7 +352,9 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         : undefined;
 
     const hostingCountry = readString(ds['tc:hostingCountry'])?.toUpperCase();
-    const issued = readIsoDate(ds['dcterms:issued'] ?? (ds as any)['dct:issued']);
+    const issued = readIsoDate(
+      ds['dcterms:issued'] ?? (ds as any)['dct:issued'],
+    );
     const identifier = readString(
       ds['dcterms:identifier'] ?? (ds as any)['dct:identifier'],
     );
@@ -360,25 +366,26 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       description,
       keywords,
       version,
-      provider: providerId || providerAddress
-        ? {
-            '@id': providerId,
-            name: providerName ?? providerId,
-            address: providerAddress as string | undefined,
-            ...(providerLogo ? { logoUrl: providerLogo } : {}),
-          }
-        : undefined,
+      provider:
+        providerId || providerAddress
+          ? {
+              '@id': providerId,
+              name: providerName ?? providerId,
+              address: providerAddress as string | undefined,
+              ...(providerLogo ? { logoUrl: providerLogo } : {}),
+            }
+          : undefined,
       images,
       // v0.2.0 pass-through
       identifier,
       rdfType: rdfType as Destination['rdfType'],
       issued,
-      themes: themes.length ? themes : undefined,
-      languages: languages.length ? languages : undefined,
+      themes: themes.length > 0 ? themes : undefined,
+      languages: languages.length > 0 ? languages : undefined,
       hostingCountry,
-      conformsTo: conformsTo.length ? conformsTo : undefined,
+      conformsTo: conformsTo.length > 0 ? conformsTo : undefined,
       contactPoint,
-      distributions: distributions?.length ? distributions : undefined,
+      distributions: distributions?.length > 0 ? distributions : undefined,
       endpointUrl,
       endpointDescription,
       bannerUrl,
@@ -398,10 +405,7 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     };
   }
 
-  async initLocalDataSourceContainer(
-    dataSrc = '',
-    containerType = 'default',
-  ) {
+  async initLocalDataSourceContainer(dataSrc = '', containerType = 'default') {
     if (!dataSrc) dataSrc = this.buildContainerId(containerType);
     const localContainer: Resource = {
       '@context': 'https://cdn.startinblox.com/owl/context.jsonld',
@@ -430,13 +434,16 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     }
   }
 
-  post(_r: object, _id: string, _s?: boolean) { return Promise.resolve(null); }
-  put(_r: object, _id: string, _s?: boolean) { return Promise.resolve(null); }
-  patch(_r: object, _id: string, _s?: boolean) { return Promise.resolve(null); }
-  delete(
-    _id: string,
-    _c?: JSONLDContextParser.JsonLdContextNormalized | null,
-  ) {
+  post(_r: object, _id: string, _s?: boolean) {
+    return Promise.resolve(null);
+  }
+  put(_r: object, _id: string, _s?: boolean) {
+    return Promise.resolve(null);
+  }
+  patch(_r: object, _id: string, _s?: boolean) {
+    return Promise.resolve(null);
+  }
+  delete(_id: string, _c?: JSONLDContextParser.JsonLdContextNormalized | null) {
     return Promise.resolve(null);
   }
 
@@ -462,7 +469,9 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     }
   }
 
-  _getLanguage() { return ''; }
+  _getLanguage() {
+    return '';
+  }
   selectLanguage(_selectedLanguageCode: string) {}
 
   getExpandedPredicate(

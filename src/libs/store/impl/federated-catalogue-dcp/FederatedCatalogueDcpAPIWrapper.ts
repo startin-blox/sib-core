@@ -24,7 +24,10 @@ export class FederatedCatalogueDcpAPIWrapper {
   private baseUrl: string;
   private fetchImpl: typeof fetch;
 
-  constructor(baseUrl: string, fetchImpl: typeof fetch = fetch.bind(globalThis)) {
+  constructor(
+    baseUrl: string,
+    fetchImpl: typeof fetch = fetch.bind(globalThis),
+  ) {
     // Strip any trailing slash so path concatenation is deterministic.
     this.baseUrl = baseUrl.replace(/\/+$/, '');
     this.fetchImpl = fetchImpl;
@@ -41,7 +44,10 @@ export class FederatedCatalogueDcpAPIWrapper {
     });
     const response = await this.fetchImpl(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
       body,
     });
     if (!response.ok) {
