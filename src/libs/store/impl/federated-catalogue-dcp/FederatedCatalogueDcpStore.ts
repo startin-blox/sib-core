@@ -131,7 +131,16 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueDcpStore',
       );
     }
-    this.api = getFederatedCatalogueDcpAPIWrapper(this.cfg.endpoint);
+    // Untyped read: shared StoreConfig doesn't know FC-specific `apiKey`.
+    const apiKey =
+      typeof (this.cfg as { apiKey?: unknown }).apiKey === 'string'
+        ? ((this.cfg as { apiKey?: string }).apiKey as string) || undefined
+        : undefined;
+    this.api = getFederatedCatalogueDcpAPIWrapper(
+      this.cfg.endpoint,
+      undefined,
+      apiKey,
+    );
     this.cache = new InMemoryCacheManager();
   }
 
