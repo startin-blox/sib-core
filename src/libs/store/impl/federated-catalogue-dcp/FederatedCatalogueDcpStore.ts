@@ -133,7 +133,9 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     }
     const cfgAny = this.cfg as Record<string, unknown>;
     const apiKey =
-      typeof cfgAny.apiKey === 'string' ? cfgAny.apiKey || undefined : undefined;
+      typeof cfgAny.apiKey === 'string'
+        ? cfgAny.apiKey || undefined
+        : undefined;
     const fetchImpl =
       typeof cfgAny.fetchImpl === 'function'
         ? (cfgAny.fetchImpl as typeof fetch)
@@ -403,7 +405,7 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       bannerUrl,
       // Contract-negotiation surface — preserve fields tems-modal expects
       // when negotiating an offer sourced from this store.
-      counterPartyId: catalog['dspace:participantId'] as string ?? providerId,
+      counterPartyId: (catalog['dspace:participantId'] as string) ?? providerId,
       counterPartyAddress: providerAddress as string | undefined,
       assetId: id,
       datasetId: id,
