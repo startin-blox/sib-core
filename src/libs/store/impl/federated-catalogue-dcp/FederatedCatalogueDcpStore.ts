@@ -131,14 +131,16 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
         'Missing required `endpoint` in StoreConfig for FederatedCatalogueDcpStore',
       );
     }
-    // Untyped read: shared StoreConfig doesn't know FC-specific `apiKey`.
+    const cfgAny = this.cfg as Record<string, unknown>;
     const apiKey =
-      typeof (this.cfg as { apiKey?: unknown }).apiKey === 'string'
-        ? ((this.cfg as { apiKey?: string }).apiKey as string) || undefined
+      typeof cfgAny.apiKey === 'string' ? cfgAny.apiKey || undefined : undefined;
+    const fetchImpl =
+      typeof cfgAny.fetchImpl === 'function'
+        ? (cfgAny.fetchImpl as typeof fetch)
         : undefined;
     this.api = getFederatedCatalogueDcpAPIWrapper(
       this.cfg.endpoint,
-      undefined,
+      fetchImpl,
       apiKey,
     );
     this.cache = new InMemoryCacheManager();
@@ -297,7 +299,7 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     // rdf:type discrimination — enables the modal's Negotiate CTA.
     const rdfType = extractRdfType(ds);
 
-    // Publisher preferred over raw DID for human-readable display.
+    // Publisher preferred over raw DID for display; counterPartyId uses the catalog DID directly.
     const publisher = ds['dcterms:publisher'] ?? (ds as any)['dct:publisher'];
     const providerId = publisher?.['@id'] ?? catalog['dspace:participantId'];
     const providerName = publisher?.['foaf:name'] ?? providerId;
@@ -401,7 +403,7 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
       bannerUrl,
       // Contract-negotiation surface — preserve fields tems-modal expects
       // when negotiating an offer sourced from this store.
-      counterPartyId: providerId,
+      counterPartyId: catalog['dspace:participantId'] as string ?? providerId,
       counterPartyAddress: providerAddress as string | undefined,
       assetId: id,
       datasetId: id,

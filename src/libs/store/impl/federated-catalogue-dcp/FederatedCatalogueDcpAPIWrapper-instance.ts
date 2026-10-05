@@ -2,16 +2,18 @@ import { FederatedCatalogueDcpAPIWrapper } from './FederatedCatalogueDcpAPIWrapp
 
 const instances = new Map<string, FederatedCatalogueDcpAPIWrapper>();
 
-// Pool keyed by (baseUrl, apiKey) so flipping auth mode picks up a fresh wrapper.
 export function getFederatedCatalogueDcpAPIWrapper(
   baseUrl: string,
-  fetchImpl: typeof fetch = fetch.bind(globalThis),
+  fetchImpl?: typeof fetch,
   apiKey?: string,
 ): FederatedCatalogueDcpAPIWrapper {
-  const key = `${baseUrl}::${apiKey ?? ''}`;
+  const resolvedFetch = fetchImpl ?? fetch.bind(globalThis);
+  const key = `${baseUrl}::${apiKey ?? ''}::${fetchImpl ? 'auth' : 'anon'}`;
   let inst = instances.get(key);
   if (!inst) {
-    inst = new FederatedCatalogueDcpAPIWrapper(baseUrl, fetchImpl, { apiKey });
+    inst = new FederatedCatalogueDcpAPIWrapper(baseUrl, resolvedFetch, {
+      apiKey,
+    });
     instances.set(key, inst);
   }
   return inst;
