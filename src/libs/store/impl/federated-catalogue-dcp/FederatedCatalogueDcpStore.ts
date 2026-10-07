@@ -310,8 +310,10 @@ export class FederatedCatalogueDcpStore implements IStore<any> {
     const endpointUrl = readObjectId(ds['dcat:endpointURL']);
     const endpointDescription = readObjectId(ds['dcat:endpointDescription']);
 
+    // DSP protocol endpoint for contract negotiations — always from the
+    // catalog-level dcat:service, never from the dataset's own endpointURL
+    // (which describes the actual data service, e.g. /public).
     const providerAddress =
-      endpointUrl ??
       (catalogServices[0]?.['dcat:endpointURL'] as string | undefined) ??
       (catalogServices[0]?.['dcat:endpointUrl'] as string | undefined) ??
       catalog.originator;
